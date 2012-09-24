@@ -26,6 +26,6 @@ setup(
 	"""
         [ckan.plugins]
 	# Add plugins here, eg
-	# myplugin=ckanext.kata:PluginClass
+	kata=ckanext.kata.plugin:KATAPlugin
 	""",
 )
