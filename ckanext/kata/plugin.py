@@ -27,14 +27,44 @@ class KATAPlugin(SingletonPlugin):
         template_dir = os.path.join(rootdir, 'ckanext', 'kata', 'theme', 'templates')
         config['extra_template_paths'] = ','.join([template_dir,
                 config.get('extra_template_paths', '')])
-    
+
     def package_types(self):
         return ['dataset']
-    
-    def is_fallback(self):
-        return True
-    
+
+    def new_template(self):
+        """
+        Returns a string representing the location of the template to be
+        rendered for the new page
+        """
+        return 'package/new.html'
+
+    def comments_template(self):
+        """
+        Returns a string representing the location of the template to be
+        rendered for the comments page
+        """
+        return 'package/comments.html'
+
+    def search_template(self):
+        """
+        Returns a string representing the location of the template to be
+        rendered for the search page (if present)
+        """
+        return 'package/search.html'
+
+    def read_template(self):
+        """
+        Returns a string representing the location of the template to be
+        rendered for the read page
+        """
+        return 'package/read.html'
+
+    def history_template(self):
+        """
+        Returns a string representing the location of the template to be
+        rendered for the history page
+        """
+        return 'package/history.html'
+
     def package_form(self):
         return 'package/new_package_form.html'
-
-
