@@ -5,19 +5,19 @@ import logging
 import os
 
 from ckan.plugins import implements, SingletonPlugin
-from ckan.plugins import IPackageController
+from ckan.plugins import IPackageController, IDatasetForm, IConfigurer
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurer
 from ckan.plugins import IMapper
-
 from ckan.lib.base import g, c
+from ckan.lib.plugins import DefaultDatasetForm
+from ckan.logic.schema import package_form_schema
+from ckan.lib.navl.validators import ignore_missing, keep_extras
 
 log = logging.getLogger('ckanext.kata')
 
-import ckan.plugins
-import ckan.lib.plugins
-
 def get_roles():
+    # TODO: read from configuration
     return ['author', 'maintainer', 'publisher', 'sponsor']
 
 class KataMetadata(SingletonPlugin):
@@ -32,9 +32,9 @@ class KataMetadata(SingletonPlugin):
     def delete(self, dataset):
         pass
 
-class KataPlugin(SingletonPlugin, ckan.lib.plugins.DefaultDatasetForm):
-    implements(ckan.plugins.IDatasetForm, inherit=True)
-    implements(ckan.plugins.IConfigurer, inherit=True)
+class KataPlugin(SingletonPlugin, DefaultDatasetForm):
+    implements(IDatasetForm, inherit=True)
+    implements(IConfigurer, inherit=True)
     
     def update_config(self, config):
         """
@@ -54,16 +54,7 @@ class KataPlugin(SingletonPlugin, ckan.lib.plugins.DefaultDatasetForm):
         return True
     
     def setup_template_variables(self, context, data_dict):
-        log.debug(context)
-        log.debug(data_dict)
-        log.debug(c)
-        
-        context['roles'] = get_roles()
-        data_dict['roles'] = get_roles()
-        c.roles = get_roles()
-        
-        return {'roles':get_roles()}
-        
+        g.roles = get_roles()
 
     def new_template(self):
         """
@@ -104,9 +95,6 @@ class KataPlugin(SingletonPlugin, ckan.lib.plugins.DefaultDatasetForm):
         return 'package/new_package_form.html'
         
     def form_to_db_schema(self, package_type=None):
-        from ckan.logic.schema import package_form_schema
-        from ckan.lib.navl.validators import ignore_missing
-    
         schema = package_form_schema()
 
         for role in get_roles():
@@ -119,8 +107,6 @@ class KataPlugin(SingletonPlugin, ckan.lib.plugins.DefaultDatasetForm):
         return schema
     
     def db_to_form_schema(data, package_type=None):
-        from ckan.lib.navl.validators import ignore_missing, keep_extras
-    
         schema = package_form_schema()
         
         for role in get_roles():
