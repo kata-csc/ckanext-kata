@@ -11,7 +11,9 @@ from ckan.plugins import IConfigurer
 from ckan.plugins import IMapper
 from ckan.lib.base import g, c
 from ckan.lib.plugins import DefaultDatasetForm
-from ckan.logic.schema import package_form_schema
+from ckan.logic.schema import db_to_form_package_schema,\
+                                form_to_db_package_schema
+import ckan.logic.converters
 from ckan.lib.navl.validators import ignore_missing, keep_extras
 
 log = logging.getLogger('ckanext.kata')
@@ -95,7 +97,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return 'package/new_package_form.html'
         
     def form_to_db_schema(self, package_type=None):
-        schema = package_form_schema()
+        schema = form_to_db_package_schema()
 
         for role in get_roles():
             schema.update({
@@ -107,8 +109,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return schema
     
     def db_to_form_schema(data, package_type=None):
-        schema = package_form_schema()
-        
+        schema = db_to_form_package_schema()
         for role in get_roles():
             schema.update({
                 '%s_name' % role : [ignore_missing],
@@ -116,5 +117,4 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 '%s_email' % role : [ignore_missing],
                 '%s_type' % role :[ignore_missing],
             })
-            
         return schema
