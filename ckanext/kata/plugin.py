@@ -20,8 +20,6 @@ from ckan.logic.converters import convert_to_extras, convert_from_extras
 
 log = logging.getLogger('ckanext.kata')
 
-import re
-
 def get_roles():
     # TODO: read from configuration
     return ['author', 'maintainer', 'publisher', 'sponsor']
@@ -148,4 +146,3 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 #            })
 
         return schema
-
