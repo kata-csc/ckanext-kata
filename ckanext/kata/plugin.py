@@ -9,63 +9,23 @@ from ckan.plugins import IPackageController, IDatasetForm, IConfigurer
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurer
 from ckan.plugins import IMapper
-from ckan.lib.base import g, c, request
+from ckan.lib.base import g, c
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
 import ckan.logic.converters
 from ckan.lib.navl.validators import ignore_missing, keep_extras
-from ckan.logic.converters import convert_to_extras, convert_from_extras
 
 log = logging.getLogger('ckanext.kata')
 
-import re
-
 def get_roles():
     # TODO: read from configuration
-    return ['author', 'maintainer', 'publisher', 'sponsor', 'owner']
-
-def get_contact_fields():
-    return {'name':'', 'role':'', 'phone':'', 'email':''}
-
-import unicodecsv
-from cStringIO import StringIO
-
-def contacts_from_csv(value):
-    """
-    Returns dict object from value
-    """
-    contacts_io = StringIO()
-    contacts_io.write(value)
-    contacts_io.seek(0)
-    
-    return csv.DictReader(contacts_io, fieldnames=get_contact_fields(), delimiter=';')
-
-
-def default_roles_schema():
-    schema = {
-        'key': [not_empty, unicode],
-        'value': [not_missing],
-        'deleted': [ignore_missing],
-    }
-    return schema
-
-#def csv_to_extras(key, data, errors, context):
-#    extras = data.get(('extras',), [])
-#    if not extras:
-#        data[('extras',)] = extras
-#    extras.append({'key': key[-1], 'value': data[key]})
-#
-#def csv_from_extras(key, data, errors, context):
-#    for data_key, data_value in data.iteritems():
-#        if (data_key[0] == 'extras'
-#            and data_key[-1] == 'key'
-#            and data_value == key[-1]):
-#            data[key] = data[('extras', data_key[1], 'value')]
+    return ['author', 'maintainer', 'publisher', 'sponsor']
 
 class KataMetadata(SingletonPlugin):
     implements(IPackageController, inherit=True)
-    
+    implements(IRoutes, inherit=True)
+
     def create(self, dataset):
         pass
     
@@ -97,6 +57,13 @@ class KataMetadata(SingletonPlugin):
         
     def delete(self, dataset):
         pass
+
+    def before_map(self, map):
+        map.connect('/dataset/{id}.{format}',
+                    controller="ckanext.kata.controllers:MetadataController",
+                    action='tordf')
+        return map
+
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IDatasetForm, inherit=True)
@@ -160,11 +127,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def package_form(self):
         return 'package/new_package_form.html'
         
-
     def form_to_db_schema(self, package_type=None):
         schema = form_to_db_package_schema()
         schema['extras_validation'] = [keep_extras, ignore]
-
         return schema
 #    
 #    def db_to_form_schema(data, package_type=None):
