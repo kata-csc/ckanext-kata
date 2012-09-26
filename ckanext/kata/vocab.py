@@ -1,6 +1,6 @@
 import rdflib
 from rdflib.graph import Graph as _Graph
-from rdflib.namespace import Namespace, RDF, RDFS, XSD
+from rdflib.namespace import Namespace, RDF, RDFS, XSD, ClosedNamespace
 from rdflib.term import URIRef, Literal, BNode, Node
 
 rdflib.plugin.register('sparql', rdflib.query.Processor,
@@ -8,7 +8,26 @@ rdflib.plugin.register('sparql', rdflib.query.Processor,
 rdflib.plugin.register('sparql', rdflib.query.Result,
                        'rdfextras.sparql.query', 'SPARQLQueryResult')
 
-DC = Namespace("http://purl.org/dc/terms/")
+DC = ClosedNamespace(uri="http://purl.org/dc/terms/",
+                     terms=[
+                            'abstract','accessRights','accrualMethod',
+                            'accrualPeriodicity', 'accrualPolicy', 'alternative',
+                            'audience', 'available','bibliographicCitation',
+                            'conformsTo','contributor','coverage', 'created',
+                            'creator','date', 'dateAccepted', 'dateCopyrighted',
+                            'dateSubmitted', 'description', 'educationLevel',
+                            'extent', 'format', 'hasFormat', 'hasPart',
+                            'hasVersion', 'identifier', 'instructionalMethod',
+                            'isFormatOf', 'isPartOf', 'isReferencedBy', 
+                            'isReplacedBy', 'isRequiredBy', 'issued',
+                            'isVersionOf', 'language', 'license', 'mediator',
+                            'medium', 'modified', 'provenance', 'publisher',
+                            'references', 'relation', 'replaces', 'requires',
+                            'rights', 'rightsHolder', 'source', 'spatial',
+                            'subject', 'tableOfContents', 'temporal', 'title',
+                            'type', 'valid'
+                            ]
+                     )
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 DCES = Namespace("http://purl.org/dc/elements/1.1/")
 FOAF = Namespace("http://xmlns.com/foaf/0.1/")
