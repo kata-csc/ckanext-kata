@@ -37,7 +37,7 @@ class MetadataController(BaseController):
         extra = BNode()
         graph.add((uri, DC.relation, extra))
         if data["url"]:
-            graph.add((uri, DC.source, data["url"]))
+            graph.add((uri, DC.source, Literal(data["url"])))
         for res in data["resources"]:
             if res["url"]:
                 graph.add((extra, DCAT.accessUrl, URIRef(res["url"])))
