@@ -50,7 +50,7 @@ class MetadataController(BaseController):
         for k, v in data["extras"].items():
             try:
                 graph.add((uri, DC[k], Literal(v)))
-            except KeyError:
+            except Exception:
                 continue
         response.headers['Content-type'] = 'text/xml'
         if format == 'rdf':
