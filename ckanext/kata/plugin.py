@@ -14,9 +14,13 @@ from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
 import ckan.logic.converters
-from ckan.lib.navl.validators import ignore_missing, keep_extras
+from ckan.lib.navl.validators import ignore_missing, keep_extras, not_empty,\
+                                        not_missing
+from ckan.logic.converters import convert_to_extras, convert_from_extras
 
 log = logging.getLogger('ckanext.kata')
+
+import re
 
 def get_roles():
     # TODO: read from configuration
@@ -144,3 +148,4 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 #            })
 
         return schema
+
