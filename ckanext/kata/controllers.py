@@ -5,6 +5,9 @@ from ckan.lib.base import BaseController, c
 from ckan.model import Package
 
 from pylons import response
+
+from rdflib.term import Identifier
+
 from vocab import Graph, URIRef, Literal, BNode
 from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
                     REV, SCOVO, XSD, LICENSES
@@ -21,6 +24,9 @@ class MetadataController(BaseController):
         pkg = Package.get(id)
         data = pkg.as_dict()
         uri = URIRef(data['ckan_url']) if 'ckan_url' in data else BNode()
+        log.debug(dir(uri))
+        selfref = u'%s' % uri
+        graph.add((selfref, RDF.ID, Literal(pkg.id)))
         graph.add((uri, DC.identifier, Literal(data["name"])))
         log.debug(data)
         graph.add((uri, DC.modified, Literal(data["metadata_modified"],
@@ -34,24 +40,19 @@ class MetadataController(BaseController):
         if 'language' in data["extras"]:
             graph.add((uri, DC.language, Literal(data["extras"]["language"])))
         graph.add((uri, DC.description, Literal(data["notes"])))
-        extra = BNode()
-        graph.add((uri, DC.relation, extra))
         if data["url"]:
             graph.add((uri, DC.source, Literal(data["url"])))
         for res in data["resources"]:
+            extra = Identifier(RDF.resource)
+            graph.add((uri, DC.relation, extra))
             if res["url"]:
-                graph.add((extra, DCAT.accessUrl, URIRef(res["url"])))
+                graph.add((extra, DC.isReferencedBy, URIRef(res["url"])))
             if res["size"]:
                 graph.add((extra, DC.extent, Literal(res['size'])))
             if res["format"]:
                 graph.add((extra, DC.hasFormat, Literal(res['format'])))
             if res["mimetype"]:
                 graph.add((extra, DC.hasFormat, Literal(res['mimetype'] + res['mimetype_inner'])))
-        for k, v in data["extras"].items():
-            try:
-                graph.add((uri, DC[k], Literal(v)))
-            except Exception:
-                continue
         response.headers['Content-type'] = 'text/xml'
         if format == 'rdf':
             format = 'pretty-xml'
