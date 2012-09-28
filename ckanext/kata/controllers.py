@@ -1,7 +1,7 @@
 '''Metadata based controllers for KATA.
 '''
 
-from ckan.lib.base import BaseController, c
+from ckan.lib.base import BaseController, c, h
 from ckan.model import Package
 
 from pylons import response
@@ -25,7 +25,7 @@ class MetadataController(BaseController):
         data = pkg.as_dict()
         uri = URIRef(data['ckan_url']) if 'ckan_url' in data else BNode()
         log.debug(dir(uri))
-        selfref = u'%s' % uri
+        selfref = URIRef(uri)
         graph.add((selfref, RDF.ID, Literal(pkg.id)))
         graph.add((uri, DC.identifier, Literal(data["name"])))
         log.debug(data)
@@ -43,7 +43,10 @@ class MetadataController(BaseController):
         if data["url"]:
             graph.add((uri, DC.source, Literal(data["url"])))
         for res in data["resources"]:
-            extra = Identifier(RDF.resource)
+            extra = Identifier(h.url_for(controller='package',
+                                         action='resource_read',
+                                         id=data['id'],
+                                         resource_id=res['id']))
             graph.add((uri, DC.relation, extra))
             if res["url"]:
                 graph.add((extra, DC.isReferencedBy, URIRef(res["url"])))
