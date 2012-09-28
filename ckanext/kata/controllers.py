@@ -26,7 +26,9 @@ class MetadataController(BaseController):
         uri = BNode()
         selfref = URIRef(uri)
         graph.add((selfref, RDF.ID, Literal(pkg.id)))
-        graph.add((uri, DC.identifier, Literal(data["name"])))
+        graph.add((uri, DC.identifier, Literal(data["name"])\
+                            if 'identifier' not in data["extras"]\
+                            else URIRef(data["extras"]["identifier"])))
         graph.add((uri, DC.modified, Literal(data["metadata_modified"],
                                              datatype=XSD.date)))
         graph.add((uri, DC.contributor, Literal(data["author_email"])))
@@ -39,7 +41,7 @@ class MetadataController(BaseController):
             graph.add((uri, DC.language, Literal(data["extras"]["language"])))
         graph.add((uri, DC.description, Literal(data["notes"])))
         if data["url"]:
-            graph.add((uri, DC.source, Literal(data["url"])))
+            graph.add((uri, DC.source, URIRef(data["url"])))
         for res in data["resources"]:
             extra = Identifier(h.url_for(controller='package',
                                          action='resource_read',
@@ -52,8 +54,6 @@ class MetadataController(BaseController):
                 graph.add((extra, DC.extent, Literal(res['size'])))
             if res["format"]:
                 graph.add((extra, DC.hasFormat, Literal(res['format'])))
-            if res["mimetype"]:
-                graph.add((extra, DC.hasFormat, Literal(res['mimetype'] + res['mimetype_inner'])))
         response.headers['Content-type'] = 'text/xml'
         if format == 'rdf':
             format = 'pretty-xml'
