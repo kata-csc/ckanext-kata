@@ -23,12 +23,10 @@ class MetadataController(BaseController):
         graph = Graph()
         pkg = Package.get(id)
         data = pkg.as_dict()
-        uri = URIRef(data['ckan_url']) if 'ckan_url' in data else BNode()
-        log.debug(dir(uri))
+        uri = BNode()
         selfref = URIRef(uri)
         graph.add((selfref, RDF.ID, Literal(pkg.id)))
         graph.add((uri, DC.identifier, Literal(data["name"])))
-        log.debug(data)
         graph.add((uri, DC.modified, Literal(data["metadata_modified"],
                                              datatype=XSD.date)))
         graph.add((uri, DC.contributor, Literal(data["author_email"])))
