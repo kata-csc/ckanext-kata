@@ -31,17 +31,19 @@ class MetadataController(BaseController):
                             else URIRef(data["extras"]["identifier"])))
         graph.add((uri, DC.modified, Literal(data["metadata_modified"],
                                              datatype=XSD.date)))
-        graph.add((uri, DC.contributor, Literal(data["author_email"])))
+        graph.add((uri, DC.creator, Literal(data["author_email"])))
         graph.add((uri, DC.title, Literal(data["title"])))
         graph.add((uri, DC.rights, Literal(data["license"])))
         for tag in data["tags"]:
             graph.add((uri, DC.subject, Literal(tag)))
-        graph.add((uri, DC.contributor, Literal(data["author_email"])))
         if 'language' in data["extras"]:
             graph.add((uri, DC.language, Literal(data["extras"]["language"])))
         graph.add((uri, DC.description, Literal(data["notes"])))
         if data["url"]:
             graph.add((uri, DC.source, URIRef(data["url"])))
+        if data["groups"]:
+            for group in data["groups"]:
+                graph.add((uri, DC.contributor, Literal(group)))
         for res in data["resources"]:
             extra = Identifier(h.url_for(controller='package',
                                          action='resource_read',
