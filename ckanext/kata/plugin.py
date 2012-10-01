@@ -9,15 +9,40 @@ from ckan.plugins import IPackageController, IDatasetForm, IConfigurer
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurer
 from ckan.plugins import IMapper
-from ckan.lib.base import g, c
+from ckan.lib.base import g, c, request
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
 import ckan.logic.converters
-from ckan.lib.navl.validators import ignore_missing, keep_extras
+from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_empty, not_missing
 
 log = logging.getLogger('ckanext.kata')
 
+def role_to_extras(key, data, errors, context):
+    if 'role' in key and key in data:
+        if not ('extras',) in data:
+            data[('extras',)] = []
+        
+        extras = data[('extras',)]
+        
+        role_key = data.get(key, None)
+        role_value = data.get((key[0], key[1], 'value'), None)
+        
+        for _key in data:
+            if 'role' in _key[0] and ('role', _key[1], 'value') in data:
+                # Skip role if deleted is found in data
+                if ('role', _key[1], '__extras') in data and data[('role', _key[1], '__extras')]['deleted'] == 'on':
+                    continue
+                
+                # Value for key column
+                _keyval = 'role_%d_%s' % (_key[1], data[('role', _key[1], 'key')])
+                # Value for value column
+                _valval = data[('role', _key[1], 'value')]
+                
+                # Add if contains data
+                if len(_valval) > 0:
+                    extras.append({'key':_keyval, 'value':_valval})
+                    
 def get_roles():
     # TODO: read from configuration
     return ['author', 'maintainer', 'publisher', 'sponsor']
@@ -29,26 +54,8 @@ class KataMetadata(SingletonPlugin):
     def create(self, dataset):
         pass
     
-#    def edit(self, id, data=None, errors=None, error_summary=None):
-#        # Start extras from 200 for example extras__200__key|value
-#        request_params = request.params.copy()
-#        
-#        extras_num = 200
-#        for key in request_params:
-#            log.debug(key)
-#            log.debug(request.params[key])
-#            
-#            if re.match('roles__\d+__key', key):
-#                _key = 'extras__%d__key'
-#                _val = 'extras__%d__value'
-#                request.params[_key % extras_num] = request.params[key]
-#                
-#                # set value
-#                num = [n for n in key.split('__') if n.isdigit()][0]
-#                request.params[_val % extras_num] = request.params['roles__%d__value' % num]
-#                
-#                extras_num += 1
-                
+    def edit(self, id, data=None, errors=None, error_summary=None):
+        pass
         
     def read(self, dataset):
         g.dataset = dataset
@@ -127,20 +134,16 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def package_form(self):
         return 'package/new_package_form.html'
         
-    def form_to_db_schema(self, package_type=None):
+    def form_to_db_schema_options(self, package_type=None, options=None):
+        log.debug('FORM_TO')
         schema = form_to_db_package_schema()
-        schema['extras_validation'] = [keep_extras, ignore]
+        schema['role'] = {'key': [ignore_missing, unicode, role_to_extras], 'value': [ignore_missing]}
+        
         return schema
-#    
-#    def db_to_form_schema(data, package_type=None):
-#        log.debug(g.dataset.id)
-#        schema = db_to_form_package_schema()
-##        for role in get_roles():
-##            schema.update({
-##                '%s_name' % role : [ignore_missing],
-##                '%s_phone' % role : [ignore_missing],
-##                '%s_email' % role : [ignore_missing],
-##                '%s_type' % role :[ignore_missing],
-##            })
-#
-#        return schema
+    
+    def db_to_form_schema(data, package_type=None):
+        schema = db_to_form_package_schema()
+        schema['role'] = {'key': [ignore_missing, unicode], 'value': [ignore_missing]}
+        
+        return schema
+    

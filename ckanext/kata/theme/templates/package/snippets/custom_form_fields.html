@@ -13,7 +13,7 @@ Example:
 
 <div data-module="custom-fields">
   {% for extra in extras %}
-  {% if not extra.key.startswith('role') %}
+  {% if extra.key.find('role') == -1 %}
     {% set prefix = 'extras__%d__' % loop.index0 %}
     {{ form.custom(
       names=(prefix ~ 'key', prefix ~ 'value', prefix ~ 'deleted'),
