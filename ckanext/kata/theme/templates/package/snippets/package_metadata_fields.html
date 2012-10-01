@@ -48,13 +48,13 @@
 					<select name="role__{{ loop.index }}__key" id="role__{{ loop.index }}__id">
 						{% for option in g.roles %}
 						{% if option in extra.key %}
-						<option value="{{ option }}" selected="selected">{{ option }}</option>
+						<option value="{{ option }}" selected="selected">{{ _(option) }}</option>
 						{% else %}
-						<option value="{{ option }}">{{ option }}</option>
+						<option value="{{ option }}">{{ _(option) }}</option>
 						{% endif %}
 						{% endfor %}
 					</select>
-					<label for="role__{{ loop.index }}__value_id" class="add-on">Value</label>
+					<label for="role__{{ loop.index }}__value_id" class="add-on">{{ _('Value') }}</label>
 					<input type="text" id="role__{{ loop.index }}__value_id" name="role__{{ loop.index }}__value" value="{{ extra.value }}" />
 					
 					{# Check field as deleted #}
@@ -75,10 +75,10 @@
 			    <div class="input-prepend">
 					<select name="role__{{ index }}__key" id="role__{{ index }}__id">
 						{% for option in g.roles %}
-						<option value="{{ option }}">{{ option }}</option>
+						<option value="{{ option }}">{{ _(option) }}</option>
 						{% endfor %}
 					</select>
-					<label for="role__{{ index }}__value_id" class="add-on">Value</label>
+					<label for="role__{{ index }}__value_id" class="add-on">{{ _('Value') }}</label>
 					<input type="text" id="role__{{ index }}__value_id" name="role__{{ index }}__value" value="" />
 			    </div>
 			</div>

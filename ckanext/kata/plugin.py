@@ -43,10 +43,6 @@ def role_to_extras(key, data, errors, context):
                 if len(_valval) > 0:
                     extras.append({'key':_keyval, 'value':_valval})
                     
-def get_roles():
-    # TODO: read from configuration
-    return ['author', 'maintainer', 'publisher', 'sponsor']
-
 class KataMetadata(SingletonPlugin):
     implements(IPackageController, inherit=True)
     implements(IRoutes, inherit=True)
@@ -86,6 +82,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         template_dir = os.path.join(rootdir, 'ckanext', 'kata', 'theme', 'templates')
         config['extra_template_paths'] = ','.join([template_dir,
                 config.get('extra_template_paths', '')])
+        
+        roles = config['kata.contact_roles']
+        roles = [r.lower() for r in roles.split(', ')]
+        self.roles = roles
 
     def package_types(self):
         return ['dataset']
@@ -94,7 +94,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return True
     
     def setup_template_variables(self, context, data_dict):
-        g.roles = get_roles()
+        g.roles = self.roles
 
     def new_template(self):
         """
@@ -135,7 +135,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return 'package/new_package_form.html'
         
     def form_to_db_schema_options(self, package_type=None, options=None):
-        log.debug('FORM_TO')
         schema = form_to_db_package_schema()
         schema['role'] = {'key': [ignore_missing, unicode, role_to_extras], 'value': [ignore_missing]}
         
