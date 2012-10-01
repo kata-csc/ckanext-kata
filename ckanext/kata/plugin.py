@@ -55,9 +55,7 @@ class KataMetadata(SingletonPlugin):
         pass
         
     def read(self, dataset):
-        g.dataset = dataset
-        
-        return dataset
+        pass
         
     def delete(self, dataset):
         pass
