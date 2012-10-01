@@ -9,7 +9,7 @@ from ckan.plugins import IPackageController, IDatasetForm, IConfigurer
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurer
 from ckan.plugins import IMapper
-from ckan.lib.base import g, c, request
+from ckan.lib.base import g, c
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
@@ -42,7 +42,8 @@ def role_to_extras(key, data, errors, context):
                 # Add if contains data
                 if len(_valval) > 0:
                     extras.append({'key':_keyval, 'value':_valval})
-                    
+
+
 class KataMetadata(SingletonPlugin):
     implements(IPackageController, inherit=True)
     implements(IRoutes, inherit=True)
@@ -145,4 +146,3 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['role'] = {'key': [ignore_missing, unicode], 'value': [ignore_missing]}
         
         return schema
-    
