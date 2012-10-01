@@ -44,7 +44,7 @@
     {% block package_description %}
       <section class="module-content">
         <h1>{{ pkg.title or pkg.name }}
-          {% if pkg.state.startswith('draft') %}
+          {% if pkg.state == 'draft' %}
             [{{ _('Draft') }}]
           {% endif %}
         </h1>
