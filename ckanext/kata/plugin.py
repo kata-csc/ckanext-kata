@@ -43,10 +43,13 @@ def role_to_extras(key, data, errors, context):
                 if len(_valval) > 0:
                     extras.append({'key':_keyval, 'value':_valval})
 
-
 class KataMetadata(SingletonPlugin):
     implements(IPackageController, inherit=True)
     implements(IRoutes, inherit=True)
+    implements(IConfigurer, inherit=True)
+    
+    def update_config(self, config):
+        self.date_format = config.get('kata.date_format', '%Y-%m-%d')
 
     def create(self, dataset):
         pass
@@ -55,7 +58,8 @@ class KataMetadata(SingletonPlugin):
         pass
         
     def read(self, dataset):
-        pass
+        g.revision = dataset.latest_related_revision
+        g.date_format = self.date_format
         
     def delete(self, dataset):
         pass
@@ -82,7 +86,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         config['extra_template_paths'] = ','.join([template_dir,
                 config.get('extra_template_paths', '')])
         
-        roles = config['kata.contact_roles']
+        roles = config.get('kata.contact_roles', 'Please, Configure')
         roles = [r.lower() for r in roles.split(', ')]
         self.roles = roles
 
