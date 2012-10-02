@@ -78,6 +78,10 @@
     {% endfor %}
   {% endblock %}
 
+  {% block package_metadata %}
+     {% snippet "package/snippets/rdfgen.html", pkg_name=pkg.name %}
+  {% endblock%}
+
   {% block package_social %}
     {% snippet "snippets/social.html" %}
   {% endblock %}

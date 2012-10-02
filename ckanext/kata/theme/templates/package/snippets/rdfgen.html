@@ -1,0 +1,13 @@
+{# 
+Renders a RDF link.
+
+pkg_name - A package name to render.
+#}
+
+  <section class="module module-narrow module-shallow group">
+    <div class="module-content media media-vertical">
+      <div class="media-content">
+        <h3 class="media-heading"><a href={{h.url_for(controller='package', action='read', id=pkg_name, format='rdf')}}>RDF</a></h3>
+      </div>
+    </div>
+  </section>
