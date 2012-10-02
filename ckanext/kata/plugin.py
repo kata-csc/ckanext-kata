@@ -139,7 +139,19 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
+        
+        schema['author'] = [not_missing, not_empty, unicode]
+        schema['author_email'] = [not_missing, not_empty, unicode]
+        schema['maintainer'] = [not_missing, not_empty, unicode]
+        schema['maintainer_email'] = [not_missing, not_empty, unicode]
         schema['role'] = {'key': [ignore_missing, unicode, role_to_extras], 'value': [ignore_missing]}
+        
+        """
+        'author': [ignore_missing, unicode],
+        'author_email': [ignore_missing, unicode],
+        'maintainer': [ignore_missing, unicode],
+        'maintainer_email': [ignore_missing, unicode],
+        """
         
         return schema
     
