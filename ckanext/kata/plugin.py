@@ -87,9 +87,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 config.get('extra_template_paths', '')])
         
         roles = config.get('kata.contact_roles', 'Please, Configure')
-        roles = [r.lower() for r in roles.split(', ')]
+        roles = [r for r in roles.split(', ')]
         self.roles = roles
-
+        
     def package_types(self):
         return ['dataset']
     

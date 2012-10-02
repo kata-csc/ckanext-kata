@@ -47,10 +47,10 @@
 			    <div class="input-prepend">
 					<select name="role__{{ loop.index }}__key" id="role__{{ loop.index }}__id">
 						{% for option in g.roles %}
-						{% if option in extra.key %}
-						<option value="{{ option }}" selected="selected">{{ _(option) }}</option>
+						{% if option.lower() in extra.key %}
+						<option value="{{ option.lower() }}" selected="selected">{{ _(option) }}</option>
 						{% else %}
-						<option value="{{ option }}">{{ _(option) }}</option>
+						<option value="{{ option.lower() }}">{{ _(option) }}</option>
 						{% endif %}
 						{% endfor %}
 					</select>
