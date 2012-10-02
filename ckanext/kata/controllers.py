@@ -34,16 +34,19 @@ class MetadataController(BaseController):
         if data["author_email"]:
             graph.add((uri, DC.creator, Literal(data["author_email"])))
         graph.add((uri, DC.title, Literal(data["title"])))
-        graph.add((uri, DC.rights, Literal(data["license"])))
+        if data["license"]:
+            graph.add((uri, DC.rights, Literal(data["license"])))
         for extra in data["extras"]:
             if 'author' in extra:
                 graph.add((uri, DC.creator, Literal(data["extras"][extra])))
             if 'publisher' in extra:
                 graph.add((uri, DC.publisher, Literal(data["extras"][extra])))
+            if 'available' in extra:
+                graph.add((uri, DC.available, Literal(data["extras"][extra])))
+            if 'language' in extra:
+                graph.add((uri, DC.language, Literal(data["extras"][extra])))
         for tag in data["tags"]:
             graph.add((uri, DC.subject, Literal(tag)))
-        if 'language' in data["extras"]:
-            graph.add((uri, DC.language, Literal(data["extras"]["language"])))
         graph.add((uri, DC.description, Literal(data["notes"])))
         if data["url"]:
             graph.add((uri, DC.source, URIRef(data["url"])))
