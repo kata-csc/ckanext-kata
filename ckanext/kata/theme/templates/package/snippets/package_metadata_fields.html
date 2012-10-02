@@ -45,7 +45,7 @@
 		<label class="control-label" for="role__{{ loop.index }}__id">{{ _('Role') }}</label>
 			<div class="controls editor">
 			    <div class="input-prepend">
-					<select name="role__{{ loop.index }}__key" id="role__{{ loop.index }}__id">
+					<select class="role-select" name="role__{{ loop.index }}__key" id="role__{{ loop.index }}__id">
 						{% for option in g.roles %}
 						{% if option.lower() in extra.key %}
 						<option value="{{ option.lower() }}" selected="selected">{{ _(option) }}</option>
@@ -73,7 +73,7 @@
 		<label class="control-label" for="role__{{ index }}__id">{{ _('Role') }}</label>
 			<div class="controls editor">
 			    <div class="input-prepend">
-					<select name="role__{{ index }}__key" id="role__{{ index }}__id">
+					<select class="role-select" name="role__{{ index }}__key" id="role__{{ index }}__id">
 						{% for option in g.roles %}
 						<option value="{{ option }}">{{ _(option) }}</option>
 						{% endfor %}

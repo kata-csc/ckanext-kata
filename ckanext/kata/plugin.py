@@ -83,8 +83,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         here = os.path.dirname(__file__)
         rootdir = os.path.dirname(os.path.dirname(here))
         template_dir = os.path.join(rootdir, 'ckanext', 'kata', 'theme', 'templates')
-        config['extra_template_paths'] = ','.join([template_dir,
-                config.get('extra_template_paths', '')])
+        config['extra_template_paths'] = ','.join([template_dir, config.get('extra_template_paths', '')])
+        
+        public_dir = os.path.join(rootdir, 'ckanext', 'kata', 'public')
+        config['extra_public_paths'] = ','.join([public_dir, config.get('extra_public_paths', '')])
+        
+        log.debug(config.get('extra_public_paths', ''))
         
         roles = config.get('kata.contact_roles', 'Please, Configure')
         roles = [r for r in roles.split(', ')]
