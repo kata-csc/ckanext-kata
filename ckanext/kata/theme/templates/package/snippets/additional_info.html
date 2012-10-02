@@ -21,7 +21,7 @@
         </tr>
       {% endif %}
 
-      {% if pkg_dict.author_email %}
+      {% if pkg_dict.author_email and user %}
         <tr>
           <th class="dataset-label">{{ _("Author") }}</th>
           <td class="dataset-details" property="dc:creator">{{ h.mail_to(email_address=pkg_dict.author_email, name=pkg_dict.author) }}</td>
@@ -33,7 +33,7 @@
         </tr>
       {% endif %}
 
-      {% if pkg_dict.maintainer_email %}
+      {% if pkg_dict.maintainer_email and user %}
         <tr>
           <th class="dataset-label">{{ _('Maintainer') }}</th>
           <td class="dataset-details" property="dc:contributor">{{ h.mail_to(email_address=pkg_dict.maintainer_email, name=pkg_dict.maintainer) }}</td>
