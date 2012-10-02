@@ -14,5 +14,5 @@ To install this Kata-plugin
 ==================
 Put following lines under [app:main]
 
-  kata.contact_roles = Author, Maintainer, Publisher, Sponsor, Example Role
-  kata.date_format = %d.%m.%Y
+    kata.contact_roles = Author, Maintainer, Publisher, Sponsor, Example Role
+    kata.date_format = %d.%m.%Y
