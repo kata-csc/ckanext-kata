@@ -31,9 +31,15 @@ class MetadataController(BaseController):
                             else URIRef(data["extras"]["identifier"])))
         graph.add((uri, DC.modified, Literal(data["metadata_modified"],
                                              datatype=XSD.date)))
-        graph.add((uri, DC.creator, Literal(data["author_email"])))
+        if data["author_email"]:
+            graph.add((uri, DC.creator, Literal(data["author_email"])))
         graph.add((uri, DC.title, Literal(data["title"])))
         graph.add((uri, DC.rights, Literal(data["license"])))
+        for extra in data["extras"]:
+            if 'author' in extra:
+                graph.add((uri, DC.creator, Literal(data["extras"][extra])))
+            if 'publisher' in extra:
+                graph.add((uri, DC.publisher, Literal(data["extras"][extra])))
         for tag in data["tags"]:
             graph.add((uri, DC.subject, Literal(tag)))
         if 'language' in data["extras"]:
