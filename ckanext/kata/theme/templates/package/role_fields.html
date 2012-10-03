@@ -1,0 +1,57 @@
+{% macro rolename(key) %}
+	{{ key.split('_')[2] }}
+{% endmacro %}
+
+{% set lastrole = 1 %}
+
+{% if roles %}
+<div data-module="custom-fields">
+{% for extra in data.extras %}
+	{% if extra.key.startswith('role') %}
+		{% set lastrole = loop.index %}
+		{% set role = rolename(extra.key) %}
+		<div class="control-group control-custom">
+		<label class="control-label" for="role__{{ loop.index }}__id">{{ _('Role') }}</label>
+			<div class="controls editor">
+			    <div class="input-prepend">
+					<select class="role-select" name="role__{{ loop.index }}__key" id="role__{{ loop.index }}__id">
+						{% for option in roles %}
+						{% if option.lower() in extra.key %}
+						<option value="{{ option.lower() }}" selected="selected">{{ _(option) }}</option>
+						{% else %}
+						<option value="{{ option.lower() }}">{{ _(option) }}</option>
+						{% endif %}
+						{% endfor %}
+					</select>
+					<label for="role__{{ loop.index }}__value_id" class="add-on">{{ _('Value') }}</label>
+					<input type="text" id="role__{{ loop.index }}__value_id" name="role__{{ loop.index }}__value" value="{{ extra.value }}" />
+					
+					{# Check field as deleted #}
+					<label class="checkbox btn btn-danger icon-remove" for="field-role-{{ loop.index }}-remove">
+						<input type="checkbox" id="field-role-{{ loop.index }}-remove" name="role__{{ loop.index }}__deleted"> <span>Remove</span>
+					</label>
+			    </div>
+			</div>
+		</div>
+	{% endif %}
+{% endfor %}
+
+  {% for extra in range(1, 2) %}
+    {% set index = lastrole + extra + 10 %}
+		<div class="control-group control-custom">
+		<label class="control-label" for="role__{{ index }}__id">{{ _('Role') }}</label>
+			<div class="controls editor">
+			    <div class="input-prepend">
+					<select class="role-select" name="role__{{ index }}__key" id="role__{{ index }}__id">
+						{% for option in roles %}
+						<option value="{{ option }}">{{ _(option) }}</option>
+						{% endfor %}
+					</select>
+					<label for="role__{{ index }}__value_id" class="add-on">{{ _('Value') }}</label>
+					<input type="text" id="role__{{ index }}__value_id" name="role__{{ index }}__value" value="" />
+			    </div>
+			</div>
+		</div>
+  {% endfor %}
+</div>
+{% endif %}

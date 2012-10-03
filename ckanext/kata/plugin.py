@@ -56,10 +56,10 @@ class KataMetadata(SingletonPlugin):
     
     def edit(self, id, data=None, errors=None, error_summary=None):
         pass
-        
+    
     def read(self, dataset):
-        g.revision = dataset.latest_related_revision
-        g.date_format = self.date_format
+        c.revision = dataset.latest_related_revision
+        c.date_format = self.date_format
         
     def delete(self, dataset):
         pass
@@ -88,8 +88,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         public_dir = os.path.join(rootdir, 'ckanext', 'kata', 'public')
         config['extra_public_paths'] = ','.join([public_dir, config.get('extra_public_paths', '')])
         
-        log.debug(config.get('extra_public_paths', ''))
-        
         roles = config.get('kata.contact_roles', 'Please, Configure')
         roles = [r for r in roles.split(', ')]
         self.roles = roles
@@ -101,7 +99,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return True
     
     def setup_template_variables(self, context, data_dict):
-        g.roles = self.roles
+        c.roles = self.roles
 
     def new_template(self):
         """
