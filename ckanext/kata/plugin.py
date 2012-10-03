@@ -7,7 +7,7 @@ import os
 from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins import IPackageController, IDatasetForm, IConfigurer
 from ckan.plugins import IRoutes
-from ckan.plugins import IConfigurer
+from ckan.plugins import IConfigurable
 from ckan.plugins import IMapper
 from ckan.lib.base import g, c
 from ckan.lib.plugins import DefaultDatasetForm
@@ -44,25 +44,7 @@ def role_to_extras(key, data, errors, context):
                     extras.append({'key':_keyval, 'value':_valval})
 
 class KataMetadata(SingletonPlugin):
-    implements(IPackageController, inherit=True)
     implements(IRoutes, inherit=True)
-    implements(IConfigurer, inherit=True)
-    
-    def update_config(self, config):
-        self.date_format = config.get('kata.date_format', '%Y-%m-%d')
-
-    def create(self, dataset):
-        pass
-    
-    def edit(self, id, data=None, errors=None, error_summary=None):
-        pass
-    
-    def read(self, dataset):
-        c.revision = dataset.latest_related_revision
-        c.date_format = self.date_format
-        
-    def delete(self, dataset):
-        pass
 
     def before_map(self, map):
         map.connect('/dataset/{id}.{format}',
@@ -74,6 +56,7 @@ class KataMetadata(SingletonPlugin):
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IDatasetForm, inherit=True)
     implements(IConfigurer, inherit=True)
+    implements(IConfigurable, inherit=True)
     
     def update_config(self, config):
         """
@@ -97,6 +80,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     
     def is_fallback(self):
         return True
+    
+    def configure(self, config):
+        self.date_format = config.get('kata.date_format', '%Y-%m-%d')
     
     def setup_template_variables(self, context, data_dict):
         c.roles = self.roles
@@ -157,8 +143,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         
         return schema
     
-    def db_to_form_schema(data, package_type=None):
+    def db_to_form_schema_options(self, options = None):
         schema = db_to_form_package_schema()
+        context = options['context']
         schema['role'] = {'key': [ignore_missing, unicode], 'value': [ignore_missing]}
-        
+        dataset = context['package']
+        c.revision = dataset.latest_related_revision
+        c.date_format = self.date_format
         return schema
+
