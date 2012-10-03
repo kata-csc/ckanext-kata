@@ -8,10 +8,10 @@
       </tr>
     </thead>
     <tbody>
-      {% if g.revision %}
+      {% if rev and stampformat %}
         <tr>
         	<th class="dataset-label">{{ _('Last modified') }}</th>
-        	<td class="dataset-details">{{ g.revision.timestamp.strftime(g.date_format) }}</td>
+        	<td class="dataset-details">{{ rev.timestamp.strftime(stampformat) }}</td>
         </tr>
       {% endif %}
       {% if pkg_dict.url %}
