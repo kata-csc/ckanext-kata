@@ -9,6 +9,9 @@
 
 {{ form.prepend('name', id='field-name', label=_('URL'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs) }}
 
+{# Kata PID field #}
+{{ form.input('pid', id='field-pid', label=_('PID'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=data.pid or PID, error=errors.pid, classes=['control-medium']) }}
+
 {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
 
 {{ form.input('author', label=_('Author'), id='field-author', placeholder=_('Joe Bloggs'), value=data.author, error=errors.author, classes=['control-medium']) }}

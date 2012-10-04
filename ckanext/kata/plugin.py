@@ -5,7 +5,7 @@ import logging
 import os
 
 from ckan.plugins import implements, SingletonPlugin
-from ckan.plugins import IPackageController, IDatasetForm, IConfigurer
+from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurable
 from ckan.plugins import IMapper
@@ -15,9 +15,14 @@ from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
 import ckan.logic.converters
+from ckan.logic.converters import convert_to_extras, convert_from_extras
 from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_empty, not_missing
 
 log = logging.getLogger('ckanext.kata')
+
+def dummy_pid():
+    import datetime
+    return "urn:nbn:fi:csc-kata%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
 def role_to_extras(key, data, errors, context):
     if 'role' in key and key in data:
@@ -54,13 +59,49 @@ class KataMetadata(SingletonPlugin):
                     action='tordf')
         return map
 
-
-
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IDatasetForm, inherit=True)
     implements(IConfigurer, inherit=True)
     implements(IConfigurable, inherit=True)
     implements(IPackageController, inherit=True)
+    implements(ITemplateHelpers, inherit=True)
+    
+    def get_helpers(self):
+        return {'is_custom_form':self.is_custom_form,
+                'kata_sorted_extras':self.kata_sorted_extras}
+    
+    def is_custom_form(self, _dict):
+        ''' Template helper, used to identify ckan custom form '''
+        log.debug(g.package_hide_extras)
+        log.debug(_dict)
+        
+        for key in self.hide_extras_form:
+            if _dict.get('key', None) and _dict['key'].find(key) > -1:
+                return False
+        return True
+    
+    def kata_sorted_extras(self, list_):
+        ''' Used for outputting package extras, skips package_hide_extras '''
+        output = []
+        for extra in sorted(list_, key=lambda x:x['key']):
+            if extra.get('state') == 'deleted':
+                continue
+            
+            k, v = extra['key'], extra['value']
+            if k in g.package_hide_extras:
+                continue
+            
+            found=False
+            for _k in g.package_hide_extras:
+                if extra['key'].startswith(_k):
+                    found=True
+            if found:
+                continue
+            
+            if isinstance(v, (list, tuple)):
+                v = ", ".join(map(unicode, v))
+            output.append((k, v))
+        return output
     
     def update_config(self, config):
         """
@@ -78,6 +119,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         roles = config.get('kata.contact_roles', 'Please, Configure')
         roles = [r for r in roles.split(', ')]
         self.roles = roles
+        self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
         
     def package_types(self):
         return ['dataset']
@@ -90,6 +132,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     
     def setup_template_variables(self, context, data_dict):
         c.roles = self.roles
+        c.PID = dummy_pid()
 
     def new_template(self):
         """
@@ -137,6 +180,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['maintainer'] = [not_missing, not_empty, unicode]
         schema['maintainer_email'] = [not_missing, not_empty, unicode]
         schema['role'] = {'key': [ignore_missing, unicode, role_to_extras], 'value': [ignore_missing]}
+        schema['pid'] = [not_missing, not_empty, unicode]
+        
+        schema.update({'pid': [not_empty, unicode, convert_to_extras] })
         
         """
         'author': [ignore_missing, unicode],
@@ -151,6 +197,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema = db_to_form_package_schema()
         context = options['context']
         schema['role'] = {'key': [ignore_missing, unicode], 'value': [ignore_missing]}
+        schema.update({'pid': [convert_from_extras, ignore_missing] })
+        
+        dataset = context['package']
+        c.PID = dummy_pid()
+        c.revision = dataset.latest_related_revision
+        c.date_format = self.date_format
+        
         return schema
 
     def before_view(self, pkg_dict):
