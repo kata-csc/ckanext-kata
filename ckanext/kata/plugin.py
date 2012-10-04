@@ -10,6 +10,7 @@ from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurable
 from ckan.plugins import IMapper
 from ckan.lib.base import g, c
+from ckan.model import Package
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
@@ -45,6 +46,7 @@ def role_to_extras(key, data, errors, context):
 
 class KataMetadata(SingletonPlugin):
     implements(IRoutes, inherit=True)
+    implements(IMapper, inherit=True)
 
     def before_map(self, map):
         map.connect('/dataset/{id}.{format}',
@@ -53,10 +55,12 @@ class KataMetadata(SingletonPlugin):
         return map
 
 
+
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IDatasetForm, inherit=True)
     implements(IConfigurer, inherit=True)
     implements(IConfigurable, inherit=True)
+    implements(IPackageController, inherit=True)
     
     def update_config(self, config):
         """
@@ -147,8 +151,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema = db_to_form_package_schema()
         context = options['context']
         schema['role'] = {'key': [ignore_missing, unicode], 'value': [ignore_missing]}
-        dataset = context['package']
-        c.revision = dataset.latest_related_revision
-        c.date_format = self.date_format
         return schema
 
+    def before_view(self, pkg_dict):
+        dataset = Package.get(pkg_dict['id'])
+        c.revision = dataset.latest_related_revision
+        c.date_format = self.date_format
+        return pkg_dict
