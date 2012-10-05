@@ -20,9 +20,7 @@ from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_em
 
 log = logging.getLogger('ckanext.kata')
 
-def dummy_pid():
-    import datetime
-    return "urn:nbn:fi:csc-kata%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+import utils
 
 def role_to_extras(key, data, errors, context):
     if 'role' in key and key in data:
@@ -67,14 +65,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(ITemplateHelpers, inherit=True)
     
     def get_helpers(self):
+        ''' Register helpers '''
         return {'is_custom_form':self.is_custom_form,
                 'kata_sorted_extras':self.kata_sorted_extras}
     
     def is_custom_form(self, _dict):
         ''' Template helper, used to identify ckan custom form '''
-        log.debug(g.package_hide_extras)
-        log.debug(_dict)
-        
         for key in self.hide_extras_form:
             if _dict.get('key', None) and _dict['key'].find(key) > -1:
                 return False
@@ -132,7 +128,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     
     def setup_template_variables(self, context, data_dict):
         c.roles = self.roles
-        c.PID = dummy_pid()
+        c.PID = utils.generate_pid()
 
     def new_template(self):
         """
@@ -200,7 +196,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema.update({'pid': [convert_from_extras, ignore_missing] })
         
         dataset = context['package']
-        c.PID = dummy_pid()
+        c.PID = utils.generate_pid()
         c.revision = dataset.latest_related_revision
         c.date_format = self.date_format
         
