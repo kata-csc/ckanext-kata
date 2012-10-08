@@ -4,8 +4,10 @@
 
 {% set lastrole = 1 %}
 
-{% if data.roles %}
+{{ data }}
+
 <div data-module="custom-fields">
+{% if data.roles %}
 {% for extra in data.roles %}
 	{% set lastrole = loop.index %}
 	{% set role = rolename(extra.key) %}
@@ -33,8 +35,8 @@
 		</div>
 	</div>
 {% endfor %}
-
-  {% for extra in range(1, 2) %}
+{% endif %}
+  {% for extra in range(1, 3) %}
     {% set index = lastrole + extra + 10 %}
 		<div class="control-group control-custom">
 		<label class="control-label" for="role__{{ index }}__id">{{ _('Role') }}</label>
@@ -52,4 +54,4 @@
 		</div>
   {% endfor %}
 </div>
-{% endif %}
+
