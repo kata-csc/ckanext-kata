@@ -167,7 +167,20 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def package_form(self):
         return 'package/new_package_form.html'
-        
+    
+    
+    def pid_to_extras(self, key, data, errors, context):
+        """
+        Check's that pid exists in data, if not then pid element is created with kata pid.
+        """
+        # Key missing
+        if not data.get(key, None):
+            data[key] = utils.generate_pid()
+        # Value missing
+        if len(data.get(key, '')) < 1:
+            data[key] = utils.generate_pid()
+            
+            
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
         
@@ -176,9 +189,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['maintainer'] = [not_missing, not_empty, unicode]
         schema['maintainer_email'] = [not_missing, not_empty, unicode]
         schema['role'] = {'key': [ignore_missing, unicode, role_to_extras], 'value': [ignore_missing]}
-        schema['pid'] = [not_missing, not_empty, unicode]
         
-        schema.update({'pid': [not_empty, unicode, convert_to_extras] })
+        schema.update({'pid': [self.pid_to_extras, unicode, convert_to_extras] })
         
         """
         'author': [ignore_missing, unicode],
@@ -195,15 +207,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['role'] = {'key': [ignore_missing, unicode], 'value': [ignore_missing]}
         schema.update({'pid': [convert_from_extras, ignore_missing] })
         
-        dataset = context['package']
-        c.PID = utils.generate_pid()
-        c.revision = dataset.latest_related_revision
-        c.date_format = self.date_format
-        
         return schema
 
     def before_view(self, pkg_dict):
         dataset = Package.get(pkg_dict['id'])
         c.revision = dataset.latest_related_revision
         c.date_format = self.date_format
+        c.PID = utils.generate_pid()
+        
         return pkg_dict
