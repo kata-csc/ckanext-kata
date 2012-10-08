@@ -180,6 +180,75 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if len(data.get(key, '')) < 1:
             data[key] = utils.generate_pid()
             
+    def roles_to_extras(self, key, data, errors, context):
+        # get current number of extras
+#        extra_number = 0
+#        for k in data.keys():
+#            if len(k) == 3 and k[0] == 'extras':
+#                extra_number = max(extra_number, (k[1] + 1))
+#        
+#        # add a new extra from roles
+#        count_roles = 0
+#        for k in data.keys():
+#            if len(k) == 3 and k[0] == 'role':
+#                count_roles += 1
+#        
+#        role_index = 0
+#        for i in range(0, count_roles):
+#            _key = ('role', i, 'key')
+#            _value = ('role', i, 'value')
+#            
+#            if _key in data and _value in data:
+#                data[('extras', i, 'key')] = 'role_%d_%s' % (role_index, data[_key])
+#                data[('extras', i, 'value')] = data[_value]
+#                
+#                role_index += 1
+#                
+#                log.debug(_key)
+#                log.debug(data[_key])
+#                log.debug(_value)
+#                log.debug(data[_value])
+                
+        if 'role' in key and key in data:
+            if not ('extras',) in data:
+                data[('extras',)] = []
+            
+            extras = data[('extras',)]
+            
+            role_key = data.get(key, None)
+            role_value = data.get((key[0], key[1], 'value'), None)
+            
+            for _key in data:
+                if 'role' in _key[0] and ('role', _key[1], 'value') in data:
+                    # Skip role if deleted is found in data
+                    if ('role', _key[1], '__extras') in data and data[('role', _key[1], '__extras')]['deleted'] == 'on':
+                        continue
+                    
+                    # Value for key column
+                    _keyval = 'role_%d_%s' % (_key[1], data[('role', _key[1], 'key')])
+                    # Value for value column
+                    _valval = data[('role', _key[1], 'value')]
+                    
+                    # Add if contains data
+                    if len(_valval) > 0:
+                        extras.append({'key':_keyval, 'value':_valval})
+                        
+                        
+    def roles_from_extras(self, key, data, errors, context):
+        if not ('roles',) in data:
+            data[('roles',)] = []
+        roles = data[('roles',)]
+        
+        role_index = 0
+        for k in data.keys():
+            if k[0] == 'extras' and k[-1] == 'key':
+                if 'role_' in data[k]:
+                    role = {}
+                    role['key'] = data[k]
+                    role['value'] = data[(k[0], k[1], 'value')]
+                    roles.append(role)
+                    role_index += 1
+            
             
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
@@ -188,8 +257,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['author_email'] = [not_missing, not_empty, unicode]
         schema['maintainer'] = [not_missing, not_empty, unicode]
         schema['maintainer_email'] = [not_missing, not_empty, unicode]
-        schema['role'] = {'key': [ignore_missing, unicode, role_to_extras], 'value': [ignore_missing]}
+        schema['role'] = {'key': [ignore_missing, unicode, self.roles_to_extras], 'value': [ignore_missing]}
         
+        
+#        schema.update({'role': [self.role_to_extras, unicode, convert_to_extras] })
         schema.update({'pid': [self.pid_to_extras, unicode, convert_to_extras] })
         
         """
@@ -204,8 +275,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def db_to_form_schema_options(self, options = None):
         schema = db_to_form_package_schema()
         context = options['context']
-        schema['role'] = {'key': [ignore_missing, unicode], 'value': [ignore_missing]}
+        schema['role']=[self.roles_from_extras, ignore_missing, unicode]
         schema.update({'pid': [convert_from_extras, ignore_missing] })
+        schema.update({'tags': {'__extras': [ckan.lib.navl.validators.keep_extras,
+                                             ckan.logic.converters.free_tags_only]
+                                },
+                       })
         
         return schema
 
