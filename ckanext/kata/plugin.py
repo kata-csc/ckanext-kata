@@ -224,13 +224,16 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         context = options['context']
         schema['role'] = [self.roles_from_extras, ignore_missing, unicode]
         schema['pid'] = [convert_from_extras, ignore_missing]
+        
         try:
             dataset = context['package']
             c.revision = dataset.latest_related_revision
             c.date_format = self.date_format
             c.PID = utils.generate_pid()
+            c.roles = self.roles
         except TypeError:
                 return schema
+        
         return schema
 
     def before_view(self, pkg_dict):
