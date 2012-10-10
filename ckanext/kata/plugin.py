@@ -187,14 +187,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 # Skip role if deleted is found in data
                 if (k[0], k[1], '__extras') in data \
                     and data[(k[0], k[1], '__extras')].get('deleted', 'off') == 'on':
-                    log.debug('deleting:')
-                    log.debug(k)
                     continue
                 
                 if k[0] == 'role' and k[-1] == 'key':
                     if (k[0], k[1], 'value') in data and len(data[(k[0], k[1], 'value')]) > 0:
-                        log.debug('Saving')
-                        log.debug(k)
                         # Value for key column
                         _keyval = 'role_%d_%s' % (k[1], data[('role', k[1], 'key')])
                         # Value for value column
