@@ -13,7 +13,6 @@ Example:
 
 <div data-module="custom-fields">
   {% for extra in extras %}
-  {% if h.is_custom_form(extra) %}
     {% set prefix = 'extras__%d__' % loop.index0 %}
     {{ form.custom(
       names=(prefix ~ 'key', prefix ~ 'value', prefix ~ 'deleted'),
@@ -22,7 +21,6 @@ Example:
       values=(extra.key, extra.value, extra.deleted),
       error=errors[prefix ~ 'key'] or errors[prefix ~ 'value']
     ) }}
-  {% endif %}
   {% endfor %}
 
   {# Add a max of 3 empty columns #}

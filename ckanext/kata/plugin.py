@@ -149,13 +149,34 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
         Check's that pid exists in data, if not then pid element is created with kata pid.
         """
-        # Key missing
-        if not data.get(key, None):
+        extra_number = 0
+        for k in data.keys():
+            if k[0] == 'extras':
+                extra_number = max(extra_number, k[1] + 1)
+
+        for k in data.keys():
+            if k[-1] == 'pid':
+                data[('extras', extra_number, 'key')] = 'pid'
+                data[('extras', extra_number, 'value')] = data[k]
+
+
+    def add_pid_if_missing(self, key, data, errors, context):
+        if not key in data or len(data.get(key, '')) < 1:
             data[key] = utils.generate_pid()
-        # Value missing
-        if len(data.get(key, '')) < 1:
-            data[key] = utils.generate_pid()
+        
             
+    def pid_from_extras(self, key, data, errors, context):
+        for k in data.keys():
+            if k[0] == 'extras' and k[-1] == 'key' and data[k] == 'pid':
+                data[('pid',)] = data[(k[0], k[1], 'value')]
+                
+                for _remove in data.keys():
+                    if _remove[0] == 'extras' and _remove[1] == k[1]:
+                        del data[_remove]
+                        
+        if not ('pid',) in data:
+            data[('pid',)] = utils.generate_pid()
+                
     def roles_to_extras(self, key, data, errors, context):
         if not ('extras',) in data:
             data[('extras',)] = []
@@ -196,8 +217,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     role['value'] = data[(k[0], k[1], 'value')]
                     roles.append(role)
                     role_index += 1
-            
-            
+                    
+                    if context.get('for_edit', False):
+                        del data[k]
+                        del data[(k[0], k[1], 'value')]
+                        
+                    
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
         schema['author'] = [not_missing, not_empty, unicode]
@@ -206,16 +231,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['maintainer_email'] = [not_missing, not_empty, unicode]
         schema['extras'] = {'key': [ignore_missing, unicode, convert_to_extras], 'value': [ignore_missing]}
         schema['role'] = {'key': [ignore_missing, unicode, self.roles_to_extras], 'value': [ignore_missing]}
+        schema['pid'] = [self.add_pid_if_missing, unicode, self.pid_to_extras]
         schema['__junk'] = [ignore]
-        
-        schema.update({'pid': [self.pid_to_extras, unicode, convert_to_extras] })
-        
-        """
-        'author': [ignore_missing, unicode],
-        'author_email': [ignore_missing, unicode],
-        'maintainer': [ignore_missing, unicode],
-        'maintainer_email': [ignore_missing, unicode],
-        """
+        schema['__extras'] = [ignore]
         
         return schema
     
@@ -223,7 +241,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema = db_to_form_package_schema()
         context = options['context']
         schema['role'] = [self.roles_from_extras, ignore_missing, unicode]
-        schema['pid'] = [convert_from_extras, ignore_missing]
+        schema['pid'] = [self.pid_from_extras, ignore_missing, unicode]
         
         try:
             dataset = context['package']
