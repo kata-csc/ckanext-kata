@@ -204,7 +204,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data[('roles',)] = []
         roles = data[('roles',)]
         
-        role_index = 0
         for k in data.keys():
             if k[0] == 'extras' and k[-1] == 'key':
                 if 'role_' in data[k]:
@@ -212,7 +211,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     role['key'] = data[k]
                     role['value'] = data[(k[0], k[1], 'value')]
                     roles.append(role)
-                    role_index += 1
                     
                     if context.get('for_edit', False):
                         del data[k]
