@@ -250,6 +250,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             
         log.debug('custom_to_extras')
         
+        from ckan.lib.navl.dictization_functions import Missing
+        
         for k in data.keys():
             try:
                 if k[0] == 'extras' and k[-1] == 'key' and (k[0], k[1], 'value') in data:
@@ -258,16 +260,26 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     log.debug((k[0], k[1], 'value'))
                     log.debug(data[(k[0], k[1], 'value')])
                     
-                    if type(data[(k[0], k[1], 'key')]) == str \
-                        and type(data[(k[0], k[1], 'value')]) == str \
-                        and len(data[(k[0], k[1], 'key')]) > 0 \
-                        and len(data[(k[0], k[1], 'value')]) > 0:
+#                    if type(data[(k[0], k[1], 'key')]) == str \
+#                        and type(data[(k[0], k[1], 'value')]) == str \
+#                        and len(data[(k[0], k[1], 'key')]) > 0 \
+#                        and len(data[(k[0], k[1], 'value')]) > 0:
+
+                    if type(data[(k[0], k[1], 'key')]) is not Missing \
+                        and type(data[(k[0], k[1], 'value')]) is not Missing:
                         extras.append({'key':data[(k[0], k[1], 'key')],
                                    'value':data[(k[0], k[1], 'value')]})
                         
-                    for _del in data.keys():
-                        if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1] and k in data:
-                            del data[k]
+                        log.debug({'key':data[(k[0], k[1], 'key')],
+                                   'value':data[(k[0], k[1], 'value')]})
+                        
+                        for _del in data.keys():
+                            if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1] and _del in data:
+                                log.debug('deleting')
+                                log.debug(_del)
+                                log.debug(data[_del])
+                                
+                                del data[_del]
             except:
                 pass
                 
