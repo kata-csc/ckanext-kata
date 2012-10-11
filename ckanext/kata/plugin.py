@@ -16,7 +16,7 @@ from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
 import ckan.logic.converters
 from ckan.logic.converters import convert_to_extras, convert_from_extras
-from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_empty, not_missing
+from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_empty, not_missing, both_not_empty
 from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
 
 log = logging.getLogger('ckanext.kata')
@@ -286,15 +286,25 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
-        schema['author'] = [not_missing, not_empty, unicode]
-        schema['author_email'] = [not_missing, not_empty, unicode]
-        schema['maintainer'] = [not_missing, not_empty, unicode]
-        schema['maintainer_email'] = [not_missing, not_empty, unicode]
-        schema['extras'] = {'key': [ignore_missing, unicode, self.custom_to_extras], 'value': [ignore_missing]}
-        schema['role'] = {'key': [ignore_missing, unicode, self.roles_to_extras], 'value': [ignore_missing]}
-        schema['pid'] = [self.add_pid_if_missing, unicode, self.pid_to_extras]
-        schema['__junk'] = [ignore]
-        schema['__extras'] = [ignore]
+        schema.update({
+           'author':[not_missing, not_empty, unicode],
+           'author_email':[not_missing, not_empty, unicode],
+           'maintainer':[not_missing, not_empty, unicode],
+           'maintainer_email':[not_missing, not_empty, unicode],
+           'extras':{
+                'id': [ignore],
+                'key': [not_missing, not_empty, both_not_empty('value'), unicode, self.custom_to_extras],
+                'value': [ignore_missing],
+                'state': [ignore],
+                'deleted': [ignore_missing],
+                'revision_timestamp': [ignore],
+                '__extras':[ignore],
+            },
+           'role':{'key': [ignore_missing, unicode, self.roles_to_extras], 'value': [ignore_missing]},
+           'pid':[self.add_pid_if_missing, unicode, self.pid_to_extras],
+           '__junk':[ignore],
+           '__extras':[ignore],
+        })
         
         return schema
     
