@@ -149,15 +149,26 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
         Check's that pid exists in data, if not then pid element is created with kata pid.
         """
-        extra_number = 0
-        for k in data.keys():
-            if k[0] == 'extras' and len(k) >= 2:
-                extra_number = max(extra_number, k[1] + 1)
+#        extra_number = 0
+#        for k in data.keys():
+#            if k[0] == 'extras' and k[-1] == 'key':
+#                extra_number = max(extra_number, k[1] + 1)
+#
+#        for k in data.keys():
+#            if k[-1] == 'pid':
+#                data[('extras', extra_number, 'key')] = 'pid'
+#                data[('extras', extra_number, 'value')] = data[k]
 
+        extras = data.get(('extras',), [])
+        if not extras:
+            data[('extras',)] = extras
+            
         for k in data.keys():
             if k[-1] == 'pid':
-                data[('extras', extra_number, 'key')] = 'pid'
-                data[('extras', extra_number, 'value')] = data[k]
+                extras.append({'key':'pid', 'value':data[k]})
+                
+                if k in data:
+                    del data[k]
 
 
     def add_pid_if_missing(self, key, data, errors, context):
@@ -178,31 +189,41 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data[('pid',)] = utils.generate_pid()
                 
     def roles_to_extras(self, key, data, errors, context):
+        extras = data.get(('extras',), [])
+        if not extras:
+            data[('extras',)] = extras
+        
         log.debug('ROLES TO EXTRAS')
         extra_number = 0
         for k in data.keys():
-            if k[0] == 'extras' and len(k) >= 2 :
+            if k[0] == 'extras' and k[-1] == 'key':
                 log.debug(k)
                 extra_number = max(extra_number, k[1] + 1)
         
         role_number = 0
         for k in data.keys():
-            if k[0] == 'role' and k[-1] == 'key' and (k[0], k[1], 'value') in data \
-                and len(data[(k[0], k[1], 'value')]) > 0:
-                
-                _keyval = data[('role', k[1], 'key')]
-                _valval = data[('role', k[1], 'value')]
-                
-                data[('extras', extra_number, 'key')] = 'role_%d_%s' % (role_number, _keyval)
-                data[('extras', extra_number, 'value')] = _valval
-                
-                extra_number += 1
-                role_number += 1
-                
-        log.debug(extra_number)
-        log.debug(role_number)
-        log.debug(data)
+            try:
+                if k[0] == 'role' and k[-1] == 'key' and (k[0], k[1], 'value') in data \
+                    and len(data[(k[0], k[1], 'value')]) > 0:
                     
+                    _keyval = data[('role', k[1], 'key')]
+                    _valval = data[('role', k[1], 'value')]
+                    
+    #                data[('extras', extra_number, 'key')] = 'role_%d_%s' % (role_number, _keyval)
+    #                data[('extras', extra_number, 'value')] = _valval
+    
+                    extras.append({'key':'role_%d_%s' % (role_number, _keyval),
+                                   'value':_valval})
+                    
+                    for _del in data.keys():
+                        if _del[0] == 'role' and _del[1] == k[1] and k in data:
+                            del data[k]
+                    
+    #                extra_number += 1
+                    role_number += 1
+            except:
+                pass
+                
                         
     def roles_from_extras(self, key, data, errors, context):
         if not ('roles',) in data:
@@ -221,14 +242,43 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                         del data[k]
                         del data[(k[0], k[1], 'value')]
                         
+
+    def custom_to_extras(self, key, data, errors, context):
+        extras = data.get(('extras',), [])
+        if not extras:
+            data[('extras',)] = extras
+            
+        log.debug('custom_to_extras')
+        
+        for k in data.keys():
+            try:
+                if k[0] == 'extras' and k[-1] == 'key' and (k[0], k[1], 'value') in data:
+                    log.debug(k)
+                    log.debug(data[k])
+                    log.debug((k[0], k[1], 'value'))
+                    log.debug(data[(k[0], k[1], 'value')])
                     
+                    if type(data[(k[0], k[1], 'key')]) == str \
+                        and type(data[(k[0], k[1], 'value')]) == str \
+                        and len(data[(k[0], k[1], 'key')]) > 0 \
+                        and len(data[(k[0], k[1], 'value')]) > 0:
+                        extras.append({'key':data[(k[0], k[1], 'key')],
+                                   'value':data[(k[0], k[1], 'value')]})
+                        
+                    for _del in data.keys():
+                        if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1] and k in data:
+                            del data[k]
+            except:
+                pass
+                
+
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
         schema['author'] = [not_missing, not_empty, unicode]
         schema['author_email'] = [not_missing, not_empty, unicode]
         schema['maintainer'] = [not_missing, not_empty, unicode]
         schema['maintainer_email'] = [not_missing, not_empty, unicode]
-        schema['extras'] = {'key': [ignore_missing, unicode, convert_to_extras], 'value': [ignore_missing]}
+        schema['extras'] = {'key': [ignore_missing, unicode, self.custom_to_extras], 'value': [ignore_missing]}
         schema['role'] = {'key': [ignore_missing, unicode, self.roles_to_extras], 'value': [ignore_missing]}
         schema['pid'] = [self.add_pid_if_missing, unicode, self.pid_to_extras]
         schema['__junk'] = [ignore]
