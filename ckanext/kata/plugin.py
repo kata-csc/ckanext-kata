@@ -193,11 +193,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if not extras:
             data[('extras',)] = extras
         
-        log.debug('ROLES TO EXTRAS')
         extra_number = 0
         for k in data.keys():
             if k[0] == 'extras' and k[-1] == 'key':
-                log.debug(k)
                 extra_number = max(extra_number, k[1] + 1)
         
         role_number = 0
@@ -209,9 +207,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     _keyval = data[('role', k[1], 'key')]
                     _valval = data[('role', k[1], 'value')]
                     
-    #                data[('extras', extra_number, 'key')] = 'role_%d_%s' % (role_number, _keyval)
-    #                data[('extras', extra_number, 'value')] = _valval
-    
                     extras.append({'key':'role_%d_%s' % (role_number, _keyval),
                                    'value':_valval})
                     
@@ -219,7 +214,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                         if _del[0] == 'role' and _del[1] == k[1] and k in data:
                             del data[k]
                     
-    #                extra_number += 1
                     role_number += 1
             except:
                 pass
@@ -248,37 +242,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if not extras:
             data[('extras',)] = extras
             
-        log.debug('custom_to_extras')
-        
         from ckan.lib.navl.dictization_functions import Missing
         
         for k in data.keys():
             try:
                 if k[0] == 'extras' and k[-1] == 'key' and (k[0], k[1], 'value') in data:
-                    log.debug(k)
-                    log.debug(data[k])
-                    log.debug((k[0], k[1], 'value'))
-                    log.debug(data[(k[0], k[1], 'value')])
-                    
-#                    if type(data[(k[0], k[1], 'key')]) == str \
-#                        and type(data[(k[0], k[1], 'value')]) == str \
-#                        and len(data[(k[0], k[1], 'key')]) > 0 \
-#                        and len(data[(k[0], k[1], 'value')]) > 0:
-
                     if type(data[(k[0], k[1], 'key')]) is not Missing \
                         and type(data[(k[0], k[1], 'value')]) is not Missing:
                         extras.append({'key':data[(k[0], k[1], 'key')],
                                    'value':data[(k[0], k[1], 'value')]})
                         
-                        log.debug({'key':data[(k[0], k[1], 'key')],
-                                   'value':data[(k[0], k[1], 'value')]})
-                        
                         for _del in data.keys():
                             if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1] and _del in data:
-                                log.debug('deleting')
-                                log.debug(_del)
-                                log.debug(data[_del])
-                                
                                 del data[_del]
             except:
                 pass
