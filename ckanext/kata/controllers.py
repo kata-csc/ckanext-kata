@@ -49,17 +49,17 @@ class MetadataController(BaseController):
             if key in ('Author', 'Producer', 'Publisher'):
                 if key == 'Author':
                     for val in value:
-                        id = Identifier(FOAF.Person)
+                        id = Identifier(hash(val))
                         graph.add((uri, DC.creator, id))
                         graph.add((id, FOAF.name, Literal(data["extras"][val])))
                 if key == 'Producer':
                     for val in value:
-                        id = Identifier(FOAF.Person)
+                        id = Identifier(hash(val))
                         graph.add((uri, DC.contributor, id))
                         graph.add((id, FOAF.name, Literal(data["extras"][val])))
                 if key == 'Publisher':
                     for val in value:
-                        id = Identifier(FOAF.Person)
+                        id = Identifier(hash(val))
                         graph.add((uri, DC.publisher, id))
                         graph.add((id, FOAF.name, Literal(data["extras"][val])))
         for tag in data["tags"]:
