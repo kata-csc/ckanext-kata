@@ -178,25 +178,24 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data[('pid',)] = utils.generate_pid()
                 
     def roles_to_extras(self, key, data, errors, context):
-        if not ('extras',) in data:
-            data[('extras',)] = []
-        extras = data[('extras',)]
-        
+        extra_number = 0
         for k in data.keys():
-            if k[0] == 'role' and k[-1] == 'key':
-                # Skip role if deleted is found in data
-                if (k[0], k[1], '__extras') in data \
-                    and data[(k[0], k[1], '__extras')].get('deleted', 'off') == 'on':
-                    continue
+            if k[0] == 'extras':
+                extra_number = max(extra_number, k[1] + 1)
+        
+        role_number = 0
+        for k in data.keys():
+            if k[0] == 'role' and k[-1] == 'key' and (k[0], k[1], 'value') in data \
+                and len(data[(k[0], k[1], 'value')]) > 0:
                 
-                if k[0] == 'role' and k[-1] == 'key':
-                    if (k[0], k[1], 'value') in data and len(data[(k[0], k[1], 'value')]) > 0:
-                        # Value for key column
-                        _keyval = 'role_%d_%s' % (k[1], data[('role', k[1], 'key')])
-                        # Value for value column
-                        _valval = data[('role', k[1], 'value')]
-                        
-                        extras.append({'key':_keyval, 'value':_valval})
+                _keyval = 'role_%d_%s' % (k[1], data[('role', k[1], 'key')])
+                _valval = data[('role', k[1], 'value')]
+                
+                data[('extras', extra_number, 'key')] = 'role_%d_%s' % (role_number, _keyval)
+                data[('extras', extra_number, 'value')] = _valval
+                
+                extra_number += 1
+                role_number += 1
                     
                         
     def roles_from_extras(self, key, data, errors, context):
