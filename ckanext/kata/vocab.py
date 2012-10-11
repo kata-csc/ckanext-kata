@@ -30,7 +30,11 @@ DC = ClosedNamespace(uri="http://purl.org/dc/terms/",
                      )
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 DCES = Namespace("http://purl.org/dc/elements/1.1/")
-FOAF = Namespace("http://xmlns.com/foaf/0.1/")
+FOAF = ClosedNamespace(uri="http://xmlns.com/foaf/0.1/",
+                       terms="""account , accountName , accountServiceHomepage , 
+                              age , aimChatID , based_near , birthday , 
+                              currentProject , depiction , depicts , 
+                              dnaChecksum, familyName, family_name, firstName, focus , fundedBy , geekcode , gender , givenName , givenname , holdsAccount , homepage , icqChatID , img , interest , isPrimaryTopicOf , jabberID , knows , lastName , logo , made , maker , mbox , mbox_sha1sum , member , membershipClass , msnChatID , myersBriggs , name , nick , openid , page , pastProject , phone , plan , primaryTopic , publications , schoolHomepage , sha1 , skypeID , status , surname , theme , thumbnail , tipjar , title , topic , topic_interest , weblog , workInfoHomepage , workplaceHomepage , yahooChatID, Agent , Document , Group , Image , LabelProperty , OnlineAccount , OnlineChatAccount , OnlineEcommerceAccount , OnlineGamingAccount , Organization , Person , PersonalProfileDocument , Project""".split(' , '))
 LICENSES = Namespace("http://purl.org/okfn/licenses/")
 LOCAL = Namespace("http://opendatasearch.org/schema#")
 OPMV = Namespace("http://purl.org/net/opmv/ns#")
