@@ -151,7 +151,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
         extra_number = 0
         for k in data.keys():
-            if k[0] == 'extras':
+            if k[0] == 'extras' and len(k) >= 2:
                 extra_number = max(extra_number, k[1] + 1)
 
         for k in data.keys():
@@ -178,9 +178,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data[('pid',)] = utils.generate_pid()
                 
     def roles_to_extras(self, key, data, errors, context):
+        log.debug('ROLES TO EXTRAS')
         extra_number = 0
         for k in data.keys():
-            if k[0] == 'extras':
+            if k[0] == 'extras' and len(k) >= 2 :
+                log.debug(k)
                 extra_number = max(extra_number, k[1] + 1)
         
         role_number = 0
@@ -188,7 +190,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if k[0] == 'role' and k[-1] == 'key' and (k[0], k[1], 'value') in data \
                 and len(data[(k[0], k[1], 'value')]) > 0:
                 
-                _keyval = 'role_%d_%s' % (k[1], data[('role', k[1], 'key')])
+                _keyval = data[('role', k[1], 'key')]
                 _valval = data[('role', k[1], 'value')]
                 
                 data[('extras', extra_number, 'key')] = 'role_%d_%s' % (role_number, _keyval)
@@ -196,6 +198,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 
                 extra_number += 1
                 role_number += 1
+                
+        log.debug(extra_number)
+        log.debug(role_number)
+        log.debug(data)
                     
                         
     def roles_from_extras(self, key, data, errors, context):
