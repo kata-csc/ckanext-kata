@@ -247,14 +247,16 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for k in data.keys():
             try:
                 if k[0] == 'extras' and k[-1] == 'key' and (k[0], k[1], 'value') in data:
-                    if type(data[(k[0], k[1], 'key')]) is not Missing \
-                        and type(data[(k[0], k[1], 'value')]) is not Missing:
+                    if type(data[(k[0], k[1], 'key')]) == unicode \
+                        and len(data[(k[0], k[1], 'key')]) > 0 \
+                        and type(data[(k[0], k[1], 'value')]) == unicode \
+                        and len(data[(k[0], k[1], 'value')]) > 0:
                         extras.append({'key':data[(k[0], k[1], 'key')],
                                    'value':data[(k[0], k[1], 'value')]})
                         
-                        for _del in data.keys():
-                            if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1] and _del in data:
-                                del data[_del]
+                    for _del in data.keys():
+                        if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1]:
+                            del data[_del]
             except:
                 pass
                 
@@ -268,7 +270,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'maintainer_email':[not_missing, not_empty, unicode],
            'extras':{
                 'id': [ignore],
-                'key': [not_missing, not_empty, both_not_empty('value'), unicode, self.custom_to_extras],
+                'key': [self.custom_to_extras],
                 'value': [ignore_missing],
                 'state': [ignore],
                 'deleted': [ignore_missing],
