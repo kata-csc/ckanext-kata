@@ -4,9 +4,9 @@
 from ckan.lib.base import BaseController, c, h
 from ckan.model import Package
 
-from pylons import response
+from pylons import response, config
 
-from rdflib.term import Identifier
+from rdflib.term import Identifier, Statement, Node, Variable
 
 from vocab import Graph, URIRef, Literal, BNode
 from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
@@ -19,40 +19,54 @@ log = logging.getLogger('ckanext.kata.controller')
 
 class MetadataController(BaseController):
 
+    def _check_and_gather_role(self, extra):
+        if extra.startswith('role_'):
+            for role in config.get('kata.contact_roles', []).split(', '):
+                if extra.endswith(role):
+                    if role in self.roles:
+                        self.roles[role].append(extra)
+                    else:
+                        self.roles[role] = []
+                        self.roles[role].append(extra)
+
     def tordf(self, id, format):
         graph = Graph()
         pkg = Package.get(id)
         data = pkg.as_dict()
         uri = BNode()
-        selfref = URIRef(uri)
-        graph.add((selfref, RDF.ID, Literal(pkg.id)))
         graph.add((uri, DC.identifier, Literal(data["name"])\
                             if 'identifier' not in data["extras"]\
                             else URIRef(data["extras"]["identifier"])))
         graph.add((uri, DC.modified, Literal(data["metadata_modified"],
                                              datatype=XSD.date)))
-        if data["author_email"]:
-            graph.add((uri, DC.creator, Literal(data["author_email"])))
         graph.add((uri, DC.title, Literal(data["title"])))
         if data["license"]:
             graph.add((uri, DC.rights, Literal(data["license"])))
+        self.roles = {}
         for extra in data["extras"]:
-            if 'author' in extra:
-                graph.add((uri, DC.creator, Literal(data["extras"][extra])))
-            if 'publisher' in extra:
-                graph.add((uri, DC.publisher, Literal(data["extras"][extra])))
-            if 'available' in extra:
-                graph.add((uri, DC.available, Literal(data["extras"][extra])))
-            if 'language' in extra:
-                graph.add((uri, DC.language, Literal(data["extras"][extra])))
+            self._check_and_gather_role(extra)
+        for key, value in self.roles.iteritems():
+            if key in ('Author', 'Producer', 'Publisher'):
+                if key == 'Author':
+                    for val in value:
+                        id = Identifier(hash(val))
+                        graph.add((uri, DC.creator, id))
+                        graph.add((id, FOAF.name, Literal(data["extras"][val])))
+                if key == 'Producer':
+                    for val in value:
+                        id = Identifier(hash(val))
+                        graph.add((uri, DC.contributor, id))
+                        graph.add((id, FOAF.name, Literal(data["extras"][val])))
+                if key == 'Publisher':
+                    for val in value:
+                        id = Identifier(hash(val))
+                        graph.add((uri, DC.publisher, id))
+                        graph.add((id, FOAF.name, Literal(data["extras"][val])))
         for tag in data["tags"]:
             graph.add((uri, DC.subject, Literal(tag)))
         graph.add((uri, DC.description, Literal(data["notes"])))
         if data["url"]:
             graph.add((uri, DC.source, URIRef(data["url"])))
-        if data["groups"]:
-            for group in data["groups"]:
-                graph.add((uri, DC.contributor, Literal(group)))
         for res in data["resources"]:
             extra = Identifier(h.url_for(controller='package',
                                          action='resource_read',
