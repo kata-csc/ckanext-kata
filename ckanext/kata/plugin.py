@@ -242,8 +242,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if not extras:
             data[('extras',)] = extras
             
-        from ckan.lib.navl.dictization_functions import Missing
-        
         for k in data.keys():
             try:
                 if k[0] == 'extras' and k[-1] == 'key' and (k[0], k[1], 'value') in data:
