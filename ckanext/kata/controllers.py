@@ -2,12 +2,12 @@
 '''
 
 from ckan.lib.base import BaseController, c, h
-from ckan.model import Package
+from ckan.model import Package, Vocabulary, Session
 
 from pylons import response, config
 
 from rdflib.term import Identifier, Statement, Node, Variable
-
+from rdflib.namespace import ClosedNamespace
 from vocab import Graph, URIRef, Literal, BNode
 from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
                     REV, SCOVO, XSD, LICENSES
@@ -33,15 +33,26 @@ class MetadataController(BaseController):
         graph = Graph()
         pkg = Package.get(id)
         data = pkg.as_dict()
-        uri = BNode()
+        uri = URIRef(config.get('ckan.site_url', '') + h.url_for(controller='package', action='read',
+                               id=id))
         graph.add((uri, DC.identifier, Literal(data["name"])\
                             if 'identifier' not in data["extras"]\
                             else URIRef(data["extras"]["identifier"])))
-        graph.add((uri, DC.modified, Literal(data["metadata_modified"],
+        graph.add((uri, DC.modified, Literal(pkg.latest_related_revision,
                                              datatype=XSD.date)))
         graph.add((uri, DC.title, Literal(data["title"])))
         if data["license"]:
             graph.add((uri, DC.rights, Literal(data["license"])))
+        id = BNode()
+        graph.add((uri, DC.publisher, id))
+        graph.add((id, FOAF.name, Literal(data["maintainer"])))
+        if data["maintainer_email"]:
+            graph.add((id, FOAF.mbox, Literal(data["maintainer_email"])))
+        id = BNode()
+        graph.add((uri, DC.creator, id))
+        graph.add((id, FOAF.name, Literal(data["author"])))
+        if data["author_email"]:
+            graph.add((id, FOAF.mbox, Literal(data["author_email"])))
         self.roles = {}
         for extra in data["extras"]:
             self._check_and_gather_role(extra)
@@ -49,36 +60,51 @@ class MetadataController(BaseController):
             if key in ('Author', 'Producer', 'Publisher'):
                 if key == 'Author':
                     for val in value:
-                        id = Identifier(hash(val))
+                        id = BNode()
                         graph.add((uri, DC.creator, id))
                         graph.add((id, FOAF.name, Literal(data["extras"][val])))
                 if key == 'Producer':
                     for val in value:
-                        id = Identifier(hash(val))
+                        id = BNode()
                         graph.add((uri, DC.contributor, id))
                         graph.add((id, FOAF.name, Literal(data["extras"][val])))
                 if key == 'Publisher':
                     for val in value:
-                        id = Identifier(hash(val))
+                        id = BNode()
                         graph.add((uri, DC.publisher, id))
                         graph.add((id, FOAF.name, Literal(data["extras"][val])))
-        for tag in data["tags"]:
-            graph.add((uri, DC.subject, Literal(tag)))
+        for vocab in Session.query(Vocabulary).all():
+            for tag in pkg.get_tags(vocab=vocab):
+                tag_id = Identifier(vocab.name + '#' + tag.name)
+                graph.add((uri, DC.subject, tag_id))
+                graph.add((tag_id, RDFS.label, Literal(tag.name)))
+        for tag in pkg.get_tags():
+            tag_id = BNode()
+            graph.add((uri, DC.subject, tag_id))
+            graph.add((tag_id, RDFS.label, Literal(tag.name)))
         graph.add((uri, DC.description, Literal(data["notes"])))
         if data["url"]:
             graph.add((uri, DC.source, URIRef(data["url"])))
         for res in data["resources"]:
-            extra = Identifier(h.url_for(controller='package',
+            url = config.get('ckan.site_url', '') + h.url_for(controller='package',
                                          action='resource_read',
                                          id=data['id'],
-                                         resource_id=res['id']))
+                                         resource_id=res['id'])
+            extra = Identifier(url)
             graph.add((uri, DC.relation, extra))
             if res["url"]:
-                graph.add((extra, DC.isReferencedBy, URIRef(res["url"])))
-            if res["size"]:
-                graph.add((extra, DC.extent, Literal(res['size'])))
-            if res["format"]:
-                graph.add((extra, DC.hasFormat, Literal(res['format'])))
+                resurl = URIRef(config.get('ckan.site_url', '') + res["url"])
+                graph.add((extra, DC.isPartOf, resurl))
+                if res["size"]:
+                    extent = BNode()
+                    graph.add((resurl, DC.extent, extent))
+                    graph.add((extent, RDF.value, Literal(res['size'])))
+                if res["format"]:
+                    isformat = BNode()
+                    graph.add((resurl, DC.hasFormat, isformat))
+                    hformat = BNode()
+                    graph.add((isformat, DC.isFormatOf, hformat))
+                    graph.add((hformat, RDFS.label, Literal(res['format'])))
         response.headers['Content-type'] = 'text/xml'
         if format == 'rdf':
             format = 'pretty-xml'
