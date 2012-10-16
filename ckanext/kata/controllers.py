@@ -43,16 +43,16 @@ class MetadataController(BaseController):
         graph.add((uri, DC.title, Literal(data["title"])))
         if data["license"]:
             graph.add((uri, DC.rights, Literal(data["license"])))
-        id = BNode()
-        graph.add((uri, DC.publisher, id))
-        graph.add((id, FOAF.name, Literal(data["maintainer"])))
+        publisher = BNode()
+        graph.add((uri, DC.publisher, publisher))
+        graph.add((publisher, FOAF.name, Literal(data["maintainer"])))
         if data["maintainer_email"]:
-            graph.add((id, FOAF.mbox, Literal(data["maintainer_email"])))
-        id = BNode()
-        graph.add((uri, DC.creator, id))
-        graph.add((id, FOAF.name, Literal(data["author"])))
+            graph.add((publisher, FOAF.mbox, Literal(data["maintainer_email"])))
+        creator = BNode()
+        graph.add((uri, DC.creator, creator))
+        graph.add((creator, FOAF.name, Literal(data["author"])))
         if data["author_email"]:
-            graph.add((id, FOAF.mbox, Literal(data["author_email"])))
+            graph.add((creator, FOAF.mbox, Literal(data["author_email"])))
         self.roles = {}
         for extra in data["extras"]:
             self._check_and_gather_role(extra)
@@ -60,19 +60,19 @@ class MetadataController(BaseController):
             if key in ('Author', 'Producer', 'Publisher'):
                 if key == 'Author':
                     for val in value:
-                        id = BNode()
-                        graph.add((uri, DC.creator, id))
-                        graph.add((id, FOAF.name, Literal(data["extras"][val])))
+                        creator = BNode()
+                        graph.add((uri, DC.creator, creator))
+                        graph.add((creator, FOAF.name, Literal(data["extras"][val])))
                 if key == 'Producer':
                     for val in value:
-                        id = BNode()
-                        graph.add((uri, DC.contributor, id))
-                        graph.add((id, FOAF.name, Literal(data["extras"][val])))
+                        contributor = BNode()
+                        graph.add((uri, DC.contributor, contributor))
+                        graph.add((contributor, FOAF.name, Literal(data["extras"][val])))
                 if key == 'Publisher':
                     for val in value:
-                        id = BNode()
-                        graph.add((uri, DC.publisher, id))
-                        graph.add((id, FOAF.name, Literal(data["extras"][val])))
+                        publisher = BNode()
+                        graph.add((uri, DC.publisher, publisher))
+                        graph.add((publisher, FOAF.name, Literal(data["extras"][val])))
         for vocab in Session.query(Vocabulary).all():
             for tag in pkg.get_tags(vocab=vocab):
                 tag_id = Identifier(vocab.name + '#' + tag.name)
