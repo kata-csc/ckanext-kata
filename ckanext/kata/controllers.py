@@ -38,7 +38,7 @@ class MetadataController(BaseController):
         graph.add((uri, DC.identifier, Literal(data["name"])\
                             if 'identifier' not in data["extras"]\
                             else URIRef(data["extras"]["identifier"])))
-        graph.add((uri, DC.modified, Literal(pkg.latest_related_revision,
+        graph.add((uri, DC.modified, Literal(pkg.latest_related_revision.timestamp.isoformat(),
                                              datatype=XSD.date)))
         graph.add((uri, DC.title, Literal(data["title"])))
         if data["license"]:
@@ -93,7 +93,9 @@ class MetadataController(BaseController):
             extra = Identifier(url)
             graph.add((uri, DC.relation, extra))
             if res["url"]:
-                resurl = URIRef(config.get('ckan.site_url', '') + res["url"])
+                resurl = res["url"] if res['url'].startswith('http') else\
+                         config.get('ckan.site_url', '') + res['url']
+                resurl = URIRef(resurl)
                 graph.add((extra, DC.isPartOf, resurl))
                 if res["size"]:
                     extent = BNode()
