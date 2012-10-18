@@ -8,12 +8,6 @@
       </tr>
     </thead>
     <tbody>
-      {% if rev and stampformat %}
-        <tr>
-        	<th class="dataset-label">{{ _('Last modified') }}</th>
-        	<td class="dataset-details">{{ rev.timestamp.strftime(stampformat) }}</td>
-        </tr>
-      {% endif %}
       {% if pkg_dict.url %}
         <tr>
           <th class="dataset-label">{{ _('Source') }}</th>

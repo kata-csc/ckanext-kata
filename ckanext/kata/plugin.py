@@ -3,6 +3,7 @@
 
 import logging
 import os
+import datetime
 
 from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers
@@ -43,7 +44,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_helpers(self):
         ''' Register helpers '''
         return {'is_custom_form':self.is_custom_form,
-                'kata_sorted_extras':self.kata_sorted_extras}
+                'kata_sorted_extras':self.kata_sorted_extras,
+                'kata_metadata_fields':self.kata_metadata_fields}
     
     def is_custom_form(self, _dict):
         ''' Template helper, used to identify ckan custom form '''
@@ -51,7 +53,19 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if _dict.get('key', None) and _dict['key'].find(key) > -1:
                 return False
         return True
-    
+
+    def kata_metadata_fields(self, list_):
+        output = []
+        log.debug("metadata_fields")
+        log.debug(list_)
+        for extra in sorted(list_, key=lambda x:x['key']):
+            if extra.get('state') == 'deleted':
+                continue
+            k, v = extra['key'], extra['value']
+            if k in ['language', 'lastmod', 'project']:
+                output.append((k, v))
+        return output
+
     def kata_sorted_extras(self, list_):
         ''' Used for outputting package extras, skips package_hide_extras '''
         output = []
@@ -257,7 +271,17 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                             del data[_del]
             except:
                 pass
-                
+
+    def validate_lastmod(self, key, data, errors, context):
+        try:
+            datetime.datetime.strptime(data[key], '%d.%m.%Y')
+        except:
+            errors[key].append('Invalid date format, must be like 1.2.2012')
+
+    def validate_lang(self, key, data, errors, context):
+        langs = ['en', 'fi', 'sv']
+        if not data[key] in langs:
+            errors[key].append('Language must be one of: %s' % (', '.join(langs)).rstrip(','))
 
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
@@ -266,6 +290,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'author_email':[not_missing, not_empty, unicode],
            'maintainer':[not_missing, not_empty, unicode],
            'maintainer_email':[not_missing, not_empty, unicode],
+           'lastmod':[not_missing, convert_to_extras, unicode, self.validate_lastmod],
+           'project':[not_missing, convert_to_extras, unicode],
+           'language':[not_missing, convert_to_extras, unicode, self.validate_lang],
            'extras':{
                 'id': [ignore],
                 'key': [self.custom_to_extras],
@@ -288,7 +315,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         context = options['context']
         schema['role'] = [self.roles_from_extras, ignore_missing, unicode]
         schema['pid'] = [self.pid_from_extras, ignore_missing, unicode]
-        
+        schema['project'] = [convert_from_extras, ignore_missing, unicode]
+        schema['lastmod'] = [convert_from_extras, ignore_missing, unicode]
+        schema['language'] = [convert_from_extras, ignore_missing, unicode]
         try:
             dataset = context['package']
             c.revision = dataset.latest_related_revision

@@ -56,6 +56,7 @@
         <span class="insert-comment-thread"></span>
       </section>
       {% snippet "package/snippets/role_contact_info.html", pkg_dict=pkg, user=c.userobj %}
+      {% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj %}
     {% endblock %}
 
     {% block package_resources %}
@@ -67,7 +68,7 @@
     {% endblock %}
 
     {% block package_additional_info %}
-      {% snippet "package/snippets/additional_info.html", pkg_dict=pkg, user=c.userobj, rev=c.revision, stampformat=c.date_format %}
+      {% snippet "package/snippets/additional_info.html", pkg_dict=pkg, user=c.userobj %}
     {% endblock %}
   </article>
 {% endblock %}
