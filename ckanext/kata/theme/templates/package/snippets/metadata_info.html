@@ -1,0 +1,27 @@
+<section class="module-content additional-info">
+<h3>{{ _('Metadata information') }}</h3>
+{{pkg_dict}}
+<table class="table table-striped table-bordered table-condensed">
+     <tbody>
+	{% set kata = pkg_dict.kata%}
+	{% if kata.lastmod %}
+	<tr>
+		<th class="dataset-label">{{ _('Last modified') }}</th>
+		<td class="dataset-details">{{kata.lastmod}}</td>
+	</tr>
+	{% endif %}
+	{% if kata.project %}
+	<tr>
+		<th class="dataset-label">{{ _('Project') }}</th>
+		<td class="dataset-details">{{kata.project}} </td>
+	</tr>
+	{% endif %}
+	{% if kata.language %}
+	<tr>
+		<th class="dataset-label">{{ _('Language') }}</th>
+		<td class="dataset-details">{{kata.language}}</td>
+	</tr>
+	{% endif %}
+	</tbody>
+</table>
+</section>
