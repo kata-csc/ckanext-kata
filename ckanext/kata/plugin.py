@@ -283,12 +283,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def validate_lang(self, key, data, errors, context):
         langs = ['en', 'fi', 'sv']
         for k in data[('extras',)]:
-            if k['kata'] == key:
+            if k['key'] == key[-1]:
                 key = k
                 break
         log.debug(data)
         log.debug(key)
-        if not data[key] in langs:
+        if not key['value'] in langs:
             errors[key].append('Language must be one of: %s' % (', '.join(langs)).rstrip(','))
 
     def convert_from_extras_kata(self, key, data, errors, context):
@@ -304,7 +304,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data[('extras',)] = extras
         for k in data.keys():
             log.debug(k)
-            if k[-1] in [('lastmod',), ('project',), ('language',)]:
+            if k[-1] in ['lastmod', 'project', 'language']:
                 log.debug("match")
                 extras.append({'key': k[-1], 'value': data[k]})
 
