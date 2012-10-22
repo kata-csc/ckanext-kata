@@ -247,13 +247,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     if context.get('for_edit', False):
                         del data[k]
                         del data[(k[0], k[1], 'value')]
-                        
 
     def custom_to_extras(self, key, data, errors, context):
         extras = data.get(('extras',), [])
         if not extras:
             data[('extras',)] = extras
-            
         for k in data.keys():
             try:
                 if k[0] == 'extras' and k[-1] == 'key' and (k[0], k[1], 'value') in data:
@@ -263,7 +261,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                         and len(data[(k[0], k[1], 'value')]) > 0:
                         extras.append({'key':data[(k[0], k[1], 'key')],
                                    'value':data[(k[0], k[1], 'value')]})
-                        
                     for _del in data.keys():
                         if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1]:
                             del data[_del]
@@ -271,38 +268,23 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 pass
 
     def validate_lastmod(self, key, data, errors, context):
-        formats = ['%Y-%m-%d', '%Y-%m-%dT%H:%M']
+        formats = ['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S']
         errs = []
         for format in formats:
             for k in data[('extras',)]:
-                log.debug("%s, %s" % (k['key'], key))
                 if (k['key'],) == key:
-                    log.debug("%s, %s" % (k['key'], k['value']))
                     try:
                         datetime.datetime.strptime(k['value'], format)
                     except ValueError:
                         errs.append(1)
         if len(errs) > 2:
-            errors[key].append('Invalid date format, must be like 2012-12-31 or 2012-12-31T13:37')
-
-    def validate_lang(self, key, data, errors, context):
-        langs = ['en', 'fi', 'sv']
-        for k in data[('extras',)]:
-            if k['key'] == key[-1]:
-                key = k
-                break
-        if not key['value'] in langs:
-            errors[key].append('Language must be one of: %s' % (', '.join(langs)).rstrip(','))
-
-    def validate_roles(self, key, data, errors, context):
-        log.debug(key)
-        log.debug(data)
+            errors[key].append('Invalid date format, must be like 2012-12-31 or 2012-12-31T13:12:11')
 
     def convert_from_extras_kata(self, key, data, errors, context):
         if not ('kata',) in data:
             data[('kata',)] = {}
         for k in data.keys():
-            if k[0] == 'extras' and k[-1] == 'key' and data[k] in ['lastmod', 'project', 'language']:
+            if k[0] == 'extras' and k[-1] == 'key' and data[k] in ['lastmod', 'project', 'title_en', 'title_fi', 'language']:
                 key = ''.join(data[k])
                 data[(key,)] = data[(k[0], k[1], 'value')]
                 for _remove in data.keys():
@@ -314,11 +296,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if not extras:
             data[('extras',)] = extras
         for k in data.keys():
-            if k[-1] in ['lastmod', 'project', 'language']:
+            if k[-1] in ['lastmod', 'project', 'title_en', 'title_fi', 'language']:
                 extras.append({'key': k[-1], 'value': data[k]})
-                for _del in data.keys():
-                        if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1]:
-                            del data[_del]
 
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
@@ -327,7 +306,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'maintainer':[not_missing, not_empty, unicode],
            'lastmod':[not_missing, self.convert_to_extras_kata, unicode, self.validate_lastmod],
            'project':[not_missing, self.convert_to_extras_kata, unicode],
-           'language':[not_missing, self.convert_to_extras_kata, unicode, self.validate_lang],
+           'title_en':[not_missing, self.convert_to_extras_kata, unicode],
+           'title_fi':[not_missing, self.convert_to_extras_kata, unicode],
+           'language': [not_missing, self.convert_to_extras_kata, unicode],
            'extras':{
                 'id': [ignore],
                 'key': [self.custom_to_extras],
@@ -337,7 +318,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'revision_timestamp': [ignore],
                 '__extras':[ignore],
             },
-           'role':{'key': [ignore_missing, unicode, self.roles_to_extras, self.validate_roles], 'value': [ignore_missing]},
+           'role':{'key': [ignore_missing, unicode, self.roles_to_extras], 'value': [ignore_missing]},
            'pid':[self.add_pid_if_missing, unicode, self.pid_to_extras],
            '__junk':[ignore],
            '__extras':[ignore],
@@ -349,6 +330,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema = db_to_form_package_schema()
         context = options['context']
         schema['role'] = [self.roles_from_extras, ignore_missing, unicode]
+        schema['title_en'] = [self.convert_from_extras_kata, ignore_missing, unicode]
+        schema['title_fi'] = [self.convert_from_extras_kata, ignore_missing, unicode]
         schema['pid'] = [self.pid_from_extras, ignore_missing, unicode]
         schema['project'] = [self.convert_from_extras_kata, ignore_missing, unicode]
         schema['lastmod'] = [self.convert_from_extras_kata, ignore_missing, unicode]

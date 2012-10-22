@@ -1,7 +1,7 @@
 {% import 'macros/form.html' as form %}
 
 {% include 'package/role_fields.html' %}
-
+{% include 'package/language_fields.html' %}
 {% set groups_available = h.groups_available() %}
 {% if groups_available %}
   <div class="control-group">
