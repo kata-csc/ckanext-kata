@@ -20,11 +20,11 @@
 
 {{ form.input('maintainer_email', label=_('Maintainer Email'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
 
-{{ form.input('project', label=_('Project'), id='project', placeholder=_('my project'), value=data.kata.project, error=errors.project, classes=['control-medium']) }}
+{{ form.input('project', label=_('Project'), id='project', placeholder=_('my project'), value=data.project, error=errors.project, classes=['control-medium']) }}
 
-{{ form.input('lastmod', label=_('Modification date'), id='last_modified', placeholder=_('date in eg. 2012-12-31'), value=data.kata.lastmod, error=errors.lastmod, classes=['control-medium']) }}
+{{ form.input('lastmod', label=_('Modification date'), id='last_modified', placeholder=_('date in eg. 2012-12-31'), value=data.lastmod, error=errors.lastmod, classes=['control-medium']) }}
 
-{{ form.input('language', label=_('Metadata language'), id='language', placeholder=_('en'), value=data.kata.language, error=errors.language, classes=['control-medium']) }}
+{{ form.input('language', label=_('Metadata language'), id='language', placeholder=_('en'), value=data.language, error=errors.language, classes=['control-medium']) }}
 
 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
 {{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}

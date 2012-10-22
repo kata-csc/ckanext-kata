@@ -56,8 +56,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def kata_metadata_fields(self, list_):
         output = []
-        log.debug("metadata_fields")
-        log.debug(list_)
         for extra in sorted(list_, key=lambda x:x['key']):
             if extra.get('state') == 'deleted':
                 continue
@@ -273,12 +271,19 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 pass
 
     def validate_lastmod(self, key, data, errors, context):
-        try:
+        formats = ['%Y-%m-%d', '%Y-%m-%dT%H:%M']
+        errs = []
+        for format in formats:
             for k in data[('extras',)]:
-                if k['key'] == key:
-                    datetime.datetime.strptime(k['value'], '%Y-%m-%d')
-        except:
-            errors[key].append('Invalid date format, must be like 2012-12-31')
+                log.debug("%s, %s" % (k['key'], key))
+                if (k['key'],) == key:
+                    log.debug("%s, %s" % (k['key'], k['value']))
+                    try:
+                        datetime.datetime.strptime(k['value'], format)
+                    except ValueError:
+                        errs.append(1)
+        if len(errs) > 2:
+            errors[key].append('Invalid date format, must be like 2012-12-31 or 2012-12-31T13:37')
 
     def validate_lang(self, key, data, errors, context):
         langs = ['en', 'fi', 'sv']
@@ -286,35 +291,40 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if k['key'] == key[-1]:
                 key = k
                 break
-        log.debug(data)
-        log.debug(key)
         if not key['value'] in langs:
             errors[key].append('Language must be one of: %s' % (', '.join(langs)).rstrip(','))
+
+    def validate_roles(self, key, data, errors, context):
+        log.debug(key)
+        log.debug(data)
 
     def convert_from_extras_kata(self, key, data, errors, context):
         if not ('kata',) in data:
             data[('kata',)] = {}
         for k in data.keys():
             if k[0] == 'extras' and k[-1] == 'key' and data[k] in ['lastmod', 'project', 'language']:
-                data[('kata',)][data[k]] = data[(k[0], k[1], 'value')]
+                key = ''.join(data[k])
+                data[(key,)] = data[(k[0], k[1], 'value')]
+                for _remove in data.keys():
+                    if _remove[0] == 'extras' and _remove[1] == k[1]:
+                        del data[_remove]
 
     def convert_to_extras_kata(self, key, data, errors, context):
         extras = data.get(('extras',), [])
         if not extras:
             data[('extras',)] = extras
         for k in data.keys():
-            log.debug(k)
             if k[-1] in ['lastmod', 'project', 'language']:
-                log.debug("match")
                 extras.append({'key': k[-1], 'value': data[k]})
+                for _del in data.keys():
+                        if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1]:
+                            del data[_del]
 
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
         schema.update({
            'author':[not_missing, not_empty, unicode],
-           'author_email':[not_missing, not_empty, unicode],
            'maintainer':[not_missing, not_empty, unicode],
-           'maintainer_email':[not_missing, not_empty, unicode],
            'lastmod':[not_missing, self.convert_to_extras_kata, unicode, self.validate_lastmod],
            'project':[not_missing, self.convert_to_extras_kata, unicode],
            'language':[not_missing, self.convert_to_extras_kata, unicode, self.validate_lang],
@@ -327,7 +337,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'revision_timestamp': [ignore],
                 '__extras':[ignore],
             },
-           'role':{'key': [ignore_missing, unicode, self.roles_to_extras], 'value': [ignore_missing]},
+           'role':{'key': [ignore_missing, unicode, self.roles_to_extras, self.validate_roles], 'value': [ignore_missing]},
            'pid':[self.add_pid_if_missing, unicode, self.pid_to_extras],
            '__junk':[ignore],
            '__extras':[ignore],
