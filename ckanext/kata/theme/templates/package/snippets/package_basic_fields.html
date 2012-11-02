@@ -1,34 +1,118 @@
 {% import 'macros/form.html' as form %}
-
+<section class="module">
+<h2 class="module-heading">{{ _('General information') }}</h2>
+<div class="module-content">
 {{ form.input('title', id='field-title', label=_('Title'), placeholder=_('eg. A descriptive title'), value=data.title, error=errors.title, classes=['control-full', 'control-large'], attrs={'data-module': 'slug-preview-target'}) }}
 {% set prefix = h.url_for(controller='package', action='read', id='') %}
 {% set domain = h.url_for(controller='package', action='read', id='', qualified=true) %}
 {% set domain = domain|replace("http://", "")|replace("https://", "") %}
 {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<dataset>'} %}
 {{ form.prepend('name', id='field-name', label=_('URL'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs) }}
-
-{# Kata PID field #}
-{{ form.input('pid', id='field-pid', label=_('PID'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=PID, error=errors.pid, classes=['control-medium']) }}
+{% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+{{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-large'], attrs=tag_attrs) }}
 
 {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
 
-{{ form.input('author', label=_('Author'), id='field-author', placeholder=_('Joe Bloggs'), value=data.author, error=errors.author, classes=['control-medium']) }}
+<div data-module="custom-fields">
+{% set lastrole = 1%}
+{% if data.orgauths %}
+	{% for auth, org in data.orgauths %}
+	{% set lastrole = loop.index %}
+	{% set index = loop.index %}
+	<div class="control-group control-custom">
+		<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
+			<div class="controls editor">
+			    <div class="input-prepend">
+					<input type="text" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{auth.value}}" />
+			    </div>
+			</div>
+		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
+			<div class="controls editor">
+			    <div class="input-prepend">
+					<input type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
+			    </div>
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}
+{% for extra in range(1, 2) %}
+	{% set index = lastrole + extra + 10 %}
+		<div class="control-group control-custom">
+		<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
+			<div class="controls editor">
+			    <div class="input-prepend">
+					<input type="text" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="" />
+			    </div>
+			</div>
+		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
+			<div class="controls editor">
+			    <div class="input-prepend">
+					<input type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="" />
+			    </div>
+			</div>
+		</div>
+  {% endfor %}
+</div>
 
-{{ form.input('author_email', label=_('Author Email'), id='field-author-email', placeholder=_('joe@example.com'), value=data.author_email, error=errors.author_email, classes=['control-medium']) }}
+{{ form.input('language', label=_('Language'), id='language', placeholder=_('en'), value=data.language, error=errors.language, classes=['control-medium']) }}
 
-{{ form.input('maintainer', label=_('Maintainer'), id='field-maintainer', placeholder=_('Joe Bloggs'), value=data.maintainer, error=errors.maintainer, classes=['control-medium']) }}
+</div>
+</section>
 
-{{ form.input('maintainer_email', label=_('Maintainer Email'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
-
-{{ form.input('project', label=_('Project'), id='project', placeholder=_('my project'), value=data.project, error=errors.project, classes=['control-medium']) }}
-
+<section class="module">
+<h2 class="module-heading">{{ _('Actors and roles') }}</h2>
+	<div class="module-content">
+		<h3 class="module-heading">{{ _('Contact information') }}</h2>
+		<div class="module-content">
+			{{ form.input('contact_name', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=data.contact_name, error=errors.contact_name, classes=['control-medium']) }}
+			{{ form.input('contact_phone', label=_('Phone'), id='contact_phone', placeholder=_('+35844122123'), value=data.contact_phone, error=errors.contact_phone, classes=['control-medium']) }}
+			{{ form.input('contact_email', label=_('Email'), id='contact_email', placeholder=_('john.doe@example.com'), value=data.contact_email, error=errors.contact_email, classes=['control-medium']) }}
+			{{ form.input('contact_form', label=_('Contact form'), id='contact_form', placeholder=_('http://johndoe.com/contact'), value=data.contact_form, error=errors.contact_form, classes=['control-medium']) }}
+		</div>
+		<h3 class="module-heading">{{ _('Project information') }}</h2>
+		<div class="module-content">
+			{{ form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-medium']) }}
+			{{ form.input('project_funder', label=_('Funder'), id='project_funder', placeholder=_('my funder'), value=data.project_funder, error=errors.project_funder, classes=['control-medium']) }}
+			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium']) }}
+			{{ form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-medium']) }}
+		</div>
+		<h3 class="module-heading">{{ _('Owner information') }}</h2>
+		<div class="module-content">
+			{{ form.input('owner_name', label=_('Name'), id='owner_name', placeholder=_('John Allen'), value=data.owner_name, error=errors.owner_name, classes=['control-medium']) }}
+			{{ form.input('owner_phone', label=_('Phone'), id='owner_phone', placeholder=_('+35844122123'), value=data.owner_phone, error=errors.owner_phone, classes=['control-medium']) }}
+			{{ form.input('owner_homepage', label=_('Homepage'), id='owner_homepage', placeholder=_('http://john.allen.com/home'), value=data.owner_homepage, error=errors.owner_homepage, classes=['control-medium']) }}
+		</div>
+</section>
+{# if we have a default group then this wants remembering #}
+{% if data.group_id %}
+  <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
+{% endif %}
+<section class="module">
+<h2 class="module-heading">{{ _('Identification information') }}</h2>
+<div class="module-content">
+{{ form.input('pid', id='field-pid', label=_('Permanent Identifier'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=PID, error=errors.pid, classes=['control-medium']) }}
 {{ form.input('lastmod', label=_('Modification date'), id='last_modified', placeholder=_('date in eg. 2012-12-31'), value=data.lastmod, error=errors.lastmod, classes=['control-medium']) }}
-
-{{ form.input('language', label=_('Metadata language'), id='language', placeholder=_('en'), value=data.language, error=errors.language, classes=['control-medium']) }}
-
-{% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-{{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
-
+</div>
+</section>
+<section class="module">
+<h2 class="module-heading">{{ _('Usage information') }}</h2>
+<div class="module-content">
+<p>{% trans %}
+	Dataset is avaiblable for use:
+	{% endtrans %}
+</p>
+<div class="control-group">
+	<input type="radio" name="access" value="form" style="top: 0px" onclick="$('#accessDiv').toggle()">{{ _('with form') }}</input><br />
+	<div id="accessDiv" style="display: none">
+	{{ form.input('accessRights', label=_('Access url'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'] )}}
+	{{ form.checkbox('newform', label=_('Create a new access request form'), id="newform") }}
+	</div>
+	<input type="radio" name="access" style="top: 0px" value="free">{{ _('openly') }}</input><br />
+	{{ _('or') }}<br />
+	<input type="radio" name="access" style="top: 0px" value="ident">{{ _('by authentication') }}</input><br />
+	{{ _('or') }}<br />
+	<input type="radio" name="access" style="top: 0px" value="contact">{{ _('by contacting') }}</input><br />
+</div>
 <div class="control-group">
   {% set error = errors.license_id %}
   <label class="control-label" for="field-license">{{ _("License") }}</label>
@@ -48,8 +132,5 @@
     </span>
   </div>
 </div>
-
-{# if we have a default group then this wants remembering #}
-{% if data.group_id %}
-  <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
-{% endif %}
+</div>
+</section>
