@@ -4,6 +4,8 @@
 import logging
 import os
 import datetime
+from lxml import etree
+import urllib2
 
 from ckan.plugins import implements, SingletonPlugin
 from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers
@@ -21,6 +23,7 @@ from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_em
 from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
 
 log = logging.getLogger('ckanext.kata')
+mets_schema = etree.XMLSchema(etree.parse(urllib2.urlopen('http://www.loc.gov/standards/rights/METSRights.xsd')))
 
 import utils
 
@@ -44,7 +47,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     kata_field = ['lastmod', 'language',
                   'contact_name', 'contact_phone', 'contact_email', 'contact_form',
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
-                  'owner_name', 'owner_phone', 'owner_homepage']
+                  'owner_name', 'owner_phone', 'owner_homepage',
+                  'access', 'accessRights',
+                  'langdis']
 
     def get_helpers(self):
         ''' Register helpers '''
@@ -77,7 +82,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 continue
             
             k, v = extra['key'], extra['value']
-            if k in g.package_hide_extras and k in self.kata_field:
+            if k in g.package_hide_extras and\
+                k in self.kata_field and\
+                k.starswith('author_') and\
+                k.startswith('organization_'):
                 continue
             
             found=False
@@ -122,6 +130,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def setup_template_variables(self, context, data_dict):
         c.roles = self.roles
         c.PID = utils.generate_pid()
+        c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
     def new_template(self):
         """
@@ -269,15 +278,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 pass
 
     def validate_lastmod(self, key, data, errors, context):
-        formats = ['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S']
+        format = '%Y-%m-%dT%H:%M:%S'
         errs = []
-        for format in formats:
-            try:
-                datetime.datetime.strptime(data[key], format)
-            except ValueError:
-                errs.append(1)
+        try:
+            datetime.datetime.strptime(data[key], format)
+        except ValueError:
+            errs.append(1)
         if len(errs) == 2:
-            errors[key].append('Invalid date format, must be like 2012-12-31 or 2012-12-31T13:12:11')
+            errors[key].append('Invalid date format, must be like 2012-12-31T13:12:11')
 
     def convert_from_extras_kata(self, key, data, errors, context):
         for k in data.keys():
@@ -345,8 +353,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     org['value'] = val
                     if not {'key': data[k], 'value': val} in orgs:
                         orgs.append(org)
-        sorted(orgs, key=lambda ke: int(ke['key'][-1]))
-        sorted(auths, key=lambda ke: int(ke['key'][-1]))
+        orgs = sorted(orgs, key=lambda ke: int(ke['key'][-1]))
+        auths = sorted(auths, key=lambda ke: int(ke['key'][-1]))
         for org, auth in zip(orgs, auths):
             if not (auth, org) in orgauths:
                 orgauths.append((auth, org))
@@ -355,6 +363,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if data[key] == 'form':
             if not data[('accessRights',)]:
                 errors[key].append('You must fill up the form URL')
+
+    def check_language(self, key, data, errors, context):
+        if data[('language',)]:
+            errors[key].append('Language received even if disabled.')
 
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
@@ -375,8 +387,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'pid':[self.add_pid_if_missing, unicode, self.pid_to_extras],
            'author': {'value': [ignore_missing, unicode, self.org_auth_to_extras]},
            'organization': {'value': [ignore_missing, unicode, self.org_auth_to_extras]},
-           'access': [not_missing, self.validate_access],
-           'accessRights': [ignore_missing, unicode],
+           'access': [not_missing, self.convert_to_extras_kata, self.validate_access],
+           'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
+           'langdis': [ignore_missing, unicode, self.check_language],
            '__junk':[ignore],
            '__extras':[ignore],
         })
@@ -397,6 +410,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             c.date_format = self.date_format
             c.PID = utils.generate_pid()
             c.roles = self.roles
+            c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
         except TypeError:
                 return schema
         

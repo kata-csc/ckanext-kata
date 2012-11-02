@@ -53,9 +53,10 @@
 		</div>
   {% endfor %}
 </div>
-
+<input type="checkbox" style="top: 0px;" name="langdis" onchange="$('#langdiv').toggle()" {% if data.langdis %}checked{% endif %}>{{ _('This dataset does not have a language') }}</input>
+<div id="langdiv" {% if data.langdis %} style="display: none" {% endif %}>
 {{ form.input('language', label=_('Language'), id='language', placeholder=_('en'), value=data.language, error=errors.language, classes=['control-medium']) }}
-
+</div>
 </div>
 </section>
 
@@ -91,7 +92,7 @@
 <h2 class="module-heading">{{ _('Identification information') }}</h2>
 <div class="module-content">
 {{ form.input('pid', id='field-pid', label=_('Permanent Identifier'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=PID, error=errors.pid, classes=['control-medium']) }}
-{{ form.input('lastmod', label=_('Modification date'), id='last_modified', placeholder=_('date in eg. 2012-12-31'), value=data.lastmod, error=errors.lastmod, classes=['control-medium']) }}
+{{ form.input('lastmod', label=_('Modification date'), id='last_modified', placeholder=_('date in eg. 2012-12-31 or 2012-12-31T13:12:11'), value=lastmod, error=errors.lastmod, classes=['control-medium']) }}
 </div>
 </section>
 <section class="module">
@@ -102,16 +103,19 @@
 	{% endtrans %}
 </p>
 <div class="control-group">
-	<input type="radio" name="access" value="form" style="top: 0px" onclick="$('#accessDiv').toggle()">{{ _('with form') }}</input><br />
+	{% call form.input_block("access", "Select", error=errors.access) %}
+	<input type="radio" name="access" value="form" style="top: 0px" onclick="$('#accessDiv').toggle()" {% if data.access == 'form'%}checked{% endif %} >{{ _('with form') }}</input><br />
+
 	<div id="accessDiv" style="display: none">
 	{{ form.input('accessRights', label=_('Access url'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'] )}}
 	{{ form.checkbox('newform', label=_('Create a new access request form'), id="newform") }}
 	</div>
-	<input type="radio" name="access" style="top: 0px" value="free">{{ _('openly') }}</input><br />
+	<input type="radio" name="access" style="top: 0px" value="free" {% if data.access == 'free'%}checked{% endif %}>{{ _('openly') }}</input><br />
 	{{ _('or') }}<br />
-	<input type="radio" name="access" style="top: 0px" value="ident">{{ _('by authentication') }}</input><br />
+	<input type="radio" name="access" style="top: 0px" value="ident" {% if data.access == 'ident'%}checked{% endif %}>{{ _('by authentication') }}</input><br />
 	{{ _('or') }}<br />
-	<input type="radio" name="access" style="top: 0px" value="contact">{{ _('by contacting') }}</input><br />
+	<input type="radio" name="access" style="top: 0px" value="contact" {% if data.access == 'contact'%}checked{% endif %}>{{ _('by contacting') }}</input><br />
+	{% endcall %}
 </div>
 <div class="control-group">
   {% set error = errors.license_id %}

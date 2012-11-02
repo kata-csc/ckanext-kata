@@ -1,37 +1,112 @@
 <section class="module-content additional-info">
-<h3>{{ _('Metadata information') }}</h3>
+<h3>{{ _('General information') }}</h3>
 <table class="table table-striped table-bordered table-condensed">
      <tbody>
-	{% if pkg_dict.language %}
+	{% if pkg_dict.language or pkg_dict.langdis %}
 	<tr>
 		<th class="dataset-label">{{ _('Language') }}</th>
-		<td class="dataset-details">{{pkg_dict.language}}</td>
+		<td class="dataset-details">{% if pkg_dict.language %}{{pkg_dict.language}}{% else %}No language{% endif%}</td>
 	</tr>
 	{% endif %}
+	{% block package_tags %}
+		{% if pkg_dict.tags %}<p>Onthology:</p>{% endif %}
+		{% snippet "package/snippets/tags.html", tags=pkg_dict.tags %}
+	{% endblock %}
+	{% if pkg_dict.orgauths %}
+	<tr>
+		<th class="dataset-label">{{ _('Authors')}}</th>
+	</tr>
+	<tr>
+			<th>Name</th><th>Organisation</th>
+	</td>
+		{% for auth, org in pkg_dict.orgauths %}
+		<tr>
+		<td>{{auth.value}}</td><td>{{org.value}}</td>
+		</tr>
+		{% endfor %}
+	{% endif %}
+	</tbody>
+</table>
+</section>
+<section class="module-content additional-info">
+<h3>{{ _('Contact information') }}</h3>
+<table class="table table-striped table-bordered table-condensed">
+	<tbody>
+	{% if pkg_dict.contact_name %}
+	<tr>
+		<th class="dataset-label">{{ _('Primary contact') }}</th><th>&nbsp;</th>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.contact_name }}</td>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Phone') }}</th><td class="dataset-details">{{ pkg_dict.contact_phone }}</td>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Email') }}</th><td class="dataset-details">{{ pkg_dict.contact_email}}</td>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Contact form') }}</th><td class="dataset-details">{{ pkg_dict.contact_form }}</td>
+	</tr>
+    {% endif%}
+    {% if pkg_dict.project_name %}
+	<tr>
+		<th class="dataset-label">{{ _('Project contact') }}</th><th>&nbsp;</th>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.project_name }}</td>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Funding contact') }}</th><td class="dataset-details">{{ pkg_dict.project_funder }}</td>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Funding #') }}</th><td class="dataset-details">{{ pkg_dict.project_funding }}</td>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Homepage') }}</th><td class="dataset-details"><a href="{{ pkg_dict.project_homepage }}">{{ pkg_dict.project_homepage }}</a></td>
+	</tr>
+    {% endif%}
+    {% if pkg_dict.owner_name %}
+	<tr>
+		<th class="dataset-label">{{ _('Owner contact') }}</th><th>&nbsp;</th>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.owner_name }}</td>
+	</tr>
+		<tr>
+		<th class="dataset-label">{{ _('Phone') }}</th><td class="dataset-details">{{ pkg_dict.owner_phone }}</td>
+	</tr>
+	<tr>
+		<th class="dataset-label">{{ _('Homepage') }}</th><td class="dataset-details"><a href="{{ pkg_dict.owner_homepage }}">{{ pkg_dict.owner_homepage }}</a></td>
+	</tr>
+    {% endif %}
+	</tbody>
+</table>
+</section>
+<section class="module-content additional-info">
+<h3>{{ _('Identification information') }}</h3>
+<table class="table table-striped table-bordered table-condensed">
 	{% if pkg_dict.lastmod %}
 	<tr>
 		<th class="dataset-label">{{ _('Last modified') }}</th>
 		<td class="dataset-details">{{pkg_dict.lastmod}}</td>
 	</tr>
 	{% endif %}
-	{% if pkg_dict.project %}
+	{% if pkg_dict.pid %}
 	<tr>
-		<th class="dataset-label">{{ _('Project') }}</th>
-		<td class="dataset-details">{{pkg_dict.project}} </td>
+		<th class="dataset-label">{{ _('Permanent identifier') }}</th>
+		<td class="dataset-details">{{pkg_dict.pid}}</td>
 	</tr>
 	{% endif %}
-	{% if pkg_dict.title_fi %}
-	<tr>
-		<th class="dataset-label">{{ _('Finnish title') }}</th>
-		<td class="dataset-details">{{pkg_dict.title_fi}} </td>
-	</tr>
-	{% endif %}
-	{% if pkg_dict.title_en %}
-	<tr>
-		<th class="dataset-label">{{ _('English title') }}</th>
-		<td class="dataset-details">{{pkg_dict.title_en}} </td>
-	</tr>
-	{% endif %}
-	</tbody>
 </table>
+</section>
+<section class="module-content additional-info">
+<h3>{{ _('Usage information') }}</h3>
+<div class="info-block{{ ' info-inline' if inline }} icon-large icon-info-sign{{ " " ~ classes | join(' ') }}">
+This dataset is
+{% if pkg_dict.access == 'form' %} available via an access form in <a href="{{ pkg_dict.accessRights }}">this link</a> {% endif%}
+{% if pkg_dict.access == 'free' %} available freely {% endif %}
+{% if pkg_dict.access == 'ident' %} available via login {% endif %}
+{% if pkg_dict.access == 'contact' %} available by contacting the author {% endif %}
+</div>
 </section>
