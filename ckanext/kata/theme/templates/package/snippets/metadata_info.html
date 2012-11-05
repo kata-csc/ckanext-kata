@@ -108,5 +108,6 @@ This dataset is
 {% if pkg_dict.access == 'free' %} available freely {% endif %}
 {% if pkg_dict.access == 'ident' %} available via login {% endif %}
 {% if pkg_dict.access == 'contact' %} available by contacting the author {% endif %}
+{% if not pkg_dict.access %} available freely{% endif %}
 </div>
 </section>
