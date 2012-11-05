@@ -368,6 +368,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if data[('language',)]:
             errors[key].append('Language received even if disabled.')
 
+    def check_project(self, key, data, errors, context):
+        if data[('project_name',)] or data[('project_funder',)] or data[('project_funding',)] or data[('project_homepage',)]:
+            errors[key].append('Project data received even if no project is associated.')
+
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
         for key in self.kata_field:
@@ -390,6 +394,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'access': [not_missing, self.convert_to_extras_kata, self.validate_access],
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
            'langdis': [ignore_missing, unicode, self.check_language],
+           'projdis': [ignore_missing, unicode, self.check_project],
            '__junk':[ignore],
            '__extras':[ignore],
         })
