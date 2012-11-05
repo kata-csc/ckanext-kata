@@ -32,9 +32,28 @@ class KataMetadata(SingletonPlugin):
     implements(IMapper, inherit=True)
 
     def before_map(self, map):
+        GET = dict(method=['GET'])
+        controller = "ckanext.kata.controllers:MetadataController"
+        api_controller = "ckanext.kata.controllers:KATAApiController"
         map.connect('/dataset/{id}.{format}',
-                    controller="ckanext.kata.controllers:MetadataController",
+                    controller=controller,
                     action='tordf')
+        map.connect('/api/2/util/owner_autocomplete',
+                    controller=api_controller,
+                    conditions=GET,
+                    action="owner_autocomplete")
+        map.connect('/api/2/util/author_autocomplete',
+                    controller=api_controller,
+                    conditions=GET,
+                    action="author_autocomplete")
+        map.connect('/api/2/util/organization_autocomplete',
+                    controller=api_controller,
+                    conditions=GET,
+                    action="organization_autocomplete")
+        map.connect('/api/2/util/contact_autocomplete',
+                    controller=api_controller,
+                    conditions=GET,
+                    action="contact_autocomplete")
         return map
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):

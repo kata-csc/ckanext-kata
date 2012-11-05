@@ -64,7 +64,8 @@
 	<div class="module-content">
 		<h3 class="module-heading">{{ _('Contact information') }}</h2>
 		<div class="module-content">
-			{{ form.input('contact_name', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=data.contact_name, error=errors.contact_name, classes=['control-medium']) }}
+			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?'} %}
+			{{ form.input('contact_name', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=data.contact_name, error=errors.contact_name, classes=['control-medium'], attrs=cont_attrs) }}
 			{{ form.input('contact_phone', label=_('Phone'), id='contact_phone', placeholder=_('+35844122123'), value=data.contact_phone, error=errors.contact_phone, classes=['control-medium']) }}
 			{{ form.input('contact_email', label=_('Email'), id='contact_email', placeholder=_('john.doe@example.com'), value=data.contact_email, error=errors.contact_email, classes=['control-medium']) }}
 			{{ form.input('contact_form', label=_('Contact form'), id='contact_form', placeholder=_('http://johndoe.com/contact'), value=data.contact_form, error=errors.contact_form, classes=['control-medium']) }}
@@ -79,7 +80,8 @@
 		</div>
 		<h3 class="module-heading">{{ _('Owner information') }}</h2>
 		<div class="module-content">
-			{{ form.input('owner_name', label=_('Name'), id='owner_name', placeholder=_('John Allen'), value=data.owner_name, error=errors.owner_name, classes=['control-medium']) }}
+			{% set own_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/owner_autocomplete?incomplete=?'} %}
+			{{ form.input('owner_name', label=_('Name'), id='owner_name', placeholder=_('John Allen'), value=data.owner_name, error=errors.owner_name, classes=['control-medium'], attrs=own_attrs) }}
 			{{ form.input('owner_phone', label=_('Phone'), id='owner_phone', placeholder=_('+35844122123'), value=data.owner_phone, error=errors.owner_phone, classes=['control-medium']) }}
 			{{ form.input('owner_homepage', label=_('Homepage'), id='owner_homepage', placeholder=_('http://john.allen.com/home'), value=data.owner_homepage, error=errors.owner_homepage, classes=['control-medium']) }}
 		</div>

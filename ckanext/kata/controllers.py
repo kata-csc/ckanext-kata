@@ -2,9 +2,12 @@
 '''
 
 from ckan.lib.base import BaseController, c, h
+from ckan.controllers.api import ApiController
 from ckan.model import Package, Vocabulary, Session
+import ckan.model.misc as misc
+import ckan.model as model
 
-from pylons import response, config
+from pylons import response, config, request
 
 from rdflib.term import Identifier, Statement, Node, Variable
 from rdflib.namespace import ClosedNamespace
@@ -13,8 +16,40 @@ from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
                     REV, SCOVO, XSD, LICENSES
 
 import logging
+from genshi.template._ast24 import Pass
 
 log = logging.getLogger('ckanext.kata.controller')
+
+
+def get_extra_contact(context, data_dict, key="contact_name"):
+    model = context['model']
+
+    terms = data_dict.get('query') or data_dict.get('q') or []
+    if isinstance(terms, basestring):
+        terms = [terms]
+    terms = [t.strip() for t in terms if t.strip()]
+
+    if 'fields' in data_dict:
+        log.warning('"fields" parameter is deprecated.  '
+                    'Use the "query" parameter instead')
+
+    offset = data_dict.get('offset')
+    limit = data_dict.get('limit')
+
+    # TODO: should we check for user authentication first?
+    q = model.Session.query(model.PackageExtra)
+
+    if not len(terms):
+        return [], 0
+
+    for term in terms:
+        escaped_term = misc.escape_sql_like_special_characters(term, escape='\\')
+        q = q.filter(model.PackageExtra.key.contains(key))
+        q = q.filter(model.PackageExtra.value.ilike("%" + escaped_term + "%"))
+
+    q = q.offset(offset)
+    q = q.limit(limit)
+    return q.all()
 
 
 class MetadataController(BaseController):
@@ -111,3 +146,52 @@ class MetadataController(BaseController):
         if format == 'rdf':
             format = 'pretty-xml'
         return graph.serialize(format=format)
+
+
+class KATAApiController(ApiController):
+
+    def author_autocomplete(self):
+        pass
+
+    def organization_autocomplete(self):
+        pass
+
+    def contact_autocomplete(self):
+        q = request.params.get('incomplete', '')
+        limit = request.params.get('limit', 10)
+        tag_names = []
+        if q:
+            context = {'model': model, 'session': model.Session,
+                       'user': c.user or c.author}
+
+            data_dict = {'q': q, 'limit': limit}
+
+            tag_names = get_extra_contact(context, data_dict)
+
+        tag_names = [k.value for k in tag_names]
+        resultSet = {
+            'ResultSet': {
+                'Result': [{'Name': tag} for tag in tag_names]
+            }
+        }
+        return self._finish_ok(resultSet)
+
+    def owner_autocomplete(self):
+        q = request.params.get('incomplete', '')
+        limit = request.params.get('limit', 10)
+        tag_names = []
+        if q:
+            context = {'model': model, 'session': model.Session,
+                       'user': c.user or c.author}
+
+            data_dict = {'q': q, 'limit': limit}
+
+            tag_names = get_extra_contact(context, data_dict, key="owner_name")
+
+        tag_names = [k.value for k in tag_names]
+        resultSet = {
+            'ResultSet': {
+                'Result': [{'Name': tag} for tag in tag_names]
+            }
+        }
+        return self._finish_ok(resultSet)
