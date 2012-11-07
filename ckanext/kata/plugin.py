@@ -8,10 +8,11 @@ from lxml import etree
 import urllib2
 
 from ckan.plugins import implements, SingletonPlugin
-from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers
+from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers, IPluginObserver
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurable
 from ckan.plugins import IMapper
+from ckan.plugins.core import unload
 from ckan.lib.base import g, c
 from ckan.model import Package
 from ckan.lib.plugins import DefaultDatasetForm
@@ -135,6 +136,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         roles = [r for r in roles.split(', ')]
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
+        log.debug("disable search")
+        try:
+            unload('synchronous_search')
+        except:
+            pass
         
     def package_types(self):
         return ['dataset']
