@@ -8,6 +8,16 @@
 		<td class="dataset-details">{% if pkg_dict.language %}{{pkg_dict.language}}{% else %}No language{% endif%}</td>
 	</tr>
 	{% endif %}
+	{% if pkg_dict.langtitles %}
+	<tr>
+		<th class="dataset-label">{{ _('Titles') }}</th>
+	</tr>
+	{% for title, lang in pkg_dict.langtitles %}
+	<tr>
+	<td>{{lang.value}}</td><td>{{title.value}}</td>
+	</tr>
+	{% endfor %}
+	{% endif %}
 	{% block package_tags %}
 		{% if pkg_dict.tags %}<p>Onthology:</p>{% endif %}
 		{% snippet "package/snippets/tags.html", tags=pkg_dict.tags %}

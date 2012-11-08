@@ -68,7 +68,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'contact_name', 'contact_phone', 'contact_email', 'contact_form',
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
                   'owner_name', 'owner_phone', 'owner_homepage',
-                  'access', 'accessRights',]
+                  'access', 'accessRights',
+                  'ltitle', 'lsel', ]
 
     def get_helpers(self):
         ''' Register helpers '''
@@ -383,6 +384,60 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if not (auth, org) in orgauths:
                 orgauths.append((auth, org))
 
+    def ltitle_to_extras(self, key, data, errors, context):
+        extras = data.get(('extras',), [])
+        if not extras:
+            data[('extras',)] = extras
+        authnum = 1
+        orgnum = 1
+        for k in data.keys():
+            try:
+                if k[0] == 'ltitle' \
+                and (k[0], k[1], 'value') in data \
+                and len(data[(k[0], k[1], 'value')]) > 0:
+                    extras.append({'key': "%s_%d" % (k[0], authnum),
+                                   'value': data[(k[0], k[1], 'value')]
+                                })
+                    authnum += 1
+                if k[0] == 'lsel' \
+                and (k[0], k[1], 'value') in data \
+                and len(data[(k[0], k[1], 'value')]) > 0:
+                    extras.append({'key': "%s_%d" % (k[0], orgnum),
+                                   'value': data[(k[0], k[1], 'value')]
+                                })
+                    orgnum += 1
+            except:
+                pass
+
+    def ltitle_from_extras(self, key, data, errors, context):
+        if not ('langtitles',) in data:
+            data[('langtitles',)] = []
+        auths = []
+        orgs = []
+        orgauths = data[('langtitles',)]
+        for k in data.keys():
+            if k[0] == 'extras' and k[-1] == 'key':
+                if 'ltitle_' in data[k]:
+                    val = data[(k[0], k[1], 'value')]
+                    auth = {}
+                    auth['key'] = data[k]
+                    auth['value'] = val
+                    if not {'key': data[k], 'value': val} in auths:
+                        auths.append(auth)
+
+                if 'lsel_' in data[k]:
+                    org = {}
+                    val = data[(k[0], k[1], 'value')]
+                    org['key'] = data[k]
+                    org['value'] = val
+                    if not {'key': data[k], 'value': val} in orgs:
+                        orgs.append(org)
+        orgs = sorted(orgs, key=lambda ke: int(ke['key'][-1]))
+        auths = sorted(auths, key=lambda ke: int(ke['key'][-1]))
+        for org, auth in zip(orgs, auths):
+            if not (auth, org) in orgauths:
+                orgauths.append((auth, org))
+
     def validate_access(self, key, data, errors, context):
         if data[key] == 'form':
             if not data[('accessRights',)]:
@@ -422,6 +477,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            '__junk':[ignore],
            '__extras':[ignore],
         })
+        schema['lsel'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
+        schema['ltitle'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
         return schema
 
     def db_to_form_schema_options(self, options = None):
@@ -433,6 +490,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['pid'] = [self.pid_from_extras, ignore_missing, unicode]
         schema['author'] = [self.org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [self.org_auth_from_extras, ignore_missing, unicode]
+        schema['ltitle'] = [self.ltitle_from_extras, ignore_missing, unicode]
+        schema['lsel'] = [self.ltitle_from_extras, ignore_missing, unicode]
         try:
             dataset = context['package']
             c.revision = dataset.latest_related_revision
