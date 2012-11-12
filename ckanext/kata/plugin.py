@@ -24,7 +24,6 @@ from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_em
 from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
 
 log = logging.getLogger('ckanext.kata')
-mets_schema = etree.XMLSchema(etree.parse(urllib2.urlopen('http://www.loc.gov/standards/rights/METSRights.xsd')))
 
 import utils
 
