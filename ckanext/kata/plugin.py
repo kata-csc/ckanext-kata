@@ -7,7 +7,7 @@ import datetime
 from lxml import etree
 import urllib2
 
-from ckan.plugins import implements, SingletonPlugin
+from ckan.plugins import implements, SingletonPlugin, toolkit
 from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers, IPluginObserver
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurable
@@ -131,7 +131,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         
         public_dir = os.path.join(rootdir, 'ckanext', 'kata', 'public')
         config['extra_public_paths'] = ','.join([public_dir, config.get('extra_public_paths', '')])
-        
+        toolkit.add_resource(public_dir, 'kata-resources')
         roles = config.get('kata.contact_roles', 'Please, Configure')
         roles = [r for r in roles.split(', ')]
         self.roles = roles
