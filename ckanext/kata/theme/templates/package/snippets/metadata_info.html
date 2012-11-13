@@ -115,8 +115,8 @@
 <div class="info-block{{ ' info-inline' if inline }} icon-large icon-info-sign{{ " " ~ classes | join(' ') }}">
 This dataset is
 {% if pkg_dict.access == 'form' %} available via an access form in <a href="{{ pkg_dict.accessRights }}">this link</a> {% endif%}
-{% if pkg_dict.access == 'free' %} available freely {% endif %}
-{% if pkg_dict.access == 'ident' %} available via login {% endif %}
+{% if pkg_dict.access == 'free' %} available freely {% if pkg_dict.accessURL %} <a href="{{pkg_dict.accessURL}}">from this address</a> {% endif %} {% endif %}
+{% if pkg_dict.access == 'ident' %} available via login {% if pkg_dict.accessURL %} <a href="{{pkg_dict.accessURL}}">from this address</a> {% endif %} {% endif %}
 {% if pkg_dict.access == 'contact' %} available by contacting the author {% endif %}
 {% if not pkg_dict.access %} available freely{% endif %}
 </div>

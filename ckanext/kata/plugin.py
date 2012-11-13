@@ -67,7 +67,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'contact_name', 'contact_phone', 'contact_email', 'contact_form',
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
                   'owner_name', 'owner_phone', 'owner_homepage',
-                  'access', 'accessRights',
+                  'access', 'accessRights', 'accessURL',
                   'ltitle', 'lsel', ]
 
     def get_helpers(self):
