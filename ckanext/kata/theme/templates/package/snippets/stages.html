@@ -22,32 +22,32 @@ Example:
 <ol class="stages {{ class }}">
   <li class="first {{ s1 }}">
     {% if s1 != 'complete' %}
-      <span class="highlight">{{ _('Create dataset') }}</span>
+      <span class="highlight">{{ _('Required information') }}</span>
     {% else %}
-      <button class="highlight" name="save" value="go-dataset" type="submit">{{ _('Create dataset') }}</button>
+      <button class="highlight" name="save" value="go-dataset" type="submit">{{ _('Required information') }}</button>
     {% endif %}
   </li>
   <li class="middle {{ s2 }}">
     {% if s2 != 'complete' %}
-      <span class="highlight">{{ _('Add data') }}</span>
+      <span class="highlight">{{ _('Recommended information') }}</span>
     {% else %}
       {% if s1 == 'active' or s3 == 'active'%}
         {# stage 1 #}
-        <button class="highlight" name="save" value="go-resources" type="submit">{{ _('Add data') }}</button>
+        <button class="highlight" name="save" value="go-resources" type="submit">{{ _('Recommended information') }}</button>
       {% else %}
-        {% link_for _('Add data'), controller='package', action='new', class_="highlight" %}
+        {% link_for _('Recommended information'), controller='package', action='new', class_="highlight" %}
       {% endif %}
     {% endif %}
   </li>
   <li class="last {{ s3 }}">
     {% if s3 != 'complete' %}
-      <span class="highlight">{{ _('Additional data') }}</span>
+      <span class="highlight">{{ _('Optional information') }}</span>
     {% else %}
       {% if s1 == 'active' or s2 == 'active' %}
         {# stage 1 #}
-        <button class="highlight" name="save" value="go-metadata" type="submit">{{ _('Additional data') }}</button>
+        <button class="highlight" name="save" value="go-metadata" type="submit">{{ _('Optional information') }}</button>
       {% else %}
-        {% link_for _('Additional data'), controller='package', action='new', class_="highlight" %}{{ s2 }}
+        {% link_for _('Optional information'), controller='package', action='new', class_="highlight" %}{{ s2 }}
       {% endif %}
     {% endif %}
   </li>
