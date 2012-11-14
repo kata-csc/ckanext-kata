@@ -1,0 +1,15 @@
+{% import 'macros/form.html' as form %}
+
+{% set data = data or {} %}
+{% set errors = errors or {} %}
+{% set action = form_action or h.url_for(controller='package', action='new_resource', id=pkg_name) %}
+<section class="module">
+<h2 class="module-heading">{{ _('Recommended information') }}</h2>
+<div class="module-content">
+{{ form.input('geographic_coverage', label=_('Geographic coverage'), id='geographic_coverage', placeholder=_('eg. places'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium']) }}
+{{ form.input('temporal_coverage', label=_('Temporal coverage'), id='temporal_coverage', placeholder=_('eg. dates and times'), value=data.temporal_coverage, error=errors.temporal_coverage, classes=['control-medium']) }}
+{{ form.input('unit_of_observation', label=_('Unit of observation'), id='unit_of_observation', placeholder=_('eg. research subjects'), value=data.unit_of_observation, error=errors.unit_of_observation, classes=['control-medium']) }}
+{{ form.input('research_variable', label=_('Research variable'), id='research_variable', placeholder=_('eg. dates and times'), value=data.temporal_coverage, error=errors.temporal_coverage, classes=['control-medium']) }}
+{{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+</div>
+</section>
