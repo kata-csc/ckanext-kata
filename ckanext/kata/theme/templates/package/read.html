@@ -58,16 +58,9 @@
     {% block package_content %}
 
       {% block package_description %}
-        <section class="module-content">
-          {% if c.pkg_notes_formatted %}
-            <div class="notes embedded-content">
-              {{ c.pkg_notes_formatted }}
-            </div>
-          {% endif %}
-          <span class="insert-comment-thread"></span>
-        </section>
-        {% snippet "package/snippets/role_contact_info.html", pkg_dict=pkg, user=c.userobj %}
-  		{% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj %}
+      <h2>{{pkg.title}}</h2>
+        {% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj, pkg_notes_formatted=c.pkg_notes_formatted %}
+
       {% endblock %}
 
       {% block package_resources %}
