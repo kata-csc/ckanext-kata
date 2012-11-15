@@ -43,7 +43,7 @@
   <span class="insert-comment-thread"></span>
 </section>
 {% block package_tags %}
-	{% if pkg_dict.tags %}<p>Ontology:</p>{% endif %}
+	{% if pkg_dict.tags %}<p>Keywords:</p>{% endif %}
 	{% snippet "package/snippets/tags.html", tags=pkg_dict.tags %}
 {% endblock %}
 <section class="module-content additional-info">
