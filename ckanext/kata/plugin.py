@@ -465,7 +465,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'revision_timestamp': [ignore],
                 '__extras':[ignore],
             },
-           'role':{'key': [ignore_missing, unicode, self.roles_to_extras], 'value': [ignore_missing]},
            'pid':[self.add_pid_if_missing, unicode, self.pid_to_extras],
            'author': {'value': [ignore_missing, unicode, self.org_auth_to_extras]},
            'organization': {'value': [ignore_missing, unicode, self.org_auth_to_extras]},
@@ -473,7 +472,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
            'langdis': [ignore_missing, unicode, self.check_language],
            'projdis': [ignore_missing, unicode, self.check_project],
-           '__junk':[ignore],
            '__extras':[ignore],
         })
         schema['lsel'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
@@ -485,7 +483,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         context = options['context']
         for key in self.kata_field:
             schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
-        schema['role'] = [self.roles_from_extras, ignore_missing, unicode]
         schema['pid'] = [self.pid_from_extras, ignore_missing, unicode]
         schema['author'] = [self.org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [self.org_auth_from_extras, ignore_missing, unicode]
