@@ -68,7 +68,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
                   'owner_name', 'owner_phone', 'owner_homepage',
                   'access', 'accessRights', 'accessURL',
-                  'ltitle', 'lsel', ]
+                  'ltitle', 'lsel',
+                  'geographic_coverage', 'temporal_coverage', 'publications',
+                  'collections', 'related', 'discipline', 'fformat', 'checksum',
+                  'algorithm', 'ev_type', 'ev_who', 'ev_when', 'ev_descr',
+                  ]
 
     def get_helpers(self):
         ''' Register helpers '''
@@ -441,6 +445,91 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if not (auth, org) in orgauths:
                 orgauths.append((auth, org))
 
+    def event_to_extras(self, key, data, errors, context):
+        extras = data.get(('extras',), [])
+        if not extras:
+            data[('extras',)] = extras
+        typenum = 1
+        whonum = 1
+        whennum = 1
+        descrnum = 1
+        for k in data.keys():
+            try:
+                if k[0] == 'evtype' \
+                and (k[0], k[1], 'value') in data \
+                and len(data[(k[0], k[1], 'value')]) > 0:
+                    extras.append({'key': "%s_%d" % (k[0], typenum),
+                                   'value': data[(k[0], k[1], 'value')]
+                                })
+                    typenum += 1
+                if k[0] == 'evwho' \
+                and (k[0], k[1], 'value') in data \
+                and len(data[(k[0], k[1], 'value')]) > 0:
+                    extras.append({'key': "%s_%d" % (k[0], whonum),
+                                   'value': data[(k[0], k[1], 'value')]
+                                })
+                    whonum += 1
+                if k[0] == 'evwhen' \
+                and (k[0], k[1], 'value') in data \
+                and len(data[(k[0], k[1], 'value')]) > 0:
+                    extras.append({'key': "%s_%d" % (k[0], whennum),
+                                   'value': data[(k[0], k[1], 'value')]
+                                })
+                    whennum += 1
+                if k[0] == 'evdescr' \
+                and (k[0], k[1], 'value') in data \
+                and len(data[(k[0], k[1], 'value')]) > 0:
+                    extras.append({'key': "%s_%d" % (k[0], descrnum),
+                                   'value': data[(k[0], k[1], 'value')]
+                                })
+                    descrnum += 1
+            except:
+                pass
+
+    def event_from_extras(self, key, data, errors, context):
+        if not ('events',) in data:
+            data[('events',)] = []
+        types = []
+        whos = []
+        whens = []
+        descrs = []
+        events = data[('events',)]
+
+        for k in data.keys():
+            if k[0] == 'extras' and k[-1] == 'key':
+                if 'evtype' in data[k]:
+                    val = data[(k[0], k[1], 'value')]
+                    type = {}
+                    type['key'] = data[k]
+                    type['value'] = val
+                    if not {'key': data[k], 'value': val} in types:
+                        types.append(type)
+                if 'evwho' in data[k]:
+                    val = data[(k[0], k[1], 'value')]
+                    who = {}
+                    who['key'] = data[k]
+                    who['value'] = val
+                    if not {'key': data[k], 'value': val} in whows:
+                        whos.append(who)
+                if 'evwhen' in data[k]:
+                    val = data[(k[0], k[1], 'value')]
+                    when = {}
+                    when['key'] = data[k]
+                    when['value'] = val
+                    if not {'key': data[k], 'value': val} in whens:
+                        whens.append(when)
+                if 'evdescr' in data[k]:
+                    val = data[(k[0], k[1], 'value')]
+                    descr = {}
+                    descr['key'] = data[k]
+                    descr['value'] = val
+                    if not {'key': data[k], 'value': val} in descrs:
+                        descrs.append(descr)
+
+        for etype, ewho, ewhen, edescr in zip(types, whos, whens, descrs):
+            if not (etype, ewho, ewhen, edescr) in events:
+                events.append(etype, ewho, ewhen, edescr)
+
     def validate_access(self, key, data, errors, context):
         if data[key] == 'form':
             if not data[('accessRights',)]:
@@ -457,7 +546,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
         for key in self.kata_field:
-            schema[key] = [not_missing, self.convert_to_extras_kata, unicode]
+            schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
         schema.update({
            'lastmod':[not_missing, self.convert_to_extras_kata, unicode, self.validate_lastmod],
            'extras':{
@@ -480,6 +569,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         })
         schema['lsel'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
         schema['ltitle'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
+
+        schema['evtype'] = {'value': [ignore_missing, unicode, self.event_to_extras]}
+        schema['evwho'] = {'value': [ignore_missing, unicode, self.event_to_extras]}
+        schema['evwhen'] = {'value': [ignore_missing, unicode, self.event_to_extras]}
+        schema['evdescr'] = {'value': [ignore_missing, unicode, self.event_to_extras]}
+
         return schema
 
     def db_to_form_schema_options(self, options = None):
@@ -488,10 +583,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in self.kata_field:
             schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
         schema['pid'] = [self.pid_from_extras, ignore_missing, unicode]
+
         schema['author'] = [self.org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [self.org_auth_from_extras, ignore_missing, unicode]
+
         schema['ltitle'] = [self.ltitle_from_extras, ignore_missing, unicode]
         schema['lsel'] = [self.ltitle_from_extras, ignore_missing, unicode]
+
+        schema['evtype'] = [self.event_from_extras, ignore_missing, unicode]
+        schema['evwho'] = [self.event_from_extras, ignore_missing, unicode]
+        schema['evwhen'] = [self.event_from_extras, ignore_missing, unicode]
+        schema['evdescr'] = [self.event_from_extras, ignore_missing, unicode]
+
         try:
             dataset = context['package']
             c.revision = dataset.latest_related_revision

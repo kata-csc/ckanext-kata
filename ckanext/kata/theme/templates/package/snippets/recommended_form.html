@@ -31,7 +31,7 @@
 <h2 class="module-heading">{{ _('File information') }}</h2>
 <div class="module-content">
 {{ form.input('fformat', label=_('File format'), id='fformat', placeholder=_(''), value=data.fformat, error=errors.fformat, classes=['control-medium']) }}
-{{ form.input('fformat', label=_('Checksum'), id='checksum', placeholder=_(''), value=data.checksum, error=errors.checksum, classes=['control-medium']) }}
+{{ form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_(''), value=data.checksum, error=errors.checksum, classes=['control-medium']) }}
 {{ form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_(''), value=data.algorithm, error=errors.algorithm, classes=['control-medium']) }}
 </div>
 </section>
@@ -48,7 +48,7 @@
 	{% set index = lastevent + extra + 10 %}
 		<div class="control-group control-custom">
 				<div class="input-prepend">
-					<select name="ev_type__{{index}}__value" style="width: 95px;">
+					<select name="evtype__{{index}}__value" style="width: 95px;">
 						<option selected>---</option>
 						<option>{{ _('collection') }}</option>
 						<option>{{ _('creation') }}</option>
@@ -64,15 +64,15 @@
 					</select>
 				</div>
 				<div class="input-prepend">
-					<input class="kata-lifecycle-input" type="text" id="ev_who_{{ index }}__value_id" name="ev_who__{{ index }}__value" value="" />
+					<input class="kata-lifecycle-input" type="text" id="evwho_{{ index }}__value_id" name="ev_who__{{ index }}__value" value="" />
 				</div>
 				<div class="input-prepend">
-					<input class="kata-lifecycle-input" type="text" id="ev_when__{{ index }}__value_id" name="ev_when__{{ index }}__value" value="" />
+					<input class="kata-lifecycle-input" type="text" id="evwhen__{{ index }}__value_id" name="ev_when__{{ index }}__value" value="" />
 				</div>
 				<div class="input-prepend">
-					<input class="kata-lifecycle-input" type="text" id="ev_descr__{{ index }}__value_id" name="ev_descr__{{ index }}__value" value="" />
+					<input class="kata-lifecycle-input" type="text" id="evdescr__{{ index }}__value_id" name="ev_descr__{{ index }}__value" value="" />
 				</div>
-				<input type="checkbox" id="ev_btn__{{index}}__value_id" name="ev_btn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+				<input type="checkbox" id="ev_btn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 		</div>
 {% endfor %}
 </div>
@@ -82,7 +82,7 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Free description') }}</h2>
 <div class="module-content">
-{{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+{{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('a freeform description'), value=data.notes, error=errors.notes) }}
 </div>
 </section>
 
