@@ -133,6 +133,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         config['extra_public_paths'] = ','.join([public_dir, config.get('extra_public_paths', '')])
         toolkit.add_resource(public_dir, 'kata-resources')
         roles = config.get('kata.contact_roles', 'Please, Configure')
+        config['package_hide_extras'] = ' '.join(['role', 'PID', 'language',
+                                                  'lastmod', 'project', 'organization'
+                                                  'lsel', 'ltitle', 'author',
+                                                  'access', 'accessRights'])
         roles = [r for r in roles.split(', ')]
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()

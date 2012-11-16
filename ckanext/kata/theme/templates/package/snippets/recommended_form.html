@@ -4,9 +4,11 @@
 {% set errors = errors or {} %}
 {% set lastevent = 1 %}
 
-<section class="module">
-<h2 class="module-heading">{{ _('Recommended information') }}</h2>
-<div class="module-content">
+<section class="module" id="recmod">
+<h2 class="module-heading">{{ _('Recommended information') }}
+<a class="module-link" href="#recmod" onclick="$('#recommended').toggle()">{{ _('Hide/show') }}</a>
+</h2>
+<div class="module-content" style="display: none;" id="recommended">
 
 <section class="module">
 <h2 class="module-heading">{{ _('Coverage') }}</h2>
@@ -70,7 +72,7 @@
 				<div class="input-prepend">
 					<input class="kata-lifecycle-input" type="text" id="ev_descr__{{ index }}__value_id" name="ev_descr__{{ index }}__value" value="" />
 				</div>
-				<input type="checkbox" id="lbtn__{{index}}__value_id" name="lbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+				<input type="checkbox" id="ev_btn__{{index}}__value_id" name="ev_btn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 		</div>
 {% endfor %}
 </div>

@@ -8,7 +8,8 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
   return {
     options: {
       /* The selector used for each custom field wrapper */
-      fieldSelector: '.control-custom'
+      fieldSelector: '.control-custom',
+      lastint: 1,
     },
 
     /* Initializes the module and attaches custom event listeners. This
@@ -60,8 +61,10 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      * Returns the wiped element.
      */
     resetField: function (field) {
+      var lastint = this.options.lastint;
       function increment(index, string) {
-        return (string || '').replace(/\d+/, function (int) { return 1 + parseInt(int, 10); });
+        var str = (string || '').replace(/\d+/, function (int) { return parseInt(int, 10) + lastint; })
+        return str;
       }
 
       var input = field.find(':input');
@@ -69,7 +72,8 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
 
       var label = field.find('label');
       label.text(increment).attr('for', increment);
-
+      var checkboxes = field.find(':input[type="checkbox"]');
+      checkboxes.hide();
       return field;
     },
 
@@ -93,6 +97,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       if (event.target.value !== '') {
         var parent = jQuery(event.target).parents('.control-custom');
         this.newField(parent);
+        this.options.lastint += 1
       }
     },
 
