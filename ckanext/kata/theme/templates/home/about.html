@@ -1,7 +1,7 @@
 {% ckan_extends %}
 {% block about%}
 	{% if g.site_about %}
-          {{ h.markdown_extract(g.site_about, 350000) }}
+          {{ h.render_markdown(g.site_about) }}
         {% else %}
           <h1 class="page-heading">{{ _('About') }}</h1>
           {% snippet 'home/snippets/about_text.html' %}
