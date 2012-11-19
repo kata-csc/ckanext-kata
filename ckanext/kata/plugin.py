@@ -70,8 +70,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'access', 'accessRights', 'accessURL',
                   'ltitle', 'lsel',
                   'geographic_coverage', 'temporal_coverage', 'publications',
-                  'collections', 'related', 'discipline', 'fformat', 'checksum',
-                  'algorithm', 'ev_type', 'ev_who', 'ev_when', 'ev_descr',
+                  'collections', 'erelated', 'discipline', 'fformat', 'checksum',
+                  'algorithm',
                   ]
 
     def get_helpers(self):
@@ -453,38 +453,46 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         whonum = 1
         whennum = 1
         descrnum = 1
+        log.debug("DATA: ")
+        log.debug(data)
         for k in data.keys():
             try:
                 if k[0] == 'evtype' \
                 and (k[0], k[1], 'value') in data \
-                and len(data[(k[0], k[1], 'value')]) > 0:
+                and len(data[(k[0], k[1], 'value')]) > 0 \
+                and type(data[(k[0], k[1], 'value')]) == unicode:
                     extras.append({'key': "%s_%d" % (k[0], typenum),
                                    'value': data[(k[0], k[1], 'value')]
                                 })
                     typenum += 1
                 if k[0] == 'evwho' \
                 and (k[0], k[1], 'value') in data \
-                and len(data[(k[0], k[1], 'value')]) > 0:
+                and len(data[(k[0], k[1], 'value')]) > 0 \
+                and type(data[(k[0], k[1], 'value')]) == unicode:
                     extras.append({'key': "%s_%d" % (k[0], whonum),
                                    'value': data[(k[0], k[1], 'value')]
                                 })
                     whonum += 1
                 if k[0] == 'evwhen' \
                 and (k[0], k[1], 'value') in data \
-                and len(data[(k[0], k[1], 'value')]) > 0:
+                and len(data[(k[0], k[1], 'value')]) > 0 \
+                and type(data[(k[0], k[1], 'value')]) == unicode:
                     extras.append({'key': "%s_%d" % (k[0], whennum),
                                    'value': data[(k[0], k[1], 'value')]
                                 })
                     whennum += 1
                 if k[0] == 'evdescr' \
                 and (k[0], k[1], 'value') in data \
-                and len(data[(k[0], k[1], 'value')]) > 0:
+                and len(data[(k[0], k[1], 'value')]) > 0 \
+                and type(data[(k[0], k[1], 'value')]) == unicode:
                     extras.append({'key': "%s_%d" % (k[0], descrnum),
                                    'value': data[(k[0], k[1], 'value')]
                                 })
                     descrnum += 1
             except:
                 pass
+        log.debug("EXTRAS: ")
+        log.debug(extras)
 
     def event_from_extras(self, key, data, errors, context):
         if not ('events',) in data:
@@ -509,7 +517,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     who = {}
                     who['key'] = data[k]
                     who['value'] = val
-                    if not {'key': data[k], 'value': val} in whows:
+                    if not {'key': data[k], 'value': val} in whos:
                         whos.append(who)
                 if 'evwhen' in data[k]:
                     val = data[(k[0], k[1], 'value')]
@@ -526,9 +534,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     if not {'key': data[k], 'value': val} in descrs:
                         descrs.append(descr)
 
+        types = sorted(types, key=lambda ke: int(ke['key'][-1]))
+        whos = sorted(whos, key=lambda ke: int(ke['key'][-1]))
+        whens = sorted(whens, key=lambda ke: int(ke['key'][-1]))
+        descrs = sorted(descrs, key=lambda ke: int(ke['key'][-1]))
+
         for etype, ewho, ewhen, edescr in zip(types, whos, whens, descrs):
             if not (etype, ewho, ewhen, edescr) in events:
-                events.append(etype, ewho, ewhen, edescr)
+                events.append((etype, ewho, ewhen, edescr))
 
     def validate_access(self, key, data, errors, context):
         if data[key] == 'form':
@@ -566,6 +579,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'langdis': [ignore_missing, unicode, self.check_language],
            'projdis': [ignore_missing, unicode, self.check_project],
            '__extras':[ignore],
+           '__junk':[ignore],
         })
         schema['lsel'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
         schema['ltitle'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}

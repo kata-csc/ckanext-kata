@@ -22,7 +22,7 @@
 <div class="module-content">
 {{ form.input('publications', label=_('Publications based on this data'), id='publications', placeholder=_(''), value=data.publications, error=errors.publications, classes=['control-medium']) }}
 {{ form.input('collections', label=_('Dataset belongs to collection/series'), id='collections', placeholder=_(''), value=data.collections, error=errors.collections, classes=['control-medium']) }}
-{{ form.input('related', label=_('Other related datasets'), id='related', placeholder=_(''), value=data.related, error=errors.related, classes=['control-medium']) }}
+{{ form.input('erelated', label=_('Other related datasets'), id='erelated', placeholder=_(''), value=data.erelated, error=errors.erelated, classes=['control-medium']) }}
 {{ form.input('discipline', label=_('Discipline/branch of science'), id='discipline', placeholder=_(''), value=data.discipline, error=errors.discipline, classes=['control-medium']) }}
 </div>
 </section>
@@ -49,8 +49,7 @@
 		<div class="control-group control-custom">
 				<div class="input-prepend">
 					<select name="evtype__{{index}}__value" style="width: 95px;">
-						<option selected>---</option>
-						<option>{{ _('collection') }}</option>
+						<option selected>{{ _('collection') }}</option>
 						<option>{{ _('creation') }}</option>
 						<option>{{ _('checked') }}</option>
 						<option>{{ _('extended') }}</option>
@@ -64,13 +63,13 @@
 					</select>
 				</div>
 				<div class="input-prepend">
-					<input class="kata-lifecycle-input" type="text" id="evwho_{{ index }}__value_id" name="ev_who__{{ index }}__value" value="" />
+					<input class="kata-lifecycle-input" type="text" id="evwho_{{ index }}__value_id" name="evwho__{{ index }}__value" value="" />
 				</div>
 				<div class="input-prepend">
-					<input class="kata-lifecycle-input" type="text" id="evwhen__{{ index }}__value_id" name="ev_when__{{ index }}__value" value="" />
+					<input class="kata-lifecycle-input" type="text" id="evwhen__{{ index }}__value_id" name="evwhen__{{ index }}__value" value="" />
 				</div>
 				<div class="input-prepend">
-					<input class="kata-lifecycle-input" type="text" id="evdescr__{{ index }}__value_id" name="ev_descr__{{ index }}__value" value="" />
+					<input class="kata-lifecycle-input" type="text" id="evdescr__{{ index }}__value_id" name="evdescr__{{ index }}__value" value="" />
 				</div>
 				<input type="checkbox" id="ev_btn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 		</div>
