@@ -161,7 +161,7 @@
 	{% call form.input_block("access", "Select", error=errors.access) %}
 	<input type="radio" name="access" value="form" style="top: 0px" onclick="$('#accessDiv').toggle()" {% if data.access == 'form'%}checked{% endif %} >{{ _('with data access application') }}</input><br />
 
-	<div id="accessDiv" style="display: none">
+	<div id="accessDiv" {% if not data.accessRights %}style="display:none"{% endif%}>
 	{{ form.input('accessRights', label=_('Web address of access application'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'] )}}
 	{{ form.checkbox('newform', label=_('Create a new access request form'), id="newform") }}
 	</div>
@@ -169,7 +169,7 @@
 	{{ _('or') }}<br />
 	<input type="radio" name="access" onclick="$('#urlDiv').toggle()" style="top: 0px" value="ident" {% if data.access == 'ident'%}checked{% endif %}>{{ _('downloadable after registration / identification') }}</input><br />
 	{{ _('or') }}<br />
-	<div id="urlDiv" style="display:none">
+	<div id="urlDiv" {% if not data.accessURL %}style="display:none"{% endif%}>
 	{{ form.input('accessURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessURL, error=errors.accessURL, classes=['control-medium'] ) }}
 	</div> 
 	<input type="radio" name="access" style="top: 0px" value="contact" {% if data.access == 'contact'%}checked{% endif %}>{{ _('only by contacting the distributor') }}</input><br />

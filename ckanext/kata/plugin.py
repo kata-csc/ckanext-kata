@@ -68,10 +68,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
                   'owner_name', 'owner_phone', 'owner_homepage',
                   'access', 'accessRights', 'accessURL',
-                  'ltitle', 'lsel',
+                  'ltitle', 'lsel', 'organization', 'author',
                   'geographic_coverage', 'temporal_coverage', 'publications',
                   'collections', 'erelated', 'discipline', 'fformat', 'checksum',
-                  'algorithm',
+                  'algorithm', 'evwho', 'evdescr','evtype', 'evwhen',
                   ]
 
     def get_helpers(self):
@@ -137,10 +137,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         config['extra_public_paths'] = ','.join([public_dir, config.get('extra_public_paths', '')])
         toolkit.add_resource(public_dir, 'kata-resources')
         roles = config.get('kata.contact_roles', 'Please, Configure')
-        config['package_hide_extras'] = ' '.join(['role', 'PID', 'language',
-                                                  'lastmod', 'project', 'organization'
-                                                  'lsel', 'ltitle', 'author',
-                                                  'access', 'accessRights'])
+        config['package_hide_extras'] = ' '.join(self.kata_field)
         roles = [r for r in roles.split(', ')]
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()

@@ -1,5 +1,6 @@
 <section class="module-content additional-info">
 <h3>{{ _('General information') }}</h3>
+{{pkg_dict}}
 <table class="table table-striped table-bordered table-condensed">
      <tbody>
 	{% if pkg_dict.language or pkg_dict.langdis %}
@@ -127,5 +128,50 @@ This dataset is
 		<td class="dataset-details">{{pkg_dict.pid}}</td>
 	</tr>
 	{% endif %}
+</table>
+</section>
+<section class="module-content additional-info">
+<h3>{{ _('Additional information on dataset') }}</h3>
+<table class="table table-striped table-bordered table-condensed">
+{% if pkg_dict.geographic_coverage %}
+<tr><td>{{ _('Geographical areas covered:') }}</td><td>{{pkg_dict.geographic_coverage}}</td></tr>
+{% endif %}
+{% if pkg_dict.temporal_coverage %}
+<tr><td>{{ _('Period of time covered:') }}</td><td>{{pkg_dict.temporal_coverage}}</td></tr>
+{% endif %}
+{% if pkg_dict.publications %}
+<tr><td>{{ _('Publications based on this data:') }}</td><td>{{pkg_dict.publications}}</td></tr>
+{% endif %}
+{% if pkg_dict.collections %}
+<tr><td>{{ _('Dataset belongs to collection/series:') }}</td><td>{{pkg_dict.collections}}</td></tr>
+{% endif %}
+{% if pkg_dict.erelated %}
+<tr><td>{{ _('Other related datasets:') }}</td><td>{{pkg_dict.erelated}}</td></tr>
+{% endif %}
+{% if pkg_dict.discipline %}
+<tr><td>{{ _('Discipline/branch of science:') }}</td><td>{{pkg_dict.discipline}}</td></tr>
+{% endif %}
+{% if pkg_dict.fformat %}
+<tr><td>{{ _('File format:') }}</td><td>{{pkg_dict.fformat}}</td></tr>
+{% endif %}
+{% if pkg_dict.algorithm and pkg_dict.checksum %}
+<tr><td>{{ _('Algorithm:') }}</td><td>{{pkg_dict.algorithm}}</td></tr>
+<tr><td>{{ _('Checksum:') }}</td><td>{{pkg_dict.checksum}}</td></tr>
+{% endif %}
+
+</table>
+</section>
+<section class="module-content additional-info">
+<h3>{{ _('Dataset lifecycle events') }}</h3>
+<table class="table table-striped table-bordered table-condensed">
+<th>type</th>
+<th>who</th>
+<th>when</th>
+<th>description</th>
+{% for type, who, when, descr in pkg_dict.events %}
+<tr>
+<td>{{type.value}}</td><td>{{who.value}}</td><td>{{when.value}}</td><td>{{descr.value}}</td>
+</tr>
+{% endfor %}
 </table>
 </section>
