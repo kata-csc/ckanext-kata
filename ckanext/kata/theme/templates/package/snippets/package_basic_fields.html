@@ -2,14 +2,10 @@
 <section class="module">
 <h2 class="module-heading">{{ _('General information') }}</h2>
 <div class="module-content">
-{{ form.input('title', id='field-title', label=_('Dataset name'), placeholder=_('eg. A descriptive title'), value=data.title, error=errors.title, classes=['control-full', 'control-large'], attrs={'data-module': 'slug-preview-target'}) }}
-{% set prefix = h.url_for(controller='package', action='read', id='') %}
-{% set domain = h.url_for(controller='package', action='read', id='', qualified=true) %}
-{% set domain = domain|replace("http://", "")|replace("https://", "") %}
-{% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<dataset>'} %}
-{{ form.prepend('name', id='field-name', label=_('URL'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs) }}
+{{ form.input('title', id='field-title', label=_('Dataset title'), placeholder=_('eg. A descriptive title'), value=data.title, error=errors.title, classes=['control-full', 'control-large'], attrs={'data-module': 'slug-preview-target'}) }}
+<input type="hidden" name="name" value="" />
 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-{{ form.input('tag_string', id='field-tags', label=_('Subjects'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-large'], attrs=tag_attrs) }}
+{{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-large'], attrs=tag_attrs) }}
 
 {% set lastlang = 1%}
 <div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">

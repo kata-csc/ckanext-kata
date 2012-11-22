@@ -224,8 +224,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 if k in data:
                     del data[k]
 
-    def add_pid_if_missing(self, key, data, errors, context):
-        if not key in data or len(data.get(key, '')) < 1:
+    def update_pid(self, key, data, errors, context):
+        data[key] = utils.generate_pid()
+
+    def update_name(self, key, data, errors, context):
+        if not data[key].startswith('urn:'):
             data[key] = utils.generate_pid()
 
     def pid_from_extras(self, key, data, errors, context):
@@ -450,8 +453,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         whonum = 1
         whennum = 1
         descrnum = 1
-        log.debug("DATA: ")
-        log.debug(data)
         for k in data.keys():
             try:
                 if k[0] == 'evtype' \
@@ -488,8 +489,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     descrnum += 1
             except:
                 pass
-        log.debug("EXTRAS: ")
-        log.debug(extras)
 
     def event_from_extras(self, key, data, errors, context):
         if not ('events',) in data:
@@ -568,7 +567,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'revision_timestamp': [ignore],
                 '__extras':[ignore],
             },
-           'pid':[self.add_pid_if_missing, unicode, self.pid_to_extras],
+           'pid':[self.update_pid, unicode, self.pid_to_extras],
            'author': {'value': [ignore_missing, unicode, self.org_auth_to_extras]},
            'organization': {'value': [ignore_missing, unicode, self.org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, self.validate_access],
@@ -577,6 +576,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'projdis': [ignore_missing, unicode, self.check_project],
            '__extras':[ignore],
            '__junk':[ignore],
+           'name': [unicode, ignore_missing, self.update_name],
         })
         schema['lsel'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
         schema['ltitle'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
