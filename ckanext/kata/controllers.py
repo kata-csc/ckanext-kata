@@ -3,7 +3,7 @@
 
 from ckan.lib.base import BaseController, c, h
 from ckan.controllers.api import ApiController
-from ckan.model import Package, Vocabulary, Session
+from ckan.model import Package, User, PackageRole
 import ckan.model.misc as misc
 import ckan.model as model
 
@@ -54,95 +54,52 @@ def get_extra_contact(context, data_dict, key="contact_name"):
 
 class MetadataController(BaseController):
 
-    def _check_and_gather_role(self, extra):
-        if extra.startswith('role_'):
-            for role in config.get('kata.contact_roles', []).split(', '):
-                if extra.endswith(role):
-                    if role in self.roles:
-                        self.roles[role].append(extra)
-                    else:
-                        self.roles[role] = []
-                        self.roles[role].append(extra)
-
     def tordf(self, id, format):
         graph = Graph()
         pkg = Package.get(id)
         if pkg:
             data = pkg.as_dict()
-            uri = URIRef(config.get('ckan.site_url', '') + h.url_for(controller='package', action='read',
-                                   id=id))
-            graph.add((uri, DC.identifier, Literal(data["name"])\
+            metadoc = URIRef('')
+            owner = [role for role in pkg.roles if role.role == 'admin'][0]
+            user = User.get(owner.user_id)
+            profileurl = ""
+            if user:
+                profileurl = URIRef(config.get('ckan.site_url', '') +\
+                    h.url_for(controller="user", action="read", id=user.name))
+            graph.add((metadoc, DC.identifier, Literal(data["id"])\
                                 if 'identifier' not in data["extras"]\
                                 else URIRef(data["extras"]["identifier"])))
-            graph.add((uri, DC.modified, Literal(pkg.latest_related_revision.timestamp.isoformat(),
+            graph.add((metadoc, DC.modified, Literal(data["extras"]["lastmod"],
                                                  datatype=XSD.date)))
-            graph.add((uri, DC.title, Literal(data["title"])))
+            graph.add((metadoc, FOAF.primaryTopic, Identifier(data['name'])))
+            uri = URIRef(data['name'])
             if data["license"]:
                 graph.add((uri, DC.rights, Literal(data["license"])))
-            publisher = BNode()
-            graph.add((uri, DC.publisher, publisher))
-            graph.add((publisher, FOAF.name, Literal(data["maintainer"])))
-            if data["maintainer_email"]:
-                graph.add((publisher, FOAF.mbox, Literal(data["maintainer_email"])))
-            creator = BNode()
-            graph.add((uri, DC.creator, creator))
-            graph.add((creator, FOAF.name, Literal(data["author"])))
-            if data["author_email"]:
-                graph.add((creator, FOAF.mbox, Literal(data["author_email"])))
-            self.roles = {}
-            for extra in data["extras"]:
-                self._check_and_gather_role(extra)
-            for key, value in self.roles.iteritems():
-                if key in ('Author', 'Producer', 'Publisher'):
-                    if key == 'Author':
-                        for val in value:
-                            creator = BNode()
-                            graph.add((uri, DC.creator, creator))
-                            graph.add((creator, FOAF.name, Literal(data["extras"][val])))
-                    if key == 'Producer':
-                        for val in value:
-                            contributor = BNode()
-                            graph.add((uri, DC.contributor, contributor))
-                            graph.add((contributor, FOAF.name, Literal(data["extras"][val])))
-                    if key == 'Publisher':
-                        for val in value:
-                            publisher = BNode()
-                            graph.add((uri, DC.publisher, publisher))
-                            graph.add((publisher, FOAF.name, Literal(data["extras"][val])))
-            for vocab in Session.query(Vocabulary).all():
-                for tag in pkg.get_tags(vocab=vocab):
-                    tag_id = Identifier(vocab.name + '#' + tag.name)
-                    graph.add((uri, DC.subject, tag_id))
-                    graph.add((tag_id, RDFS.label, Literal(tag.name)))
-            for tag in pkg.get_tags():
-                tag_id = BNode()
-                graph.add((uri, DC.subject, tag_id))
-                graph.add((tag_id, RDFS.label, Literal(tag.name)))
-            graph.add((uri, DC.description, Literal(data["notes"])))
-            if data["url"]:
-                graph.add((uri, DC.source, URIRef(data["url"])))
-            for res in data["resources"]:
-                url = config.get('ckan.site_url', '') + h.url_for(controller='package',
-                                             action='resource_read',
-                                             id=data['id'],
-                                             resource_id=res['id'])
-                extra = Identifier(url)
-                graph.add((uri, DC.relation, extra))
-                if res["url"]:
-                    resurl = res["url"] if res['url'].startswith('http') else\
-                             config.get('ckan.site_url', '') + res['url']
-                    resurl = URIRef(resurl)
-                    graph.add((extra, DC.isPartOf, resurl))
-                    if res["size"]:
-                        extent = BNode()
-                        graph.add((resurl, DC.extent, extent))
-                        graph.add((extent, RDF.value, Literal(res['size'])))
-                    if res["format"]:
-                        isformat = BNode()
-                        graph.add((resurl, DC.hasFormat, isformat))
-                        hformat = BNode()
-                        graph.add((isformat, DC.isFormatOf, hformat))
-                        graph.add((hformat, RDFS.label, Literal(res['format'])))
+            if "pid" in data["extras"]:
+                graph.add((uri, DC.identifier, Literal(data["extras"]["pid"])))
+            graph.add((uri, DC.modified, Literal(data["extras"]["lastmod"])))
+            org = URIRef(FOAF.Organization)
+            graph.add((uri, DC.publisher, profileurl))
+            graph.add((profileurl, RDF.type, org))
+            graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
+            graph.add((profileurl, FOAF.mbox, Identifier(data["extras"]["contact_email"])))
+            graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["contact_phone"])))
+            graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contact_form"])))
+            graph.add((uri, DC.rightsHolder, Identifier(profileurl)))
+            graph.add((uri, DC.title, Literal(data["title"],
+                                        lang=data["extras"].get("language",
+                                                                None))))
+            project = URIRef(FOAF.Project)
+            projecturl = URIRef(data["extras"]["project_homepage"])
+            graph.add((uri, DC.contributor, projecturl))
+            for tag in data['tags']:
+                graph.add((uri, DC.subject, Literal(tag)))
+            graph.add((projecturl, RDF.type, project))
+            graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
+            graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
+            graph.add((projecturl, RDFS.comment, Literal(data["extras"]["project_funder"] + " " + data["extras"]["project_funding"])))
+
+            graph.add((uri, DC.language, Literal(data["extras"]["language"])))
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
                 format = 'pretty-xml'
