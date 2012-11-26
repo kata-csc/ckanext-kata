@@ -56,6 +56,10 @@ class KataMetadata(SingletonPlugin):
                     action="contact_autocomplete")
         return map
 
+    def before_insert(self, mapper, connection, instance):
+        if isinstance(instance, Package):
+            instance.id = utils.generate_pid()
+
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IDatasetForm, inherit=True)
     implements(IConfigurer, inherit=True)
@@ -228,7 +232,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         data[key] = utils.generate_pid()
 
     def update_name(self, key, data, errors, context):
-        if not data[key].startswith('urn:'):
+        if len(data[key]) == 0:
             data[key] = utils.generate_pid()
 
     def pid_from_extras(self, key, data, errors, context):
