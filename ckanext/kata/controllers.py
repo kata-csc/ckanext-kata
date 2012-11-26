@@ -100,14 +100,18 @@ class MetadataController(BaseController):
                                                  "project_funder")):
                 projecturl = URIRef(data["extras"]["project_homepage"])
                 graph.add((uri, DC.contributor, projecturl))
-                for tag in data['tags']:
-                    graph.add((uri, DC.subject, Literal(tag)))
-                    graph.add((projecturl, RDF.type, project))
-                    graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
-                    graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
-                    graph.add((projecturl, RDFS.comment,
-                                Literal(data["extras"]["project_funder"] + " " +\
-                                       data["extras"]["project_funding"])))
+                graph.add((projecturl, RDF.type, project))
+                graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
+                graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
+                graph.add((projecturl, RDFS.comment,
+                            Literal(data["extras"]["project_funder"] + " " +\
+                                   data["extras"]["project_funding"])))
+            for key in data["extras"]:
+                log.debug(key)
+                if key.startswith('author'):
+                    graph.add((uri, DC.creator, Literal(data["extras"][key])))
+            for tag in data['tags']:
+                graph.add((uri, DC.subject, Literal(tag)))
             graph.add((uri, DC.language, Literal(data["extras"]["language"])))
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
