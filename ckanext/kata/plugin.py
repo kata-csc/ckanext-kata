@@ -35,7 +35,7 @@ class KataMetadata(SingletonPlugin):
         GET = dict(method=['GET'])
         controller = "ckanext.kata.controllers:MetadataController"
         api_controller = "ckanext.kata.controllers:KATAApiController"
-        map.connect('/dataset/{id}.{format}',
+        map.connect('/dataset/{id}.{format:rdf}',
                     controller=controller,
                     action='tordf')
         map.connect('/api/2/util/owner_autocomplete',

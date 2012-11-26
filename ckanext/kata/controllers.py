@@ -60,8 +60,11 @@ class MetadataController(BaseController):
         if pkg:
             data = pkg.as_dict()
             metadoc = URIRef('')
-            owner = [role for role in pkg.roles if role.role == 'admin'][0]
-            user = User.get(owner.user_id)
+            user = None
+            if pkg.roles:
+                owner = [role for role in pkg.roles if role.role == 'admin']
+                if len(owner):
+                    user = User.get(owner[0].user_id)
             profileurl = ""
             if user:
                 profileurl = URIRef(config.get('ckan.site_url', '') +\
@@ -79,26 +82,32 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.identifier, Literal(data["extras"]["pid"])))
             graph.add((uri, DC.modified, Literal(data["extras"]["lastmod"])))
             org = URIRef(FOAF.Organization)
-            graph.add((uri, DC.publisher, profileurl))
-            graph.add((profileurl, RDF.type, org))
-            graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
-            graph.add((profileurl, FOAF.mbox, Identifier(data["extras"]["contact_email"])))
-            graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["contact_phone"])))
-            graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contact_form"])))
-            graph.add((uri, DC.rightsHolder, Identifier(profileurl)))
+            if profileurl:
+                graph.add((uri, DC.publisher, profileurl))
+                graph.add((profileurl, RDF.type, org))
+                graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
+                graph.add((profileurl, FOAF.mbox, Identifier(data["extras"]["contact_email"])))
+                graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["contact_phone"])))
+                graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contact_form"])))
+                graph.add((uri, DC.rightsHolder, Identifier(profileurl)))
             graph.add((uri, DC.title, Literal(data["title"],
                                         lang=data["extras"].get("language",
                                                                 None))))
             project = URIRef(FOAF.Project)
-            projecturl = URIRef(data["extras"]["project_homepage"])
-            graph.add((uri, DC.contributor, projecturl))
-            for tag in data['tags']:
-                graph.add((uri, DC.subject, Literal(tag)))
-            graph.add((projecturl, RDF.type, project))
-            graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
-            graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
-            graph.add((projecturl, RDFS.comment, Literal(data["extras"]["project_funder"] + " " + data["extras"]["project_funding"])))
-
+            if all(k in data["extras"] for k in ("project_name",\
+                                                 "project_homepage",\
+                                                 "project_funding",\
+                                                 "project_funder")):
+                projecturl = URIRef(data["extras"]["project_homepage"])
+                graph.add((uri, DC.contributor, projecturl))
+                for tag in data['tags']:
+                    graph.add((uri, DC.subject, Literal(tag)))
+                    graph.add((projecturl, RDF.type, project))
+                    graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
+                    graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
+                    graph.add((projecturl, RDFS.comment,
+                                Literal(data["extras"]["project_funder"] + " " +\
+                                       data["extras"]["project_funding"])))
             graph.add((uri, DC.language, Literal(data["extras"]["language"])))
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
