@@ -80,7 +80,7 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.rights, Literal(data["license"])))
             if "pid" in data["extras"]:
                 graph.add((uri, DC.identifier, Literal(data["extras"]["pid"])))
-            graph.add((uri, DC.modified, Literal(data["extras"]["lastmod"])))
+            graph.add((uri, DC.modified, Literal(data["extras"].get("lastmod", ''))))
             org = URIRef(FOAF.Organization)
             if profileurl:
                 graph.add((uri, DC.publisher, profileurl))
