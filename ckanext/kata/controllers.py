@@ -112,7 +112,8 @@ class MetadataController(BaseController):
                     graph.add((uri, DC.creator, Literal(data["extras"][key])))
             for tag in data['tags']:
                 graph.add((uri, DC.subject, Literal(tag)))
-            graph.add((uri, DC.language, Literal(data["extras"]["language"])))
+            graph.add((uri, DC.language, Literal(data["extras"]\
+                                                 .get(["language"], ''))))
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
                 format = 'pretty-xml'
