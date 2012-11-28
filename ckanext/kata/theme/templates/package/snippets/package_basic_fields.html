@@ -140,7 +140,7 @@
 <h2 class="module-heading">{{ _('Identification information') }}</h2>
 <div class="module-content">
 {{ form.input('pid', id='field-pid', label=_('Permanent Identifier'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=PID, error=errors.pid, classes=['control-medium']) }}
-{{ form.input('lastmod', label=_('Modification date'), id='last_modified', placeholder=_('date in eg. 2012-12-31 or 2012-12-31T13:12:11'), value=lastmod, error=errors.lastmod, classes=['control-medium']) }}
+{{ form.input('version', label=_('Modification date'), id='last_modified', placeholder=_('date in eg. 2012-12-31 or 2012-12-31T13:12:11'), value=data.version, error=errors.version, classes=['control-medium']) }}
 </div>
 </section>
 <section class="module">

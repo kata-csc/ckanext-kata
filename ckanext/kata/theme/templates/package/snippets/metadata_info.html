@@ -115,10 +115,10 @@ This dataset is
 <section class="module-content additional-info">
 <h3>{{ _('Identification information') }}</h3>
 <table class="table table-striped table-bordered table-condensed">
-	{% if pkg_dict.lastmod %}
+	{% if pkg_dict.version %}
 	<tr>
 		<th class="dataset-label">{{ _('Last modified') }}</th>
-		<td class="dataset-details">{{pkg_dict.lastmod}}</td>
+		<td class="dataset-details">{{pkg_dict.version}}</td>
 	</tr>
 	{% endif %}
 	{% if pkg_dict.pid %}

@@ -72,7 +72,7 @@ class MetadataController(BaseController):
             graph.add((metadoc, DC.identifier, Literal(data["id"])\
                                 if 'identifier' not in data["extras"]\
                                 else URIRef(data["extras"]["identifier"])))
-            graph.add((metadoc, DC.modified, Literal(data["extras"]["lastmod"],
+            graph.add((metadoc, DC.modified, Literal(data["metadata_modified"],
                                                  datatype=XSD.date)))
             graph.add((metadoc, FOAF.primaryTopic, Identifier(data['name'])))
             uri = URIRef(data['name'])
@@ -80,7 +80,8 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.rights, Literal(data["license"])))
             if "pid" in data["extras"]:
                 graph.add((uri, DC.identifier, Literal(data["extras"]["pid"])))
-            graph.add((uri, DC.modified, Literal(data["extras"].get("lastmod", ''))))
+            graph.add((uri, DC.modified, Literal(data.get("version", ''),
+                                                 datatype=XSD.date)))
             org = URIRef(FOAF.Organization)
             if profileurl:
                 graph.add((uri, DC.publisher, profileurl))
