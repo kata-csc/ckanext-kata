@@ -68,16 +68,19 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IPackageController, inherit=True)
     implements(ITemplateHelpers, inherit=True)
 
-    kata_field = ['version', 'language',
+    kata_fields_required = ['version', 'language',
                   'contact_name', 'contact_phone', 'contact_email', 'contact_form',
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
                   'owner_name', 'owner_phone', 'owner_homepage',
                   'access', 'accessRights', 'accessURL',
-                  'ltitle', 'lsel', 'organization', 'author',
-                  'geographic_coverage', 'temporal_coverage', 'publications',
-                  'collections', 'erelated', 'discipline', 'fformat', 'checksum',
+                  'ltitle', 'lsel', 'organization', 'author',]
+    kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
+                  'temporal_coverage_end', 'publications', 'collections',
+                  'erelated', 'discipline', 'fformat', 'checksum',
                   'algorithm', 'evwho', 'evdescr','evtype', 'evwhen',
                   ]
+
+    kata_field = kata_fields_recommended + kata_fields_required
 
     def get_helpers(self):
         ''' Register helpers '''
@@ -557,11 +560,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
-        for key in self.kata_field:
+        for key in self.kata_fields_required:
             schema[key] = [not_missing, self.convert_to_extras_kata, unicode]
+        for key in self.kata_fields_recommended:
+            schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
         schema.update({
            'version': [not_missing, unicode, self.validate_lastmod],
-           'temporal_coverage': [ignore_missing, self.convert_to_extras_kata, unicode],
+           'temporal_coverage_begin': [ignore_missing, self.convert_to_extras_kata, unicode, self.validate_lastmod],
+           'temporal_coverage_end': [ignore_missing, self.convert_to_extras_kata, unicode, self.validate_lastmod],
            'extras':{
                 'id': [ignore],
                 'key': [self.custom_to_extras],
