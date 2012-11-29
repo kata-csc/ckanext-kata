@@ -314,13 +314,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 pass
 
     def validate_lastmod(self, key, data, errors, context):
-        format = '%Y-%m-%dT%H:%M:%S'
-        errs = []
+        dformat = '%Y-%m-%dT%H:%M:%S'
         try:
-            datetime.datetime.strptime(data[key], format)
+            datetime.datetime.strptime(data[key], dformat)
         except ValueError:
-            errs.append(1)
-        if len(errs) == 2:
             errors[key].append('Invalid date format, must be like 2012-12-31T13:12:11')
 
     def convert_from_extras_kata(self, key, data, errors, context):
@@ -561,7 +558,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in self.kata_field:
             schema[key] = [not_missing, self.convert_to_extras_kata, unicode]
         schema.update({
-           'version':[not_missing, unicode, self.validate_lastmod],
+           'version': [not_missing, unicode, self.validate_lastmod],
+           'temporal_coverage': [self.convert_to_extras_kata, unicode, self.validate_lastmod],
            'extras':{
                 'id': [ignore],
                 'key': [self.custom_to_extras],

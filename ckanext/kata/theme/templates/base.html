@@ -3,9 +3,12 @@
 {% block styles %}
     {{super()}}
     {% resource 'kata-resources/css/kata.css' %}
+    {% resource 'kata-resources/css/jquery-ui-1.9.2.custom.css' %}
 {% endblock%}
 {% block scripts %}
 {{ super() }}
 {% resource 'kata-resources/javascript/custom-fields-kata.js' %}
-{{ super() }}
+{% resource 'kata-resources/javascript/dateselect-modules-kata.js' %}
+{% resource 'kata-resources/javascript/jqueryui/jquery-ui-main.js' %}
+{% resource 'kata-resources/javascript/jquerytimepicker/jquery-ui-timepicker-addon.js' %}
 {% endblock %}
