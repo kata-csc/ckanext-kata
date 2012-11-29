@@ -157,6 +157,7 @@ This dataset is
 
 </table>
 </section>
+{% if pkg_dict_events %}
 <section class="module-content additional-info">
 <h3>{{ _('Dataset lifecycle events') }}</h3>
 <table class="table table-striped table-bordered table-condensed">
@@ -171,3 +172,4 @@ This dataset is
 {% endfor %}
 </table>
 </section>
+{% endif %}
