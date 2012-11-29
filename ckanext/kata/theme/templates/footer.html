@@ -1,0 +1,77 @@
+<footer class="site-footer">
+  <div class="container">
+    {% block footer_content %}
+      
+      <div class="footer-first">
+        {% block csc_contact_fi %}
+        <h1>Kata-aineistokatalogia ylläpitää<br />CSC - Tieteen Tietotekniikan Keskus Oy</h1>
+        <p>
+          <span class="footer-data">Käyntiosoite:</span>
+          <span class="footer-data">Life Science Center</span>
+          <span class="footer-data">Keilaranta 14</span>
+          <span class="footer-data">Keilaniemi, Espoo</span>
+        </p>
+        <p>
+          <span class="footer-data">Postiosoite:</span>
+          <span class="footer-data">PL 405</span>
+          <span class="footer-data">02101 Espoo</span>
+        </p>
+        <p>
+          <span class="footer-data">Puh. (09) 457 2001</span>
+        </p>
+        {% endblock %}
+      </div>
+      <div class="footer-second">
+        {% block csc_contact %}
+        <h1>Kata material catalogue is maintained by<br />CSC - IT Center for Science Ltd.</h1>
+        <p>
+          <span class="footer-data">Visiting address:</span>
+          <span class="footer-data">Life Science Center</span>
+          <span class="footer-data">Keilaranta 14</span>
+          <span class="footer-data">Keilaniemi, Espoo</span>
+          <span class="footer-data">Finland</span>
+        </p>
+        <p>
+          <span class="footer-data">Postal address:</span>
+          <span class="footer-data">P.O. Box 405</span>
+          <span class="footer-data">FI-02101 Espoo</span>
+          <span class="footer-data">Finland</span>
+        </p>
+        <p>
+          <span class="footer-data">Switchboard:</span>
+          <span class="footer-data">+358 (09) 457 2001</span>
+        </p>
+        {% endblock %}
+      </div>
+      <div class="footer-third">
+        {% block service_desk %}
+	<h1>CSC SERVICE DESK</h1>
+        <p>
+          <span class="footer-data">Päivystää ma-pe</span>
+          <span class="footer-data">klo 8.30-16.00</span>
+        </p>
+        <p>
+          <span class="footer-data">Puh. (09) 457 2821</span>
+          <span class="footer-data">helpdesk (at) csc.fi</span>
+        </p>
+        <h1>CSC SERVICE DESK</h1>
+        <p>
+          <span class="footer-data">Monday to Friday</span>
+          <span class="footer-data">from 8.30 am to 4:00 pm</span>
+        </p>
+        <p>
+          <span class="footer-data">Phone +358 (09) 457 2821</span>
+          <span class="footer-data">helpdesk (at) csc.fi</span>
+        </p>
+        {% endblock %}
+      </div>
+    {% endblock %}
+  </div>
+
+  {% block footer_debug %}
+    {% if config.debug %}
+      {% include 'snippets/debug.html' %}
+    {% endif %}
+  {% endblock %}
+</footer>
+

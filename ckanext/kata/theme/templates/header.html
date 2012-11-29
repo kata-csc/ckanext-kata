@@ -1,0 +1,84 @@
+<header class="masthead">
+  {% if config.debug %}
+    <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
+{% endif %}
+  <div class="container">
+    {# The .header-image class hides the main text and uses image replacement for the title #}
+    <hgroup class="{{ g.header_class }}">
+      {% if g.site_logo %}
+        <a class="logo" href="{{ h.url('home') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ g.site_title }} Logo" title="{{ g.site_title }} Logo" /></a>
+      {% else %}
+        <h1>
+          <a href="{{ h.url('home') }}">{{ g.site_title }}</a>
+        </h1>
+        {% if g.site_description %}<h2>{{ g.site_description }}</h2>{% endif %}
+      {% endif %}
+    </hgroup>
+    <div id="kata_header">
+      <p><h1>Kata-aineistokatalogi</h1></p>
+    </div>
+    <div class="content">
+      {% if c.userobj %}
+        <div class="account section avatar authed dropdown" data-me="{{ c.userobj.id }}">
+          <a href="#" class="image dropdown-toggle" data-toggle="dropdown">
+            {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''),size=25) }}
+            <i class="icon-caret-down"></i>
+          </a>
+          <ul class="dropdown-menu pull-right" role="menu">
+            <li>
+              <a href="{{ h.url_for(controller='user', action='dashboard') }}">
+                <i class="icon-dashboard"></i> {{ _('Dashboard') }}
+              </a>
+            </li>
+            <li>
+              <a href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}">
+                <i class="icon-user"></i>
+                {{ _('My Profile') }}
+              </a>
+            </li>
+            <li>
+              <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}">
+                <i class="icon-wrench"></i>
+                {{ _('Edit Profile') }}
+              </a>
+            </li>
+            <li>
+              <a href="{{ h.url_for('/user/_logout') }}">
+                <i class="icon-signout"></i>
+                {{ _('Log out') }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      {% else %}
+        <nav class="account section">
+          <span class="links">
+            {% link_for _('Log in'), controller='user', action='login' %}
+            {% link_for _('Register'), controller='user', action='register', class_='sub' %}
+          </span>
+        </nav>
+      {% endif %}
+      <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
+        <div class="field">
+          <label for="field-sitewide-search">{{ _('Search Datasets') }}</label>
+          <input id="field-sitewide-search" name="q" placeholder="{{ _('Search') }}" />
+          <button class="btn-search" type="submit">{{ _('Search') }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="main-nav">
+    <div id="nav_wrapper">
+      <nav class="first section navigation">
+        <ul class="unstyled">
+          {{ h.build_nav_main(('add dataset', _('Add Dataset'), 'package_create'), ('search', _('Datasets')), ('default_group', _('Groups')), ('about', _('About'))) }}
+        </ul>
+      </nav>
+      <div id="language-wrapper">
+        {% block footer_lang %}
+          {% snippet "snippets/language_selector.html" %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</header>
