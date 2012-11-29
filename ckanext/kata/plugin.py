@@ -6,6 +6,7 @@ import os
 import datetime
 from lxml import etree
 import urllib2
+import iso8601
 
 from ckan.plugins import implements, SingletonPlugin, toolkit
 from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers, IPluginObserver
@@ -314,10 +315,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 pass
 
     def validate_lastmod(self, key, data, errors, context):
-        dformat = '%Y-%m-%dT%H:%M:%S'
+        if data[key] == u'':
+            pass
         try:
-            datetime.datetime.strptime(data[key], dformat)
-        except ValueError:
+            iso8601.parse_date(data[key])
+        except iso8601.ParseError, ve:
             errors[key].append('Invalid date format, must be like 2012-12-31T13:12:11')
 
     def convert_from_extras_kata(self, key, data, errors, context):
@@ -559,7 +561,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema[key] = [not_missing, self.convert_to_extras_kata, unicode]
         schema.update({
            'version': [not_missing, unicode, self.validate_lastmod],
-           'temporal_coverage': [self.convert_to_extras_kata, unicode, self.validate_lastmod],
+           'temporal_coverage': [ignore_missing, self.convert_to_extras_kata, unicode],
            'extras':{
                 'id': [ignore],
                 'key': [self.custom_to_extras],
