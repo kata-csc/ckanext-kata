@@ -54,6 +54,16 @@ def get_extra_contact(context, data_dict, key="contact_name"):
 
 class MetadataController(BaseController):
 
+    def _make_rights_element(self, extras):
+        xmlstr = ""
+        if extras["access"] == 'contact':
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['accessRights'] + '</RightsDeclaration>'
+        if extras["access"] in ('ident', 'free'):
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['accessURL'] + '</RightsDeclaration>'
+        if extras["access"] == 'form':
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED"/>'
+        return Literal(xmlstr, datatype=RDF.XMLLiteral)
+
     def tordf(self, id, format):
         graph = Graph()
         pkg = Package.get(id)
@@ -114,6 +124,7 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.subject, Literal(tag)))
             graph.add((uri, DC.language, Literal(data["extras"]\
                                                  .get("language", ''))))
+            graph.add((uri, DC.rights, self._make_rights_element(data["extras"])))
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
                 format = 'pretty-xml'
