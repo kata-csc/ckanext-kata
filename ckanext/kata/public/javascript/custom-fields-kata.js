@@ -94,13 +94,26 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      * changes.
      */
     _onChange: function (event) {
-      if (event.target.value !== '') {
+      if (event.target.value !== '' && this._checklangs(event)) {
         var parent = jQuery(event.target).parents('.control-custom');
         this.newField(parent);
         this.options.lastint += 1
       }
     },
-
+    _checklangs: function (event) {
+        var langs = $('#lastlang input[type="text"]');
+        var parent = jQuery(event.target).parents('.control-custom').parents('#lastlang');
+        if (parent.length == 1) {
+        var reserved = ['fi', 'en'];
+        var tocheck = [];
+        langs.each(function() {
+             tocheck.push($(this));
+        });
+        return tocheck.length + 1 <= reserved.length;
+        } else {
+        return true;
+        }
+    },
     /* Event handler called when the remove checkbox is checked */
     _onRemove: function (event) {
       var parent = jQuery(event.target).parents('.control-custom');

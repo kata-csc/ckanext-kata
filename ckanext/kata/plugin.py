@@ -558,6 +558,16 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if data[('project_name',)] or data[('project_funder',)] or data[('project_funding',)] or data[('project_homepage',)]:
             errors[key].append('Project data received even if no project is associated.')
 
+    def copy_from_titles(self, key, data, errors, context):
+        for k in data.keys():
+            try:
+                if k[0] == 'extras' and k[-1] == 'key':
+                    if 'ltitle' in data[k] and not data[key]:
+                        data[key] = data[(k[0], k[1], 'value')]
+            except:
+                pass
+
+
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
         for key in self.kata_fields_required:
@@ -587,6 +597,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            '__extras':[ignore],
            '__junk':[ignore],
            'name': [unicode, ignore_missing, self.update_name],
+           'title': [ignore_missing, self.copy_from_titles],
         })
         schema['lsel'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
         schema['ltitle'] = {'value': [ignore_missing, unicode, self.ltitle_to_extras]}
@@ -610,7 +621,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['ltitle'] = [self.ltitle_from_extras, ignore_missing, unicode]
         schema['lsel'] = [self.ltitle_from_extras, ignore_missing, unicode]
-
+        schema['title'] = [self.copy_from_titles, ignore_missing]
         schema['evtype'] = [self.event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [self.event_from_extras, ignore_missing, unicode]
         schema['evwhen'] = [self.event_from_extras, ignore_missing, unicode]
