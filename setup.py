@@ -22,6 +22,7 @@ setup(
 	install_requires=[
 		# -*- Extra requirements: -*-
         'rdflib',
+        'iso8601',
 	],
 	entry_points=\
 	"""

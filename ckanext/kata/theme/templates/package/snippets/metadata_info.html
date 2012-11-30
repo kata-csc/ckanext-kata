@@ -132,8 +132,8 @@ This dataset is
 {% if pkg_dict.geographic_coverage %}
 <tr><td>{{ _('Geographical areas covered:') }}</td><td>{{pkg_dict.geographic_coverage}}</td></tr>
 {% endif %}
-{% if pkg_dict.temporal_coverage %}
-<tr><td>{{ _('Period of time covered:') }}</td><td>{{pkg_dict.temporal_coverage}}</td></tr>
+{% if pkg_dict.temporal_coverage_begin and pkg_dict.temporal_coverage_end %}
+<tr><td>{{ _('Period of time covered:') }}</td><td>{{pkg_dict.temporal_coverage_begin}} to {{pkg_dict.temporal_coverage_end}}</td></tr>
 {% endif %}
 {% if pkg_dict.publications %}
 <tr><td>{{ _('Publications based on this data:') }}</td><td>{{pkg_dict.publications}}</td></tr>

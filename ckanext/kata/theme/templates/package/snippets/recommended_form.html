@@ -14,7 +14,17 @@
 <h2 class="module-heading">{{ _('Coverage') }}</h2>
 <div class="module-content">
 {{ form.input('geographic_coverage', label=_('Geographic coverage'), id='geographic_coverage', placeholder=_('eg. places'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium']) }}
-{{ form.input('temporal_coverage', label=_('Temporal coverage'), id='temporal_coverage', placeholder=_('eg. dates and times'), value=data.temporal_coverage, error=errors.temporal_coverage, classes=['control-medium']) }}
+<div data-module="dateselect-dcmi-kata">
+		<label class="control-label" for="temporal_coverage">{{ _('Temporal coverage') }}</label>
+		<label class="control-label" for="temporal_coverage_begin">{{ _('Begin') }}</label>
+		<div class="controls">
+			<input type="text" id="temporal_coverage_begin" name="temporal_coverage_begin" value="{{data.temporal_coverage_begin}}" />
+		</div>
+		<label class="control-label" for="temporal_coverage_end">{{ _('End') }}</label>
+		<div class="controls">
+			<input type="text" id="temporal_coverage_end" name="temporal_coverage_end" value="{{data.temporal_coverage_end}}" />
+		</div>
+	</div>
 </div>
 </section>
 <section class="module">
