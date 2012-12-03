@@ -74,6 +74,8 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       label.text(increment).attr('for', increment);
       var checkboxes = field.find(':input[type="checkbox"]');
       checkboxes.hide();
+      var buttons = field.find('input[type="button"]');
+      buttons.hide();
       return field;
     },
 
