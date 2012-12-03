@@ -65,7 +65,7 @@
 			    </div>
 			</div>
 		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
-			<div class="controls editor">
+			<div class="controls editor" style="margin-top: 5px;">
 			    <div class="input-prepend">
 					<input type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
 			    </div>
@@ -84,7 +84,7 @@
 			    </div>
 			</div>
 		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
-			<div class="controls editor">
+			<div class="controls editor" style="margin-top: 5px;">
 			    <div class="input-prepend">
 					<input type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="" />
 			    </div>
@@ -165,9 +165,7 @@
 	{{ form.checkbox('newform', label=_('Create a new access request form'), id="newform") }}
 	</div>
 	<input type="radio" name="access" onclick="$('#urlDiv').toggle()" style="top: 0px" value="free" {% if data.access == 'free'%}checked{% endif %}>{{ _('directly downloadable') }}</input><br />
-	{{ _('or') }}<br />
 	<input type="radio" name="access" onclick="$('#urlDiv').toggle()" style="top: 0px" value="ident" {% if data.access == 'ident'%}checked{% endif %}>{{ _('downloadable after registration / identification') }}</input><br />
-	{{ _('or') }}<br />
 	<div id="urlDiv" {% if not data.accessURL %}style="display:none"{% endif%}>
 	{{ form.input('accessURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessURL, error=errors.accessURL, classes=['control-medium'] ) }}
 	</div> 

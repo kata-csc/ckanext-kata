@@ -10,7 +10,7 @@
 	{% endif %}
 	{% if pkg_dict.langtitles %}
 	<tr>
-		<th class="dataset-label">{{ _('Titles') }}</th>
+		<th class="dataset-label" colspan="2">{{ _('Titles') }}</th>
 	</tr>
 	{% for title, lang in pkg_dict.langtitles %}
 	<tr>
@@ -20,7 +20,7 @@
 	{% endif %}
 	{% if pkg_dict.orgauths %}
 	<tr>
-		<th class="dataset-label">{{ _('Authors')}}</th>
+		<th class="dataset-label" colspan="2">{{ _('Authors')}}</th>
 	</tr>
 	<tr>
 			<th>Name</th><th>Organisation</th>
@@ -35,12 +35,14 @@
 </table>
 </section>
 <section class="module-content">
-  {% if pkg_notes_formatted %}
+<h3>Description</h3>
+  {% if not pkg_notes_formatted == '' %}
     <div class="notes embedded-content">
       {{ pkg_notes_formatted }}
     </div>
-  {% endif %}
-  <span class="insert-comment-thread"></span>
+  {% else %}
+  <p>{{ _('No description') }}</p>
+  {% endif%}
 </section>
 {% block package_tags %}
 	{% if pkg_dict.tags %}<p>Keywords:</p>{% endif %}
@@ -63,7 +65,7 @@ This dataset is
 	<tbody>
 	{% if pkg_dict.contact_name %}
 	<tr>
-		<th class="dataset-label">{{ _('Primary contact') }}</th><th>&nbsp;</th>
+		<th class="dataset-label" colspan="2">{{ _('Primary contact') }}</th>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.contact_name }}</td>
@@ -80,7 +82,7 @@ This dataset is
     {% endif%}
     {% if pkg_dict.project_name %}
 	<tr>
-		<th class="dataset-label">{{ _('Project contact') }}</th><th>&nbsp;</th>
+		<th class="dataset-label" colspan="2">{{ _('Project contact') }}</th>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.project_name }}</td>
@@ -94,7 +96,7 @@ This dataset is
     {% endif%}
     {% if pkg_dict.owner_name %}
 	<tr>
-		<th class="dataset-label">{{ _('Owner contact') }}</th><th>&nbsp;</th>
+		<th class="dataset-label" colspan="2">{{ _('Owner contact') }}</th>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.owner_name }}</td>
