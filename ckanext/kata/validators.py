@@ -22,10 +22,8 @@ def check_project(key, data, errors, context):
 
 
 def validate_lastmod(key, data, errors, context):
-    log.debug(data[key] == '')
     if data[key] == u'':
         return
-    log.debug('if %r then pass' % (data[key] == ''))
     try:
         iso8601.parse_date(data[key])
     except iso8601.ParseError, ve:
@@ -33,4 +31,5 @@ def validate_lastmod(key, data, errors, context):
 
 
 def check_junk(key, data, errors, context):
-    log.debug(data[key])
+    if key in data:
+        log.debug(data[key])

@@ -273,7 +273,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'langdis': [ignore_missing, unicode, check_language],
            'projdis': [ignore_missing, unicode, check_project],
            '__extras': [ignore],
-           '__junk': [ignore, check_junk],
+           '__junk': [check_junk],
            'name': [unicode, ignore_missing, self.update_name],
            'title': [ignore_missing, copy_from_titles],
         })
