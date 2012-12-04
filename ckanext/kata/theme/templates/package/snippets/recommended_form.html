@@ -113,7 +113,8 @@
 				<div class="input-prepend">
 					<input class="kata-lifecycle-input" type="text" id="evdescr__{{ index }}__value_id" name="evdescr__{{ index }}__value" value="" />
 				</div>
-				<input type="checkbox" id="ev_btn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+				<input type="button" class="btn checkbox" onclick="$('#evbtn__{{index}}__value_id').change();"/>
+			<input style="display: none;"type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 		</div>
 {% endfor %}
 </div>
