@@ -124,7 +124,8 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.subject, Literal(tag)))
             graph.add((uri, DC.language, Literal(data["extras"]\
                                                  .get("language", ''))))
-            graph.add((uri, DC.rights, self._make_rights_element(data["extras"])))
+            if "access" in data["extras"]:
+                graph.add((uri, DC.rights, self._make_rights_element(data["extras"])))
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
                 format = 'pretty-xml'
