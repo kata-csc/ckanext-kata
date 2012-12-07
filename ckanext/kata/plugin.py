@@ -79,11 +79,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'contact_name', 'contact_phone', 'contact_email', 'contact_form',
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
                   'access', 'accessRights', 'accessURL',
-                  'ltitle', 'lsel', 'organization', 'author',]
+                  'ltitle', 'lsel', 'organization', 'author']
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
                   'temporal_coverage_end', 'publications', 'collections',
                   'erelated', 'discipline', 'fformat', 'checksum',
-                  'algorithm', 'evwho', 'evdescr','evtype', 'evwhen',
+                  'algorithm', 'evwho', 'evdescr', 'evtype', 'evwhen',
                   ]
 
     kata_field = kata_fields_recommended + kata_fields_required
@@ -232,14 +232,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data[('extras',)] = extras
 
         for k in data.keys():
-            if k[-1] == 'pid':
-                extras.append({'key': 'pid', 'value': data[k]})
+            if k[-1] == 'versionPID':
+                extras.append({'key': 'versionPID', 'value': data[k]})
 
                 if k in data:
                     del data[k]
 
     def update_pid(self, key, data, errors, context):
-        data[key] = utils.generate_pid()
+        if key == ('versionPID',):
+            if len(data[key]) == 0:
+                data[key] = utils.generate_pid()
+        else:
+            data[('versionPID',)] = utils.generate_pid()
 
     def update_name(self, key, data, errors, context):
         if len(data[key]) == 0:
@@ -252,7 +256,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in self.kata_fields_recommended:
             schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
         schema.update({
-           'version': [not_missing, unicode, validate_lastmod],
+           'version': [not_missing, unicode, validate_lastmod, self.update_pid],
            'temporal_coverage_begin': [ignore_missing, self.convert_to_extras_kata, unicode, validate_lastmod],
            'temporal_coverage_end': [ignore_missing, self.convert_to_extras_kata, unicode, validate_lastmod],
            'extras': {
@@ -264,7 +268,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'revision_timestamp': [ignore],
                 '__extras': [ignore],
             },
-           'pid': [self.update_pid, unicode, self.pid_to_extras],
+           'versionPID': [self.update_pid, unicode, self.pid_to_extras],
            'author': {'value': [ignore_missing, unicode, org_auth_to_extras]},
            'organization': {'value': [ignore_missing, unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
@@ -291,7 +295,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         context = options['context']
         for key in self.kata_field:
             schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
-        schema['pid'] = [pid_from_extras, ignore_missing, unicode]
+        schema['versionPID'] = [pid_from_extras, ignore_missing, unicode]
 
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [org_auth_from_extras, ignore_missing, unicode]
@@ -308,7 +312,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             dataset = context['package']
             c.revision = dataset.latest_related_revision
             c.date_format = self.date_format
-            c.PID = utils.generate_pid()
+            c.versionPID = utils.generate_pid()
             c.roles = self.roles
             c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
         except TypeError:
