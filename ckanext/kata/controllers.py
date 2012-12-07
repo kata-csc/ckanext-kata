@@ -88,8 +88,8 @@ class MetadataController(BaseController):
             uri = URIRef(data['name'])
             if data["license"]:
                 graph.add((uri, DC.rights, Literal(data["license"])))
-            if "pid" in data["extras"]:
-                graph.add((uri, DC.identifier, Literal(data["extras"]["pid"])))
+            if "versionPID" in data["extras"]:
+                graph.add((uri, DC.identifier, Literal(data["extras"]["versionPID"])))
             graph.add((uri, DC.modified, Literal(data.get("version", ''),
                                                  datatype=XSD.date)))
             org = URIRef(FOAF.Organization)

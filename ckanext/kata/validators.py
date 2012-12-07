@@ -1,6 +1,10 @@
 import iso8601
 import logging
 
+from ckan.model import Package
+
+import utils
+
 log = logging.getLogger('ckanext.kata.validators')
 
 
@@ -33,3 +37,14 @@ def validate_lastmod(key, data, errors, context):
 def check_junk(key, data, errors, context):
     if key in data:
         log.debug(data[key])
+
+
+def check_last_and_update_pid(key, data, errors, context):
+    if key == ('version',):
+        pkg = Package.get(data[('name',)])
+        if pkg:
+            log.debug(pkg.as_dict())
+            log.debug(data[key])
+            log.debug(data[key] == pkg.as_dict()['version'])
+            if not data[key] == pkg.as_dict()['version']:
+                data[('versionPID',)] = utils.generate_pid()

@@ -25,7 +25,7 @@ from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_em
 from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
 
 from validators import check_language, check_project, validate_access,\
-                        validate_lastmod, check_junk
+                        validate_lastmod, check_junk, check_last_and_update_pid
 
 from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras,\
@@ -239,11 +239,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     del data[k]
 
     def update_pid(self, key, data, errors, context):
-        if key == ('versionPID',):
+        if type(data[key]) == unicode:
             if len(data[key]) == 0:
                 data[key] = utils.generate_pid()
-        else:
-            data[('versionPID',)] = utils.generate_pid()
 
     def update_name(self, key, data, errors, context):
         if len(data[key]) == 0:
@@ -256,7 +254,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in self.kata_fields_recommended:
             schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
         schema.update({
-           'version': [not_missing, unicode, validate_lastmod, self.update_pid],
+           'version': [not_missing, unicode, validate_lastmod, check_last_and_update_pid],
            'temporal_coverage_begin': [ignore_missing, self.convert_to_extras_kata, unicode, validate_lastmod],
            'temporal_coverage_end': [ignore_missing, self.convert_to_extras_kata, unicode, validate_lastmod],
            'extras': {
@@ -307,16 +305,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
         schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
         schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
-
-        try:
-            dataset = context['package']
-            c.revision = dataset.latest_related_revision
-            c.date_format = self.date_format
-            c.versionPID = utils.generate_pid()
-            c.roles = self.roles
-            c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-        except TypeError:
-                return schema
 
         return schema
 

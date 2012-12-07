@@ -7,15 +7,15 @@ log = logging.getLogger('ckanext.kata.converters')
 
 def pid_from_extras(key, data, errors, context):
     for k in data.keys():
-        if k[0] == 'extras' and k[-1] == 'key' and data[k] == 'pid':
-            data[('pid',)] = data[(k[0], k[1], 'value')]
+        if k[0] == 'extras' and k[-1] == 'key' and data[k] == 'versionPID':
+            data[('versionPID',)] = data[(k[0], k[1], 'value')]
 
             for _remove in data.keys():
                 if _remove[0] == 'extras' and _remove[1] == k[1]:
                     del data[_remove]
 
-    if not ('pid',) in data:
-        data[('pid',)] = utils.generate_pid()
+    if not ('versionPID',) in data:
+        data[('versionPID',)] = utils.generate_pid()
 
 
 def roles_to_extras(key, data, errors, context):

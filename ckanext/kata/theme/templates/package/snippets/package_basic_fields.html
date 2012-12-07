@@ -133,7 +133,7 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Identification information') }}</h2>
 <div class="module-content">
-{{ form.input('pid', id='field-pid', label=_('Permanent Identifier'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=versionPID, error=errors.versionPID, classes=['control-medium']) }}
+{{ form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=data.versionPID, error=errors.versionPID, classes=['control-medium']) }}
 	<div data-module="dateselect-simple-kata">
 		<label class="control-label" for="last modified">{{ _('Modification date') }}</label>
 		<div class="controls">
