@@ -56,7 +56,7 @@ This dataset is
 {% if pkg_dict.access == 'free' %} available freely {% if pkg_dict.accessURL %} <a href="{{pkg_dict.accessURL}}">from this address</a> {% endif %} {% endif %}
 {% if pkg_dict.access == 'ident' %} available via login {% if pkg_dict.accessURL %} <a href="{{pkg_dict.accessURL}}">from this address</a> {% endif %} {% endif %}
 {% if pkg_dict.access == 'contact' %} available by contacting the author {% endif %}
-{% if not pkg_dict.access %} available freely{% endif %}
+{% if not pkg_dict.access %} available freely{% endif %} {% if pkg_dict.licenseURL %} with license as {{pkg_dict.licenseURL}} {% endif %}
 </div>
 </section>
 <section class="module-content additional-info">

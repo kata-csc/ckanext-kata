@@ -78,7 +78,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     kata_fields_required = ['version', 'language',
                   'contact_name', 'contact_phone', 'contact_email', 'contact_form',
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
-                  'access', 'accessRights', 'accessURL',
+                  'access', 'accessRights', 'accessURL', 'licenseURL',
                   'ltitle', 'lsel', 'organization', 'author']
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
                   'temporal_coverage_end', 'publications', 'collections',
