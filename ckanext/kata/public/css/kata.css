@@ -46,6 +46,9 @@ p {
 hr {
 	margin: 0px 0;
 }
+html, body {
+	min-width: 970px;
+}
 body {
 	background-color: #FFF;
 	font-family: Tahoma, Arial, sans-serif;
@@ -252,9 +255,9 @@ input, button, select, textarea {
 	color: #666;
 }
 #kata_header {
-	position: relative;
+	position: absolute;
 	left: 300px;
-	top: -5px;
+	top: 55px;
 }
 #kata_header h1 {
 	color: #139CEC;
