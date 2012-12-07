@@ -23,6 +23,8 @@ setup(
 		# -*- Extra requirements: -*-
         'rdflib',
         'iso8601',
+        'rdfextras',
+        'rdflib-postgresql',
 	],
 	entry_points=\
 	"""

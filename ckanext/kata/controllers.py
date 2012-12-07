@@ -1,5 +1,6 @@
 '''Metadata based controllers for KATA.
 '''
+import re
 
 from ckan.lib.base import BaseController, c, h
 from ckan.controllers.api import ApiController
@@ -11,6 +12,10 @@ from pylons import response, config, request
 
 from rdflib.term import Identifier, Statement, Node, Variable
 from rdflib.namespace import ClosedNamespace
+from rdflib.store import NO_STORE, CORRUPTED_STORE, VALID_STORE, Store
+from rdflib.graph import ConjunctiveGraph
+from rdflib import plugin
+from rdflib.resource import Resource
 from vocab import Graph, URIRef, Literal, BNode
 from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
                     REV, SCOVO, XSD, LICENSES
@@ -64,72 +69,89 @@ class MetadataController(BaseController):
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED"/>'
         return Literal(xmlstr, datatype=RDF.XMLLiteral)
 
+    def _configstr(self):
+        pgsqlurl = config.get('sqlalchemy.url')
+        mstr = "postgresql\:\/\/(?P<user>[a-z]+)\:(?P<password>[a-z]+)\@(?P<host>[a-z]+)\/(?P<dbname>[a-z]+)"
+        matches = re.search(mstr, pgsqlurl).groupdict()
+        retstr = ' '.join(["%s=%s" % (k, v) for k, v in matches.iteritems()])
+        log.debug(retstr)
+        return retstr
+
     def tordf(self, id, format):
-        graph = Graph()
-        pkg = Package.get(id)
-        if pkg:
-            data = pkg.as_dict()
-            metadoc = URIRef('')
-            user = None
-            if pkg.roles:
-                owner = [role for role in pkg.roles if role.role == 'admin']
-                if len(owner):
-                    user = User.get(owner[0].user_id)
-            profileurl = ""
-            if user:
-                profileurl = URIRef(config.get('ckan.site_url', '') +\
-                    h.url_for(controller="user", action="read", id=user.name))
-            graph.add((metadoc, DC.identifier, Literal(data["id"])\
-                                if 'identifier' not in data["extras"]\
-                                else URIRef(data["extras"]["identifier"])))
-            graph.add((metadoc, DC.modified, Literal(data["metadata_modified"],
-                                                 datatype=XSD.date)))
-            graph.add((metadoc, FOAF.primaryTopic, Identifier(data['name'])))
-            uri = URIRef(data['name'])
-            if data["license"]:
-                graph.add((uri, DC.rights, Literal(data["license"])))
-            if "pid" in data["extras"]:
-                graph.add((uri, DC.identifier, Literal(data["extras"]["pid"])))
-            graph.add((uri, DC.modified, Literal(data.get("version", ''),
-                                                 datatype=XSD.date)))
-            org = URIRef(FOAF.Organization)
-            if profileurl:
-                graph.add((uri, DC.publisher, profileurl))
-                graph.add((profileurl, RDF.type, org))
-                graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
-                graph.add((profileurl, FOAF.mbox, Identifier(data["extras"]["contact_email"])))
-                graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["contact_phone"])))
-                graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contact_form"])))
-                graph.add((uri, DC.rightsHolder, Identifier(profileurl)))
-            graph.add((uri, DC.title, Literal(data["title"],
-                                        lang=data["extras"].get("language",
-                                                                None))))
-            project = URIRef(FOAF.Project)
-            if all(k in data["extras"] for k in ("project_name",\
-                                                 "project_homepage",\
-                                                 "project_funding",\
-                                                 "project_funder")):
-                projecturl = URIRef(data["extras"]["project_homepage"])
-                graph.add((uri, DC.contributor, projecturl))
-                graph.add((projecturl, RDF.type, project))
-                graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
-                graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
-                graph.add((projecturl, RDFS.comment,
-                            Literal(data["extras"]["project_funder"])))
-            for key in data["extras"]:
-                log.debug(key)
-                if key.startswith('author'):
-                    graph.add((uri, DC.creator, Literal(data["extras"][key])))
-            for tag in data['tags']:
-                graph.add((uri, DC.subject, Literal(tag)))
-            graph.add((uri, DC.language, Literal(data["extras"]\
-                                                 .get("language", ''))))
-            if "access" in data["extras"]:
-                graph.add((uri, DC.rights, self._make_rights_element(data["extras"])))
-            response.headers['Content-type'] = 'text/xml'
-            if format == 'rdf':
-                format = 'pretty-xml'
-            return graph.serialize(format=format)
+        store = plugin.get('PostgreSQL', Store)(identifier="katardf")
+        rt = store.open(self._configstr())
+        log.debug(rt)
+        if rt == NO_STORE:
+            store.open(self._configstr(), create=True)
+        elif rt == VALID_STORE:
+            pkg = Package.get(id)
+            if pkg:
+                data = pkg.as_dict()
+                graph = Graph(store=store)
+                metadoc = URIRef('')
+                user = None
+                if pkg.roles:
+                    owner = [role for role in pkg.roles if role.role == 'admin']
+                    if len(owner):
+                        user = User.get(owner[0].user_id)
+                profileurl = ""
+                if user:
+                    profileurl = URIRef(config.get('ckan.site_url', '') +\
+                        h.url_for(controller="user", action="read", id=user.name))
+                graph.add((metadoc, DC.identifier, Literal(data["id"])\
+                                    if 'identifier' not in data["extras"]\
+                                    else URIRef(data["extras"]["identifier"])))
+                graph.add((metadoc, DC.modified, Literal(data["metadata_modified"],
+                                                     datatype=XSD.date)))
+                graph.add((metadoc, FOAF.primaryTopic, Literal(data['name'])))
+                uri = URIRef(data['name'])
+                if data["license"]:
+                    graph.add((uri, DC.rights, Literal(data["license"])))
+                if "pid" in data["extras"]:
+                    graph.add((uri, DC.identifier, Literal(data["extras"]["pid"])))
+                graph.add((uri, DC.modified, Literal(data.get("version", ''),
+                                                     datatype=XSD.date)))
+                org = URIRef(FOAF.Organization)
+                if profileurl:
+                    graph.add((uri, DC.publisher, profileurl))
+                    graph.add((profileurl, RDF.type, org))
+                    graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
+                    graph.add((profileurl, FOAF.mbox, Variable(data["extras"]["contact_email"])))
+                    graph.add((profileurl, FOAF.phone, Variable(data["extras"]["contact_phone"])))
+                    graph.add((profileurl, FOAF.homepage, Variable(data["extras"]["contact_form"])))
+                    graph.add((uri, DC.rightsHolder, URIRef(profileurl)))
+                graph.add((uri, DC.title, Literal(data["title"],
+                                            lang=data["extras"].get("language",
+                                                                    None))))
+                project = URIRef(FOAF.Project)
+                if all(k in data["extras"] for k in ("project_name",\
+                                                     "project_homepage",\
+                                                     "project_funding",\
+                                                     "project_funder")):
+                    projecturl = URIRef(data["extras"]["project_homepage"])
+                    graph.add((uri, DC.contributor, projecturl))
+                    graph.add((projecturl, RDF.type, project))
+                    graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
+                    graph.add((projecturl, FOAF.homepage, Variable(data["extras"]["project_homepage"])))
+                    graph.add((projecturl, RDFS.comment,
+                                Literal(data["extras"]["project_funder"])))
+                for key in data["extras"]:
+                    log.debug(key)
+                    if key.startswith('author'):
+                        graph.add((uri, DC.creator, Literal(data["extras"][key])))
+                for tag in data['tags']:
+                    graph.add((uri, DC.subject, Literal(tag)))
+                graph.add((uri, DC.language, Literal(data["extras"]\
+                                                     .get("language", ''))))
+                if "access" in data["extras"]:
+                    graph.add((uri, DC.rights, self._make_rights_element(data["extras"])))
+                graph.commit()
+                response.headers['Content-type'] = 'text/xml'
+                if format == 'rdf':
+                    format = 'pretty-xml'
+                return graph.serialize(format=format)
+            else:
+                return ""
         else:
             return ""
 

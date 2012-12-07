@@ -1,5 +1,5 @@
 import rdflib
-from rdflib.graph import Graph as _Graph
+from rdflib.graph import ConjunctiveGraph as _Graph
 from rdflib.namespace import Namespace, RDF, RDFS, XSD, ClosedNamespace
 from rdflib.term import URIRef, Literal, BNode, Node
 
