@@ -94,20 +94,6 @@ This dataset is
 		<th class="dataset-label">{{ _('Homepage') }}</th><td class="dataset-details"><a href="{{ pkg_dict.project_homepage }}">{{ pkg_dict.project_homepage }}</a></td>
 	</tr>
     {% endif%}
-    {% if pkg_dict.owner_name %}
-	<tr>
-		<th class="dataset-label" colspan="2">{{ _('Owner contact') }}</th>
-	</tr>
-	<tr>
-		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.owner_name }}</td>
-	</tr>
-		<tr>
-		<th class="dataset-label">{{ _('Phone') }}</th><td class="dataset-details">{{ pkg_dict.owner_phone }}</td>
-	</tr>
-	<tr>
-		<th class="dataset-label">{{ _('Homepage') }}</th><td class="dataset-details"><a href="{{ pkg_dict.owner_homepage }}">{{ pkg_dict.owner_homepage }}</a></td>
-	</tr>
-    {% endif %}
 	</tbody>
 </table>
 </section>

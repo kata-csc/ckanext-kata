@@ -125,13 +125,6 @@
 			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium']) }}
 			{{ form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-medium']) }}
 		</div>
-		<h3 class="module-heading">{{ _('Dataset owner (rights holder)') }}</h2>
-		<div class="module-content">
-			{% set own_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/owner_autocomplete?incomplete=?'} %}
-			{{ form.input('owner_name', label=_('Name'), id='owner_name', placeholder=_('John Allen'), value=data.owner_name, error=errors.owner_name, classes=['control-medium'], attrs=own_attrs) }}
-			{{ form.input('owner_phone', label=_('Phone'), id='owner_phone', placeholder=_('+35844122123'), value=data.owner_phone, error=errors.owner_phone, classes=['control-medium']) }}
-			{{ form.input('owner_homepage', label=_('Homepage'), id='owner_homepage', placeholder=_('http://john.allen.com/home'), value=data.owner_homepage, error=errors.owner_homepage, classes=['control-medium']) }}
-		</div>
 </section>
 {# if we have a default group then this wants remembering #}
 {% if data.group_id %}
