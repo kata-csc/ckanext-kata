@@ -1,7 +1,6 @@
 # Translations template for ckanext-kata.
 # Copyright (C) 2012 ORGANIZATION
-# This file is distributed under the same license as the ckanext-kata
-# project.
+# This file is distributed under the same license as the ckanext-kata project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 #
 #, fuzzy
@@ -9,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-12-10 14:34+0200\n"
+"POT-Creation-Date: 2012-12-10 15:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,9 +102,8 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/base_form_page.html:21
 msgid ""
-" Datasets are simply used to group related pieces of data. These can then"
-" be found under a single url with a description and licensing "
-"information. "
+" Datasets are simply used to group related pieces of data. These can then be "
+"found under a single url with a description and licensing information. "
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/confirm_delete.html:3
@@ -187,9 +185,8 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/read.html:31
 #, python-format
 msgid ""
-"This is an old revision of this dataset, as edited at %(timestamp)s. It "
-"may differ significantly from the <a href=\"%(url)s\">current "
-"revision</a>."
+"This is an old revision of this dataset, as edited at %(timestamp)s. It may "
+"differ significantly from the <a href=\"%(url)s\">current revision</a>."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/read.html:33
@@ -224,10 +221,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/related_list.html:33
 msgid ""
-" <p>Related Media is any app, article, visualisation or idea related to "
-"this dataset.</p> <p>For example, it could be a custom visualisation, "
-"pictograph or bar chart, an app using all or part of the data or even a "
-"news story that references this dataset.</p> "
+" <p>Related Media is any app, article, visualisation or idea related to this "
+"dataset.</p> <p>For example, it could be a custom visualisation, pictograph "
+"or bar chart, an app using all or part of the data or even a news story that "
+"references this dataset.</p> "
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/resource_api_data.html:3
@@ -658,8 +655,8 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:28
 msgid ""
-"Important: By submitting content, you agree to release your contributions"
-" under the Open Database License."
+"Important: By submitting content, you agree to release your contributions "
+"under the Open Database License."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:37
