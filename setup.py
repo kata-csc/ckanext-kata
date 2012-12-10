@@ -24,6 +24,19 @@ setup(
         'rdflib',
         'iso8601',
 	],
+	package_data={'ckanext': [
+        'kata/i18n/*/LC_MESSAGES/*.mo',
+        ]
+	},
+	message_extractors = {
+        'ckanext': [
+						('**.py', 'python', None),#
+						('kata/theme/templates/package/**.html', 'ckan', None),
+						('kata/theme/templates/privacypolicy.html', 'ckan', None),
+						('kata/theme/templates/header.html', 'ckan', None),
+						('kata/theme/templates/footer.html', 'ckan', None),
+						]
+	},
 	entry_points=\
 	"""
 	[ckan.plugins]
