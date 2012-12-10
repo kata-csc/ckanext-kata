@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-12-10 14:19+0200\n"
-"PO-Revision-Date: 2012-12-10 14:20+0200\n"
+"POT-Creation-Date: 2012-12-10 14:34+0200\n"
+"PO-Revision-Date: 2012-12-10 14:58+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fi <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -32,6 +32,69 @@ msgstr ""
 
 #: ckanext/kata/validators.py:34
 msgid "Invalid date format, must be like 2012-12-31T13:12:11"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:30
+msgid "Dashboard"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:36
+msgid "My Profile"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:42
+msgid "Edit Profile"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:48
+msgid "Log out"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:56
+msgid "Log in"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:57
+msgid "Register"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:63
+#: ckanext/kata/theme/templates/package/search.html:6
+msgid "Search Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:64
+#: ckanext/kata/theme/templates/header.html:65
+#: ckanext/kata/theme/templates/package/search.html:15
+#: ckanext/kata/theme/templates/package/snippets/search_form.html:4
+msgid "Search"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:74
+msgid "Add Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:74
+#: ckanext/kata/theme/templates/package/edit.html:6
+#: ckanext/kata/theme/templates/package/new_resource.html:34
+#: ckanext/kata/theme/templates/package/read.html:9
+#: ckanext/kata/theme/templates/package/related_list.html:6
+#: ckanext/kata/theme/templates/package/resource_edit.html:9
+#: ckanext/kata/theme/templates/package/resource_read.html:9
+#: ckanext/kata/theme/templates/package/snippets/new_package_breadcrumb.html:1
+msgid "Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:74
+msgid "Groups"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:74
+msgid "About"
+msgstr ""
+
+#: ckanext/kata/theme/templates/privacypolicy.html:2
+msgid "Tietosuojaseloste / Privacy Policy"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/base_form_page.html:18
@@ -64,16 +127,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/confirm_delete_resource.html:10
 msgid "Are you sure you want to delete resource - {name}?"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/edit.html:6
-#: ckanext/kata/theme/templates/package/new_resource.html:34
-#: ckanext/kata/theme/templates/package/read.html:9
-#: ckanext/kata/theme/templates/package/related_list.html:6
-#: ckanext/kata/theme/templates/package/resource_edit.html:9
-#: ckanext/kata/theme/templates/package/resource_read.html:9
-#: ckanext/kata/theme/templates/package/snippets/new_package_breadcrumb.html:1
-msgid "Datasets"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/edit.html:8
@@ -229,18 +282,9 @@ msgstr ""
 msgid "Search for a Dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:6
-msgid "Search Datasets"
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/search.html:14
 #: ckanext/kata/theme/templates/package/snippets/search_form.html:3
 msgid "Search..."
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/search.html:15
-#: ckanext/kata/theme/templates/package/snippets/search_form.html:4
-msgid "Search"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:33
@@ -407,7 +451,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:101
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:134
 msgid "Identification information"
-msgstr "Tunnistustiedot"
+msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:105
 msgid "Last modified"
