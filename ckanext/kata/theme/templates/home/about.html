@@ -1,9 +1,99 @@
-{% ckan_extends %}
-{% block about%}
-	{% if g.site_about %}
-          {{ h.render_markdown(g.site_about) }}
-        {% else %}
-          <h1 class="page-heading">{{ _('About') }}</h1>
-          {% snippet 'home/snippets/about_text.html' %}
+  {% ckan_extends %}
+  {% block about%}
+      {% if g.site_about %}
+        {{ h.render_markdown(g.site_about) }}
+      {% else %}
+        <div id="about">
+          <p>
+            <div id="about_fi">Suomeksi</div>
+            <h2>Tietoa Kata-aineistokatalogista</h2>
+            <p>
+              Kata-aineistokatalogi on opetus- ja kulttuuriministeriön palvelu tutkimusaineistojen saatavuuden ja käytettävyyden parantamiseksi. 
+              Katan tehtävä on:             
+            <p>
+            <ul>
+              <li>helpottaa tutkimuskäyttöön saatavilla olevien aineistojen löytämistä ja uudelleenkäyttöä eli toimia Tieto käyttöön -raportin 
+                toimenpide-ehdotuksen nro 11 
+                <i>yhteistyöfoorumin perustaminen tietoaineistojen löydettävyyden takaamiseksi ja yhteentoimivuuden tekniikoiden määrittämiseksi</i> 
+                yhteentoimivana katalogina muiden eri aihepiireihin ja eri toimittajien tarjoamien katalogien rinnalla edustaen 
+                tutkimuksen tietoaineistoja.
+              </li>
+              <li>
+                OKM:ään kohdistuvien tietohallintolain mukaisten inventointivaatimusten toteuttaminen: tuottaa tietoa aineistojen 
+                olemassaolosta rahoittajille.
+              </li>
+              <li>
+                yhtenäisen käyttöehto- ja käyttöoikeuskulttuurin luominen. Tämä tarkoittaa selkeiden omistajuus- ja hyödyntämisoikeustietojen 
+                kirjaamista aineistokatalogiin.
+              </li>
+              <li>
+                meriitin syntyminen tutkijalle.
+              </li>
+              <li>
+                pitkäaikaissäilytykseen soveltuvien tietoaineistojen löytäminen.
+              </li>
+            </ul>
+            <h2>Ominaisuudet</h2>
+            <p>
+              Kata-aineistokatalogista voit etsiä erinäisiä tutkimuksia ja palvelu tarjoaa erinäisiä tapoja kohdistaa tulosjoukkoa. 
+              Tulosjoukon lajittelu on mahdollista esimerkiksi eri metatietokenttien, aihealueen tai tiedostotyypin mukaan. 
+              Myös Boolen operaattorit, kuten AND, ovat tuettuja.
+            </p>
+            <p> 
+              Kataan voi vapaasti rekisteröityä erillisillä Kata-tunnuksilla tai palveluun voi kirjautua sisään myös Shibboleth-tunnuksilla, kuten 
+              HAKA-tunnuksilla. Kirjautuneena käyttäjänä voit lisätä ja muokata omia aineistojasi, kommentoida muiden aineistoja tai vaikka 
+              viitata metatiedoissasi muihin objekteihin Katassa.
+            </p>
+            <h2>Tietoturva</h2>
+            <p>
+              Sinä - ja mahdollisesti määrittelemäsi muut omistajat - omistat omat aineistosi. Voit itse määritellä, mikä on metatiedon kohteena olevan 
+              tutkimuksesi levittämistapa ja -kohde. Kata-aineistokatalogi tukee tätä tapaa informoiden siitä aineistosi selaajaa ja voi tarjota myös 
+              ohjeen tutkimusaineistosi saavuttamiseksi.
+            </p>
+            <p>
+              Jos käytät Kata-palvelua julkisesta verkosta, kuten esimerkiksi yleisestä langattomasta verkosta, suosittelemme käytettäväksi 
+              SSL-salattua sivua, osoitteessa https://kata.csc.fi.
+            </p>
+            <h2>Yleistä</h2>
+            <p>
+              Kata-aineistokatalogi on yhteensopiva yleisessä käytössä olevien selainten kanssa. Lisäksi selaimeen tarvitaan JavaScript. KATA tulee 
+              tukemaan suomen- ja englanninkielistä käyttöä.
+            </p>
+          <p>
+          <hr />
+          <p>
+            <div id="about_en">In English</div>
+            <h2>About Kata material catalogue</h2>
+            <p>
+              Kata is a service provided by the Ministry of Education and Culture to provide an easy, centralized access point to researches.
+            </p>
+            <h2>Features</h2>
+            <p>
+              You can search data from a variety of researches and Kata provides several ways to limit the result set. You can search 
+              specifically according to the different fields of meta data, subject or file type to name but a few. Widely used Boolean 
+              operators are supported as well, for example the conjunctive AND operator.
+            </p>
+            <p>
+              You can freely register into Kata or log in using Shibboleth based authentication, for example the HAKA-federation. As a 
+              logged in user, you can add and modify your own researches and objects as you like. You can also comment other people's 
+              objects as well as reference them in your own dataset.
+            </p>
+            <h2>Security</h2>
+            <p>
+              Only you and your group members, if you specified any, own the dataset. It is up to you which method to apply in your 
+              research's availability. For example, you can tell in Kata that your research is open for anyone or specify an independent 
+              location for an application form to gain a restricted access.
+            </p>
+            <p>
+              If you are using Kata from an open network, for example from a public wireless network, we highly recommend you to use the 
+              encrypted connection, at https://kata.csc.fi.
+            </p>
+            <h2>General information</h2>
+            <p>
+              Kata supports commonly used modern web browsers. Additionally, we recommend that JavaScript should be enabled.
+            </p>
+          </p>
+        </div>
         {% endif %}
-{% endblock%}
+  {% endblock%}
+ 
