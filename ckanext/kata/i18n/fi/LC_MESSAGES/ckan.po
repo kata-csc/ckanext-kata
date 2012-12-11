@@ -5231,4 +5231,6 @@ msgstr ""
 msgid "Additional data"
 msgstr ""
 
-
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:153
+msgid "Select"
+msgstr "Valitse"
