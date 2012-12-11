@@ -24,7 +24,7 @@ setup(
         'rdflib',
         'iso8601',
 	],
-	package_data={'ckan': [
+	package_data={'ckanext-kata': [
         'i18n/*/LC_MESSAGES/*.mo',
         ]
 	},
