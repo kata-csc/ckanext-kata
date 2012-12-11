@@ -6,18 +6,35 @@
 	margin-left: 10px;
 	width: 110px !important;
 }
-.kata-lifecycle-span {
+.events {
 	font-style: bold;
 	margin-left: 30px;
 }
-.who {
-	margin-left: 80px;
+li.kata {
+	float: left !important;
 }
-.when {
-	margin-left: 106px;
+li.kata label {
+	float: right !important;
 }
-.description {
-	margin-left: 98px;
+.form-horizontal .control-label span {
+}
+.form-horizontal .katalabel1 {
+	width: 95px !important;
+	text-align: center;
+	float: left;
+}
+.form-horizontal .katalabel {
+	width: 145px !important;
+	float: left;
+	text-align: center !important;
+
+}
+.form-horizontal .katalabel::after {
+	content: '' !important;
+}
+ul.kata {
+	list-style: none !important;
+	margin: 0px !important;
 }
 .module-link {
 	float: right;
