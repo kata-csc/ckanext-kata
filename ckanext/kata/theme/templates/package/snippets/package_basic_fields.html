@@ -150,7 +150,7 @@
 	{% endtrans %}
 </p>
 <div class="control-group">
-	{% call form.input_block("access", "Select", error=errors.access) %}
+	{% call form.input_block("access", _("Select"), error=errors.access) %}
 	<input type="radio" name="access" value="form" style="top: 0px" onclick="$('#accessDiv').toggle()" {% if data.access == 'form'%}checked{% endif %} >{{ _('with data access application') }}</input><br />
 
 	<div id="accessDiv" {% if not data.accessRights %}style="display:none"{% endif%}>
