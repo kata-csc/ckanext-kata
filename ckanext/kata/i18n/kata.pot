@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-12-10 15:08+0200\n"
+"POT-Creation-Date: 2012-12-11 10:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -690,7 +690,6 @@ msgid "Finish"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:8
-#: ckanext/kata/theme/templates/package/snippets/stages.html:38
 msgid "Recommended information"
 msgstr ""
 
@@ -947,12 +946,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/stages.html:32
 #: ckanext/kata/theme/templates/package/snippets/stages.html:36
-msgid "Add data"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/stages.html:44
-#: ckanext/kata/theme/templates/package/snippets/stages.html:48
-#: ckanext/kata/theme/templates/package/snippets/stages.html:50
+#: ckanext/kata/theme/templates/package/snippets/stages.html:38
 msgid "Additional data"
 msgstr ""
 

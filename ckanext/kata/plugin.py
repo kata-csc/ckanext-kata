@@ -152,6 +152,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         toolkit.add_resource(public_dir, 'kata-resources')
         roles = config.get('kata.contact_roles', 'Please, Configure')
         config['package_hide_extras'] = ' '.join(self.kata_field)
+        config['ckan.i18n_directory'] = os.path.join(rootdir, 'ckanext', 'kata')
         roles = [r for r in roles.split(', ')]
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
