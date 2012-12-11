@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ckanext-kata 0.1\n"
 "Report-Msgid-Bugs-To: aleksi.suomalainen@nomovok.com\n"
 "POT-Creation-Date: 2012-12-10 15:08+0200\n"
-"PO-Revision-Date: 2012-12-11 12:30+0200\n"
+"PO-Revision-Date: 2012-12-11 12:43+0200\n"
 "Last-Translator: Aleksi Suomalainen (Work) <aleksi.suomalainen@nomovok.com>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -4674,7 +4674,7 @@ msgstr "Ei kuvausta"
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:52
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:146
 msgid "Usage information"
-msgstr ""
+msgstr "Käyttötiedot"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:63
 msgid "Contact information"
@@ -4967,7 +4967,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:8
 #: ckanext/kata/theme/templates/package/snippets/stages.html:38
 msgid "Recommended information"
-msgstr ""
+msgstr "Suositellut tiedot"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:14
 msgid "Coverage"
