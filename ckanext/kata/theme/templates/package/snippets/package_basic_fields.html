@@ -109,13 +109,13 @@
 	<div class="module-content">
 		<h3 class="module-heading">{{ _('Distributor / publisher contact information') }}</h2>
 		<div class="module-content">
-			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?'} %}
+			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?', 'data-module-items': 1} %}
 			{% set contact_name = data.contact_name if not user.fullname else user.fullname %}
 			{% set contact_email = data.contact_email if not user.email else user.email %}
 			{{ form.input('contact_name', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.contact_name, classes=['control-medium'], attrs=cont_attrs) }}
-			{{ form.input('contact_phone', label=_('Phone'), id='contact_phone', placeholder=_('+35844122123'), value=data.contact_phone, error=errors.contact_phone, classes=['control-medium']) }}
-			{{ form.input('contact_email', label=_('Email'), id='contact_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.contact_email, classes=['control-medium']) }}
-			{{ form.input('contact_form', label=_('Contact form'), id='contact_form', placeholder=_('http://johndoe.com/contact'), value=data.contact_form, error=errors.contact_form, classes=['control-medium']) }}
+			{{ form.input('phone', label=_('Phone'), id='phone', placeholder=_('+35844122123'), value=data.phone, error=errors.phone, classes=['control-medium']) }}
+			{{ form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
+			{{ form.input('contactURL', label=_('Contact form'), id='contactURL', placeholder=_('http://johndoe.com/contact'), value=data.contactURL, error=errors.contactURL, classes=['control-medium']) }}
 		</div>
 		<h3 class="module-heading">{{ _('Project that produced this dataset') }}</h2>
 		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis %}checked{% endif %}>{{ _('This dataset was not produced in a project.') }}</input>
@@ -160,7 +160,7 @@
 	<input type="radio" name="access" onclick="$('#urlDiv').toggle()" style="top: 0px" value="free" {% if data.access == 'free'%}checked{% endif %}>{{ _('directly downloadable') }}</input><br />
 	<input type="radio" name="access" onclick="$('#urlDiv').toggle()" style="top: 0px" value="ident" {% if data.access == 'ident'%}checked{% endif %}>{{ _('downloadable after registration / identification') }}</input><br />
 	<div id="urlDiv" {% if not data.accessURL %}style="display:none"{% endif%}>
-	{{ form.input('accessURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessURL, error=errors.accessURL, classes=['control-medium'] ) }}
+	{{ form.input('accessrequestURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessrequestURL, error=errors.accessrequestURL, classes=['control-medium'] ) }}
 	</div> 
 	<input type="radio" name="access" style="top: 0px" value="contact" {% if data.access == 'contact'%}checked{% endif %}>{{ _('only by contacting the distributor') }}</input><br />
 	{% endcall %}

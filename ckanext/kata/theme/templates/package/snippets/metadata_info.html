@@ -71,13 +71,13 @@ This dataset is
 		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.contact_name }}</td>
 	</tr>
 	<tr>
-		<th class="dataset-label">{{ _('Phone') }}</th><td class="dataset-details">{{ pkg_dict.contact_phone }}</td>
+		<th class="dataset-label">{{ _('Phone') }}</th><td class="dataset-details">{{ pkg_dict.phone }}</td>
 	</tr>
 	<tr>
-		<th class="dataset-label">{{ _('Email') }}</th><td class="dataset-details">{{ pkg_dict.contact_email}}</td>
+		<th class="dataset-label">{{ _('Email') }}</th><td class="dataset-details">{{ pkg_dict.maintainer_email}}</td>
 	</tr>
 	<tr>
-		<th class="dataset-label">{{ _('Contact form') }}</th><td class="dataset-details">{{ pkg_dict.contact_form }}</td>
+		<th class="dataset-label">{{ _('Contact form') }}</th><td class="dataset-details">{{ pkg_dict.contactURL }}</td>
 	</tr>
     {% endif%}
     {% if pkg_dict.project_name %}
