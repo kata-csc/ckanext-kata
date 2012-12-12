@@ -1,8 +1,9 @@
 import iso8601
 import logging
+import pycountry
 
 from ckan.model import Package
-
+from pylons.i18n import gettext as _
 import utils
 
 log = logging.getLogger('ckanext.kata.validators')
@@ -48,3 +49,10 @@ def check_last_and_update_pid(key, data, errors, context):
             log.debug(data[key] == pkg.as_dict()['version'])
             if not data[key] == pkg.as_dict()['version']:
                 data[('versionPID',)] = utils.generate_pid()
+
+
+def validate_language(key, data, errors, context):
+    try:
+        pycountry.languages.get(alpha2=data[key])
+    except KeyError:
+        errors[key].append(_('Invalid language, not in ISO 639.'))

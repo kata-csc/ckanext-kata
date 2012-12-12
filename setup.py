@@ -23,6 +23,7 @@ setup(
 		# -*- Extra requirements: -*-
         'rdflib',
         'iso8601',
+        'pycountry',
 	],
 	package_data={'ckan': [
         'i18n/*/LC_MESSAGES/*.mo',
