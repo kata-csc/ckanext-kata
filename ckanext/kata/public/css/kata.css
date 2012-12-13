@@ -71,35 +71,35 @@ body {
 	font-family: Tahoma, Arial, sans-serif;
 }
 .masthead {
-	background-color: #FFF;
-	background-image: none;
+	background-color: #FFF !important;
+	background-image: none !important;
 	margin-bottom: 10px;
-	height: 175px;
+	height: 175px !important;
 	width: 970px;
 	margin: auto;
 }
 .masthead a {
-	color: #666;
+	color: #666 !important;
 }
 .masthead .links .sub {
-	color: rgba(0, 0, 0, 0.6);
+	color: rgba(0, 0, 0, 0.6) !important;
 }
 .masthead .header-image .logo {
-	height: 87px;
+	height: 87px !important;
 }
 .masthead .container {
-	height: 100px;
+	height: 100px !important;
 }
 .masthead .section {
-	margin-left: 12px;
-	padding-left: 0px;
+	margin-left: 12px !important;
+	padding-left: 0px !important;
 }
 .masthead .content {
-	margin-top: 30px;
+	margin-top: 30px !important;
 }
 .masthead .dropdown-menu a {
-	font-color: #666;
-	color: #666;
+	font-color: #666 !important;
+	color: #666 !important;
 }
 [role="main"], .main {
 	padding-bottom: 25px;
