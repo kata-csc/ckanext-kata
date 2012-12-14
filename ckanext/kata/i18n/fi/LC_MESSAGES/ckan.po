@@ -5235,3 +5235,233 @@ msgstr ""
 msgid "Select"
 msgstr "Valitse"
 
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:1
+msgid "Search Overview"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:4
+msgid ""
+" CKAN supports 2 search modes, both a used from the same search field.<br /> "
+"If the search terms entered into the search field contain no colon (\":\") "
+"CKAN will perform a simple search. If the search expression does contain at "
+"least one colon (\":\") CKAN will perform and advanced search. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:14
+msgid "Simple Search"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:17
+msgid ""
+" When using simple search you just enter search words.<br /> There are only 3"
+" special characters to be taken into account<br /> + The following search "
+"word is mandatory<br /> - The following search is word is prohibited<br /> \""
+" Several search words enclosed in double quotes must occur in that sequence. "
+"Double quotes must occur pairwise, otherwise they will be ignored completely "
+"All other special characters, like e.g. \"*\", \"?\" or \"=\" will be "
+"ignored.<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:33
+msgid "Advanced search"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:36
+msgid ""
+" Your search terms must contain a colon \":\" to activate advanced search. "
+"The basic principle is that search terms are entered as <br /> <br /> "
+"field:search<br /> <br /> Example:<br /> <br /> title:european<br /> <br /> "
+"Advanced search supports many special characters to achieve various search "
+"functions<br /> </p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:52
+msgid "Multiple character wildcard search"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:54
+msgid ""
+" To perform a multiple character wildcard search use the \"*\" symbol. "
+"Multiple character wildcard searches looks for 0 or more characters<br /> <br"
+" /> Example:<br /> <br /> title:europ*<br /> </p> <h2>Single character wild "
+"card search</h2> <p> To perform a single character wildcard search use the "
+"\"?\" symbol. The single character wildcard search looks for terms that match"
+" that with the single character replaced. Example:<br /> <br /> "
+"author:eri?sson<br /> <br /> This will match both Ericsson and Eriksson (and "
+"of course all other<br /> letters in the location in question)<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:76
+msgid "Fuzzy Searches"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:78
+msgid ""
+" CKAN supports fuzzy searches based on the Levenshtein Distance, or Edit "
+"Distance algorithm. To do a fuzzy search use the tilde, \"~\", symbol at the "
+"end of a Single word Term<br /> <br /> Example:<br /> <br /> "
+"author:powell~<br /> <br /> will also find jowell and many others<br /> <br "
+"/> An additional (optional) parameter can specify the required similarity. "
+"The value is between 0 and 1, with a value closer to 1 only terms with a "
+"higher similarity will be matched. For example: <br /> title:roam~0.8<br /> "
+"<br /> The default that is used if the parameter is not given is 0.5.<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:99
+msgid "Proximity searches"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:102
+msgid ""
+" CKAN supports finding words are a within a specific distance away. To do a "
+"proximity search use the tilde, \"~\", symbol at the end of a Phrase. <br /> "
+"<br /> Example:<br /> <br /> To search for a \"international\" and "
+"\"domestic\" within 5 words of each other in the abstract of a dataset use "
+"the search:<br /> <br /> extras_abstract:\"international domestic\"~5<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:116
+msgid "Range Searches"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:118
+msgid ""
+" Range Queries allow one to match datasets whose field(s) values are between "
+"the lower and upper bound specified by the Range Query. Range Queries can be "
+"inclusive or exclusive of the upper and lower bounds. Sorting is done "
+"lexicographically.<br /> <br /> Example:<br /> <br /> title:[2005 TO 2010] "
+"(inclusive search)<br /> title:{2005 TO 2010} (exclusive search)<br /> <br />"
+" Please note that the \"TO\" keyword needs to be spelled in CAPITAL<br /> "
+"letters.<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:134
+msgid "Boolean Operators"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:137
+msgid ""
+" Boolean operators allow terms to be combined through logic operators. CKAN "
+"supports AND, \"+\", OR, NOT and \"-\" as Boolean operators (Note: Boolean "
+"operators must be ALL CAPS).<br /> <br /> The AND operator is the default "
+"conjunction operator. This means that if there is no Boolean operator between"
+" two terms, the AND operator is used.<br /> <br /> The OR operator links two "
+"terms and finds a matching dataset if either of the terms exist in a dataset."
+" This is equivalent to a union using sets. The symbol || can be used in place"
+" of the word OR.<br /> <br /> To search for datasets that contain either "
+"\"2005\" or \"2007\" in their title use the query:<br /> <br /> Example:<br "
+"/> <br /> title:2005 OR title:2007<br /> <br /> The AND operator matches "
+"datasets where both terms exist anywhere in<br /> the text of a single "
+"dataset. This is equivalent to an intersection<br /> using sets. The symbol "
+"&& can be used in place of the word AND.<br /> Example:<br /> <br /> To "
+"search for datasets that contain \"2005\" and \"2007\" use the query:<br /> "
+"<br /> title:2005 AND title:2007<br /> <br /> or<br /> <br /> title:2005 "
+"title:2007<br /> <br /> Both searches are indentical because AND is the "
+"default operator.<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:179
+msgid ""
+" The \"+\" or required operator requires that the term after the \"+\" symbol"
+" exist somewhere in a the field of a single dataset.<br /> <br /> Example:<br"
+" /> <br /> To search for datasets that must contain \"survey\" and may "
+"contain \"economy\" use the query:<br /> <br /> text:+survey text:economy<br "
+"/> </p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:194
+msgid ""
+" The NOT operator excludes datasets that contain the term after NOT. This is "
+"equivalent to a difference using sets. The symbol ! can be used in place of "
+"the word NOT.<br /> <br /> Example:<br /> <br /> To search for datasets that "
+"contain \"2007\" but not \"2005\" in their title use the query:<br /> <br /> "
+"title:2005 NOT title:2007<br /> <br /> Note: The NOT operator can also be "
+"used with just one term.<br /> <br /> Example:<br /> <br /> The following "
+"search will all results, which are not written in English or have no "
+"extras_language field<br /> <br /> NOT extras_language:en "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:219
+msgid ""
+" The \"-\" or prohibit operator excludes datasets that contain the term after"
+" the \"-\" symbol.<br /> <br /> Example:<br /> <br /> To search for datasets "
+"that contain \"2005\" but not \"2007\" in their title use the query:<br /> "
+"<br /> title:2005 -title:2007<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:232
+msgid "Grouping"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:235
+msgid ""
+" CKAN supports using parentheses to group clauses to form sub queries. This "
+"can be very useful if you want to control the boolean logic for a query.<br "
+"/> <br /> Example:<br /> To search for either \"jakarta\" or \"apache\" and "
+"\"website\" use the query:<br /> <br /> title:2005 AND (title:2007 OR "
+"title:survey)<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:247
+msgid "Field Grouping"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:250
+msgid ""
+" Lucene supports using parentheses to group multiple clauses to a single "
+"field.<br /> To search for a title that contains both the word \"return\" and"
+" the phrase \"pink panther\" use the query:<br /> <br /> title:(+return "
+"+\"pink panther\")<br /> </p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:258
+msgid "Default field"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:261
+msgid ""
+" The field called text is a virtual field containing all text from all other "
+"fields. This field serves also as default field if you do not specify a field"
+" name.<br /> <br /> Example:<br /> <br /> title:2005 and survey<br /> <br /> "
+"is equivalent to<br /> <br /> title:2005 and text:survey<br /> <br /> "
+"Warning: If you don't specify a single field, you won't have a colon anymore "
+"and CKAN will switch to simple search. This might lead to very surprising "
+"results, because simple search ignores most of the special characters used in"
+" advanced search.<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:281
+msgid "Available fields"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:284
+msgid ""
+" Look at some datasets relevant for you search to see what fields are "
+"available. Note that non-standard fields need to be prefixed by extras_<br />"
+" <br /> Example:<br /> <br /> Language of the dataset might be available in a"
+" field called extras_language<br /> <br /> An abstract of the dataset might "
+"be available in a field called extras_abstrtact.<br /> <br /> Note that exact"
+" details cannot be given here because the available fields vary in diffferent"
+" CKAN installations and/or according to the datasets entered.<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:303
+msgid "Further reading"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:306
+msgid ""
+" CKAN uses Apache Solr as its search engine. For further details check the "
+"documentation at<br /> <br /> <a "
+"href=\"http://lucene.apache.org/core/3_6_0/queryparsersyntax.html\">http://lucene.apache.org/core/3_6_0/queryparsersyntax.html</a><br"
+" /> <a "
+"href=\"http://wiki.apache.org/solr/SolrQuerySyntax\">http://wiki.apache.org/solr/SolrQuerySyntax</a><br"
+" /> <a "
+"href=\"http://wiki.apache.org/solr/DisMaxQParserPlugin\">http://wiki.apache.org/solr/DisMaxQParserPlugin"
+" (for simple search)/a><br /> <br /> Please note that CKAN uses sometimes "
+"different values than what is mentioned in that documentation. Also note that"
+" not the whole functionality is offered through the simplified serach "
+"interface in CKAN.<br /> This description is heavily based on the original "
+"documentation.<br /> "
+msgstr ""
+
