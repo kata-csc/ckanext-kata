@@ -7,14 +7,7 @@
 {% endblock %}
 
 {% block primary_content %}
-  <section class="module">
-    <div class="module-content">
-      <form id="dataset-search" class="dataset-search clearfix" method="get" data-module="select-switch">
-        <span class="control-group search-giant">
-          <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('Search...') }}" />
-          <button type="submit" value="{{ _('Search') }}">Submit</button>
-        </span>
-	<section class="module" id="recmod">
+	<section class="module" id="help">
 		<h2 class="module-heading">{{ _('Search help') }}
 		<a class="module-link" href="#searchhelp" onclick="$('#searchhelp').slideToggle()">{{ _('Hide/show') }}</a>
 		</h2>
@@ -22,6 +15,14 @@
 		{{ h.snippet('package/snippets/search_help.html')}}
 	</div>
 	</section>
+  <section class="module">
+    <div class="module-content">
+      <form id="dataset-search" class="dataset-search clearfix" method="get" data-module="select-switch">
+        <span class="control-group search-giant">
+          <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('Search...') }}" />
+          <button type="submit" value="{{ _('Search') }}">Submit</button>
+        </span>
+
         {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
 
         {% if c.fields -%}
@@ -34,6 +35,7 @@
 
         <div id="dataset-search-ext"></div>
       </form>
+
       <div class="results">
         <strong>
           {%- if request.params and c.page.item_count -%}
