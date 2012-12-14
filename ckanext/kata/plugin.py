@@ -24,9 +24,11 @@ from ckan.logic.converters import convert_to_extras, convert_from_extras
 from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_empty, not_missing, both_not_empty
 from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
 
+from pylons.decorators.cache import beaker_cache
+
 from validators import check_language, check_project, validate_access,\
                         validate_lastmod, check_junk, check_last_and_update_pid,\
-                        validate_language
+                        validate_language, validate_email, validate_phonenum
 
 from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras,\
@@ -91,10 +93,17 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def get_helpers(self):
         ''' Register helpers '''
-        return {'is_custom_form':self.is_custom_form,
-                'kata_sorted_extras':self.kata_sorted_extras,
-                'kata_metadata_fields':self.kata_metadata_fields}
-    
+        return {'is_custom_form': self.is_custom_form,
+                'kata_sorted_extras': self.kata_sorted_extras,
+                'kata_metadata_fields': self.kata_metadata_fields,
+                'reference_update': self.reference_update}
+
+    def reference_update(self, ref):
+        @beaker_cache(type="dbm", expire=2678400)
+        def cached_url(url):
+            return url
+        return cached_url(ref)
+
     def is_custom_form(self, _dict):
         ''' Template helper, used to identify ckan custom form '''
         for key in self.hide_extras_form:
@@ -255,11 +264,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema[key] = [not_missing, self.convert_to_extras_kata, unicode]
         for key in self.kata_fields_recommended:
             schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
+        schema['temporal_coverage_begin'].append(validate_lastmod)
+        schema['temporal_coverage_end'].append(validate_lastmod)
+        schema['language'].append(validate_language)
+        schema['phone'].append(validate_phonenum)
+        schema['maintainer_email'].append(validate_email)
         schema.update({
            'version': [not_missing, unicode, validate_lastmod, check_last_and_update_pid],
-           'temporal_coverage_begin': [ignore_missing, self.convert_to_extras_kata, unicode, validate_lastmod],
-           'temporal_coverage_end': [ignore_missing, self.convert_to_extras_kata, unicode, validate_lastmod],
-           'language': [not_missing, self.convert_to_extras_kata, validate_language],
            'extras': {
                 'id': [ignore],
                 'key': [custom_to_extras],

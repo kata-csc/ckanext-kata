@@ -1,6 +1,7 @@
 import iso8601
 import logging
 import pycountry
+import re
 
 from ckan.model import Package
 from pylons.i18n import gettext as _
@@ -56,3 +57,20 @@ def validate_language(key, data, errors, context):
         pycountry.languages.get(alpha2=data[key])
     except KeyError:
         errors[key].append(_('Invalid language, not in ISO 639.'))
+
+EMAIL_REGEX = re.compile(r'[^@]+@[^@]+\.[^@]+')
+TEL_REGEX = re.compile(r'^\+?\d+$')
+
+
+def validate_email(key, data, errors, context):
+    if not EMAIL_REGEX.match(data[key]):
+        errors[key].append(_('Invalid email address'))
+    else:
+        data[key] = 'mailto:%s' % data[key]
+
+
+def validate_phonenum(key, data, errors, context):
+    if not TEL_REGEX.match(data[key]):
+        errors[key].append(_('Invalid telephone number, must be like +13221221'))
+    else:
+        data[key] = 'tel:%s' % data[key]

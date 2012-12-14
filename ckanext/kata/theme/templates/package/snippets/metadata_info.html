@@ -27,7 +27,7 @@
 	</td>
 		{% for auth, org in pkg_dict.orgauths %}
 		<tr>
-		<td>{{auth.value}}</td><td>{{org.value}}</td>
+		<td>{{ h.reference_update(auth.value) }}</td><td>{{org.value}}</td>
 		</tr>
 		{% endfor %}
 	{% endif %}
