@@ -101,17 +101,25 @@ def org_auth_to_extras(key, data, errors, context):
             if k[0] == 'author' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
-                extras.append({'key': "%s_%d" % (k[0], authnum),
-                               'value': data[(k[0], k[1], 'value')]
-                            })
-                authnum += 1
+                val = data[(k[0], k[1], 'value')]
+                if val.startswith('http://') or val.startswith('urn:'):
+                    extras.append({'key': "%s_%d" % (k[0], authnum),
+                                   'value': val
+                                })
+                    authnum += 1
+                else:
+                    errors[key].append(_('One or more authors/organisations is not a reference, like http://ref or urn:isni:1231233'))
             if k[0] == 'organization' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
-                extras.append({'key': "%s_%d" % (k[0], orgnum),
-                               'value': data[(k[0], k[1], 'value')]
-                            })
-                orgnum += 1
+                val = data[(k[0], k[1], 'value')]
+                if val.startswith('http://') or val.startswith('urn:'):
+                    extras.append({'key': "%s_%d" % (k[0], orgnum),
+                                   'value': val,
+                                })
+                    orgnum += 1
+                else:
+                    errors[key].append(_('One or more authors/organisations is not a reference, like http://ref or urn:isni:1231233'))
         except:
             pass
 
@@ -139,6 +147,7 @@ def org_auth_from_extras(key, data, errors, context):
                 org['value'] = val
                 if not {'key': data[k], 'value': val} in orgs:
                     orgs.append(org)
+
     orgs = sorted(orgs, key=lambda ke: int(ke['key'][-1]))
     auths = sorted(auths, key=lambda ke: int(ke['key'][-1]))
     for org, auth in zip(orgs, auths):
@@ -158,7 +167,7 @@ def ltitle_to_extras(key, data, errors, context):
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
                 extras.append({'key': "%s_%d" % (k[0], authnum),
-                               'value': data[(k[0], k[1], 'value')]
+                               'value': value
                             })
                 authnum += 1
             if k[0] == 'lsel' \
@@ -309,9 +318,10 @@ def copy_from_titles(key, data, errors, context):
 
 
 def export_as_related(key, data, errors, context):
-    for value in data[key].split(';'):
-        if len(Session.query(Related).filter(Related.title == value).all()) == 0:
-            data_dict = {'title': value,
-                         'type': _("Paper"),
-                         'dataset_id': data[('__extras',)]['id']}
-            related_create(context, data_dict)
+    return
+#    for value in data[key].split(';'):
+#        if len(Session.query(Related).filter(Related.title == value).all()) == 0:
+#            data_dict = {'title': value,
+#                         'type': _("Paper"),
+#                         'dataset_id': data[('__extras',)]['id']}
+#            related_create(context, data_dict)
