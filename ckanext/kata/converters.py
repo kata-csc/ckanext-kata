@@ -1,6 +1,9 @@
 import utils
 import logging
+from pylons.i18n import gettext as _
 
+from ckan.logic.action.create import related_create
+from ckan.model import Related, Session
 
 log = logging.getLogger('ckanext.kata.converters')
 
@@ -303,3 +306,12 @@ def copy_from_titles(key, data, errors, context):
                     data[key] = data[(k[0], k[1], 'value')]
         except:
             pass
+
+
+def export_as_related(key, data, errors, context):
+    for value in data[key].split(';'):
+        if len(Session.query(Related).filter(Related.title == value).all()) == 0:
+            data_dict = {'title': value,
+                         'type': _("Paper"),
+                         'dataset_id': data[('__extras',)]['id']}
+            related_create(context, data_dict)

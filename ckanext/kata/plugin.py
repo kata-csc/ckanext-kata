@@ -32,7 +32,8 @@ from validators import check_language, check_project, validate_access,\
 
 from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras,\
-                        org_auth_from_extras, org_auth_to_extras, pid_from_extras\
+                        org_auth_from_extras, org_auth_to_extras, pid_from_extras,\
+                        export_as_related
 
 log = logging.getLogger('ckanext.kata')
 
@@ -269,6 +270,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['language'].append(validate_language)
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
+        schema['erelated'].append(export_as_related)
         schema.update({
            'version': [not_missing, unicode, validate_lastmod, check_last_and_update_pid],
            'extras': {
