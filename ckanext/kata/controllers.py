@@ -59,7 +59,7 @@ class MetadataController(BaseController):
         if extras["access"] == 'contact':
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['accessRights'] + '</RightsDeclaration>'
         if extras["access"] in ('ident', 'free'):
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['accessURL'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['accessrequestURL'] + '</RightsDeclaration>'
         if extras["access"] == 'form':
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED"/>'
         return Literal(xmlstr, datatype=RDF.XMLLiteral)
@@ -97,9 +97,9 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.publisher, profileurl))
                 graph.add((profileurl, RDF.type, org))
                 graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
-                graph.add((profileurl, FOAF.mbox, Identifier(data["extras"]["contact_email"])))
-                graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["contact_phone"])))
-                graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contact_form"])))
+                graph.add((profileurl, FOAF.mbox, Identifier(data["maintainer_email"])))
+                graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["phone"])))
+                graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contactURL"])))
                 graph.add((uri, DC.rightsHolder, Identifier(profileurl)))
             graph.add((uri, DC.title, Literal(data["title"],
                                         lang=data["extras"].get("language",
