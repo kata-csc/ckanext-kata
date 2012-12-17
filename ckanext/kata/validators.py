@@ -59,7 +59,7 @@ def validate_language(key, data, errors, context):
         errors[key].append(_('Invalid language, not in ISO 639.'))
 
 EMAIL_REGEX = re.compile(r'[^@]+@[^@]+\.[^@]+')
-TEL_REGEX = re.compile(r'^\+?\d+$')
+TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
 
 
 def validate_email(key, data, errors, context):

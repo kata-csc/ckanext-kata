@@ -99,7 +99,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'reference_update': self.reference_update}
 
     def reference_update(self, ref):
-        @beaker_cache(type="dbm", expire=2678400)
+        #@beaker_cache(type="dbm", expire=2678400)
         def cached_url(url):
             return url
         return cached_url(ref)
