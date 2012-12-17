@@ -271,6 +271,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
         schema['erelated'].append(export_as_related)
+        schema['publications'].append(export_as_related)
         schema.update({
            'version': [not_missing, unicode, validate_lastmod, check_last_and_update_pid],
            'extras': {
