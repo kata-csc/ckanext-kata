@@ -65,12 +65,8 @@ TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
 def validate_email(key, data, errors, context):
     if not EMAIL_REGEX.match(data[key]):
         errors[key].append(_('Invalid email address'))
-    else:
-        data[key] = 'mailto:%s' % data[key]
 
 
 def validate_phonenum(key, data, errors, context):
     if not TEL_REGEX.match(data[key]):
         errors[key].append(_('Invalid telephone number, must be like +13221221'))
-    else:
-        data[key] = 'tel:%s' % data[key]

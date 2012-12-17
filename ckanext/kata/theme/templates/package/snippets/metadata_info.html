@@ -71,10 +71,10 @@ This dataset is
 		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.contact_name }}</td>
 	</tr>
 	<tr>
-		<th class="dataset-label">{{ _('Phone') }}</th><td class="dataset-details">{{ pkg_dict.phone }}</td>
+		<th class="dataset-label">{{ _('Phone') }}</th><td class="dataset-details">tel:{{ pkg_dict.phone }}</td>
 	</tr>
 	<tr>
-		<th class="dataset-label">{{ _('Email') }}</th><td class="dataset-details">{{ pkg_dict.maintainer_email}}</td>
+		<th class="dataset-label">{{ _('Email') }}</th><td class="dataset-details">mailto:{{ pkg_dict.maintainer_email}}</td>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Contact form') }}</th><td class="dataset-details">{{ pkg_dict.contactURL }}</td>
