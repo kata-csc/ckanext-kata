@@ -56,7 +56,8 @@ def validate_language(key, data, errors, context):
     try:
         pycountry.languages.get(alpha2=data[key])
     except KeyError:
-        errors[key].append(_('Invalid language, not in ISO 639.'))
+        if not ('langdis',) in data:
+            errors[key].append(_('Invalid language, not in ISO 639.'))
 
 EMAIL_REGEX = re.compile(r'[^@]+@[^@]+\.[^@]+')
 TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
