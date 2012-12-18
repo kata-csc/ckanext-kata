@@ -167,7 +167,7 @@ def ltitle_to_extras(key, data, errors, context):
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
                 extras.append({'key': "%s_%d" % (k[0], authnum),
-                               'value': value
+                               'value': data[(k[0], k[1], 'value')]
                             })
                 authnum += 1
             if k[0] == 'lsel' \
@@ -313,6 +313,7 @@ def copy_from_titles(key, data, errors, context):
             if k[0] == 'extras' and k[-1] == 'key':
                 if 'ltitle' in data[k] and not data[key]:
                     data[key] = data[(k[0], k[1], 'value')]
+                    break
         except:
             pass
 
