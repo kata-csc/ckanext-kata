@@ -161,7 +161,7 @@
 	</div>
 	<input type="radio" name="access" onclick="$('#urlDiv').toggle()" style="top: 0px" value="free" {% if data.access == 'free'%}checked{% endif %}>{{ _('directly downloadable') }}</input><br />
 	<input type="radio" name="access" onclick="$('#urlDiv').toggle()" style="top: 0px" value="ident" {% if data.access == 'ident'%}checked{% endif %}>{{ _('downloadable after registration / identification') }}</input><br />
-	<div id="urlDiv" {% if not data.accessURL %}style="display:none"{% endif%}>
+	<div id="urlDiv" {% if not data.accessrequestURL %}style="display:none"{% endif%}>
 	{{ form.input('accessrequestURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessrequestURL, error=errors.accessrequestURL, classes=['control-medium'] ) }}
 	</div> 
 	<input type="radio" name="access" style="top: 0px" value="contact" {% if data.access == 'contact'%}checked{% endif %}>{{ _('only by contacting the distributor') }}</input><br />
