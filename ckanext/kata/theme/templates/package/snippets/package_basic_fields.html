@@ -51,7 +51,7 @@
 	</div>
 {% endfor %}
 </div>
-{% call form.input_block("author", _("Authors and organizations"), error=errors.author[0].value) %}
+{% call form.input_block("author", _("Authors and organizations"), error=errors.author) %}
 <div data-module="custom-fields-kata" data-module-id="orgauths" id="orgauths">
 {% set lastrole = 1%}
 {% if data.orgauths %}
