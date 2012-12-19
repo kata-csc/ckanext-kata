@@ -102,7 +102,7 @@ def org_auth_to_extras(key, data, errors, context):
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
                 val = data[(k[0], k[1], 'value')]
-                if val.startswith('http://') or val.startswith('urn:'):
+                if val.startswith(('http://', 'urn:')):
                     extras.append({'key': "%s_%d" % (k[0], authnum),
                                    'value': val
                                 })
@@ -113,15 +113,20 @@ def org_auth_to_extras(key, data, errors, context):
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
                 val = data[(k[0], k[1], 'value')]
-                if val.startswith('http://') or val.startswith('urn:'):
+                if val.startswith(('http://', 'urn:')):
                     extras.append({'key': "%s_%d" % (k[0], orgnum),
                                    'value': val,
                                 })
                     orgnum += 1
                 else:
                     errors[key].append(_('One or more authors/organisations is not a reference, like http://ref or urn:isni:1231233'))
-        except:
+        except Exception, e:
             pass
+    if not orgnum == authnum:
+        if key[0] == 'author':
+            errors[key].append(_('Some of the authors are without organisation.'))
+        elif key[0] == 'organization':
+            errors[key].append(_('Some of the organizations are without author.'))
 
 
 def org_auth_from_extras(key, data, errors, context):
@@ -150,9 +155,18 @@ def org_auth_from_extras(key, data, errors, context):
 
     orgs = sorted(orgs, key=lambda ke: int(ke['key'][-1]))
     auths = sorted(auths, key=lambda ke: int(ke['key'][-1]))
-    for org, auth in zip(orgs, auths):
-        if not (auth, org) in orgauths:
-            orgauths.append((auth, org))
+    zipped = zip(orgs, auths)
+    if zipped:
+        for org, auth in zipped:
+            if not (auth, org) in orgauths:
+                orgauths.append((auth, org))
+    else:
+        for org in orgs:
+            if not ("", org) in orgauths:
+                orgauths.append(("", org))
+        for auth in auths:
+            if not (auth, "") in orgauths:
+                orgauths.append((auth, ""))
 
 
 def ltitle_to_extras(key, data, errors, context):
