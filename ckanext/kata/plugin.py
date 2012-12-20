@@ -28,7 +28,8 @@ from pylons.decorators.cache import beaker_cache
 
 from validators import check_language, check_project, validate_access,\
                         validate_lastmod, check_junk, check_last_and_update_pid,\
-                        validate_language, validate_email, validate_phonenum
+                        validate_language, validate_email, validate_phonenum,\
+                        check_project_dis, check_accessrequesturl, check_accessrights
 
 from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras,\
@@ -262,7 +263,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def form_to_db_schema_options(self, package_type=None, options=None):
         schema = form_to_db_package_schema()
         for key in self.kata_fields_required:
-            schema[key] = [not_missing, self.convert_to_extras_kata, unicode]
+            schema[key] = [not_empty, self.convert_to_extras_kata, unicode]
         for key in self.kata_fields_recommended:
             schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
         schema['temporal_coverage_begin'].append(validate_lastmod)
@@ -272,6 +273,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['maintainer_email'].append(validate_email)
         schema['erelated'].append(export_as_related)
         schema['publications'].append(export_as_related)
+        
         schema.update({
            'version': [not_missing, unicode, validate_lastmod, check_last_and_update_pid],
            'extras': {
@@ -284,16 +286,22 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 '__extras': [ignore],
             },
            'versionPID': [self.update_pid, unicode, self.pid_to_extras],
-           'author': {'value': [not_missing, unicode, org_auth_to_extras]},
-           'organization': {'value': [not_missing, unicode, org_auth_to_extras]},
+           'author': {'value': [not_empty, unicode, org_auth_to_extras]},
+           'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
            'langdis': [ignore_missing, unicode, check_language],
-           'projdis': [ignore_missing, unicode, check_project],
            '__extras': [ignore],
+           'projdis': [ignore_missing, unicode, check_project],
            '__junk': [check_junk],
            'name': [unicode, ignore_missing, self.update_name],
            'title': [ignore_missing, copy_from_titles],
+           'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
+           'accessrequestURL': [check_accessrequesturl, self.convert_to_extras_kata, unicode],
+           'project_name': [check_project_dis, unicode, self.convert_to_extras_kata],
+           'project_funder': [check_project_dis, unicode, self.convert_to_extras_kata],
+           'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
+           'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
         })
         schema['lsel'] = {'value': [ignore_missing, unicode, ltitle_to_extras]}
         schema['ltitle'] = {'value': [ignore_missing, unicode, ltitle_to_extras]}

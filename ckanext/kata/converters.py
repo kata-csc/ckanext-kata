@@ -101,6 +101,9 @@ def org_auth_to_extras(key, data, errors, context):
             if k[0] == 'author' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
+                if not ('organization', key[1], 'value') in data:
+                    errors[key].append(_('This author is without organisation.'))
+                    return
                 val = data[(k[0], k[1], 'value')]
                 if val.startswith(('http://', 'urn:')):
                     extras.append({'key': "%s_%d" % (k[0], authnum),
@@ -112,6 +115,9 @@ def org_auth_to_extras(key, data, errors, context):
             if k[0] == 'organization' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
+                if not ('author', key[1], 'value') in data:
+                    errors[key].append(_('This organization is without author.'))
+                    return
                 val = data[(k[0], k[1], 'value')]
                 if val.startswith(('http://', 'urn:')):
                     extras.append({'key': "%s_%d" % (k[0], orgnum),
@@ -122,11 +128,6 @@ def org_auth_to_extras(key, data, errors, context):
                     errors[key].append(_('One or more authors/organisations is not a reference, like http://ref or urn:isni:1231233'))
         except Exception, e:
             pass
-    if not orgnum == authnum:
-        if key[0] == 'author':
-            errors[key].append(_('Some of the authors are without organisation.'))
-        elif key[0] == 'organization':
-            errors[key].append(_('Some of the organizations are without author.'))
 
 
 def org_auth_from_extras(key, data, errors, context):

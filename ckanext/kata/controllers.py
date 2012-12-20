@@ -104,11 +104,11 @@ class MetadataController(BaseController):
             graph.add((uri, DC.title, Literal(data["title"],
                                         lang=data["extras"].get("language",
                                                                 None))))
-            project = URIRef(FOAF.Project)
             if all(k in data["extras"] for k in ("project_name",\
                                                  "project_homepage",\
                                                  "project_funding",\
                                                  "project_funder")):
+                project = URIRef(FOAF.Project)
                 projecturl = URIRef(data["extras"]["project_homepage"])
                 graph.add((uri, DC.contributor, projecturl))
                 graph.add((projecturl, RDF.type, project))

@@ -6,6 +6,7 @@ import re
 from ckan.model import Package
 from pylons.i18n import gettext as _
 import utils
+from ckan.lib.navl.validators import not_empty
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -71,3 +72,18 @@ def validate_email(key, data, errors, context):
 def validate_phonenum(key, data, errors, context):
     if not TEL_REGEX.match(data[key]):
         errors[key].append(_('Invalid telephone number, must be like +13221221'))
+
+
+def check_project_dis(key, data, errors, context):
+    if not ('projdis',) in data:
+        not_empty(key, data, errors, context)
+
+
+def check_accessrights(key, data, errors, context):
+    if data[('access',)] == 'form':
+        not_empty(key, data, errors, context)
+
+
+def check_accessrequesturl(key, data, errors, context):
+    if data[('access',)] in ('free', 'ident'):
+        not_empty(key, data, errors, context)
