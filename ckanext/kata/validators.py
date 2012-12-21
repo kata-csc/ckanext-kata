@@ -7,6 +7,7 @@ from ckan.model import Package
 from pylons.i18n import gettext as _
 import utils
 from ckan.lib.navl.validators import not_empty
+from ckan.lib.navl.dictization_functions import StopOnError
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -87,3 +88,9 @@ def check_accessrights(key, data, errors, context):
 def check_accessrequesturl(key, data, errors, context):
     if data[('access',)] in ('free', 'ident'):
         not_empty(key, data, errors, context)
+
+
+def not_empty_kata(key, data, errors, context):
+    if data[key] == []:
+        errors[key].append(_('Missing value'))
+        raise StopOnError

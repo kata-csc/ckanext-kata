@@ -29,7 +29,8 @@ from pylons.decorators.cache import beaker_cache
 from validators import check_language, check_project, validate_access,\
                         validate_lastmod, check_junk, check_last_and_update_pid,\
                         validate_language, validate_email, validate_phonenum,\
-                        check_project_dis, check_accessrequesturl, check_accessrights
+                        check_project_dis, check_accessrequesturl, check_accessrights,\
+                        not_empty_kata
 
 from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras,\
@@ -84,7 +85,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'contact_name', 'phone', 'contactURL',
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
                   'access', 'accessRights', 'accessrequestURL', 'licenseURL',
-                  'ltitle', 'lsel', 'organization', 'author']
+                  'organization', 'author']
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
                   'temporal_coverage_end', 'publications', 'collections',
                   'erelated', 'discipline', 'fformat', 'checksum',
@@ -268,14 +269,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
         schema['temporal_coverage_begin'].append(validate_lastmod)
         schema['temporal_coverage_end'].append(validate_lastmod)
-        schema['language'].append(validate_language)
+        schema['language'] = [validate_language, self.convert_to_extras_kata, unicode]
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
         schema['erelated'].append(export_as_related)
         schema['publications'].append(export_as_related)
-        
+        schema['tag_string'].append(not_empty)
         schema.update({
-           'version': [not_missing, unicode, validate_lastmod, check_last_and_update_pid],
+           'version': [not_empty, unicode, validate_lastmod, check_last_and_update_pid],
            'extras': {
                 'id': [ignore],
                 'key': [custom_to_extras],
@@ -286,8 +287,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 '__extras': [ignore],
             },
            'versionPID': [self.update_pid, unicode, self.pid_to_extras],
-           'author': {'value': [not_empty, unicode, org_auth_to_extras]},
-           'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
+           'author': {'value': [unicode, org_auth_to_extras]},
+           'organization': {'value': [unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
            'langdis': [ignore_missing, unicode, check_language],

@@ -3,6 +3,8 @@
 <h2 class="module-heading">{{ _('General information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name%}{{data.name}}{%endif%}" />
+
+{% call form.input_block("titles", "Titles" , error=errors.lsel) %}
 {% set lastlang = 1%}
 <div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
 {% if data.langtitles %}
@@ -50,6 +52,7 @@
 			</div>
 	</div>
 {% endfor %}
+{% endcall %}
 </div>
 {% call form.input_block("author", _("Authors and organizations"), error=errors.author) %}
 <div data-module="custom-fields-kata" data-module-id="orgauths" id="orgauths">
@@ -97,7 +100,7 @@
 </div>
 {% endcall %}
 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-{{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-large'], attrs=tag_attrs) }}
+{{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-large'], attrs=tag_attrs) }}
 
 <input type="checkbox" style="top: 0px;" name="langdis" onchange="$('#langdiv').toggle()" {% if data.langdis %}checked{% endif %}>{{ _('This dataset does not have a language') }}</input>
 <div id="langdiv" {% if data.langdis %} style="display: none" {% endif %}>
@@ -136,12 +139,11 @@
 <h2 class="module-heading">{{ _('Identification information') }}</h2>
 <div class="module-content">
 {{ form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=data.versionPID, error=errors.versionPID, classes=['control-medium']) }}
+{% call form.input_block("titles", _('Modification date'), error=errors.version) %}
 	<div data-module="dateselect-simple-kata">
-		<label class="control-label" for="last modified">{{ _('Modification date') }}</label>
-		<div class="controls">
-			<input type="text" readonly id="last_modified" name="version" value="{{data.version}}" />
-		</div>
+		<input type="text" readonly id="last_modified" name="version" value="{{data.version}}" />
 	</div>
+{% endcall %}
 </div>
 </section>
 <section class="module">

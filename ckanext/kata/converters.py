@@ -4,6 +4,7 @@ from pylons.i18n import gettext as _
 
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session
+from ckan.lib.navl.validators import not_empty
 
 log = logging.getLogger('ckanext.kata.converters')
 
@@ -96,6 +97,7 @@ def org_auth_to_extras(key, data, errors, context):
         data[('extras',)] = extras
     authnum = 1
     orgnum = 1
+    not_empty(key, data, errors, context)
     for k in data.keys():
         try:
             if k[0] == 'author' \
@@ -176,11 +178,13 @@ def ltitle_to_extras(key, data, errors, context):
         data[('extras',)] = extras
     authnum = 1
     orgnum = 1
+    langs = []
     for k in data.keys():
         try:
             if k[0] == 'ltitle' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
+                not_empty(k, data, errors, context)
                 extras.append({'key': "%s_%d" % (k[0], authnum),
                                'value': data[(k[0], k[1], 'value')]
                             })
@@ -188,8 +192,15 @@ def ltitle_to_extras(key, data, errors, context):
             if k[0] == 'lsel' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
+                not_empty(k, data, errors, context)
+                val = data[(k[0], k[1], 'value')]
+                if not val in langs:
+                    langs.append(val)
+                else:
+                    if not _("Duplicate language found.") in errors[key]:
+                        errors[key].append(_("Duplicate language found."))
                 extras.append({'key': "%s_%d" % (k[0], orgnum),
-                               'value': data[(k[0], k[1], 'value')]
+                               'value': val
                             })
                 orgnum += 1
         except:
