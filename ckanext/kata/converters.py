@@ -107,13 +107,10 @@ def org_auth_to_extras(key, data, errors, context):
                     errors[key].append(_('This author is without organisation.'))
                     return
                 val = data[(k[0], k[1], 'value')]
-                if val.startswith(('http://', 'urn:')):
-                    extras.append({'key': "%s_%d" % (k[0], authnum),
-                                   'value': val
-                                })
-                    authnum += 1
-                else:
-                    errors[key].append(_('One or more authors/organisations is not a reference, like http://ref or urn:isni:1231233'))
+                extras.append({'key': "%s_%d" % (k[0], authnum),
+                               'value': val
+                            })
+                authnum += 1
             if k[0] == 'organization' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
@@ -121,13 +118,10 @@ def org_auth_to_extras(key, data, errors, context):
                     errors[key].append(_('This organization is without author.'))
                     return
                 val = data[(k[0], k[1], 'value')]
-                if val.startswith(('http://', 'urn:')):
-                    extras.append({'key': "%s_%d" % (k[0], orgnum),
-                                   'value': val,
-                                })
-                    orgnum += 1
-                else:
-                    errors[key].append(_('One or more authors/organisations is not a reference, like http://ref or urn:isni:1231233'))
+                extras.append({'key': "%s_%d" % (k[0], orgnum),
+                               'value': val,
+                            })
+                orgnum += 1
         except Exception, e:
             pass
 
