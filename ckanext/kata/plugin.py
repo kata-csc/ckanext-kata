@@ -13,6 +13,7 @@ from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplat
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurable
 from ckan.plugins import IMapper
+from ckan.plugins import IActions
 from ckan.plugins.core import unload
 from ckan.lib.base import g, c
 from ckan.model import Package
@@ -36,6 +37,7 @@ from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras,\
                         org_auth_from_extras, org_auth_to_extras, pid_from_extras,\
                         export_as_related
+import actions
 
 log = logging.getLogger('ckanext.kata')
 
@@ -80,6 +82,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IConfigurable, inherit=True)
     implements(IPackageController, inherit=True)
     implements(ITemplateHelpers, inherit=True)
+    implements(IActions, inherit=True)
 
     kata_fields_required = ['version', 'language',
                   'contact_name', 'phone', 'contactURL',
@@ -93,6 +96,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   ]
 
     kata_field = kata_fields_recommended + kata_fields_required
+
+    def get_actions(self):
+        return {'package_show': actions.package_show}
 
     def get_helpers(self):
         ''' Register helpers '''

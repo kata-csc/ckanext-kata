@@ -339,10 +339,10 @@ def copy_from_titles(key, data, errors, context):
 
 
 def export_as_related(key, data, errors, context):
-    return
-#    for value in data[key].split(';'):
-#        if len(Session.query(Related).filter(Related.title == value).all()) == 0:
-#            data_dict = {'title': value,
-#                         'type': _("Paper"),
-#                         'dataset_id': data[('__extras',)]['id']}
-#            related_create(context, data_dict)
+    if 'id' in data[('__extras',)]:
+        for value in data[key].split(';'):
+            if len(Session.query(Related).filter(Related.title == value).all()) == 0:
+                data_dict = {'title': value,
+                             'type': _("Paper"),
+                             'dataset_id': data[('__extras',)]['id']}
+                related_create(context, data_dict)
