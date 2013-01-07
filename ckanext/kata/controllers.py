@@ -57,11 +57,11 @@ class MetadataController(BaseController):
     def _make_rights_element(self, extras):
         xmlstr = ""
         if extras["access"] == 'contact':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['accessRights'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras['accessRights'] + '</RightsDeclaration>'
         if extras["access"] in ('ident', 'free'):
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['accessrequestURL'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['licenseURL'] + '</RightsDeclaration>'
         if extras["access"] == 'form':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED"/>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['accessRightsURL'] + '</RightsDeclaration>'
         return Literal(xmlstr, datatype=RDF.XMLLiteral)
 
     def tordf(self, id, format):
@@ -83,28 +83,26 @@ class MetadataController(BaseController):
                                 if 'identifier' not in data["extras"]\
                                 else URIRef(data["extras"]["identifier"])))
             graph.add((metadoc, DC.modified, Literal(data["metadata_modified"],
-                                                 datatype=XSD.date)))
+                                                 datatype=XSD.dateTime)))
             graph.add((metadoc, FOAF.primaryTopic, Identifier(data['name'])))
             uri = URIRef(data['name'])
             if data["license"]:
                 graph.add((uri, DC.rights, Literal(data["license"])))
             if "versionPID" in data["extras"]:
                 graph.add((uri, DC.identifier, Literal(data["extras"]["versionPID"])))
+            graph.add((uri, DC.identifier, Literal(data["name"])))
             graph.add((uri, DC.modified, Literal(data.get("version", ''),
-                                                 datatype=XSD.date)))
-            org = URIRef(FOAF.Organization)
+                                                 datatype=XSD.dateTime)))
+            org = URIRef(FOAF.Person)
             if profileurl:
                 graph.add((uri, DC.publisher, profileurl))
                 graph.add((profileurl, RDF.type, org))
                 graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
-                graph.add((profileurl, FOAF.mbox, Identifier(data["maintainer_email"])))
                 graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["phone"])))
                 graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contactURL"])))
                 graph.add((uri, DC.rightsHolder, Identifier(profileurl)))
-            graph.add((uri, DC.title, Literal(data["title"],
-                                        lang=data["extras"].get("language",
-                                                                None))))
-            if all(k in data["extras"] for k in ("project_name",\
+            log.debug(data["extras"])
+            if all((k in data["extras"] and data["extras"][k] != "") for k in ("project_name",\
                                                  "project_homepage",\
                                                  "project_funding",\
                                                  "project_funder")):
@@ -116,10 +114,18 @@ class MetadataController(BaseController):
                 graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
                 graph.add((projecturl, RDFS.comment,
                             Literal(data["extras"]["project_funder"])))
+            lastlang = ""
             for key in data["extras"]:
                 log.debug(key)
                 if key.startswith('author'):
-                    graph.add((uri, DC.creator, Literal(data["extras"][key])))
+                    graph.add((uri, DC.creator, URIRef(data["extras"][key])\
+                                                if data["extras"][key].startswith(('http','urn'))\
+                                                else Literal(data["extras"][key])))
+                if key.startswith('lsel'):
+                    lastlang = data["extras"][key]
+                if key.startswith("ltitle"):
+                    graph.add((uri, DC.title, Literal(data["extras"][key],
+                                        lang=lastlang)))
             for tag in data['tags']:
                 graph.add((uri, DC.subject, Literal(tag)))
             graph.add((uri, DC.language, Literal(data["extras"]\
