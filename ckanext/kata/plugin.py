@@ -309,8 +309,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
         })
-        schema['title'] = {'value': [ignore_missing, unicode, ltitle_to_extras],
-                           'lang': [ignore_missing, unicode]}
+        schema['title'] = {'value': [ignore_missing, ltitle_to_extras],
+                           'lang': [ignore_missing]}
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras]}

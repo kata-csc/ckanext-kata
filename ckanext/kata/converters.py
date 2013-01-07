@@ -178,12 +178,10 @@ def ltitle_to_extras(key, data, errors, context):
             if k[0] == 'title' and k[-1] == 'value' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
-                not_empty(k, data, errors, context)
                 extras.append({'key': "%s_%d" % (k[0], authnum),
                                'value': data[(k[0], k[1], 'value')]
                             })
                 authnum += 1
-                not_empty(k, data, errors, context)
                 lval = data[(k[0], k[1], 'lang')]
                 if not lval in langs:
                     langs.append(lval)
@@ -194,8 +192,10 @@ def ltitle_to_extras(key, data, errors, context):
                                'value': lval
                             })
                 orgnum += 1
-                if data[('title',)] == '':
-                    data[('title',)] = data[key]
+                if not ('title',) in data:
+                    data[('title',)] = data[(k[0], k[1], 'value')]
+                del data[(k[0], k[1], 'value')]
+                del data[(k[0], k[1], 'lang')]
         except:
             pass
 
