@@ -175,7 +175,7 @@ def ltitle_to_extras(key, data, errors, context):
     langs = []
     for k in data.keys():
         try:
-            if k[0] == 'ltitle' \
+            if k[0] == 'title' and k[-1] == 'value' \
             and (k[0], k[1], 'value') in data \
             and len(data[(k[0], k[1], 'value')]) > 0:
                 not_empty(k, data, errors, context)
@@ -183,20 +183,19 @@ def ltitle_to_extras(key, data, errors, context):
                                'value': data[(k[0], k[1], 'value')]
                             })
                 authnum += 1
-            if k[0] == 'lsel' \
-            and (k[0], k[1], 'value') in data \
-            and len(data[(k[0], k[1], 'value')]) > 0:
                 not_empty(k, data, errors, context)
-                val = data[(k[0], k[1], 'value')]
-                if not val in langs:
-                    langs.append(val)
+                lval = data[(k[0], k[1], 'lang')]
+                if not lval in langs:
+                    langs.append(lval)
                 else:
                     if not _("Duplicate language found.") in errors[key]:
                         errors[key].append(_("Duplicate language found."))
-                extras.append({'key': "%s_%d" % (k[0], orgnum),
-                               'value': val
+                extras.append({'key': "lang_%s_%d" % (k[0], orgnum),
+                               'value': lval
                             })
                 orgnum += 1
+                if data[('title',)] == '':
+                    data[('title',)] = data[key]
         except:
             pass
 
@@ -209,7 +208,7 @@ def ltitle_from_extras(key, data, errors, context):
     orgauths = data[('langtitles',)]
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key':
-            if 'ltitle_' in data[k]:
+            if 'title_' in data[k]:
                 val = data[(k[0], k[1], 'value')]
                 auth = {}
                 auth['key'] = data[k]
@@ -217,7 +216,7 @@ def ltitle_from_extras(key, data, errors, context):
                 if not {'key': data[k], 'value': val} in auths:
                     auths.append(auth)
 
-            if 'lsel_' in data[k]:
+            if 'lang_title_' in data[k]:
                 org = {}
                 val = data[(k[0], k[1], 'value')]
                 org['key'] = data[k]

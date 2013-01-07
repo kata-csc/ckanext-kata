@@ -302,7 +302,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'projdis': [ignore_missing, unicode, check_project],
            '__junk': [check_junk],
            'name': [unicode, ignore_missing, self.update_name],
-           'title': [ignore_missing, copy_from_titles],
            'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
            'accessrequestURL': [check_accessrequesturl, self.convert_to_extras_kata, unicode],
            'project_name': [check_project_dis, unicode, self.convert_to_extras_kata],
@@ -310,8 +309,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
         })
-        schema['lsel'] = {'value': [ignore_missing, unicode, ltitle_to_extras]}
-        schema['ltitle'] = {'value': [ignore_missing, unicode, ltitle_to_extras]}
+        schema['title'] = {'value': [ignore_missing, unicode, ltitle_to_extras],
+                           'lang': [ignore_missing, unicode]}
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras]}
@@ -330,9 +329,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [org_auth_from_extras, ignore_missing, unicode]
 
-        schema['ltitle'] = [ltitle_from_extras, ignore_missing, unicode]
-        schema['lsel'] = [ltitle_from_extras, ignore_missing, unicode]
-        schema['title'] = [copy_from_titles, ignore_missing]
+        schema['title'] = [ltitle_from_extras, ignore_missing, unicode]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
         schema['evwhen'] = [event_from_extras, ignore_missing, unicode]

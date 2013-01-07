@@ -57,11 +57,11 @@ class MetadataController(BaseController):
     def _make_rights_element(self, extras):
         xmlstr = ""
         if extras["access"] == 'contact':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras['accessRights'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras['accessrequestURL'] + '</RightsDeclaration>'
         if extras["access"] in ('ident', 'free'):
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['licenseURL'] + '</RightsDeclaration>'
         if extras["access"] == 'form':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['accessRightsURL'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['accessRights'] + '</RightsDeclaration>'
         return Literal(xmlstr, datatype=RDF.XMLLiteral)
 
     def tordf(self, id, format):
@@ -121,9 +121,7 @@ class MetadataController(BaseController):
                     graph.add((uri, DC.creator, URIRef(data["extras"][key])\
                                                 if data["extras"][key].startswith(('http','urn'))\
                                                 else Literal(data["extras"][key])))
-                if key.startswith('lsel'):
-                    lastlang = data["extras"][key]
-                if key.startswith("ltitle"):
+                if key.startswith("title"):
                     graph.add((uri, DC.title, Literal(data["extras"][key],
                                         lang=lastlang)))
             for tag in data['tags']:
