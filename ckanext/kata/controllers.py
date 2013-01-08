@@ -3,7 +3,7 @@
 
 from ckan.lib.base import BaseController, c, h
 from ckan.controllers.api import ApiController
-from ckan.model import Package, User, PackageRole
+from ckan.model import Package, User, Related
 import ckan.model.misc as misc
 import ckan.model as model
 
@@ -63,6 +63,14 @@ class MetadataController(BaseController):
         if extras["access"] == 'form':
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['accessRights'] + '</RightsDeclaration>'
         return Literal(xmlstr, datatype=RDF.XMLLiteral)
+
+    def _make_temporal(self, extras):
+        dcmi_period = ""
+        if all(k in extras for k in ("temporal_coverage_begin",
+                                    "temporal_coverage_end")):
+            dcmi_period = "start=%s; end=%s; scheme=ISO-8601;" % (extras["temporal_coverage_begin"],
+                                                            extras["temporal_coverage_end"])
+        return dcmi_period
 
     def tordf(self, id, format):
         graph = Graph()
@@ -130,6 +138,19 @@ class MetadataController(BaseController):
                                                  .get("language", ''))))
             if "access" in data["extras"]:
                 graph.add((uri, DC.rights, self._make_rights_element(data["extras"])))
+
+            # Extended metadatamodel
+
+            if all(k in data["extras"] for k in ("temporal_coverage_begin",
+                                                  "temporal_coverage_end")):
+                graph.add((uri, DC.temporal, Literal(self._make_temporal(data["extras"]))))
+            if "geographical_coverage" in data["extras"]:
+                graph.add((uri, DC.spatial, Literal(data["extras"]["geographical_coverage"])))
+            for rel in Related.get_for_dataset(pkg):
+                graph.add((uri, DC.isReferencedBy, Literal(rel.related.title)))
+            if "notes_rendered" in data:
+                graph.add((uri, DC.description, Literal(data["notes_rendered"])))
+
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
                 format = 'pretty-xml'
