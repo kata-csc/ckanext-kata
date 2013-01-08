@@ -171,7 +171,6 @@ def ltitle_to_extras(key, data, errors, context):
     if not extras:
         data[('extras',)] = extras
     authnum = 1
-    orgnum = 1
     langs = []
     for k in data.keys():
         try:
@@ -181,23 +180,22 @@ def ltitle_to_extras(key, data, errors, context):
                 extras.append({'key': "%s_%d" % (k[0], authnum),
                                'value': data[(k[0], k[1], 'value')]
                             })
-                authnum += 1
+
                 lval = data[(k[0], k[1], 'lang')]
                 if not lval in langs:
                     langs.append(lval)
                 else:
                     if not _("Duplicate language found.") in errors[key]:
                         errors[key].append(_("Duplicate language found."))
-                extras.append({'key': "lang_%s_%d" % (k[0], orgnum),
+                extras.append({'key': "lang_%s_%d" % (k[0], authnum),
                                'value': lval
                             })
-                orgnum += 1
-                if not ('title',) in data:
-                    data[('title',)] = data[(k[0], k[1], 'value')]
+                authnum += 1
                 del data[(k[0], k[1], 'value')]
                 del data[(k[0], k[1], 'lang')]
         except:
             pass
+    print extras
 
 
 def ltitle_from_extras(key, data, errors, context):
@@ -208,7 +206,7 @@ def ltitle_from_extras(key, data, errors, context):
     orgauths = data[('langtitles',)]
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key':
-            if 'title_' in data[k]:
+            if data[k].startswith('title_'):
                 val = data[(k[0], k[1], 'value')]
                 auth = {}
                 auth['key'] = data[k]
@@ -340,8 +338,9 @@ def copy_from_titles(key, data, errors, context):
 def export_as_related(key, data, errors, context):
     if 'id' in data[('__extras',)]:
         for value in data[key].split(';'):
-            if len(Session.query(Related).filter(Related.title == value).all()) == 0:
-                data_dict = {'title': value,
-                             'type': _("Paper"),
-                             'dataset_id': data[('__extras',)]['id']}
-                related_create(context, data_dict)
+            if value != '':
+                if len(Session.query(Related).filter(Related.title == value).all()) == 0:
+                    data_dict = {'title': value,
+                                 'type': _("Paper"),
+                                 'dataset_id': data[('__extras',)]['id']}
+                    related_create(context, data_dict)

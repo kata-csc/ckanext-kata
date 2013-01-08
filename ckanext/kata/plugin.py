@@ -22,7 +22,7 @@ from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
 import ckan.logic.converters
 from ckan.logic.converters import convert_to_extras, convert_from_extras
-from ckan.lib.navl.validators import ignore_missing, keep_extras, ignore, not_empty, not_missing, both_not_empty
+from ckan.lib.navl.validators import missing, ignore_missing, keep_extras, ignore, not_empty, not_missing, both_not_empty
 from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
 
 from pylons.decorators.cache import beaker_cache
@@ -88,7 +88,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'contact_name', 'phone', 'contactURL',
                   'project_name', 'project_funder', 'project_funding', 'project_homepage',
                   'access', 'accessRights', 'accessrequestURL', 'licenseURL',
-                  'organization', 'author']
+                  'organization', 'author', 'owner_name']
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
                   'temporal_coverage_end', 'publications', 'collections',
                   'erelated', 'discipline', 'fformat', 'checksum',
@@ -283,15 +283,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['tag_string'].append(not_empty)
         schema.update({
            'version': [not_empty, unicode, validate_lastmod, check_last_and_update_pid],
-           'extras': {
-                'id': [ignore],
-                'key': [custom_to_extras],
-                'value': [ignore_missing],
-                'state': [ignore],
-                'deleted': [ignore_missing],
-                'revision_timestamp': [ignore],
-                '__extras': [ignore],
-            },
+           'extras': [ignore],
+           'extras_validation': [ignore],
            'versionPID': [self.update_pid, unicode, self.pid_to_extras],
            'author': {'value': [unicode, org_auth_to_extras]},
            'organization': {'value': [unicode, org_auth_to_extras]},
@@ -308,9 +301,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'project_funder': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
+           'resources': [ignore_missing],
         })
-        schema['title'] = {'value': [ignore_missing, ltitle_to_extras],
-                           'lang': [ignore_missing]}
+        schema['title'] = {'value': [not_missing, ltitle_to_extras],
+                           'lang': [not_missing]}
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras]}
@@ -329,7 +323,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [org_auth_from_extras, ignore_missing, unicode]
 
-        schema['title'] = [ltitle_from_extras, ignore_missing, unicode]
+        schema['title'] = [ltitle_from_extras, ignore_missing]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
         schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
@@ -347,6 +341,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                         del data[_remove]
 
     def convert_to_extras_kata(self, key, data, errors, context):
+        if data.get(('extras',)) is missing:
+            return
         extras = data.get(('extras',), [])
         if not extras:
             data[('extras',)] = extras

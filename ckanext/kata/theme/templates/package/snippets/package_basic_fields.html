@@ -3,7 +3,6 @@
 <h2 class="module-heading">{{ _('General information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name%}{{data.name}}{%endif%}" />
-
 {% call form.input_block("titles", "Titles" , error=errors.lsel) %}
 {% set lastlang = 1%}
 <div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
@@ -11,6 +10,7 @@
 	{% for title, lang in data.langtitles %}
 	{% set index = loop.index %}
 	{% set lastlang = loop.index %}
+	{{title}}
 	<div class="control-group control-custom">
 		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
 			<div class="controls editor">
@@ -28,6 +28,30 @@
 				</div>
 			</div>
 	</div>
+	{% endfor %}
+{% else %}
+	{% for title in data.title %}
+	{% set index = loop.index %}
+	{% set lastlang = loop.index %}
+	{% if title.value %}
+	<div class="control-group control-custom">
+		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
+			<div class="controls editor">
+			    <div class="input-prepend">
+					<input type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="{{title.value}}" />
+			    </div>
+			</div>
+		<label class="control-label" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
+			<div class="controls">
+				<div class="input-prepend">
+					<select name="title__{{index}}__lang">
+						<option {% if title.lang == 'fi'%}selected{% endif %}>fi</option>
+						<option {% if title.lang == 'en'%}selected{% endif %}>en</option>
+					</select>
+				</div>
+			</div>
+	</div>
+	{% endif %}
 	{% endfor %}
 {% endif%}
 {% for extra in range(1,2) %}
@@ -77,6 +101,25 @@
 	</div>
 
 	{% endfor %}
+{% else %}
+	{% for auth, org in zip(data.author, data.organization) %}
+	{% set lastrole = loop.index %}
+	{% set index = loop.index %}
+	<div class="control-group control-custom">
+	<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
+		<div class="controls editor">
+		    <div class="input-prepend">
+				<input type="text" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{auth.value}}" />
+		    </div>
+		</div>
+		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
+		<div class="controls editor" style="margin-top: 5px;">
+		    <div class="input-prepend">
+				<input type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
+		    </div>
+		</div>
+	</div>
+	{% endfor %}
 {% endif %}
 {% for extra in range(1, 2) %}
 	{% set index = lastrole + extra + 10 %}
@@ -104,7 +147,7 @@
 
 <input type="checkbox" style="top: 0px;" name="langdis" onchange="$('#langdiv').toggle()" {% if data.langdis %}checked{% endif %}>{{ _('This dataset does not have a language') }}</input>
 <div id="langdiv" {% if data.langdis %} style="display: none" {% endif %}>
-{{ form.input('language', label=_('Languages'), id='language', placeholder=_('en'), value=data.language, error=errors.language, classes=['control-medium']) }}
+{{ form.input('language', label=_('Languages'), id='language', placeholder=_('en, fi, sv ...'), value=data.language, error=errors.language, classes=['control-medium']) }}
 </div>
 </div>
 </section>
@@ -130,6 +173,10 @@
 			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium']) }}
 			{{ form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-medium']) }}
 		</div>
+		<h3 class="module-heading">{{ _('Owner information')}}</h3>
+		<div class="module-content">
+			{{ form.input('owner_name', label=_('Owner identity'), id="owner_name", placeholder=_('identification URL or name'), value=data.owner_name, error=errors.owner_name, classes=['control-medium']) }}
+		</div>
 </section>
 {# if we have a default group then this wants remembering #}
 {% if data.group_id %}
@@ -138,7 +185,7 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Identification information') }}</h2>
 <div class="module-content">
-{{ form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('eg. urn:nbn:fi:csc-kata2012093012345'), value=data.versionPID, error=errors.versionPID, classes=['control-medium']) }}
+{{ form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.versionPID, error=errors.versionPID, classes=['control-medium']) }}
 {% call form.input_block("titles", _('Modification date'), error=errors.version) %}
 	<div data-module="dateselect-simple-kata">
 		<input type="text" readonly id="last_modified" name="version" value="{{data.version}}" />

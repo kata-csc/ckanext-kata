@@ -6,7 +6,7 @@ import re
 from ckan.model import Package
 from pylons.i18n import gettext as _
 import utils
-from ckan.lib.navl.validators import not_empty
+from ckan.lib.navl.validators import not_empty, not_missing
 from ckan.lib.navl.dictization_functions import StopOnError
 
 log = logging.getLogger('ckanext.kata.validators')
@@ -76,8 +76,9 @@ def validate_phonenum(key, data, errors, context):
 
 
 def check_project_dis(key, data, errors, context):
-    if not ('projdis',) in data:
-        not_empty(key, data, errors, context)
+    if not all(k in data for k in (('projdis',),
+                                      ('resources', 0, 'id'))):
+        not_missing(key, data, errors, context)
 
 
 def check_accessrights(key, data, errors, context):
