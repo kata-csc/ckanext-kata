@@ -97,6 +97,7 @@ def org_auth_to_extras(key, data, errors, context):
         data[('extras',)] = extras
     authnum = 1
     orgnum = 1
+    vals = []
     not_empty(key, data, errors, context)
     for k in data.keys():
         try:
@@ -110,6 +111,7 @@ def org_auth_to_extras(key, data, errors, context):
                 extras.append({'key': "%s_%d" % (k[0], authnum),
                                'value': val
                             })
+                vals.append(val)
                 authnum += 1
             if k[0] == 'organization' \
             and (k[0], k[1], 'value') in data \
@@ -122,8 +124,11 @@ def org_auth_to_extras(key, data, errors, context):
                                'value': val,
                             })
                 orgnum += 1
+                vals.append(val)
         except Exception, e:
             pass
+    if not len(vals):
+        errors[key].append(_('Please fill at least one author/organization!'))
 
 
 def org_auth_from_extras(key, data, errors, context):
@@ -172,6 +177,7 @@ def ltitle_to_extras(key, data, errors, context):
         data[('extras',)] = extras
     authnum = 1
     langs = []
+    values = []
     for k in data.keys():
         try:
             if k[0] == 'title' and k[-1] == 'value' \
@@ -180,7 +186,7 @@ def ltitle_to_extras(key, data, errors, context):
                 extras.append({'key': "%s_%d" % (k[0], authnum),
                                'value': data[(k[0], k[1], 'value')]
                             })
-
+                values.append((k[0], k[1], 'value'))
                 lval = data[(k[0], k[1], 'lang')]
                 if not lval in langs:
                     langs.append(lval)
@@ -195,7 +201,8 @@ def ltitle_to_extras(key, data, errors, context):
                 del data[(k[0], k[1], 'lang')]
         except:
             pass
-    print extras
+    if not len(values):
+        errors[key].append(_('Please fill at least one title!'))
 
 
 def ltitle_from_extras(key, data, errors, context):

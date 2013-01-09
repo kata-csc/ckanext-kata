@@ -3,7 +3,7 @@
 <h2 class="module-heading">{{ _('General information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name%}{{data.name}}{%endif%}" />
-{% call form.input_block("titles", "Titles" , error=errors.lsel) %}
+{% call form.input_block("titles", "Titles" , error=errors.title) %}
 {% set lastlang = 1%}
 <div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
 {% if data.langtitles %}

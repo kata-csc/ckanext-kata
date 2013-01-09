@@ -283,11 +283,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['tag_string'].append(not_empty)
         schema.update({
            'version': [not_empty, unicode, validate_lastmod, check_last_and_update_pid],
-           'extras': [ignore],
-           'extras_validation': [ignore],
            'versionPID': [self.update_pid, unicode, self.pid_to_extras],
-           'author': {'value': [unicode, org_auth_to_extras]},
-           'organization': {'value': [unicode, org_auth_to_extras]},
+           'author': {'value': [not_empty, unicode, org_auth_to_extras]},
+           'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
            'langdis': [ignore_missing, unicode, check_language],
