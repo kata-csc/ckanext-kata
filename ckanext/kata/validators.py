@@ -47,19 +47,19 @@ def check_last_and_update_pid(key, data, errors, context):
     if key == ('version',):
         pkg = Package.get(data[('name',)])
         if pkg:
-            log.debug(pkg.as_dict())
-            log.debug(data[key])
-            log.debug(data[key] == pkg.as_dict()['version'])
             if not data[key] == pkg.as_dict()['version']:
                 data[('versionPID',)] = utils.generate_pid()
 
 
 def validate_language(key, data, errors, context):
-    try:
-        pycountry.languages.get(alpha2=data[key])
-    except KeyError:
-        if not ('langdis',) in data and 'save' in context:
-            errors[key].append(_('Invalid language, not in ISO 639.'))
+    value = data[key]
+    for lang in value.split(','):
+        lang = lang.strip()
+        try:
+            pycountry.languages.get(alpha2=lang)
+        except KeyError:
+            if not ('langdis',) in data and 'save' in context:
+                errors[key].append(_('Invalid language %s, not in ISO 639.' % lang))
 
 EMAIL_REGEX = re.compile(r'[^@]+@[^@]+\.[^@]+')
 TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
