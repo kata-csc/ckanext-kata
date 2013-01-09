@@ -22,8 +22,7 @@
 			<div class="controls">
 				<div class="input-prepend">
 					<select name="title__{{index}}__lang">
-						<option {% if lang.value == 'fi'%}selected{% endif %}>fi</option>
-						<option {% if lang.value == 'en'%}selected{% endif %}>en</option>
+						{% snippet 'package/snippets/languages.html' %}
 					</select>
 				</div>
 			</div>
@@ -45,8 +44,7 @@
 			<div class="controls">
 				<div class="input-prepend">
 					<select name="title__{{index}}__lang">
-						<option {% if title.lang == 'fi'%}selected{% endif %}>fi</option>
-						<option {% if title.lang == 'en'%}selected{% endif %}>en</option>
+						{% snippet 'package/snippets/languages.html' %}
 					</select>
 				</div>
 			</div>
@@ -67,8 +65,7 @@
 			<div class="controls">
 				<div class="input-prepend">
 					<select name="title__{{index}}__lang">
-						<option selected>fi</option>
-						<option>en</option>
+						{% snippet 'package/snippets/languages.html' %}
 					</select>
 				</div>
 				<input type="button" class="btn checkbox" onclick="$('#lbtn__{{index}}__value_id').change();"/>
