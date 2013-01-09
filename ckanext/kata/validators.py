@@ -56,7 +56,10 @@ def validate_language(key, data, errors, context):
     for lang in value.split(','):
         lang = lang.strip()
         try:
-            pycountry.languages.get(alpha2=lang)
+            if lang:
+                pycountry.languages.get(alpha2=lang)
+            else:
+                errors[key].append(_('No language given.'))
         except KeyError:
             if not ('langdis',) in data and 'save' in context:
                 errors[key].append(_('Invalid language %s, not in ISO 639.' % lang))
@@ -76,9 +79,8 @@ def validate_phonenum(key, data, errors, context):
 
 
 def check_project_dis(key, data, errors, context):
-    if not all(k in data for k in (('projdis',),
-                                      ('resources', 0, 'id'))):
-        not_missing(key, data, errors, context)
+    if not ('projdis',) in data:
+        not_empty(key, data, errors, context)
 
 
 def check_accessrights(key, data, errors, context):
