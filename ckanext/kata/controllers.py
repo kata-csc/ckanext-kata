@@ -108,7 +108,9 @@ class MetadataController(BaseController):
                 graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
                 graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["phone"])))
                 graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contactURL"])))
-                graph.add((uri, DC.rightsHolder, Identifier(profileurl)))
+                graph.add((uri, DC.rightsHolder, URIRef(data["extras"]["owner_name"])
+                                                if data["extras"]["owner_name"].startswith(('http','urn'))\
+                                                else Literal(data["extras"]["owner_name"])))
             log.debug(data["extras"])
             if all((k in data["extras"] and data["extras"][k] != "") for k in ("project_name",\
                                                  "project_homepage",\
@@ -122,7 +124,6 @@ class MetadataController(BaseController):
                 graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
                 graph.add((projecturl, RDFS.comment,
                             Literal(data["extras"]["project_funder"])))
-            lastlang = ""
             for key in data["extras"]:
                 log.debug(key)
                 if key.startswith('author'):
@@ -130,12 +131,15 @@ class MetadataController(BaseController):
                                                 if data["extras"][key].startswith(('http','urn'))\
                                                 else Literal(data["extras"][key])))
                 if key.startswith("title"):
+                    lastlangnum = key.split('_')[-1]
+                    log.debug(lastlangnum)
+                    lastlang = data["extras"]["lang_title_%s" % lastlangnum]
                     graph.add((uri, DC.title, Literal(data["extras"][key],
                                         lang=lastlang)))
             for tag in data['tags']:
                 graph.add((uri, DC.subject, Literal(tag)))
-            graph.add((uri, DC.language, Literal(data["extras"]\
-                                                 .get("language", ''))))
+            for lang in data["extras"].get("language", "").split(','):
+                graph.add((uri, DC.language, Literal(lang.strip())))
             if "access" in data["extras"]:
                 graph.add((uri, DC.rights, self._make_rights_element(data["extras"])))
 
