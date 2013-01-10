@@ -40,9 +40,9 @@
 <section class="module">
 <h2 class="module-heading">{{ _('File information') }}</h2>
 <div class="module-content">
-{{ form.input('fformat', label=_('File format'), id='fformat', placeholder=_(''), value=data.fformat, error=errors.fformat, classes=['control-medium']) }}
-{{ form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_(''), value=data.checksum, error=errors.checksum, classes=['control-medium']) }}
-{{ form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_(''), value=data.algorithm, error=errors.algorithm, classes=['control-medium']) }}
+{{ form.input('fformat', label=_('File format'), id='fformat', placeholder=_('eg. pdf, word'), value=data.fformat, error=errors.fformat, classes=['control-medium']) }}
+{{ form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, error=errors.checksum, classes=['control-medium']) }}
+{{ form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_('eg. MD5'), value=data.algorithm, error=errors.algorithm, classes=['control-medium']) }}
 </div>
 </section>
 

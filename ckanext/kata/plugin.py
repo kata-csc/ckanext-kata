@@ -31,7 +31,7 @@ from validators import check_language, check_project, validate_access,\
                         validate_lastmod, check_junk, check_last_and_update_pid,\
                         validate_language, validate_email, validate_phonenum,\
                         check_project_dis, check_accessrequesturl, check_accessrights,\
-                        not_empty_kata
+                        not_empty_kata, check_author_org
 
 from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras,\
@@ -289,7 +289,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
            'langdis': [ignore_missing, unicode, check_language],
-           '__extras': [ignore],
+           '__extras': [check_author_org],
            'projdis': [ignore_missing, unicode, check_project],
            '__junk': [check_junk],
            'name': [unicode, ignore_missing, self.update_name],

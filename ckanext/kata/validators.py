@@ -39,6 +39,7 @@ def validate_lastmod(key, data, errors, context):
 
 
 def check_junk(key, data, errors, context):
+    log.debug(data)
     if key in data:
         log.debug(data[key])
 
@@ -97,3 +98,10 @@ def not_empty_kata(key, data, errors, context):
     if data[key] == []:
         errors[key].append(_('Missing value'))
         raise StopOnError
+
+
+def check_author_org(key, data, errors, context):
+    if all(k in data[key] for k in ('author', 'organization')):
+        if not ('author',) in errors:
+            errors[('author',)] = []
+        errors[('author',)].append('Missing author and organization pairs!')

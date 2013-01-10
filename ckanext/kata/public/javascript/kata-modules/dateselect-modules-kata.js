@@ -10,9 +10,13 @@ this.ckan.module('dateselect-simple-kata', function (jQuery, _)
         showTimezone: true,
         showSecond: true,
         });
+        var d = new Date();
         var parsed = $.datepicker.parseDateTime("yy-mm-dd", "HH:mm:ssz", lm[0].value, {separator: 'T'}, {separator: 'T'} );
+        var def = $.datepicker.parseDateTime("yy-mm-dd", "HH:mm:ssz", d.toISOString(), {separator: 'T'}, {separator: 'T'} );
         if (parsed) {
         	lm.datetimepicker('setDate', (parsed));
+        } else {
+        	lm.datetimepicker('setDate', (def));
         }
      },
   }

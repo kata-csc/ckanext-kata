@@ -10,7 +10,6 @@
 	{% for title, lang in data.langtitles %}
 	{% set index = loop.index %}
 	{% set lastlang = loop.index %}
-	{{title}}
 	<div class="control-group control-custom">
 		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
 			<div class="controls editor">
@@ -22,7 +21,7 @@
 			<div class="controls">
 				<div class="input-prepend">
 					<select name="title__{{index}}__lang">
-						{% snippet 'package/snippets/languages.html' %}
+						{% snippet 'package/snippets/languages.html', selected=lang.value %}
 					</select>
 				</div>
 			</div>
@@ -44,7 +43,7 @@
 			<div class="controls">
 				<div class="input-prepend">
 					<select name="title__{{index}}__lang">
-						{% snippet 'package/snippets/languages.html' %}
+						{% snippet 'package/snippets/languages.html', selected=title.lang %}
 					</select>
 				</div>
 			</div>
