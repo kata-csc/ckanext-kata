@@ -154,7 +154,7 @@ def ltitle_to_extras(key, data, errors, context):
         extras.append({'key': 'lang_title_%s' % key[1],
                        'value': data[key[0], key[1], 'lang']
                        })
-    if key[1] == 0 and len(data[key]) == 0:
+    if key[1] == 0 and len(data[key]) == 0 and not (key[0], key[1] + 1, 'value') in data:
         errors[key].append(_('Add at least one non-empty title!'))
 
 
