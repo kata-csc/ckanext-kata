@@ -166,7 +166,7 @@ def ltitle_from_extras(key, data, errors, context):
     orgauths = data[('langtitles',)]
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key':
-            if data[k].startswith('title_'):
+            if data[k].startswith(('title_', 'ltitle')):
                 val = data[(k[0], k[1], 'value')]
                 auth = {}
                 auth['key'] = data[k]
@@ -174,7 +174,7 @@ def ltitle_from_extras(key, data, errors, context):
                 if not {'key': data[k], 'value': val} in auths:
                     auths.append(auth)
 
-            if 'lang_title_' in data[k]:
+            if data[k].startswith(('lsel', 'lang_title_')):
                 org = {}
                 val = data[(k[0], k[1], 'value')]
                 org['key'] = data[k]
