@@ -9,6 +9,8 @@ this.ckan.module('dateselect-simple-kata', function (jQuery, _)
         dateFormat: "yy-mm-dd",
         showTimezone: true,
         showSecond: true,
+        timezoneIso8601: true,
+        defaultTimezone: 'Z',
         });
         var d = new Date();
         var parsed = $.datepicker.parseDateTime("yy-mm-dd", "HH:mm:ssz", lm[0].value, {separator: 'T'}, {separator: 'T'} );
@@ -33,6 +35,8 @@ this.ckan.module('dateselect-dcmi-kata', function (jQuery, _)
         dateFormat: "yy-mm-dd",
         showTimezone: true,
         showSecond: true,
+        timezoneIso8601: true,
+        defaultTimezone: 'Z',
 		onClose: function(dateText, inst) {
 			if (tce.val() != '') {
 				var testStartDate = tcb.datetimepicker('getDate');
@@ -58,6 +62,8 @@ this.ckan.module('dateselect-dcmi-kata', function (jQuery, _)
         dateFormat: "yy-mm-dd",
         showTimezone: true,
         showSecond: true,
+        timezoneIso8601: true,
+        defaultTimezone: 'Z',
         onClose: function(dateText, inst) {
 			if (tcb.val() != '') {
 				var testStartDate = tcb.datetimepicker('getDate');

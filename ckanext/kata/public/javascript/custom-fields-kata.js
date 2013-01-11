@@ -109,3 +109,20 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
     }
   };
 });
+
+KATA = function() {}
+KATA.toggleAccess = function(obj) {
+		if (obj.id == 'form'){
+			$('#accessDiv').show();
+			$('#urlDiv').hide();
+		}
+		if (obj.id == 'free' || obj.id == 'ident'){
+			$('#accessDiv').hide();
+			$('#urlDiv').show();
+		}
+		if (obj.id == 'contact') {
+			$('#accessDiv').hide();
+			$('#urlDiv').hide();
+		}
+	}
+

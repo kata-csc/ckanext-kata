@@ -30,7 +30,7 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Relations') }}</h2>
 <div class="module-content">
-{{ form.input('publications', label=_('Publications based on this data'), id='publications', placeholder=_(''), value=data.publications, error=errors.publications, classes=['control-medium']) }}
+{{ form.input('publications', label=_('Publications based on this data'), id='publications', placeholder=_('eg. urn:ISBN:000001234;urn:ISBN:000001235'), value=data.publications, error=errors.publications, classes=['control-medium']) }}
 {{ form.input('collections', label=_('Dataset belongs to collection/series'), id='collections', placeholder=_(''), value=data.collections, error=errors.collections, classes=['control-medium']) }}
 {{ form.input('erelated', label=_('Other related datasets'), id='erelated', placeholder=_(''), value=data.erelated, error=errors.erelated, classes=['control-medium']) }}
 {{ form.input('discipline', label=_('Discipline/branch of science'), id='discipline', placeholder=_(''), value=data.discipline, error=errors.discipline, classes=['control-medium']) }}
@@ -40,7 +40,7 @@
 <section class="module">
 <h2 class="module-heading">{{ _('File information') }}</h2>
 <div class="module-content">
-{{ form.input('fformat', label=_('File format'), id='fformat', placeholder=_('eg. pdf, word'), value=data.fformat, error=errors.fformat, classes=['control-medium']) }}
+{{ form.input('fformat', label=_('File format'), id='fformat', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.fformat, error=errors.fformat, classes=['control-medium']) }}
 {{ form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, error=errors.checksum, classes=['control-medium']) }}
 {{ form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_('eg. MD5'), value=data.algorithm, error=errors.algorithm, classes=['control-medium']) }}
 </div>
@@ -133,7 +133,7 @@
 				</div>
 			</li>
 			<li class="kata">
-				<input type="button" class="btn checkbox" onclick="$('#evbtn__{{index}}__value_id').change();"/>
+				<input type="button" class="btn checkbox" onclick="$('#evbtn__{{index}}__value_id').change();" value="+" style="line-height:10px !important;text-indent: -4px;"/>
 			</li>
 			<input style="display: none;"type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 		</div>
