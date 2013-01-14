@@ -146,14 +146,22 @@ def org_auth_from_extras(key, data, errors, context):
 
 def ltitle_to_extras(key, data, errors, context):
     extras = data.get(('extras',), [])
+    langs = []
     if not extras:
         data[('extras',)] = extras
     if len(data[key]) > 0:
+        lval = data[(key[0], key[1], 'lang')]
+        if not lval in langs:
+            langs.append(lval)
+        else:
+            if not _("Duplicate language found.") in errors[key]:
+                errors[key].append(_("Duplicate language found."))
         extras.append({'key': "title_%s" % key[1],
                       'value': data[key]})
         extras.append({'key': 'lang_title_%s' % key[1],
-                       'value': data[key[0], key[1], 'lang']
+                       'value': lval
                        })
+
     if key[1] == 0 and len(data[key]) == 0 and not (key[0], key[1] + 1, 'value') in data:
         errors[key].append(_('Add at least one non-empty title!'))
 
