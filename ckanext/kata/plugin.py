@@ -90,8 +90,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'access', 'accessRights', 'accessrequestURL', 'licenseURL',
                   'organization', 'author', 'owner_name']
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
-                  'temporal_coverage_end', 'publications', 'collections',
-                  'erelated', 'discipline', 'fformat', 'checksum',
+                  'temporal_coverage_end',  'collections',
+                  'discipline', 'fformat', 'checksum',
                   'algorithm', 'evwho', 'evdescr', 'evtype', 'evwhen',
                   ]
 
@@ -278,8 +278,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['language'] = [validate_language, self.convert_to_extras_kata, unicode]
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
-        schema['erelated'].append(export_as_related)
-        schema['publications'].append(export_as_related)
         schema['tag_string'].append(not_empty)
         schema.update({
            'version': [not_empty, unicode, validate_lastmod, check_last_and_update_pid],
