@@ -132,8 +132,8 @@ s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.
 		<h3 class="module-heading">{{ _('Distributor / publisher contact information') }}</h2>
 		<div class="module-content">
 			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?', 'data-module-items': 1} %}
-			{% set contact_name = data.contact_name if not user.fullname else user.fullname %}
-			{% set contact_email = data.maintainer_email if not user.email else user.email %}
+			{% set contact_name = data.contact_name if data.contact_name else user.fullname %}
+			{% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
 			{{ form.input('contact_name', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.contact_name, classes=['control-medium'], attrs=cont_attrs) }}
 			{{ form.input('phone', label=_('Phone'), id='phone', placeholder=_('+35844122123'), value=data.phone, error=errors.phone, classes=['control-medium']) }}
 			{{ form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, classes=['control-medium']) }}
