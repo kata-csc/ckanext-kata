@@ -95,7 +95,49 @@
 		</div>
 {% endfor %}
 </ul>
-{% endif%}
+{% elif data.evtype and data.evwho and data.evwhen and data.evdescr %}
+<ul class="kata">
+{% for type, who, when, descr in zip(data.evtype, data.evwho, data.evwhen, data.evdescr) %}
+	{% set index = loop.index %}
+	{% set lastevent = loop.index %}
+		<div class="control-group control-custom">
+		<li class="kata">
+			<div class="input-prepend">
+				<select name="evtype__{{index}}__value" style="width: 95px;">
+					<option selected>{{ _('collection') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('creation') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('checked') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('extended') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('changed') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('removed') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('published') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('sent') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('received') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('modified') }}</option>
+					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('used') }}</option>
+				</select>
+			</div>
+		</li>
+		<li class="kata">
+			<div class="input-prepend">
+				<input class="kata-lifecycle-input" type="text" id="evwho_{{ index }}__value_id" name="evwho__{{ index }}__value" value="{{who.value}}" />
+			</div>
+		</li>
+		<li class="kata">
+			<div class="input-prepend">
+				<input class="kata-lifecycle-input" type="text" id="evwhen__{{ index }}__value_id" name="evwhen__{{ index }}__value" value="{{when.value}}" />
+			</div>
+		</li>
+		<li class="kata">
+			<div class="input-prepend">
+				<input class="kata-lifecycle-input" type="text" id="evdescr__{{ index }}__value_id" name="evdescr__{{ index }}__value" value="{{descr.value}}" />
+			</div>
+		</li>
+		</div>
+{% endfor %}
+</ul>
+
+{% endif %}
 <ul class="kata">
 {% for extra in range(1,2) %}
 	{% set index = lastevent + extra + 10 %}
