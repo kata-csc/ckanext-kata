@@ -85,10 +85,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IActions, inherit=True)
 
     kata_fields_required = ['version', 'language',
-                  'contact_name', 'phone', 'contactURL',
-                  'project_name', 'project_funder', 'project_funding', 'project_homepage',
+                  'publisher', 'phone', 'contactURL',
+                  'project_name', 'funder', 'project_funding', 'project_homepage',
                   'access', 'accessRights', 'accessrequestURL', 'licenseURL',
-                  'organization', 'author', 'owner_name']
+                  'organization', 'author', 'owner']
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
                   'temporal_coverage_end',  'collections',
                   'discipline', 'fformat', 'checksum',
@@ -294,7 +294,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
            'accessrequestURL': [check_accessrequesturl, self.convert_to_extras_kata, unicode],
            'project_name': [check_project_dis, unicode, self.convert_to_extras_kata],
-           'project_funder': [check_project_dis, unicode, self.convert_to_extras_kata],
+           'funder': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
            'resources': [ignore_missing],

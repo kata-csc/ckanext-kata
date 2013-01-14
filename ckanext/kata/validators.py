@@ -24,7 +24,7 @@ def check_language(key, data, errors, context):
 
 
 def check_project(key, data, errors, context):
-    if data[('project_name',)] or data[('project_funder',)] or\
+    if data[('project_name',)] or data[('funder',)] or\
         data[('project_funding',)] or data[('project_homepage',)]:
         errors[key].append(_('Project data received even if no project is associated.'))
 

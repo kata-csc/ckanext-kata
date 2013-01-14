@@ -132,9 +132,9 @@ s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.
 		<h3 class="module-heading">{{ _('Distributor / publisher contact information') }}</h2>
 		<div class="module-content">
 			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?', 'data-module-items': 1} %}
-			{% set contact_name = data.contact_name if data.contact_name else user.fullname %}
+			{% set contact_name = data.publisher if data.publisher else user.fullname %}
 			{% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
-			{{ form.input('contact_name', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.contact_name, classes=['control-medium'], attrs=cont_attrs) }}
+			{{ form.input('publisher', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.publisher, classes=['control-medium'], attrs=cont_attrs) }}
 			{{ form.input('phone', label=_('Phone'), id='phone', placeholder=_('+35844122123'), value=data.phone, error=errors.phone, classes=['control-medium']) }}
 			{{ form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, classes=['control-medium']) }}
 			{{ form.input('contactURL', label=_('Homepage'), id='contactURL', placeholder=_('http://johndoe.com/contact'), value=data.contactURL, error=errors.contactURL, classes=['control-medium']) }}
@@ -143,13 +143,13 @@ s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.
 		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis %}checked{% endif %}>{{ _('This dataset was not produced in a project.') }}</input>
 		<div class="module-content" id="projdiv">
 			{{ form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-medium']) }}
-			{{ form.input('project_funder', label=_('Funder'), id='project_funder', placeholder=_('my funder'), value=data.project_funder, error=errors.project_funder, classes=['control-medium']) }}
+			{{ form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-medium']) }}
 			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium']) }}
 			{{ form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-medium']) }}
 		</div>
 		<h3 class="module-heading">{{ _('Owner information')}}</h3>
 		<div class="module-content">
-			{{ form.input('owner_name', label=_('Owner identity'), id="owner_name", placeholder=_('identification URL or name'), value=data.owner_name, error=errors.owner_name, classes=['control-medium']) }}
+			{{ form.input('owner', label=_('Owner identity'), id="owner", placeholder=_('identification URL or name'), value=data.owner, error=errors.owner, classes=['control-medium']) }}
 		</div>
 </section>
 {# if we have a default group then this wants remembering #}
