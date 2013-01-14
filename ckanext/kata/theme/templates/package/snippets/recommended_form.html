@@ -30,9 +30,7 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Relations') }}</h2>
 <div class="module-content">
-{{ form.input('publications', label=_('Publications based on this data'), id='publications', placeholder=_('eg. urn:ISBN:000001234;urn:ISBN:000001235'), value=data.publications, error=errors.publications, classes=['control-medium']) }}
 {{ form.input('collections', label=_('Dataset belongs to collection/series'), id='collections', placeholder=_(''), value=data.collections, error=errors.collections, classes=['control-medium']) }}
-{{ form.input('erelated', label=_('Other related datasets'), id='erelated', placeholder=_(''), value=data.erelated, error=errors.erelated, classes=['control-medium']) }}
 {{ form.input('discipline', label=_('Discipline/branch of science'), id='discipline', placeholder=_(''), value=data.discipline, error=errors.discipline, classes=['control-medium']) }}
 </div>
 </section>
