@@ -53,8 +53,8 @@
 <div class="info-block{{ ' info-inline' if inline }} icon-large icon-info-sign{{ " " ~ classes | join(' ') }}">
 This dataset is
 {% if pkg_dict.access == 'form' %} available via an access form in <a href="{{ pkg_dict.accessRights }}">this link</a> {% endif%}
-{% if pkg_dict.access == 'free' %} available freely {% if pkg_dict.accessRequestURL %} <a href="{{pkg_dict.accessRequestURL}}">from this address</a> {% endif %} {% endif %}
-{% if pkg_dict.access == 'ident' %} available via login {% if pkg_dict.accessRequestURL %} <a href="{{pkg_dict.accessRequestURL}}">from this address</a> {% endif %} {% endif %}
+{% if pkg_dict.access == 'free' %} available freely {% if pkg_dict.accessrequestURL %} <a href="{{pkg_dict.accessrequestURL}}">from this address</a> {% endif %} {% endif %}
+{% if pkg_dict.access == 'ident' %} available via login {% if pkg_dict.accessrequestURL %} <a href="{{pkg_dict.accessrequestURL}}">from this address</a> {% endif %} {% endif %}
 {% if pkg_dict.access == 'contact' %} available by contacting the author {% endif %}
 {% if not pkg_dict.access %} available freely{% endif %} {% if pkg_dict.licenseURL %} with license as {{pkg_dict.licenseURL}} {% endif %}
 </div>
