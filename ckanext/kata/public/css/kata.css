@@ -36,6 +36,10 @@ ul.kata {
 	list-style: none !important;
 	margin: 0px !important;
 }
+.kata-plus-btn {
+	line-height:10px !important;
+	text-indent: -4px;
+}
 .module-link {
 	float: right;
 }

@@ -57,7 +57,7 @@
 				<select name="title__{{index}}__lang">
 					{% snippet 'package/snippets/languages.html' %}
 				</select>
-				<input type="button" class="btn checkbox" onclick="$('#lbtn__{{index}}__value_id').change();" value="+" style="line-height:10px !important;text-indent: -4px;"/>
+				<input type="button" class="btn checkbox kata-plus-btn" onclick="$('#lbtn__{{index}}__value_id').change();" value="+" />
 			<input style="display: none;" type="checkbox" id="lbtn__{{index}}__value_id" name="lbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 			</div>
 	</div>
@@ -109,7 +109,7 @@ s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.
 		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
 			<div class="controls editor" style="margin-top: 5px;">
 			<input class="control-medium" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="" />
-			<input type="button" class="btn checkbox" onclick="$('#obtn__{{index}}__value_id').change();" value="+" style="line-height:10px !important;text-indent: -4px;"/>
+			<input type="button" class="btn checkbox kata-plus-btn" onclick="$('#obtn__{{index}}__value_id').change();" value="+" />
 			<input style="display: none;"type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 			</div>
 		</div>
@@ -131,7 +131,7 @@ s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.
 	<div class="module-content">
 		<h3 class="module-heading">{{ _('Distributor / publisher contact information') }}</h2>
 		<div class="module-content">
-			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?', 'data-module-items': 1} %}
+			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?', 'data-module-items': 1} %}
 			{% set contact_name = data.publisher if data.publisher else user.fullname %}
 			{% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
 			{{ form.input('publisher', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.publisher, classes=['control-medium'], attrs=cont_attrs) }}
