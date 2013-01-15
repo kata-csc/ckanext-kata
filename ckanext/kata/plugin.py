@@ -16,10 +16,14 @@ from ckan.plugins import IMapper
 from ckan.plugins import IActions
 from ckan.plugins.core import unload
 from ckan.lib.base import g, c
-from ckan.model import Package
+from ckan.model import Package, Group, Session, repo
+import ckan.model as model
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
                                 form_to_db_package_schema
+from ckan.lib.dictization.model_save import group_dict_save
+
+
 import ckan.logic.converters
 from ckan.logic.converters import convert_to_extras, convert_from_extras
 from ckan.lib.navl.validators import missing, ignore_missing, keep_extras, ignore, not_empty, not_missing, both_not_empty
@@ -38,6 +42,7 @@ from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         org_auth_from_extras, org_auth_to_extras, pid_from_extras,\
                         export_as_related
 import actions
+import tieteet
 
 log = logging.getLogger('ckanext.kata')
 
@@ -70,6 +75,10 @@ class KataMetadata(SingletonPlugin):
                     controller=api_controller,
                     conditions=GET,
                     action="contact_autocomplete")
+        map.connect('/api/2/util/discipline_autocomplete',
+                    controller=api_controller,
+                    conditions=GET,
+                    action="discipline_autocomplete")
         return map
 
     def before_insert(self, mapper, connection, instance):
@@ -175,6 +184,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         roles = [r for r in roles.split(', ')]
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
+
         log.debug("disable search")
         try:
             unload('synchronous_search')
