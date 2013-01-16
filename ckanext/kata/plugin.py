@@ -185,11 +185,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
 
-        log.debug("disable search")
-        try:
-            unload('synchronous_search')
-        except:
-            pass
+#        log.debug("disable search")
+#        try:
+#            unload('synchronous_search')
+#        except:
+#            pass
         
     def package_types(self):
         return ['dataset']
