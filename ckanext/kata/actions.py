@@ -36,6 +36,9 @@ def package_show(context, data_dict):
     pkg_dict['owner_org'] = False
     pkg_dict['metadata_created'] = datetime.datetime.now().isoformat()
     pkg_dict['metadata_modified'] = datetime.datetime.now().isoformat()
+    del pkg_dict['extras']['langtitles']
+    del pkg_dict['extras']['events']
+    del pkg_dict['extras']['orgauths']
     index = index_for('package')
     index.index_package(pkg_dict)
     return pkg_dict1
