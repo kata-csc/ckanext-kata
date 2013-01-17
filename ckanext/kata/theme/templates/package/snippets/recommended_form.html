@@ -30,7 +30,7 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Relations') }}</h2>
 <div class="module-content">
-{% set grp_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/group/autocomplete?incomplete=?'} %}
+{% set grp_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/group/autocomplete?incomplete=?', 'data-module-items': 5} %}
 {{ form.input('collections', label=_('Dataset belongs to collection/series'), id='collections', placeholder=_(''), value=data.collections, error=errors.collections, classes=['control-medium'], attrs=grp_attrs) }}
 {% set cont_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?', 'data-module-items': 5} %}
 {{ form.input('discipline', label=_('Discipline/branch of science'), id='discipline', placeholder=_(''), value=data.discipline, error=errors.discipline, classes=['control-medium'], attrs=cont_attrs) }}
