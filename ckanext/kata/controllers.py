@@ -8,7 +8,7 @@ import ckan.model.misc as misc
 import ckan.model as model
 
 from pylons import response, config, request
-
+from pylons.decorators.cache import beaker_cache
 from rdflib.term import Identifier, Statement, Node, Variable
 from rdflib.namespace import ClosedNamespace
 from vocab import Graph, URIRef, Literal, BNode
@@ -17,6 +17,7 @@ from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
 
 import logging
 from genshi.template._ast24 import Pass
+from urnhelper import URNHelper
 
 log = logging.getLogger('ckanext.kata.controller')
 
@@ -100,6 +101,11 @@ class MetadataController(BaseController):
             dcmi_period = "start=%s; end=%s; scheme=ISO-8601;" % (extras["temporal_coverage_begin"],
                                                             extras["temporal_coverage_end"])
         return dcmi_period
+
+    @beaker_cache(type="dbm", expire=604800)
+    def urnexport(self):
+        response.headers['Content-type'] = 'text/xml'
+        return URNHelper.list_packages()
 
     def tordf(self, id, format):
         graph = Graph()

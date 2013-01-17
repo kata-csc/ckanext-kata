@@ -59,6 +59,9 @@ class KataMetadata(SingletonPlugin):
         map.connect('/dataset/{id}.{format:rdf}',
                     controller=controller,
                     action='tordf')
+        map.connect('/urnexport',
+                    controller=controller,
+                    action='urnexport')
         map.connect('/api/2/util/owner_autocomplete',
                     controller=api_controller,
                     conditions=GET,
