@@ -140,17 +140,17 @@ class MetadataController(BaseController):
             if profileurl:
                 graph.add((uri, DC.publisher, profileurl))
                 graph.add((profileurl, RDF.type, org))
-                graph.add((profileurl, FOAF.name, Literal(data["extras"]["contact_name"])))
+                graph.add((profileurl, FOAF.name, Literal(data["extras"]["publisher"])))
                 graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["phone"])))
                 graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contactURL"])))
-                graph.add((uri, DC.rightsHolder, URIRef(data["extras"]["owner_name"])
-                                                if data["extras"]["owner_name"].startswith(('http','urn'))\
-                                                else Literal(data["extras"]["owner_name"])))
+                graph.add((uri, DC.rightsHolder, URIRef(data["extras"]["owner"])
+                                                if data["extras"]["owner"].startswith(('http','urn'))\
+                                                else Literal(data["extras"]["owner"])))
             log.debug(data["extras"])
             if all((k in data["extras"] and data["extras"][k] != "") for k in ("project_name",\
                                                  "project_homepage",\
                                                  "project_funding",\
-                                                 "project_funder")):
+                                                 "funder")):
                 project = URIRef(FOAF.Project)
                 projecturl = URIRef(data["extras"]["project_homepage"])
                 graph.add((uri, DC.contributor, projecturl))

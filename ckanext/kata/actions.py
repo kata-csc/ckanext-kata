@@ -31,14 +31,4 @@ def package_show(context, data_dict):
                 pkg.save()
                 break
     context['extras_as_string'] = False
-    pkg_dict = ckan.logic.action.get.package_show(context, data_dict)
-    pkg_dict['private'] = False
-    pkg_dict['owner_org'] = False
-    pkg_dict['metadata_created'] = datetime.datetime.now().isoformat()
-    pkg_dict['metadata_modified'] = datetime.datetime.now().isoformat()
-    del pkg_dict['langtitles']
-    del pkg_dict['events']
-    del pkg_dict['orgauths']
-    index = index_for('package')
-    index.index_package(pkg_dict)
     return pkg_dict1
