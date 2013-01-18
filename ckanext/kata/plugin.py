@@ -102,8 +102,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'access', 'accessRights', 'accessrequestURL', 'licenseURL',
                   'organization', 'author', 'owner']
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
-                  'temporal_coverage_end',  'collections',
-                  'discipline', 'fformat', 'checksum',
+                  'temporal_coverage_end', 'discipline', 'fformat', 'checksum',
                   'algorithm', 'evwho', 'evdescr', 'evtype', 'evwhen', 'projdis',
                   ]
 
