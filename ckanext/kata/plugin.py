@@ -110,7 +110,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     kata_field = kata_fields_recommended + kata_fields_required
 
     def get_actions(self):
-        return {'package_show': actions.package_show}
+        return {'package_show': actions.package_show,
+                'group_list': actions.group_list}
 
     def get_helpers(self):
         ''' Register helpers '''
