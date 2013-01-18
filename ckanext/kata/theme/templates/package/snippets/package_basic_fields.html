@@ -141,7 +141,7 @@ s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.
 		</div>
 		<h3 class="module-heading">{{ _('Project that produced this dataset') }}</h2>
 		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis %}checked{% endif %}>{{ _('This dataset was not produced in a project.') }}</input>
-		<div class="module-content" id="projdiv">
+		<div class="module-content" id="projdiv" {% if data.projdis %}style="display: none;"{% endif %}>
 			{{ form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-medium']) }}
 			{{ form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-medium']) }}
 			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium']) }}
