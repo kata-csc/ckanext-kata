@@ -40,7 +40,7 @@ from validators import check_language, check_project, validate_access,\
 from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras,\
                         org_auth_from_extras, org_auth_to_extras, pid_from_extras,\
-                        export_as_related
+                        export_as_related, add_to_group
 import actions
 import tieteet
 
@@ -312,6 +312,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
            'resources': [ignore_missing],
+           'discipline': [add_to_group],
         })
         schema['title'] = {'value': [not_missing, ltitle_to_extras],
                            'lang': [not_missing]}

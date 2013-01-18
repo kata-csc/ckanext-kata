@@ -3,7 +3,7 @@ import logging
 from pylons.i18n import gettext as _
 
 from ckan.logic.action.create import related_create
-from ckan.model import Related, Session
+from ckan.model import Related, Session, Group, repo
 from ckan.lib.navl.validators import not_empty
 
 log = logging.getLogger('ckanext.kata.converters')
@@ -312,3 +312,12 @@ def export_as_related(key, data, errors, context):
                                  'type': _("Paper"),
                                  'dataset_id': data[('__extras',)]['id']}
                     related_create(context, data_dict)
+
+
+def add_to_group(key, data, errors, context):
+    val = data.get(key)
+    if val:
+        repo.new_revision()
+        grp = Group.get(val)
+        grp.add_package_by_name(data[('name',)])
+        grp.save()
