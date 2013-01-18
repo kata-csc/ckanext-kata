@@ -4,6 +4,7 @@ import datetime
 import ckan.logic.action.get
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Package, repo, Group, Member
+import ckan.model as model
 from ckan.lib.search import index_for
 from pylons.i18n import gettext as _
 import tieteet
@@ -30,5 +31,16 @@ def package_show(context, data_dict):
                 pkg.title = pkg.extras[key]
                 pkg.save()
                 break
-    context['extras_as_string'] = False
+    context = {'model': model, 'ignore_auth': True, 'validate': False,
+               'extras_as_string': False}
+    pkg_dict = ckan.logic.action.get.package_show(context, data_dict)
+#    pkg_dict['private'] = False
+#    pkg_dict['owner_org'] = False
+#    pkg_dict['metadata_created'] = datetime.datetime.now().isoformat()
+#    pkg_dict['metadata_modified'] = datetime.datetime.now().isoformat()
+#    del pkg_dict['langtitles']
+#    del pkg_dict['events']
+#    del pkg_dict['orgauths']
+    index = index_for('package')
+    index.index_package(pkg_dict)
     return pkg_dict1
