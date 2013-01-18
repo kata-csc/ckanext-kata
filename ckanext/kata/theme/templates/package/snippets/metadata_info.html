@@ -94,6 +94,22 @@ This dataset is
 		<th class="dataset-label">{{ _('Homepage') }}</th><td class="dataset-details"><a href="{{ pkg_dict.project_homepage }}">{{ pkg_dict.project_homepage }}</a></td>
 	</tr>
     {% endif%}
+    {% if pkg_dict.contributor %}
+	<tr>
+		<th class="dataset-label" colspan="2">{{ _('Contributor') }}</th>
+	</tr>
+	<tr>
+		<td class="dataset-details">{{ pkg_dict.contibutor }}</td>
+	</tr>
+    {% endif %}
+    {% if pkg_dict.producer %}
+	<tr>
+		<th class="dataset-label" colspan="2">{{ _('Producer') }}</th>
+	</tr>
+	<tr>
+		<td class="dataset-details">{{ pkg_dict.producer }}</td>
+	</tr>
+    {% endif %}
 	</tbody>
 </table>
 </section>
