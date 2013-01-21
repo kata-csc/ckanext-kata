@@ -30,15 +30,17 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Relations') }}</h2>
 <div class="module-content">
-{% if data.groups %}
+{% if data.groups and 'name' in data.groups.0%}
 <div class="control-group">
 <label class="control-label">{{ _('Groups') }}</label>
 <div class="controls">
   {% for group in data.groups %}
     <label class="checkbox" for="field-group-{{ loop.index0 }}">
+    {% if group.name %}
       <input id="field-group-{{ loop.index0 }}" type="checkbox" name="groups__{{ loop.index0 }}__id" value="{{ group.id }}" checked="checked" />
       {{ group.title }}
     </label>
+    {% endif %}
   {% endfor %}
 </div>
 </div>
