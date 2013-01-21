@@ -73,13 +73,13 @@ def get_discipline(context, data_dict):
     if not len(terms):
         return [], 0
     katagrp = Group.get('KATA')
+    res = []
     for term in terms:
         escaped_term = misc.escape_sql_like_special_characters(term, escape='\\')
-        q = q.filter(model.Member.group_id == katagrp.id)
-        q = q.filter(model.Group.name.ilike("%" + escaped_term + "%"))
-    q = q.offset(offset)
-    q = q.limit(limit)
-    return q.all()
+        for child in katagrp.get_children_groups():
+            if escaped_term in child['name']:
+                res.append(child)
+    return res
 
 
 class MetadataController(BaseController):
@@ -238,7 +238,7 @@ class KATAApiController(ApiController):
 
             tag_names = get_discipline(context, data_dict)
 
-        tag_names = [k.name for k in tag_names]
+        tag_names = [k['name'] for k in tag_names]
         resultSet = {
             'ResultSet': {
                 'Result': [{'Name': tag} for tag in tag_names]
