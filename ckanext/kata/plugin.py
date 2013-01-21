@@ -104,7 +104,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
                   'temporal_coverage_end', 'discipline', 'fformat', 'checksum',
                   'algorithm', 'evwho', 'evdescr', 'evtype', 'evwhen', 'projdis',
-                  ]
+                  'langdis']
 
     kata_field = kata_fields_recommended + kata_fields_required
 
