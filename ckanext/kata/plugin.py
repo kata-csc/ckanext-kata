@@ -299,9 +299,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
-           'langdis': [self.convert_to_extras_kata, ignore_missing, check_language],
+           'langdis': [unicode, check_language],
            '__extras': [check_author_org],
-           'projdis': [self.convert_to_extras_kata, ignore_missing, check_project],
+           'projdis': [unicode, check_project],
            '__junk': [check_junk],
            'name': [unicode, ignore_missing, self.update_name],
            'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
@@ -333,8 +333,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         context = options['context']
         for key in self.kata_field:
             schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
-        schema['langdis'] = [self.convert_from_extras_kata, ignore_missing]
-        schema['projdis'] = [self.convert_from_extras_kata, ignore_missing]
         schema['versionPID'] = [pid_from_extras, ignore_missing, unicode]
 
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
