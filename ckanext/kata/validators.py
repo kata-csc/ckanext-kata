@@ -19,14 +19,15 @@ def validate_access(key, data, errors, context):
 
 
 def check_language(key, data, errors, context):
-    if data[('language',)]:
+    if data[('language',)] and data[('langdis',)] != 'False':
         errors[key].append(_('Language received even if disabled.'))
 
 
 def check_project(key, data, errors, context):
     if data[('project_name',)] or data[('funder',)] or\
         data[('project_funding',)] or data[('project_homepage',)]:
-        errors[key].append(_('Project data received even if no project is associated.'))
+        if data[('projdis',)] != 'False':
+            errors[key].append(_('Project data received even if no project is associated.'))
 
 
 def validate_lastmod(key, data, errors, context):

@@ -119,8 +119,8 @@ s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.
 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
 {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-large'], attrs=tag_attrs) }}
 
-<input type="checkbox" style="top: 0px;" name="langdis" onchange="$('#langdiv').toggle()" {% if data.langdis %}checked{% endif %}>{{ _('This dataset does not have a language') }}</input>
-<div id="langdiv" {% if data.langdis %} style="display: none" {% endif %}>
+<input type="checkbox" style="top: 0px;" name="langdis" onchange="$('#langdiv').toggle()" {% if data.langdis != 'False' %}checked{% endif %}>{{ _('This dataset does not have a language') }}</input>
+<div id="langdiv" {% if data.langdis != 'False' %} style="display: none" {% endif %}>
 {{ form.input('language', label=_('Languages'), id='language', placeholder=_('en, fi, sv ...'), value=data.language, error=errors.language, classes=['control-medium']) }}
 </div>
 </div>
@@ -140,8 +140,8 @@ s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.
 			{{ form.input('contactURL', label=_('Homepage'), id='contactURL', placeholder=_('http://johndoe.com/contact'), value=data.contactURL, error=errors.contactURL, classes=['control-medium']) }}
 		</div>
 		<h3 class="module-heading">{{ _('Project that produced this dataset') }}</h2>
-		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis %}checked{% endif %}>{{ _('This dataset was not produced in a project.') }}</input>
-		<div class="module-content" id="projdiv" {% if data.projdis %}style="display: none;"{% endif %}>
+		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' %}checked{% endif %}>{{ _('This dataset was not produced in a project.') }}</input>
+		<div class="module-content" id="projdiv" {% if data.projdis != 'False' %}style="display: none;"{% endif %}>
 			{{ form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-medium']) }}
 			{{ form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-medium']) }}
 			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium']) }}

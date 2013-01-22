@@ -26,7 +26,9 @@ from ckan.lib.dictization.model_save import group_dict_save
 
 import ckan.logic.converters
 from ckan.logic.converters import convert_to_extras, convert_from_extras
-from ckan.lib.navl.validators import missing, ignore_missing, keep_extras, ignore, not_empty, not_missing, both_not_empty
+from ckan.lib.navl.validators import missing, ignore_missing, keep_extras,\
+                                    ignore, not_empty, not_missing, default,\
+                                    both_not_empty
 from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
 
 from pylons.decorators.cache import beaker_cache
@@ -299,9 +301,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
-           'langdis': [unicode, check_language],
+           'langdis': [default(False), unicode, check_language],
            '__extras': [check_author_org],
-           'projdis': [unicode, check_project],
+           'projdis': [default(False), unicode, check_project],
            '__junk': [check_junk],
            'name': [unicode, ignore_missing, self.update_name],
            'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
