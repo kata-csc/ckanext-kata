@@ -8,7 +8,7 @@ from ckan.logic import get_action, ValidationError
 
 from ckan.lib.cli import CkanCommand
 import ckanext.kata.tieteet as tieteet
-
+from ckanext.harvest.model import HarvestSource
 
 class Kata(CkanCommand):
     '''
@@ -37,6 +37,8 @@ class Kata(CkanCommand):
         
         if cmd == 'initdb':
             self.initdb()
+        elif cmd == 'harvest_sources':
+            self.harvest_sources()
         else:
             print 'Command %s not recognized' % cmd
 
@@ -57,3 +59,10 @@ class Kata(CkanCommand):
                 m = Member(group=kata, table_id=t.id, table_name="group")
                 m.save()
 
+    def harvest_sources(self):
+        ddi = HarvestSource(url='http://www.fsd.uta.fi/fi/aineistot/luettelo/fsd-ddi-records-uris-fi.txt',
+                            type='DDI')
+        ddi.save()
+        oai = HarvestSource(url='http://helda.helsinki.fi/oai/request',
+                            type='OAI-PMH')
+        oai.save()
