@@ -95,11 +95,13 @@ def org_auth_to_extras(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    authnum = 1
-    orgnum = 1
-    avals = []
-    ovals = []
     if len(data[key]) > 0:
+        if key[0] == 'author':
+            if not ('organization', key[1], key[2]) in data:
+                errors[key].append(_('This author is without organization!'))
+        if key[0] == 'organization':
+            if not ('author', key[1], key[2]) in data:
+                errors[key].append(_('This organization is without author!'))
         extras.append({'key': "%s_%s" % (key[0], key[1]),
                   'value': data[key]})
 
