@@ -40,6 +40,9 @@ ul.kata {
 	line-height:10px !important;
 	text-indent: -4px;
 }
+.kata-input-org {
+	width: 200px !important;
+}
 .module-link {
 	float: right;
 }

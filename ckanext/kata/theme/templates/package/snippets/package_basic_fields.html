@@ -13,7 +13,7 @@
 	<div class="control-group control-custom">
 		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
 			<div class="controls editor">
-				<input class="control-medium" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="{{title.value}}" />
+				<input class="control-medium kata-input-org" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="{{title.value}}" />
 			</div>
 		<label class="control-label" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
 			<div class="controls">
@@ -31,7 +31,7 @@
 	<div class="control-group control-custom">
 		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
 			<div class="controls editor">
-					<input class="control-medium" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="{{title.value}}" />
+					<input class="control-medium kata-input-org" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="{{title.value}}" />
 			</div>
 		<label class="control-label" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
 			<div class="controls">
@@ -50,7 +50,7 @@
 	<div class="control-group control-custom">
 		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
 			<div class="controls editor">
-				<input class="control-medium" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="" />
+				<input class="control-medium kata-input-org" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="" />
 			</div>
 		<label class="control-label" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
 			<div class="controls">
@@ -74,11 +74,11 @@
 	<div class="control-group control-custom">
 		<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
 			<div class="controls editor">
-				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{auth.value}}" />
+				<input class="control-medium kata-input-org" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{auth.value}}" />
 			</div>
 		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
 			<div class="controls editor" style="margin-top: 5px;">
-				<input class="control-medium" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
+				<input class="control-medium kata-input-org" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
 			</div>
 	</div>
 
@@ -90,11 +90,11 @@
 	<div class="control-group control-custom">
 	<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
 		<div class="controls editor">
-			<input class="control-medium" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{auth.value}}" />
+			<input class="control-medium kata-input-org" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{auth.value}}" />
 		</div>
 		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
 		<div class="controls editor" style="margin-top: 5px;">
-			<input class="control-medium" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
+			<input class="control-medium kata-input-org" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
 		</div>
 	</div>
 	{% endfor %}
@@ -104,11 +104,11 @@
 		<div class="control-group control-custom">
 		<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
 			<div class="controls editor">
-s				<input class="control-medium" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="" />
+s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="" />
 			</div>
 		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
 			<div class="controls editor" style="margin-top: 5px;">
-			<input class="control-medium" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="" />
+			<input class="control-medium kata-input-org" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="" />
 			<input type="button" class="btn checkbox kata-plus-btn" onclick="$('#obtn__{{index}}__value_id').change();" value="+" />
 			<input style="display: none;"type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 			</div>
