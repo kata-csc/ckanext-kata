@@ -43,6 +43,9 @@ ul.kata {
 .kata-input-org {
 	width: 200px !important;
 }
+.kata-label-pluspad {
+	padding-top: 9px !important;
+}
 .module-link {
 	float: right;
 }

@@ -159,8 +159,8 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 <section class="module">
 <h2 class="module-heading">{{ _('Identification information') }}</h2>
 <div class="module-content">
-{{ form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.versionPID, error=errors.versionPID, classes=['control-medium']) }}
-{% call form.input_block("titles", _('Modification date'), error=errors.version) %}
+{{ form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.versionPID, error=errors.versionPID, classes=['control-medium'], control_classes=["kata-label-pluspad"]) }}
+{% call form.input_block("titles", _('Modification date'), error=errors.version, control_classes=["kata-label-pluspad"]) %}
 	<div data-module="dateselect-simple-kata">
 		<input type="text" readonly id="last_modified" name="version" value="{{data.version}}" />
 	</div>
@@ -179,13 +179,13 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 	<input type="radio" name="access" id="form" value="form" style="top: 0px" onclick="KATA.toggleAccess(this)" {% if data.access == 'form'%}checked{% endif %} >{{ _('with data access application') }}</input><br />
 
 	<div id="accessDiv" {% if not data.accessRights and not data.access == 'form' %}style="display:none"{% endif%}>
-	{{ form.input('accessRights', label=_('Web address of access application'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'] )}}
+	{{ form.input('accessRights', label=_('Web address of access application'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'], control_classes=["kata-label-pluspad"])}}
 	{{ form.checkbox('newform', label=_('Create a new access request form'), id="newform") }}
 	</div>
 	<input type="radio" name="access" id="free" onclick="KATA.toggleAccess(this)" style="top: 0px" value="free" {% if data.access == 'free'%}checked{% endif %}>{{ _('directly downloadable') }}</input><br />
 	<input type="radio" name="access" id="ident" onclick="KATA.toggleAccess(this)" style="top: 0px" value="ident" {% if data.access == 'ident'%}checked{% endif %}>{{ _('downloadable after registration / identification') }}</input><br />
 	<div id="urlDiv" {% if not data.accessrequestURL and not data.access in ('free', 'ident') %}style="display:none"{% endif%}>
-	{{ form.input('accessrequestURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessrequestURL, error=errors.accessrequestURL, classes=['control-medium'] ) }}
+	{{ form.input('accessrequestURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessrequestURL, error=errors.accessrequestURL, classes=['control-medium'], control_classes=["kata-label-pluspad"]) }}
 	</div> 
 	<input type="radio" name="access" id="contact" onclick="KATA.toggleAccess(this)" style="top: 0px" value="contact" {% if data.access == 'contact'%}checked{% endif %}>{{ _('only by contacting the distributor') }}</input><br />
 	{% endcall %}
