@@ -127,7 +127,6 @@ KATA.toggleAccess = function(obj) {
 	}
 KATA.checkLang = function(obj) {
 	$('#langdiv').toggle();
-	console.log(!$('#langdiv').is(':visible'))
 	if ($(obj).val().length && !$('#langdiv').is(':visible')) {
 		alert('Losing data on language if this is disabled!');
 	}
