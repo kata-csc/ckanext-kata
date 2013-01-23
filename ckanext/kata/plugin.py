@@ -339,8 +339,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['langdis'] = [default(False), unicode, check_language]
-        schema['projdis'] = [default(False), unicode, check_language]
+        schema['langdis'] = [default(False), unicode]
+        schema['projdis'] = [default(False), unicode]
         schema['title'] = [ltitle_from_extras, ignore_missing]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
