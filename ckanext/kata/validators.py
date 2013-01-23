@@ -60,7 +60,7 @@ def validate_language(key, data, errors, context):
         try:
             if lang:
                 pycountry.languages.get(alpha2=lang)
-            elif not ('langdis',) in data:
+            elif data[('langdis',)] == 'False':
                 errors[key].append(_('No language given.'))
         except KeyError:
             if not ('langdis',) in data and 'save' in context:
