@@ -84,7 +84,16 @@
 
 	{% endfor %}
 {% else %}
-	{% for auth, org in zip(data.author, data.organization) %}
+	{% if len(data.author) and len(data.organization) %}
+		{% set orgauths = zip(data.author, data.organization) %}
+	{% else %}
+		{% if not len(data.author) %}
+			{% set orgauths = zip(range(len(data.organization), data.organization)) %}
+		{% elif not len(data.organization) %}
+			{% set orgauths = zip(data.author, range(len(data.author))) %}
+		{% endif %}
+	{% endif %}
+	{% for auth, org in orgauths %}
 	{% set lastrole = loop.index %}
 	{% set index = loop.index %}
 	<div class="control-group control-custom">
