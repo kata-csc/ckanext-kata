@@ -14,6 +14,7 @@ from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurable
 from ckan.plugins import IMapper
 from ckan.plugins import IActions
+from ckan.plugins import IAuthFunctions
 from ckan.plugins.core import unload
 from ckan.lib.base import g, c
 from ckan.model import Package, Group, Session, repo
@@ -44,11 +45,12 @@ from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         org_auth_from_extras, org_auth_to_extras, pid_from_extras,\
                         export_as_related, add_to_group
 import actions
-import tieteet
+import auth_functions
 
 log = logging.getLogger('ckanext.kata')
 
 import utils
+
 
 class KataMetadata(SingletonPlugin):
     implements(IRoutes, inherit=True)
@@ -97,6 +99,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IPackageController, inherit=True)
     implements(ITemplateHelpers, inherit=True)
     implements(IActions, inherit=True)
+    implements(IAuthFunctions, inherit=True)
 
     kata_fields_required = ['version', 'language',
                   'publisher', 'phone', 'contactURL',
@@ -109,6 +112,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                   'projdis']
 
     kata_field = kata_fields_recommended + kata_fields_required
+
+    def get_auth_functions(self):
+        """
+        Returns a dict of all the authorization functions which the
+        implementation overrides
+        """
+        return {'package_update': auth_functions.is_owner}
 
     def get_actions(self):
         return {'package_show': actions.package_show,
