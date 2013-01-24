@@ -4,6 +4,8 @@ import pycountry
 import re
 
 from ckan.model import Package
+from ckan.lib import helpers as h
+
 from pylons.i18n import gettext as _
 import utils
 from ckan.lib.navl.validators import not_empty, not_missing
@@ -16,11 +18,6 @@ def validate_access(key, data, errors, context):
     if data[key] == 'form':
         if not data[('accessRights',)]:
             errors[key].append(_('You must fill up the form URL'))
-
-
-def check_language(key, data, errors, context):
-    if data[('language',)] and data[('langdis',)] != 'False':
-        errors[key].append(_('Language received even if disabled.'))
 
 
 def check_project(key, data, errors, context):
@@ -55,12 +52,17 @@ def check_last_and_update_pid(key, data, errors, context):
 
 def validate_language(key, data, errors, context):
     value = data[key]
+    langdis = data.get(('langdis',), None)
+    if langdis == 'True':
+        value = data.pop(key, None)
+        h.flash_notice(_("Language was deleted as it is disabled. Value was: %s" % value))
+        return
     for lang in value.split(','):
         lang = lang.strip()
         try:
             if lang:
                 pycountry.languages.get(alpha2=lang)
-            elif data[('langdis',)] == 'False':
+            elif langdis == 'False':
                 errors[key].append(_('No language given.'))
         except KeyError:
             if not ('langdis',) in data and 'save' in context:

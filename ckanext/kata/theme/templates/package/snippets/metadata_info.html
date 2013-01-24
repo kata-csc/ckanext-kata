@@ -5,7 +5,7 @@
 	{% if pkg_dict.language or pkg_dict.langdis %}
 	<tr>
 		<th class="dataset-label">{{ _('Language') }}</th>
-		<td class="dataset-details">{% if pkg_dict.language %}{{pkg_dict.language}}{% else %}No language{% endif%}</td>
+		<td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}No language{% endif%}</td>
 	</tr>
 	{% endif %}
 	{% if pkg_dict.langtitles %}

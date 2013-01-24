@@ -33,8 +33,8 @@ from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_
 
 from pylons.decorators.cache import beaker_cache
 
-from validators import check_language, check_project, validate_access,\
-                        validate_lastmod, check_junk, check_last_and_update_pid,\
+from validators import check_project, validate_access, validate_lastmod,\
+                        check_junk, check_last_and_update_pid,\
                         validate_language, validate_email, validate_phonenum,\
                         check_project_dis, check_accessrequesturl, check_accessrights,\
                         not_empty_kata, check_author_org
@@ -301,7 +301,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
            'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
-           'langdis': [default(False), unicode, check_language],
+           'langdis': [default(False), unicode],
            '__extras': [check_author_org],
            'projdis': [default(False), unicode, check_project],
            '__junk': [check_junk],
