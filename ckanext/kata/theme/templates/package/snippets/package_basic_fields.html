@@ -57,7 +57,7 @@
 				<select name="title__{{index}}__lang">
 					{% snippet 'package/snippets/languages.html' %}
 				</select>
-				<input type="button" class="btn checkbox kata-plus-btn" onclick="$('#lbtn__{{index}}__value_id').change();" value="+" />
+				<button type="button" class="btn checkbox kata-plus-btn" onclick="$('#lbtn__{{index}}__value_id').change();"><span class="kata-btn-span">+</span></button>
 			<input style="display: none;" type="checkbox" id="lbtn__{{index}}__value_id" name="lbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 			</div>
 	</div>
@@ -118,7 +118,7 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
 			<div class="controls editor" style="margin-top: 5px;">
 			<input class="control-medium kata-input-org" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="" />
-			<input type="button" class="btn checkbox kata-plus-btn" onclick="$('#obtn__{{index}}__value_id').change();" value="+" />
+			<button type="button" class="btn checkbox kata-plus-btn" onclick="$('#obtn__{{index}}__value_id').change();" ><span class="kata-btn-span">+</span></button>
 			<input style="display: none;"type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 			</div>
 		</div>

@@ -37,8 +37,15 @@ ul.kata {
 	margin: 0px !important;
 }
 .kata-plus-btn {
-	line-height:10px !important;
-	text-indent: -4px;
+	margin: 0 !important;
+}
+.kata-btn-span {
+	display: inline !important;
+	left: -4px;
+	top: -4px;
+	position: relative;
+	width: 0 !important;
+	margin-left: 0px !important;
 }
 .kata-input-org {
 	width: 200px !important;
