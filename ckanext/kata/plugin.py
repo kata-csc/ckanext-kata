@@ -151,6 +151,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         pkg = Package.get(pkg_id)
         if c.user and not user_has_role(c.userobj, 'admin', pkg) and\
                         not user_has_role(c.userobj, 'editor', pkg) and\
+                        not c.userobj.sysadmin and\
                         not config.get('smtp_server', False):
             following = KataAccessRequest.is_requesting(c.userobj.id, pkg_id)
             if not following:
