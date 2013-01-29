@@ -9,6 +9,8 @@ from ckan.logic import get_action, ValidationError
 from ckan.lib.cli import CkanCommand
 import ckanext.kata.tieteet as tieteet
 from ckanext.harvest.model import HarvestSource
+from ckanext.kata.model import setup
+
 
 class Kata(CkanCommand):
     '''
@@ -58,6 +60,7 @@ class Kata(CkanCommand):
                 t.save()
                 m = Member(group=kata, table_id=t.id, table_name="group")
                 m.save()
+        setup()
 
     def harvest_sources(self):
         ddi = HarvestSource(url='http://www.fsd.uta.fi/fi/aineistot/luettelo/fsd-ddi-records-uris-fi.txt',

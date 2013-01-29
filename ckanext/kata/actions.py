@@ -2,12 +2,16 @@ import re
 import json
 import datetime
 import ckan.logic.action.get
+from pylons import c
 from ckan.logic.action.create import related_create
-from ckan.model import Related, Session, Package, repo, Group, Member
+from ckan.model import Related, Session, Package, repo
+from ckan.model.authz import add_user_to_role
 import ckan.model as model
 from ckan.lib.search import index_for
 from pylons.i18n import gettext as _
-import tieteet
+from model import KataAccessRequest
+from sqlalchemy import exceptions
+import utils
 
 TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
@@ -44,3 +48,20 @@ def group_list(context, data_dict):
         return {}
     else:
         return ckan.logic.action.get.group_list(context, data_dict)
+
+
+def reqaccess(context, data_dict):
+    if c.userobj:
+        if 'id' in data_dict:
+            req = KataAccessRequest.is_requesting(c.userobj.id, data_dict['id'])
+            if req:
+                return {'ret': 'Yes'}
+            else:
+                # Do your emailing here
+                requ = KataAccessRequest(c.userobj.id, data_dict['id'])
+                requ.save()
+                utils.send_email(requ)
+                return {'ret': 'Yes'}
+        else:
+            return {'ret': 'No'}
+    return {'ret': 'No'}

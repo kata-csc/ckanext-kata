@@ -17,7 +17,7 @@ from ckan.plugins import IActions
 from ckan.plugins import IAuthFunctions
 from ckan.plugins.core import unload
 from ckan.lib.base import g, c
-from ckan.model import Package, Group, Session, repo
+from ckan.model import Package, user_has_role
 import ckan.model as model
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
@@ -46,10 +46,18 @@ from converters import copy_from_titles, custom_to_extras, event_from_extras,\
                         export_as_related, add_to_group
 import actions
 import auth_functions
+from model import KataAccessRequest
 
 log = logging.getLogger('ckanext.kata')
 
 import utils
+
+
+def snippet(template_name, **kw):
+    ''' This function is used to load html snippets into pages. keywords
+    can be used to pass parameters into the snippet rendering '''
+    import ckan.lib.base as base
+    return base.render_snippet(template_name, **kw)
 
 
 class KataMetadata(SingletonPlugin):
@@ -86,6 +94,9 @@ class KataMetadata(SingletonPlugin):
                     controller=api_controller,
                     conditions=GET,
                     action="discipline_autocomplete")
+        map.connect('/unlock_access/{id}',
+                    controller="ckanext.kata.controllers:AccessRequestController",
+                    action="unlock_access")
         return map
 
     def before_insert(self, mapper, connection, instance):
@@ -122,14 +133,29 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def get_actions(self):
         return {'package_show': actions.package_show,
-                'group_list': actions.group_list}
+                'group_list': actions.group_list,
+                'reqaccess': actions.reqaccess,}
 
     def get_helpers(self):
         ''' Register helpers '''
         return {'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': self.kata_sorted_extras,
                 'kata_metadata_fields': self.kata_metadata_fields,
-                'reference_update': self.reference_update}
+                'reference_update': self.reference_update,
+                'request_access': self.request_access,
+                }
+
+    def request_access(self, pkg_id):
+        # If the user is logged in show the access request button
+        pkg = Package.get(pkg_id)
+        if c.user and not user_has_role(c.userobj, 'admin', pkg) and\
+                        not user_has_role(c.userobj, 'editor', pkg):
+            following = KataAccessRequest.is_requesting(c.userobj.id, pkg_id)
+            if not following:
+                return snippet('snippets/access_button.html',
+                           obj_id=pkg_id,
+                           following=following)
+        return ''
 
     def reference_update(self, ref):
         #@beaker_cache(type="dbm", expire=2678400)

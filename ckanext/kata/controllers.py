@@ -1,14 +1,16 @@
 '''Metadata based controllers for KATA.
 '''
 
-from ckan.lib.base import BaseController, c, h
+from ckan.lib.base import BaseController, c, h, redirect
 from ckan.controllers.api import ApiController
-from ckan.model import Package, User, Related, Member, Group
+from ckan.model import Package, User, Related, Group, meta
+from ckan.model.authz import add_user_to_role
 import ckan.model.misc as misc
 import ckan.model as model
 
 from pylons import response, config, request
 from pylons.decorators.cache import beaker_cache
+from pylons.i18n import gettext as _
 from rdflib.term import Identifier, Statement, Node, Variable
 from rdflib.namespace import ClosedNamespace
 from vocab import Graph, URIRef, Literal, BNode
@@ -18,6 +20,7 @@ from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
 import logging
 from genshi.template._ast24 import Pass
 from urnhelper import URNHelper
+from model import KataAccessRequest
 
 log = logging.getLogger('ckanext.kata.controller')
 
@@ -265,3 +268,23 @@ class KATAApiController(ApiController):
             }
         }
         return self._finish_ok(resultSet)
+
+
+class AccessRequestController(BaseController):
+
+    def unlock_access(self, id):
+        q = model.Session.query(KataAccessRequest)
+        q = q.filter_by(id=id)
+        req = q.first()
+        if req:
+            usr = User.get(req.user_id)
+            pkg = Package.get(req.pkg_id)
+            add_user_to_role(usr, 'editor', pkg)
+            url = h.url_for(controller='package', action='read', id=req.pkg_id)
+            h.flash_success(_("You now have editor rights to package %s" % pkg.name))
+            req.delete()
+            meta.Session.commit()
+            redirect(url)
+        else:
+            h.flash_error(_("No such request found!"))
+            redirect('/')

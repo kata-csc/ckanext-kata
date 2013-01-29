@@ -17,6 +17,7 @@
     <li>{% link_for _('Edit'), controller='package', action='edit', id=pkg.name, class_='btn btn-primary', icon='wrench' %}</li>
   {% endif %}
   <li>{{ h.follow_button('dataset', pkg.id) }}</li>
+  <li>{{ h.request_access(pkg.id)}}</li>
 {% endblock %}
 
 {% block primary_content %}
