@@ -2,7 +2,7 @@ import re
 import json
 import datetime
 import ckan.logic.action.get
-from pylons import c
+from pylons import c, config
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Package, repo
 from ckan.model.authz import add_user_to_role
@@ -51,6 +51,8 @@ def group_list(context, data_dict):
 
 
 def reqaccess(context, data_dict):
+    if not config.get('smtp_server', False):
+        return {'ret': 'No'}
     if c.userobj:
         if 'id' in data_dict:
             req = KataAccessRequest.is_requesting(c.userobj.id, data_dict['id'])

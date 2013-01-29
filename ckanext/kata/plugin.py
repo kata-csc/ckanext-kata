@@ -33,6 +33,7 @@ from ckan.lib.navl.validators import missing, ignore_missing, keep_extras,\
 from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
 
 from pylons.decorators.cache import beaker_cache
+from pylons import config
 
 from validators import check_project, validate_access, validate_lastmod,\
                         check_junk, check_last_and_update_pid,\
@@ -149,7 +150,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # If the user is logged in show the access request button
         pkg = Package.get(pkg_id)
         if c.user and not user_has_role(c.userobj, 'admin', pkg) and\
-                        not user_has_role(c.userobj, 'editor', pkg):
+                        not user_has_role(c.userobj, 'editor', pkg) and\
+                        not config.get('smtp_server', False):
             following = KataAccessRequest.is_requesting(c.userobj.id, pkg_id)
             if not following:
                 return snippet('snippets/access_button.html',
