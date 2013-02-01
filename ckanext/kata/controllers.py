@@ -272,16 +272,25 @@ class KATAApiController(ApiController):
 
 class AccessRequestController(BaseController):
 
+    def create_request(self, pkg_id):
+        pkg = Package.get(pkg_id)
+        user = c.userobj
+        req = KataAccessRequest(user.id, pkg.id)
+        req.save()
+        url = h.url_for(controller='package', action='read', id=pkg_id)
+        h.flash_success(_("You now requested editor rights to package %s" % pkg.name))
+        redirect(url)
+
     def unlock_access(self, id):
         q = model.Session.query(KataAccessRequest)
         q = q.filter_by(id=id)
         req = q.first()
         if req:
-            usr = User.get(req.user_id)
+            user = User.get(req.user_id)
             pkg = Package.get(req.pkg_id)
-            add_user_to_role(usr, 'editor', pkg)
+            add_user_to_role(user, 'editor', pkg)
             url = h.url_for(controller='package', action='read', id=req.pkg_id)
-            h.flash_success(_("You now have editor rights to package %s" % pkg.name))
+            h.flash_success(_("%s now has editor rights to package %s" % (user.name, pkg.name)))
             req.delete()
             meta.Session.commit()
             redirect(url)

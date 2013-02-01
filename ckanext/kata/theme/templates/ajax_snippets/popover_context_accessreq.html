@@ -1,0 +1,29 @@
+<div class="popover-context profile-info">
+
+
+{% if no_owner == 'false' %}
+<p>
+{% trans %}
+To edit this dataset you may click the button below, this emails a request to the package owner.
+{% endtrans %}
+<br />
+{% if following == 'true' %}
+<a href="" class="btn btn-danger">
+	<i class="icon-remove-sign"></i>
+	{{ _('Already requested edit') }}
+</a>
+{% else %}
+<a href="{{ h.url_for(controller='ckanext.kata.controllers:AccessRequestController', action='create_request', pkg_id=id) }}" class="btn btn-success">
+	<i class="icon-plus-sign"></i>
+	{{ _('Request edit') }}
+</a>
+{% endif %}
+</p>
+{% else %}
+<p>
+<b>
+{{ _('This dataset does not have an owner.') }}
+</b>
+</p>
+{% endif %}
+</div>

@@ -98,6 +98,9 @@ class KataMetadata(SingletonPlugin):
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="unlock_access")
+        map.connect('/create_request/{pkg_id}',
+                    controller="ckanext.kata.controllers:AccessRequestController",
+                    action="create_request")
         return map
 
     def before_insert(self, mapper, connection, instance):
@@ -135,7 +138,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_actions(self):
         return {'package_show': actions.package_show,
                 'group_list': actions.group_list,
-                'reqaccess': actions.reqaccess,}
+                'accessreq_show': actions.accessreq_show,
+                }
 
     def get_helpers(self):
         ''' Register helpers '''

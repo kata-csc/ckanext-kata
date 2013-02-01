@@ -50,20 +50,31 @@ def group_list(context, data_dict):
         return ckan.logic.action.get.group_list(context, data_dict)
 
 
-def reqaccess(context, data_dict):
-    if not config.get('smtp_server', False):
-        return {'ret': 'No'}
+def accessreq_show(context, data_dict):
+    ret = {}
+    ret['title'] = _('Request edit rights')
+    smtp = config.get('smtp.server', '')
+    if not len(smtp):
+        ret['ret'] = 'Yes'
+        return ret
+    pkg = Package.get(data_dict['id'])
+    selrole = False
+    ret['id'] = pkg.id
+    for role in pkg.roles:
+        if role.role == "admin":
+            selrole = True
+    ret['no_owner'] = not selrole
     if c.userobj:
         if 'id' in data_dict:
             req = KataAccessRequest.is_requesting(c.userobj.id, data_dict['id'])
             if req:
-                return {'ret': 'Yes'}
+                ret['ret'] = 'Yes'
+                return ret
             else:
-                # Do your emailing here
-                requ = KataAccessRequest(c.userobj.id, data_dict['id'])
-                requ.save()
-                utils.send_email(requ)
-                return {'ret': 'Yes'}
+                ret['ret'] = 'No'
+                return ret
         else:
-            return {'ret': 'No'}
-    return {'ret': 'No'}
+            ret['ret'] = 'No'
+            return ret
+    ret['ret'] = 'No'
+    return ret

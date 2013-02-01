@@ -9,7 +9,11 @@ from ckan.logic import get_action, ValidationError
 from ckan.lib.cli import CkanCommand
 import ckanext.kata.tieteet as tieteet
 from ckanext.harvest.model import HarvestSource
-from ckanext.kata.model import setup
+from ckanext.kata.model import setup, KataAccessRequest
+from ckanext.kata.utils import send_email
+
+import pylons
+from pylons import config, g
 
 
 class Kata(CkanCommand):
@@ -18,6 +22,8 @@ class Kata(CkanCommand):
 
       kata initdb
         - Creates the necessary tables in the database
+      kata send_request_emails
+        - Sends edit request messages
     '''
 
     summary = __doc__.split('\n')[0]
@@ -41,6 +47,8 @@ class Kata(CkanCommand):
             self.initdb()
         elif cmd == 'harvest_sources':
             self.harvest_sources()
+        elif cmd == 'send_request_emails':
+            self.send_emails()
         else:
             print 'Command %s not recognized' % cmd
 
@@ -69,3 +77,11 @@ class Kata(CkanCommand):
         oai = HarvestSource(url='http://helda.helsinki.fi/oai/request',
                             type='OAI-PMH')
         oai.save()
+
+    def send_emails(self):
+        all_reqs = model.Session.query(KataAccessRequest).all()
+        for req in all_reqs:
+            try:
+                send_email(req)
+            except Exception, me:
+                print "Couldn't send email! Details:\n%s" % me
