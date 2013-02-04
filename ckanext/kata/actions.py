@@ -2,12 +2,16 @@ import re
 import json
 import datetime
 import ckan.logic.action.get
+import ckan.logic.action.create
+import ckan.logic.action.update
 from pylons import c, config
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Package, repo
 from ckan.model.authz import add_user_to_role
 import ckan.model as model
 from ckan.lib.search import index_for
+from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
+from ckan.logic.validators import url_validator
 from pylons.i18n import gettext as _
 from model import KataAccessRequest
 from sqlalchemy import exceptions
@@ -78,3 +82,37 @@ def accessreq_show(context, data_dict):
             return ret
     ret['ret'] = 'No'
     return ret
+
+
+def related_create(context, data_dict):
+    schema = {
+        'id': [ignore_missing, unicode],
+        'title': [not_empty, unicode],
+        'description': [ignore_missing, unicode],
+        'type': [not_empty, unicode],
+        'image_url': [ignore_missing, unicode, url_validator],
+        'url': [ignore_missing, unicode],
+        'owner_id': [not_empty, unicode],
+        'created': [ignore],
+        'featured': [ignore_missing, int],
+    }
+    context['schema'] = schema
+
+    return ckan.logic.action.create.related_create(context, data_dict)
+
+
+def related_update(context, data_dict):
+    schema = {
+        'id': [ignore_missing, unicode],
+        'title': [not_empty, unicode],
+        'description': [ignore_missing, unicode],
+        'type': [not_empty, unicode],
+        'image_url': [ignore_missing, unicode, url_validator],
+        'url': [ignore_missing, unicode],
+        'owner_id': [not_empty, unicode],
+        'created': [ignore],
+        'featured': [ignore_missing, int],
+    }
+    context['schema'] = schema
+
+    return ckan.logic.action.update.related_update(context, data_dict)

@@ -139,6 +139,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {'package_show': actions.package_show,
                 'group_list': actions.group_list,
                 'accessreq_show': actions.accessreq_show,
+                'related_create': actions.related_create,
+                'related_update': actions.related_update,
                 }
 
     def get_helpers(self):
