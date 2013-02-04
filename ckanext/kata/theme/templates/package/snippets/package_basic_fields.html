@@ -3,7 +3,7 @@
 <h2 class="module-heading">{{ _('General information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name%}{{data.name}}{%endif%}" />
-{% call form.input_block("titles", "Titles" , error=errors.title) %}
+{% call form.input_block("titles", "Titles" , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
 {% set lastlang = 1%}
 <div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
 {% if data.langtitles %}
@@ -64,7 +64,7 @@
 {% endfor %}
 {% endcall %}
 </div>
-{% call form.input_block("author", _("Authors and organizations"), error=errors.author or errors.organization) %}
+{% call form.input_block("author", _("Authors and organizations"), error=errors.author or errors.organization, control_classes=["kata-auth-padding"], label_classes=["kata-auth-label"]) %}
 <div data-module="custom-fields-kata" data-module-id="orgauths" id="orgauths">
 {% set lastrole = 1%}
 {% if data.orgauths %}

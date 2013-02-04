@@ -53,6 +53,24 @@ ul.kata {
 .kata-label-pluspad {
 	padding-top: 9px !important;
 }
+.kata-multi-padding {
+	margin-left: 67px !important;
+}
+.kata-multi-label {
+	width: 453px !important;
+	text-align: left !important;
+	margin-left: 28px !important;
+	margin-bottom: 15px;
+}
+.kata-auth-padding {
+	margin-left: 72px !important;
+}
+.kata-auth-label {
+	width: 453px !important;
+	text-align: left !important;
+	margin-left: 28px !important;
+	margin-bottom: 15px;
+}
 .module-link {
 	float: right;
 }
