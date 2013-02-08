@@ -24,6 +24,7 @@ setup(
         'rdflib',
         'iso8601',
         'pycountry',
+        'Orange-Text',
 	],
 	package_data={'ckan': [
         'i18n/*/LC_MESSAGES/*.mo',

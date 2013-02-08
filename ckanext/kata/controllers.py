@@ -1,10 +1,12 @@
 '''Metadata based controllers for KATA.
 '''
 
-from ckan.lib.base import BaseController, c, h, redirect
+from ckan.lib.base import BaseController, c, h, redirect, render
+from ckan.logic import get_action
 from ckan.controllers.api import ApiController
-from ckan.model import Package, User, Related, Group, meta
+from ckan.model import Package, User, Related, Group, meta, Resource
 from ckan.model.authz import add_user_to_role
+from ckan.controllers.storage import get_ofs
 import ckan.model.misc as misc
 import ckan.model as model
 
@@ -18,9 +20,13 @@ from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
                     REV, SCOVO, XSD, LICENSES
 
 import logging
-from genshi.template._ast24 import Pass
+import urllib2
+
 from urnhelper import URNHelper
 from model import KataAccessRequest
+from _text import orngText
+import tempfile
+import os
 
 log = logging.getLogger('ckanext.kata.controller')
 
@@ -302,3 +308,47 @@ class AccessRequestController(BaseController):
         else:
             h.flash_error(_("No such request found!"))
             redirect('/')
+
+BUCKET = config.get('ckan.storage.bucket', 'default')
+
+
+class DataMiningController(BaseController):
+
+    def read_data(self, id, resource_id):
+        import re
+        import string
+        pattern = re.compile('[\W_]+')
+        log.debug("%s,%s" % (id, resource_id))
+        url = h.url_for(controller='package', action='resource_read',
+                        id=id,
+                        resource_id=resource_id)
+        res = Resource.get(resource_id)
+        pkg = Package.get(id)
+        tags = []
+        c.tags = tags
+        c.pkg_dict = pkg.as_dict()
+        c.package = pkg
+        c.resource = get_action('resource_show')({'model': model},
+                                                     {'id': resource_id})
+        label = res.url.split(config.get('ckan.site_url') + '/storage/f/')[-1]
+        label = urllib2.unquote(label)
+        ofs = get_ofs()
+        furl = ofs.get_url(BUCKET, label).split('file://')[-1]
+        wordstats = {}
+        ret = {}
+        wdsf, wdspath = tempfile.mkstemp()
+        os.write(wdsf, "%s\nmetadata description title information" % furl)
+        with os.fdopen(wdsf, 'r') as wordfile:
+            preproc = orngText.Preprocess()
+            table = orngText.loadFromListWithCategories(wdspath)
+            data = orngText.bagOfWords(table, preprocessor=preproc)
+            words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
+        for i in range(len(words)):
+            d = words[i]
+            wordstats = d.get_metas(str)
+        for k, v in wordstats.items():
+            if v.value > 10.0:
+                ret[k] = v.value
+        from operator import itemgetter
+        c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
+        return render('datamining/read.html')

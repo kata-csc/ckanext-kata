@@ -21,12 +21,12 @@ from ckan.model import Package, user_has_role
 import ckan.model as model
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema,\
-                                form_to_db_package_schema
+                                form_to_db_package_schema,\
+                                default_resource_schema
 from ckan.lib.dictization.model_save import group_dict_save
 
 
 import ckan.logic.converters
-from ckan.logic.converters import convert_to_extras, convert_from_extras
 from ckan.lib.navl.validators import missing, ignore_missing, keep_extras,\
                                     ignore, not_empty, not_missing, default,\
                                     both_not_empty
@@ -101,6 +101,9 @@ class KataMetadata(SingletonPlugin):
         map.connect('/create_request/{pkg_id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="create_request")
+        map.connect('/read_data/{id}/{resource_id}',
+                    controller="ckanext.kata.controllers:DataMiningController",
+                    action="read_data")
         return map
 
     def before_insert(self, mapper, connection, instance):
@@ -357,7 +360,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'funder': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
-           'resources': [ignore_missing],
+           'resources': default_resource_schema(),
            'discipline': [add_to_group],
         })
         schema['title'] = {'value': [not_missing, ltitle_to_extras],
