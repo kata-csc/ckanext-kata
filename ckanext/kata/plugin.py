@@ -104,6 +104,9 @@ class KataMetadata(SingletonPlugin):
         map.connect('/read_data/{id}/{resource_id}',
                     controller="ckanext.kata.controllers:DataMiningController",
                     action="read_data")
+        map.connect('/data_mining/save',
+                    controller="ckanext.kata.controllers:DataMiningController",
+                    action="save")
         return map
 
     def before_insert(self, mapper, connection, instance):

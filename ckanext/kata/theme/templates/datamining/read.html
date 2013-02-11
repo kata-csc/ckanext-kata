@@ -18,15 +18,20 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Data mining results') }}</h2>
 <div class="module-content">
+<form class="dataset-form form-horizontal" method="post" action="/data_mining/save" data-module="basic-form">
+<input type="hidden" name="pkgid" value="{{ pkg.id }}" />
 <table class="table table-striped table-bordered table-condensed">
 <tbody>
 {% for k, v in c.data_tags %}
+{% set index = loop.index %}
 <tr>
-<td>{{k}}</td><td>{{v}}</td>
+<td>{{k}}</td><td>{{v}}</td><td><input type="checkbox" name="kw{{index}}" value="{{k}}"/></td>
 </tr>
 {% endfor %}
 </tbody>
 </table>
+<input type="submit" />
+</form>
 </div>
 </section>
 {% endblock %}

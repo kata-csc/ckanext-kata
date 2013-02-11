@@ -1,32 +1,33 @@
 '''Metadata based controllers for KATA.
 '''
 
-from ckan.lib.base import BaseController, c, h, redirect, render
-from ckan.logic import get_action
+from _text import orngText
 from ckan.controllers.api import ApiController
+from ckan.controllers.storage import get_ofs
+from ckan.logic import check_access
+from ckan.lib.base import BaseController, c, h, redirect, render
+from ckan.lib.navl.dictization_functions import unflatten
+from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params
 from ckan.model import Package, User, Related, Group, meta, Resource
 from ckan.model.authz import add_user_to_role
-from ckan.controllers.storage import get_ofs
-import ckan.model.misc as misc
-import ckan.model as model
-
+from model import KataAccessRequest
 from pylons import response, config, request
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import gettext as _
-from rdflib.term import Identifier, Statement, Node, Variable
 from rdflib.namespace import ClosedNamespace
-from vocab import Graph, URIRef, Literal, BNode
-from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS,\
-                    REV, SCOVO, XSD, LICENSES
-
+from rdflib.term import Identifier, Statement, Node, Variable
+from urnhelper import URNHelper
+from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS, \
+    REV, SCOVO, XSD, LICENSES, Graph, URIRef, Literal, BNode
+import ckan.model as model
+import ckan.model.misc as misc
 import logging
+import os
+import tempfile
 import urllib2
 
-from urnhelper import URNHelper
-from model import KataAccessRequest
-from _text import orngText
-import tempfile
-import os
+
+
 
 log = logging.getLogger('ckanext.kata.controller')
 
@@ -352,3 +353,25 @@ class DataMiningController(BaseController):
         from operator import itemgetter
         c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
         return render('datamining/read.html')
+
+    def save(self):
+        if c.user:
+            model.repo.new_revision()
+            data = clean_dict(unflatten(tuplize_dict(parse_params(request.params))))
+            package = Package.get(data['pkgid'])
+            keywords = []
+            context = {'model': model, 'session': model.Session,
+                       'user': c.user}
+            if check_access('package_update', context):
+                for k, v in data.items():
+                    if k.startswith('kw'):
+                        keywords.append(v)
+                tags = package.get_tags()
+                for kw in keywords:
+                    if not kw in tags:
+                        package.add_tag_by_name(kw)
+                package.save()
+                url = h.url_for(controller='package', action='read', id=data['pkgid'])
+                redirect(url)
+            else:
+                redirect('/')
