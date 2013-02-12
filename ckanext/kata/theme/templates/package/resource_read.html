@@ -18,7 +18,7 @@
         {%endif %}
       </a>
     </li>
-    {% if res.format == 'TXT' %}
+    {% if h.check_access('package_update', {'id':pkg.id }) %}
     <li>
     	{% link_for _('Data mining'), controller='ckanext.kata.controllers:DataMiningController', action='read_data', id=pkg.name, resource_id=res.id, class_='btn btn-primary', icon='eye-open' %}
     </li>

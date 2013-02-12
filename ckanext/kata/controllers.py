@@ -27,6 +27,7 @@ import tempfile
 import urllib2
 
 
+from utils import convert_to_text
 
 
 log = logging.getLogger('ckanext.kata.controller')
@@ -316,17 +317,8 @@ BUCKET = config.get('ckan.storage.bucket', 'default')
 class DataMiningController(BaseController):
 
     def read_data(self, id, resource_id):
-        import re
-        import string
-        pattern = re.compile('[\W_]+')
-        log.debug("%s,%s" % (id, resource_id))
-        url = h.url_for(controller='package', action='resource_read',
-                        id=id,
-                        resource_id=resource_id)
         res = Resource.get(resource_id)
         pkg = Package.get(id)
-        tags = []
-        c.tags = tags
         c.pkg_dict = pkg.as_dict()
         c.package = pkg
         c.resource = get_action('resource_show')({'model': model},
@@ -337,22 +329,55 @@ class DataMiningController(BaseController):
         furl = ofs.get_url(BUCKET, label).split('file://')[-1]
         wordstats = {}
         ret = {}
-        wdsf, wdspath = tempfile.mkstemp()
-        os.write(wdsf, "%s\nmetadata description title information" % furl)
-        with os.fdopen(wdsf, 'r') as wordfile:
-            preproc = orngText.Preprocess()
-            table = orngText.loadFromListWithCategories(wdspath)
-            data = orngText.bagOfWords(table, preprocessor=preproc)
-            words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
-        for i in range(len(words)):
-            d = words[i]
-            wordstats = d.get_metas(str)
-        for k, v in wordstats.items():
-            if v.value > 10.0:
-                ret[k] = v.value
-        from operator import itemgetter
-        c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
-        return render('datamining/read.html')
+        if res.format in ('TXT', 'txt'):
+            wdsf, wdspath = tempfile.mkstemp()
+            os.write(wdsf, "%s\nmetadata description title information" % furl)
+            with os.fdopen(wdsf, 'r') as wordfile:
+                preproc = orngText.Preprocess()
+                table = orngText.loadFromListWithCategories(wdspath)
+                data = orngText.bagOfWords(table, preprocessor=preproc)
+                words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
+            for i in range(len(words)):
+                d = words[i]
+                wordstats = d.get_metas(str)
+            for k, v in wordstats.items():
+                if v.value > 10.0:
+                    ret[k] = v.value
+            from operator import itemgetter
+            c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
+            os.remove(wdspath)
+            return render('datamining/read.html')
+        elif res.format in ('odt', 'doc', 'xls', 'ods', 'odp', 'ppt', 'doc', 'html'):
+            textfd, textpath = convert_to_text(res, furl)
+            if not textpath:
+                h.flash_error(_('This file could not be mined for any data!'))
+                os.close(textfd)
+                return render('datamining/read.html')
+            else:
+                wdsf, wdspath = tempfile.mkstemp()
+                os.write(wdsf, "%s\nmetadata description title information" % textpath)
+                preproc = orngText.Preprocess()
+                table = orngText.loadFromListWithCategories(wdspath)
+                data = orngText.bagOfWords(table, preprocessor=preproc)
+                words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
+                for i in range(len(words)):
+                    d = words[i]
+                    wordstats = d.get_metas(str)
+                for k, v in wordstats.items():
+                    if v.value > 10.0:
+                        ret[k] = v.value
+                from operator import itemgetter
+                c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
+                os.close(textfd)
+                os.close(wdsf)
+                os.remove(wdspath)
+                os.remove(textpath)
+                return render('datamining/read.html')
+        else:
+            h.flash_error(_('This metadata document is not in proper format for data mining!'))
+            url = h.url_for(controller='package', action='resource_read',
+                            id=id, resource_id=resource_id)
+            return redirect(url)
 
     def save(self):
         if c.user:
