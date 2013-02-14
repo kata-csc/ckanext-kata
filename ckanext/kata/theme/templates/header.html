@@ -6,7 +6,7 @@
     {# The .header-image class hides the main text and uses image replacement for the title #}
     <hgroup class="{{ g.header_class }}">
       {% if g.site_logo %}
-        <a class="logo" href="{{ h.url('home') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ g.site_title }} Logo" title="{{ g.site_title }} Logo" /></a>
+        <a class="logo" href="{{ h.url('home') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ g.site_title }} " title="{{ g.site_title }} " /></a>
       {% else %}
         <h1>
           <a href="{{ h.url('home') }}">{{ g.site_title }}</a>
@@ -17,18 +17,7 @@
     <div id="kata_header">
       <p><h1>Kata-aineistokatalogi</h1></p>
     </div>
-    <div class="content">
-      <nav class="section navigation">
-        <ul class="unstyled">
-          {{ h.build_nav_main(
-            ('add dataset', _('Add Dataset'), 'package_create'),
-            ('search', _('Datasets')),
-            ('organizations_index', _('Organizations')),
-            ('group_index', _('Groups')),
-            ('about', _('About'))
-          ) }}
-        </ul>
-      </nav>
+     <div class="content">
       <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
         <div class="field">
           <label for="field-sitewide-search">{{ _('Search Datasets') }}</label>
@@ -86,7 +75,22 @@
       {% endif %}
     </div>
   </div>
-  <div class="pull-right">
-  {% snippet "snippets/language_selector.html" %}
+  <div id="main-nav">
+    <div id="nav_wrapper">
+      <nav class="section navigation">
+        <ul class="unstyled">
+          {{ h.build_nav_main(
+            ('add dataset', _('Add Dataset'), 'package_create'),
+            ('search', _('Datasets')),
+            ('organizations_index', _('Organizations')),
+            ('group_index', _('Groups')),
+            ('about', _('About'))
+          ) }}
+        </ul>
+      </nav>
+     <div class="pull-right">
+      {% snippet "snippets/language_selector.html" %}
+     </div>
+   </div>
   </div>
 </header>
