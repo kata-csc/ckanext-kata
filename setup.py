@@ -24,6 +24,7 @@ setup(
         'rdflib',
         'iso8601',
         'pycountry',
+        'Orange',
         'Orange-Text',
 	],
 	package_data={'ckan': [
