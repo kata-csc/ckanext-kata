@@ -274,12 +274,17 @@ class AccessRequestController(BaseController):
 
     def create_request(self, pkg_id):
         pkg = Package.get(pkg_id)
-        user = c.userobj
-        req = KataAccessRequest(user.id, pkg.id)
-        req.save()
-        url = h.url_for(controller='package', action='read', id=pkg_id)
-        h.flash_success(_("You now requested editor rights to package %s" % pkg.name))
-        redirect(url)
+        user = c.userobj if c.userobj else None
+        if user:
+            req = KataAccessRequest(user.id, pkg.id)
+            req.save()
+            url = h.url_for(controller='package', action='read', id=pkg_id)
+            h.flash_success(_("You now requested editor rights to package %s" % pkg.name))
+            redirect(url)
+        else:
+            url = h.url_for(controller='package', action='read', id=pkg_id)
+            h.flash_error(_("Please log in!"))
+            redirect(url)
 
     def unlock_access(self, id):
         q = model.Session.query(KataAccessRequest)
