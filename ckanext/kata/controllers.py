@@ -342,7 +342,7 @@ class DataMiningController(BaseController):
                 wordstats = d.get_metas(str)
             for k, v in wordstats.items():
                 if v.value > 10.0:
-                    ret[k] = v.value
+                    ret[unicode(k, 'utf8')] = v.value
             from operator import itemgetter
             c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
             os.remove(wdspath)
@@ -365,7 +365,7 @@ class DataMiningController(BaseController):
                     wordstats = d.get_metas(str)
                 for k, v in wordstats.items():
                     if v.value > 10.0:
-                        ret[k] = v.value
+                        ret[unicode(k, 'utf8')] = v.value
                 from operator import itemgetter
                 c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
                 os.close(textfd)
