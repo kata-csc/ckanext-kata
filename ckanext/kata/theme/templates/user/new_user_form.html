@@ -1,5 +1,7 @@
 {% import "macros/form.html" as form %}
-
+{% block styles %}
+{% resource 'kata-resources/css/kata-fix-captcha.css' %}
+{% endblock %}
 <form class="form-horizontal" action="" method="post">
   {{ form.errors(error_summary) }}
   {{ form.input("name", id="field-username", label=_("Username"), placeholder="username", value=data.name, error=errors.name, classes=["control-medium"]) }}
