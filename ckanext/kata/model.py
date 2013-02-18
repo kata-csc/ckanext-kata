@@ -43,7 +43,7 @@ kata_access_request_table = Table('kata_req', meta.metadata,
     Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
     Column('pkg_id', types.UnicodeText, nullable=False),
     Column('user_id', types.UnicodeText, nullable=False),
-    Column('created', types.DateTime, default=datetime.datetime.utcnow,
+    Column('created', types.DateTime, default=datetime.datetime.utcnow),
     UniqueConstraint('pkg_id', 'user_id', name='pkgusr_1'),
 )
 
