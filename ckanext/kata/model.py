@@ -10,7 +10,8 @@ import ckan.model.types as _types
 from sqlalchemy.orm import mapper
 from sqlalchemy import orm as orm
 from sqlalchemy.schema import Table, Column, UniqueConstraint, ForeignKey
-
+from sqlalchemy.engine.reflection import Inspector
+import datetime
 import vdm.sqlalchemy
 
 
@@ -42,6 +43,7 @@ kata_access_request_table = Table('kata_req', meta.metadata,
     Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
     Column('pkg_id', types.UnicodeText, nullable=False),
     Column('user_id', types.UnicodeText, nullable=False),
+    Column('created', types.DateTime, default=datetime.datetime.utcnow,
     UniqueConstraint('pkg_id', 'user_id', name='pkgusr_1'),
 )
 

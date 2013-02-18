@@ -1,6 +1,8 @@
 import sys
 import re
 from pprint import pprint
+import datetime
+from datetime import timedelta
 
 from ckan import model
 from ckan.model import Group, repo, Member
@@ -80,8 +82,12 @@ class Kata(CkanCommand):
 
     def send_emails(self):
         all_reqs = model.Session.query(KataAccessRequest).all()
+        curdate = datetime.datetime.utcnow()
         for req in all_reqs:
             try:
-                send_email(req)
+                if (curdate - req.created) > timedelta(days=1):
+                    send_email(req)
+                else:
+                    req.delete()
             except Exception, me:
                 print "Couldn't send email! Details:\n%s" % me
