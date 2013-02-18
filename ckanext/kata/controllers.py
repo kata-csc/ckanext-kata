@@ -346,6 +346,16 @@ class DataMiningController(BaseController):
             from operator import itemgetter
             c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
             os.remove(wdspath)
+            for i in range(len(data)):
+                    d = words[i]
+                    wordstats = d.get_metas(str)
+            words = []
+            for k, v in wordstats.items():
+                words.append(k)
+            model.repo.new_revision()
+            if not 'autoextracted_description' in pkg.extras:
+                pkg.extras['autoextracted_description'] = ' '.join(words)
+            pkg.save()
             return render('datamining/read.html')
         elif res.format in ('odt', 'doc', 'xls', 'ods', 'odp', 'ppt', 'doc', 'html'):
             textfd, textpath = convert_to_text(res, furl)
@@ -372,6 +382,17 @@ class DataMiningController(BaseController):
                 os.close(wdsf)
                 os.remove(wdspath)
                 os.remove(textpath)
+                for i in range(len(data)):
+                    d = words[i]
+                    wordstats = d.get_metas(str)
+                words = []
+                for k, v in wordstats.items():
+                    log.debug(k)
+                    words.append(u'%s' % k)
+                model.repo.new_revision()
+                if not 'autoextracted_description' in pkg.extras:
+                    pkg.extras['autoextracted_description'] = ' '.join(words)
+                pkg.save()
                 return render('datamining/read.html')
         else:
             h.flash_error(_('This metadata document is not in proper format for data mining!'))
