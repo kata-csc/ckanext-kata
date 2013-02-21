@@ -28,6 +28,7 @@ import urllib2
 
 
 from utils import convert_to_text
+from pairtree.storage_exceptions import FileNotFoundException
 
 
 log = logging.getLogger('ckanext.kata.controller')
@@ -326,7 +327,13 @@ class DataMiningController(BaseController):
         label = res.url.split(config.get('ckan.site_url') + '/storage/f/')[-1]
         label = urllib2.unquote(label)
         ofs = get_ofs()
-        furl = ofs.get_url(BUCKET, label).split('file://')[-1]
+        try:
+            furl = ofs.get_url(BUCKET, label).split('file://')[-1]
+        except FileNotFoundException:
+            h.flash_error(_('Cannot do data mining on remote resource!'))
+            url = h.url_for(controller='package', action='resource_read',
+                            id=id, resource_id=resource_id)
+            return redirect(url)
         wordstats = {}
         ret = {}
         if res.format in ('TXT', 'txt'):
