@@ -39,6 +39,11 @@ def package_show(context, data_dict):
                 pkg.title = pkg.extras[key]
                 pkg.save()
                 break
+    return pkg_dict1
+
+
+def package_update(context, data_dict):
+    pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
     pkg_dict = ckan.logic.action.get.package_show(context, data_dict)
