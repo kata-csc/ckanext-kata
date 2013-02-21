@@ -42,11 +42,11 @@ def package_show(context, data_dict):
     return pkg_dict1
 
 
-def package_update(context, data_dict):
-    pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
+def package_create(context, data_dict):
+    pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
-    pkg_dict = ckan.logic.action.get.package_show(context, data_dict)
+    pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
     index = index_for('package')
     index.index_package(pkg_dict)
     return pkg_dict1
