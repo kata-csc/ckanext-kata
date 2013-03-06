@@ -5,6 +5,7 @@ from _text import orngText
 from ckan.controllers.api import ApiController
 from ckan.controllers.storage import get_ofs
 from ckan.logic import check_access
+from ckan.lib.munge import substitute_ascii_equivalents
 from ckan.lib.base import BaseController, c, h, redirect, render
 from ckan.lib.navl.dictization_functions import unflatten
 from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params
@@ -395,7 +396,7 @@ class DataMiningController(BaseController):
                 words = []
                 for k, v in wordstats.items():
                     log.debug(k)
-                    words.append(u'%s' % k)
+                    words.append(substitute_ascii_equivalents(k))
                 model.repo.new_revision()
                 if not 'autoextracted_description' in pkg.extras:
                     pkg.extras['autoextracted_description'] = ' '.join(words)
@@ -415,7 +416,7 @@ class DataMiningController(BaseController):
             keywords = []
             context = {'model': model, 'session': model.Session,
                        'user': c.user}
-            if check_access('package_update', context):
+            if check_access('package_update', context, data_dict={"id": data['pkgid']}):
                 for k, v in data.items():
                     if k.startswith('kw'):
                         keywords.append(v)
