@@ -1,8 +1,9 @@
 {% import 'macros/form.html' as form %}
 <section class="module">
-<h2 class="module-heading">{{ _('General information') }}</h2>
+<h2 class="module-heading">{{ _('Required information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name%}{{data.name}}{%endif%}" />
+<p>{{ _("All fields marked with * are compulsory.") }}</p>
 {% call form.input_block("titles", "Titles" , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
 {% set lastlang = 1%}
 <div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
@@ -11,11 +12,11 @@
 	{% set index = loop.index %}
 	{% set lastlang = loop.index %}
 	<div class="control-group control-custom">
-		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
+		<label class="control-label kata-input-comp" for="title__{{ index }}__id">{{ _('Title') }}</label>
 			<div class="controls editor">
 				<input class="control-medium kata-input-org" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="{{title.value}}" />
 			</div>
-		<label class="control-label" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
+		<label class="control-label kata-input-comp" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
 			<div class="controls">
 				<select name="title__{{index}}__lang">
 					{% snippet 'package/snippets/languages.html', selected=lang.value %}
@@ -29,13 +30,13 @@
 	{% set lastlang = loop.index %}
 	{% if title.value %}
 	<div class="control-group control-custom">
-		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
+		<label class="control-label kata-input-comp" for="title__{{ index }}__id">{{ _('Title') }}</label>
 			<div class="controls editor">
-					<input class="control-medium kata-input-org" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="{{title.value}}" />
+					<input class="control-medium kata-input-org kata-input-comp" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="{{title.value}}" />
 			</div>
-		<label class="control-label" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
+		<label class="control-label kata-input-comp" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
 			<div class="controls">
-				<div class="input-prepend">
+				<div class="input-prepend kata-input-comp">
 					<select name="title__{{index}}__lang">
 						{% snippet 'package/snippets/languages.html', selected=title.lang %}
 					</select>
@@ -48,12 +49,12 @@
 {% for extra in range(1,2) %}
 	{% set index = lastlang + extra + 10 %}
 	<div class="control-group control-custom">
-		<label class="control-label" for="title__{{ index }}__id">{{ _('Title') }}</label>
+		<label class="control-label kata-input-comp" for="title__{{ index }}__id">{{ _('Title') }}</label>
 			<div class="controls editor">
 				<input class="control-medium kata-input-org" type="text" id="title__{{ index }}__value_id" name="title__{{ index }}__value" value="" />
 			</div>
-		<label class="control-label" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
-			<div class="controls">
+		<label class="control-label kata-input-comp" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
+			<div class="controls kata-input-comp">
 				<select name="title__{{index}}__lang">
 					{% snippet 'package/snippets/languages.html' %}
 				</select>
@@ -72,11 +73,11 @@
 	{% set lastrole = loop.index %}
 	{% set index = loop.index %}
 	<div class="control-group control-custom">
-		<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
+		<label class="control-label kata-input-comp" for="author__{{ index }}__id">{{ _('Author') }}</label>
 			<div class="controls editor">
 				<input class="control-medium kata-input-org" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{auth.value}}" />
 			</div>
-		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
+		<label class="control-label kata-input-comp" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
 			<div class="controls editor" style="margin-top: 5px;">
 				<input class="control-medium kata-input-org" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
 			</div>
@@ -97,11 +98,11 @@
 	{% set lastrole = loop.index %}
 	{% set index = loop.index %}
 	<div class="control-group control-custom">
-	<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
+	<label class="control-label kata-input-comp" for="author__{{ index }}__id">{{ _('Author') }}</label>
 		<div class="controls editor">
 			<input class="control-medium kata-input-org" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{auth.value}}" />
 		</div>
-		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
+		<label class="control-label kata-input-comp" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
 		<div class="controls editor" style="margin-top: 5px;">
 			<input class="control-medium kata-input-org" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{org.value}}" />
 		</div>
@@ -111,11 +112,11 @@
 {% for extra in range(1, 2) %}
 	{% set index = lastrole + extra + 10 %}
 		<div class="control-group control-custom">
-		<label class="control-label" for="author__{{ index }}__id">{{ _('Author') }}</label>
+		<label class="control-label kata-input-comp" for="author__{{ index }}__id">{{ _('Author') }}</label>
 			<div class="controls editor">
 s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="" />
 			</div>
-		<label class="control-label" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
+		<label class="control-label kata-input-comp" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
 			<div class="controls editor" style="margin-top: 5px;">
 			<input class="control-medium kata-input-org" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="" />
 			<button type="button" class="btn checkbox kata-plus-btn" onclick="$('#obtn__{{index}}__value_id').change();" ><span class="kata-btn-span">+</span></button>
@@ -126,11 +127,11 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 </div>
 {% endcall %}
 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-{{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-large'], attrs=tag_attrs) }}
+{{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-large'], attrs=tag_attrs, label_classes=['kata-input-comp']) }}
 
 <input type="checkbox" style="top: 0px;" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="False"{% endif %}value="True">{{ _('This dataset does not have a language') }}</input>
 <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
-{{ form.input('language', label=_('Languages'), id='language', placeholder=_('en, fi, sv ...'), value=data.language, error=errors.language, classes=['control-medium']) }}
+{{ form.input('language', label=_('Languages'), id='language', placeholder=_('en, fi, sv ...'), value=data.language, error=errors.language, classes=['control-medium'], label_classes=['kata-input-comp']) }}
 </div>
 </div>
 </section>
@@ -143,22 +144,22 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?', 'data-module-items': 1} %}
 			{% set contact_name = data.publisher if data.publisher else user.fullname %}
 			{% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
-			{{ form.input('publisher', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.publisher, classes=['control-medium'], attrs=cont_attrs) }}
-			{{ form.input('phone', label=_('Phone'), id='phone', placeholder=_('+35844122123'), value=data.phone, error=errors.phone, classes=['control-medium']) }}
-			{{ form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, classes=['control-medium']) }}
-			{{ form.input('contactURL', label=_('Homepage'), id='contactURL', placeholder=_('http://johndoe.com/contact'), value=data.contactURL, error=errors.contactURL, classes=['control-medium']) }}
+			{{ form.input('publisher', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.publisher, classes=['control-medium'], attrs=cont_attrs, label_classes=['kata-input-comp']) }}
+			{{ form.input('phone', label=_('Phone'), id='phone', placeholder=_('+35844122123'), value=data.phone, error=errors.phone, classes=['control-medium'], label_classes=['kata-input-comp']) }}
+			{{ form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, classes=['control-medium'], label_classes=['kata-input-comp']) }}
+			{{ form.input('contactURL', label=_('Homepage'), id='contactURL', placeholder=_('http://johndoe.com/contact'), value=data.contactURL, error=errors.contactURL, classes=['control-medium'], label_classes=['kata-input-comp']) }}
 		</div>
 		<h3 class="module-heading">{{ _('Project that produced this dataset') }}</h2>
 		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked value="False"{% endif %}value="True">{{ _('This dataset was not produced in a project.') }}</input>
 		<div class="module-content" id="projdiv" {% if data.projdis != 'False' and data.projdis %}style="display: none;"{% endif %}>
-			{{ form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-medium']) }}
-			{{ form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-medium']) }}
-			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium']) }}
-			{{ form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-medium']) }}
+			{{ form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-medium'], label_classes=['kata-input-comp']) }}
+			{{ form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-medium'], label_classes=['kata-input-comp']) }}
+			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium'], label_classes=['kata-input-comp']) }}
+			{{ form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-medium'], label_classes=['kata-input-comp']) }}
 		</div>
 		<h3 class="module-heading">{{ _('Owner information')}}</h3>
 		<div class="module-content">
-			{{ form.input('owner', label=_('Owner identity'), id="owner", placeholder=_('identification URL or name'), value=data.owner, error=errors.owner, classes=['control-medium']) }}
+			{{ form.input('owner', label=_('Owner identity'), id="owner", placeholder=_('identification URL or name'), value=data.owner, error=errors.owner, classes=['control-medium'], label_classes=['kata-input-comp']) }}
 		</div>
 </section>
 {# if we have a default group then this wants remembering #}
@@ -168,8 +169,8 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 <section class="module">
 <h2 class="module-heading">{{ _('Identification information') }}</h2>
 <div class="module-content">
-{{ form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.versionPID, error=errors.versionPID, classes=['control-medium'], control_classes=["kata-label-pluspad"]) }}
-{% call form.input_block("titles", _('Modification date'), error=errors.version, control_classes=["kata-label-pluspad"]) %}
+{{ form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.versionPID, error=errors.versionPID, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+{% call form.input_block("titles", _('Modification date'), error=errors.version, control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) %}
 	<div data-module="dateselect-simple-kata">
 		<input type="text" readonly id="last_modified" name="version" value="{{data.version}}" />
 	</div>
@@ -184,23 +185,23 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 	{% endtrans %}
 </p>
 <div class="control-group">
-	{% call form.input_block("access", _("Select"), error=errors.access) %}
+	{% call form.input_block("access", _("Select"), error=errors.access, label_classes=['kata-input-comp']) %}
 	<input type="radio" name="access" id="form" value="form" style="top: 0px" onclick="KATA.toggleAccess(this)" {% if data.access == 'form'%}checked{% endif %} >{{ _('with data access application') }}</input><br />
 
 	<div id="accessDiv" {% if not data.accessRights and not data.access == 'form' %}style="display:none"{% endif%}>
-	{{ form.input('accessRights', label=_('Web address of access application'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'], control_classes=["kata-label-pluspad"])}}
+	{{ form.input('accessRights', label=_('Web address of access application'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
 	{{ form.checkbox('newform', label=_('Create a new access request form'), id="newform") }}
 	</div>
 	<input type="radio" name="access" id="free" onclick="KATA.toggleAccess(this)" style="top: 0px" value="free" {% if data.access == 'free'%}checked{% endif %}>{{ _('directly downloadable') }}</input><br />
 	<input type="radio" name="access" id="ident" onclick="KATA.toggleAccess(this)" style="top: 0px" value="ident" {% if data.access == 'ident'%}checked{% endif %}>{{ _('downloadable after registration / identification') }}</input><br />
 	<div id="urlDiv" {% if not data.accessrequestURL and not data.access in ('free', 'ident') %}style="display:none"{% endif%}>
-	{{ form.input('accessrequestURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessrequestURL, error=errors.accessrequestURL, classes=['control-medium'], control_classes=["kata-label-pluspad"]) }}
+	{{ form.input('accessrequestURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessrequestURL, error=errors.accessrequestURL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
 	</div> 
 	<input type="radio" name="access" id="contact" onclick="KATA.toggleAccess(this)" style="top: 0px" value="contact" {% if data.access == 'contact'%}checked{% endif %}>{{ _('only by contacting the distributor') }}</input><br />
 	{% endcall %}
 </div>
 <div class="control-group">
-	{{ form.input('licenseURL', id='licenseURL', label=_('License'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.licenseURL, error=errors.licenseURL, classes=['control-medium'])}}
+	{{ form.input('licenseURL', id='licenseURL', label=_('License'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.licenseURL, error=errors.licenseURL, classes=['control-medium'], label_classes=['kata-input-comp'])}}
 </div>
 </div>
 </section>
