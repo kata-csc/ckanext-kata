@@ -11,6 +11,7 @@ this.ckan.module('dateselect-simple-kata', function (jQuery, _)
         showSecond: true,
         timezoneIso8601: true,
         defaultTimezone: 'Z',
+        changeYear: true,
         });
         var d = new Date();
         var parsed = $.datepicker.parseDateTime("yy-mm-dd", "HH:mm:ssz", lm[0].value, {separator: 'T'}, {separator: 'T'} );
@@ -37,6 +38,7 @@ this.ckan.module('dateselect-dcmi-kata', function (jQuery, _)
         showSecond: true,
         timezoneIso8601: true,
         defaultTimezone: 'Z',
+        changeYear: true,
 		onClose: function(dateText, inst) {
 			if (tce.val() != '') {
 				var testStartDate = tcb.datetimepicker('getDate');
