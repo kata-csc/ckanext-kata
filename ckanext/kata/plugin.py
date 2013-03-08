@@ -144,6 +144,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_actions(self):
         return {'package_show': actions.package_show,
                 'package_create': actions.package_create,
+                'package_update': actions.package_update,
                 'group_list': actions.group_list,
                 'accessreq_show': actions.accessreq_show,
                 'related_create': actions.related_create,
