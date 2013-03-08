@@ -85,9 +85,12 @@ class Kata(CkanCommand):
         curdate = datetime.datetime.utcnow()
         for req in all_reqs:
             try:
-                if (curdate - req.created) > timedelta(days=1):
+                if (curdate - req.created) < timedelta(days=1):
                     send_email(req)
+                    req.delete()
+                    model.Session.flush()
                 else:
                     req.delete()
+                    model.Session.flush()
             except Exception, me:
                 print "Couldn't send email! Details:\n%s" % me
