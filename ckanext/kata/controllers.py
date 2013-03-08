@@ -28,7 +28,7 @@ import tempfile
 import urllib2
 
 
-from utils import convert_to_text
+from utils import convert_to_text, send_contact_email
 from pairtree.storage_exceptions import FileNotFoundException
 
 
@@ -429,3 +429,56 @@ class DataMiningController(BaseController):
                 redirect(url)
             else:
                 redirect('/')
+
+
+class ContactController(BaseController):
+
+    def send(self, pkg_id):
+        package = Package.get(pkg_id)
+        url = h.url_for(controller='package',
+                action="read",
+                id=package.id)
+        if c.user:
+                userid = None
+                for role in package.roles:
+                    if role.role == "admin":
+                        userid = role.user_id
+                        break
+                if userid:
+                    owner = User.get(userid)
+                    msg = request.params.get('msg', '')
+                    if msg:
+                        send_contact_email(owner, c.userobj, package,\
+                                       msg)
+                    else:
+                        h.flash_error(_("No message"))
+                        return redirect(url)
+                else:
+                    h.flash_error(_("No owner found"))
+                    return redirect(url)
+                h.flash_notice(_("Message sent"))
+        else:
+            h.flash_error(_("Please login"))
+        return redirect(url)
+
+    def render(self, pkg_id):
+        c.package = Package.get(pkg_id)
+        url = h.url_for(controller='package',
+                        action="read",
+                        id=c.package.id)
+        if c.user:
+            if pkg_id not in c.userobj.extras.get('contacted', []):
+                model.repo.new_revision()
+                if "contacted" in c.userobj.extras:
+                    c.userobj.extras['contacted'].append(pkg_id)
+                else:
+                    c.userobj.extras['contacted'] = []
+                    c.userobj.extras['contacted'].append(pkg_id)
+                c.userobj.save()
+                return render('contact/contact_form.html')
+            else:
+                h.flash_error(_("Already contacted"))
+                return redirect(url)
+        else:
+            h.flash_error(_("Please login"))
+            return redirect(url)

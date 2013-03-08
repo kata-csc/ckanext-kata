@@ -107,6 +107,12 @@ class KataMetadata(SingletonPlugin):
         map.connect('/data_mining/save',
                     controller="ckanext.kata.controllers:DataMiningController",
                     action="save")
+        map.connect('/contact/send/{pkg_id}',
+                    controller="ckanext.kata.controllers:ContactController",
+                    action="send")
+        map.connect('/contact/{pkg_id}',
+                    controller="ckanext.kata.controllers:ContactController",
+                    action="render")
         return map
 
     def before_insert(self, mapper, connection, instance):

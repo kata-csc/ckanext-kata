@@ -71,6 +71,8 @@ ul.kata {
 	margin-left: 28px !important;
 	margin-bottom: 15px;
 }
+.kata-input-comp:after { content:": *"; }
+
 .module-link {
 	float: right;
 }

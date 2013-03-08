@@ -1,0 +1,21 @@
+{% extends "page.html" %}
+{% block breadcrumb_content %}
+  <li>{% link_for _('Datasets'), controller='package', action='search', highlight_actions = 'new index' %}</li>
+  <li>{% link_for h.dataset_display_name(c.package)|truncate(15), controller='package', action='read', id=c.pkg_id %}</li>
+  <li class="active"><a href="">{{ _("Contact") }}</a></li>
+{% endblock %}
+{% block primary_content %}
+<section class="module">
+<h2 class="module-heading">{{ _('Contact distributor') }}</h2>
+<div class="module-content">
+<form class="dataset-form form-horizontal" method="post" action="/contact/send/{{c.pkg_id}}" data-module="basic-form">
+<p>{{ _("On this page you can send a message to the original material owner to request access to it.") }}</p>
+<label for="msg">{{ _("Message") }}</label>
+<textarea name="msg" rows="10" cols="50">
+</textarea>
+<br />
+<input type="submit" value="Send"/>
+</form>
+</div>
+</section>
+{% endblock %}
