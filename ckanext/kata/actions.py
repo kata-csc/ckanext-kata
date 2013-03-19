@@ -32,23 +32,13 @@ def package_show(context, data_dict):
                                  'type': _("Paper"),
                                  'dataset_id': pkg.id}
                     related_create(context, data_dict)
-    for key in pkg.extras.keys():
-        if TITLE_MATCH.match(key):
-            repo.new_revision()
-            pkg.title = pkg.extras[key]
-            pkg_dict1['title'] = pkg.extras[key]
-            pkg.save()
-            break
-    return pkg_dict1
-
-
-def package_update(context, data_dict):
-    pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
-    context = {'model': model, 'ignore_auth': True, 'validate': False,
-               'extras_as_string': False}
-    pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
-    index = index_for('package')
-    index.index_package(pkg_dict)
+    if not pkg.title:
+        for key in pkg.extras.keys():
+            if TITLE_MATCH.match(key):
+                repo.new_revision()
+                pkg.title = pkg.extras[key]
+                pkg.save()
+                break
     return pkg_dict1
 
 
