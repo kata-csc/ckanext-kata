@@ -15,15 +15,16 @@ from ckan.model.authz import setup_default_user_roles
 
 from ckan.lib.munge import munge_tag
 
+log = logging.getLogger(__name__)
 
-def oaipmh2ckan(data, group=None, harvest_object=None):
+def oai_dc2ckan(data, group=None, harvest_object=None):
     try:
-        return _oaipmh2ckan(data, group, harvest_object)
+        return _oai_dc2ckan(data, group, harvest_object)
     except Exception as e:
         log.debug(traceback.format_exc(e))
     return False
 
-def _oaipmh2ckan(oaipmh, group):
+def _oai_dc2ckan(data, group, harvest_object):
     model.repo.new_revision()
     identifier = data['identifier']
     metadata = data['metadata']
@@ -33,6 +34,11 @@ def _oaipmh2ckan(oaipmh, group):
     if not pkg:
         pkg = Package(name=name, title=title, id=identifier)
         pkg.save()
+    else:
+        # There are old resources which are replaced by new ones if they are
+        # relevant anymore so "delete" all existing resources now.
+        for r in pkg.resources:
+            r.state = 'deleted'
     extras = {}
     lastidx = 0
     for met in metadata.items():
