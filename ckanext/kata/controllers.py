@@ -171,7 +171,7 @@ class MetadataController(BaseController):
                 graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
                 graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
                 graph.add((projecturl, RDFS.comment,
-                            Literal(data["extras"]["project_funder"])))
+                            Literal(data["extras"]["project_funding"])))
             for key in data["extras"]:
                 log.debug(key)
                 if key.startswith('author'):
