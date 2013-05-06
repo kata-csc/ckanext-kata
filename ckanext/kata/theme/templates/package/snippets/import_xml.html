@@ -1,0 +1,14 @@
+{#
+  Displays a file name field, a format drop-down list and a import-button.
+  Type list should come from harvest sources.
+#}
+<form class="module module-narrow" action="{% url_for controller='ckanext.harvest.controllers.view:ViewController', action='import_xml' %}">
+  <h2 class="module-heading"><i class="icon-copy"></i> {{ _("Import XML") }}</h2>
+  <ul class="unstyled">
+  <li><label>{{ _("URL") }}</label>
+    <input name="xml-url" type="text" class="input-medium" placeholder="http://myxml.com/file.xml"/></li>
+  <li><label>{{ _("Type") }}</label>
+    <select name='xml-type'><option>OAI-PMH</option><option>DDI</option><option>DDI3</option></select></li>
+  <li><button class='btn' type='submit'>{{ _("Import") }}</button></li>
+  </ul>
+</form>
