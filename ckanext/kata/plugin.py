@@ -113,6 +113,9 @@ class KataMetadata(SingletonPlugin):
         map.connect('/contact/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
                     action="render")
+        map.connect('/dataset/import_xml/',
+                    controller="ckanext.harvest.controllers.view:ViewController",
+                    action="import_xml")
         return map
 
     def before_insert(self, mapper, connection, instance):
