@@ -8,6 +8,7 @@ import tempfile
 import subprocess
 import urllib2
 from lxml import etree
+import socket
 
 log = logging.getLogger(__name__)
 
