@@ -385,7 +385,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['groups'] = {
                 'id': [ignore_missing, unicode],
-                'name': [ignore_missing, unicode],
+                'name': [ignore_missing, unicode, add_to_group],
                 'title': [ignore_missing, unicode],
                 '__extras': [ignore],
             }

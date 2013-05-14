@@ -5,6 +5,7 @@ from pylons.i18n import gettext as _
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
 from ckan.lib.navl.validators import not_empty
+from ckan.model.authz import setup_default_user_roles
 
 log = logging.getLogger('ckanext.kata.converters')
 
@@ -321,5 +322,12 @@ def add_to_group(key, data, errors, context):
     if val:
         repo.new_revision()
         grp = Group.get(val)
+        # UI code needs group created if it does not match. Hence do so.
+        if not grp:
+            grp = Group(name=val, description=val)
+            setup_default_user_roles(grp)
+            grp.save()
         grp.add_package_by_name(data[('name',)])
         grp.save()
+        repo.commit()
+
