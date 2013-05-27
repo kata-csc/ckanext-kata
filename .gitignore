@@ -25,3 +25,4 @@ pip-log.txt
 #Mr Developer
 .project
 .pydevproject
+.settings
