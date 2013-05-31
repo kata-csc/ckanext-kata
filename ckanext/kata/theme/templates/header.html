@@ -18,6 +18,8 @@
       <p><h1>Kata-aineistokatalogi</h1></p>
     </div>
      <div class="content">
+      {#{% link_for _('Kata Help'), controller='ckanext.kata.controllers:KataHelpController', action='kata_help', class_='btn btn-primary' %} #}
+      <!-- <a href="/kata/kata_help">Kata help</a><br />-->
       <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
         <div class="field">
           <label for="field-sitewide-search">{{ _('Search Datasets') }}</label>
@@ -69,28 +71,31 @@
         <nav class="section account not-authed">
           <ul class="unstyled">
             <li>{% link_for _('Log in'), controller='user', action='login' %}</li>
-            <li>{% link_for _('Register'), controller='user', action='register', class_='sub' %}</li>
           </ul>
         </nav>
       {% endif %}
     </div>
   </div>
-  <div id="main-nav">
-    <div id="nav_wrapper">
-      <nav class="section navigation">
-        <ul class="unstyled">
-          {{ h.build_nav_main(
-            ('add dataset', _('Add Dataset'), 'package_create'),
-            ('search', _('Datasets')),
-            ('organizations_index', _('Organizations')),
-            ('group_index', _('Groups')),
-            ('about', _('About'))
-          ) }}
-        </ul>
-      </nav>
-     <div class="pull-right">
-      {% snippet "snippets/language_selector.html" %}
-     </div>
-   </div>
+  <div id="nav_wrapper">
+    <nav id="nav_wrapper">
+      <ul>
+        {% if c.userobj %}
+          <li id="nav-add-dataset"><a href=/dataset/new>{{ _('Add Dataset') }}</a></li>
+        {% endif %}
+        <li id="nav-datasets"><a href=/dataset>{{ _('Datasets') }}</a></li>
+        <li id="nav-organizations"><a href=/organization>{{ _('Organizations') }}</a></li>
+        <li id="nav-groups"><a href=/group>{{ _('Groups') }}</a></li>
+        <li id="nav-about"><a href=/about>{{ _('About') }}</a></li>
+        <li id="nav-help"><a href=/kata/help>{{ _('Help') }}</a></li>
+        <li id="nav-faq"><a href=/kata/faq>{{ _('FAQ') }}</a></li>
+      </ul>
+    </nav>
+   <div id="language-wrapper">
+     <ul>
+       <li>
+         {% snippet "snippets/language_selector.html" %}
+       </li>
+     </ul>
+   </div> 
   </div>
 </header>
