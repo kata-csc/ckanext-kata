@@ -1,14 +1,13 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1.1'
+version = '0.1.2'
 
 setup(
 	name='ckanext-kata',
 	version=version,
 	description="KATA extensions for CKAN",
-	long_description="""\
-	""",
+	long_description="""Provides modified Add Dataset (package) page and other modifications. This extension contains also jQuery files, custom css (eg. kata.css) and several templates are overwritten from basic CKAN to provide the Kata/TTA looks.""",
 	classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
 	keywords='',
 	author='Aleksi Suomalainen',
