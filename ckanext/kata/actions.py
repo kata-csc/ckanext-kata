@@ -43,6 +43,18 @@ def package_show(context, data_dict):
 
 
 def package_create(context, data_dict):
+    """
+    Creates a new dataset.
+    
+    This is extended from ckan's similar method to instantly reindex the SOLR index, 
+    so that this newly added package emerges in search results instantly instead of 
+    during the next timed reindexing.
+    
+    Arguments: 
+        context    - ?
+        data_dict  - ?
+    """
+    
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
@@ -60,6 +72,14 @@ def group_list(context, data_dict):
 
 
 def accessreq_show(context, data_dict):
+    """
+    Handles the requests of edit rights to the dataset. 
+    
+    From the web page you can find this when viewing a dataset not owned by you. In the upper right corner you can 
+    request edit rights to this package from a button. The owner will receive a url via e-mail (sent daily) and by 
+    clicking the url (s)he can provide edit rights to the requesting person. 
+    """
+    
     ret = {}
     ret['title'] = _('Request edit rights')
     smtp = config.get('smtp.server', '')

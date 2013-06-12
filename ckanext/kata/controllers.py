@@ -1,5 +1,8 @@
-'''Metadata based controllers for KATA.
-'''
+"""
+Metadata based controllers for Kata.
+
+Controllers for Kata plus some additional functions.
+"""
 
 from _text import orngText
 from ckan.controllers.api import ApiController
@@ -433,6 +436,12 @@ class DataMiningController(BaseController):
 
 
 class ContactController(BaseController):
+    """
+    Adds features to contact the dataset's owner. 
+    
+    From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author. 
+    The feature provides a form for message sending, and the message is sent via e-mail. 
+    """
 
     def send(self, pkg_id):
         package = Package.get(pkg_id)

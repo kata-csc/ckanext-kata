@@ -66,6 +66,7 @@ this.ckan.module('dateselect-dcmi-kata', function (jQuery, _)
         showSecond: true,
         timezoneIso8601: true,
         defaultTimezone: 'Z',
+        changeYear: true,
         onClose: function(dateText, inst) {
 			if (tcb.val() != '') {
 				var testStartDate = tcb.datetimepicker('getDate');
