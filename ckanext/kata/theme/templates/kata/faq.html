@@ -1,0 +1,42 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _("Kata FAQ") }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{ _('FAQ') }} </li>
+{% endblock %}
+
+{% block primary_content %}
+  <section class="help" id="kata_help">
+   <section class="module"><h2 class="module-heading">{{ _('Frequently asked questions') }}</h2>
+      <p><b>{{ _('Q: ') }}{{ _('
+        What kind of data Kata contains?
+      ') }}</b></p>
+      <p>{{ _('A: ') }}{{ _('
+        Kata contains metadata of research data, from various branches of science.
+      ') }}</p>
+      <p><b>{{ _('Q: ') }}{{ _('
+        There are two search fields, why?
+      ') }}</b></p>
+      <p>{{ _('A: ') }}{{ _('
+        The search field in the upmost part makes it easier to search for data from anywhere in the site. You can use any search field you prefer.
+      ') }}</p>
+   </section>
+  </section>
+{% endblock %}
+{% block secondary_content %}
+<div class="module help-right">
+  <div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+      <i class="icon-large icon-info-sign"></i>
+      {{ _('FAQ') }}
+    </h2>
+    <div class="module-content">
+      <p>
+      {{ _(' ') }}
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+ 
