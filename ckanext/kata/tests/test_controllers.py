@@ -28,6 +28,7 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
 
     @classmethod
     def teardown_class(cls):
+        #kata_model.drop_tables()
         CreateTestData.delete()
     
     def test_data_and_resources_not_rendered(self):
@@ -35,7 +36,7 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
         res = self.app.get(offset)
         assert 'Data and Resources' not in res, 'A package with no resources should not render Data and Resources section'
 
-    def test_data_and_resources_not_rendered(self):
+    def test_data_and_resources_rendered(self):
         offset = url_for(controller='package', action='read', id=u'annakarenina')
         res = self.app.get(offset)
         assert 'Data and Resources' in res, 'A package with resources should render Data and Resources section'
@@ -44,23 +45,26 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
 class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
     '''
     Tests for Kata's ContactController.
-    ''' 
+    '''
     
     @classmethod
     def setup_class(cls):
         #CreateTestData.create()
+        # Set up Kata's additions to CKAN database (user_extra, etc.)
+        #kata_model.setup()
         pass
 
     @classmethod
     def teardown_class(cls):
+        #kata_model.drop_tables()
         #CreateTestData.delete()
         pass
 
     
     def test_contact_controller_found(self):
-        #offset = url_for(controller="contact", action='send')
+        #offset = url_for(controller="ContactController", action='render')
         #res = self.app.get(offset)
-        #print type(offset)
+        #print res
         pass
         #assert 'Data and Resources' not in res, 'A package with no resources should not render Data and Resources section'
         

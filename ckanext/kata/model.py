@@ -95,9 +95,21 @@ user.User.extras = vdm.sqlalchemy.stateful.OurAssociationProxy('extras_active', 
             creator=_create_extra)
 
 def setup():
+    '''
+    Creates the tables that are specified in this file
+    '''
+     
     if model.package_table.exists() and not kata_access_request_table.exists():
         kata_access_request_table.create()
     if model.user_table.exists() and not user_extra_table.exists() \
         and not user_extra_revision_table.exists():
         user_extra_table.create()
         user_extra_revision_table.create()
+
+def drop_tables():
+    if user_extra_revision_table.exists():
+        user_extra_revision_table.drop()
+    if user_extra_table.exists():
+        user_extra_table.drop()
+    if kata_access_request_table.exists():
+        kata_access_request_table.drop()
