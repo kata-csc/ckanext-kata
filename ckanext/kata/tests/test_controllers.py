@@ -42,6 +42,9 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
 
 
 class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+    '''
+    Tests for Kata's ContactController.
+    ''' 
     
     @classmethod
     def setup_class(cls):
