@@ -1,6 +1,4 @@
 """
-Metadata based controllers for Kata.
-
 Controllers for Kata plus some additional functions.
 """
 
@@ -437,13 +435,17 @@ class DataMiningController(BaseController):
 
 class ContactController(BaseController):
     """
-    Adds features to contact the dataset's owner. 
+    Add features to contact the dataset's owner. 
     
     From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author. 
     The feature provides a form for message sending, and the message is sent via e-mail. 
     """
 
     def send(self, pkg_id):
+        """
+        Send a contact e-mail if allowed.
+        """
+        
         package = Package.get(pkg_id)
         url = h.url_for(controller='package',
                 action="read",
@@ -458,6 +460,17 @@ class ContactController(BaseController):
                     owner = User.get(userid)
                     msg = request.params.get('msg', '')
                     if msg:
+                        
+                        model.repo.new_revision()
+                        
+                        # Mark this user as contacted
+                        if "contacted" in c.userobj.extras:
+                            c.userobj.extras['contacted'].append(pkg_id)
+                        else:
+                            c.userobj.extras['contacted'] = []
+                            c.userobj.extras['contacted'].append(pkg_id)
+                        c.userobj.save()
+
                         send_contact_email(owner, c.userobj, package,\
                                        msg)
                     else:
@@ -471,20 +484,18 @@ class ContactController(BaseController):
             h.flash_error(_("Please login"))
         return redirect(url)
 
+
     def render(self, pkg_id):
+        """
+        Render the contact form if allowed.
+        """
+        
         c.package = Package.get(pkg_id)
         url = h.url_for(controller='package',
                         action="read",
                         id=c.package.id)
         if c.user:
             if pkg_id not in c.userobj.extras.get('contacted', []):
-                model.repo.new_revision()
-                if "contacted" in c.userobj.extras:
-                    c.userobj.extras['contacted'].append(pkg_id)
-                else:
-                    c.userobj.extras['contacted'] = []
-                    c.userobj.extras['contacted'].append(pkg_id)
-                c.userobj.save()
                 return render('contact/contact_form.html')
             else:
                 h.flash_error(_("Already contacted"))
@@ -492,3 +503,4 @@ class ContactController(BaseController):
         else:
             h.flash_error(_("Please login"))
             return redirect(url)
+

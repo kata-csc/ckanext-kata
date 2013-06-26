@@ -1,0 +1,21 @@
+{# 
+Renders a list of resources with icons and view links.
+
+resources - A list of resources to render
+pkg - A package object that the resources belong to.
+
+Example:
+
+  {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}
+
+#}
+{% if resources %}
+	<section id="dataset-resources" class="resources module-content">
+		<h3>Data and Resources</h3>
+		<ul class="resource-list">
+		  {% for resource in resources %}
+		    {% snippet 'package/snippets/resource_item.html', pkg=pkg, res=resource %}
+		  {% endfor %}
+		</ul>
+	</section>
+{% endif %}
