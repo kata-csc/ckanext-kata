@@ -1,5 +1,4 @@
-'''Model classes for KATA
-'''
+'''Model additions for Kata'''
 
 from ckan.model.domain_object import DomainObject
 from ckan.model import domain_object as domain_object
@@ -16,6 +15,7 @@ import vdm.sqlalchemy
 
 
 class KataAccessRequest(DomainObject):
+    
     def __init__(self, follower_id, object_id):
         self.user_id = follower_id
         self.pkg_id = object_id
@@ -107,9 +107,15 @@ def setup():
         user_extra_revision_table.create()
 
 def drop_tables():
+    '''
+    Drop tables created by setup(), except for user_extra which is removed by CreateTestData.delete() 
+    
+    This function is used to remove tables from database between test cases.    
+    '''
+    
     if user_extra_revision_table.exists():
         user_extra_revision_table.drop()
-    if user_extra_table.exists():
-        user_extra_table.drop()
+    #if user_extra_table.exists():
+        #user_extra_table.drop()
     if kata_access_request_table.exists():
         kata_access_request_table.drop()
