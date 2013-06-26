@@ -34,12 +34,12 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
     def test_data_and_resources_not_rendered(self):
         offset = url_for(controller='package', action='read', id=u'warandpeace')
         res = self.app.get(offset)
-        assert 'Data and Resources' not in res, 'A package with no resources should not render Data and Resources section'
+        assert '<section id="dataset-resources"' not in res, 'A package with no resources should not render Data and Resources section'
 
     def test_data_and_resources_rendered(self):
         offset = url_for(controller='package', action='read', id=u'annakarenina')
         res = self.app.get(offset)
-        assert 'Data and Resources' in res, 'A package with resources should render Data and Resources section'
+        assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
 
 
 class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
