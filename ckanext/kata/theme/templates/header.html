@@ -13,30 +13,22 @@
         </h1>
         {% if g.site_description %}<h2>{{ g.site_description }}</h2>{% endif %}
       {% endif %}
-    </hgroup>
-    <div id="kata_header">
-      <p><h1>Kata-aineistokatalogi</h1></p>
-    </div>
-     <div class="content">
-      {#{% link_for _('Kata Help'), controller='ckanext.kata.controllers:KataHelpController', action='kata_help', class_='btn btn-primary' %} #}
-      <!-- <a href="/kata/kata_help">Kata help</a><br />-->
-      <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
-        <div class="field">
-          <label for="field-sitewide-search">{{ _('Search Datasets') }}</label>
-          <input id="field-sitewide-search" name="q" placeholder="{{ _('Search') }}" />
-          <button class="btn-search" type="submit">{{ _('Search') }}</button>
-        </div>
-      </form>
       {% if c.userobj %}
         <div class="section account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
           <div class="dropdown">
             <a href="{{ h.url_for(controller='user', action='dashboard') }}" class="button notifications{% if c.new_activities > 0 %} notifications-important{% endif %}" title="{{ c.new_activities }} {{ _('new notifications') }}">
-              {{ c.new_activities }}
+              {{ _('Notifications') }} {{ c.new_activities }}
             </a>
           </div>
           <div class="dropdown">
-            <a href="#" class="button image dropdown-toggle" data-toggle="dropdown">
-              {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''),size=25) }}
+            <a class="button" href="{{ h.url_for('/user/_logout') }}">
+              <i class="icon-signout"></i>
+              {{ _('Log out') }}
+            </a>
+          </div>
+          <div class="dropdown">
+            <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+              {{ c.userobj.fullname or c.userobj.name }}
               <i class="icon-chevron-down"></i>
             </a>
             <ul class="user-dropdown-menu dropdown-menu pull-right" role="menu">
@@ -74,6 +66,20 @@
           </ul>
         </nav>
       {% endif %}
+    </hgroup>
+    <div id="kata_header">
+      <p><h1>Kata-aineistokatalogi</h1></p>
+    </div>
+     <div class="content">
+      {#{% link_for _('Kata Help'), controller='ckanext.kata.controllers:KataHelpController', action='kata_help', class_='btn btn-primary' %} #}
+      <!-- <a href="/kata/kata_help">Kata help</a><br />-->
+      <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
+        <div class="field">
+          <label for="field-sitewide-search">{{ _('Search Datasets') }}</label>
+          <input id="field-sitewide-search" name="q" placeholder="{{ _('Search') }}" />
+          <button class="btn-search" type="submit">{{ _('Search') }}</button>
+        </div>
+      </form>
     </div>
   </div>
   <div id="nav_wrapper">

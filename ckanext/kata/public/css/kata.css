@@ -133,11 +133,21 @@ header.masthead .account .button {
 	background-color: #209D82 !important;
 	border: 0px;
 	color: #fff !important;
+	margin: 2px 5px 2px 0;
+	padding: 4px 8px 3px;
 	text-shadow: none !important;
 }
 header.masthead .account .image img {
 	border-right-color: #209D82;
 	opacity: 0.9;
+}
+header.masthead .section.account {
+/* Overwrite profile avatar section alignment in main.css */
+    float: right;
+}
+header.masthead .site-search {
+/* Overwrite search field alignment in main.css */
+    margin-right: 17px;
 }
 [role="main"], .main {
 	padding-bottom: 25px;
