@@ -79,17 +79,19 @@
 		<li class="kata">
 			<div class="input-prepend">
 				<select name="evtype__{{index}}__value" style="width: 95px;">
-					<option selected>{{ _('collection') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('creation') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('checked') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('extended') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('changed') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('removed') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('published') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('sent') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('received') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('modified') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('used') }}</option>
+					<!-- option selected>{{ _('collection') }}</option -->
+					<!-- option selected>{{type.value}}</option -->
+					<option {% if type.value=='collection'%}selected{% endif %}>{{ _('collection') }}</option>
+					<option {% if type.value=='creation'%}selected{% endif %}>{{ _('creation') }}</option>
+					<option {% if type.value=='checked'%}selected{% endif %}>{{ _('checked') }}</option>
+					<option {% if type.value=='extended'%}selected{% endif %}>{{ _('extended') }}</option>
+					<option {% if type.value=='changed'%}selected{% endif %}>{{ _('changed') }}</option>
+					<option {% if type.value=='removed'%}selected{% endif %}>{{ _('removed') }}</option>
+					<option {% if type.value=='published'%}selected{% endif %}>{{ _('published') }}</option>
+					<option {% if type.value=='sent'%}selected{% endif %}>{{ _('sent') }}</option>
+					<option {% if type.value=='received'%}selected{% endif %}>{{ _('received') }}</option>
+					<option {% if type.value=='modified'%}selected{% endif %}>{{ _('modified') }}</option>
+					<option {% if type.value=='used'%}selected{% endif %}>{{ _('used') }}</option>
 				</select>
 			</div>
 		</li>
@@ -120,17 +122,18 @@
 		<li class="kata">
 			<div class="input-prepend">
 				<select name="evtype__{{index}}__value" style="width: 95px;">
-					<option selected>{{ _('collection') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('creation') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('checked') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('extended') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('changed') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('removed') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('published') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('sent') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('received') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('modified') }}</option>
-					<option {% if type.value=='creation'%}checked{% endif %}>{{ _('used') }}</option>
+					<!-- option selected>{{ _('collection') }}</option -->
+					<option {% if type.value=='collection'%}selected{% endif %}>{{ _('collection') }}</option>
+					<option {% if type.value=='creation'%}selected{% endif %}>{{ _('creation') }}</option>
+					<option {% if type.value=='checked'%}selected{% endif %}>{{ _('checked') }}</option>
+					<option {% if type.value=='extended'%}selected{% endif %}>{{ _('extended') }}</option>
+					<option {% if type.value=='changed'%}selected{% endif %}>{{ _('changed') }}</option>
+					<option {% if type.value=='removed'%}selected{% endif %}>{{ _('removed') }}</option>
+					<option {% if type.value=='published'%}selected{% endif %}>{{ _('published') }}</option>
+					<option {% if type.value=='sent'%}selected{% endif %}>{{ _('sent') }}</option>
+					<option {% if type.value=='received'%}selected{% endif %}>{{ _('received') }}</option>
+					<option {% if type.value=='modified'%}selected{% endif %}>{{ _('modified') }}</option>
+					<option {% if type.value=='used'%}selected{% endif %}>{{ _('used') }}</option>
 				</select>
 			</div>
 		</li>
