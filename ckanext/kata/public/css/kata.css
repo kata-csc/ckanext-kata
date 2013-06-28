@@ -463,3 +463,14 @@ input, button, select, textarea {
 header.masthead {
 	filter: 0 !important;
 }
+.debug, #debug  {
+    /* Overwrite main.css white font and .site-footer font-size upwards */
+    color: rgba(0, 0, 0, 1) !important;
+    font-size: 12px !important;
+}
+#debug-toggle  {
+    /* Overwrite .site-footer font-size upwards and inline style */
+    color: #FFFF80 !important;
+    font-size: 12px !important;
+    opacity: 1 !important;
+}
