@@ -453,3 +453,6 @@ input, button, select, textarea {
 header.masthead {
 	filter: 0 !important;
 }
+.kata-medium-input {
+	width: 330px !important;
+}
