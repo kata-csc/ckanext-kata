@@ -116,7 +116,10 @@ header.masthead .container {
 	height: 120px !important;
 	width: 970px;
 }
-header.masthead .content a {
+header.masthead .content a,
+header.masthead .account a,
+header.masthead .user-dropdown-menu a{
+/* Overwrite profile drop down menu color in main.css */
 	color: #666;
 }
 header.masthead .account {
@@ -130,12 +133,17 @@ header.masthead .account .button {
 	-moz-box-shadow: 0 0 0 0 #fff;
 	-webkit-box-shadow: 0 0 0 0 #fff;
 	box-shadow: 0 0 0 0 #fff;
-	background-color: #209D82 !important;
+	background-color: #fff !important;
 	border: 0px;
-	color: #fff !important;
+	color: #666 !important;
 	margin: 2px 5px 2px 0;
 	padding: 4px 8px 3px;
 	text-shadow: none !important;
+}
+header.masthead .account .dropdown.open .button,
+header.masthead .account .dropdown .button:hover {
+/* Overwrite profile section buttons shadow color in main.css */
+    box-shadow: 0 1px 0 #666 inset;
 }
 header.masthead .account .image img {
 	border-right-color: #209D82;
@@ -393,7 +401,6 @@ input, button, select, textarea {
 	text-decoration: none;
 }
 
-#kata_navigation .selected a, #kata_navigation li.hover a, #kata_navigation a:hover, #kata_navigation a:focus, 
 #kata_navigation .selected a, #kata_navigation li.hover a, #kata_navigation a:hover, #kata_navigation a:focus {
 	background-color: #108D72;
 	background-position: initial initial;

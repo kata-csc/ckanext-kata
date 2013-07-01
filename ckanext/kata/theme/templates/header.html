@@ -58,6 +58,12 @@
               </li>
             </ul>
           </div>
+          <div class="dropdown">
+            <a class="button" href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}">
+              <i class="icon-sitemap"></i>
+              {{ _('My Datasets') }}
+            </a>
+          </div>
         </div>
       {% else %}
         <nav class="section account not-authed">
