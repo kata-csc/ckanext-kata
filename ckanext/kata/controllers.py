@@ -5,6 +5,8 @@ Controllers for Kata plus some additional functions.
 from _text import orngText
 from ckan.controllers.api import ApiController
 from ckan.controllers.storage import get_ofs
+from ckan.controllers.user import UserController
+from ckan.lib.helpers import lang
 from ckan.logic import check_access
 from ckan.lib.munge import substitute_ascii_equivalents
 from ckan.lib.base import BaseController, c, h, redirect, render
@@ -12,8 +14,9 @@ from ckan.lib.navl.dictization_functions import unflatten
 from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params
 from ckan.model import Package, User, Related, Group, meta, Resource
 from ckan.model.authz import add_user_to_role
+from paste.deploy.converters import asbool
 from model import KataAccessRequest
-from pylons import response, config, request
+from pylons import response, config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import gettext as _
 from rdflib.namespace import ClosedNamespace
@@ -27,6 +30,7 @@ import logging
 import os
 import tempfile
 import urllib2
+import ckan.lib.i18n
 
 
 from utils import convert_to_text, send_contact_email
@@ -504,3 +508,40 @@ class ContactController(BaseController):
             h.flash_error(_("Please login"))
             return redirect(url)
 
+class KataUserController(UserController):
+
+    def logged_in(self):
+        # we need to set the language via a redirect
+        lang = session.pop('lang', None)
+        session.save()
+        came_from = request.params.get('came_from', '')
+
+        # we need to set the language explicitly here or the flash
+        # messages will not be translated.
+        ckan.lib.i18n.set_lang(lang)
+
+        if c.user:
+            context = {'model': model,
+                   'user': c.user}
+
+            data_dict = {'id': c.user}
+
+            user_dict = get_action('user_show')(context, data_dict)
+
+            h.flash_success(_("%s is now logged in") %
+                        user_dict['display_name'])
+            if came_from:
+                return h.redirect_to(str(came_from))
+            # else:
+            return h.redirect_to(controller='user', action='read', id=c.userobj.name)
+        else:
+            err = _('Login failed. Bad username or password.')
+            if g.openid_enabled:
+                err += _(' (Or if using OpenID, it hasn\'t been associated '
+                     'with a user account.)')
+            if asbool(config.get('ckan.legacy_templates', 'false')):
+                h.flash_error(err)
+                h.redirect_to(locale=lang, controller='user',
+                          action='login', came_from=came_from)
+            else:
+                return self.login(error=err)

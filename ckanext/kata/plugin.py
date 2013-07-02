@@ -115,7 +115,10 @@ class KataMetadata(SingletonPlugin):
                     action="render")
         map.connect('/dataset/import_xml/',
                     controller="ckanext.harvest.controllers.view:ViewController",
-                    action="import_xml")
+                    action="import_xml"),
+        map.connect('/user/logged_in',
+                    controller="ckanext.kata.controllers:KataUserController",
+                    action="logged_in")
         return map
 
     def before_insert(self, mapper, connection, instance):
