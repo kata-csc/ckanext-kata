@@ -1,9 +1,10 @@
 {% import 'macros/form.html' as form %}
+{% import 'macros/kata_form.html' as kata_form %}
 <section class="module">
 <h2 class="module-heading">{{ _('Required information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name%}{{data.name}}{%endif%}" />
-<p>{{ _("All fields marked with * are compulsory.") }}</p>
+<!-- <p>{{ _("All fields marked with * are compulsory.") }}</p> -->
 {% call form.input_block("titles", "Titles" , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
 {% set lastlang = 1%}
 <div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
@@ -139,27 +140,27 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 <section class="module">
 <h2 class="module-heading">{{ _('Actors and roles') }}</h2>
 	<div class="module-content">
-		<h3 class="module-heading">{{ _('Distributor / publisher contact information') }}</h2>
+		<h3 class="module-heading">{{ _('Distributor / publisher contact information') }}</h3>
 		<div class="module-content">
 			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?', 'data-module-items': 1} %}
 			{% set contact_name = data.publisher if data.publisher else user.fullname %}
 			{% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
-			{{ form.input('publisher', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.publisher, classes=['control-medium'], attrs=cont_attrs, label_classes=['kata-input-comp']) }}
-			{{ form.input('phone', label=_('Phone'), id='phone', placeholder=_('+35844122123'), value=data.phone, error=errors.phone, classes=['control-medium'], label_classes=['kata-input-comp']) }}
-			{{ form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, classes=['control-medium'], label_classes=['kata-input-comp']) }}
-			{{ form.input('contactURL', label=_('Homepage'), id='contactURL', placeholder=_('http://johndoe.com/contact'), value=data.contactURL, error=errors.contactURL, classes=['control-medium'], label_classes=['kata-input-comp']) }}
+			{{ kata_form.input('publisher', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.publisher, classes=['control-custom'], attrs=cont_attrs, label_classes=['kata-input-comp'], tooltip=_('Cool help text about publisher')) }}
+			{{ kata_form.input('phone', label=_('Phone'), id='phone', placeholder=_('+35844122123'), value=data.phone, error=errors.phone, classes=['control-custom'], label_classes=['kata-input-comp'], tooltip=_('Cool help text about phone')) }}
+			{{ kata_form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, classes=['control-custom'], label_classes=['kata-input-comp'], tooltip=_('Cool help text about email')) }}
+			{{ kata_form.input('contactURL', label=_('Homepage'), id='contactURL', placeholder=_('http://johndoe.com/contact'), value=data.contactURL, error=errors.contactURL, classes=['control-custom'], label_classes=['kata-input-comp'], tooltip=_('Cool help text about homepage')) }}
 		</div>
-		<h3 class="module-heading">{{ _('Project that produced this dataset') }}</h2>
+		<h3 class="module-heading">{{ _('Project that produced this dataset') }}</h3>
 		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked value="False"{% endif %}value="True">{{ _('This dataset was not produced in a project.') }}</input>
 		<div class="module-content" id="projdiv" {% if data.projdis != 'False' and data.projdis %}style="display: none;"{% endif %}>
-			{{ form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-medium'], label_classes=['kata-input-comp']) }}
-			{{ form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-medium'], label_classes=['kata-input-comp']) }}
-			{{ form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-medium'], label_classes=['kata-input-comp']) }}
-			{{ form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-medium'], label_classes=['kata-input-comp']) }}
+			{{ kata_form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-custom'], label_classes=['kata-input-comp'], tooltip=_('Cool help text about project name')) }}
+			{{ kata_form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-custom'], label_classes=['kata-input-comp'], tooltip=_('Cool help text about funder')) }}
+			{{ kata_form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-custom'], label_classes=['kata-input-comp'], tooltip=_('Cool help text about funding id')) }}
+			{{ kata_form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-custom'], label_classes=['kata-input-comp'], tooltip=_('Cool help text about project homepage')) }}
 		</div>
 		<h3 class="module-heading">{{ _('Owner information')}}</h3>
 		<div class="module-content">
-			{{ form.input('owner', label=_('Owner identity'), id="owner", placeholder=_('identification URL or name'), value=data.owner, error=errors.owner, classes=['control-medium'], label_classes=['kata-input-comp']) }}
+			{{ kata_form.input('owner', label=_('Owner identity'), id="owner", placeholder=_('identification URL or name'), value=data.owner, error=errors.owner, classes=['control-medium'], label_classes=['kata-input-comp']) }}
 		</div>
 </section>
 {# if we have a default group then this wants remembering #}
@@ -180,29 +181,26 @@ s				<input class="control-medium kata-input-org" type="text" placeholder="{{ _
 <section class="module">
 <h2 class="module-heading">{{ _('Usage information') }}</h2>
 <div class="module-content">
-<p>{% trans %}
-	Dataset is avaiblable for use:
-	{% endtrans %}
-</p>
-<div class="control-group">
-	{% call form.input_block("access", _("Select"), error=errors.access, label_classes=['kata-input-comp']) %}
+	<pl class="kata-input-comp">{{ _('Dataset is available for use:') }}</p>
+	{% call kata_form.input_block("access", '', error=errors.access, label_classes=['kata-input-comp']) %}
 	<input type="radio" name="access" id="form" value="form" style="top: 0px" onclick="KATA.toggleAccess(this)" {% if data.access == 'form'%}checked{% endif %} >{{ _('with data access application') }}</input><br />
 
 	<div id="accessDiv" {% if not data.accessRights and not data.access == 'form' %}style="display:none"{% endif%}>
-	{{ form.input('accessRights', label=_('Web address of access application'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
-	{{ form.checkbox('newform', label=_('Create a new access request form'), id="newform") }}
+		{{ form.input('accessRights', label=_('Web address of access application'), id='accessRights', placeholder=_('http://remsid/'), value=data.accessRights, error=errors.accessRights, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+		{{ form.checkbox('newform', label=_('Create a new access request form'), id="newform") }}
 	</div>
 	<input type="radio" name="access" id="free" onclick="KATA.toggleAccess(this)" style="top: 0px" value="free" {% if data.access == 'free'%}checked{% endif %}>{{ _('directly downloadable') }}</input><br />
+	<div id="urlDiv_free" {% if not data.accessrequestURL and not data.access == 'free' %}style="display:none"{% endif%}>
+		{{ form.input('accessrequestURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessrequestURL, error=errors.accessrequestURL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+	</div> 
 	<input type="radio" name="access" id="ident" onclick="KATA.toggleAccess(this)" style="top: 0px" value="ident" {% if data.access == 'ident'%}checked{% endif %}>{{ _('downloadable after registration / identification') }}</input><br />
-	<div id="urlDiv" {% if not data.accessrequestURL and not data.access in ('free', 'ident') %}style="display:none"{% endif%}>
-	{{ form.input('accessrequestURL', label=_('Web address for downloading the dataset'), id="accessURL", placeholder=_('http://mydata.com'), value=data.accessrequestURL, error=errors.accessrequestURL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+	<div id="urlDiv_ident" {% if not data.accessrequestURL and not data.access == 'ident' %}style="display:none"{% endif%}>
 	</div> 
 	<input type="radio" name="access" id="contact" onclick="KATA.toggleAccess(this)" style="top: 0px" value="contact" {% if data.access == 'contact'%}checked{% endif %}>{{ _('only by contacting the distributor') }}</input><br />
 	{% endcall %}
-</div>
-<div class="control-group">
-	{{ form.input('licenseURL', id='licenseURL', label=_('License'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.licenseURL, error=errors.licenseURL, classes=['control-medium'], label_classes=['kata-input-comp'])}}
-</div>
+	
+	{{ kata_form.input('licenseURL', id='licenseURL', label=_('License'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.licenseURL, error=errors.licenseURL, classes=['control-custom'], label_classes=['kata-input-comp'], tooltip=_('Cool help text about license')) }}
 </div>
 </section>
+
 {% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}

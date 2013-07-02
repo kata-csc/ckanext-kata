@@ -481,3 +481,6 @@ header.masthead {
     font-size: 12px !important;
     opacity: 1 !important;
 }
+.kata-medium-input {
+	width: 330px !important;
+}

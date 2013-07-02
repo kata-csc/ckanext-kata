@@ -27,6 +27,9 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
 
         // Style the remove checkbox like a button.
         //this.$('.checkbox').addClass("btn btn-danger icon-remove");
+        
+        // Create tooltips with no fade-in (change false to number for a fade-in)
+        jQuery( document ).tooltip({ show: false });
       }
     },
 
@@ -112,17 +115,38 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
 
 KATA = function() {}
 KATA.toggleAccess = function(obj) {
-		if (obj.id == 'form'){
+	/* Shows and hides data access inputs according to selection, also juggles the accessURL input HTML code back and forth */
+	switch (obj.id) {
+		case 'form':
 			$('#accessDiv').show();
-			$('#urlDiv').hide();
-		}
-		if (obj.id == 'free' || obj.id == 'ident'){
+			$('#urlDiv_ident').hide();
+			$('#urlDiv_free').hide();
+			break;
+		case 'free':
 			$('#accessDiv').hide();
-			$('#urlDiv').show();
-		}
-		if (obj.id == 'contact') {
+			$('#urlDiv_ident').hide();
+			$('#urlDiv_free').show();
+			if ($('#urlDiv_ident').html().length > 10) {
+				/* Consider length <= 10 as empty */
+				$('#urlDiv_free').html($('#urlDiv_ident').html());
+				$('#urlDiv_ident').html('');
+			}
+			break;
+		case 'ident':
 			$('#accessDiv').hide();
-			$('#urlDiv').hide();
+			$('#urlDiv_ident').show();
+			$('#urlDiv_free').hide();
+			if ($('#urlDiv_free').html().length > 10) {
+				/* Consider length <= 10 as empty */
+				$('#urlDiv_ident').html($('#urlDiv_free').html());
+				$('#urlDiv_free').html('');
+			}
+			break;
+		case 'contact':
+			$('#accessDiv').hide();
+			$('#urlDiv_ident').hide();
+			$('#urlDiv_free').hide();
+			break;
 		}
 	}
 KATA.checkLang = function(obj) {
