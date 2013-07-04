@@ -38,6 +38,12 @@ ul.kata {
 }
 .kata-plus-btn {
 	margin: 0 !important;
+    border-radius: 15px 15px 15px 15px !important;
+    height: 3px !important;
+    left: 5px !important;
+    padding: 3px 8px !important;
+    position: relative;
+    top: 0;
 }
 .kata-btn-span {
 	display: inline !important;
@@ -49,6 +55,9 @@ ul.kata {
 }
 .kata-input-org {
 	width: 200px !important;
+}
+.kata-medium-input {
+	width: 330px !important;
 }
 .kata-label-pluspad {
 	padding-top: 9px !important;
@@ -480,7 +489,4 @@ header.masthead {
     color: #FFFF80 !important;
     font-size: 12px !important;
     opacity: 1 !important;
-}
-.kata-medium-input {
-	width: 330px !important;
 }
