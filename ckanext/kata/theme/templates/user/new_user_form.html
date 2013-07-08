@@ -1,10 +1,15 @@
 {% import "macros/form.html" as form %}
+{% import 'macros/kata_form.html' as kata_form %}
 {% block styles %}
 {% resource 'kata-resources/css/kata-fix-captcha.css' %}
 {% endblock %}
 <form class="form-horizontal" action="" method="post">
   {{ form.errors(error_summary) }}
-  {{ form.input("name", id="field-username", label=_("Username"), placeholder="username", value=data.name, error=errors.name, classes=["control-medium"]) }}
+
+  {% call form.input('name', label=_('Username'), id='field-username', placeholder=_('username'), value=data.name, error=errors.name, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+    {{ kata_form.tooltip(tooltip=_('Username should contain only lowercase characters and symbols: -_')) }}
+  {% endcall %}
+
   {{ form.input("fullname", id="field-fullname", label=_("Full Name"), placeholder="Joe Bloggs", value=data.fullname, error=errors.fullname, classes=["control-medium"]) }}
   {{ form.input("email", id="field-email", label=_("Email"), type="email", placeholder="joe@example.com", value=data.email, error=errors.email, classes=["control-medium"]) }}
   {{ form.input("password1", id="field-password", label=_("Password"), type="password", placeholder="••••••••", value=data.password1, error=errors.password1, classes=["control-medium"]) }}
