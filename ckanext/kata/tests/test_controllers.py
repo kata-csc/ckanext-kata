@@ -1,19 +1,9 @@
 '''Unit tests for controllers''' 
 
-from nose.tools import assert_equal, assert_raises
-
-import paste.fixture
-
-import ckan
 from ckan.lib.create_test_data import CreateTestData
-from ckan.lib.field_types import DateType
-import ckan.model as model
-from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for, assert_in, assert_not_in
+from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
 from ckan.tests.html_check import HtmlCheckMethods
-from ckan.lib.helpers import url
-from ckan.lib.create_test_data import CreateTestData
 from ckanext.kata import model as kata_model
-from ckan.lib.base import c, h
 
 
 class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
