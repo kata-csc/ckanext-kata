@@ -33,7 +33,7 @@
 	
 		{% set index = loop.index0 %}
 		
-		{% call form.input('title__' ~ index ~ '__value', id='title_' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, error=errors.title, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+		{% call form.input('title__' ~ index ~ '__value', id='title__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, error=errors.title, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
 			
 			{% if index == 0 %}
 				{{ kata_form.tooltip(tooltip=_('Cool help text about title')) }}
