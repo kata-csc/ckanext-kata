@@ -464,9 +464,11 @@ class ContactController(BaseController):
                     owner = User.get(userid)
                     msg = request.params.get('msg', '')
                     if msg:
-                        
                         model.repo.new_revision()
-                        
+
+                        send_contact_email(owner, c.userobj, package, \
+                                           msg)
+
                         # Mark this user as contacted
                         if "contacted" in c.userobj.extras:
                             c.userobj.extras['contacted'].append(pkg_id)
@@ -475,8 +477,6 @@ class ContactController(BaseController):
                             c.userobj.extras['contacted'].append(pkg_id)
                         c.userobj.save()
 
-                        send_contact_email(owner, c.userobj, package,\
-                                       msg)
                     else:
                         h.flash_error(_("No message"))
                         return redirect(url)
