@@ -1,5 +1,5 @@
 '''
-Selenium tests
+Selenium tests for Kata.
 
 Requirements:
     - Firefox installed
@@ -20,16 +20,18 @@ To run from pyenv:
 
     xvfb-run nosetests ckanext-kata/ckanext/kata/testselenium/test_selenium.py
 
+or
+
+    ./ckanext-kata/nose.sh selenium
+
 '''
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.keys import Keys
-from selenium import selenium
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
-from string import replace
 from unittest import TestCase
 import time
 
@@ -91,7 +93,11 @@ class TestDatasetSelenium(TestCase):
 
 
     def test_1_register_user(self):
-        '''Test user registration. Named so because tests are run in alphabetical order.'''
+        '''
+        Test for user registration. Named so because tests are run in alphabetical order.
+
+        The test user is needed when testing contact form functionality.
+        '''
 
         self._register_user(self.browser)
 
@@ -202,12 +208,10 @@ class TestDatasetSelenium(TestCase):
             self.browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
             assert 0, 'Contact form expected but not found (second visit)'
 
+        try:
+            WebDriverWait(self.browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(text(),'Message sent')]")))
+        except TimeoutException:
+            self.browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
+            assert 0, "Sending contact form didn't finish"
 
-        # TODO: check that sending the form didn't produce an error.
-
-        #try:
-        #    WebDriverWait(self.browser, 30).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, "RDF")))
-        #except TimeoutException:
-        #    self.browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
-        #    assert 0, "Dataset creation didn't finish"
 
