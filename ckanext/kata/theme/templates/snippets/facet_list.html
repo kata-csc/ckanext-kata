@@ -38,13 +38,14 @@ extras
         <ul class="unstyled nav nav-simple nav-facet">
           {% for item in items %}
             {% set href = h.remove_url_param(name, item.name, extras=extras) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras) %}
-            {% set label = label_function(item) if label_function else h.truncate(item.display_name, 22) %}
+            {% set label = label_function(item) if label_function else item.display_name %}
+            {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
             {% set count = count_label(item['count']) if count_label else ('(%d)' % item['count']) %}
-              <li class="nav-item{% if item.active %} active{% endif %}" title="{{item.display_name}}">
-                <a href="{{ href }}">
-                  <span>{{ label }} {{ count }}</span>
+            <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %}">
+                <a href="{{ href }}" title="{{ label if label != label_truncated else '' }}">
+                    <span>{{ label_truncated }} {{ count }}</span>
                 </a>
-              </li>
+            </li>
           {% endfor %}
         </ul>
       </nav>
