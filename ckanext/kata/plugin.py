@@ -432,3 +432,27 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if k[-1] in self.kata_field:
                 if not {'key': k[-1], 'value': data[k]} in extras:
                     extras.append({'key': k[-1], 'value': data[k]})
+
+    def before_search(self, data_dict):
+        '''
+        Things to do before querying Solr.
+
+        :param data_dict: data_dict to modify
+        '''
+
+        data_dict['facet.field'] = ['groups','tags','extras_fformat','extras_licenseURL','author','organization','extras_language']
+        #log.debug("data_dict: %r" % data_dict)
+        return data_dict
+
+    def after_search(self, search_results, data_dict):
+        '''
+        Things to do after querying Solr.
+
+        :param search_results: ?
+        :param data_dict: data_dict to modify
+        '''
+
+        #log.debug("search_results: %r" % search_results)
+        #log.debug("data_dict: %r" % data_dict)
+        return search_results
+

@@ -92,8 +92,13 @@
 {% endblock %}
 
 {% block secondary_content %}
-  {{ h.snippet('snippets/facet_list.html', title='Tags', name='tags') }}
-  {{ h.snippet('snippets/facet_list.html', title='Groups', name='groups') }}
+  {{ h.snippet('snippets/facet_list.html', title='Keywords', name='tags') }}
+  {{ h.snippet('snippets/facet_list.html', title='File formats', name='extras_fformat') }}
+  {{ h.snippet('snippets/facet_list.html', title='Discipline', name='groups') }}
+  {{ h.snippet('snippets/facet_list.html', title='Author', name='author') }}
+  {{ h.snippet('snippets/facet_list.html', title='Organization', name='organization') }}
+  {{ h.snippet('snippets/facet_list.html', title='License', name='extras_licenseURL') }}
+  {{ h.snippet('snippets/facet_list.html', title='Language', name='extras_language') }}
 {% endblock %}
 
 
