@@ -440,7 +440,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param data_dict: data_dict to modify
         '''
 
-        data_dict['facet.field'] = ['groups','tags','extras_fformat','extras_licenseURL','author','organization','extras_language']
+        data_dict['facet.field'] = ['groups','tags','extras_fformat','license','authorstring','organizationstring','extras_language']
         #log.debug("data_dict: %r" % data_dict)
         return data_dict
 

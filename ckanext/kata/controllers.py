@@ -103,6 +103,13 @@ def get_discipline(context, data_dict):
 class MetadataController(BaseController):
 
     def _make_rights_element(self, extras):
+        '''
+        Return license information as an RDF literal.
+
+        :param extras:
+        :return:
+        '''
+
         xmlstr = ""
         if extras["access"] == 'contact':
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras['accessrequestURL'] + '</RightsDeclaration>'
@@ -126,6 +133,13 @@ class MetadataController(BaseController):
         return URNHelper.list_packages()
 
     def tordf(self, id, format):
+        '''
+        Get an RDF presentation of a package.
+
+        :param id:
+        :param format:
+        :return:
+        '''
         graph = Graph()
         pkg = Package.get(id)
         if pkg:
