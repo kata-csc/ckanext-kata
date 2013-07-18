@@ -22,6 +22,11 @@
           <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('Search...') }}" />
           <button type="submit" value="{{ _('Search') }}">Submit</button>
         </span>
+        <span class="control-group search">
+          <label class="control-label " for="search-author">Author</label>
+          <input id="search-author" type="text" class="search" name="q_author" value="{{ c.q_author }}" autocomplete="off" placeholder="{{ _('Search author...') }}" />
+          <button type="submit" value="{{ _('Search') }}">Submit</button>
+        </span>
 
         {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
 
