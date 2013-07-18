@@ -101,21 +101,20 @@ def setup():
      
     if model.package_table.exists() and not kata_access_request_table.exists():
         kata_access_request_table.create()
+
     if model.user_table.exists() and not user_extra_table.exists() \
         and not user_extra_revision_table.exists():
         user_extra_table.create()
         user_extra_revision_table.create()
 
-def drop_tables():
+def delete_tables():
     '''
-    Drop tables created by setup(), except for user_extra which is removed by CreateTestData.delete() 
-    
-    This function is used to remove tables from database between test cases.    
+    Delete data from some extra tables to prevent IntegrityError between tests.
     '''
-    
+
     if user_extra_revision_table.exists():
-        user_extra_revision_table.drop()
+        user_extra_revision_table.delete()
     #if user_extra_table.exists():
         #user_extra_table.drop()
     if kata_access_request_table.exists():
-        kata_access_request_table.drop()
+        kata_access_request_table.delete()

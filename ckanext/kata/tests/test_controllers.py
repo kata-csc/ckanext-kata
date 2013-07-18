@@ -13,13 +13,14 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
     
     @classmethod
     def setup_class(cls):
-        CreateTestData.create()
         # Set up Kata's additions to CKAN database (user_extra, etc.)
         kata_model.setup()
 
+        CreateTestData.create()
+
     @classmethod
     def teardown_class(cls):
-        kata_model.drop_tables()
+        kata_model.delete_tables()
         CreateTestData.delete()
     
     def test_data_and_resources_not_rendered(self):
@@ -52,10 +53,11 @@ class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
     
     @classmethod
     def setup_class(cls):
-        CreateTestData.create()
         # Set up Kata's additions to CKAN database (user_extra, etc.)
         kata_model.setup()
-        
+
+        CreateTestData.create()
+
         #tester = model.User(name=u'tester', apikey=u'tester',
             #password=u'tester')
         #model.Session.add(tester)
@@ -69,7 +71,7 @@ class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
         
     @classmethod
     def teardown_class(cls):
-        #kata_model.drop_tables()
+        kata_model.delete_tables()
         CreateTestData.delete()
     
     def test_contact_controller_found(self):

@@ -1,4 +1,4 @@
-'''Main plugin file
+'''Main plugin file for Kata CKAN extension
 '''
 
 import logging
@@ -34,7 +34,6 @@ from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_
 
 from pylons.decorators.cache import beaker_cache
 from pylons import config
-
 from validators import check_project, validate_access, validate_lastmod,\
                         check_junk, check_last_and_update_pid,\
                         validate_language, validate_email, validate_phonenum,\
@@ -49,9 +48,10 @@ import actions
 import auth_functions
 from model import KataAccessRequest
 
-log = logging.getLogger('ckanext.kata')
-
+from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY
 import utils
+
+log = logging.getLogger('ckanext.kata')
 
 
 def snippet(template_name, **kw):
@@ -440,7 +440,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param data_dict: data_dict to modify
         '''
 
-        data_dict['facet.field'] = ['groups','tags','extras_fformat','license','authorstring','organizationstring','extras_language']
+        data_dict['facet.field'] = FACETS
+        if data_dict['sort'] is None:
+            data_dict['sort'] = DEFAULT_SORT_BY
+            c.sort_by_selected = DEFAULT_SORT_BY  # This is to get the correct one selected on the HTML form.
+
         #log.debug("data_dict: %r" % data_dict)
         return data_dict
 
