@@ -4,6 +4,7 @@ Controllers for Kata plus some additional functions.
 
 from _text import orngText
 from ckan.controllers.api import ApiController
+from ckan.controllers.package import PackageController
 from ckan.controllers.storage import get_ofs
 from ckan.controllers.user import UserController
 from ckan.lib.helpers import lang
@@ -523,8 +524,14 @@ class ContactController(BaseController):
             return redirect(url)
 
 class KataUserController(UserController):
-
+    """
+    Overwrite logged_in function in super class.
+    """
     def logged_in(self):
+        """
+        Redirect user to own profile page instead of dashboard.
+        @return - some sort of redirect object??
+        """
         # we need to set the language via a redirect
         lang = session.pop('lang', None)
         session.save()
@@ -546,7 +553,6 @@ class KataUserController(UserController):
                         user_dict['display_name'])
             if came_from:
                 return h.redirect_to(str(came_from))
-            # else:
             return h.redirect_to(controller='user', action='read', id=c.userobj.name)
         else:
             err = _('Login failed. Bad username or password.')
@@ -559,3 +565,27 @@ class KataUserController(UserController):
                           action='login', came_from=came_from)
             else:
                 return self.login(error=err)
+
+class KataPackageController(PackageController):
+    """
+    Adds advanced search feature.
+    """
+    def advanced_search(self):
+        """
+        Parse query parameters from different search form inputs, modify into
+        one query string 'q' in the context and call basic search() method of
+        the super class.
+
+        @return - dictionary with keys results and count
+        """
+        # parse author search into q
+        q_author = c.q_author = request.params.get('q_author', u'')
+
+        # unicode format (decoded from utf8)
+        q_free = c.q_free = request.params.get('q_free', u'')
+        q = c.q = q_free + u' AND '+ u'author:' +  q_author
+
+        log.debug('advanced_search(): request.params.items(): %r' % request.params.items())
+        log.debug('advanced_search(): q: %r' % q)
+        log.debug('advanced_search(): call to search()')
+        return self.search()
