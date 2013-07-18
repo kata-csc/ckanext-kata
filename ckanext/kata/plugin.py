@@ -50,7 +50,7 @@ import auth_functions
 from model import KataAccessRequest
 
 log = logging.getLogger('ckanext.kata')
-
+t = toolkit
 import utils
 
 
@@ -118,7 +118,10 @@ class KataMetadata(SingletonPlugin):
                     action="import_xml"),
         map.connect('/user/logged_in',
                     controller="ckanext.kata.controllers:KataUserController",
-                    action="logged_in")
+                    action="logged_in"),
+        map.connect('/dataset',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="advanced_search")
         return map
 
     def before_insert(self, mapper, connection, instance):
@@ -433,6 +436,20 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 if not {'key': k[-1], 'value': data[k]} in extras:
                     extras.append({'key': k[-1], 'value': data[k]})
 
+    def update_facet_titles(self, facet_titles):
+         '''
+             Update the dictionary mapping facet names to facet titles.
+
+             Example: {'facet_name': 'The title of the facet'}
+
+             Called after the search operation was performed and
+             before the search page will be displayed.
+             The titles show up on the search page.
+         '''
+         facet_titles.update([('q_author', t._('Author')), ('authorstring', t._('Author'))])
+         return facet_titles
+
+
     def before_search(self, data_dict):
         '''
         Things to do before querying Solr.
@@ -441,7 +458,29 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         '''
 
         data_dict['facet.field'] = ['groups','tags','extras_fformat','license','authorstring','organizationstring','extras_language']
-        #log.debug("data_dict: %r" % data_dict)
+
+        ## Ugly first version of advanced search.
+        # It's ugly because it duplicates functionality both, from the
+        # function which is before it in call chain (package:search)
+        # and from the function which is called after it
+        # (query:PackageSearchQuery.run).
+        # Copied from query:PackageSearchQuery.run
+        q = data_dict['q']
+        if not q or q == '""' or q == "''":
+            data_dict['q'] = "*:*"
+        # Copied from package:search
+        for (param, value) in c.fields:
+            if param not in ['q', 'page', 'sort'] \
+                    and len(value) and not param.startswith('_'):
+                if not param.startswith('ext_'):
+               # c.fields.append((param, value))
+                    if param.startswith('q_'):
+                        data_dict['q'] += ' %s:%s' % (param[2:], value)
+        ## End ugly first version of advanced search
+
+        # data_dict['q'] += u' author:' + t.request.params.get('q_author', u'')
+        data_dict['fq'] = u''
+        log.debug("before_search(): data_dict: %r" % data_dict)
         return data_dict
 
     def after_search(self, search_results, data_dict):
