@@ -4,6 +4,7 @@
 import logging
 import os
 import datetime
+import re
 from lxml import etree
 import urllib2
 import iso8601
@@ -447,7 +448,17 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
              before the search page will be displayed.
              The titles show up on the search page.
          '''
-         facet_titles.update([('q_author', t._('Author')), ('authorstring', t._('Author'))])
+         FIELD_TITLES = {'organizationstring': t._('Organization'),
+                         'tags': t._('Keywords'),
+                         'extras_fformat': t._('File formats'),
+                         'groups': t._('Discipline'),
+                         'license': t._('Licence'),
+                         'authorstring': t._('Author'),
+                         'extras_language': t._('Language'),
+                         'title': t._('Title'),
+                         'q_author': t._('Author')
+                         }
+         facet_titles.update(FIELD_TITLES)
          return facet_titles
 
 
@@ -469,22 +480,25 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # function which is before it in call chain (package:search)
         # and from the function which is called after it
         # (query:PackageSearchQuery.run).
+        # Better could be implement whole new search() method to
+        # avoid appending and removing parameters.
         # Copied from query:PackageSearchQuery.run
         q = data_dict['q']
         if not q or q == '""' or q == "''":
             data_dict['q'] = "*:*"
         # Copied from package:search
         for (param, value) in c.fields:
-            if param not in ['q', 'page', 'sort'] \
-                    and len(value) and not param.startswith('_'):
-                if not param.startswith('ext_'):
-               # c.fields.append((param, value))
-                    if param.startswith('q_'):
-                        data_dict['q'] += ' %s:%s' % (param[2:], value)
+            if len(value) and param.startswith('q_'):
+                data_dict['q'] += ' AND %s:%s' % (param[2:], value)  # Add field search to query q
+                c.fields.remove((param, value))  # Remove field from context to avoid usage as hidden facet input
+                c.fields_grouped.pop(param)  # Remove field from this to avoid showing in tags
+                log.debug("before_search(): data_dict['fq']: %r" % data_dict['fq'])
+                # This removes field:"search_term" pairs from 'fq' that match q_smthng:"*foo bar*"
+                data_dict['fq'] = re.sub(pattern=r'q_[a-z]*:(.)[^"]*\1', repl="", string=data_dict['fq'])
         ## End ugly first version of advanced search
 
         # data_dict['q'] += u' author:' + t.request.params.get('q_author', u'')
-        data_dict['fq'] = u''
+        # data_dict['f.q_author.qf'] = 'author'  # lib.search.query doesn't support Solr field aliasing parameter
         log.debug("before_search(): data_dict: %r" % data_dict)
         return data_dict
 
