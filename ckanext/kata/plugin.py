@@ -48,7 +48,7 @@ from converters import copy_from_titles, custom_to_extras, event_from_extras,\
 import actions
 import auth_functions
 from model import KataAccessRequest
-from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY
+from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
 import utils
 
 log = logging.getLogger('ckanext.kata')
@@ -461,7 +461,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         data_dict['facet.field'] = FACETS
         if data_dict['sort'] is None:
             data_dict['sort'] = DEFAULT_SORT_BY
-            c.sort_by_selected = DEFAULT_SORT_BY  # This is to get the correct one selected on the HTML form.
+            c.sort_by_selected = DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
+
+        c.search_fields = SEARCH_FIELDS
+        c.translated_field_titles = get_field_titles(t._)
 
 
         ## Ugly first version of advanced search.

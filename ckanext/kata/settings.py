@@ -15,9 +15,20 @@ FIELD_TITLES = {'organizationstring': 'Organization',
                 'groups': 'Discipline',
                 'license': 'Licence',
                 'authorstring': 'Author',
+                'q_author': 'Author',
                 'extras_language': 'Language',
                 'title': 'Title',
                 }
+
+SEARCH_FIELDS = ['organizationstring',
+                'tags',
+                'extras_fformat',
+                'groups',
+                'license',
+                'q_author',
+                'extras_language',
+                'title',
+                ]
 
 
 def get_field_titles(_):
@@ -34,3 +45,13 @@ def get_field_titles(_):
         translated_field_titles[k] = _(v)
 
     return translated_field_titles
+
+def get_field_title(key, _):
+    '''
+    Get correctly translated title for one search field
+
+    :param _: gettext translator
+    :return: dict of titles for fields
+    '''
+
+    return _(FIELD_TITLES[key])
