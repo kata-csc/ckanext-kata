@@ -448,17 +448,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
              before the search page will be displayed.
              The titles show up on the search page.
          '''
-         FIELD_TITLES = {'organizationstring': t._('Organization'),
-                         'tags': t._('Keywords'),
-                         'extras_fformat': t._('File formats'),
-                         'groups': t._('Discipline'),
-                         'license': t._('Licence'),
-                         'authorstring': t._('Author'),
-                         'extras_language': t._('Language'),
-                         'title': t._('Title'),
-                         'q_author': t._('Author')
-                         }
-         facet_titles.update(FIELD_TITLES)
+
+         facet_titles.update(get_field_titles(t._))
          return facet_titles
 
 
