@@ -11,7 +11,7 @@ this.ckan.module('advanced-search-kata', function (jQuery, _) {
       var _this = this;
 
       this.el.on('change', this.options.target, function () {
-        jQuery( "#advanced-search-01-text" ).attr('name', this.value);
+        jQuery( "#advanced-search-1-text" ).attr('name', this.value);
       });
     }
   };

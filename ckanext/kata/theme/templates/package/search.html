@@ -13,9 +13,9 @@
 
 {% if c.search_extras %}
   {% set basic_classes = basic_classes ~ ' hidden' %}
-{%- else -%}
+{%- else %}
   {% set adv_classes = adv_classes ~ ' hidden' %}
-{%- endif -%}
+{% endif %}
 
 
 {% block primary_content %}
@@ -52,13 +52,35 @@
 
     <form id="advanced-search" class="dataset-search clearfix {{ adv_classes }}" method="get" data-module="advanced-search-kata">
       <span class="control-group">
-        <select id="advanced-search-01-by">
-          {% for field in c.search_fields %}
-          <option value="{{ field }}">{{ c.translated_field_titles[field] }}</option>
-          {% endfor -%}
-        </select>
-        <input id="advanced-search-01-text" type="text" class="search" name="ext_author" value="{{ c.search_extras['ext_author'] }}"
-               autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
+
+        {% if c.search_extras %}
+
+          {% for (searched_field, search_text) in c.search_extras %}
+            <select id="advanced-search-{{ loop.index }}-by">
+              {% for option_field in c.search_fields -%}
+                <option value="{{ option_field }}"
+                    {% if option_field == searched_field -%}
+                      selected="selected"
+                    {%- endif -%}
+                    >{{ c.translated_field_titles[option_field] }}</option>
+              {%- endfor %}
+            </select>
+            <input id="advanced-search-{{ loop.index }}-text" type="text" class="search" name="{{ searched_field }}" value="{{ search_text }}"
+                   autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
+          {% endfor %}
+
+        {% else %}
+
+          <select id="advanced-search-1-by">
+            {% for field in c.search_fields %}
+            <option value="{{ field }}">{{ c.translated_field_titles[field] }}</option>
+            {% endfor %}
+          </select>
+          <input id="advanced-search-1-text" type="text" class="search" name="{{ c.search_fields | first }}" value=""
+                 autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
+
+        {% endif %}
+
         <button type="submit" value="{{ _('Search') }}">Submit</button>
       </span>
 
