@@ -9,25 +9,35 @@ FACETS = ['groups','tags','extras_fformat','license','authorstring','organizatio
 # Default sorting method. Pre-selects the corresponding option on search form.
 DEFAULT_SORT_BY = u'metadata_modified desc'
 
-FIELD_TITLES = {'organizationstring': 'Organization',
+# Titles for all fields used in searches, should be used through get_field_titles() for translation
+_FIELD_TITLES = {'organizationstring': 'Organization',
+                'ext_organizationstring': 'Organization',
                 'tags': 'Keywords',
+                'ext_tags': 'Keywords',
                 'extras_fformat': 'File formats',
+                'ext_extras_fformat': 'File formats',
                 'groups': 'Discipline',
-                'license': 'Licence',
+                'ext_groups': 'Discipline',
+                'license': 'License',
+                'ext_license': 'Licence',
                 'authorstring': 'Author',
-                'q_author': 'Author',
+                'ext_authorstring': 'Author',
+                'ext_author': 'Author',
                 'extras_language': 'Language',
+                'ext_extras_language': 'Language',
                 'title': 'Title',
+                'ext_title': 'Title',
                 }
 
-SEARCH_FIELDS = ['organizationstring',
-                'tags',
-                'extras_fformat',
-                'groups',
-                'license',
-                'q_author',
-                'extras_language',
-                'title',
+# Fields for advanced search
+SEARCH_FIELDS = ['ext_organizationstring',
+                'ext_tags',
+                'ext_extras_fformat',
+                'ext_groups',
+                'ext_license',
+                'ext_author',
+                'ext_extras_language',
+                'ext_title',
                 ]
 
 
@@ -41,7 +51,7 @@ def get_field_titles(_):
 
     translated_field_titles = {}
 
-    for k, v in FIELD_TITLES.iteritems():
+    for k, v in _FIELD_TITLES.iteritems():
         translated_field_titles[k] = _(v)
 
     return translated_field_titles
@@ -54,4 +64,4 @@ def get_field_title(key, _):
     :return: dict of titles for fields
     '''
 
-    return _(FIELD_TITLES[key])
+    return _(_FIELD_TITLES[key])

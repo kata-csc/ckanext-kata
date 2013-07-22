@@ -9,18 +9,18 @@
 {% endblock %}
 
 {% block primary_content %}
-<section class="module" id="help">
-  <h2 class="module-heading">{{ _('Search help') }}
-    <a class="module-link" href="#searchhelp" onclick="$('#searchhelp').slideToggle()">{{ _('Hide/show') }}</a>
+<section class="module" id="search-toggle">
+  <h2 class="module-heading">
+    <span class="basic_search_toggled">{{ _('Basic search') }}</span>
+    <span class="advanced_search_toggled">{{ _('Advanced search') }}</span>
+    <a id="toggle_advanced" class="module-link basic_search_toggled" data-module="search-toggle" href="#">{{ _('Advanced search') }}</a>
+    <a id="toggle_basic" class="module-link advanced_search_toggled" data-module="search-toggle" href="#">{{ _('Basic search') }}</a>
   </h2>
-
-  <div class="module-content" id="searchhelp" style="display: none">
-    {{ h.snippet('package/snippets/search_help.html')}}
-  </div>
 </section>
 <section class="module">
   <div class="module-content">
-    <form id="dataset-search" class="dataset-search clearfix" method="get" data-module="select-switch">
+
+    <form id="dataset-search" class="dataset-search clearfix basic_search_toggled" method="get" data-module="select-switch">
       <span class="control-group search-giant">
         <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
                placeholder="{{ _('Search...') }}"/>
@@ -40,18 +40,14 @@
       <div id="dataset-search-ext"></div>
     </form>
 
-    <p>--</p>
-
-    <p>--</p>
-
-    <form id="advanced-search" class="dataset-search clearfix" method="get" data-module="advanced-search-kata">
+    <form id="advanced-search" class="dataset-search clearfix advanced_search_toggled" method="get" data-module="advanced-search-kata">
       <span class="control-group">
-        <select id="advanced-field-order-by" name="sort">
+        <select id="advanced-search-01-by">
           {% for field in c.search_fields %}
           <option value="{{ field }}">{{ c.translated_field_titles[field] }}</option>
           {% endfor -%}
         </select>
-        <input id="search-author" type="text" class="search" name="q_author" value="{{ c.q_author }}"
+        <input id="advanced-search-01-text" type="text" class="search" name="ext_author" value="{{ c.search_extras }}"
                autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
         <button type="submit" value="{{ _('Search') }}">Submit</button>
       </span>
