@@ -490,3 +490,6 @@ header.masthead {
     font-size: 12px !important;
     opacity: 1 !important;
 }
+.hidden {
+  display: none;
+}

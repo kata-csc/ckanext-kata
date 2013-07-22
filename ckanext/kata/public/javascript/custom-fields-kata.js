@@ -9,7 +9,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
     options: {
       /* The selector used for each custom field wrapper */
       fieldSelector: '.control-custom',
-      lastint: 1,
+      lastint: 1
     },
 
     /* Initializes the module and attaches custom event listeners. This
