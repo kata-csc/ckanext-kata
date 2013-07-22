@@ -481,11 +481,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if not q or q == '""' or q == "''":
             data_dict['q'] = "*:*"
         # Copied from package:search
-        c.search_extras = {}
+        c.search_extras = []
         for (param, value) in data_dict['extras'].items():
             if len(value) and param.startswith('ext_'):
                 data_dict['q'] += ' AND %s:%s' % (param[4:], value)  # Add field search to query q
-                c.search_extras[param] = value  # Add field to template context
+                c.search_extras.append((param, value))  # Add field to template context
                 log.debug("before_search(): data_dict['fq']: %r" % data_dict['fq'])
         ## End ugly first version of advanced search
 
