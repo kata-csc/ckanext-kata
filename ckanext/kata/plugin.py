@@ -481,18 +481,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if not q or q == '""' or q == "''":
             data_dict['q'] = "*:*"
         # Copied from package:search
-        for (param, value) in c.fields:
-            if len(value) and param.startswith('q_'):
-                data_dict['q'] += ' AND %s:%s' % (param[2:], value)  # Add field search to query q
-                c.fields.remove((param, value))  # Remove field from context to avoid usage as hidden facet input
-                c.fields_grouped.pop(param)  # Remove field from this to avoid showing in tags
+        c.search_extras = {}
+        for (param, value) in data_dict['extras'].items():
+            if len(value) and param.startswith('ext_'):
+                data_dict['q'] += ' AND %s:%s' % (param[4:], value)  # Add field search to query q
+                c.search_extras[param] = value  # Add field to template context
                 log.debug("before_search(): data_dict['fq']: %r" % data_dict['fq'])
-                # This removes field:"search_term" pairs from 'fq' that match q_smthng:"*foo bar*"
-                data_dict['fq'] = re.sub(pattern=r'q_[a-z]*:(.)[^"]*\1', repl="", string=data_dict['fq'])
         ## End ugly first version of advanced search
 
-        # data_dict['q'] += u' author:' + t.request.params.get('q_author', u'')
-        # data_dict['f.q_author.qf'] = 'author'  # lib.search.query doesn't support Solr field aliasing parameter
         log.debug("before_search(): data_dict: %r" % data_dict)
         return data_dict
 

@@ -51,7 +51,7 @@
           <option value="{{ field }}">{{ c.translated_field_titles[field] }}</option>
           {% endfor -%}
         </select>
-        <input id="search-author" type="text" class="search" name="q_author" value="{{ c.q_author }}"
+        <input id="search-author" type="text" class="search" name="ext_author" value="{{ c.search_extras['ext_author'] }}"
                autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
         <button type="submit" value="{{ _('Search') }}">Submit</button>
       </span>
