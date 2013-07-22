@@ -8,19 +8,29 @@
 </li>
 {% endblock %}
 
+{% set adv_classes = 'advanced_search_toggled' %}
+{% set basic_classes = 'basic_search_toggled' %}
+
+{% if c.search_extras %}
+  {% set basic_classes = basic_classes ~ ' hidden' %}
+{%- else -%}
+  {% set adv_classes = adv_classes ~ ' hidden' %}
+{%- endif -%}
+
+
 {% block primary_content %}
 <section class="module" id="search-toggle">
   <h2 class="module-heading">
-    <span class="basic_search_toggled">{{ _('Basic search') }}</span>
-    <span class="advanced_search_toggled">{{ _('Advanced search') }}</span>
-    <a id="toggle_advanced" class="module-link basic_search_toggled" data-module="search-toggle" href="#">{{ _('Advanced search') }}</a>
-    <a id="toggle_basic" class="module-link advanced_search_toggled" data-module="search-toggle" href="#">{{ _('Basic search') }}</a>
+    <span class="{{ basic_classes }}">{{ _('Basic search') }}</span>
+    <span class="{{ adv_classes }}">{{ _('Advanced search') }}</span>
+    <a id="toggle_advanced" class="module-link {{ basic_classes }}" onclick="toggle_search('advanced');" href="#">{{ _('Advanced search') }}</a>
+    <a id="toggle_basic" class="module-link {{ adv_classes }}" onclick="toggle_search('basic');" href="#">{{ _('Basic search') }}</a>
   </h2>
 </section>
 <section class="module">
   <div class="module-content">
 
-    <form id="dataset-search" class="dataset-search clearfix basic_search_toggled" method="get" data-module="select-switch">
+    <form id="dataset-search" class="dataset-search clearfix {{ basic_classes }}" method="get" data-module="select-switch">
       <span class="control-group search-giant">
         <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
                placeholder="{{ _('Search...') }}"/>
@@ -40,14 +50,14 @@
       <div id="dataset-search-ext"></div>
     </form>
 
-    <form id="advanced-search" class="dataset-search clearfix advanced_search_toggled" method="get" data-module="advanced-search-kata">
+    <form id="advanced-search" class="dataset-search clearfix {{ adv_classes }}" method="get" data-module="advanced-search-kata">
       <span class="control-group">
         <select id="advanced-search-01-by">
           {% for field in c.search_fields %}
           <option value="{{ field }}">{{ c.translated_field_titles[field] }}</option>
           {% endfor -%}
         </select>
-        <input id="advanced-search-01-text" type="text" class="search" name="ext_author" value="{{ c.search_extras }}"
+        <input id="advanced-search-01-text" type="text" class="search" name="ext_author" value="{{ c.search_extras['ext_author'] }}"
                autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
         <button type="submit" value="{{ _('Search') }}">Submit</button>
       </span>

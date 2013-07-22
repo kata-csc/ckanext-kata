@@ -38,3 +38,13 @@ this.ckan.module('search-toggle', function (jQuery, _) {
   };
 });
 
+toggle_search = function(type) {
+  if (type == 'advanced') {
+    $('.advanced_search_toggled').show();
+    $('.basic_search_toggled').hide();
+  } else {
+    $('.advanced_search_toggled').hide();
+    $('.basic_search_toggled').show();
+  }
+
+}

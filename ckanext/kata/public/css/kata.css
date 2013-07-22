@@ -490,6 +490,6 @@ header.masthead {
     font-size: 12px !important;
     opacity: 1 !important;
 }
-.advanced_search_toggled {
+.hidden {
   display: none;
 }
