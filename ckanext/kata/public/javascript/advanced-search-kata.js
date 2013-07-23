@@ -2,7 +2,7 @@
  */
 
 this.ckan.module('advanced-search-kata', function (jQuery, _) {
-  /** CKAN module to toggle between basic and advanced search.
+  /** CKAN module to update input field name.
    */
   return {
     options: {
@@ -16,7 +16,7 @@ this.ckan.module('advanced-search-kata', function (jQuery, _) {
         temp_arr = this.id.split('-');
         index = temp_arr[temp_arr.length - 1];
         //console.log(index);
-        jQuery( "#advanced-search-text-" + index ).attr('name', this.value + '-' + index);
+        jQuery( "#advanced-search-text-" + index ).attr('name', this.value + '_' + index);
       });
     }
   };
@@ -61,19 +61,19 @@ add_search_elements = function(index) {
   /** Add a new row of search elements to advanced search page.
    */
   new_index = (index + 1);
-  
+
   if (!$("#advanced-search-row-" + new_index).length) {
     cloned_row = $("#advanced-search-row-" + index).clone(true);
 
     // Update indexes. Might work more simply by just replacing all like '-1"' -> '-2"'.
     cloned_row.html(cloned_row.html().replace('advanced-search-text-' + index, 'advanced-search-text-' + new_index));
     cloned_row.html(cloned_row.html().replace('advanced-search-by-' + index, 'advanced-search-by-' + new_index));
-    cloned_row.html(cloned_row.html().replace('ext_operator-' + index, 'ext_operator-' + new_index));
+    cloned_row.html(cloned_row.html().replace('ext_operator_' + index, 'ext_operator_' + new_index));
     cloned_row.html(cloned_row.html().replace('add_search_elements(' + index + ');', 'add_search_elements(' + new_index + ');'));
     cloned_row.attr('id', 'advanced-search-row-' + new_index);
 
     // update input-field name
-    cloned_row.children('#advanced-search-text-' + new_index).attr('name', $('input#default_search_field').attr('value') + '-' + new_index);
+    cloned_row.children('#advanced-search-text-' + new_index).attr('name', $('input#default_search_field').attr('value') + '_' + new_index);
 
     cloned_row.insertAfter($("#advanced-search-row-" + index));
   }

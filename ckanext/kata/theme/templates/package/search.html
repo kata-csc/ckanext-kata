@@ -66,9 +66,9 @@
                     >{{ c.translated_field_titles[option_field] }}</option>
               {%- endfor %}
             </select>
-            <input id="advanced-search-text-{{ loop.index }}" type="text" class="search" name="{{ searched_field ~ '-' ~ loop.index }}" value="{{ search_text }}"
+            <input id="advanced-search-text-{{ loop.index }}" type="text" class="search" name="{{ searched_field ~ '_' ~ loop.index }}" value="{{ search_text }}"
                    autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
-            <select name="ext_operator-{{ loop.index }}" class="kata-search-relation" onchange="add_search_elements({{ loop.index }});">
+            <select name="ext_operator_{{ loop.index }}" class="kata-search-relation" onchange="add_search_elements({{ loop.index }});">
               <option value=""> </option>
               <option value="AND">{{ _('AND') }}</option>
               <option value="OR">{{ _('OR') }}</option>
