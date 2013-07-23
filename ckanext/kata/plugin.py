@@ -481,9 +481,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # if not q or q == '""' or q == "''":
         #     data_dict['q'] = "*:*"
         # Copied from package:search
-        extra_terms = []
-        c.search_extras = []
-        if data_dict.has_key('extras'):
+
+        if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
+            extra_terms = []
+            extra_ops = []
+            c.search_extras = []
 
             def extras_cmp(a, b):
                 a  = a.split("-")[-1]
@@ -498,17 +500,38 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
             log.debug("before_search(): data_dict['extras']: %r" % data_dict['extras'].items())
             for (param, value) in data_dict['extras'].items():
-                if len(value) and param.startswith('ext_'):
-                    extra_terms.append((param, value))  # Add search term to template context
-            log.debug("before_search(): extra_terms(unsorted): %r" % extra_terms)
-            extra_terms.sort(extras_cmp, key=lambda tpl: tpl[0])
-            for (param, value) in extra_terms:
-                p_no_index = param.split("-")[0]
-                if p_no_index.startswith('ext_operator'):
-                    data_dict['q'] += ' %s' % value  # Add operator (AND / OR)
+                if len(value) and param.startswith('ext_operator'):
+                    extra_ops.append((param, value))  # Add search operator to template context
                 else:
-                    data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                    extra_terms.append((param, value))  # Add search term to template context
+            log.debug("before_search(): extra_terms: %r; extra_ops: %r", extra_terms, extra_ops)
+            extra_terms.sort(cmp=extras_cmp, key=lambda tpl: tpl[0])
+            extra_ops.sort(cmp=extras_cmp, key=lambda tpl: tpl[0])
+            n = min(len(extra_terms)-1, len(extra_ops))
+            for i1 in range(0, n):
+                (param, value) = extra_terms[i1]
+                p_no_index = param.split("-")[0]
+                (oparam, ovalue) = extra_ops[i1]
+                op_no_index = oparam.split("-")[0]
+                data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
                 c.search_extras.append((p_no_index,value))
+                c.search_extras.append((op_no_index,ovalue))
+            # Append search terms without operators
+            for i1 in range(n, len(extra_terms)):
+                (param, value) = extra_terms[i1]
+                p_no_index = param.split("-")[0]
+                data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                #data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
+                c.search_extras.append((p_no_index,value))
+
+            # for (param, value) in extra_terms:
+            #     p_no_index = param.split("-")[0]
+            #     if p_no_index.startswith('ext_operator'):
+            #         data_dict['q'] += ' %s' % value  # Add operator (AND / OR)
+            #     else:
+            #         data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+            #     c.search_extras.append((p_no_index,value))
             log.debug("before_search(): c.search_extras: %r" % c.search_extras)
 
         ## End ugly first version of advanced search
