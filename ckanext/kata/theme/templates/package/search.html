@@ -8,15 +8,17 @@
 </li>
 {% endblock %}
 
+
 {% set adv_classes = 'advanced_search_toggled' %}
 {% set basic_classes = 'basic_search_toggled' %}
 
 {% if c.search_extras %}
   {% set basic_classes = basic_classes ~ ' hidden' %}
+  {% set search_extras = c.search_extras %}
 {%- else %}
   {% set adv_classes = adv_classes ~ ' hidden' %}
+  {% set search_extras = [(c.search_fields | first, '')] %}
 {% endif %}
-
 
 {% block primary_content %}
 <section class="module" id="search-toggle">
@@ -53,48 +55,26 @@
     <form id="advanced-search" class="dataset-search clearfix {{ adv_classes }}" method="get" data-module="advanced-search-kata">
       <span id="advanced-search-group" class="control-group">
 
-        {% if c.search_extras %}
-
-          {% for (searched_field, search_text) in c.search_extras if searched_field != 'ext_operator' %}
-            <div id="advanced-search-row-{{ loop.index }}">
-              <select id="advanced-search-by-{{ loop.index }}" class="kata-search-by">
-                {% for option_field in c.search_fields -%}
-                  <option value="{{ option_field }}"
-                      {% if option_field == searched_field -%}
-                        selected="selected"
-                      {%- endif -%}
-                      >{{ c.translated_field_titles[option_field] }}</option>
-                {%- endfor %}
-              </select>
-              <input id="advanced-search-text-{{ loop.index }}" type="text" class="search" name="{{ searched_field }}" value="{{ search_text }}"
-                     autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
-              <select id="element-relation-{{ loop.index }}" name="ext_operator" class="kata-search-relation" onchange="add_search_elements({{ loop.index }});">
-                <option value=""> </option>
-                <option value="AND">{{ _('AND') }}</option>
-                <option value="OR">{{ _('OR') }}</option>
-              </select>
-            </div>
-          {% endfor %}
-
-        {% else %}
-
-          <div id="advanced-search-row-1">
-            <select id="advanced-search-by-1" class="kata-search-by">
-              {% for field in c.search_fields %}
-              <option value="{{ field }}">{{ c.translated_field_titles[field] }}</option>
-              {% endfor %}
+        {% for (searched_field, search_text) in search_extras if searched_field != 'ext_operator' %}
+          <div id="advanced-search-row-{{ loop.index }}">
+            <select id="advanced-search-by-{{ loop.index }}" class="kata-search-by">
+              {% for option_field in c.search_fields -%}
+                <option value="{{ option_field }}"
+                    {% if option_field == searched_field -%}
+                      selected="selected"
+                    {%- endif -%}
+                    >{{ c.translated_field_titles[option_field] }}</option>
+              {%- endfor %}
             </select>
-            <input id="advanced-search-text-1" type="text" class="search" name="{{ (c.search_fields | first) }}" value=""
+            <input id="advanced-search-text-{{ loop.index }}" type="text" class="search" name="{{ searched_field ~ '-' ~ loop.index }}" value="{{ search_text }}"
                    autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
-
-            <select id="element-relation-1" name="ext_operator" class="kata-search-relation" onchange="add_search_elements(1);">
+            <select name="ext_operator-{{ loop.index }}" class="kata-search-relation" onchange="add_search_elements({{ loop.index }});">
               <option value=""> </option>
               <option value="AND">{{ _('AND') }}</option>
               <option value="OR">{{ _('OR') }}</option>
             </select>
           </div>
-
-        {% endif %}
+        {% endfor %}
 
         <button type="submit" value="{{ _('Search') }}">Submit</button>
       </span>
@@ -111,6 +91,7 @@
         </span>
       {%- endif %}
 
+      <input type="hidden" id="default_search_field" value="{{ c.search_fields | first }}"/>
       <div id="advanced-search-ext"></div>
     </form>
 
