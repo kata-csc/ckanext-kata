@@ -477,17 +477,19 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Better could be implement whole new search() method to
         # avoid appending and removing parameters.
         # Copied from query:PackageSearchQuery.run
-        q = data_dict['q']
-        if not q or q == '""' or q == "''":
-            data_dict['q'] = "*:*"
+        # q = data_dict['q']
+        # if not q or q == '""' or q == "''":
+        #     data_dict['q'] = "*:*"
         # Copied from package:search
         c.search_extras = []
         if data_dict.has_key('extras'):
-            for (param, value) in data_dict['extras'].items():
-                if len(value) and param.startswith('ext_'):
-                    data_dict['q'] += ' AND %s:%s' % (param[4:], value)  # Add field search to query q
-                    c.search_extras.append((param, value))  # Add field to template context
-                    log.debug("before_search(): data_dict['fq']: %r" % data_dict['fq'])
+             for (param, value) in data_dict['extras'].items():
+                 if len(value) and param.startswith('ext_'):
+                     if param.startswith('ext_operator'):
+                         data_dict['q'] += ' %s' % value  # Add operator (AND / OR)
+                     else:
+                         data_dict['q'] += ' %s:%s' % (param[4:], value)  # Add field search to query q
+                     c.search_extras.append((param, value))  # Add search term to template context
         ## End ugly first version of advanced search
 
         log.debug("before_search(): data_dict: %r" % data_dict)

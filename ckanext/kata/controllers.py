@@ -586,6 +586,6 @@ class KataPackageController(PackageController):
         q = c.q = q_free + u' AND '+ u'author:' +  q_author
 
         log.debug('advanced_search(): request.params.items(): %r' % request.params.items())
-        log.debug('advanced_search(): q: %r' % q)
+        #log.debug('advanced_search(): q: %r' % q)
         log.debug('advanced_search(): call to search()')
         return self.search()
