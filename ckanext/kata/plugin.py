@@ -482,14 +482,31 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #     data_dict['q'] = "*:*"
         # Copied from package:search
         c.search_extras = []
+        def extras_cmp(a, b):
+            a  = a.split("_")[-1]
+            b  = b.split("_")[-1]
+            if a <= b:
+                if a < b:
+                    return -1
+                else:
+                    return 0
+            else:
+                return 1
+
         if data_dict.has_key('extras'):
-             for (param, value) in data_dict['extras'].items():
-                 if len(value) and param.startswith('ext_'):
-                     if param.startswith('ext_operator'):
-                         data_dict['q'] += ' %s' % value  # Add operator (AND / OR)
-                     else:
-                         data_dict['q'] += ' %s:%s' % (param[4:], value)  # Add field search to query q
-                     c.search_extras.append((param, value))  # Add search term to template context
+            log.debug("before_search(): data_dict['extras']: %r" % data_dict['extras'].items())
+            for (param, value) in data_dict['extras'].items():
+                if len(value) and param.startswith('ext_'):
+                    c.search_extras.append((param, value))  # Add search term to template context
+            log.debug("before_search(): c.search_extras(unsorted): %r" % c.search_extras)
+            c.search_extras.sort(extras_cmp, key=lambda tpl: tpl[0])
+            for (param, value) in c.search_extras:
+                    if param.startswith('ext_operator'):
+                        data_dict['q'] += ' %s' % value  # Add operator (AND / OR)
+                    else:
+                        data_dict['q'] += ' %s:%s' % (param[4:], value)  # Add field search to query q
+            log.debug("before_search(): c.search_extras: %r" % c.search_extras)
+
         ## End ugly first version of advanced search
 
         log.debug("before_search(): data_dict: %r" % data_dict)
