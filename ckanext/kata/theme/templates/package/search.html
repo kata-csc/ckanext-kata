@@ -51,33 +51,48 @@
     </form>
 
     <form id="advanced-search" class="dataset-search clearfix {{ adv_classes }}" method="get" data-module="advanced-search-kata">
-      <span class="control-group">
+      <span id="advanced-search-group" class="control-group">
 
         {% if c.search_extras %}
 
-          {% for (searched_field, search_text) in c.search_extras %}
-            <select id="advanced-search-{{ loop.index }}-by">
-              {% for option_field in c.search_fields -%}
-                <option value="{{ option_field }}"
-                    {% if option_field == searched_field -%}
-                      selected="selected"
-                    {%- endif -%}
-                    >{{ c.translated_field_titles[option_field] }}</option>
-              {%- endfor %}
-            </select>
-            <input id="advanced-search-{{ loop.index }}-text" type="text" class="search" name="{{ searched_field }}" value="{{ search_text }}"
-                   autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
+          {% for (searched_field, search_text) in c.search_extras if searched_field != 'ext_operator' %}
+            <div id="advanced-search-row-{{ loop.index }}">
+              <select id="advanced-search-by-{{ loop.index }}" class="kata-search-by">
+                {% for option_field in c.search_fields -%}
+                  <option value="{{ option_field }}"
+                      {% if option_field == searched_field -%}
+                        selected="selected"
+                      {%- endif -%}
+                      >{{ c.translated_field_titles[option_field] }}</option>
+                {%- endfor %}
+              </select>
+              <input id="advanced-search-text-{{ loop.index }}" type="text" class="search" name="{{ searched_field }}" value="{{ search_text }}"
+                     autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
+              <select id="element-relation-{{ loop.index }}" name="ext_operator" class="kata-search-relation" onchange="add_search_elements({{ loop.index }});">
+                <option value=""> </option>
+                <option value="AND">{{ _('AND') }}</option>
+                <option value="OR">{{ _('OR') }}</option>
+              </select>
+            </div>
           {% endfor %}
 
         {% else %}
 
-          <select id="advanced-search-1-by">
-            {% for field in c.search_fields %}
-            <option value="{{ field }}">{{ c.translated_field_titles[field] }}</option>
-            {% endfor %}
-          </select>
-          <input id="advanced-search-1-text" type="text" class="search" name="{{ c.search_fields | first }}" value=""
-                 autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
+          <div id="advanced-search-row-1">
+            <select id="advanced-search-by-1" class="kata-search-by">
+              {% for field in c.search_fields %}
+              <option value="{{ field }}">{{ c.translated_field_titles[field] }}</option>
+              {% endfor %}
+            </select>
+            <input id="advanced-search-text-1" type="text" class="search" name="{{ (c.search_fields | first) }}" value=""
+                   autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
+
+            <select id="element-relation-1" name="ext_operator" class="kata-search-relation" onchange="add_search_elements(1);">
+              <option value=""> </option>
+              <option value="AND">{{ _('AND') }}</option>
+              <option value="OR">{{ _('OR') }}</option>
+            </select>
+          </div>
 
         {% endif %}
 
