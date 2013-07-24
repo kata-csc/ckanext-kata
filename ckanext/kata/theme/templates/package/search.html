@@ -100,21 +100,22 @@
           </div>
         {% endfor %}
         <div id="search-fields-end"></div>
-
         <div class="control-group">
           <span class="form-select">
             <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
-            <div id="advanced-search-date" class="controls">
-              <input id="advanced-search-date-start" type="text" class="search" name="ext_metadata_modified"
+            <div class="controls">
+              <input id="advanced-search-date-start" type="number"
+                     pattern="[0-9]{1,4}" class="" name="ext_date-metadata_modified-start"
                      value="{# search_extras[search_extras.index('ext_metadata_modified')][1] | default('') #}"
                      autocomplete="off" placeholder="{{ _('Start year') }}"/>
               -
-              <input id="advanced-search-date-end" type="text" class="search" name="ext_metadata_modified"
+              <input id="advanced-search-date-end" type="number"
+                     pattern="[0-9]{1,4}" class="search" name="ext_date-metadata_modified-end"
                      autocomplete="off" placeholder="{{ _('End year') }}"/>
             </div>
           </span>
-        </div>
-        
+        </div>      
+
         <button id="advanced_search_submit" type="submit" value="{{ _('Search') }}">Submit</button>
       </span>
 
