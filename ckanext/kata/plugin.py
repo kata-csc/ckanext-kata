@@ -521,12 +521,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             for i1 in range(n, len(extra_terms)):
                 (param, value) = extra_terms[i1]
                 p_no_index = param.split("-")[0]
-                (oparam, ovalue) = extra_ops[i1]
-                op_no_index = oparam.split("-")[0]
+                #(oparam, ovalue) = extra_ops[i1]
+                #op_no_index = oparam.split("-")[0]
                 data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
                 #data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
                 c.search_extras.append((p_no_index,value))
-                c.search_extras.append((op_no_index,ovalue))
+                #c.search_extras.append((op_no_index,ovalue))
 
             # for (param, value) in extra_terms:
             #     p_no_index = param.split("-")[0]
