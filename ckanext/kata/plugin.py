@@ -485,6 +485,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
             extra_terms = []
             extra_ops = []
+            extra_dates = {}
             c.search_extras = []
 
             def extras_cmp(a, b):
@@ -498,35 +499,68 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 else:
                     return 1
 
-            log.debug("before_search(): data_dict['extras']: %r" % data_dict['extras'].items())
+            log.debug("before_search(): data_dict['extras']: %r" %
+                      data_dict['extras'].items())
             for (param, value) in data_dict['extras'].items():
-                if len(value) and param.startswith('ext_operator'):
-                    extra_ops.append((param, value))  # Add search operator to template context
-                else:
-                    extra_terms.append((param, value))  # Add search term to template context
-            log.debug("before_search(): extra_terms: %r; extra_ops: %r", extra_terms, extra_ops)
+                if len(value):
+                    # Extract search operators
+                    if param.startswith('ext_operator'):
+                        extra_ops.append((param, value))
+                    # Extract search date limits from eg. name="ext_date-metadata_modified-start"
+                    elif param.startswith('ext_date'):
+                        param_tokens = param.split('-')
+                        extra_dates[param_tokens[2]] = value  # 'start' or 'end' date
+                        extra_dates['field'] = param_tokens[1]
+                    else: # Extract search terms
+                        extra_terms.append((param, value))
+            log.debug("before_search(): extra_terms: %r; extra_ops: %r; "
+                      + "extra_dates: %r", extra_terms, extra_ops, extra_dates)
             extra_terms.sort(cmp=extras_cmp, key=lambda tpl: tpl[0])
             extra_ops.sort(cmp=extras_cmp, key=lambda tpl: tpl[0])
-            n = min(len(extra_terms)-1, len(extra_ops))
-            for i1 in range(0, n):
-                (param, value) = extra_terms[i1]
-                p_no_index = param.split("-")[0]
-                (oparam, ovalue) = extra_ops[i1]
-                op_no_index = oparam.split("-")[0]
-                data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
-                data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
-                c.search_extras.append((p_no_index,value))
-                c.search_extras.append((op_no_index,ovalue))
-            # Append search terms without operators
-            for i1 in range(n, len(extra_terms)):
-                (param, value) = extra_terms[i1]
-                p_no_index = param.split("-")[0]
-                #(oparam, ovalue) = extra_ops[i1]
-                #op_no_index = oparam.split("-")[0]
-                data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
-                #data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
-                c.search_extras.append((p_no_index,value))
-                #c.search_extras.append((op_no_index,ovalue))
+
+            # Parse extra terms and operators into query q.
+            # Eg. author:*onstabl* OR title:*edliest jok*
+            if len(extra_terms) > 0:
+                n = min(len(extra_terms)-1, len(extra_ops))
+                for i1 in range(0, n):
+                    (param, value) = extra_terms[i1]
+                    p_no_index = param.split("-")[0]
+                    (oparam, ovalue) = extra_ops[i1]
+                    op_no_index = oparam.split("-")[0]
+                    data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                    data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
+                    c.search_extras.append((p_no_index,value))
+                    c.search_extras.append((op_no_index,ovalue))
+                # Append search terms without operators
+                for i1 in range(n, len(extra_terms)):
+                    (param, value) = extra_terms[i1]
+                    p_no_index = param.split("-")[0]
+                    #(oparam, ovalue) = extra_ops[i1]
+                    #op_no_index = oparam.split("-")[0]
+                    data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                    #data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
+                    c.search_extras.append((p_no_index,value))
+                    #c.search_extras.append((op_no_index,ovalue))
+
+            # Parse year limit into query q.
+            # Eg. metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]
+            if len(extra_dates) > 0:
+                qdate = ''
+                if extra_dates.has_key('start'):
+                    # TODO: Validate that input is valid year
+                    qdate += '[' + extra_dates['start'] + '-01-01T00:00:00.000Z TO '
+                    c.search_extras.append(('ext_date-' + extra_dates['field'] \
+                        + '-start', extra_dates['start']))
+                else:
+                    qdate += '[* TO '
+                if extra_dates.has_key('end'):
+                    # TODO: Validate that input is valid year
+                    qdate += extra_dates['end'] + '-12-31T23:59:59.999Z]'
+                    c.search_extras.append(('ext_date-' + extra_dates['field'] \
+                                            + '-end', extra_dates['end']))
+                else:
+                    qdate += '*]'
+                data_dict['q'] += ' %s:%s' % (extra_dates['field'], qdate)
 
             # for (param, value) in extra_terms:
             #     p_no_index = param.split("-")[0]
