@@ -12,8 +12,8 @@
 {% set adv_classes = 'advanced_search_toggled' %}
 {% set basic_classes = 'basic_search_toggled' %}
 
-{# CREATE A HIDDEN ELEMENT TO CLONE FROM #}
-{% set search_extras = [('hidden_' ~ c.search_fields | first, '')] %}
+{# CREATE A HIDDEN ROW TO CLONE FROM, WITH PARSED FIELD NAMES BEGINNING WITH ___ FOR CKAN TO DROP THEM  #}
+{% set search_extras = [('___' ~ c.search_fields | first, '')] %}
 
 {% if c.search_extras %}
   {% set basic_classes = basic_classes ~ ' hidden' %}
@@ -60,30 +60,37 @@
 
         {% for (searched_field, search_text) in search_extras if searched_field != 'ext_operator' %}
 
-            {% if searched_field[0:7] == 'hidden_' -%}
-              <div id="advanced-search-row-{{ loop.index0 }}" class="control-group hidden">
-              {% set searched_field = searched_field[7:] -%}
-            {%- else -%}
-              <div id="advanced-search-row-{{ loop.index0 }}" class="control-group">
-            {%- endif -%}
+          <div id="advanced-search-row-{{ loop.index0 }}"
+               class="control-group{% if loop.index0 == 0 %} hidden{%- endif -%}">
+
+            {# SELECT OPERATOR (AND/OR/NOT) #}
 
             {% if loop.index0 != 1 %}
-              <select name="ext_operator-{{ loop.index0 }}" class="kata-search-relation">
-                <option value="AND">{{ _('AND') }}</option>
-                <option value="OR">{{ _('OR') }}</option>
-                <option value="NOT">{{ _('NOT') }}</option>
+              {% if loop.index0 == 0 %}
+                <select name="___ext_operator-{{ loop.index0 }}" class="kata-search-relation">
+              {%- else -%}
+                <select name="ext_operator-{{ loop.index0 }}" class="kata-search-relation">
+              {%- endif -%}
+                <option value="AND" {% if search_text == "AND" %}selected="selected"{% endif %}>{{ _('AND') }}</option>
+                <option value="OR" {% if search_text == "OR" %}selected="selected"{% endif %}>{{ _('OR') }}</option>
+                <option value="NOT" {% if search_text == "NOT" %}selected="selected"{% endif %}>{{ _('NOT') }}</option>
               </select>
             {% endif %}
+
+            {# SELECT FIELD TO SEARCH BY #}
+
             <select id="advanced-search-by-{{ loop.index0 }}" class="kata-search-by">
               {% for option_field in c.search_fields -%}
-              <option value="{{ option_field }}"
-              {% if option_field == searched_field -%}
-                selected="selected"
-              {%- endif -%}
-              >{{ c.translated_field_titles[option_field] }}</option>
+                <option value="{{ option_field }}"
+                      {% if option_field == searched_field %}selected="selected"{% endif %}>
+                      {{ c.translated_field_titles[option_field] }}</option>
               {%- endfor %}
             </select>
-            <input id="advanced-search-text-{{ loop.index0 }}" type="text" class="search" name="{{ searched_field ~ '-' ~ loop.index0 }}" value="{{ search_text }}"
+
+            {# INPUT SEARCH TERM #}
+
+            <input id="advanced-search-text-{{ loop.index0 }}" type="text" class="search"
+                   name="{{ searched_field ~ '-' ~ loop.index0 }}" value="{{ search_text }}"
                    autocomplete="off" placeholder="{{ _('Search...') }}"/>
             {% if loop.index0 != 1 %}
               <a href="#" onclick="">DEL</a>

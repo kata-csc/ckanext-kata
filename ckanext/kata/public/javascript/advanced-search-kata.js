@@ -71,6 +71,9 @@ add_search_elements = function(index) {
     cloned_row.attr('id', 'advanced-search-row-' + new_index);
     cloned_row.html(cloned_row.html().replace(/-\d+/g, '-' + new_index));
 
+    // Replace field names with correct ones
+    cloned_row.html(cloned_row.html().replace(/___/g, ''));
+
     // Make this visible
     cloned_row.attr('class', cloned_row.attr('class').replace('hidden', '').trim());
     //cloned_row.show();
