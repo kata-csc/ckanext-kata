@@ -55,16 +55,16 @@
       <div id="dataset-search-ext"></div>
     </form>
 
-    <form id="advanced-search" class="dataset-search clearfix {{ adv_classes }}" method="get" data-module="advanced-search-kata">
+    <form id="advanced-search" class="dataset-search clearfix form-horizontal {{ adv_classes }}" method="get" data-module="advanced-search-kata">
       <span id="advanced-search-group" class="control-group">
 
         {% for (searched_field, search_text) in search_extras if searched_field != 'ext_operator' %}
-          <div id="advanced-search-row-{{ loop.index0 }}"
+          <div id="advanced-search-row-{{ loop.index0 }}" class="control-group 
               {% if searched_field[0:7] == 'hidden_' -%}
-                class="hidden"
+                hidden
                 {% set searched_field = searched_field[7:] -%}
               {%- endif -%}
-              >
+              ">
             {% if loop.index0 != 1 %}
               <select name="ext_operator-{{ loop.index0 }}" class="kata-search-relation">
                 <option value="AND">{{ _('AND') }}</option>
@@ -91,6 +91,20 @@
           </div>
         {% endfor %}
 
+        <div class="control-group">
+          <span class="form-select">
+            <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
+            <div id="advanced-search-date" class="controls">
+              <input id="advanced-search-date-start" type="text" class="search" name="ext_metadata_modified"
+                     value="{# search_extras[search_extras.index('ext_metadata_modified')][1] | default('') #}"
+                     autocomplete="off" placeholder="{{ _('Start year') }}"/>
+              -
+              <input id="advanced-search-date-end" type="text" class="search" name="ext_metadata_modified"
+                     autocomplete="off" placeholder="{{ _('End year') }}"/>
+            </div>
+          </span>
+        </div>
+        
         <button id="advanced_search_submit" type="submit" value="{{ _('Search') }}">Submit</button>
       </span>
 
