@@ -12,17 +12,15 @@
 {% set adv_classes = 'advanced_search_toggled' %}
 {% set basic_classes = 'basic_search_toggled' %}
 
+{# CREATE A HIDDEN ELEMENT TO CLONE FROM #}
+{% set search_extras = [('hidden_' ~ c.search_fields | first, '')] %}
+
 {% if c.search_extras %}
   {% set basic_classes = basic_classes ~ ' hidden' %}
-  {% set search_extras = c.search_extras %}
+  {% do search_extras.extend(c.search_extras) %}
 {% else %}
   {% set adv_classes = adv_classes ~ ' hidden' %}
-  {% set search_extras = [(c.search_fields | first, '')] %}
-{% endif %}
-
-{% if search_extras | length == 1 %}
-  {# THIS WILL BE CREATED AS A HIDDEN ELEMENT #}
-  {% do search_extras.append(('hidden_' ~ c.search_fields | first, '')) %}
+  {% do search_extras.append((c.search_fields | first, '')) %}
 {% endif %}
 
 {% block primary_content %}
@@ -61,20 +59,20 @@
       <span id="advanced-search-group" class="control-group">
 
         {% for (searched_field, search_text) in search_extras if searched_field != 'ext_operator' %}
-          <div id="advanced-search-row-{{ loop.index }}"
+          <div id="advanced-search-row-{{ loop.index0 }}"
               {% if searched_field[0:7] == 'hidden_' -%}
                 class="hidden"
                 {% set searched_field = searched_field[7:] -%}
               {%- endif -%}
               >
-            {% if not loop.first %}
-              <select name="ext_operator-{{ loop.index }}" class="kata-search-relation">
+            {% if loop.index0 != 1 %}
+              <select name="ext_operator-{{ loop.index0 }}" class="kata-search-relation">
                 <option value="AND">{{ _('AND') }}</option>
                 <option value="OR">{{ _('OR') }}</option>
                 <option value="NOT">{{ _('NOT') }}</option>
               </select>
             {% endif %}
-            <select id="advanced-search-by-{{ loop.index }}" class="kata-search-by">
+            <select id="advanced-search-by-{{ loop.index0 }}" class="kata-search-by">
               {% for option_field in c.search_fields -%}
               <option value="{{ option_field }}"
               {% if option_field == searched_field -%}
@@ -83,12 +81,12 @@
               >{{ c.translated_field_titles[option_field] }}</option>
               {%- endfor %}
             </select>
-            <input id="advanced-search-text-{{ loop.index }}" type="text" class="search" name="{{ searched_field ~ '-' ~ loop.index }}" value="{{ search_text }}"
+            <input id="advanced-search-text-{{ loop.index0 }}" type="text" class="search" name="{{ searched_field ~ '-' ~ loop.index0 }}" value="{{ search_text }}"
                    autocomplete="off" placeholder="{{ _('Search...') }}"/>
-            {% if not loop.first %}
+            {% if loop.index0 != 1 %}
               <a href="#" onclick="">DEL</a>
             {% else %}
-              <a id="new_search_element" href="#" onclick="add_search_elements({{ loop.index }});">ADD</a>
+              <a id="new_search_element" href="#" onclick="add_search_elements({{ loop.index0 }});">ADD</a>
             {% endif %}
           </div>
         {% endfor %}

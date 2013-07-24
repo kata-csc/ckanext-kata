@@ -62,30 +62,20 @@ add_search_elements = function(index) {
    */
   new_index = (index + 1);
 
-  if (index == 1 && $("#advanced-search-row-" + new_index).is(":hidden")) {
-    // Reveal a hidden element
-    $("#advanced-search-row-" + new_index).show();
-  } else {
+  if (!$("#advanced-search-row-" + new_index).length) {
+
     // Clone a new element
-    added = false;
+    cloned_row = $("#advanced-search-row-0").clone(true);
 
-    while (!added) {
+    // Update indexes.
+    cloned_row.attr('id', 'advanced-search-row-' + new_index);
+    cloned_row.html(cloned_row.html().replace(/-\d+/g, '-' + new_index));
 
-      if (!$("#advanced-search-row-" + new_index).length) {
-        cloned_row = $("#advanced-search-row-" + index).clone(true);
+    // Make this visible
+    cloned_row.removeAttr('class');
+    //cloned_row.show();
 
-        // Update indexes.
-
-        cloned_row.attr('id', 'advanced-search-row-' + new_index);
-        cloned_row.html(cloned_row.html().replace(/-\d+/g, '-' + new_index));
-
-        cloned_row.insertBefore($('button#advanced_search_submit'));
-
-        added = true;
-      } else
-        new_index++;
-
-    }
+    cloned_row.insertBefore($('button#advanced_search_submit'));
   }
 
   // Update element adding button
