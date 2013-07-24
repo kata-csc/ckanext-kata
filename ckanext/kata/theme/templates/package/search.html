@@ -20,6 +20,11 @@
   {% set search_extras = [(c.search_fields | first, '')] %}
 {% endif %}
 
+{% if search_extras | length == 1 %}
+  {# THIS WILL BE CREATED AS A HIDDEN ELEMENT #}
+  {% do search_extras.append(('hidden_' ~ c.search_fields | first, '')) %}
+{% endif %}
+
 {% block primary_content %}
 <section class="module" id="search-toggle">
   <h2 class="module-heading">
@@ -56,7 +61,19 @@
       <span id="advanced-search-group" class="control-group">
 
         {% for (searched_field, search_text) in search_extras if searched_field != 'ext_operator' %}
-          <div id="advanced-search-row-{{ loop.index }}">
+          <div id="advanced-search-row-{{ loop.index }}"
+              {% if searched_field[0:7] == 'hidden_' -%}
+                class="hidden"
+                {% set searched_field = searched_field[7:] -%}
+              {%- endif -%}
+              >
+            {% if not loop.first %}
+              <select name="ext_operator-{{ loop.index }}" class="kata-search-relation">
+                <option value="AND">{{ _('AND') }}</option>
+                <option value="OR">{{ _('OR') }}</option>
+                <option value="NOT">{{ _('NOT') }}</option>
+              </select>
+            {% endif %}
             <select id="advanced-search-by-{{ loop.index }}" class="kata-search-by">
               {% for option_field in c.search_fields -%}
               <option value="{{ option_field }}"
@@ -67,16 +84,16 @@
               {%- endfor %}
             </select>
             <input id="advanced-search-text-{{ loop.index }}" type="text" class="search" name="{{ searched_field ~ '-' ~ loop.index }}" value="{{ search_text }}"
-                   autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
-            <select name="ext_operator-{{ loop.index }}" class="kata-search-relation" onchange="add_search_elements({{ loop.index }});">
-              <option value=""> </option>
-              <option value="AND">{{ _('AND') }}</option>
-              <option value="OR">{{ _('OR') }}</option>
-            </select>
+                   autocomplete="off" placeholder="{{ _('Search...') }}"/>
+            {% if not loop.first %}
+              <a href="#" onclick="">DEL</a>
+            {% else %}
+              <a id="new_search_element" href="#" onclick="add_search_elements({{ loop.index }});">ADD</a>
+            {% endif %}
           </div>
         {% endfor %}
 
-        <button type="submit" value="{{ _('Search') }}">Submit</button>
+        <button id="advanced_search_submit" type="submit" value="{{ _('Search') }}">Submit</button>
       </span>
 
       <div data-module="select-switch" data-module-id="advsearch" id="advsearch">

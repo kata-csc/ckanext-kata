@@ -62,20 +62,33 @@ add_search_elements = function(index) {
    */
   new_index = (index + 1);
 
-  if (!$("#advanced-search-row-" + new_index).length) {
-    cloned_row = $("#advanced-search-row-" + index).clone(true);
+  if (index == 1 && $("#advanced-search-row-" + new_index).is(":hidden")) {
+    // Reveal a hidden element
+    $("#advanced-search-row-" + new_index).show();
+  } else {
+    // Clone a new element
+    added = false;
 
-    // Update indexes. Might work more simply by just replacing all like '-1"' -> '-2"'.
-    cloned_row.html(cloned_row.html().replace('advanced-search-text-' + index, 'advanced-search-text-' + new_index));
-    cloned_row.html(cloned_row.html().replace('advanced-search-by-' + index, 'advanced-search-by-' + new_index));
-    cloned_row.html(cloned_row.html().replace('ext_operator-' + index, 'ext_operator-' + new_index));
-    cloned_row.html(cloned_row.html().replace('add_search_elements(' + index + ');', 'add_search_elements(' + new_index + ');'));
-    cloned_row.attr('id', 'advanced-search-row-' + new_index);
+    while (!added) {
 
-    // update input-field name
-    cloned_row.children('#advanced-search-text-' + new_index).attr('name', $('input#default_search_field').attr('value') + '-' + new_index);
+      if (!$("#advanced-search-row-" + new_index).length) {
+        cloned_row = $("#advanced-search-row-" + index).clone(true);
 
-    cloned_row.insertAfter($("#advanced-search-row-" + index));
+        // Update indexes.
+
+        cloned_row.attr('id', 'advanced-search-row-' + new_index);
+        cloned_row.html(cloned_row.html().replace(/-\d+/g, '-' + new_index));
+
+        cloned_row.insertBefore($('button#advanced_search_submit'));
+
+        added = true;
+      } else
+        new_index++;
+
+    }
   }
+
+  // Update element adding button
+  $('a#new_search_element').attr('onclick', 'add_search_elements(' + new_index + ');');
 
 }

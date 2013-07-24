@@ -27,10 +27,12 @@ _FIELD_TITLES = {'organizationstring': 'Organization',
                 'ext_extras_language': 'Language',
                 'title': 'Title',
                 'ext_title': 'Title',
+                'ext_text': 'All fields',
                 }
 
-# Fields for advanced search
-SEARCH_FIELDS = ['ext_organizationstring',
+# Fields for advanced search. First one will be used as the default search field.
+SEARCH_FIELDS = ['ext_text',
+                'ext_organizationstring',
                 'ext_tags',
                 'ext_extras_fformat',
                 'ext_groups',
