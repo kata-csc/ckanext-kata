@@ -72,10 +72,10 @@ add_search_elements = function(index) {
     cloned_row.html(cloned_row.html().replace(/-\d+/g, '-' + new_index));
 
     // Make this visible
-    cloned_row.removeAttr('class');
+    cloned_row.attr('class', cloned_row.attr('class').replace('hidden', '').trim());
     //cloned_row.show();
 
-    cloned_row.insertBefore($('button#advanced_search_submit'));
+    cloned_row.insertBefore($('div#search-fields-end'));
   }
 
   // Update element adding button
