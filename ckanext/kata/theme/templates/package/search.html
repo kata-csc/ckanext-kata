@@ -55,28 +55,25 @@
     <form id="advanced-search" class="dataset-search clearfix {{ adv_classes }}" method="get" data-module="advanced-search-kata">
       <span id="advanced-search-group" class="control-group">
 
-        {% for (searched_field, search_text) in search_extras %}
-          {% if searched_field != 'ext_operator' %}
+        {% for (searched_field, search_text) in search_extras if searched_field != 'ext_operator' %}
           <div id="advanced-search-row-{{ loop.index }}">
             <select id="advanced-search-by-{{ loop.index }}" class="kata-search-by">
               {% for option_field in c.search_fields -%}
-                <option value="{{ option_field }}"
-                    {% if option_field == searched_field -%}
-                      selected="selected"
-                    {%- endif -%}
-                    >{{ c.translated_field_titles[option_field] }}</option>
+              <option value="{{ option_field }}"
+              {% if option_field == searched_field -%}
+                selected="selected"
+              {%- endif -%}
+              >{{ c.translated_field_titles[option_field] }}</option>
               {%- endfor %}
             </select>
             <input id="advanced-search-text-{{ loop.index }}" type="text" class="search" name="{{ searched_field ~ '-' ~ loop.index }}" value="{{ search_text }}"
                    autocomplete="off" placeholder="{{ _('Search this field...') }}"/>
-          {% endif %}
-          {% if searched_field == 'ext_operator' or not c.search_extras %}
             <select name="ext_operator-{{ loop.index }}" class="kata-search-relation" onchange="add_search_elements({{ loop.index }});">
-              <option value="AND" {% if search_text == "AND" %}selected="selected"{% endif %}>{{ _('AND') }}</option>
-              <option value="OR" {% if search_text == "OR" %}selected="selected"{% endif %}>{{ _('OR') }}</option>
+              <option value=""> </option>
+              <option value="AND">{{ _('AND') }}</option>
+              <option value="OR">{{ _('OR') }}</option>
             </select>
           </div>
-          {% endif %}
         {% endfor %}
 
         <button type="submit" value="{{ _('Search') }}">Submit</button>
