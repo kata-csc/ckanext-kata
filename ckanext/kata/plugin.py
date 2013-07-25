@@ -529,7 +529,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 c.current_search_rows.append({'field':p_no_index, 'text':value})
 
                 n = min(len(extra_terms)-1, len(extra_ops))
-                for i1 in range(1, n):  # looped are [1,n]
+                for i1 in range(0, n):  # looped are [0,n]
                     (oparam, ovalue) = extra_ops[i1]
                     op_no_index = oparam.split("-")[0]
                     (param, value) = extra_terms[i1+1]

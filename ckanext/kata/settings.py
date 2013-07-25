@@ -32,15 +32,15 @@ _FIELD_TITLES = {'organizationstring': 'Organization',
 
 # Fields for advanced search. First one will be used as the default search field.
 SEARCH_FIELDS = ['ext_text',
-                'ext_organizationstring',
-                'ext_tags',
-                'ext_extras_fformat',
-                'ext_groups',
-                'ext_license',
-                'ext_author',
-                'ext_extras_language',
-                'ext_title',
-                ]
+                    'ext_author',
+                    'ext_title',
+                    'ext_tags',
+                    'ext_organizationstring',
+                    'ext_groups',
+                    'ext_extras_fformat',
+                    'ext_license',
+                    'ext_extras_language',
+                    ]
 
 
 def get_field_titles(_):
