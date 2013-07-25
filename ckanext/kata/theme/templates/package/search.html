@@ -12,15 +12,18 @@
 {% set adv_classes = 'advanced_search_toggled' %}
 {% set basic_classes = 'basic_search_toggled' %}
 
-{# CREATE A HIDDEN ROW TO CLONE FROM, WITH PARSED FIELD NAMES BEGINNING WITH ___ FOR CKAN TO DROP THEM  #}
-{% set search_extras = [('___' ~ c.search_fields | first, '')] %}
+{# CREATE A HIDDEN ROW TO CLONE FROM, WITH PARSED FIELD NAMES BEGINNING WITH LEADING ___ SO THEY WON'T BE PARSED  #}
+{% set current_search_rows = [{ 'field': '___' ~ c.search_fields | first,
+                                'text': '',
+                                'operator': 'AND'
+                                }] %}
 
-{% if c.search_extras %}
+{% if c.current_search_rows %}
   {% set basic_classes = basic_classes ~ ' hidden' %}
-  {% do search_extras.extend(c.search_extras) %}
+  {% do current_search_rows.extend(c.current_search_rows) %}
 {% else %}
   {% set adv_classes = adv_classes ~ ' hidden' %}
-  {% do search_extras.append((c.search_fields | first, '')) %}
+  {% do current_search_rows.append({ 'field': c.search_fields | first, 'text': '', 'operator': 'AND' }) %}
 {% endif %}
 
 {% block primary_content %}
@@ -58,7 +61,7 @@
     <form id="advanced-search" class="dataset-search clearfix form-horizontal {{ adv_classes }}" method="get" data-module="advanced-search-kata">
       <span id="advanced-search-group" class="control-group">
 
-        {% for (searched_field, search_text) in search_extras if searched_field != 'ext_operator' %}
+        {% for current_row_dict in current_search_rows %}
 
           <div id="advanced-search-row-{{ loop.index0 }}"
                class="control-group{% if loop.index0 == 0 %} hidden{%- endif -%}">
@@ -71,9 +74,10 @@
               {%- else -%}
                 <select name="ext_operator-{{ loop.index0 }}" class="kata-search-relation">
               {%- endif -%}
-                <option value="AND" {% if search_text == "AND" %}selected="selected"{% endif %}>{{ _('AND') }}</option>
-                <option value="OR" {% if search_text == "OR" %}selected="selected"{% endif %}>{{ _('OR') }}</option>
-                <option value="NOT" {% if search_text == "NOT" %}selected="selected"{% endif %}>{{ _('NOT') }}</option>
+                {% set operator = current_row_dict.get('operator', '') | default('AND') %}
+                <option value="AND" {% if operator == "AND" %}selected="selected"{% endif %}>{{ _('AND') }}</option>
+                <option value="OR" {% if operator == "OR" %}selected="selected"{% endif %}>{{ _('OR') }}</option>
+                <option value="NOT" {% if operator == "NOT" %}selected="selected"{% endif %}>{{ _('NOT') }}</option>
               </select>
             {% endif %}
 
@@ -82,7 +86,7 @@
             <select id="advanced-search-by-{{ loop.index0 }}" class="kata-search-by">
               {% for option_field in c.search_fields -%}
                 <option value="{{ option_field }}"
-                      {% if option_field == searched_field %}selected="selected"{% endif %}>
+                      {% if option_field == current_row_dict.get('field') %}selected="selected"{% endif %}>
                       {{ c.translated_field_titles[option_field] }}</option>
               {%- endfor %}
             </select>
@@ -90,20 +94,23 @@
             {# INPUT SEARCH TERM #}
 
             <input id="advanced-search-text-{{ loop.index0 }}" type="text" class="search"
-                   name="{{ searched_field ~ '-' ~ loop.index0 }}" value="{{ search_text }}"
+                   name="{{ current_row_dict.get('field') ~ '-' ~ loop.index0 }}" value="{{ current_row_dict.get('text') }}"
                    autocomplete="off" placeholder="{{ _('Search...') }}"/>
             {% if loop.index0 != 1 %}
-              <a href="#" onclick="">DEL</a>
+              <a id="del_search_element" href="#" onclick="remove_search_row({{ loop.index0 }})">DEL</a>
             {% else %}
-              <a id="new_search_element" href="#" onclick="add_search_elements({{ loop.index0 }});">ADD</a>
+              <a id="new_search_element" href="#" onclick="add_search_row({{ loop.index0 }});">ADD</a>
             {% endif %}
           </div>
         {% endfor %}
+
+        {# INPUT DATES #}
+
         <div id="search-fields-end"></div>
         <div class="control-group">
           <span class="form-select">
             <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
-            <div class="controls">
+            <div class="controls" id="advanced-search-date">
               <input id="advanced-search-date-start" type="number"
                      pattern="[0-9]{1,4}" class="" name="ext_date-metadata_modified-start"
                      value="{# search_extras[search_extras.index('ext_metadata_modified')][1] | default('') #}"

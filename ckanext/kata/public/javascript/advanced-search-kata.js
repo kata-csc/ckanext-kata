@@ -57,7 +57,7 @@ toggle_search = function(type) {
 }
 
 
-add_search_elements = function(index) {
+add_search_row = function(index) {
   /** Add a new row of search elements to advanced search page.
    */
   new_index = (index + 1);
@@ -78,10 +78,25 @@ add_search_elements = function(index) {
     cloned_row.attr('class', cloned_row.attr('class').replace('hidden', '').trim());
     //cloned_row.show();
 
+    // Update element remove button
+    cloned_row.children('a#del_search_element').attr('onclick', 'remove_search_row(' + new_index + ');');
+
     cloned_row.insertBefore($('div#search-fields-end'));
   }
 
   // Update element adding button
-  $('a#new_search_element').attr('onclick', 'add_search_elements(' + new_index + ');');
+  $('a#new_search_element').attr('onclick', 'add_search_row(' + new_index + ');');
+
+}
+
+remove_search_row = function(index) {
+  /** Remove a row of search elements from advanced search page.
+   */
+
+  row_to_remove = $("#advanced-search-row-" + index);
+
+  if (row_to_remove.length) {
+    row_to_remove.remove();
+  }
 
 }
