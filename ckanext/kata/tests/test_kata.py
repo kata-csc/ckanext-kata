@@ -1,7 +1,7 @@
 """Test classes for Kata CKAN Extension."""
 
 from unittest import TestCase
-from ckanext.kata.settings import get_field_titles, FIELD_TITLES, get_field_title
+from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 
 
 class TestKataExtension(TestCase):
@@ -23,8 +23,8 @@ class TestKataExtension(TestCase):
 
         titles = get_field_titles(translator)
 
-        assert translator(FIELD_TITLES['tags']) in titles.values(), 'No tags field found in field titles'
-        assert translator(FIELD_TITLES['authorstring']) in titles.values(), 'No authorstring found in field titles'
+        assert translator(_FIELD_TITLES['tags']) in titles.values(), 'No tags field found in field titles'
+        assert translator(_FIELD_TITLES['authorstring']) in titles.values(), 'No authorstring found in field titles'
 
     def test_get_field_title(self):
         '''Test settings.get_field_title()'''
@@ -33,4 +33,4 @@ class TestKataExtension(TestCase):
 
         title = get_field_title('tags', translator)
 
-        assert translator(FIELD_TITLES['tags']) == title
+        assert translator(_FIELD_TITLES['tags']) == title
