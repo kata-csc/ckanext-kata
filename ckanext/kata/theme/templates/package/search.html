@@ -26,137 +26,163 @@
   {% do current_search_rows.append({ 'field': c.search_fields | first, 'text': '', 'operator': 'AND' }) %}
 {% endif %}
 
+
 {% block primary_content %}
-<section class="module" id="search-toggle">
-  <h2 class="module-heading">
-    <span class="{{ basic_classes }}">{{ _('Basic search') }}</span>
-    <span class="{{ adv_classes }}">{{ _('Advanced search') }}</span>
-    <a id="toggle_advanced" class="module-link {{ basic_classes }}" onclick="toggle_search('advanced');" href="#">{{ _('Advanced search') }}</a>
-    <a id="toggle_basic" class="module-link {{ adv_classes }}" onclick="toggle_search('basic');" href="#">{{ _('Basic search') }}</a>
-  </h2>
-</section>
-<section class="module">
-  <div class="module-content">
 
-    <form id="dataset-search" class="dataset-search clearfix {{ basic_classes }}" method="get" data-module="select-switch">
-      <span class="control-group search-giant">
-        <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
-               placeholder="{{ _('Search...') }}"/>
-        <button type="submit" value="{{ _('Search') }}">Submit</button>
-      </span>
+<article class="module">
+  <header class="module-content page-header">
+    <ul id="search-tabs" class="nav nav-tabs" data-module="search-tabs-ul">
+      <li{% if not c.current_search_rows %} class="active"{% endif %}>
+        <a href="#search-tab" data-toggle="tab">{{ _('Search') }}</a>
+        <!-- onclick="toggle_search('basic');"-->
+        {#% link_for _('Search'), controller='ckanext.kata.controllers:KataPackageController', action='advanced_search', icon='sitemap' %#}
+      </li>
+      <li{% if c.current_search_rows %} class="active"{% endif %}>
+        {#% link_for _('Advanced search'), controller='ckanext.kata.controllers:KataPackageController', action='advanced_search', icon='time' %#}
+        <a href="#advanced-search-tab" data-toggle="tab">{{ _('Advanced search') }}</a>
+        <!-- class="module-link" onclick="toggle_search('advanced');"-->
+      </li>
+    </ul>
+  </header>
 
-      {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
+  <section class="module-content">
 
-      {% if c.fields -%}
-        <span>
-          {%- for k, v in c.fields -%}
-            <input type="hidden" name="{{ k }}" value="{{ v }}"/>
-          {% endfor -%}
-        </span>
-      {%- endif %}
+    {% block primary_content_inner %}
 
-      <div id="dataset-search-ext"></div>
-    </form>
+    <div class="module-content tab-content active">
 
-    <form id="advanced-search" class="dataset-search clearfix form-horizontal {{ adv_classes }}" method="get" data-module="advanced-search-kata">
-      <span id="advanced-search-group" class="control-group">
+      {# Basic search tab #}
 
-        {% for current_row_dict in current_search_rows %}
-
-          <div id="advanced-search-row-{{ loop.index0 }}"
-               class="control-group{% if loop.index0 == 0 %} hidden{%- endif -%}">
-
-            {# SELECT OPERATOR (AND/OR/NOT) #}
-
-            {% if loop.index0 != 1 %}
-              {% if loop.index0 == 0 %}
-                <select name="___ext_operator-{{ loop.index0 }}" class="kata-search-relation">
-              {%- else -%}
-                <select name="ext_operator-{{ loop.index0 }}" class="kata-search-relation">
-              {%- endif -%}
-                {% set operator = current_row_dict.get('operator', '') | default('AND') %}
-                <option value="AND" {% if operator == "AND" %}selected="selected"{% endif %}>{{ _('AND') }}</option>
-                <option value="OR" {% if operator == "OR" %}selected="selected"{% endif %}>{{ _('OR') }}</option>
-                <option value="NOT" {% if operator == "NOT" %}selected="selected"{% endif %}>{{ _('NOT') }}</option>
-              </select>
-            {% endif %}
-
-            {# SELECT FIELD TO SEARCH BY #}
-
-            <select id="advanced-search-by-{{ loop.index0 }}" class="kata-search-by">
-              {% for option_field in c.search_fields -%}
-                <option value="{{ option_field }}"
-                      {% if option_field == current_row_dict.get('field') %}selected="selected"{% endif %}>
-                      {{ c.translated_field_titles[option_field] }}</option>
-              {%- endfor %}
-            </select>
-
-            {# INPUT SEARCH TERM #}
-
-            <input id="advanced-search-text-{{ loop.index0 }}" type="text" class="search"
-                   name="{{ current_row_dict.get('field') ~ '-' ~ loop.index0 }}" value="{{ current_row_dict.get('text') }}"
-                   autocomplete="off" placeholder="{{ _('Search...') }}"/>
-            {% if loop.index0 != 1 %}
-              <a id="del_search_element" href="#" onclick="remove_search_row({{ loop.index0 }})">DEL</a>
-            {% else %}
-              <a id="new_search_element" href="#" onclick="add_search_row({{ loop.index0 }});">ADD</a>
-            {% endif %}
-          </div>
-        {% endfor %}
-
-        {# INPUT DATES #}
-
-        <div id="search-fields-end"></div>
-        <div class="control-group">
-          <span class="form-select">
-            <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
-            <div class="controls" id="advanced-search-date">
-              <input id="advanced-search-date-start" type="number"
-                     pattern="[0-9]{1,4}" class="" name="ext_date-metadata_modified-start"
-                     value="{# search_extras[search_extras.index('ext_metadata_modified')][1] | default('') #}"
-                     autocomplete="off" placeholder="{{ _('Start year') }}"/>
-              -
-              <input id="advanced-search-date-end" type="number"
-                     pattern="[0-9]{1,4}" class="search" name="ext_date-metadata_modified-end"
-                     autocomplete="off" placeholder="{{ _('End year') }}"/>
-            </div>
+      <div id="search-tab" class="tab-pane{% if not c.current_search_rows %} active{% endif %}">
+        {{ not c.current_search_rows }}
+        <form id="dataset-search" class="dataset-search clearfix {{ basic_classes }}" method="get" data-module="select-switch">
+          <span class="control-group search-giant">
+            <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
+                 placeholder="{{ _('Search...') }}"/>
+            <button type="submit" value="{{ _('Search') }}">Submit</button>
           </span>
-        </div>      
 
-        <button id="advanced_search_submit" type="submit" value="{{ _('Search') }}">Submit</button>
-      </span>
+          {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
 
-      <div data-module="select-switch" data-module-id="advsearch" id="advsearch">
-        {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
+          {% if c.fields -%}
+          <span>
+            {%- for k, v in c.fields -%}
+            <input type="hidden" name="{{ k }}" value="{{ v }}"/>
+            {% endfor -%}
+          </span>
+          {%- endif %}
+
+          <div id="dataset-search-ext"></div>
+        </form>
+
       </div>
 
-      {% if c.fields -%}
-        <span>
-          {%- for k, v in c.fields -%}
+      {# Advanced search tab #}
+
+      <div id="advanced-search-tab" class="tab-pane{% if c.current_search_rows != False %} active{% endif %}">
+        {{ c.current_search_rows != False }}
+        <form id="advanced-search" class="dataset-search clearfix form-horizontal" method="get" data-module="advanced-search-kata">
+          <span id="advanced-search-group" class="control-group">
+
+            {% for current_row_dict in current_search_rows %}
+
+            <div id="advanced-search-row-{{ loop.index0 }}"
+                 class="control-group{% if loop.index0 == 0 %} hidden{%- endif -%}">
+
+              {# SELECT OPERATOR (AND/OR/NOT) #}
+
+              {% if loop.index0 != 1 %}
+                {% if loop.index0 == 0 %}
+                <select name="___ext_operator-{{ loop.index0 }}" class="kata-search-relation"></select>
+                {%- else -%}
+                <select name="ext_operator-{{ loop.index0 }}" class="kata-search-relation">
+                {%- endif -%}
+                {% set operator = current_row_dict.get('operator', '') | default('AND') %}
+                  <option value="AND" {% if operator == "AND" %}selected="selected"{% endif %}>{{ _('AND') }}</option>
+                  <option value="OR" {% if operator == "OR" %}selected="selected"{% endif %}>{{ _('OR') }}</option>
+                  <option value="NOT" {% if operator == "NOT" %}selected="selected"{% endif %}>{{ _('NOT') }}</option>
+                </select>
+              {% endif %}
+
+              {# SELECT FIELD TO SEARCH BY #}
+
+              <select id="advanced-search-by-{{ loop.index0 }}" class="kata-search-by">
+                {% for option_field in c.search_fields -%}
+                  <option value="{{ option_field }}"
+                          {% if option_field == current_row_dict.get('field') %}selected="selected"{% endif %}>
+                    {{ c.translated_field_titles[option_field] }}</option>
+                {%- endfor %}
+              </select>
+
+              {# INPUT SEARCH TERM #}
+
+              <input id="advanced-search-text-{{ loop.index0 }}" type="text" class="search"
+                     name="{{ current_row_dict.get('field') ~ '-' ~ loop.index0 }}" value="{{ current_row_dict.get('text') }}"
+                     autocomplete="off" placeholder="{{ _('Search...') }}"/>
+              {% if loop.index0 != 1 %}
+                <a id="del_search_element" href="#" onclick="remove_search_row({{ loop.index0 }})">DEL</a>
+              {% else %}
+                <a id="new_search_element" href="#" onclick="add_search_row({{ loop.index0 }});">ADD</a>
+              {% endif %}
+            </div>
+            {% endfor %}
+
+          {# INPUT DATES #}
+
+            <div id="search-fields-end"></div>
+            <div class="control-group">
+              <span class="form-select">
+                <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
+                <div class="controls" id="advanced-search-date">
+                  <input id="advanced-search-date-start" type="number"
+                         pattern="[0-9]{1,4}" class="" name="ext_date-metadata_modified-start"
+                         value="{{ c.current_search_limiters['ext_date-metadata_modified-start'] }}"
+                         autocomplete="off" placeholder="{{ _('Start year') }}"/>
+                  -
+                  <input id="advanced-search-date-end" type="number"
+                         pattern="[0-9]{1,4}" class="search" name="ext_date-metadata_modified-end"
+                         value="{{ c.current_search_limiters['ext_date-metadata_modified-end'] }}"
+                         autocomplete="off" placeholder="{{ _('End year') }}"/>
+                </div>
+              </span>
+            </div>
+
+            <button id="advanced_search_submit" type="submit" value="{{ _('Search') }}">Submit</button>
+          </span>
+
+          <div data-module="select-switch" data-module-id="advsearch" id="advsearch">
+            {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
+          </div>
+
+          {% if c.fields -%}
+          <span>
+            {%- for k, v in c.fields -%}
             <input type="hidden" name="{{ k }}" value="{{ v }}"/>
-          {% endfor -%}
-        </span>
-      {%- endif %}
+            {% endfor -%}
+          </span>
+          {%- endif %}
 
-      <input type="hidden" id="default_search_field" value="{{ c.search_fields | first }}"/>
-      <div id="advanced-search-ext"></div>
-    </form>
+          <input type="hidden" id="default_search_field" value="{{ c.search_fields | first }}"/>
+          <div id="advanced-search-ext"></div>
 
-    <div class="results">
-      <strong>
-        {%- if request.params and c.page.item_count -%}
-        {{ c.page.item_count }} datasets{{ _(" found for \"{query}\"").format(query=c.q) if c.q }}
-        {%- elif request.params and c.page.item_count == 0 -%}
-        {{ _('Sorry no datasets found for "{query}"').format(query=c.q) }}
-        {%- else -%}
-        {{ _('All datasets') }}
-        {%- endif -%}
-      </strong>
+        </form>
+      </div>
 
-      <div class="filter-list">
-        {% for field in c.fields_grouped %}
-        <span class="facet">{{ c.facet_titles.get(field) }}:</span>
-        {% for value in c.fields_grouped[field] %}
+      <div class="results">
+        <strong>
+          {%- if request.params and c.page.item_count -%}
+            {{ c.page.item_count }} datasets{{ _(" found for \"{query}\"").format(query=c.q) if c.q }}
+          {%- elif request.params and c.page.item_count == 0 -%}
+            {{ _('Sorry no datasets found for "{query}"').format(query=c.q) }}
+          {%- else -%}
+            {{ _('All datasets') }}
+          {%- endif -%}
+        </strong>
+
+        <div class="filter-list">
+          {% for field in c.fields_grouped %}
+          <span class="facet">{{ c.facet_titles.get(field) }}:</span>
+          {% for value in c.fields_grouped[field] %}
           <span class="filtered pill">
             {%- if c.translated_fields and c.translated_fields.has_key((field,value)) -%}
               {{ c.translated_fields[(field,value)] }}
@@ -164,29 +190,32 @@
               {{ value }}
             {%- endif %}
             <a href="{{ c.remove_field(field, value) }}" class="remove" title="{{ _('Remove') }}"><i
-                class="icon-remove"></i></a>
+               class="icon-remove"></i></a>
           </span>
-        {% endfor %}
-        {% endfor %}
+          {% endfor %}
+          {% endfor %}
+        </div>
+
+        {% if request.params and c.page.item_count == 0 %}
+        <p class="extra">Try another search term, browse the datasets below or
+          <a href="{{ h.url_for(controller='package', action='new') }}">
+            {{ _('add your own data') }}</a>.
+        </p>
+        {% endif %}
       </div>
-      {% if request.params and c.page.item_count == 0 %}
-      <p class="extra">Try another search term,
-        browse the datasets below or <a href="{{ h.url_for(controller='package', action='new') }}">{{ _('add your own
-          data') }}</a>.
-      </p>
+
+      {% if c.query_error %}
+        {% trans %}
+        <p><strong>There was an error while searching.</strong> Please try again.</p>
+        {% endtrans %}
       {% endif %}
+      {{ h.snippet('snippets/package_list.html', packages=c.page.items) }}
     </div>
 
-    {% if c.query_error %}
-    {% trans %}
-    <p><strong>There was an error while searching.</strong> Please try again.</p>
-    {% endtrans %}
-    {% endif %}
-    {{ h.snippet('snippets/package_list.html', packages=c.page.items) }}
-  </div>
-
-  {{ c.page.pager(q=c.q) }}
-</section>
+    {{ c.page.pager(q=c.q) }}
+    {% endblock %}
+  </section>
+</article>
 
 <section class="module module-narrow module-shallow">
   <small class="module-content">
@@ -210,5 +239,4 @@
 {{ h.snippet('snippets/facet_list.html', title='License', name='license') }}
 {{ h.snippet('snippets/facet_list.html', title='Language', name='extras_language') }}
 {% endblock %}
-
 

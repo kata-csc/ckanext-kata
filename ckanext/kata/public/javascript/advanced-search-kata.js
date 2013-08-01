@@ -22,6 +22,30 @@ this.ckan.module('advanced-search-kata', function (jQuery, _) {
   };
 });
 
+this.ckan.module('search-tabs-ul', function (jQuery, _) {
+  /** CKAN module to update input field name.
+   */
+  return {
+    initialize: function () {
+      var _this = this;
+
+      jQuery('#search-tabs').tab();
+      /* $('#search-tabs a:last').tab('show'); */
+      /*
+       init_tabs = function() {
+       $('#myTab a').click(function (e) {
+       e.preventDefault();
+       $(this).tab('show');
+       });
+       }
+
+       toggle_tabs = function () {
+       $('#search-tabs a:last').tab('show');
+       } */
+    }
+  };
+});
+
 /*this.ckan.module('search-toggle', function (jQuery, _) {
   return {
 
