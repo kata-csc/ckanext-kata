@@ -1,4 +1,6 @@
-'''Unit tests for controllers''' 
+# pylint: disable=R0201
+
+"""Unit tests for controllers"""
 
 from ckan.lib.create_test_data import CreateTestData
 from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
@@ -7,12 +9,14 @@ from ckanext.kata import model as kata_model
 
 
 class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
-    '''
+    """
     Tests for CKAN's package controller, to which Kata makes some changes by overriding templates.
-    ''' 
+    """
     
     @classmethod
     def setup_class(cls):
+        """Set up tests."""
+
         # Set up Kata's additions to CKAN database (user_extra, etc.)
         kata_model.setup()
 
@@ -20,30 +24,34 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
 
     @classmethod
     def teardown_class(cls):
+        """Get away from testing environment."""
+
         kata_model.delete_tables()
         CreateTestData.delete()
     
     def test_data_and_resources_not_rendered(self):
-        '''
+        """
         A package with no resources should not render Data and Resources section
-        '''
+        """
+
         offset = url_for(controller='package', action='read', id=u'warandpeace')
         res = self.app.get(offset)
         assert '<section id="dataset-resources"' not in res, 'A package with no resources should not render Data and Resources section'
 
     def test_data_and_resources_rendered(self):
-        '''
+        """
         A package with resources should render Data and Resources section
-        '''
+        """
+
         offset = url_for(controller='package', action='read', id=u'annakarenina')
         res = self.app.get(offset)
         assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
 
 
 class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
-    '''
+    """
     Tests for Kata's ContactController.
-    '''
+    """
     
 #     _users = [
 #         {'name': 'tester',
@@ -53,10 +61,12 @@ class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
     
     @classmethod
     def setup_class(cls):
-        # Set up Kata's additions to CKAN database (user_extra, etc.)
-        kata_model.setup()
+        """Set up Kata's additions to CKAN database (user_extra, etc.)"""
 
+        kata_model.setup()
         CreateTestData.create()
+
+        # Couldn't get the session to work properly with a logged in user...
 
         #tester = model.User(name=u'tester', apikey=u'tester',
             #password=u'tester')
@@ -64,11 +74,11 @@ class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
         #model.Session.commit()
 #         CreateTestData.create_users(cls._users)
 #         model.repo.commit_and_remove() # due to bug in create_users
-#                  
+#
 #         #model.Session.remove()
 #         user = model.User.by_name('tester')
 #         cls.extra_environ = {'Authorization': str(user.apikey)}
-        
+
     @classmethod
     def teardown_class(cls):
         kata_model.delete_tables()
@@ -79,9 +89,9 @@ class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
         assert offset[0] == '/', 'No URL received for contact controller' 
 
     def test_contact_controller_no_user(self):
-        '''
+        """
         Test that we get a redirect when there is no user
-        '''
+        """
         
         offset = url_for(controller="contact", action='render', pkg_id=u'warandpeace')
         res = self.app.get(offset)
