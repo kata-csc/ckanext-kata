@@ -117,10 +117,10 @@ class KataMetadata(SingletonPlugin):
                     action="render")
         map.connect('/dataset/import_xml/',
                     controller="ckanext.harvest.controllers.view:ViewController",
-                    action="import_xml"),
+                    action="import_xml")
         map.connect('/user/logged_in',
                     controller="ckanext.kata.controllers:KataUserController",
-                    action="logged_in"),
+                    action="logged_in")
         map.connect('/dataset',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="advanced_search")
@@ -439,18 +439,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     extras.append({'key': k[-1], 'value': data[k]})
 
     def update_facet_titles(self, facet_titles):
-         '''
-             Update the dictionary mapping facet names to facet titles.
+        """
+        Update the dictionary mapping facet names to facet titles.
 
-             Example: {'facet_name': 'The title of the facet'}
+        Example: {'facet_name': 'The title of the facet'}
 
-             Called after the search operation was performed and
-             before the search page will be displayed.
-             The titles show up on the search page.
-         '''
+        Called after the search operation was performed and
+        before the search page will be displayed.
+        The titles show up on the search page.
+        """
 
-         facet_titles.update(get_field_titles(t._))
-         return facet_titles
+        facet_titles.update(get_field_titles(t._))
+        return facet_titles
 
 
     def before_search(self, data_dict):
