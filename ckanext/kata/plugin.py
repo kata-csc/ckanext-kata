@@ -1,5 +1,5 @@
-'''Main plugin file for Kata CKAN extension
-'''
+"""Main plugin file for Kata CKAN extension
+"""
 
 import logging
 import os
@@ -57,8 +57,8 @@ t = toolkit
 
 
 def snippet(template_name, **kw):
-    ''' This function is used to load html snippets into pages. keywords
-    can be used to pass parameters into the snippet rendering '''
+    """This function is used to load html snippets into pages. keywords
+    can be used to pass parameters into the snippet rendering."""
     import ckan.lib.base as base
     return base.render_snippet(template_name, **kw)
 
@@ -168,7 +168,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 }
 
     def get_helpers(self):
-        ''' Register helpers '''
+        """ Register helpers """
         return {'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': self.kata_sorted_extras,
                 'kata_metadata_fields': self.kata_metadata_fields,
@@ -177,7 +177,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 }
 
     def request_access(self, pkg_id):
-        # If the user is logged in show the access request button
+        """If the user is logged in show the access request button"""
         pkg = Package.get(pkg_id)
         if c.user and not user_has_role(c.userobj, 'admin', pkg) and\
                         not user_has_role(c.userobj, 'editor', pkg) and\
@@ -197,7 +197,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return cached_url(ref)
 
     def is_custom_form(self, _dict):
-        ''' Template helper, used to identify ckan custom form '''
+        """ Template helper, used to identify ckan custom form """
         for key in self.hide_extras_form:
             if _dict.get('key', None) and _dict['key'].find(key) > -1:
                 return False

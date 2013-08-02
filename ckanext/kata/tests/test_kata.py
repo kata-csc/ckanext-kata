@@ -61,5 +61,24 @@ class TestKataPlugin(TestCase):
 
     def test_get_actions(self):
         """Test get_actions() output type."""
-
         assert isinstance( self.kata_plugin.get_actions(), dict), "KataPlugin.get_actions() didn't output a dict"
+
+    def test_get_helpers(self):
+        """Test get_helpers() output type."""
+        assert isinstance( self.kata_plugin.get_helpers(), dict), "KataPlugin.get_helpers() didn't output a dict"
+
+    def test_new_template(self):
+        """Test new_template()."""
+        html_location = self.kata_plugin.new_template()
+        assert len( html_location ) > 0
+
+    def test_comments_template(self):
+        """Test comments_template()."""
+        html_location = self.kata_plugin.comments_template()
+        assert len( html_location ) > 0
+
+    def test_search_template(self):
+        """Test search_template()."""
+        html_location = self.kata_plugin.search_template()
+        assert len( html_location ) > 0
+
