@@ -10,7 +10,7 @@ setup(
 	long_description="""Provides modified Add Dataset (package) page and other modifications. This extension contains also jQuery files, custom css (eg. kata.css) and several templates are overwritten from basic CKAN to provide the Kata/TTA looks.""",
 	classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
 	keywords='',
-	author='Aleksi Suomalainen',
+	author='CSC',
 	author_email='aleksi.suomalainen@nomovok.com',
 	url='https://github.com/kata-csc/ckanext-kata',
 	license='AGPL',
@@ -33,10 +33,7 @@ setup(
 	message_extractors = {
 		'ckanext': [
 						('**.py', 'python', None),#
-						('kata/theme/templates/package/**.html', 'ckan', None),
-						('kata/theme/templates/privacypolicy.html', 'ckan', None),
-						('kata/theme/templates/header.html', 'ckan', None),
-						('kata/theme/templates/footer.html', 'ckan', None),
+						('kata/theme/templates/**.html', 'ckan', None),
 						],
 	},
 	entry_points=\
