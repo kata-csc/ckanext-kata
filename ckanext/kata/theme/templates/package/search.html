@@ -8,10 +8,6 @@
 </li>
 {% endblock %}
 
-
-{% set adv_classes = 'advanced_search_toggled' %}
-{% set basic_classes = 'basic_search_toggled' %}
-
 {# CREATE A HIDDEN ROW TO CLONE FROM, WITH PARSED FIELD NAMES BEGINNING WITH LEADING ___ SO THEY WON'T BE PARSED  #}
 {% set current_search_rows = [{ 'field': '___' ~ c.search_fields | first,
                                 'text': '',
@@ -19,10 +15,8 @@
                                 }] %}
 
 {% if c.current_search_rows %}
-  {% set basic_classes = basic_classes ~ ' hidden' %}
   {% do current_search_rows.extend(c.current_search_rows) %}
 {% else %}
-  {% set adv_classes = adv_classes ~ ' hidden' %}
   {% do current_search_rows.append({ 'field': c.search_fields | first, 'text': '', 'operator': 'AND' }) %}
 {% endif %}
 
@@ -34,13 +28,9 @@
     <ul id="search-tabs" class="nav nav-tabs" data-module="search-tabs-ul">
       <li{% if not c.current_search_rows %} class="active"{% endif %}>
         <a href="#search-tab" data-toggle="tab">{{ _('Search') }}</a>
-        <!-- onclick="toggle_search('basic');"-->
-        {#% link_for _('Search'), controller='ckanext.kata.controllers:KataPackageController', action='advanced_search', icon='sitemap' %#}
       </li>
       <li{% if c.current_search_rows %} class="active"{% endif %}>
-        {#% link_for _('Advanced search'), controller='ckanext.kata.controllers:KataPackageController', action='advanced_search', icon='time' %#}
         <a href="#advanced-search-tab" data-toggle="tab">{{ _('Advanced search') }}</a>
-        <!-- class="module-link" onclick="toggle_search('advanced');"-->
       </li>
     </ul>
   </header>
@@ -54,8 +44,7 @@
       {# Basic search tab #}
 
       <div id="search-tab" class="tab-pane{% if not c.current_search_rows %} active{% endif %}">
-        {{ not c.current_search_rows }}
-        <form id="dataset-search" class="dataset-search clearfix {{ basic_classes }}" method="get" data-module="select-switch">
+        <form id="dataset-search" class="dataset-search clearfix" method="get" data-module="select-switch">
           <span class="control-group search-giant">
             <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
                  placeholder="{{ _('Search...') }}"/>
@@ -79,8 +68,7 @@
 
       {# Advanced search tab #}
 
-      <div id="advanced-search-tab" class="tab-pane{% if c.current_search_rows != False %} active{% endif %}">
-        {{ c.current_search_rows != False }}
+      <div id="advanced-search-tab" class="tab-pane{% if c.current_search_rows[0] is defined %} active{% endif %}">
         <form id="advanced-search" class="dataset-search clearfix form-horizontal" method="get" data-module="advanced-search-kata">
           <span id="advanced-search-group" class="control-group">
 
@@ -127,7 +115,7 @@
             </div>
             {% endfor %}
 
-          {# INPUT DATES #}
+            {# INPUT DATES #}
 
             <div id="search-fields-end"></div>
             <div class="control-group">
@@ -150,9 +138,7 @@
             <button id="advanced_search_submit" type="submit" value="{{ _('Search') }}">Submit</button>
           </span>
 
-          <div data-module="select-switch" data-module-id="advsearch" id="advsearch">
-            {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
-          </div>
+          {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
 
           {% if c.fields -%}
           <span>
