@@ -67,10 +67,10 @@ this.ckan.module('search-tabs-ul', function (jQuery, _) {
   };
 });*/
 
-
-toggle_search = function(type) {
+/*
+toggle_search = function(type) { */
 /** Toggle visibility between basic and advanced search.
- */
+ */ /*
   if (type == 'advanced') {
     $('#content .advanced_search_toggled').show();
     $('#content .basic_search_toggled').hide();
@@ -78,7 +78,7 @@ toggle_search = function(type) {
     $('#content .advanced_search_toggled').hide();
     $('#content .basic_search_toggled').show();
   }
-}
+} */
 
 
 add_search_row = function(index) {
