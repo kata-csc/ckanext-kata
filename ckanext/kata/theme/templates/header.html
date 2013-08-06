@@ -74,11 +74,9 @@
       {% endif %}
     </hgroup>
     <div id="kata_header">
-      <p><h1>Kata-aineistokatalogi</h1></p>
+      <h1>Kata-aineistokatalogi</h1>
     </div>
      <div class="content">
-      {#{% link_for _('Kata Help'), controller='ckanext.kata.controllers:KataHelpController', action='kata_help', class_='btn btn-primary' %} #}
-      <!-- <a href="/kata/kata_help">Kata help</a><br />-->
       <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
         <div class="field">
           <label for="field-sitewide-search">{{ _('Search Datasets') }}</label>
