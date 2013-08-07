@@ -1,16 +1,15 @@
-"""Main plugin file for Kata CKAN extension
+"""
+Main plugin file for Kata CKAN extension
 """
 
 import logging
 import os
 import datetime
-import re
-from lxml import etree
-import urllib2
-import iso8601
+
+from pylons import config
 
 from ckan.plugins import implements, SingletonPlugin, toolkit
-from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers, IPluginObserver
+from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers
 from ckan.plugins import IRoutes
 from ckan.plugins import IConfigurable
 from ckan.plugins import IMapper
@@ -19,38 +18,26 @@ from ckan.plugins import IAuthFunctions
 from ckan.plugins.core import unload
 from ckan.lib.base import g, c
 from ckan.model import Package, user_has_role
-import ckan.model as model
 from ckan.lib.plugins import DefaultDatasetForm
-from ckan.logic.schema import db_to_form_package_schema,\
-                                form_to_db_package_schema,\
+from ckan.logic.schema import db_to_form_package_schema, \
+                                form_to_db_package_schema, \
                                 default_resource_schema
-from ckan.lib.dictization.model_save import group_dict_save
-
-
-import ckan.logic.converters
-from ckan.lib.navl.validators import missing, ignore_missing, keep_extras,\
-                                    ignore, not_empty, not_missing, default,\
-                                    both_not_empty
-from ckan.logic.converters import convert_to_tags, convert_from_tags, free_tags_only
-
-from pylons.decorators.cache import beaker_cache
-from pylons import config
-
-from validators import check_project, validate_access, validate_lastmod,\
-                        check_junk, check_last_and_update_pid,\
-                        validate_language, validate_email, validate_phonenum,\
-                        check_project_dis, check_accessrequesturl, check_accessrights,\
-                        not_empty_kata, check_author_org
-
-from converters import copy_from_titles, custom_to_extras, event_from_extras,\
-                        event_to_extras, ltitle_from_extras, ltitle_to_extras,\
-                        org_auth_from_extras, org_auth_to_extras, pid_from_extras,\
-                        export_as_related, add_to_group
+from ckan.lib.navl.validators import missing, ignore_missing, ignore, not_empty, not_missing, default
+from validators import check_project, validate_access, validate_lastmod, \
+                        check_junk, check_last_and_update_pid, \
+                        validate_language, validate_email, validate_phonenum, \
+                        check_project_dis, check_accessrequesturl, check_accessrights, \
+    check_author_org
+from converters import event_from_extras,\
+                        event_to_extras, ltitle_from_extras, ltitle_to_extras, \
+                        org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
+    add_to_group
 import actions
 import auth_functions
 from model import KataAccessRequest
 from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
 import utils
+
 
 log = logging.getLogger('ckanext.kata')
 t = toolkit
@@ -64,11 +51,17 @@ def snippet(template_name, **kw):
 
 
 class KataMetadata(SingletonPlugin):
+    """
+    Kata metadata plugin.
+    """
     implements(IRoutes, inherit=True)
     implements(IMapper, inherit=True)
 
     def before_map(self, map):
-        GET = dict(method=['GET'])
+        """
+        Override IRoutes.before_map()
+        """
+        get = dict(method=['GET'])
         controller = "ckanext.kata.controllers:MetadataController"
         api_controller = "ckanext.kata.controllers:KATAApiController"
         map.connect('/dataset/{id}.{format:rdf}',
@@ -79,23 +72,23 @@ class KataMetadata(SingletonPlugin):
                     action='urnexport')
         map.connect('/api/2/util/owner_autocomplete',
                     controller=api_controller,
-                    conditions=GET,
+                    conditions=get,
                     action="owner_autocomplete")
         map.connect('/api/2/util/author_autocomplete',
                     controller=api_controller,
-                    conditions=GET,
+                    conditions=get,
                     action="author_autocomplete")
         map.connect('/api/2/util/organization_autocomplete',
                     controller=api_controller,
-                    conditions=GET,
+                    conditions=get,
                     action="organization_autocomplete")
         map.connect('/api/2/util/contact_autocomplete',
                     controller=api_controller,
-                    conditions=GET,
+                    conditions=get,
                     action="contact_autocomplete")
         map.connect('/api/2/util/discipline_autocomplete',
                     controller=api_controller,
-                    conditions=GET,
+                    conditions=get,
                     action="discipline_autocomplete")
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
@@ -127,10 +120,17 @@ class KataMetadata(SingletonPlugin):
         return map
 
     def before_insert(self, mapper, connection, instance):
+        """
+        Override IMapper.before_insert()
+        """
         if isinstance(instance, Package):
             instance.id = utils.generate_pid()
 
+
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
+    """
+    Kata functionality and UI plugin.
+    """
     implements(IDatasetForm, inherit=True)
     implements(IConfigurer, inherit=True)
     implements(IConfigurable, inherit=True)
@@ -351,12 +351,30 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if len(data[key]) == 0:
             data[key] = utils.generate_pid()
 
-    def form_to_db_schema_options(self, package_type=None, options=None):
+    def form_to_db_schema(self):
+        """
+        The data fields that are accepted by CKAN for each dataset can be changed with this method. Invoked also
+        when adding a resource to a dataset.
+
+        Can be switched to form_to_db_schema_options(self, package_type=None, options=None)
+        if in need of customizing the schema for different uses.
+        """
+
         schema = form_to_db_package_schema()
         for key in self.kata_fields_required:
             schema[key] = [not_empty, self.convert_to_extras_kata, unicode]
         for key in self.kata_fields_recommended:
             schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
+
+        # When adding a resource the data comes straight from DB and 'title' is not in the same format
+        # than the title data coming from the dataset form.
+
+        if c.action in ['new_resource']:
+            schema['title'] = [not_missing]
+        else:
+            schema['title'] = {'value': [not_missing, ltitle_to_extras],
+                               'lang': [not_missing]}
+
         schema['temporal_coverage_begin'].append(validate_lastmod)
         schema['temporal_coverage_end'].append(validate_lastmod)
         schema['language'] = [validate_language, self.convert_to_extras_kata, unicode]
@@ -384,8 +402,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'resources': default_resource_schema(),
            'discipline': [add_to_group],
         })
-        schema['title'] = {'value': [not_missing, ltitle_to_extras],
-                           'lang': [not_missing]}
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras]}
@@ -399,9 +415,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             }
         return schema
 
-    def db_to_form_schema_options(self, options = None):
+    def db_to_form_schema(self, options = None):
+        """
+        The data fields that are returned from CKAN for each dataset can be changed with this method.
+
+
+        Can be switched to db_to_form_schema_options(self, options = None)
+        if in need of customizing the schema for different uses.
+        """
         schema = db_to_form_package_schema()
-        context = options['context']
         for key in self.kata_field:
             schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
         schema['versionPID'] = [pid_from_extras, ignore_missing, unicode]

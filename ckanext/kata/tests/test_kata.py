@@ -1,6 +1,7 @@
 # pylint: disable=R0201
-
-"""Test classes for Kata CKAN Extension."""
+"""
+Test classes for Kata CKAN Extension.
+"""
 
 from unittest import TestCase
 from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, \
@@ -82,3 +83,14 @@ class TestKataPlugin(TestCase):
         html_location = self.kata_plugin.search_template()
         assert len( html_location ) > 0
 
+# Needs Pylons context variable c initialized:
+#
+#    def test_form_to_db_schema(self):
+#        """Test form_to_db_schema()."""
+#        schema = self.kata_plugin.form_to_db_schema()
+#        assert isinstance(schema, dict) and len(schema) > 0
+
+    def test_db_to_form_schema(self):
+        """Test db_to_form_schema()."""
+        schema = self.kata_plugin.db_to_form_schema()
+        assert isinstance(schema, dict) and len(schema) > 0
