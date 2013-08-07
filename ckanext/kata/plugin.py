@@ -469,19 +469,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.translated_field_titles = get_field_titles(t._)
 
 
-        ## Ugly first version of advanced search.
-        # It's ugly because it duplicates functionality both, from the
-        # function which is before it in call chain (package:search)
-        # and from the function which is called after it
-        # (query:PackageSearchQuery.run).
-        # Better could be implement whole new search() method to
-        # avoid appending and removing parameters.
-        # Copied from query:PackageSearchQuery.run
-        # q = data_dict['q']
-        # if not q or q == '""' or q == "''":
-        #     data_dict['q'] = "*:*"
-        # Copied from package:search
-
+        # Start advanced search parameter parsing
         if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
             extra_terms = []
             extra_ops = []
@@ -507,7 +495,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     # Extract search operators
                     if param.startswith('ext_operator'):
                         extra_ops.append((param, value))
-                    # Extract search date limits from eg. name="ext_date-metadata_modified-start"
+                    # Extract search date limits from eg.
+                    # name = "ext_date-metadata_modified-start"
                     elif param.startswith('ext_date'):
                         param_tokens = param.split('-')
                         extra_dates[param_tokens[2]] = value  # 'start' or 'end' date
@@ -529,47 +518,39 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 c.current_search_rows.append({'field':p_no_index, 'text':value})
 
                 n = min(len(extra_terms)-1, len(extra_ops))
-                for i1 in range(0, n):  # looped are [0,n]
+                for i1 in range(0, n):
                     (oparam, ovalue) = extra_ops[i1]
-                    op_no_index = oparam.split("-")[0]
                     (param, value) = extra_terms[i1+1]
                     p_no_index = param.split("-")[0]
                     data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
                     data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
-                    c.current_search_rows.append({'field':p_no_index, 'text':value, 'operator':ovalue})
+                    c.current_search_rows.append(
+                        {'field':p_no_index, 'text':value, 'operator':ovalue})
 
-            # Parse year limit into query q.
+            # Parse year limit into query 'q'.
             # Eg. metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]
             if len(extra_dates) > 0:
                 qdate = ''
                 if extra_dates.has_key('start'):
                     # TODO: Validate that input is valid year
                     qdate += '[' + extra_dates['start'] + '-01-01T00:00:00.000Z TO '
-                    c.current_search_limiters['ext_date-' + extra_dates['field'] \
-                        + '-start'] = extra_dates['start']
+                    key = 'ext_date-' + extra_dates['field'] + '-start'
+                    c.current_search_limiters[key] = extra_dates['start']
                 else:
                     qdate += '[* TO '
                 if extra_dates.has_key('end'):
                     # TODO: Validate that input is valid year
                     qdate += extra_dates['end'] + '-12-31T23:59:59.999Z]'
-                    c.current_search_limiters['ext_date-' + extra_dates['field'] \
-                                            + '-end'] = extra_dates['end']
+                    key = 'ext_date-' + extra_dates['field'] + '-end'
+                    c.current_search_limiters[key] = extra_dates['end']
                 else:
                     qdate += '*]'
                 data_dict['q'] += ' %s:%s' % (extra_dates['field'], qdate)
 
-            # for (param, value) in extra_terms:
-            #     p_no_index = param.split("-")[0]
-            #     if p_no_index.startswith('ext_operator'):
-            #         data_dict['q'] += ' %s' % value  # Add operator (AND / OR)
-            #     else:
-            #         data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
-            #     c.current_search_rows.append((p_no_index,value))
             log.debug("before_search(): c.current_search_rows: %s; \
                 c.current_search_limiters: %s" % (c.current_search_rows,
                 c.current_search_limiters))
-
-        ## End ugly first version of advanced search
+        # End advanced search parameter parsing
 
         log.debug("before_search(): data_dict: %r" % data_dict)
         return data_dict
