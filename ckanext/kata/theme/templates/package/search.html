@@ -8,21 +8,20 @@
 </li>
 {% endblock %}
 
-
-{% set adv_classes = 'advanced_search_toggled' %}
-{% set basic_classes = 'basic_search_toggled' %}
-
 {# CREATE A HIDDEN ROW TO CLONE FROM, WITH PARSED FIELD NAMES BEGINNING WITH LEADING ___ SO THEY WON'T BE PARSED  #}
 {% set current_search_rows = [{ 'field': '___' ~ c.search_fields | first,
                                 'text': '',
                                 'operator': 'AND'
                                 }] %}
 
+{% set advanced_search = false %}
+{% if c.current_search_rows  or c.current_search_limiters %}
+  {% set advanced_search = true %}
+{% endif %}
+
 {% if c.current_search_rows %}
-  {% set basic_classes = basic_classes ~ ' hidden' %}
   {% do current_search_rows.extend(c.current_search_rows) %}
 {% else %}
-  {% set adv_classes = adv_classes ~ ' hidden' %}
   {% do current_search_rows.append({ 'field': c.search_fields | first, 'text': '', 'operator': 'AND' }) %}
 {% endif %}
 
@@ -32,15 +31,11 @@
 <article class="module">
   <header class="module-content page-header">
     <ul id="search-tabs" class="nav nav-tabs" data-module="search-tabs-ul">
-      <li{% if not c.current_search_rows %} class="active"{% endif %}>
+      <li{% if not advanced_search %} class="active"{% endif %}>
         <a href="#search-tab" data-toggle="tab">{{ _('Search') }}</a>
-        <!-- onclick="toggle_search('basic');"-->
-        {#% link_for _('Search'), controller='ckanext.kata.controllers:KataPackageController', action='advanced_search', icon='sitemap' %#}
       </li>
-      <li{% if c.current_search_rows %} class="active"{% endif %}>
-        {#% link_for _('Advanced search'), controller='ckanext.kata.controllers:KataPackageController', action='advanced_search', icon='time' %#}
+      <li{% if advanced_search %} class="active"{% endif %}>
         <a href="#advanced-search-tab" data-toggle="tab">{{ _('Advanced search') }}</a>
-        <!-- class="module-link" onclick="toggle_search('advanced');"-->
       </li>
     </ul>
   </header>
@@ -53,9 +48,8 @@
 
       {# Basic search tab #}
 
-      <div id="search-tab" class="tab-pane{% if not c.current_search_rows %} active{% endif %}">
-        {{ not c.current_search_rows }}
-        <form id="dataset-search" class="dataset-search clearfix {{ basic_classes }}" method="get" data-module="select-switch">
+      <div id="search-tab" class="tab-pane{% if not advanced_search %} active{% endif %}">
+        <form id="dataset-search" class="dataset-search clearfix" method="get" data-module="select-switch">
           <span class="control-group search-giant">
             <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
                  placeholder="{{ _('Search...') }}"/>
@@ -79,8 +73,7 @@
 
       {# Advanced search tab #}
 
-      <div id="advanced-search-tab" class="tab-pane{% if c.current_search_rows != False %} active{% endif %}">
-        {{ c.current_search_rows != False }}
+      <div id="advanced-search-tab" class="tab-pane{% if advanced_search %} active{% endif %}">
         <form id="advanced-search" class="dataset-search clearfix form-horizontal" method="get" data-module="advanced-search-kata">
           <span id="advanced-search-group" class="control-group">
 
@@ -127,7 +120,7 @@
             </div>
             {% endfor %}
 
-          {# INPUT DATES #}
+            {# INPUT DATES #}
 
             <div id="search-fields-end"></div>
             <div class="control-group">
@@ -135,12 +128,12 @@
                 <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
                 <div class="controls" id="advanced-search-date">
                   <input id="advanced-search-date-start" type="number"
-                         pattern="[0-9]{1,4}" class="" name="ext_date-metadata_modified-start"
+                         pattern="[0-9]{1,4}" class="kata-search-relation" name="ext_date-metadata_modified-start"
                          value="{{ c.current_search_limiters['ext_date-metadata_modified-start'] }}"
                          autocomplete="off" placeholder="{{ _('Start year') }}"/>
                   -
                   <input id="advanced-search-date-end" type="number"
-                         pattern="[0-9]{1,4}" class="search" name="ext_date-metadata_modified-end"
+                         pattern="[0-9]{1,4}" class="kata-search-relation" name="ext_date-metadata_modified-end"
                          value="{{ c.current_search_limiters['ext_date-metadata_modified-end'] }}"
                          autocomplete="off" placeholder="{{ _('End year') }}"/>
                 </div>
@@ -150,9 +143,7 @@
             <button id="advanced_search_submit" type="submit" value="{{ _('Search') }}">Submit</button>
           </span>
 
-          <div data-module="select-switch" data-module-id="advsearch" id="advsearch">
-            {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
-          </div>
+          {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
 
           {% if c.fields -%}
           <span>
@@ -231,12 +222,12 @@
 {% endblock %}
 
 {% block secondary_content %}
-{{ h.snippet('snippets/facet_list.html', title='Keywords', name='tags') }}
-{{ h.snippet('snippets/facet_list.html', title='File formats', name='extras_fformat') }}
-{{ h.snippet('snippets/facet_list.html', title='Discipline', name='groups') }}
-{{ h.snippet('snippets/facet_list.html', title='Author', name='authorstring') }}
-{{ h.snippet('snippets/facet_list.html', title='Organization', name='organizationstring') }}
-{{ h.snippet('snippets/facet_list.html', title='License', name='license') }}
-{{ h.snippet('snippets/facet_list.html', title='Language', name='extras_language') }}
+{{ h.snippet('snippets/facet_list.html', title=_('Keywords'), name='tags') }}
+{{ h.snippet('snippets/facet_list.html', title=_('File formats'), name='extras_fformat') }}
+{{ h.snippet('snippets/facet_list.html', title=_('Discipline'), name='groups') }}
+{{ h.snippet('snippets/facet_list.html', title=_('Author'), name='authorstring') }}
+{{ h.snippet('snippets/facet_list.html', title=_('Organization'), name='organizationstring') }}
+{{ h.snippet('snippets/facet_list.html', title=_('License'), name='license') }}
+{{ h.snippet('snippets/facet_list.html', title=_('Language'), name='extras_language') }}
 {% endblock %}
 
