@@ -33,7 +33,11 @@ setup(
 	message_extractors = {
 		'ckanext': [
 						('**.py', 'python', None),#
-						('kata/theme/templates/**.html', 'ckan', None),
+						('kata/theme/templates/package/**.html', 'ckan', None),
+						('kata/theme/templates/privacypolicy.html', 'ckan', None),
+						('kata/theme/templates/header.html', 'ckan', None),
+						('kata/theme/templates/footer.html', 'ckan', None),
+						('kata/theme/templates/kata/**.html', 'ckan', None),
 						],
 	},
 	entry_points=\
