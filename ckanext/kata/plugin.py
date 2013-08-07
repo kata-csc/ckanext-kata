@@ -514,7 +514,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 # Handle first search term row
                 (param, value) = extra_terms[0]
                 p_no_index = param.split("-")[0]
-                data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                data_dict['q'] += ' (%s:%s' % (p_no_index[4:], value)  # Add field search to query q
                 c.current_search_rows.append({'field':p_no_index, 'text':value})
 
                 n = min(len(extra_terms)-1, len(extra_ops))
@@ -526,6 +526,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
                     c.current_search_rows.append(
                         {'field':p_no_index, 'text':value, 'operator':ovalue})
+                data_dict['q'] += ')'
 
             # Parse year limit into query 'q'.
             # Eg. metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]

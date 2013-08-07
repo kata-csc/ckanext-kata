@@ -30,7 +30,7 @@
 
 <article class="module">
   <header class="module-content page-header">
-    <ul id="search-tabs" class="nav nav-tabs" data-module="search-tabs-ul">
+    <ul id="search-tabs" class="nav nav-tabs">
       <li{% if not advanced_search %} class="active"{% endif %}>
         <a href="#search-tab" data-toggle="tab">{{ _('Search') }}</a>
       </li>
@@ -140,7 +140,7 @@
               </span>
             </div>
 
-            <button id="advanced_search_submit" type="submit" value="{{ _('Search') }}">Submit</button>
+            <button id="advanced_search_submit" class="btn btn-primary" type="submit" value="{{ _('Search') }}">{{ _('Search') }}</button>
           </span>
 
           {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
