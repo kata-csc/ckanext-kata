@@ -1,3 +1,7 @@
+"""
+Utility functions for Kata.
+"""
+
 from ckan.lib.email_notifications import send_notification
 from pylons.i18n import gettext as _
 from pylons import config
@@ -11,6 +15,16 @@ from lxml import etree
 import socket
 
 log = logging.getLogger(__name__)
+
+textoutputprogs = {
+    'doc': '/usr/bin/catdoc',
+    'html': '/usr/bin/w3m',
+    'odt': '/usr/bin/odt2txt',
+    'xls': '/usr/bin/xls2csv',
+    'ods': '/usr/bin/ods2txt',
+    'ppt': '/usr/bin/catppt',
+    'odp': '/usr/bin/odp2txt',
+    }
 
 
 def generate_pid():
@@ -45,18 +59,11 @@ Please click this link if you want to give this user write access:
     email_dict["body"] = body
     send_notification(admin.as_dict(), email_dict)
 
-textoutputprogs = {
-                   'doc': '/usr/bin/catdoc',
-                   'html': '/usr/bin/w3m',
-                   'odt': '/usr/bin/odt2txt',
-                   'xls': '/usr/bin/xls2csv',
-                   'ods': '/usr/bin/ods2txt',
-                   'ppt': '/usr/bin/catppt',
-                   'odp': '/usr/bin/odp2txt',
-            }
-
 
 def convert_to_text(resource, resource_fname):
+    """
+    Convert structured documents to pure text.
+    """
     fmt = resource.format.lower()
     prog = textoutputprogs[fmt] if (fmt in textoutputprogs and \
                                     fmt is not 'txt') else ''

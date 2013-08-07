@@ -115,6 +115,6 @@ def delete_tables():
     if user_extra_revision_table.exists():
         user_extra_revision_table.delete()
     #if user_extra_table.exists():
-        #user_extra_table.drop()
+        #user_extra_table.delete()
     if kata_access_request_table.exists():
         kata_access_request_table.delete()

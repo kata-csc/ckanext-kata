@@ -2,12 +2,23 @@
 Controllers for Kata plus some additional functions.
 """
 
+import logging
+import os
+import tempfile
+import urllib2
+
 from _text import orngText
+from paste.deploy.converters import asbool
+from pylons import response, config, request, session, g
+from pylons.decorators.cache import beaker_cache
+from pylons.i18n import gettext as _
+from rdflib.term import Identifier
+from pairtree.storage_exceptions import FileNotFoundException
+
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.storage import get_ofs
 from ckan.controllers.user import UserController
-from ckan.lib.helpers import lang
 from ckan.logic import check_access
 from ckan.lib.munge import substitute_ascii_equivalents
 from ckan.lib.base import BaseController, c, h, redirect, render
@@ -15,30 +26,18 @@ from ckan.lib.navl.dictization_functions import unflatten
 from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params
 from ckan.model import Package, User, Related, Group, meta, Resource
 from ckan.model.authz import add_user_to_role
-from paste.deploy.converters import asbool
 from model import KataAccessRequest
-from pylons import response, config, request, session, g
-from pylons.decorators.cache import beaker_cache
-from pylons.i18n import gettext as _
-from rdflib.namespace import ClosedNamespace
-from rdflib.term import Identifier, Statement, Node, Variable
 from urnhelper import URNHelper
-from vocab import DC, DCES, DCAT, FOAF, OWL, RDF, RDFS, UUID, VOID, OPMV, SKOS, \
-    REV, SCOVO, XSD, LICENSES, Graph, URIRef, Literal, BNode
+from vocab import DC, FOAF, RDF, RDFS, XSD, Graph, URIRef, Literal
 import ckan.model as model
 import ckan.model.misc as misc
-import logging
-import os
-import tempfile
-import urllib2
 import ckan.lib.i18n
-
-
 from utils import convert_to_text, send_contact_email
-from pairtree.storage_exceptions import FileNotFoundException
 
 
 log = logging.getLogger('ckanext.kata.controller')
+
+BUCKET = config.get('ckan.storage.bucket', 'default')
 
 
 def get_extra_contact(context, data_dict, key="contact_name"):
@@ -333,8 +332,6 @@ class AccessRequestController(BaseController):
         else:
             h.flash_error(_("No such request found!"))
             redirect('/')
-
-BUCKET = config.get('ckan.storage.bucket', 'default')
 
 
 class DataMiningController(BaseController):
