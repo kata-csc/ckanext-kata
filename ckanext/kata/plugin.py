@@ -118,13 +118,13 @@ class KataMetadata(SingletonPlugin):
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="advanced_search")
         map.connect('help',
-                    '/kata/help',
+                    '/help',
                     controller="ckanext.kata.controllers:KataInfoController",
-                    action="renderHelp")
+                    action="render_help")
         map.connect('faq',
-                    '/kata/faq',
+                    '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
-                    action="renderFAQ")
+                    action="render_faq")
         return map
 
     def before_insert(self, mapper, connection, instance):

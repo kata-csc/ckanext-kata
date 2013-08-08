@@ -591,7 +591,7 @@ class KataInfoController(BaseController):
     """
     Renders help page.
     """
-    def renderHelp(self):
+    def render_help(self):
         return render('kata/help.html')
-    def renderFAQ(self):
+    def render_faq(self):
         return render('kata/faq.html')
