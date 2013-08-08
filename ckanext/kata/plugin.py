@@ -117,6 +117,14 @@ class KataMetadata(SingletonPlugin):
         map.connect('/dataset',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="advanced_search")
+        map.connect('help',
+                    '/kata/help',
+                    controller="ckanext.kata.controllers:KataInfoController",
+                    action="renderHelp")
+        map.connect('faq',
+                    '/kata/faq',
+                    controller="ckanext.kata.controllers:KataInfoController",
+                    action="renderFAQ")
         return map
 
     def before_insert(self, mapper, connection, instance):
@@ -589,4 +597,4 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #log.debug("search_results: %r" % search_results)
         #log.debug("data_dict: %r" % data_dict)
         return search_results
-
+    

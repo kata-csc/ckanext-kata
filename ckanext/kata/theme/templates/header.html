@@ -64,6 +64,14 @@
               {{ _('My Datasets') }}
             </a>
           </div>
+          {% if c.userobj.sysadmin %}
+              <div class="dropdown">
+              <a class="button" href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
+                <i class="icon-legal"></i>
+                {{ _('Sysadmin settings') }}
+              </a>
+            </div>
+          {% endif %}
         </div>
       {% else %}
         <nav class="section account not-authed">
@@ -90,28 +98,14 @@
   {% set current_lang = request.environ.CKAN_LANG %} 
     <nav id="kata_navigation">
       <ul>
-        {% if c.userobj %} 
-          {% if current_lang == "fi" %} 
-            <li id="nav-add-dataset"><a href=/fi/dataset/new>{{ _('Add Dataset') }}</a></li> 
-          {% else %} 
-            <li id="nav-add-dataset"><a href=/dataset/new>{{ _('Add Dataset') }}</a></li> 
-          {% endif %} 
-        {% endif %} 
-        {% if current_lang == "fi" %} 
-          <li id="nav-datasets"><a href=/fi/dataset>{{ _('Datasets') }}</a></li> 
-          <li id="nav-organizations"><a href=/fi/organization>{{ _('Organizations') }}</a></li> 
-          <li id="nav-groups"><a href=/fi/group>{{ _('Groups') }}</a></li> 
-          <li id="nav-about"><a href=/fi/about>{{ _('About') }}</a></li> 
-          <li id="nav-help"><a href=/fi/kata/help>{{ _('Help') }}</a></li> 
-          <li id="nav-faq"><a href=/fi/kata/faq>{{ _('FAQ') }}</a></li> 
-        {% else %} 
-          <li id="nav-datasets"><a href=/dataset>{{ _('Datasets') }}</a></li> 
-          <li id="nav-organizations"><a href=/organization>{{ _('Organizations') }}</a></li> 
-          <li id="nav-groups"><a href=/group>{{ _('Groups') }}</a></li> 
-          <li id="nav-about"><a href=/about>{{ _('About') }}</a></li> 
-          <li id="nav-help"><a href=/kata/help>{{ _('Help') }}</a></li> 
-          <li id="nav-faq"><a href=/kata/faq>{{ _('FAQ') }}</a></li> 
-        {% endif %} 
+      {{ h.build_nav_main(
+        ('add dataset', _('Add Dataset'), 'package_create'),
+        ('search', _('Datasets')),
+        ('organizations_index', _('Organizations')),
+        ('about', _('About')),
+        ('help', _('Help')),
+        ('faq', _('FAQ'))
+      )}}
       </ul>
     </nav>
    <div id="language-wrapper">

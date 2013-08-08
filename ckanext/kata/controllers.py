@@ -586,3 +586,12 @@ class KataPackageController(PackageController):
         #log.debug('advanced_search(): q: %r' % q)
         log.debug('advanced_search(): call to search()')
         return self.search()
+    
+class KataInfoController(BaseController):
+    """
+    Renders help page.
+    """
+    def renderHelp(self):
+        return render('kata/help.html')
+    def renderFAQ(self):
+        return render('kata/faq.html')
