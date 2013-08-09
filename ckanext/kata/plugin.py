@@ -359,13 +359,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if len(data[key]) == 0:
             data[key] = utils.generate_pid()
 
-    def form_to_db_schema(self):
+    def form_to_db_schema_options(self, package_type=None, options=None):
         """
         The data fields that are accepted by CKAN for each dataset can be changed with this method. Invoked also
         when adding a resource to a dataset.
 
-        Can be switched to form_to_db_schema_options(self, package_type=None, options=None)
-        if in need of customizing the schema for different uses.
+        This allows the selectino of different schemas for different purposes (like HTML form / API).
+        Can't be switched to form_to_db_schema() since they are used differently.
         """
 
         schema = form_to_db_package_schema()
@@ -423,13 +423,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             }
         return schema
 
-    def db_to_form_schema(self, options = None):
+    def db_to_form_schema_options(self, options = None):
         """
         The data fields that are returned from CKAN for each dataset can be changed with this method.
 
-
-        Can be switched to db_to_form_schema_options(self, options = None)
-        if in need of customizing the schema for different uses.
+        This allows the selectino of different schemas for different purposes (like HTML form / API).
+        Can't be switched to db_to_form_schema() since they are used differently.
         """
         schema = db_to_form_package_schema()
         for key in self.kata_field:

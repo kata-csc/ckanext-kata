@@ -19,6 +19,9 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
 
         # Set up Kata's additions to CKAN database (user_extra, etc.)
         kata_model.setup()
+        cls._original_config = config.copy()
+        config['ckan.plugins'] = 'KataMetadata'
+        wsgiapp = make_app(config['global_conf'], **config.local_conf)
 
         CreateTestData.create()
 
@@ -28,6 +31,8 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
 
         kata_model.delete_tables()
         CreateTestData.delete()
+        config.clear()
+        config.update(cls._original_config)
     
     def test_data_and_resources_not_rendered(self):
         """
