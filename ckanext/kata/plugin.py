@@ -117,18 +117,14 @@ class KataMetadata(SingletonPlugin):
         map.connect('/dataset',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="advanced_search")
-        map.connect('/help',
+        map.connect('help',
+                    '/help',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_help")
-        map.connect('/faq',
+        map.connect('faq',
+                    '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_faq")
-        map.connect('/dataset/new',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action="new")
-        map.connect('/dataset/edit/{id}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action="edit")
         return map
 
     def before_insert(self, mapper, connection, instance):
