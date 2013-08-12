@@ -1,29 +1,33 @@
 # pylint: disable=R0201
 
 """Unit tests for controllers"""
+import time
 
+from pylons import config
+import paste.fixture
+from ckan.config.middleware import make_app
+
+from ckan.lib.base import c
 from ckan.lib.create_test_data import CreateTestData
 from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
 from ckan.tests.html_check import HtmlCheckMethods
 from ckanext.kata import model as kata_model
 
 
-class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
     """
-    Tests for CKAN's package controller, to which Kata makes some changes by overriding templates.
+    Tests for Kata's controllers.
     """
     
     @classmethod
     def setup_class(cls):
-        """Set up tests."""
+        """Set up testing environment."""
 
-        # Set up Kata's additions to CKAN database (user_extra, etc.)
         kata_model.setup()
-        cls._original_config = config.copy()
-        config['ckan.plugins'] = 'KataMetadata'
-        wsgiapp = make_app(config['global_conf'], **config.local_conf)
-
         CreateTestData.create()
+
+        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
+        cls.app = paste.fixture.TestApp(wsgiapp)
 
     @classmethod
     def teardown_class(cls):
@@ -31,9 +35,25 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
 
         kata_model.delete_tables()
         CreateTestData.delete()
-        config.clear()
-        config.update(cls._original_config)
-    
+
+    def test_help_page(self):
+        """
+        Test that help page is found and rendered.
+        """
+
+        offset = url_for('/help')
+        res = self.app.post(offset)
+        assert res.status == 200, 'Wrong HTTP status code (not 200)'
+
+    def test_faq_page(self):
+        """
+        Test that faq page is found and rendered.
+        """
+
+        offset = url_for('/faq')
+        res = self.app.post(offset)
+        assert res.status == 200, 'Wrong HTTP status code (not 200)'
+
     def test_data_and_resources_not_rendered(self):
         """
         A package with no resources should not render Data and Resources section
@@ -52,78 +72,33 @@ class TestPackageController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
         res = self.app.get(offset)
         assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
 
-
-class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
-    """
-    Tests for Kata's ContactController.
-    """
-    
-#     _users = [
-#         {'name': 'tester',
-#          'fullname': 'Testi Testaaja',
-#          'password': 'pass'},
-#         ]
-    
-    @classmethod
-    def setup_class(cls):
-        """Set up Kata's additions to CKAN database (user_extra, etc.)"""
-
-        kata_model.setup()
-        CreateTestData.create()
-
-        # Couldn't get the session to work properly with a logged in user...
-
-        #tester = model.User(name=u'tester', apikey=u'tester',
-            #password=u'tester')
-        #model.Session.add(tester)
-        #model.Session.commit()
-#         CreateTestData.create_users(cls._users)
-#         model.repo.commit_and_remove() # due to bug in create_users
-#
-#         #model.Session.remove()
-#         user = model.User.by_name('tester')
-#         cls.extra_environ = {'Authorization': str(user.apikey)}
-
-    @classmethod
-    def teardown_class(cls):
-        kata_model.delete_tables()
-        CreateTestData.delete()
-    
     def test_contact_controller_found(self):
         offset = url_for(controller="contact", action='render', pkg_id=u'warandpeace')
-        assert offset[0] == '/', 'No URL received for contact controller' 
+        assert offset[0] == '/', 'No URL received for contact controller'
 
     def test_contact_controller_no_user(self):
         """
         Test that we get a redirect when there is no user
         """
-        
+
         offset = url_for(controller="contact", action='render', pkg_id=u'warandpeace')
         res = self.app.get(offset)
         assert res.status == 302, 'Expecting a redirect when user not logged in'
 
-#     def test_contact_controller_user_logged_in(self):
-#         '''
-#         Test that we get the contact form when user is logged in
-#          
-#         TODO: Form should probably be only visible if the dataset can be requested via the form.
-#         '''
-#          
-#         #package = model.Package.get(u'warandpeace')
-#          
-#         #CreateTestData.create_test_user()
-#         #model.Session.remove()
-#          
-#         #model.Session.add(model.User.by_name(u'tester'))
-#         #model.Session.commit()
-#          
-#         #self.normal_user = model.User.by_name('tester')
-#         #auth = {'Authorization': str(self.normal_user.api_key)}
-#          
-#         offset = url_for(controller="contact", action='render', pkg_id=u'warandpeace')
-#         res = self.app.get(offset, extra_environ=self.extra_environ)
-#          
-#         #assert res.status == 200, 'Not OK'
-#          
-#         assert all(piece in res.body for piece in ['<form', '/contact/send/', '</form>']), 'Contact form not rendered'
-#                  
+    def test_contact_controller_user_logged_in(self):
+        '''
+        Test that we get the contact form when user is logged in
+
+        Note: Form should probably be only visible if the dataset can be requested via the form?
+        '''
+
+        extra_environ = {'REMOTE_USER': 'tester'}
+
+        offset = url_for("/contact/warandpeace")
+        res = self.app.post(offset, extra_environ=extra_environ)
+
+        print offset
+        print res
+
+        assert all(piece in res.body for piece in ['<form', '/contact/send/', '</form>']), 'Contact form not rendered'
+

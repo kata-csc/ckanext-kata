@@ -4,10 +4,17 @@ Test classes for Kata CKAN Extension.
 """
 
 from unittest import TestCase
-from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, \
-    get_field_title
+from pylons.util import ContextObj, PylonsContext, pylons, AttribSafeContextObj
+
+from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 from ckanext.kata.plugin import KataPlugin
 
+from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
+from ckan.tests.html_check import HtmlCheckMethods
+from pylons import config
+import paste.fixture
+from paste.registry import RegistryManager
+from ckan.config.middleware import make_app
 
 class TestKataExtension(TestCase):
     """General tests for Kata CKAN extension."""
@@ -41,24 +48,39 @@ class TestKataExtension(TestCase):
         assert translator(_FIELD_TITLES['tags']) == title
 
 
-class TestKataPlugin(TestCase):
-    """General tests for KataPlugin."""
+class TestKataPlugin(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+    """
+    General tests for KataPlugin.
+
+    Provides a a dummy context object to test functions and methods that rely on it.
+    """
 
     @classmethod
     def setup_class(cls):
         """Set up tests."""
+
+        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
+        cls.app = paste.fixture.TestApp(wsgiapp)
+
         cls.some_data_dict = {'sort': u'metadata_modified desc', 'fq': '', 'rows': 20, 'facet.field': ['groups', 'tags', 'extras_fformat', 'license', 'authorstring', 'organizationstring', 'extras_language'], 'q': u'Selenium', 'start': 0, 'extras': {}}
         cls.kata_plugin = KataPlugin()
+
+        # The Pylons globals are not available outside a request. This is a hack to provide context object.
+        c = AttribSafeContextObj()
+        py_obj = PylonsContext()
+        py_obj.tmpl_context = c
+        pylons.tmpl_context._push_object(c)
 
     @classmethod
     def teardown_class(cls):
         """Get away from testing environment."""
-        pass
 
-#    def test_before_search(self):
-#        """Test before_search() output type."""
-#
-#        assert isinstance( self.kata_plugin.before_search(self.some_data_dict), dict), "KataPlugin.before_search() didn't output a dict"
+        pylons.tmpl_context._pop_object()
+
+    def test_before_search(self):
+        """Test before_search() output type."""
+
+        assert isinstance( self.kata_plugin.before_search(self.some_data_dict), dict), "KataPlugin.before_search() didn't output a dict"
 
     def test_get_actions(self):
         """Test get_actions() output type."""
@@ -83,14 +105,12 @@ class TestKataPlugin(TestCase):
         html_location = self.kata_plugin.search_template()
         assert len( html_location ) > 0
 
-# Needs Pylons context variable c initialized:
-#
-#    def test_form_to_db_schema(self):
-#        """Test form_to_db_schema()."""
-#        schema = self.kata_plugin.form_to_db_schema()
-#        assert isinstance(schema, dict) and len(schema) > 0
+    def test_form_to_db_schema_options(self):
+        """Test Kata schema."""
+        schema = self.kata_plugin.form_to_db_schema_options()
+        assert isinstance(schema, dict) and len(schema) > 0
 
-    def test_db_to_form_schema(self):
-        """Test db_to_form_schema()."""
-        schema = self.kata_plugin.db_to_form_schema()
+    def test_db_to_form_schema_options(self):
+        """Test Kata schema."""
+        schema = self.kata_plugin.db_to_form_schema_options()
         assert isinstance(schema, dict) and len(schema) > 0
