@@ -335,8 +335,14 @@ class AccessRequestController(BaseController):
 
 
 class DataMiningController(BaseController):
+    """
+    Controller for scraping content off a structured file.
+    """
 
     def read_data(self, id, resource_id):
+        """
+        Scrape words from a structured file and save it to extras.
+        """
         res = Resource.get(resource_id)
         pkg = Package.get(id)
         c.pkg_dict = pkg.as_dict()

@@ -1,13 +1,11 @@
-# pylint: disable=R0201
+#pylint: disable=R0201, R0904
 
 """Unit tests for controllers"""
-import time
 
 from pylons import config
-import paste.fixture
-from ckan.config.middleware import make_app
+import paste.fixture    # pylint: disable=F0401
 
-from ckan.lib.base import c
+from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
 from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
 from ckan.tests.html_check import HtmlCheckMethods
@@ -16,7 +14,7 @@ from ckanext.kata import model as kata_model
 
 class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
     """
-    Tests for Kata's controllers.
+    Tests for Kata's controllers and routing.
     """
     
     @classmethod
@@ -40,7 +38,6 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         """
         Test that help page is found and rendered.
         """
-
         offset = url_for('/help')
         res = self.app.post(offset)
         assert res.status == 200, 'Wrong HTTP status code (not 200)'
@@ -49,7 +46,6 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         """
         Test that faq page is found and rendered.
         """
-
         offset = url_for('/faq')
         res = self.app.post(offset)
         assert res.status == 200, 'Wrong HTTP status code (not 200)'
@@ -58,7 +54,6 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         """
         A package with no resources should not render Data and Resources section
         """
-
         offset = url_for(controller='package', action='read', id=u'warandpeace')
         res = self.app.get(offset)
         assert '<section id="dataset-resources"' not in res, 'A package with no resources should not render Data and Resources section'
@@ -67,21 +62,15 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         """
         A package with resources should render Data and Resources section
         """
-
         offset = url_for(controller='package', action='read', id=u'annakarenina')
         res = self.app.get(offset)
         assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
-
-    def test_contact_controller_found(self):
-        offset = url_for(controller="contact", action='render', pkg_id=u'warandpeace')
-        assert offset[0] == '/', 'No URL received for contact controller'
 
     def test_contact_controller_no_user(self):
         """
         Test that we get a redirect when there is no user
         """
-
-        offset = url_for(controller="contact", action='render', pkg_id=u'warandpeace')
+        offset = url_for("/contact/warandpeace")
         res = self.app.get(offset)
         assert res.status == 302, 'Expecting a redirect when user not logged in'
 

@@ -13,18 +13,9 @@ import subprocess
 import urllib2
 from lxml import etree
 import socket
+from ckanext.kata.settings import TEXTOUTPUTPROGS
 
 log = logging.getLogger(__name__)
-
-textoutputprogs = {
-    'doc': '/usr/bin/catdoc',
-    'html': '/usr/bin/w3m',
-    'odt': '/usr/bin/odt2txt',
-    'xls': '/usr/bin/xls2csv',
-    'ods': '/usr/bin/ods2txt',
-    'ppt': '/usr/bin/catppt',
-    'odp': '/usr/bin/odp2txt',
-    }
 
 
 def generate_pid():
@@ -65,7 +56,7 @@ def convert_to_text(resource, resource_fname):
     Convert structured documents to pure text.
     """
     fmt = resource.format.lower()
-    prog = textoutputprogs[fmt] if (fmt in textoutputprogs and \
+    prog = TEXTOUTPUTPROGS[fmt] if (fmt in TEXTOUTPUTPROGS and \
                                     fmt is not 'txt') else ''
     if not prog:
         return None, None
@@ -96,8 +87,12 @@ The message is as follows:
     send_notification(owner.as_dict(), email_dict)
 
 
-# For use with label_list_yso.
-_tagspaces = {
+def label_list_yso(tag_url):
+    """
+    Takes tag keyword URL and fetches the labels that link to it.
+    """
+
+    _tagspaces = {
     'rdf' : 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
     'yso-meta' : 'http://www.yso.fi/onto/yso-meta/2007-03-02/',
     'rdfs' : "http://www.w3.org/2000/01/rdf-schema#",
@@ -111,12 +106,8 @@ _tagspaces = {
     'owl' : "http://www.w3.org/2002/07/owl#",
     'xsd' : "http://www.w3.org/2001/XMLSchema#",
     'yso' : "http://www.yso.fi/onto/yso/",
-}
+    }
 
-def label_list_yso(tag_url):
-    """
-    Takes tag keyword URL and fetches the labels that link to it.
-    """
     labels = []
     if not tag_url.endswith("?rdf=xml"):
         tag_url += "?rdf=xml" # Small necessary bit.

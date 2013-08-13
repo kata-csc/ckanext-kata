@@ -43,6 +43,17 @@ SEARCH_FIELDS = ['ext_text',
                     'ext_extras_language',
                     ]
 
+# File types and converters used by DataMiningController.
+TEXTOUTPUTPROGS = {
+    'doc': '/usr/bin/catdoc',
+    'html': '/usr/bin/w3m',
+    'odt': '/usr/bin/odt2txt',
+    'xls': '/usr/bin/xls2csv',
+    'ods': '/usr/bin/ods2txt',
+    'ppt': '/usr/bin/catppt',
+    'odp': '/usr/bin/odp2txt',
+    }
+
 
 def get_field_titles(_):
     '''
