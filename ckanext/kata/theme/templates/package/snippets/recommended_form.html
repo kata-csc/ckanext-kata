@@ -95,8 +95,6 @@
 		<li class="kata">
 			<div class="input-prepend">
 				<select name="evtype__{{index}}__value" style="width: 95px;">
-					<!-- option selected>{{ _('collection') }}</option -->
-					<!-- option selected>{{type.value}}</option -->
 					<option {% if type.value=='collection'%}selected{% endif %}>{{ _('collection') }}</option>
 					<option {% if type.value=='creation'%}selected{% endif %}>{{ _('creation') }}</option>
 					<option {% if type.value=='checked'%}selected{% endif %}>{{ _('checked') }}</option>
@@ -138,7 +136,6 @@
 		<li class="kata">
 			<div class="input-prepend">
 				<select name="evtype__{{index}}__value" style="width: 95px;">
-					<!-- option selected>{{ _('collection') }}</option -->
 					<option {% if type.value=='collection'%}selected{% endif %}>{{ _('collection') }}</option>
 					<option {% if type.value=='creation'%}selected{% endif %}>{{ _('creation') }}</option>
 					<option {% if type.value=='checked'%}selected{% endif %}>{{ _('checked') }}</option>
