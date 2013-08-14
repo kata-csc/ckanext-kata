@@ -166,13 +166,13 @@ This dataset is
 <section class="module-content additional-info">
 <h3>{{ _('Dataset lifecycle events') }}</h3>
 <table class="table table-striped table-bordered table-condensed">
-<th>type</th>
-<th>who</th>
-<th>when</th>
-<th>description</th>
+<th>{{ _('Type') }}</th>
+<th>{{ _('Who') }}</th>
+<th>{{ _('Date') }}</th>
+<th>{{ _('Description') }}</th>
 {% for type, who, when, descr in pkg_dict.events %}
 <tr>
-<td>{{type.value}}</td><td>{{who.value}}</td><td>{{when.value}}</td><td>{{descr.value}}</td>
+<td>{{ _(type.value) }}</td><td>{{who.value}}</td><td>{{when.value}}</td><td>{{descr.value}}</td>
 </tr>
 {% endfor %}
 </table>
