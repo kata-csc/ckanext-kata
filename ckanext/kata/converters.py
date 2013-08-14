@@ -200,50 +200,22 @@ def ltitle_from_extras(key, data, errors, context):
 
 
 def event_to_extras(key, data, errors, context):
+    """
+    Parses separate 'ev*' parameters from 'data' data_dict to 'extra' field
+    in that same 'data'.
+    @param key: key from schema
+    @param data: whole data_dict passed for modification
+    """
+    log.debug("event_to_extras(key, ...): key: %s" % str(key))
+
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    typenum = 1
-    whonum = 1
-    whennum = 1
-    descrnum = 1
-    for k in data.keys():
-        try:
-            if k[0] == 'evtype' \
-            and (k[0], k[1], 'value') in data \
-            and len(data[(k[0], k[1], 'value')]) > 0 \
-            and type(data[(k[0], k[1], 'value')]) == unicode:
-                extras.append({'key': "%s_%d" % (k[0], typenum),
-                               'value': data[(k[0], k[1], 'value')]
-                            })
-                typenum += 1
-            if k[0] == 'evwho' \
-            and (k[0], k[1], 'value') in data \
-            and len(data[(k[0], k[1], 'value')]) > 0 \
-            and type(data[(k[0], k[1], 'value')]) == unicode:
-                extras.append({'key': "%s_%d" % (k[0], whonum),
-                               'value': data[(k[0], k[1], 'value')]
-                            })
-                whonum += 1
-            if k[0] == 'evwhen' \
-            and (k[0], k[1], 'value') in data \
-            and len(data[(k[0], k[1], 'value')]) > 0 \
-            and type(data[(k[0], k[1], 'value')]) == unicode:
-                extras.append({'key': "%s_%d" % (k[0], whennum),
-                               'value': data[(k[0], k[1], 'value')]
-                            })
-                whennum += 1
-            if k[0] == 'evdescr' \
-            and (k[0], k[1], 'value') in data \
-            and len(data[(k[0], k[1], 'value')]) > 0 \
-            and type(data[(k[0], k[1], 'value')]) == unicode:
-                extras.append({'key': "%s_%d" % (k[0], descrnum),
-                               'value': data[(k[0], k[1], 'value')]
-                            })
-                descrnum += 1
-        except:
-            pass
-
+    if (key[2] == 'value' and len(data[key]) > 0 and
+        type(data[key]) == unicode):
+            extras.append({'key': "%s_%d" % (key[0], key[1]),
+                           'value': data[key]
+                          })
 
 def event_from_extras(key, data, errors, context):
     if not ('events',) in data:
