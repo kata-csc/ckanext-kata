@@ -56,7 +56,7 @@ def convert_to_text(resource, resource_fname):
     Convert structured documents to pure text.
     """
     fmt = resource.format.lower()
-    prog = TEXTOUTPUTPROGS[fmt] if (fmt in TEXTOUTPUTPROGS and \
+    prog = TEXTOUTPUTPROGS[fmt] if (fmt in TEXTOUTPUTPROGS and
                                     fmt is not 'txt') else ''
     if not prog:
         return None, None
@@ -76,14 +76,13 @@ def send_contact_email(owner, requestee, pkg, message):
 The message is as follows:
 %s
 """)
-    body = msg % (requestee.name,\
-                  requestee.email,\
-                  pkg.title if pkg.title else pkg.name,\
+    body = msg % (requestee.name,
+                  requestee.email,
+                  pkg.title if pkg.title else pkg.name,
                   message)
-    email_dict = {}
-    email_dict["subject"] = _("Material access request for dataset %s" % pkg.title\
-                              if pkg.title else pkg.name)
-    email_dict["body"] = body
+    email_dict = {"subject": _("Material access request for dataset %s" % pkg.title \
+                        if pkg.title else pkg.name),
+                  "body": body}
     send_notification(owner.as_dict(), email_dict)
 
 

@@ -26,14 +26,15 @@ from ckan.lib.navl.dictization_functions import unflatten
 from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params
 from ckan.model import Package, User, Related, Group, meta, Resource
 from ckan.model.authz import add_user_to_role
-from model import KataAccessRequest
-from urnhelper import URNHelper
-from vocab import DC, FOAF, RDF, RDFS, XSD, Graph, URIRef, Literal
+from ckanext.kata.model import KataAccessRequest
+from ckanext.kata.urnhelper import URNHelper
+from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, XSD, Graph, URIRef, Literal
+from ckanext.kata.utils import convert_to_text, send_contact_email
 import ckan.model as model
 import ckan.model.misc as misc
 import ckan.lib.i18n
-from utils import convert_to_text, send_contact_email
 
+from operator import itemgetter
 
 log = logging.getLogger('ckanext.kata.controller')
 
@@ -336,12 +337,12 @@ class AccessRequestController(BaseController):
 
 class DataMiningController(BaseController):
     """
-    Controller for scraping content off a structured file.
+    Controller for scraping metadata content from files.
     """
 
     def read_data(self, id, resource_id):
         """
-        Scrape words from a structured file and save it to extras.
+        Scrape all words from a file and save it to extras.
         """
         res = Resource.get(resource_id)
         pkg = Package.get(id)
@@ -352,45 +353,62 @@ class DataMiningController(BaseController):
         label = res.url.split(config.get('ckan.site_url') + '/storage/f/')[-1]
         label = urllib2.unquote(label)
         ofs = get_ofs()
+
         try:
+            # Get file location
             furl = ofs.get_url(BUCKET, label).split('file://')[-1]
         except FileNotFoundException:
             h.flash_error(_('Cannot do data mining on remote resource!'))
             url = h.url_for(controller='package', action='resource_read',
                             id=id, resource_id=resource_id)
             return redirect(url)
+
         wordstats = {}
         ret = {}
+
         if res.format in ('TXT', 'txt'):
             wdsf, wdspath = tempfile.mkstemp()
             os.write(wdsf, "%s\nmetadata description title information" % furl)
+
             with os.fdopen(wdsf, 'r') as wordfile:
                 preproc = orngText.Preprocess()
                 table = orngText.loadFromListWithCategories(wdspath)
                 data = orngText.bagOfWords(table, preprocessor=preproc)
                 words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
+
             for i in range(len(words)):
                 d = words[i]
                 wordstats = d.get_metas(str)
+
             for k, v in wordstats.items():
                 if v.value > 10.0:
                     ret[unicode(k, 'utf8')] = v.value
-            from operator import itemgetter
+
             c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
             os.remove(wdspath)
+
             for i in range(len(data)):
                     d = words[i]
                     wordstats = d.get_metas(str)
+
             words = []
             for k, v in wordstats.items():
                 words.append(k)
+
+            # Save scraped words to extras.
+
             model.repo.new_revision()
             if not 'autoextracted_description' in pkg.extras:
                 pkg.extras['autoextracted_description'] = ' '.join(words)
+
             pkg.save()
+
             return render('datamining/read.html')
+
         elif res.format in ('odt', 'doc', 'xls', 'ods', 'odp', 'ppt', 'doc', 'html'):
+
             textfd, textpath = convert_to_text(res, furl)
+
             if not textpath:
                 h.flash_error(_('This file could not be mined for any data!'))
                 os.close(textfd)
@@ -402,29 +420,38 @@ class DataMiningController(BaseController):
                 table = orngText.loadFromListWithCategories(wdspath)
                 data = orngText.bagOfWords(table, preprocessor=preproc)
                 words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
+
                 for i in range(len(words)):
                     d = words[i]
                     wordstats = d.get_metas(str)
+
                 for k, v in wordstats.items():
                     if v.value > 10.0:
                         ret[unicode(k, 'utf8')] = v.value
-                from operator import itemgetter
+
                 c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
                 os.close(textfd)
                 os.close(wdsf)
                 os.remove(wdspath)
                 os.remove(textpath)
+
                 for i in range(len(data)):
                     d = words[i]
                     wordstats = d.get_metas(str)
+
                 words = []
+
                 for k, v in wordstats.items():
                     log.debug(k)
                     words.append(substitute_ascii_equivalents(k))
+
                 model.repo.new_revision()
+
                 if not 'autoextracted_description' in pkg.extras:
                     pkg.extras['autoextracted_description'] = ' '.join(words)
+
                 pkg.save()
+
                 return render('datamining/read.html')
         else:
             h.flash_error(_('This metadata document is not in proper format for data mining!'))
@@ -433,26 +460,33 @@ class DataMiningController(BaseController):
             return redirect(url)
 
     def save(self):
-        if c.user:
-            model.repo.new_revision()
-            data = clean_dict(unflatten(tuplize_dict(parse_params(request.params))))
-            package = Package.get(data['pkgid'])
-            keywords = []
-            context = {'model': model, 'session': model.Session,
-                       'user': c.user}
-            if check_access('package_update', context, data_dict={"id": data['pkgid']}):
-                for k, v in data.items():
-                    if k.startswith('kw'):
-                        keywords.append(v)
-                tags = package.get_tags()
-                for kw in keywords:
-                    if not kw in tags:
-                        package.add_tag_by_name(kw)
-                package.save()
-                url = h.url_for(controller='package', action='read', id=data['pkgid'])
-                redirect(url)
-            else:
-                redirect('/')
+        if not c.user:
+            return
+
+        model.repo.new_revision()
+        data = clean_dict(unflatten(tuplize_dict(parse_params(request.params))))
+        package = Package.get(data['pkgid'])
+        keywords = []
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user}
+
+        if check_access('package_update', context, data_dict={"id": data['pkgid']}):
+
+            for k, v in data.items():
+                if k.startswith('kw'):
+                    keywords.append(v)
+
+            tags = package.get_tags()
+
+            for kw in keywords:
+                if not kw in tags:
+                    package.add_tag_by_name(kw)
+
+            package.save()
+            url = h.url_for(controller='package', action='read', id=data['pkgid'])
+            redirect(url)
+        else:
+            redirect('/')
 
 
 class ContactController(BaseController):

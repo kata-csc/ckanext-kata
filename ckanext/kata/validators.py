@@ -1,3 +1,7 @@
+"""
+Validators for user inputs
+"""
+
 import iso8601
 import logging
 import pycountry
@@ -13,6 +17,10 @@ from ckan.lib.navl.dictization_functions import StopOnError
 
 log = logging.getLogger('ckanext.kata.validators')
 
+# Regular expressions for validating e-mail and telephone number
+EMAIL_REGEX = re.compile(r'[^@]+@[^@]+\.[^@]+')
+TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
+
 
 def validate_access(key, data, errors, context):
     if data[key] == 'form':
@@ -27,13 +35,18 @@ def check_project(key, data, errors, context):
             errors[key].append(_('Project data received even if no project is associated.'))
 
 
-def validate_lastmod(key, data, errors, context):
+def validate_kata_date(key, data, errors, context):
+    """
+    Validate a date string. Empty strings also pass.
+    """
     if data[key] == u'':
         return
     try:
         iso8601.parse_date(data[key])
-    except iso8601.ParseError, ve:
-        errors[key].append(_('Invalid date format, must be like 2012-12-31T13:12:11'))
+    except iso8601.ParseError:
+        errors[key].append(_('Invalid date format, must be like 2012-12-31T13:12:11.'))
+    except ValueError:
+        errors[key].append(_('Invalid date'))
 
 
 def check_junk(key, data, errors, context):
@@ -51,25 +64,41 @@ def check_last_and_update_pid(key, data, errors, context):
 
 
 def validate_language(key, data, errors, context):
-    value = data[key]
-    langdis = data.get(('langdis',), None)
-    if langdis == 'True':
-        value = data.pop(key, None)
-        h.flash_notice(_("Language was deleted as it is disabled. Value was: %s" % value))
-        return
-    for lang in value.split(','):
-        lang = lang.strip()
-        try:
-            if lang:
-                pycountry.languages.get(alpha2=lang)
-            elif langdis == 'False':
-                errors[key].append(_('No language given.'))
-        except KeyError:
-            if not ('langdis',) in data and 'save' in context:
-                errors[key].append(_('Invalid language %s, not in ISO 639.' % lang))
+    """
+    Validate ISO 639 language abbreviations. If langdis == 'True', remove all languages.
+    """
 
-EMAIL_REGEX = re.compile(r'[^@]+@[^@]+\.[^@]+')
-TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
+    value = data.get(key)
+    langs = value.split(',')
+
+    langdis = data.get(('langdis',), None)
+
+    if langdis == 'False':
+        # Language enabled
+
+        if langs == [u'']:
+            errors[key].append(_('No language given.'))
+            return
+    else:
+        # Language disabled
+
+        # Display flash message if user is loading a page.
+        if 'session' in globals():
+            h.flash_notice(_("Because language is disabled, removing languages: '%s'" % value))
+
+        # Remove languages.
+        del data[key]
+        data[key] = u''
+
+        return
+
+    for lang in langs:
+        lang = lang.strip()
+        if lang:
+            try:
+                pycountry.languages.get(alpha2=lang)
+            except KeyError:
+                errors[key].append(_('Language %s not in ISO 639 format' % lang))
 
 
 def validate_email(key, data, errors, context):

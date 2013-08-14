@@ -23,7 +23,7 @@ from ckan.logic.schema import db_to_form_package_schema, \
                                 form_to_db_package_schema, \
                                 default_resource_schema
 from ckan.lib.navl.validators import missing, ignore_missing, ignore, not_empty, not_missing, default
-from validators import check_project, validate_access, validate_kata_date, \
+from ckanext.kata.validators import check_project, validate_access, validate_kata_date, \
                         check_junk, check_last_and_update_pid, \
                         validate_language, validate_email, validate_phonenum, \
                         check_project_dis, check_accessrequesturl, check_accessrights, \
@@ -32,11 +32,11 @@ from converters import event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras, \
                         org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
     add_to_group
-import actions
-import auth_functions
-from model import KataAccessRequest
+import ckanext.kata.actions
+import ckanext.kata.auth_functions
+from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
-import utils
+import ckanext.kata.utils
 
 
 log = logging.getLogger('ckanext.kata')
