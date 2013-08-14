@@ -28,15 +28,13 @@ from ckanext.kata.validators import check_project, validate_access, validate_kat
                         validate_language, validate_email, validate_phonenum, \
                         check_project_dis, check_accessrequesturl, check_accessrights, \
     check_author_org
-from converters import event_from_extras,\
+from ckanext.kata.converters import event_from_extras,\
                         event_to_extras, ltitle_from_extras, ltitle_to_extras, \
                         org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
     add_to_group
-import ckanext.kata.actions
-import ckanext.kata.auth_functions
+from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
-import ckanext.kata.utils
 
 
 log = logging.getLogger('ckanext.kata')
