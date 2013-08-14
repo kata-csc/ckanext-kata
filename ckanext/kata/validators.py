@@ -11,7 +11,7 @@ from ckan.model import Package
 from ckan.lib import helpers as h
 
 from pylons.i18n import gettext as _
-import utils
+import ckanext.kata.utils as utils
 from ckan.lib.navl.validators import not_empty, not_missing
 from ckan.lib.navl.dictization_functions import StopOnError
 
