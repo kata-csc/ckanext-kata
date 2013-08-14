@@ -23,7 +23,7 @@ from ckan.logic.schema import db_to_form_package_schema, \
                                 form_to_db_package_schema, \
                                 default_resource_schema
 from ckan.lib.navl.validators import missing, ignore_missing, ignore, not_empty, not_missing, default
-from validators import check_project, validate_access, validate_lastmod, \
+from validators import check_project, validate_access, validate_kata_date, \
                         check_junk, check_last_and_update_pid, \
                         validate_language, validate_email, validate_phonenum, \
                         check_project_dis, check_accessrequesturl, check_accessrights, \
@@ -383,14 +383,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema['title'] = {'value': [not_missing, ltitle_to_extras],
                                'lang': [not_missing]}
 
-        schema['temporal_coverage_begin'].append(validate_lastmod)
-        schema['temporal_coverage_end'].append(validate_lastmod)
+        schema['temporal_coverage_begin'].append(validate_kata_date)
+        schema['temporal_coverage_end'].append(validate_kata_date)
         schema['language'] = [validate_language, self.convert_to_extras_kata, unicode]
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
         schema['tag_string'].append(not_empty)
         schema.update({
-           'version': [not_empty, unicode, validate_lastmod, check_last_and_update_pid],
+           'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
            'versionPID': [self.update_pid, unicode, self.pid_to_extras],
            'author': {'value': [not_empty, unicode, org_auth_to_extras]},
            'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
