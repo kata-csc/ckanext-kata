@@ -5,7 +5,7 @@
 <h2 class="module-heading">{{ _('Required information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name %}{{data.name}}{% endif %}" />
-{% call form.input_block("titles", "Titles" , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
+{% call form.input_block("titles", _('Titles') , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
 	<div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
 	
 	{% set titles = [] %}
@@ -48,9 +48,9 @@
 					{{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change();") }}
 				{% endif %} 
 				
-				{% if title.value %}
+				{#% if title.value %#}
 					<input style="display: none;" type="checkbox" id="lbtn__{{index}}__value_id" name="lbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-				{% endif %} 
+				{#% endif %#}
 			</div>
 		{% endcall %}
 	{% endfor %}
