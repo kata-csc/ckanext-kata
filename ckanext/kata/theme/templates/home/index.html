@@ -11,15 +11,50 @@
 {% block secondary_content %}
 {% endblock %}
 
-{% block home_primary_text %}
+{% block home_image %}
 {% endblock %}
 
-{% block home_image %}
+{% block home_secondary_content %}
+  {% block home_search %}
+    <div class="module module-shallow module-narrow module-dark info">
+      <form class="dataset-search module-content clearfix" method="get" action="{% url_for controller='package', action='search' %}">
+        <h3 class="heading">{{ _("Search Research Data") }}</h3>
+        <span class="control-group search-giant">
+          <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('eg. climate research material') }}" />
+          <button type="submit" value="{{ _('Search') }}">Submit</button>
+        </span>
+      </form>
+    </div>
+  {% endblock %}
 {% endblock %}
 
 {% block home_tags %}
 {% endblock %}
 
 {% block home_primary_heading %}
-{{ _('Welcome to KATA') }}
+{{ _('Welcome to search for research data') }}
 {% endblock%}
+{% block home_primary_text %}
+{# TODO: make this prettier, insert graphics etc. #}
+  <p>
+    {{ _('Kata metadata catalogue contains metadata of research data. Here you can search and find research data for your needs or even add you own data for others to reuse.') }}
+  </p>
+  <h3>
+    {{ _('What is metadata?') }}
+  </h3>
+  <p>
+    {{ _('Shortly explained metadata is data of data. Metadata describes important features of data which can be for example authors, subject, format and license.') }}
+    {{ _('The content of metadata varies a lot depending on the data, but this service will provide a uniform set of metadata fields tailored for research data, the metadata information defined by the minimum metadata model by TTA.') }}
+  </p>
+  <h3>
+    {{ _('Is this service for me?') }}
+  </h3>
+  <p>
+    {{ _('Kata service aims to collect data from various places and from various branches of science to be a single point of access to all kinds of research data.') }}
+    {{ _('To search for data or even to add your own data doesn\'t require you to be a professional scientist or researcher - useful data can be generated and reused anywhere and by anyone.') }}
+  </p>
+  <h3>
+    {{ _('Is all data open?') }}
+  </h3>
+    {{ _('All metadata is open, but it is for the author to decide how the data is accessed and by who. Nevertheless, providing your data openly is recommended.') }}
+{% endblock %}

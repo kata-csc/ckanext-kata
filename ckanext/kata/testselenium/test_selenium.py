@@ -61,7 +61,7 @@ class TestDatasetSelenium(TestCase):
             field.send_keys('seleniumuser' + str(int(time.time()*100)))
 
             field = reg_browser.find_element_by_xpath("//input[@id='field-email']")
-            field.send_keys('seleniumuser@kata.fi')
+            field.send_keys('kata.selenium@gmail.com')
 
             field = reg_browser.find_element_by_xpath("//input[@id='field-password']")
             field.send_keys('seleniumuser')
@@ -214,4 +214,100 @@ class TestDatasetSelenium(TestCase):
             self.browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
             assert 0, "Sending contact form didn't finish"
 
+    def test_0_test_navigation(self):
+        '''
+        Test that Selenium can access the navigation and all are present.
+        '''
+        # These tests are very clumsy and should be made more sane in the future
 
+        self.browser.get("https://localhost/")
+        #assert "Kata" in self.browser.title
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/dataset')]")           
+        except NoSuchElementException:
+            assert 0, 'Search (dataset) navigation not found for anonymous user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/organization')]")
+        except NoSuchElementException:
+            assert 0, 'Organization navigation not found for anonymous user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/group')]")           
+        except NoSuchElementException:
+            assert 0, 'Group navigation not found for anonymous user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/about')]")
+        except NoSuchElementException:
+            assert 0, 'About navigation not found for anonymous user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/help')]")           
+        except NoSuchElementException:
+            assert 0, 'Help navigation not found for anonymous user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/faq')]")
+        except NoSuchElementException:
+            assert 0, 'FAQ navigation not found for anonymous user'   
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/user/login')]")
+        except NoSuchElementException:
+            assert 0, 'Log in link not found for anonymous user'
+            
+    def test_2_test_navigation(self):
+        '''
+        Test that navigation is ok for logged in user.
+        '''
+        # These should match often twice, clumsy, fix in the future
+        self.browser.get("https://localhost/")
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/dataset/new')]")           
+        except NoSuchElementException:
+            assert 0, 'Search (dataset) navigation not found for logged in user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/dataset')]")           
+        except NoSuchElementException:
+            assert 0, 'Search (dataset) navigation not found for logged in user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/organization')]")
+        except NoSuchElementException:
+            assert 0, 'Organization navigation not found for logged in user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/group')]")           
+        except NoSuchElementException:
+            assert 0, 'Group navigation not found for logged in user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/about')]")
+        except NoSuchElementException:
+            assert 0, 'About navigation not found for logged in user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/help')]")           
+        except NoSuchElementException:
+            assert 0, 'Help navigation not found for logged in user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/faq')]")
+        except NoSuchElementException:
+            assert 0, 'FAQ navigation not found for logged in user'   
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/dashboard')]")
+        except NoSuchElementException:
+            assert 0, 'Notifications link not found for logged in user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/user/_logout')]")
+        except NoSuchElementException:
+            assert 0, 'Log out link not found for logged in user'
+#        try:
+#            search = self.browser.find_element_by_xpath("//a[contains(@href, '/#')]")
+#        except NoSuchElementException:
+#            assert 0, 'Drop down (profile menu) link not found for logged in user'
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/user/selenium')]")
+        except NoSuchElementException:
+            assert 0, 'My datasets link not found for logged in user'
+
+    def test_9_test_logout(self):
+        self.browser.get("https://localhost/en/user/_logout")
+
+        try:
+            search = self.browser.find_element_by_xpath("//h1[.='Logged Out']")
+        except NoSuchElementException:
+            test_browser.get_screenshot_as_file('test_9_test_logout.png')
+            assert 0, "Error logging out"
+        
