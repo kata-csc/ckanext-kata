@@ -5,7 +5,7 @@
 <h2 class="module-heading">{{ _('Required information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name %}{{data.name}}{% endif %}" />
-{% call form.input_block("titles", "Titles" , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
+{% call form.input_block("titles", "Titles", error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
 	<div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
 	
 	{% set titles = [] %}
@@ -30,13 +30,11 @@
 
 	{# Render title fields #}
 	{% for title, lang in titles %}
-	
+	    {{ titles }}
 		{% set index = loop.index0 %}
-		
 		{% call form.input('title__' ~ index ~ '__value', id='title__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, error=errors.title, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
-			
 			{% if index == 0 %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about title')) }}
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded but, note that the first title field must have a value.')) }}
 			{% endif %} 
 			
 			<label class="control-label kata-input-comp" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
@@ -98,7 +96,7 @@
 				<div class="controls editor">
 					<input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{ author.value }}" />
 					{% if index == 0 %}
-						{{ kata_form.tooltip(tooltip=_('Cool help text about author')) }}
+						{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave and added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />Author can be a name or an identifier URL, like an orcid identifier.')) }}
 					{% endif %}
 				</div>
 			<label class="control-label kata-input-comp" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
@@ -117,13 +115,13 @@
 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?', 'class': "kata-medium-input"} %}
 
 {% call form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], label_classes=['control-label'], attrs=tag_attrs) %}
-	{{ kata_form.tooltip(tooltip=_('Cool help text about keywords')) }}
+	{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Keywords are a set of words describing the subject and content of the data. Start typing to the keywords field. You will get suggestions from an ontology, from which you can select a word by clicking it or first selecting it and then pressing the enter key. You can also add custom keywords by typing the word you want and accepting it with the enter key. Remove an added keyword from the \'x\' button next to the keyword.')) }}
 {% endcall %}
 
 <input type="checkbox" style="top: 0px;" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis == 'False' and data.langdis %}checked value="False"{% else %}value="True"{% endif %}>{{ _('This dataset does not have a language') }}</input>
 <div id="langdiv" {% if data.langdis == 'False' and data.langdis %} style="display: none" {% endif %}>
 {% call form.input('language', label=_('Languages'), id='language', placeholder=_('en, fi, sv ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
-	{{ kata_form.tooltip(tooltip=_('Cool help text about languages')) }}
+	{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a comma separated list of languages used in your research material, for example \"en, fi, sv\".')) }}
 {% endcall %}
 </div>
 </div>
@@ -134,49 +132,48 @@
 	<div class="module-content">
 		<h3 class="module-heading">{{ _('Distributor / publisher contact information') }}</h3>
 		<div class="module-content">
-			{% set cont_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/contact_autocomplete?incomplete=?', 'data-module-items': 1, 'class': "kata-medium-input"} %}
 			{% set contact_name = data.publisher if data.publisher else user.fullname %}
 			{% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
 
-			{% call form.input('publisher', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.publisher, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=cont_attrs) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about publisher')) }} 
+			{% call form.input('publisher', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.publisher, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone that can be contacted if more information about the data is required or the person responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }} 
 			{% endcall %}			
 
 			{% call form.input('phone', label=_('Phone'), id='phone', placeholder=_('+35844122123'), value=data.phone, error=errors.phone, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about phone')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact phone number. The phone number must be in form \"+35812341234\".')) }} 
 			{% endcall %}			
 
 			{% call form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about email')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address.')) }} 
 			{% endcall %}			
 
 			{% call form.input('contactURL', label=_('Homepage'), id='contactURL', placeholder=_('http://johndoe.com/contact'), value=data.contactURL, error=errors.contactURL, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about homepage')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a valid web address to you web page. In case you don\'t have one, you could for example give an address to your research group\'s site or any site that could make it possible to contact the origin of the dataset in case of need.')) }} 
 			{% endcall %}						
 		</div>
 		<h3 class="module-heading">{{ _('Project that produced this dataset') }}</h3>
 		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked value="False"{% endif %}value="True">{{ _('This dataset was not produced in a project.') }}</input>
 		<div class="module-content" id="projdiv" {% if data.projdis != 'False' and data.projdis %}style="display: none;"{% endif %}>
 			{% call form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about project name')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project\'s name.')) }} 
 			{% endcall %}
 
 			{% call form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about funder')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project funder\'s name.')) }} 
 			{% endcall %}
 									
 			{% call form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about funding id')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project\'s funding id.')) }} 
 			{% endcall %}
 
 			{% call form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about project homepage')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project\'s homepage')) }} 
 			{% endcall %}
 		</div>
 		<h3 class="module-heading">{{ _('Owner information')}}</h3>
 		<div class="module-content">
 			{% call form.input('owner', label=_('Owner identity'), id="owner", placeholder=_('identification URL or name'), value=data.owner, error=errors.owner, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Cool help text about owner')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example and orcid identifier.')) }} 
 			{% endcall %}						
 		</div>
 </section>
@@ -189,13 +186,13 @@
 <h2 class="module-heading">{{ _('Identification information') }}</h2>
 <div class="module-content">
 {% call form.input('versionPID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.versionPID, error=errors.versionPID, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-	{{ kata_form.tooltip(tooltip=_('Cool help text about permanent identifier')) }}
+	{{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier of the data, preferrably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is an URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/index.html for more information.')) }}
 {% endcall %}						
 {% call form.input_block("date", _('Modification date'), error=errors.version, control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) %}
 	<div class="control-group control-custom">
 		<div data-module="dateselect-simple-kata">
 			<input type="text" readonly id="last_modified" name="version" value="{{data.version}}" />
-			{{ kata_form.tooltip(tooltip=_('Cool help text about modification date')) }}
+			{{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br /><br />The modification date tells when the data has last been modified. Click the field to open a calendar tool to choose the modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires javascript to be enabled in the browser.')) }}
 		</div>
 	</div>
 {% endcall %}
@@ -227,7 +224,7 @@
 	</div>
 	
 	{% call form.input('licenseURL', id='licenseURL', label=_('License'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.licenseURL, error=errors.licenseURL, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-		{{ kata_form.tooltip(tooltip=_('Cool help text about license')) }} 
+		{{ kata_form.tooltip(tooltip=_('Usage and license fields are compulsory.<br /><br />Use the radio buttons and displayed fields to tell how to access your research data. Provide the download URL when such a field is displayed beside your chosen option. Note that this service supports the use of REMS service and you can automatically generate a basic access request form by checking the \"Create a new addess request form\" button when choosing the first option.<br /><br />Learn more about REMS from https://rems.csc.fi.<br /><br />Provide a license URL or a freeform license text to the License field.')) }} 
 	{% endcall %}
 </div>
 </section>
