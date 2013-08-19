@@ -393,10 +393,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'author': {'value': [not_empty, unicode, org_auth_to_extras]},
            'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
-           'accessRights': [ignore_missing, self.convert_to_extras_kata, unicode],
-           'langdis': [default(False), unicode],
+           'langdis': [default(u'False'), unicode],
            '__extras': [check_author_org],
-           'projdis': [default(False), unicode, check_project],
+           'projdis': [default(u'False'), unicode, check_project],
            '__junk': [check_junk],
            'name': [unicode, ignore_missing, self.update_name],
            'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
@@ -419,6 +418,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'title': [ignore_missing, unicode],
                 '__extras': [ignore],
             }
+
         return schema
 
     def db_to_form_schema_options(self, options = None):
