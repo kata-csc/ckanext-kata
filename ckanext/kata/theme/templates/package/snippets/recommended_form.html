@@ -58,46 +58,6 @@
         {% call form.input(group_name, label=_('Dataset belongs to collection/series'), id="field-group", value=data[group_name], classes=['control-medium'], label_classes=['kata-input-comp'], attrs=group_attrs) %}
   	      {{ kata_form.tooltip(tooltip=_('You can add your dataset to an existing group in this service by typing the group name and accepting it with the enter key. When you start typing the group, the service will search existing groups and will give suggestions of existing ones. Pick a group of your choice by clicking it or selecting it and then pressing the enter key.')) }}
         {% endcall %}
-	{{ kata_form.tooltip(tooltip=_('Cool help text about geographic coverage')) }} 
-{% endcall %}
-<div data-module="dateselect-dcmi-kata">
-		<label class="control-label" for="temporal_coverage">{{ _('Temporal coverage') }}</label>
-		<label class="control-label" for="temporal_coverage_begin">{{ _('Begin') }}</label>
-		<div class="controls">
-			<input type="text" readonly id="temporal_coverage_begin" name="temporal_coverage_begin" value="{{data.temporal_coverage_begin}}" />
-			{{ kata_form.tooltip(tooltip=_('Cool help text about temporal coverage - begin')) }} 
-		</div>
-		<label class="control-label" for="temporal_coverage_end">{{ _('End') }}</label>
-		<div class="controls">
-			<input type="text" readonly id="temporal_coverage_end" name="temporal_coverage_end" value="{{data.temporal_coverage_end}}" />
-			{{ kata_form.tooltip(tooltip=_('Cool help text about temporal coverage - end')) }} 
-		</div>
-	</div>
-</div>
-</section>
-<section class="module">
-<h2 class="module-heading">{{ _('Relations') }}</h2>
-<div class="module-content">
-{% if data.groups and 'title' in data.groups.0 %}
-	<div class="control-group">
-	<label class="control-label">{{ _('Groups') }}</label>
-	<div class="controls">
-	  {% for group in data.groups %}
-	    <label class="checkbox" for="field-group-{{ loop.index0 }}">
-	    {% if group.title %}
-	      <input id="field-group-{{ loop.index0 }}" type="checkbox" name="groups__{{ loop.index0 }}__id" value="{{ group.id }}" checked="checked" />
-	      {{ group.title }}
-	    </label>
-	    {% endif %}
-	  {% endfor %}
-	</div>
-	</div>
-{% endif %}
-{% set group_name = 'groups__%s__name' % data.groups|length %}
-{% set group_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/group/autocomplete?q=?', 'class': "kata-medium-input"} %}
-{% call form.input(group_name, label=_('Dataset belongs to collection/series'), id="field-group", value=data[group_name], classes=['control-medium'], label_classes=['kata-input-comp'], attrs=group_attrs) %}
-	{{ kata_form.tooltip(tooltip=_('Cool help text about collection/series')) }} 
-{% endcall %}
 
   {% set cont_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?', 'data-module-items': 5, 'class': "kata-medium-input"} %}
         {% call form.input('discipline', label=_('Discipline/branch of science'), id='discipline', placeholder=_(''), value=data.discipline, error=errors.discipline, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=cont_attrs) %}
@@ -105,10 +65,6 @@
         {% endcall %}
       </div>
     </section>
-	{{ kata_form.tooltip(tooltip=_('Cool help text about science')) }} 
-{% endcall %}
-</div>
-</section>
 
     <section class="module">
       <h2 class="module-heading">{{ _('File information') }}</h2>
@@ -124,16 +80,6 @@
         {% endcall %}
       </div>
     </section>
-	{{ kata_form.tooltip(tooltip=_('Cool help text about file format')) }} 
-{% endcall %}
-{% call form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, error=errors.checksum, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=cont_attrs) %}
-	{{ kata_form.tooltip(tooltip=_('Cool help text about checksum')) }} 
-{% endcall %}
-{% call form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_('eg. MD5'), value=data.algorithm, error=errors.algorithm, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=cont_attrs) %}
-	{{ kata_form.tooltip(tooltip=_('Cool help text about algorithm')) }} 
-{% endcall %}
-</div>
-</section>
 
     <section class="module">
       <h2 class="module-heading">{{ _('Dataset lifecycle events') }}</h2>
@@ -276,14 +222,6 @@
         </div>
       </div>
     </section>
-			{{ kata_form.tooltip(tooltip=_('Cool help text about lifecycle events')) }}
-			<input style="display: none;"type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
-		</div>
-{% endfor %}
-</ul>
-</div>
-</div>
-</section>
 
     <section class="module">
       <h2 class="module-heading">{{ _('Free description') }}</h2>
@@ -293,8 +231,6 @@
   <!--  {{ kata_form.tooltip(tooltip=_('Type a description about the data over here. The field can be filled with free text and you can format the text with Markdown formatting.')) }}  -->
       </div>
     </section>
-</div>
-</section>
 
   </div>
 </section>
