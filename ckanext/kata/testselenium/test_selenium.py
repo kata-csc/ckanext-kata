@@ -36,8 +36,8 @@ from unittest import TestCase
 import time
 
 
-class TestDatasetSelenium(TestCase):
-    """Selenium tests for Kata CKAN extension's dataset stuff."""
+class TestKataBasicsSelenium(TestCase):
+    """Some basic Selenium tests for Kata's user interface."""
 
     @classmethod
     def setup_class(cls):
@@ -83,23 +83,6 @@ class TestDatasetSelenium(TestCase):
             reg_browser.quit()
             assert 0, "User registration didn't finish"
 
-
-
-    def test_0_front_page_loads(self):
-        """Test that Selenium can access the front page."""
-
-        self.browser.get("https://localhost/")
-        assert "Kata" in self.browser.title
-
-
-    def test_1_register_user(self):
-        '''
-        Test for user registration. Named so because tests are run in alphabetical order.
-
-        The test user is needed when testing contact form functionality.
-        '''
-
-        self._register_user(self.browser)
 
 
     def _add_dataset(self):
@@ -174,15 +157,34 @@ class TestDatasetSelenium(TestCase):
         test_browser.quit()
 
 
+    def test_0_front_page_loads(self):
+        """Test that Selenium can access the front page."""
+
+        self.browser.get("https://localhost/")
+        assert "Kata" in self.browser.title
+
+
+    def test_1_register_user(self):
+        '''
+        Test for user registration. Named so because tests are run in alphabetical order.
+
+        The test user is needed when testing contact form functionality.
+        '''
+
+        self._register_user(self.browser)
+
+
     def test_2_contact_form_can_go_back(self):
         '''Test that user can go back from contact form and still go forward to send it.'''
 
-        # Should have this set from the previous test
+        # First add a dataset
+
         if self.dataset_url is None:
             self._add_dataset()
 
-        #assert 0, self.dataset_url
         assert self.dataset_url is not None, "dataset_url is None"
+
+        # Go to contact form
 
         contact_form_url = self.dataset_url.replace('/dataset/', '/contact/')
         self.browser.get(self.dataset_url)
