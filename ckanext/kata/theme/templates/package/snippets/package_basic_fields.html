@@ -7,9 +7,9 @@
 <input type="hidden" name="name" value="{% if data.name %}{{data.name}}{% endif %}" />
 {% call form.input_block("titles", _('Titles') , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
 	<div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
-	
+
 	{% set titles = [] %}
-	
+
 	{% if data.langtitles %}
 		{% for title, lang in data.langtitles %}
 			{% do titles.append((title, lang)) %}
@@ -21,8 +21,8 @@
 			{% endif %}
 		{% endfor %}
 	{% endif%}
-	
-	{% if titles|length == 0 %}	
+
+	{% if (titles|length) == 0 %}
 		{% for extra in range(1,2) %}
 			{% do titles.append(('', '')) %}
 		{% endfor %}
@@ -34,8 +34,8 @@
 		{% call form.input('title__' ~ index ~ '__value', id='title__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, error=errors.title, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
 			{% if index == 0 %}
 				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded but, note that the first title field must have a value.')) }}
-			{% endif %} 
-			
+			{% endif %}
+
 			<label class="control-label kata-input-comp" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
 			<div class="controls kata-input-comp">
 				<select name="title__{{index}}__lang">
@@ -43,23 +43,23 @@
 				</select>
 				{% if index == 0 %}
 					{{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change();") }}
-				{% endif %} 
-				
+				{% endif %}
+
 				{#% if title.value %#}
 					<input style="display: none;" type="checkbox" id="lbtn__{{index}}__value_id" name="lbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 				{#% endif %#}
 			</div>
 		{% endcall %}
 	{% endfor %}
-	
+
 	</div>
 {% endcall %}
 
 {% call form.input_block("author", _("Authors and organizations"), error=errors.author or errors.organization, control_classes=["kata-auth-padding"], label_classes=["kata-auth-label"]) %}
 	<div data-module="custom-fields-kata" data-module-id="orgauths" id="orgauths">
-	
+
 	{% set authors = [] %}
-	
+
 	{% if data.orgauths %}
 		{% for auth, org in data.orgauths %}
 			{% do authors.append((auth, org)) %}
@@ -78,18 +78,18 @@
 			{% do authors.append((auth, org)) %}
 		{% endfor %}
 	{% endif %}
-	
-	{% if authors|length == 0 %}	
+
+	{% if authors|length == 0 %}
 		{% for extra in range(1, 2) %}
 			{% do authors.append(('', '')) %}
 		{% endfor %}
 	{% endif %}
-	
+
 	{# Render author and organisation fields #}
 	{% for author, org in authors %}
-	
+
 		{% set index = loop.index0 %}
-		
+
 			<div class="control-group control-custom">
 			<label class="control-label kata-input-comp" for="author__{{ index }}__id">{{ _('Author') }}</label>
 				<div class="controls editor">
@@ -117,8 +117,8 @@
 	{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Keywords are a set of words describing the subject and content of the data. Start typing to the keywords field. You will get suggestions from an ontology, from which you can select a word by clicking it or first selecting it and then pressing the enter key. You can also add custom keywords by typing the word you want and accepting it with the enter key. Remove an added keyword from the \'x\' button next to the keyword.')) }}
 {% endcall %}
 
-<input type="checkbox" style="top: 0px;" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis == 'False' and data.langdis %}checked value="False"{% else %}value="True"{% endif %}>{{ _('This dataset does not have a language') }}</input>
-<div id="langdiv" {% if data.langdis == 'False' and data.langdis %} style="display: none" {% endif %}>
+<input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset does not have a language') }}</input>
+<div id="langdiv" {% if data.langdis != 'True' and data.langdis %} style="display: none" {% endif %}>
 {% call form.input('language', label=_('Languages'), id='language', placeholder=_('en, fi, sv ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
 	{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a comma separated list of languages used in your research material, for example \"en, fi, sv\".')) }}
 {% endcall %}
@@ -151,7 +151,7 @@
 			{% endcall %}						
 		</div>
 		<h3 class="module-heading">{{ _('Project that produced this dataset') }}</h3>
-		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked value="False"{% endif %}value="True">{{ _('This dataset was not produced in a project.') }}</input>
+		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked {% endif %}value="True">{{ _('This dataset was not produced in a project.') }}</input>
 		<div class="module-content" id="projdiv" {% if data.projdis != 'False' and data.projdis %}style="display: none;"{% endif %}>
 			{% call form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
 				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project\'s name.')) }} 
