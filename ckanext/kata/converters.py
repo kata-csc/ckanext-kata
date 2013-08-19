@@ -203,10 +203,10 @@ def event_to_extras(key, data, errors, context):
     """
     Parses separate 'ev*' parameters from 'data' data_dict to 'extra' field
     in that same 'data'.
-    @param key: key from schema
+    @param key: key from schema, 'evtype', 'evdescr' etc.
     @param data: whole data_dict passed for modification
     """
-    log.debug("event_to_extras(key, ...): key: %s" % str(key))
+    log.debug("event_to_extras(): key: %s : %s", str(key), str(data[key]))
 
     extras = data.get(('extras',), [])
     if not extras:
@@ -217,7 +217,7 @@ def event_to_extras(key, data, errors, context):
                            'value': data[key]
                           })
 
-def event_from_extras(key, data, errors, context):
+def event_from_extras(evkey, data, errors, context):
     if not ('events',) in data:
         data[('events',)] = []
     types = []
@@ -226,41 +226,52 @@ def event_from_extras(key, data, errors, context):
     descrs = []
     events = data[('events',)]
 
+    #evvalues = []
+
+    log.debug("event_FROM_extras(key, ...): evkey: %s" % str(evkey))
+
+    # TODO: rewrite to extract each key:value with its key's validator
+    #for k in data.keys():
+    #    if k[0] == 'extras' and k[-1] == 'key':
+    #        if evkey[0] in data[k]:
+    #            # evindex = int(data[k].split('_')[-1])
+    #            val = data[(k[0], k[1], 'value')]
+    #            if not {'key': data[k], 'value': val} in evvalues:
+    #            evvalues.append({'key': data[k], 'value': val})
+
+    #evvalues = sorted(evvalues, key=lambda evdict: int(evdict['key'].split('_')[-1]))
+
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key':
             if 'evtype' in data[k]:
                 val = data[(k[0], k[1], 'value')]
-                type = {}
-                type['key'] = data[k]
+                type = {'key': data[k]}
                 type['value'] = val
                 if not {'key': data[k], 'value': val} in types:
                     types.append(type)
             if 'evwho' in data[k]:
                 val = data[(k[0], k[1], 'value')]
-                who = {}
-                who['key'] = data[k]
+                who = {'key': data[k]}
                 who['value'] = val
                 if not {'key': data[k], 'value': val} in whos:
                     whos.append(who)
             if 'evwhen' in data[k]:
                 val = data[(k[0], k[1], 'value')]
-                when = {}
-                when['key'] = data[k]
+                when = {'key': data[k]}
                 when['value'] = val
                 if not {'key': data[k], 'value': val} in whens:
                     whens.append(when)
             if 'evdescr' in data[k]:
                 val = data[(k[0], k[1], 'value')]
-                descr = {}
-                descr['key'] = data[k]
+                descr = {'key': data[k]}
                 descr['value'] = val
                 if not {'key': data[k], 'value': val} in descrs:
                     descrs.append(descr)
 
-    types = sorted(types, key=lambda ke: int(ke['key'][-1]))
-    whos = sorted(whos, key=lambda ke: int(ke['key'][-1]))
-    whens = sorted(whens, key=lambda ke: int(ke['key'][-1]))
-    descrs = sorted(descrs, key=lambda ke: int(ke['key'][-1]))
+    types = sorted(types, key=lambda ke: int(ke['key'].split('_')[-1]))
+    whos = sorted(whos, key=lambda ke: int(ke['key'].split('_')[-1]))
+    whens = sorted(whens, key=lambda ke: int(ke['key'].split('_')[-1]))
+    descrs = sorted(descrs, key=lambda ke: int(ke['key'].split('_')[-1]))
 
     for etype, ewho, ewhen, edescr in zip(types, whos, whens, descrs):
         if not (etype, ewho, ewhen, edescr) in events:
