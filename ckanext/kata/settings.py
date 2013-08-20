@@ -29,12 +29,13 @@ _FIELD_TITLES = {'organizationstring': 'Organization',
                 'ext_actor': 'Actor',
                 'extras_language': 'Language',
                 'ext_extras_language': 'Language',
+                'ext_extras_funder': 'Funder',
                 'title': 'Title',
                 'ext_title': 'Title',
                 'ext_text': 'All fields',
                 }
 
-# Fields for advanced search. First one will be used as the default search field.
+# Ordered list of fields for advanced search. First one will be used as the default search field.
 SEARCH_FIELDS = ['ext_text',
                     'ext_author',
                     'ext_title',
@@ -43,8 +44,9 @@ SEARCH_FIELDS = ['ext_text',
                     'ext_actor',
                     'ext_organization',
                     'ext_groups',
-                    'ext_extras_fformat',
+                    'ext_extras_funder',
                     'ext_licensetext',
+                    'ext_extras_fformat',
                     'ext_extras_language',
                     ]
 
