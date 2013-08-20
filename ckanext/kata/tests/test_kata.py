@@ -20,7 +20,7 @@ from paste.registry import RegistryManager
 from ckan.config.middleware import make_app
 
 from collections import defaultdict
-from ckanext.kata.validators import validate_kata_date, validate_language
+from ckanext.kata.validators import validate_kata_date, validate_language, check_project_dis
 
 from pylons import session
 
@@ -280,4 +280,26 @@ class TestKataValidators(TestCase):
         dada[('langdis',)] = 'True'
 
         validate_language(('language',), dada, errors, None)
+        assert len( errors ) == 0
+        
+    def test_project_valid(self):
+        errors = defaultdict(list)
+        dada = self.test_data.copy()
+        dada[('projdis',)] = 'False'
+        dada[('funder',)] = u'funder'
+        dada[('project_name',)] = u'project name'
+        dada[('project_funding',)] = u'project_funding'
+        dada[('project_homepage',)] = u'www.google.fi'
+        
+        check_project_dis(('project_name',), \
+                          dada, errors, None)
+        assert len( errors ) == 0
+        check_project_dis(('funder',), \
+                          dada, errors, None)
+        assert len( errors ) == 0
+        check_project_dis(('project_funding',), \
+                          dada, errors, None)
+        assert len( errors ) == 0
+        check_project_dis(('project_homepage',), \
+                          dada, errors, None)
         assert len( errors ) == 0

@@ -112,8 +112,16 @@ def validate_phonenum(key, data, errors, context):
 
 
 def check_project_dis(key, data, errors, context):
+    # If projdis checkbox is checked, check out that 
+    # the project fields have data
     if not ('projdis',) in data:
         not_empty(key, data, errors, context)
+    else:
+        projdis = data.get(('projdis',), False)
+        value = data.get(key)
+        if not projdis or projdis == 'False':
+            if value == "":
+                errors[(key[0],)].append(_('Missing value'))
 
 
 def check_accessrights(key, data, errors, context):
