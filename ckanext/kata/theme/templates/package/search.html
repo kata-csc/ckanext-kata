@@ -1,4 +1,5 @@
 {% extends "page.html" %}
+{% import 'macros/kata_form.html' as kata_form %}
 
 {% block subtitle %}{{ _("Search for a Dataset") }}{% endblock %}
 
@@ -117,6 +118,7 @@
                 <a id="del_search_element" href="#" onclick="remove_search_row({{ loop.index0 }})">DEL</a>
               {% else %}
                 <a id="new_search_element" href="#" onclick="add_search_row({{ loop.index0 }});">ADD</a>
+                {{ kata_form.tooltip(tooltip=_('Multiple search terms are bind together with ANDs and grouped with ORs. Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)')) }}
               {% endif %}
             </div>
             {% endfor %}
