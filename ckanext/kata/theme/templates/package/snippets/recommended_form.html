@@ -60,7 +60,7 @@
         {% endcall %}
 
   {% set cont_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?', 'data-module-items': 5, 'class': "kata-medium-input"} %}
-        {% call form.input('discipline', label=_('Discipline/branch of science'), id='discipline', placeholder=_(''), value=data.discipline, error=errors.discipline, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=cont_attrs) %}
+        {% call form.input('discipline', label=_('Discipline/branch of science'), id='discipline', value=data.discipline, error=errors.discipline, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=cont_attrs) %}
   	      {{ kata_form.tooltip(tooltip=_('You can provide a branch of science your dataset belongs to by typing the correct word and accepting it with the enter key. When you start typing the word, the service will search for matches among available branches of science and will give suggestions. Pick a branch of science of your choice by clicking it or selecting it and then pressing the enter key.')) }}
         {% endcall %}
       </div>
