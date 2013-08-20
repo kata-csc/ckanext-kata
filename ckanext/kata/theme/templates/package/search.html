@@ -9,6 +9,7 @@
 {% endblock %}
 
 {# CREATE A HIDDEN ROW TO CLONE FROM, WITH PARSED FIELD NAMES BEGINNING WITH LEADING ___ SO THEY WON'T BE PARSED  #}
+
 {% set current_search_rows = [{ 'field': '___' ~ c.search_fields | first,
                                 'text': '',
                                 'operator': 'AND'
@@ -140,7 +141,9 @@
               </span>
             </div>
 
-            <button id="advanced_search_submit" class="btn btn-primary" type="submit" value="{{ _('Search') }}">{{ _('Search') }}</button>
+            <div>
+              <button id="advanced_search_submit" class="btn btn-primary kata-search-button" type="submit" value="{{ _('Search') }}">{{ _('Search') }}</button>
+            </div>
           </span>
 
           {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
@@ -164,7 +167,7 @@
           {%- if request.params and c.page.item_count -%}
             {{ c.page.item_count }} datasets{{ _(" found for \"{query}\"").format(query=c.q) if c.q }}
           {%- elif request.params and c.page.item_count == 0 -%}
-            {{ _('Sorry no datasets found for "{query}"').format(query=c.q) }}
+            {{ _('Sorry no datasets found.').format(query=c.q) }}
           {%- else -%}
             {{ _('All datasets') }}
           {%- endif -%}
@@ -188,10 +191,7 @@
         </div>
 
         {% if request.params and c.page.item_count == 0 %}
-        <p class="extra">Try another search term, browse the datasets below or
-          <a href="{{ h.url_for(controller='package', action='new') }}">
-            {{ _('add your own data') }}</a>.
-        </p>
+        <p class="extra">Please try another search term.</p>
         {% endif %}
       </div>
 
