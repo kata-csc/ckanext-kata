@@ -495,53 +495,35 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.search_fields = SEARCH_FIELDS
         c.translated_field_titles = get_field_titles(t._)
 
-
-        # Start advanced search parameter parsing
-        if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
-            extra_terms = []
-            extra_ops = []
-            extra_dates = {}
-            c.current_search_rows = []
-            c.current_search_limiters = {}
-
-            def extras_cmp(a, b):
-                a  = a.split("-")[-1]
-                b  = b.split("-")[-1]
-                if a <= b:
-                    if a < b:
-                        return -1
-                    else:
-                        return 0
+        def extras_cmp(a, b):
+            a  = a.split("-")[-1]
+            b  = b.split("-")[-1]
+            if a <= b:
+                if a < b:
+                    return -1
                 else:
-                    return 1
+                    return 0
+            else:
+                return 1
 
-            log.debug("before_search(): data_dict['extras']: %r" %
-                      data_dict['extras'].items())
-            for (param, value) in data_dict['extras'].items():
-                if len(value):
-                    # Extract search operators
-                    if param.startswith('ext_operator'):
-                        extra_ops.append((param, value))
-                    # Extract search date limits from eg.
-                    # name = "ext_date-metadata_modified-start"
-                    elif param.startswith('ext_date'):
-                        param_tokens = param.split('-')
-                        extra_dates[param_tokens[2]] = value  # 'start' or 'end' date
-                        extra_dates['field'] = param_tokens[1]
-                    else: # Extract search terms
-                        extra_terms.append((param, value))
-            log.debug("before_search(): extra_terms: %r; extra_ops: %r; "
-                      + "extra_dates: %r", extra_terms, extra_ops, extra_dates)
-            extra_terms.sort(cmp=extras_cmp, key=lambda tpl: tpl[0])
-            extra_ops.sort(cmp=extras_cmp, key=lambda tpl: tpl[0])
+        def parse_search_terms(data_dict, extra_terms, extra_ops):
+            """
+            Parse extra terms and operators into query q into data_dict:
+            data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND \
+              tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*))
+            Note that all ANDs and NOTs are enclosed in parenthesis by ORs.
+            Outer parenthesis are for date limits to work correctly.
 
-            # Parse extra terms and operators into query q.
-            # Eg. author:*onstabl* OR title:*edliest jok*
+            @param data_dict: full data_dict from package:search
+            @param extra_terms: [(ext_organization-2, u'someOrg'), ...]
+            @param extra_ops: [(ext_operator-2, u'AND'), ...]
+            """
             if len(extra_terms) > 0:
+                c.current_search_rows = []
                 # Handle first search term row
                 (param, value) = extra_terms[0]
                 p_no_index = param.split("-")[0]
-                data_dict['q'] += ' (%s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                data_dict['q'] += ' ((%s:%s' % (p_no_index[4:], value)  # Add field search to query q
                 c.current_search_rows.append({'field':p_no_index, 'text':value})
 
                 n = min(len(extra_terms)-1, len(extra_ops))
@@ -549,15 +531,32 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     (oparam, ovalue) = extra_ops[i1]
                     (param, value) = extra_terms[i1+1]
                     p_no_index = param.split("-")[0]
-                    data_dict['q'] += ' %s' % ovalue  # Add operator (AND / OR)
-                    data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                    if ovalue in ['AND', 'NOT']:
+                        data_dict['q'] += ' %s' % ovalue  # Add operator (AND / NOT)
+                        data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
+                    elif ovalue == 'OR':
+                        data_dict['q'] += ') %s (' % ovalue  # Add operator OR
+                        data_dict['q'] += ' %s:%s' % (p_no_index[4:], value)  # Add field search to query q
                     c.current_search_rows.append(
                         {'field':p_no_index, 'text':value, 'operator':ovalue})
-                data_dict['q'] += ')'
+                data_dict['q'] += '))'
 
-            # Parse year limit into query 'q'.
-            # Eg. metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]
+        def parse_search_dates(data_dict, extra_dates):
+            """
+            Parse extra date into query q into data_dict:
+            data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND \
+              tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*)) AND \
+              metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]
+
+            @param data_dict: full data_dict from package:search
+            @param extra_dates: {'start': 1991,
+                                 'end': 1994,
+                                 'field': 'metadata_modified'}
+            """
             if len(extra_dates) > 0:
+                c.current_search_limiters = {}
+                if len(data_dict['q']) > 0:
+                    data_dict['q'] += ' AND '
                 qdate = ''
                 if extra_dates.has_key('start'):
                     # TODO: Validate that input is valid year
@@ -574,6 +573,39 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 else:
                     qdate += '*]'
                 data_dict['q'] += ' %s:%s' % (extra_dates['field'], qdate)
+
+
+        # Start advanced search parameter parsing
+        if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
+            extra_terms = []
+            extra_ops = []
+            extra_dates = {}
+
+            log.debug("before_search(): data_dict['extras']: %r" %
+                      data_dict['extras'].items())
+
+            # Extract parameters
+            for (param, value) in data_dict['extras'].items():
+                if len(value):
+                    # Extract search operators
+                    if param.startswith('ext_operator'):
+                        extra_ops.append((param, value))
+                    # Extract search date limits from eg.
+                    # name = "ext_date-metadata_modified-start"
+                    elif param.startswith('ext_date'):
+                        param_tokens = param.split('-')
+                        extra_dates[param_tokens[2]] = value  # 'start' or 'end' date
+                        extra_dates['field'] = param_tokens[1]
+                    else: # Extract search terms
+                        extra_terms.append((param, value))
+
+            log.debug("before_search(): extra_terms: %r; extra_ops: %r; "
+                      + "extra_dates: %r", extra_terms, extra_ops, extra_dates)
+
+            extra_terms.sort(cmp=extras_cmp, key=lambda tpl: tpl[0])
+            extra_ops.sort(cmp=extras_cmp, key=lambda tpl: tpl[0])
+            parse_search_terms(data_dict, extra_terms, extra_ops)
+            parse_search_dates(data_dict, extra_dates)
 
             log.debug("before_search(): c.current_search_rows: %s; \
                 c.current_search_limiters: %s" % (c.current_search_rows,
