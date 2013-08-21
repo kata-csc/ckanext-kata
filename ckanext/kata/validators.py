@@ -29,6 +29,9 @@ def validate_access(key, data, errors, context):
 
 
 def check_project(key, data, errors, context):
+    """
+    Check if user is trying to send project data when project is disabled.
+    """
     if data[('project_name',)] or data[('funder',)] or\
         data[('project_funding',)] or data[('project_homepage',)]:
         if data[('projdis',)] != 'False':
@@ -84,7 +87,7 @@ def validate_language(key, data, errors, context):
 
         # Display flash message if user is loading a page.
         if 'session' in globals():
-            h.flash_notice(_("Because language is disabled, removing languages: '%s'" % value))
+            h.flash_notice(_("Language is disabled, removing languages: '%s'" % value))
 
         # Remove languages.
         del data[key]
@@ -96,24 +99,34 @@ def validate_language(key, data, errors, context):
         lang = lang.strip()
         if lang:
             try:
-                pycountry.languages.get(alpha2=lang)
+                pycountry.languages.get(bibliographic=lang)
             except KeyError:
-                errors[key].append(_('Language %s not in ISO 639 format' % lang))
+                try:
+                    pycountry.languages.get(terminology=lang)
+                except KeyError:
+                    errors[key].append(_('Language %s not in ISO 639-2 (B/T) format' % lang))
 
 
 def validate_email(key, data, errors, context):
+    """
+    Validate an e-mail address against a regular expression.
+    """
     if not EMAIL_REGEX.match(data[key]):
         errors[key].append(_('Invalid email address'))
 
 
 def validate_phonenum(key, data, errors, context):
+    """
+    Validate a phone number against a regular expression.
+    """
     if not TEL_REGEX.match(data[key]):
         errors[key].append(_('Invalid telephone number, must be like +13221221'))
 
 
 def check_project_dis(key, data, errors, context):
-    # If projdis checkbox is checked, check out that 
-    # the project fields have data
+    """
+    If projdis checkbox is checked, check out that the project fields have data.
+    """
     if not ('projdis',) in data:
         not_empty(key, data, errors, context)
     else:
