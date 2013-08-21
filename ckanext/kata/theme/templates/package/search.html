@@ -167,7 +167,9 @@
       <div class="results">
         <strong>
           {%- if request.params and c.page.item_count -%}
-            {{ c.page.item_count }} datasets{{ _(" found for \"{query}\"").format(query=c.q) if c.q }}
+            {{ c.page.item_count }} {{ _(" datasets") }} {{ _(" found for") if c.q }}
+            <br/>
+            {{ "\"{query}\"".format(query=c.q) if c.q }}
           {%- elif request.params and c.page.item_count == 0 -%}
             {{ _('Sorry no datasets found.').format(query=c.q) }}
           {%- else -%}

@@ -613,6 +613,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # End advanced search parameter parsing
 
         log.debug("before_search(): data_dict: %r" % data_dict)
+        # Uncomment below to show query before results & in search field
+        #c.q = data_dict['q']
         return data_dict
 
     def after_search(self, search_results, data_dict):
