@@ -20,7 +20,7 @@ from paste.registry import RegistryManager
 from ckan.config.middleware import make_app
 
 from collections import defaultdict
-from ckanext.kata.validators import validate_kata_date, validate_language, check_project_dis
+from ckanext.kata.validators import validate_kata_date, validate_language, check_project_dis, validate_email, validate_phonenum
 
 from pylons import session
 
@@ -133,70 +133,71 @@ class TestKataValidators(TestCase):
 
         # Some test data from Add dataset.
 
-        cls.test_data = {('__extras',): {'_ckan_phase': u'', \
-        'evdescr': [], \
-        'evwhen': [], \
-        'evwho': [], \
-        'groups': [], \
-        'pkg_name': u''}, \
-        ('access',): u'contact', \
-        ('accessRights',): u'', \
-        ('accessrequestURL',): u'', \
-        ('algorithm',): u'', \
-        ('author', 0, 'value'): u'dada', \
-        ('checksum',): u'', \
-        ('contactURL',): u'http://google.com', \
-        ('discipline',): u'', \
-        ('evtype', 0, 'value'): u'collection', \
-        ('extras',): [{'key': 'funder', 'value': u''}, \
-        {'key': 'discipline', 'value': u''}, \
-        {'key': 'publisher', 'value': u'dada'}, \
-        {'key': 'fformat', 'value': u''}, \
-        {'key': 'project_funding', 'value': u''}, \
-        {'key': 'project_homepage', 'value': u''}, \
-        {'key': 'owner', 'value': u'dada'}, \
-        {'key': 'version', 'value': u'2013-08-14T10:37:09Z'}, \
-        {'key': 'temporal_coverage_begin', 'value': u''}, \
-        {'key': 'accessrequestURL', 'value': u''}, \
-        {'key': 'phone', 'value': u'+35805050505'}, \
-        {'key': 'licenseURL', 'value': u'dada'}, \
-        {'key': 'geographic_coverage', 'value': u''}, \
-        {'key': 'access', 'value': u'contact'}, \
-        {'key': 'algorithm', 'value': u''}, \
-        {'key': 'langdis', 'value': u'True'}, \
-        {'key': 'accessRights', 'value': u''}, \
-        {'key': 'contactURL', 'value': u'http://google.com'}, \
-        {'key': 'project_name', 'value': u''}, \
-        {'key': 'checksum', 'value': u''}, \
-        {'key': 'temporal_coverage_end', 'value': u''}, \
-        {'key': 'projdis', 'value': u'True'}, \
-        {'key': 'language', 'value': u''}], \
-        ('fformat',): u'', \
-        ('funder',): u'', \
-        ('geographic_coverage',): u'', \
-        ('langdis',): u'False', \
-        ('language',): u'sv', \
-        ('licenseURL',): u'dada', \
-        ('license_id',): u'', \
-        ('log_message',): u'', \
-        ('name',): u'', \
-        ('notes',): u'', \
-        ('organization', 0, 'value'): u'dada', \
-        ('owner',): u'dada', \
-        ('phone',): u'+35805050505', \
-        ('projdis',): u'True', \
-        ('project_funding',): u'', \
-        ('project_homepage',): u'', \
-        ('project_name',): u'', \
-        ('publisher',): u'dada', \
-        ('save',): u'finish', \
-        ('tag_string',): u'dada', \
-        ('temporal_coverage_begin',): u'', \
-        ('temporal_coverage_end',): u'', \
-        ('title', 0, 'lang'): u'sv', \
-        ('title', 0, 'value'): u'dada', \
-        ('type',): None, \
-        ('version',): u'2013-08-14T10:37:09Z', \
+        cls.test_data = {('__extras',): {'_ckan_phase': u'',
+        'evdescr': [],
+        'evwhen': [],
+        'evwho': [],
+        'groups': [],
+        'pkg_name': u''},
+        ('access',): u'contact',
+        ('accessRights',): u'',
+        ('accessrequestURL',): u'',
+        ('algorithm',): u'',
+        ('author', 0, 'value'): u'dada',
+        ('checksum',): u'',
+        ('contactURL',): u'http://google.com',
+        ('discipline',): u'',
+        ('evtype', 0, 'value'): u'collection',
+        ('extras',): [{'key': 'funder', 'value': u''},
+        {'key': 'discipline', 'value': u''},
+        {'key': 'publisher', 'value': u'dada'},
+        {'key': 'fformat', 'value': u''},
+        {'key': 'project_funding', 'value': u''},
+        {'key': 'project_homepage', 'value': u''},
+        {'key': 'owner', 'value': u'dada'},
+        {'key': 'version', 'value': u'2013-08-14T10:37:09Z'},
+        {'key': 'temporal_coverage_begin', 'value': u''},
+        {'key': 'accessrequestURL', 'value': u''},
+        {'key': 'phone', 'value': u'+35805050505'},
+        {'key': 'licenseURL', 'value': u'dada'},
+        {'key': 'geographic_coverage', 'value': u''},
+        {'key': 'access', 'value': u'contact'},
+        {'key': 'algorithm', 'value': u''},
+        {'key': 'langdis', 'value': u'True'},
+        {'key': 'accessRights', 'value': u''},
+        {'key': 'contactURL', 'value': u'http://google.com'},
+        {'key': 'project_name', 'value': u''},
+        {'key': 'checksum', 'value': u''},
+        {'key': 'temporal_coverage_end', 'value': u''},
+        {'key': 'projdis', 'value': u'True'},
+        {'key': 'language', 'value': u''}],
+        ('fformat',): u'',
+        ('funder',): u'',
+        ('geographic_coverage',): u'',
+        ('langdis',): u'False',
+        ('language',): u'swe',
+        ('licenseURL',): u'dada',
+        ('license_id',): u'',
+        ('log_message',): u'',
+        ('name',): u'',
+        ('notes',): u'',
+        ('organization', 0, 'value'): u'dada',
+        ('owner',): u'dada',
+        ('phone',): u'+35805050505',
+        ('maintainer_email',): u'kata.selenium@gmail.com',
+        ('projdis',): u'True',
+        ('project_funding',): u'',
+        ('project_homepage',): u'',
+        ('project_name',): u'',
+        ('publisher',): u'dada',
+        ('save',): u'finish',
+        ('tag_string',): u'dada',
+        ('temporal_coverage_begin',): u'',
+        ('temporal_coverage_end',): u'',
+        ('title', 0, 'lang'): u'sv',
+        ('title', 0, 'value'): u'dada',
+        ('type',): None,
+        ('version',): u'2013-08-14T10:37:09Z',
         ('versionPID',): u''}
 
     def test_validate_kata_date_valid(self):
@@ -234,21 +235,23 @@ class TestKataValidators(TestCase):
         errors = defaultdict(list)
 
         dada = self.test_data.copy()
-        dada[('language',)] = u'fi, sv, en, aa'
+        dada[('language',)] = u'fin, swe, eng, ita'
         dada[('langdis',)] = 'False'
 
         validate_language(('language',), dada, errors, None)
+
         assert len( errors ) == 0
-        assert dada[('language',)] == u'fi, sv, en, aa'
+        assert dada[('language',)] == u'fin, swe, eng, ita'
 
     def test_validate_language_valid_4(self):
         errors = defaultdict(list)
 
         dada = self.test_data.copy()
-        dada[('language',)] = u'fi, sv, en, aa'
+        dada[('language',)] = u'fin, swe, eng, ita'
         dada[('langdis',)] = 'True'
 
         validate_language(('language',), dada, errors, None)
+
         assert len( errors ) == 0
         assert dada[('language',)] == u''
 
@@ -276,7 +279,7 @@ class TestKataValidators(TestCase):
         errors = defaultdict(list)
 
         dada = self.test_data.copy()
-        dada[('language',)] = u'fin, sve, eng'
+        dada[('language',)] = u'finglish, sv, en'
         dada[('langdis',)] = 'True'
 
         validate_language(('language',), dada, errors, None)
@@ -291,15 +294,70 @@ class TestKataValidators(TestCase):
         dada[('project_funding',)] = u'project_funding'
         dada[('project_homepage',)] = u'www.google.fi'
         
-        check_project_dis(('project_name',), \
+        check_project_dis(('project_name',),
                           dada, errors, None)
         assert len( errors ) == 0
-        check_project_dis(('funder',), \
+        check_project_dis(('funder',),
                           dada, errors, None)
         assert len( errors ) == 0
-        check_project_dis(('project_funding',), \
+        check_project_dis(('project_funding',),
                           dada, errors, None)
         assert len( errors ) == 0
-        check_project_dis(('project_homepage',), \
+        check_project_dis(('project_homepage',),
                           dada, errors, None)
         assert len( errors ) == 0
+
+    def test_validate_email_valid(self):
+        errors = defaultdict(list)
+
+        validate_email(('maintainer_email',), self.test_data, errors, None)
+
+        assert len( errors ) == 0
+
+    def test_validate_email_valid_2(self):
+        errors = defaultdict(list)
+
+        dada = self.test_data.copy()
+        dada[('maintainer_email',)] = u'a.b.c.d@e.com'
+
+        validate_email(('maintainer_email',), dada, errors, None)
+
+        assert len( errors ) == 0
+
+    def test_validate_email_invalid(self):
+        errors = defaultdict(list)
+
+        dada = self.test_data.copy()
+        dada[('maintainer_email',)] = u'a.b.c.d'
+
+        validate_email(('maintainer_email',), dada, errors, None)
+
+        assert len( errors ) == 1
+
+    def test_validate_email_invalid_2(self):
+        errors = defaultdict(list)
+
+        dada = self.test_data.copy()
+        dada[('maintainer_email',)] = u'a.b@com'
+
+        validate_email(('maintainer_email',), dada, errors, None)
+
+        assert len( errors ) == 1
+
+    def test_validate_phonenum_valid(self):
+        errors = defaultdict(list)
+
+        validate_phonenum(('phone',), self.test_data, errors, None)
+
+        assert len( errors ) == 0
+
+    def test_validate_phonenum_invalid(self):
+        errors = defaultdict(list)
+
+        dada = self.test_data.copy()
+        dada[('phone',)] = u'123_notgood_456'
+
+        validate_phonenum(('phone',), dada, errors, None)
+
+        assert len( errors ) == 1
+
