@@ -145,11 +145,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IActions, inherit=True)
     implements(IAuthFunctions, inherit=True)
 
+    # Required extras fields
     kata_fields_required = ['version', 'language',
                   'publisher', 'phone', 'contactURL',
                   'project_name', 'funder', 'project_funding', 'project_homepage',
                   'access', 'accessRights', 'accessrequestURL', 'licenseURL',
                   'organization', 'author', 'owner']
+
+    # Recommended extras fields
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
                   'temporal_coverage_end', 'discipline', 'fformat', 'checksum',
                   'algorithm', 'evwho', 'evdescr', 'evtype', 'evwhen', 'langdis',
@@ -165,6 +168,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {'package_update': auth_functions.is_owner}
 
     def get_actions(self):
+        """ Register actions. """
         return {'package_show': actions.package_show,
                 'package_create': actions.package_create,
                 'group_list': actions.group_list,
@@ -427,10 +431,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         This allows the selectino of different schemas for different purposes (like HTML form / API).
         Can't be switched to db_to_form_schema() since they are used differently.
+
+        This method is called when viewing or editing a dataset.
         """
+
         schema = db_to_form_package_schema()
         for key in self.kata_field:
             schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
+
         schema['versionPID'] = [pid_from_extras, ignore_missing, unicode]
 
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
@@ -446,6 +454,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return schema
 
     def convert_from_extras_kata(self, key, data, errors, context):
+
+        #import pprint
+        #pprint.pprint(data)
+        #print("Key: " + repr(key))
+
         for k in data.keys():
             if k[0] == 'extras' and k[-1] == 'key' and data[k] in self.kata_field:
                 key = ''.join(data[k])
@@ -453,6 +466,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 for _remove in data.keys():
                     if _remove[0] == 'extras' and _remove[1] == k[1]:
                         del data[_remove]
+
+        #pprint.pprint(data)
 
     def convert_to_extras_kata(self, key, data, errors, context):
         if data.get(('extras',)) is missing:
