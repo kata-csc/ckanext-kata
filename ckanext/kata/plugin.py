@@ -488,7 +488,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         '''
 
         data_dict['facet.field'] = FACETS
-        if data_dict['sort'] is None:
+        if data_dict.has_key('sort') and data_dict['sort'] is None:
             data_dict['sort'] = DEFAULT_SORT_BY
             c.sort_by_selected = DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
 
