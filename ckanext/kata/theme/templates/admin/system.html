@@ -1,0 +1,68 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Administration - Authorization') }}{% endblock %}
+
+{% block breadcrumb_content %}
+{% endblock %}
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      {% snippet 'admin/snippets/header.html', action=c.action %}
+
+      <h3 class="m-bottom">{{ _('System statistics') }}</h3>
+      {% if c.mem %}
+      <h4 class="m-bottom">{{ _('RAM usage') }}</h3>
+      <table class="table table-striped table-bordered table-condensed">
+        <tbody>
+        <tr>
+        {% for mem in c.mem %}
+
+          {% if loop.index is divisibleby 7 %}
+            <td>{{ mem }}</td></tr><tr>
+          {% else %}
+            <td>{{ mem }}</td>
+          {% endif %}        
+        
+        {% endfor %}
+        </tr>
+        </tbody>
+      </table>
+      {% endif %}
+      
+      {% if c.hd %}
+      <h4 class="m-bottom">{{ _('Disk usage') }}</h3>
+      <table class="table table-striped table-bordered table-condensed">
+        <tbody>
+        <tr>
+        {% for ptt in c.hd %}
+
+          {% if loop.index is divisibleby 6 %}
+            <td>{{ ptt }}</td></tr><tr>
+          {% else %}
+            <td>{{ ptt }}</td>
+          {% endif %}        
+        
+        {% endfor %}
+        </tr>
+        </tbody>
+      </table>
+      {% endif %}
+      {% if c.ut %}
+      <h4 class="m-bottom">{{ _('System uptime and load') }}</h3>
+      <table class="table table-striped table-bordered table-condensed">
+        <tbody>
+        <tr>
+        {% for ut in c.ut %}
+            <td>{{ ut }}</td>               
+        {% endfor %}
+        </tr>
+        </tbody>
+      </table>
+      {% endif %}
+ 
+
+    </div>
+  </article>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

@@ -3,7 +3,9 @@
 {% block subtitle %}{{ _("Kata instructions") }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{{ _('Help') }} </li>
+  <li class="active">{{ h.nav_link(_('Help'), controller='ckanext.kata.controllers:KataInfoController', action='render_help', highlight_actions = 'new
+  index') }}
+</li>
 {% endblock %}
 
 {% block primary_content %}

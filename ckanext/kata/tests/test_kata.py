@@ -11,6 +11,7 @@ from pylons.util import ContextObj, PylonsContext, pylons, AttribSafeContextObj
 
 from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 from ckanext.kata.plugin import KataPlugin
+from ckan.lib.base import c
 
 from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
 from ckan.tests.html_check import HtmlCheckMethods
@@ -70,7 +71,50 @@ class TestKataPlugin(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
 
-        cls.some_data_dict = {'sort': u'metadata_modified desc', 'fq': '', 'rows': 20, 'facet.field': ['groups', 'tags', 'extras_fformat', 'license', 'authorstring', 'organizationstring', 'extras_language'], 'q': u'Selenium', 'start': 0, 'extras': {}}
+        cls.some_data_dict = {'sort': u'metadata_modified desc',
+                              'fq': '',
+                              'rows': 20,
+                              'facet.field': ['groups',
+                                              'tags',
+                                              'extras_fformat',
+                                              'license',
+                                              'authorstring',
+                                              'organizationstring',
+                                              'extras_language'],
+                              'q': u'',
+                              'start': 0,
+                              'extras': {'ext_author-4': u'testauthor',
+                                         'ext_date-metadata_modified-end': u'2013',
+                                         'ext_date-metadata_modified-start': u'2000',
+                                         'ext_groups-6': u'testdiscipline',
+                                         'ext_operator-2': u'OR',
+                                         'ext_operator-3': u'AND',
+                                         'ext_operator-4': u'AND',
+                                         'ext_operator-5': u'OR',
+                                         'ext_operator-6': u'NOT',
+                                         'ext_organization-3': u'testorg',
+                                         'ext_tags-1': u'testkeywd',
+                                         'ext_tags-2': u'testkeywd2',
+                                         'ext_title-5': u'testtitle'}
+        }
+        cls.short_data_dict = {'sort': u'metadata_modified desc',
+                              'fq': '',
+                              'rows': 20,
+                              'facet.field': ['groups',
+                                              'tags',
+                                              'extras_fformat',
+                                              'license',
+                                              'authorstring',
+                                              'organizationstring',
+                                              'extras_language'],
+                              'q': u'',
+                              'start': 0,
+        }
+        cls.test_q_terms = u' ((tags:testkeywd) OR ( tags:testkeywd2 AND ' + \
+                     u'organization:testorg AND author:testauthor) OR ' + \
+                     u'( title:testtitle NOT groups:testdiscipline))'
+        cls.test_q_dates = u' metadata_modified:[2000-01-01T00:00:00.000Z TO ' + \
+                u'2013-12-31T23:59:59.999Z]'
         cls.kata_plugin = KataPlugin()
 
         # The Pylons globals are not available outside a request. This is a hack to provide context object.
@@ -85,10 +129,38 @@ class TestKataPlugin(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
 
         pylons.tmpl_context._pop_object()
 
-    def test_before_search(self):
-        """Test before_search() output type."""
+    def test_extract_search_params(self):
+        """Test extract_search_params() output parameters number."""
+        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        n_extracted = len(terms) + len(ops) + len(dates)
+        assert len(self.some_data_dict['extras']) == n_extracted - 1, \
+            "KataPlugin.extract_search_params() parameter number mismatch"
+        assert len(terms) == len(ops) + 1, \
+            "KataPlugin.extract_search_params() term/operator ratio mismatch"
 
-        assert isinstance( self.kata_plugin.before_search(self.some_data_dict), dict), "KataPlugin.before_search() didn't output a dict"
+    def test_parse_search_terms(self):
+        """Test parse_search_terms() result string."""
+        test_dict = self.some_data_dict.copy()
+        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        self.kata_plugin.parse_search_terms(test_dict, terms, ops)
+        assert test_dict['q'] == self.test_q_terms, \
+            "KataPlugin.parse_search_terms() error in query parsing q=%s, test_q_terms=%s" % (test_dict['q'], self.test_q_terms)
+
+    def test_parse_search_dates(self):
+        """Test parse_search_dates() result string."""
+        test_dict = self.some_data_dict.copy()
+        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        self.kata_plugin.parse_search_dates(test_dict, dates)
+        assert test_dict['q'] == self.test_q_dates, \
+            "KataPlugin.parse_search_dates() error in query parsing"
+
+    def test_before_search(self):
+        """Test before_search() output type and more."""
+        result_dict = self.kata_plugin.before_search(self.some_data_dict.copy())
+        assert isinstance(result_dict, dict), "KataPlugin.before_search() didn't output a dict"
+
+        # Test that no errors occur without 'extras'
+        self.kata_plugin.before_search(self.short_data_dict)
 
     def test_get_actions(self):
         """Test get_actions() output type."""

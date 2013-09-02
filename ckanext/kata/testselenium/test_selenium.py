@@ -94,6 +94,10 @@ class TestKataBasics(TestCase):
         except NoSuchElementException:
             assert 0, 'FAQ navigation not found for anonymous user'
         try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/applications')]")
+        except NoSuchElementException:
+            assert 0, 'Applications navigation not found for anonymous user'
+        try:
             search = self.browser.find_element_by_xpath("//a[contains(@href, '/user/login')]")
         except NoSuchElementException:
             assert 0, 'Log in link not found for anonymous user'
@@ -325,6 +329,10 @@ class TestKataBasicsWithUser(TestCase):
             search = self.browser.find_element_by_xpath("//a[contains(@href, '/faq')]")
         except NoSuchElementException:
             assert 0, 'FAQ navigation not found for logged in user'   
+        try:
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/applications')]")
+        except NoSuchElementException:
+            assert 0, 'Applications navigation not found for logged in user'
         try:
             search = self.browser.find_element_by_xpath("//a[contains(@href, '/dashboard')]")
         except NoSuchElementException:

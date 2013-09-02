@@ -6,6 +6,7 @@ import logging
 import os
 import tempfile
 import urllib2
+import subprocess
 
 from _text import orngText
 from paste.deploy.converters import asbool
@@ -19,12 +20,13 @@ from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.storage import get_ofs
 from ckan.controllers.user import UserController
+from ckan.controllers.admin import AdminController
 from ckan.logic import check_access
 from ckan.lib.munge import substitute_ascii_equivalents
 from ckan.lib.base import BaseController, c, h, redirect, render
 from ckan.lib.navl.dictization_functions import unflatten
 from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params
-from ckan.model import Package, User, Related, Group, meta, Resource
+from ckan.model import Package, User, Related, Group, meta, Resource, PackageExtra
 from ckan.model.authz import add_user_to_role
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
@@ -635,3 +637,62 @@ class KataInfoController(BaseController):
         return render('kata/help.html')
     def render_faq(self):
         return render('kata/faq.html')
+    
+class SystemController(AdminController):
+    def system(self):
+        """
+        Generates a simple page about very basic system information
+        to admin site
+        """
+        smem = subprocess.Popen(["free", "-m"], stdout=subprocess.PIPE).communicate()[0]
+        c.mem = smem.split( );
+        # Add empty list items for empty cells to keep template clean
+        c.mem.extend(['','',''])
+        c.mem.insert(0, '')
+        c.mem = c.mem[0:18] + ['','',''] + c.mem[-7:]
+        
+        shd = subprocess.Popen(["df", "-h"], stdout=subprocess.PIPE).communicate()[0]
+        c.hd = shd.split( );
+        # Split matches the single phrase "Mounted on", quick fix:
+        c.hd[5] = c.hd[5] + ' ' + c.hd[6]
+        del c.hd[6]
+        
+        sut = subprocess.Popen(["uptime"], stdout=subprocess.PIPE).communicate()[0]
+        c.ut = sut.split(',');
+        del c.ut[1:2]
+        c.ut[2] = c.ut[2] + ', ' + c.ut[3] + ', '+ c.ut[4]
+        del c.ut[3:]
+        
+        return render('admin/system.html')
+
+    def report(self):
+        """
+        Generates a simple report page to admin site
+        """
+        # package info
+        c.numpackages = c.openpackages = 0
+        c.numpackages = model.Session.query(Package.id).count()
+        key = 'access'
+        value = 'free'
+        c.openpackages = model.Session.query(Package.id).\
+                   filter(PackageExtra.key==key).\
+                   filter(PackageExtra.value==value).\
+                   filter(Package.id==PackageExtra.package_id).\
+                   count()
+        # format to: d.dd %
+        c.popen = float(c.openpackages) / float(c.numpackages) * 100
+        c.popen = "{0:.2f}".format(c.popen) + ' %'
+        
+        # user info
+        c.numusers = 0
+        c.numusers = model.Session.query(User.id).count()
+        
+        return render('admin/report.html')
+    
+class AVAAController(BaseController):
+    """
+    Pages for AVAA
+    """
+    def listapps(self):
+        return render('avaa/applications.html')
+    

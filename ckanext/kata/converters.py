@@ -310,7 +310,5 @@ def add_to_group(key, data, errors, context):
             grp = Group(name=val, description=val)
             setup_default_user_roles(grp)
             grp.save()
-        grp.add_package_by_name(data[('name',)])
-        grp.save()
         repo.commit()
 
