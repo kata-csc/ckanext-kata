@@ -221,13 +221,13 @@ header.masthead .site-search {
 	color: #139CEC;
 }
 .site-footer {
-	background-color: #000;
+	background-color: #0A010E;
 	background-image: none;
 	padding: 20px 0;
-	background-image:-webkit-linear-gradient(top, #000, #000);
-	background-image:-moz-linear-gradient(top, #000, #000);
-	background-image:-o-linear-gradient(top, #000, #000);
-	background-image:-ms-linear-gradient(top, #000, #000);
+	background-image:-webkit-linear-gradient(top, #0A010E, #0A010E);
+	background-image:-moz-linear-gradient(top, #0A010E, #0A010E);
+	background-image:-o-linear-gradient(top, #0A010E, #0A010E);
+	background-image:-ms-linear-gradient(top, #0A010E, #0A010E);
 	background-repeat:repeat no-repeat;
 	min-height: 75px;
 	height: auto;
@@ -269,6 +269,9 @@ header.masthead .site-search {
 	background-repeat: no-repeat no-repeat;
  	padding-left: 55px;
 	background: url("/base/images/helpdesk.png") no-repeat scroll left top transparent;
+}
+.tta-info {
+	margin-top: 50px;
 }
 input, button, select, textarea {
 	font-family: Tahoma, Arial, sans-serif;
