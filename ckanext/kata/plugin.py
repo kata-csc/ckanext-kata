@@ -131,6 +131,10 @@ class KataMetadata(SingletonPlugin):
                     '/ckan-admin/report',
                     controller='ckanext.kata.controllers:SystemController',
                     action='report')
+        map.connect('applications',
+                    '/applications',
+                    controller="ckanext.kata.controllers:AVAAController",
+                    action="listapps")
         return map
 
     def before_insert(self, mapper, connection, instance):

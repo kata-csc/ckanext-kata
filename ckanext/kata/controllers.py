@@ -15,7 +15,6 @@ from pylons.decorators.cache import beaker_cache
 from pylons.i18n import gettext as _
 from rdflib.term import Identifier
 from pairtree.storage_exceptions import FileNotFoundException
-from sqlalchemy import func
 
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
@@ -689,4 +688,11 @@ class SystemController(AdminController):
         c.numusers = model.Session.query(User.id).count()
         
         return render('admin/report.html')
+    
+class AVAAController(BaseController):
+    """
+    Pages for AVAA
+    """
+    def listapps(self):
+        return render('avaa/applications.html')
     
