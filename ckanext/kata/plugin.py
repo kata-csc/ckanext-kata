@@ -435,6 +435,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         This method is called when viewing or editing a dataset.
         """
 
+        # TODO: Get rid of using db_to_form_package_schema() as it is removed in all CKAN updates.
+        # TODO: Instead use ckan.logic.schema.default_package_schema() ?
+
         schema = db_to_form_package_schema()
         for key in self.kata_field:
             schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
