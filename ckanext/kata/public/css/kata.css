@@ -110,6 +110,9 @@ body {
 header.masthead .header-image .logo {
 	height: 87px !important;
 }
+header.masthead .header-image {
+	padding-top: 10px;
+}
 header.masthead {
 	background-color: #FFF !important;
 	background-image: none !important;
@@ -123,28 +126,30 @@ header.masthead .content {
 }
 header.masthead .container {
 	height: 120px !important;
-	width: 970px;
+	background-image: url("/base/images/TTA-bg2.png") !important;
+	background-size: 100% !important;
+	width: 971px;
 }
 header.masthead .content a,
 header.masthead .account a,
 header.masthead .user-dropdown-menu a{
 /* Overwrite profile drop down menu color in main.css */
-	color: #666;
+	color: #FFF;
 }
 header.masthead .account {
 	-moz-box-shadow: 0 0 0 0 #fff;
 	-webkit-box-shadow: 0 0 0 0 #fff;
 	box-shadow: 0 0 0 0 #fff !important;
-	background-color: #fff !important;
+	background-color: transparent !important;
 
 }
 header.masthead .account .button {
 	-moz-box-shadow: 0 0 0 0 #fff;
 	-webkit-box-shadow: 0 0 0 0 #fff;
 	box-shadow: 0 0 0 0 #fff;
-	background-color: #fff !important;
+	background-color: rgba(0,0,0,0.3) !important;
 	border: 0px;
-	color: #666 !important;
+	color: #fff !important;
 	margin: 2px 5px 2px 0;
 	padding: 4px 8px 3px;
 	text-shadow: none !important;
@@ -166,14 +171,35 @@ header.masthead .site-search {
 /* Overwrite search field alignment in main.css */
     margin-right: 17px;
 }
+#help_navi {
+	color: #FFF;
+	margin-bottom: 5px;
+	float: right;
+	margin-right: 17px;
+}
+.tta-orange {
+	color: #E24632;
+}
+.tta-dblue {
+	color: #03263E;
+}
+.tta-lblue {
+	color: #063A5A;
+}
+.tta-green {
+	color: #209D82;
+}
 [role="main"], .main {
 	padding-bottom: 25px;
 	padding-top: 25px;
-	width: 960px;
+	width: 970px !important;
 	margin: auto auto 10px auto;
 	background-color: #FFF;
-	border: 5px solid;
-	border-color: #EEE;
+	border: 1px solid;
+	border-color: #063A5A;
+	-webkit-box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
+	box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
+	-moz-box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
 }
 [role="main"] .primary {
 	float:left;
@@ -213,6 +239,15 @@ header.masthead .site-search {
 .hero:after {
 	background-image: none !important;
 	border: 0;
+}
+.module {
+	-webkit-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
+	box-shadow: rgba(6, 58, 90, 01) 0 0 3px !important;
+	-moz-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
+}
+.padded-module {
+	padding: 0px 5px 5px 5px;
+	background-color: #F3F3F3;
 }
 .navbar-search .search-query {
 	font-family: Tahoma, Arial, sans-serif;
@@ -277,7 +312,7 @@ input, button, select, textarea {
 	font-family: Tahoma, Arial, sans-serif;
 }
 .dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover {
-	background-color:#209D82;
+	background-color:#03264E;
 }
 .btn {
 	border: 1px solid #666;
@@ -313,7 +348,7 @@ input, button, select, textarea {
 	float: right;
 }
 #main-nav {
-	background-color: #209D82 !important;
+	background-color: #063A5A !important;
 	color: #fff;
 	padding-left: 4px;
 	overflow: hidden !important;
@@ -329,11 +364,15 @@ input, button, select, textarea {
 #kata_header {
 	position: absolute;
 	left: 300px;
-	top: 35px;
+	top: 45px;
 }
 #kata_header h1 {
-	color: #139CEC;
-	font-size: 24px;
+	color: #FFF;
+	padding-top: 8px;
+	font-size: 16px;
+	font-family: Tahoma, Arial, sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 2px;
 }
 .pp-body h1 {
 	font-size: 16px;
@@ -378,11 +417,11 @@ input, button, select, textarea {
 	padding-top: 25px;
 }
 #nav_wrapper {
-	color: #209D82;
-	background-color: #209D82;
+	color: #063A5A;
+	background-color: #063A5A;
 }
 #kata_navigation {
-	background-color: #209D82;
+	background-color: #063A5A;
 }
 #kata_navigation li.selected a {
 	-webkit-box-shadow: none;
@@ -414,7 +453,7 @@ input, button, select, textarea {
 }
 
 #kata_navigation .selected a, #kata_navigation li.hover a, #kata_navigation a:hover, #kata_navigation a:focus {
-	background-color: #108D72;
+	background-color: #03263E;
 	background-position: initial initial;
 	background-repeat: initial initial;
 	color: #FFFFFF;
@@ -438,7 +477,7 @@ input, button, select, textarea {
 	clear: both;
 	height: 100%;
 	margin: 0 0 0 0;
-	max-width: 700px;
+	max-width: 820px;
 	padding: 0 0 0 5px;
 	position: relative;
 	z-index: 1;

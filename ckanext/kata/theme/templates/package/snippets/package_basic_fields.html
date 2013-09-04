@@ -1,8 +1,9 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
-
+<section class="module padded-module">
+<h2 class="module-heading tta-orange">{{ _('Required information') }}</h2>
 <section class="module">
-<h2 class="module-heading">{{ _('Required information') }}</h2>
+<h2 class="module-heading">{{ _('Basic information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name %}{{data.name}}{% endif %}" />
 {% call form.input_block("titles", _('Titles') , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
@@ -226,6 +227,7 @@
 		{{ kata_form.tooltip(tooltip=_('Usage and license fields are compulsory.<br /><br />Use the radio buttons and displayed fields to tell how to access your research data. Provide the download URL when such a field is displayed beside your chosen option. Note that this service supports the use of REMS service and you can automatically generate a basic access request form by checking the \"Create a new addess request form\" button when choosing the first option.<br /><br />Learn more about REMS from https://rems.csc.fi.<br /><br />Provide a license URL or a freeform license text to the License field.')) }} 
 	{% endcall %}
 </div>
+</section>
 </section>
 
 {% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
