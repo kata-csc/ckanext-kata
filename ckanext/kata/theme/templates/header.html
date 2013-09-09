@@ -6,7 +6,7 @@
     {# The .header-image class hides the main text and uses image replacement for the title #}
     <hgroup class="{{ g.header_class }}">
       {% if g.site_logo %}
-        <a class="logo" href="{{ h.url('home') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ g.site_title }} " title="{{ g.site_title }} " /></a>
+        <a class="logo" href="{{ _('http://datakeskus.csc.fi/en/web/tta') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ _('TTA - Tutkimuksen Tietoaineistot') }}" title="{{ _('TTA - Tutkimuksen Tietoaineistot') }}" /></a>
       {% else %}
         <h1>
           <a href="{{ h.url('home') }}">{{ g.site_title }}</a>
@@ -65,7 +65,7 @@
             </a>
           </div>
           {% if c.userobj.sysadmin %}
-              <div class="dropdown">
+            <div class="dropdown">
               <a class="button" href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
                 <i class="icon-legal"></i>
                 {{ _('Sysadmin settings') }}
@@ -84,7 +84,7 @@
     <div id="kata_header">
       <h1>Kata-aineistokatalogi</h1>
     </div>
-     <div class="content">
+    <div class="content">
       <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
         <div class="field">
           <label for="field-sitewide-search">{{ _('Search Datasets') }}</label>
@@ -93,18 +93,30 @@
         </div>
       </form>
     </div>
+    <div id="help_navi">
+      <i class="icon-large icon-info-sign"></i>
+      <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataInfoController', action='render_help') }}">
+      {{ _('Help') }}
+      </a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <i class="icon-large icon-info-sign"></i>
+      <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataInfoController', action='render_faq') }}">
+      {{ _('FAQ') }}
+      </a>
+    </div>
   </div>
   <div id="nav_wrapper"> 
     <nav id="kata_navigation">
       <ul>
+      <li>
+      <a href="/">
+        <i class="icon-large icon-home tta-orange"/></i>
+      </a>
+      </li>
       {{ h.build_nav_main(
-        ('add dataset', _('Add Dataset'), 'package_create'),
         ('search', _('Datasets')),
-        ('organizations_index', _('Organizations')),
-        ('group_index', _('Groups')),
+        ('group_index', _('Collections')),
         ('about', _('About')),
-        ('help', _('Help')),
-        ('faq', _('FAQ')),
         ('applications', _('Applications'))
       )}}
       </ul>

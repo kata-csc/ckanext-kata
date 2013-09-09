@@ -9,6 +9,12 @@
 </li>
 {% endblock %}
 
+{% block actions_content %}
+  {% if h.check_access('package_create') %}
+    <li>{% link_for _('Add Dataset'), controller='package', action='new', class_="btn btn-primary icon-large", icon="plus" %}</li>
+  {% endif %}
+{% endblock %}
+
 {# CREATE A HIDDEN ROW TO CLONE FROM, WITH PARSED FIELD NAMES BEGINNING WITH LEADING ___ SO THEY WON'T BE PARSED  #}
 
 {% set current_search_rows = [{ 'field': '___' ~ c.search_fields | first,

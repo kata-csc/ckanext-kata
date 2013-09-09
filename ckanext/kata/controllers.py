@@ -647,9 +647,9 @@ class SystemController(AdminController):
         smem = subprocess.Popen(["free", "-m"], stdout=subprocess.PIPE).communicate()[0]
         c.mem = smem.split( );
         # Add empty list items for empty cells to keep template clean
-        c.mem.extend(['','',''])
+        c.mem.extend(['', '', ''])
         c.mem.insert(0, '')
-        c.mem = c.mem[0:18] + ['','',''] + c.mem[-7:]
+        c.mem = c.mem[0:18] + ['', '', ''] + c.mem[-7:]
         
         shd = subprocess.Popen(["df", "-h"], stdout=subprocess.PIPE).communicate()[0]
         c.hd = shd.split( );

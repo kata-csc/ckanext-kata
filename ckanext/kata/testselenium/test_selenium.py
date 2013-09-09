@@ -74,10 +74,6 @@ class TestKataBasics(TestCase):
         except NoSuchElementException:
             assert 0, 'Search (dataset) navigation not found for anonymous user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/organization')]")
-        except NoSuchElementException:
-            assert 0, 'Organization navigation not found for anonymous user'
-        try:
             search = self.browser.find_element_by_xpath("//a[contains(@href, '/group')]")
         except NoSuchElementException:
             assert 0, 'Group navigation not found for anonymous user'
@@ -302,17 +298,9 @@ class TestKataBasicsWithUser(TestCase):
         # These should match often twice, clumsy, fix in the future
         self.browser.get("https://localhost/")
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/dataset/new')]")           
-        except NoSuchElementException:
-            assert 0, 'Search (dataset) navigation not found for logged in user'
-        try:
             search = self.browser.find_element_by_xpath("//a[contains(@href, '/dataset')]")           
         except NoSuchElementException:
             assert 0, 'Search (dataset) navigation not found for logged in user'
-        try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/organization')]")
-        except NoSuchElementException:
-            assert 0, 'Organization navigation not found for logged in user'
         try:
             search = self.browser.find_element_by_xpath("//a[contains(@href, '/group')]")           
         except NoSuchElementException:
