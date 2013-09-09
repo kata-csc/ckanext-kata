@@ -1,3 +1,8 @@
+"""
+Functions to convert and validate dataset form fields from or to db fields. Validating
+parts should probably be separated to validators.py.
+"""
+
 import utils
 import logging
 from pylons.i18n import gettext as _
@@ -148,17 +153,27 @@ def org_auth_from_extras(key, data, errors, context):
 
 
 def ltitle_to_extras(key, data, errors, context):
+    """
+    Convert title & language pair from dataset form to db format and validate.
+    Title & language pairs will be stored in package_extra.
+    """
+
     extras = data.get(('extras',), [])
     langs = []
+
     if not extras:
         data[('extras',)] = extras
+
     if len(data[key]) > 0:
+        # Get title's language from data dictionary. key[0] == 'title'.
         lval = data[(key[0], key[1], 'lang')]
+
         if not lval in langs:
             langs.append(lval)
         else:
             if not _("Duplicate language found.") in errors[key]:
                 errors[key].append(_("Duplicate language found."))
+
         extras.append({'key': "title_%s" % key[1],
                       'value': data[key]})
         extras.append({'key': 'lang_title_%s' % key[1],
@@ -170,6 +185,9 @@ def ltitle_to_extras(key, data, errors, context):
 
 
 def ltitle_from_extras(key, data, errors, context):
+    """
+    Convert title & language pair from db format to dataset form format.
+    """
     if not ('langtitles',) in data:
         data[('langtitles',)] = []
     auths = []

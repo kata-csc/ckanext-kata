@@ -17,7 +17,7 @@ from ckan.plugins import IActions
 from ckan.plugins import IAuthFunctions
 from ckan.plugins.core import unload
 from ckan.lib.base import g, c
-from ckan.model import Package, user_has_role
+from ckan.model import Package, PackageExtra, user_has_role, repo, Session
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import db_to_form_package_schema, \
                                 form_to_db_package_schema, \
@@ -39,6 +39,7 @@ from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEA
 
 log = logging.getLogger('ckanext.kata')
 t = toolkit
+
 
 
 def snippet(template_name, **kw):
@@ -139,10 +140,35 @@ class KataMetadata(SingletonPlugin):
 
     def before_insert(self, mapper, connection, instance):
         """
-        Override IMapper.before_insert()
+        Override IMapper.before_insert(). Receive an object instance before that instance is INSERTed.
         """
         if isinstance(instance, Package):
             instance.id = utils.generate_pid()
+
+    # def after_insert(self, mapper, connection, instance):
+    #     if isinstance(instance, PackageExtra) and instance.key == u'title_0':
+    #         # Update package.title to match package.extras.title_0
+    #         # package.extras is not created yet, so we can't do it like in before_update()
+    #
+    #         package = Package.get(instance.package_id)
+    #
+    #         transaction = connection.begin()
+    #         connection.execute('UPDATE package SET title = \'' + instance.value + '\' WHERE id LIKE \'' + instance.package_id + '\';')
+    #
+    #         kerpo
+    #         transaction.commit()
+    #
+    #
+    # def before_update(self, mapper, connection, instance):
+    #     """
+    #     Override IMapper.after_update()
+    #     """
+    #     if isinstance(instance, Package):
+    #         # Update package.title to match package.extras.title_0
+    #         title0 = instance.extras.get(u'title_0')
+    #
+    #         if title0:
+    #             instance.title = title0
 
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
