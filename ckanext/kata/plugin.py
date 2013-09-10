@@ -110,7 +110,10 @@ class KataMetadata(SingletonPlugin):
         map.connect('/dataset/import_xml/',
                     controller="ckanext.harvest.controllers.view:ViewController",
                     action="import_xml")
-        map.connect('add dataset', '/dataset/new', controller='package', action='new')
+        map.connect('add dataset', 
+                    '/dataset/new', 
+                    controller='package', 
+                    action='new')
         map.connect('/dataset/new_comment/{id}',
                     controller='ckanext.kata.controllers:KataCommentController',
                     action="new_comment")

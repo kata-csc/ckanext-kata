@@ -88,11 +88,6 @@
   {% block package_comments %}
     {% snippet "kata_comment/comments.html", pkg_name=pkg.name, user=c.userobj, pkg_id=pkg.id, comments=c.comments %}
   {% endblock %}
-{#  
-  {% block package_revisions %}
-    {% snippet "package/comments.html", pkg_name=pkg.name %}
-  {% endblock %}
-#}
 {% endblock %}
 
 {% block secondary_content %}

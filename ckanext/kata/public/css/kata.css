@@ -578,10 +578,17 @@ header.masthead {
 	margin-right: 5px;
 }
 /* Star rating for comment widget */
-
 .rating {
-    /*overflow: hidden;*/
     display: inline;
+    float: left;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+.rating input {
+	float: right;
+	display: block;
+	width: 0px;
 }
 .rating-input {
     position: absolute;
@@ -589,7 +596,7 @@ header.masthead {
     top: -50px;
     width: none !important;
 }
-.rating-star-label {
+.rating-star-label, .rating:hover .rating-star-label {
 	float: right;
 	display: block;
 	width: 16px;
@@ -598,12 +605,16 @@ header.masthead {
 	margin-bottom: 0px;
 	line-height: 0px;
 	position: relative;
-	top: 10px;
-	/*left: 100px;*/
+	top: 5px;
+	/*left: 15px;*/
 }
-.rating-star-label:hover, .rating-star-label:hover ~ .rating-star-label,
+.rating input[type='radio'] {
+	visibility: hidden;
+}
+.rating-star-label:hover,
+.rating-star-label:hover ~ .rating-star-label,
 .rating-input:checked ~ .rating-star-label {
-	background-position: left -32px;
+	background-position: left -32px !important;
 }
 .rating-star-label::after {
 	content: none !important;
@@ -614,14 +625,3 @@ header.masthead {
 .control-comment textarea {
 	width: 100%;
 }
-/*
-.rating-star, rating:hover .rating-star {
-	float: right;
-    display: block;
-    width: 16px;
-    height: 16px;
-    background: url('/base/images/star.png') 0 -16px;
-}
-.rating-star:hover, .rating-star:hover ~ .rating-star, .rating-input:checked ~ .rating-star {
-    background-position: 0 0;
-}*/
