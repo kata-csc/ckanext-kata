@@ -1,0 +1,56 @@
+{% extends "page.html" %}
+
+{% block breadcrumb_content %}
+  <li><a href="{{ h.url_for(controller='package', action='read', id=c.pkg_id) }}" title="{{ c.pkg_title }}">{{ c.pkg_title}}</a></li>
+  
+{% endblock %}
+{% block primary_content %}
+  <section class="module">
+    <form class="dataset-form form-horizontal" method="post" data-module="basic-form">
+      <div class="module-content">
+        <h1 class="page-heading">{% block page_heading %}{{ _('Add new comment to dataset') }}{% endblock %}</h1>
+          {% block fields %}
+          {#<div class="control-group control-full">#}
+          <div class="control-comment">
+            <label class="control-label" for="new_comment">{{ _('Comment') }}</label>
+            
+            <div class="controls">
+              <textarea rows="8" cols="20" id="new_comment" name="new_comment" placeholder="{{ _('Your comment') }}"></textarea>
+            </div>
+            <label class="control-label" for="new_comment">{{ _('Rating') }}</label>&nbsp;&nbsp;
+            
+            <div class="rating">
+              <input type="radio" id="rating-1" name="rating" value="1" title="1" class="rating-input">
+              <label for="rating-1" class="rating-star-label"></label>
+              <input type="radio" id="rating-2" name="rating" value="2" title="2" class="rating-input">
+              <label for="rating-2" class="rating-star-label"></label>
+              <input type="radio" id="rating-3" name="rating" value="3" title="3" class="rating-input">
+              <label for="rating-3" class="rating-star-label"></label>
+              <input type="radio" id="rating-4" name="rating" value="4" title="4" class="rating-input">
+              <label for="rating-4" class="rating-star-label"></label>
+              <input type="radio" id="rating-5" name="rating" value="5" title="5" class="rating-input">
+              <label for="rating-5" class="rating-star-label"></label>
+            </div>
+            
+          </div>
+          {% endblock %}
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit" name="save">{% block button_text %}{{ _('Save') }}{% endblock %}</button>
+          </div>
+      </div>
+   </form>
+  </section>
+{% endblock %}
+
+
+
+{% block secondary_content %}
+  <section class="module module-narrow">
+    <h2 class="module-heading"><i class="icon-large icon-info-sign"></i>{{ _('What are comments?') }}</h2>
+    <div class="module-content">
+      <p>{{ _('With comments you can contribute to the data. You can for example give additional information about it or any other helpful information.') }}</p>
+
+      <p>{{ _('To help the Finnish science on its journey to interplanetary domination, keep your comments constructive and appropriate.') }}</p>
+    </div>
+  </section>
+{% endblock %}

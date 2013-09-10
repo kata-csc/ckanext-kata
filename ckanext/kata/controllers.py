@@ -16,6 +16,9 @@ from pylons.i18n import gettext as _
 from rdflib.term import Identifier
 from pairtree.storage_exceptions import FileNotFoundException
 
+import calendar
+from datetime import datetime, timedelta
+
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.storage import get_ofs
@@ -23,18 +26,23 @@ from ckan.controllers.user import UserController
 from ckan.controllers.admin import AdminController
 from ckan.logic import check_access
 from ckan.lib.munge import substitute_ascii_equivalents
-from ckan.lib.base import BaseController, c, h, redirect, render
+from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.navl.dictization_functions import unflatten
 from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params
+from ckan.logic import NotFound, NotAuthorized, ActionError
 from ckan.model import Package, User, Related, Group, meta, Resource, PackageExtra
 from ckan.model.authz import add_user_to_role
-from ckanext.kata.model import KataAccessRequest
+from ckanext.kata.model import KataAccessRequest, KataComment
 from ckanext.kata.urnhelper import URNHelper
 from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, XSD, Graph, URIRef, Literal
 from ckanext.kata.utils import convert_to_text, send_contact_email
+from ckan.lib.package_saver import PackageSaver
+from sqlalchemy import null
+
 import ckan.model as model
 import ckan.model.misc as misc
 import ckan.lib.i18n
+import ckan.new_authz as new_authz
 
 from operator import itemgetter
 
@@ -102,6 +110,13 @@ def get_discipline(context, data_dict):
                 res.append(child)
     return res
 
+def utc_to_local(utc_dt):
+    # http://stackoverflow.com/questions/4563272/ \
+    # how-to-convert-a-python-utc-datetime-to-a-local-datetime-using-only-python-stand
+    timestamp = calendar.timegm(utc_dt.timetuple())
+    local_dt = datetime.fromtimestamp(timestamp)
+    assert utc_dt.resolution >= timedelta(microseconds=1)
+    return local_dt.replace(microsecond=utc_dt.microsecond)
 
 class MetadataController(BaseController):
 
@@ -629,10 +644,121 @@ class KataPackageController(PackageController):
         log.debug('advanced_search(): call to search()')
         return self.search()
     
+    def read(self, id, format='html'):
+        if not format == 'html':
+            ctype, extension, loader = \
+                self._content_type_from_extension(format)
+            if not ctype:
+                # An unknown format, we'll carry on in case it is a
+                # revision specifier and re-constitute the original id
+                id = "%s.%s" % (id, format)
+                ctype, format, loader = "text/html; charset=utf-8", "html", \
+                    MarkupTemplate
+        else:
+            ctype, format, loader = self._content_type_from_accept()
+
+        response.headers['Content-Type'] = ctype
+
+        package_type = self._get_package_type(id.split('@')[0])
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'extras_as_string': True,
+                   'for_view': True}
+        data_dict = {'id': id}
+
+        # interpret @<revision_id> or @<date> suffix
+        split = id.split('@')
+        if len(split) == 2:
+            data_dict['id'], revision_ref = split
+            if model.is_id(revision_ref):
+                context['revision_id'] = revision_ref
+            else:
+                try:
+                    date = date_str_to_datetime(revision_ref)
+                    context['revision_date'] = date
+                except TypeError, e:
+                    abort(400, _('Invalid revision format: %r') % e.args)
+                except ValueError, e:
+                    abort(400, _('Invalid revision format: %r') % e.args)
+        elif len(split) > 2:
+            abort(400, _('Invalid revision format: %r') %
+                  'Too many "@" symbols')
+
+        #check if package exists
+        try:
+            c.pkg_dict = get_action('package_show')(context, data_dict)
+            c.pkg = context['package']
+        except NotFound:
+            abort(404, _('Dataset not found'))
+        except NotAuthorized:
+            abort(401, _('Unauthorized to read package %s') % id)
+
+        # used by disqus plugin
+        c.current_package_id = c.pkg.id
+        c.related_count = c.pkg.related_count
+
+        PackageSaver().render_package(c.pkg_dict, context)
+
+        template = self._read_template(package_type)
+        template = template[:template.index('.') + 1] + format
+        
+        # For Kata commends
+        c.comments = []
+        q = KataComment.get_all_for_pkg(c.pkg.id)
+        log.debug(q)
+        for res in q:
+            usr_name = model.Session.query(
+                model.User.fullname.label('fullname')).filter_by(id=res.user_id).first()
+            res.date = utc_to_local(res.date)
+            list = [res.comment, res.date, usr_name[0], res.rating]
+            c.comments.append(list)
+
+        return render(template, loader_class=loader)
+    
+class KataCommentController(BaseController):
+    '''
+    Kata commenting features
+    '''
+    def new_comment(self, id, data=None, errors=None):
+        '''
+        New comment form
+        '''
+        c.pkg_id = id
+        c.pkg_title = Package.get(id).title
+        log.debug(request.params)
+        if 'save' in request.params and c.user:
+            data_dict = clean_dict(unflatten(
+                tuplize_dict(parse_params(request.POST))))
+            try:
+                rating = data_dict['rating']
+            except KeyError:
+                rating = null()
+            comment = data_dict['new_comment']
+            return self._save_comment(id, comment, c.user or c.author, rating)
+        else:
+            if not c.user:
+                h.flash_error("Requires login")
+                came_from = request.params.get('came_from', '')
+                lang = session.pop('lang', None)
+                return h.redirect_to(locale=lang, controller='user',
+                                 action='login', came_from=came_from)
+            return render('kata_comment/new_comment.html')
+        
+    def _save_comment(self, id, comment, user, rating):
+        try:
+            userid = new_authz.get_user_id_for_username(user, allow_none=True)
+            cmmt = KataComment(id, userid, comment, rating)
+            cmmt.save()
+        except ActionError:
+            log.debug("saving comment failed")
+            h.flash_error('Failed to save comment')
+        lang = session.pop('lang', None)
+        h.redirect_to(locale=lang, controller='package',
+                          action='read', id=id)
+    
 class KataInfoController(BaseController):
-    """
+    '''
     Renders help page.
-    """
+    '''
     def render_help(self):
         return render('kata/help.html')
     def render_faq(self):

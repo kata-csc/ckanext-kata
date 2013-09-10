@@ -52,6 +52,33 @@ mapper(KataAccessRequest, kata_access_request_table, extension=[
                ]
             )
 
+class KataComment(DomainObject):
+    
+    def __init__(self, pkg_id, user_id, cmt, rating):
+        self.pkg_id = pkg_id
+        self.comment = cmt
+        self.user_id = user_id
+        self.rating = rating
+    
+    @classmethod    
+    def get_all_for_pkg(self, pkg_id):
+        query = meta.Session.query(KataComment)
+        return query.filter_by(pkg_id=pkg_id).all()
+
+kata_comments_table = Table('kata_comments', meta.metadata,
+    Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+    Column('pkg_id', types.UnicodeText, ForeignKey('package.id')),
+    Column('user_id', types.UnicodeText, ForeignKey('user.id')),
+    Column('comment', types.UnicodeText),
+    Column('date', types.DateTime, default=datetime.datetime.utcnow),
+    Column('rating', types.Integer),
+    UniqueConstraint('pkg_id', 'user_id', 'date', name='comment_1'),
+)
+
+mapper(KataComment, kata_comments_table, extension=[
+                        extension.PluginMapperExtension(),
+                    ]
+)
 
 user_extra_table = Table('user_extra', meta.metadata,
     Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
@@ -106,6 +133,9 @@ def setup():
         and not user_extra_revision_table.exists():
         user_extra_table.create()
         user_extra_revision_table.create()
+        
+    if model.user_table.exists() and model.package_table.exists() and not kata_comments_table.exists():
+        kata_comments_table.create()
 
 def delete_tables():
     '''
