@@ -64,6 +64,9 @@ class KataComment(DomainObject):
     def get_all_for_pkg(self, pkg_id):
         query = meta.Session.query(KataComment)
         return query.filter_by(pkg_id=pkg_id).all()
+    @classmethod
+    def check_existence(self):
+        return kata_comments_table.exists()
 
 kata_comments_table = Table('kata_comments', meta.metadata,
     Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
@@ -148,3 +151,5 @@ def delete_tables():
         #user_extra_table.delete()
     if kata_access_request_table.exists():
         kata_access_request_table.delete()
+    if kata_comments_table.exists():
+        kata_comments_table.delete()

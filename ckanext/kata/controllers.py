@@ -7,6 +7,7 @@ import os
 import tempfile
 import urllib2
 import subprocess
+import re
 
 from _text import orngText
 from paste.deploy.converters import asbool
@@ -701,16 +702,22 @@ class KataPackageController(PackageController):
         template = self._read_template(package_type)
         template = template[:template.index('.') + 1] + format
         
-        # For Kata commends
+        # For Kata comments
         c.comments = []
-        q = KataComment.get_all_for_pkg(c.pkg.id)
-        log.debug(q)
+        # not to run query against  a non-existent table
+        if KataComment.check_existence():
+            q = KataComment.get_all_for_pkg(c.pkg.id)
+        else:
+            q = ''
+            c.comments_error = 'Comments disabled'
         for res in q:
             usr_name = model.Session.query(
                 model.User.fullname.label('fullname')).filter_by(id=res.user_id).first()
             res.date = utc_to_local(res.date)
+            # Finnish time format
+            res.date = res.date.strftime('%d.%m.%Y %H:%M')
             list = [res.comment, res.date, usr_name[0], res.rating]
-            c.comments.append(list)
+            c.comments.append(list)  
 
         return render(template, loader_class=loader)
     
