@@ -9,7 +9,7 @@ from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Package, repo
 from ckan.model.authz import add_user_to_role
 import ckan.model as model
-from ckan.lib.search import index_for
+from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from pylons.i18n import gettext as _
@@ -32,13 +32,16 @@ def package_show(context, data_dict):
                                  'type': _("Paper"),
                                  'dataset_id': pkg.id}
                     related_create(context, data_dict)
-    if not pkg.title:
-        for key in pkg.extras.keys():
-            if TITLE_MATCH.match(key):
-                repo.new_revision()
-                pkg.title = pkg.extras[key]
-                pkg.save()
-                break
+
+    # Update package.title to match package.extras.title_0
+
+    extras_title = pkg.extras.get(u'title_0')
+    if extras_title and extras_title != pkg.title:
+        repo.new_revision()
+        pkg.title = pkg.extras[u'title_0']
+        pkg.save()
+        rebuild(pkg.id)  # Rebuild solr-index for this dataset
+
     return pkg_dict1
 
 
