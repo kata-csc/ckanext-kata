@@ -725,7 +725,7 @@ class KataCommentController(BaseController):
     '''
     Kata commenting features
     '''
-    def new_comment(self, id, data=None, errors=None):
+    def new_comment(self, id):
         '''
         New comment form
         '''
@@ -757,7 +757,7 @@ class KataCommentController(BaseController):
             cmmt.save()
         except ActionError:
             log.debug("saving comment failed")
-            h.flash_error('Failed to save comment')
+            h.flash_error(_('Failed to save comment'))
         lang = session.pop('lang', None)
         h.redirect_to(locale=lang, controller='package',
                           action='read', id=id)

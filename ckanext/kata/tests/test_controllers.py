@@ -91,3 +91,19 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
 
         assert all(piece in res.body for piece in ['<form', '/contact/send/', '</form>']), 'Contact form not rendered'
 
+    def test_comments_rendered(self):
+        '''
+        A package should have a comments section
+        '''
+        extra_environ = {'REMOTE_USER': 'tester'}
+        offset = url_for(controller='package', action='read', id=u'annakarenina')
+        res = self.app.get(offset)
+        assert '<section class="module module-narrow comments">' in res, 'A logged in user should see comments section'
+    
+    def test_comments_rendered_not_logged_in(self):
+        '''
+        A package should not have a comments section for a user not logged in
+        '''
+        offset = url_for(controller='package', action='read', id=u'annakarenina')
+        res = self.app.get(offset)
+        assert '<a class="btn btn-primary" href="/dataset/new_comment/' not in res, 'A non-logged in user should not see comments section'

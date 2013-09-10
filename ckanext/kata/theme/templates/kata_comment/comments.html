@@ -42,7 +42,7 @@
   </ul>
   {% if user %}
     <section class="module-content">  
-      <p class="action">{% link_for _('New comment and rating'), controller='ckanext.kata.controllers:KataCommentController', action='new_comment', id=pkg_id, class_='btn btn-primary' %}</p>    
+      <p class="action">{% link_for _('Rate and comment'), controller='ckanext.kata.controllers:KataCommentController', action='new_comment', id=pkg_id, class_='btn btn-primary' %}</p>    
     </section>
   {% else %}
     <section class="module-content">
