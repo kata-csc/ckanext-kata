@@ -114,3 +114,9 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         offset = url_for(controller='ckanext.kata.controllers:KataCommentController', action='new_comment', id=u'annakarenina')
         res = self.app.get(offset)
         assert res.status==302, 'Wrong status code (should be 302), in new_comment'
+        extra_environ = {'REMOTE_USER': 'tester'}
+        offset = url_for(controller='ckanext.kata.controllers:KataCommentController', action='new_comment', id=u'annakarenina')
+        res = self.app.get(offset, extra_environ=extra_environ)
+        assert '<label class="control-label" for="new_comment">' in res, 'Text area to add a comment should exist'
+        assert '<label for="rating-3"' in res, 'Rating should exist in add comment page'
+        assert res.status == 200, 'Wrong status code in new comment page'

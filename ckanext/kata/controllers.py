@@ -7,7 +7,6 @@ import os
 import tempfile
 import urllib2
 import subprocess
-import re
 
 from _text import orngText
 from paste.deploy.converters import asbool
@@ -43,7 +42,6 @@ from sqlalchemy import null
 import ckan.model as model
 import ckan.model.misc as misc
 import ckan.lib.i18n
-import ckan.new_authz as new_authz
 
 from operator import itemgetter
 
@@ -112,7 +110,10 @@ def get_discipline(context, data_dict):
     return res
 
 def utc_to_local(utc_dt):
-    # http://stackoverflow.com/questions/4563272/ \
+    '''
+    Change datetime in utc zone to datetime on local zone
+    '''
+    # Taken from: http://stackoverflow.com/questions/4563272/ \
     # how-to-convert-a-python-utc-datetime-to-a-local-datetime-using-only-python-stand
     timestamp = calendar.timegm(utc_dt.timetuple())
     local_dt = datetime.fromtimestamp(timestamp)
@@ -251,6 +252,9 @@ class MetadataController(BaseController):
 
 
 class KATAApiController(ApiController):
+    '''
+    Functions for autocomplete fields in add dataset form
+    '''
 
     def author_autocomplete(self):
         pass
@@ -320,6 +324,11 @@ class KATAApiController(ApiController):
 
 
 class AccessRequestController(BaseController):
+    '''
+    AccessRequestController class provides a feature to ask
+    for editor rights to a dataset. On the other hand,
+    it also provides the process to grant them upon request.
+    '''
 
     def create_request(self, pkg_id):
         pkg = Package.get(pkg_id)
@@ -354,9 +363,9 @@ class AccessRequestController(BaseController):
 
 
 class DataMiningController(BaseController):
-    """
+    '''
     Controller for scraping metadata content from files.
-    """
+    '''
 
     def read_data(self, id, resource_id):
         """
@@ -525,35 +534,35 @@ class ContactController(BaseController):
                 action="read",
                 id=package.id)
         if c.user:
-                userid = None
-                for role in package.roles:
-                    if role.role == "admin":
-                        userid = role.user_id
-                        break
-                if userid:
-                    owner = User.get(userid)
-                    msg = request.params.get('msg', '')
-                    if msg:
-                        model.repo.new_revision()
+            userid = None
+            for role in package.roles:
+                if role.role == "admin":
+                    userid = role.user_id
+                    break
+            if userid:
+                owner = User.get(userid)
+                msg = request.params.get('msg', '')
+                if msg:
+                    model.repo.new_revision()
 
-                        send_contact_email(owner, c.userobj, package, \
-                                           msg)
+                    send_contact_email(owner, c.userobj, package, \
+                                        msg)
 
-                        # Mark this user as contacted
-                        if "contacted" in c.userobj.extras:
-                            c.userobj.extras['contacted'].append(pkg_id)
-                        else:
-                            c.userobj.extras['contacted'] = []
-                            c.userobj.extras['contacted'].append(pkg_id)
-                        c.userobj.save()
-
+                    # Mark this user as contacted
+                    if "contacted" in c.userobj.extras:
+                        c.userobj.extras['contacted'].append(pkg_id)
                     else:
-                        h.flash_error(_("No message"))
-                        return redirect(url)
+                        c.userobj.extras['contacted'] = []
+                        c.userobj.extras['contacted'].append(pkg_id)
+                    c.userobj.save()
+
                 else:
-                    h.flash_error(_("No owner found"))
+                    h.flash_error(_("No message"))
                     return redirect(url)
-                h.flash_notice(_("Message sent"))
+            else:
+                h.flash_error(_("No owner found"))
+                return redirect(url)
+            h.flash_notice(_("Message sent"))
         else:
             h.flash_error(_("Please login"))
         return redirect(url)
@@ -741,72 +750,86 @@ class KataCommentController(BaseController):
             # should rating be remembered too?
             c.comment = data['new_comment']
         try:
-            c.pkg_title = Package.get(id).title
+            c.pkg_title = Package.get(c.pkg_id).title
         except AttributeError:
             h.flash_error(_('Dataset you tried to rate or comment does not exist or was deleted'))
             return h.redirect_to(locale=lang, controller='package',
                                  action='search')
         # prepare to save data after POST
-        if 'save' in request.params and c.userobj and not data:
+        # skip, if we render the add_comment page for the first time
+        # or user is not logged in
+        # or there is data (= user has previously provided erratic
+        # data and it was put to data to be remembered, as a default value
+        # for text area)
+        if 'save' in request.params and c.user and not data:
             data_dict = clean_dict(unflatten(
                   tuplize_dict(parse_params(request.POST))))
-            log.debug(data_dict)
             try:
                 c.rating = data_dict['rating']
             except KeyError:
                 c.rating = null()
             c.comment = data_dict['new_comment']
+            # minimum comment length to not to provide useless comments
             if len(c.comment) < 10:
                 h.flash_error(_('A comment of minimum length of 10 is required'))
-                return self.new_comment(id, data_dict)
+                return self.new_comment(c.pkg_id, data_dict)
             return self._save_comment(c.pkg_id, c.comment, c.userobj or c.author, c.rating)
         else:
             if not c.userobj:
+                # if user is not logged in, redirect her/him
+                # to login page
                 h.flash_error(_('Requires login'))
                 came_from = request.params.get('came_from', '')
                 return h.redirect_to(locale=lang, controller='user',
                                      action='login', came_from=came_from)
             return render('kata_comment/new_comment.html')
         
-    def _save_comment(self, id, comment, userobj, rating):
+    def _save_comment(self, pkgid, comment, userobj, rating):
         '''
         Save comment and rating
         '''
         try:
             userid = userobj.id
-            cmmt = KataComment(id, userid, comment, rating)
+            cmmt = KataComment(pkgid, userid, comment, rating)
             cmmt.save()
         except ActionError:
             log.debug("saving comment failed")
             h.flash_error(_('Failed to save comment'))
         lang = session.pop('lang', None)
         h.redirect_to(locale=lang, controller='package',
-                          action='read', id=id)
+                          action='read', id=pkgid)
     
 class KataInfoController(BaseController):
     '''
-    Renders help page.
+    KataInfoController provides info pages, which
+    are non-dynamic and visible for all
     '''
     def render_help(self):
+        '''
+        Provides the help page
+        '''
         return render('kata/help.html')
     def render_faq(self):
+        '''
+        Provides the FAQ page
+        '''
         return render('kata/faq.html')
     
 class SystemController(AdminController):
     def system(self):
-        """
+        '''
         Generates a simple page about very basic system information
         to admin site
-        """
+        '''
         smem = subprocess.Popen(["free", "-m"], stdout=subprocess.PIPE).communicate()[0]
-        c.mem = smem.split( );
+        c.mem = smem.split( )
         # Add empty list items for empty cells to keep template clean
         c.mem.extend(['', '', ''])
         c.mem.insert(0, '')
         c.mem = c.mem[0:18] + ['', '', ''] + c.mem[-7:]
         
         shd = subprocess.Popen(["df", "-h"], stdout=subprocess.PIPE).communicate()[0]
-        c.hd = shd.split( );
+        c.hd = shd.split( )
         # Split matches the single phrase "Mounted on", quick fix:
         c.hd[5] = c.hd[5] + ' ' + c.hd[6]
         del c.hd[6]
@@ -820,9 +843,9 @@ class SystemController(AdminController):
         return render('admin/system.html')
 
     def report(self):
-        """
+        '''
         Generates a simple report page to admin site
-        """
+        '''
         # package info
         c.numpackages = c.openpackages = 0
         c.numpackages = model.Session.query(Package.id).count()
@@ -844,9 +867,9 @@ class SystemController(AdminController):
         return render('admin/report.html')
     
 class AVAAController(BaseController):
-    """
+    '''
     Pages for AVAA
-    """
+    '''
     def listapps(self):
         return render('avaa/applications.html')
     

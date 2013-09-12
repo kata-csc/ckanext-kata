@@ -53,7 +53,9 @@ mapper(KataAccessRequest, kata_access_request_table, extension=[
             )
 
 class KataComment(DomainObject):
-    
+    '''
+    Standalone commenting for ckanext-kata
+    '''
     def __init__(self, pkg_id, user_id, cmt, rating):
         self.pkg_id = pkg_id
         self.comment = cmt
@@ -62,10 +64,19 @@ class KataComment(DomainObject):
     
     @classmethod    
     def get_all_for_pkg(self, pkg_id):
+        '''
+        Get all comments for a specific dataset
+        
+        @return all comments for dataset
+        '''
         query = meta.Session.query(KataComment)
         return query.filter_by(pkg_id=pkg_id).all()
     @classmethod
     def check_existence(self):
+        '''
+        Checks out whether the comments table exists
+        @return boolean
+        '''
         return kata_comments_table.exists()
 
 kata_comments_table = Table('kata_comments', meta.metadata,
