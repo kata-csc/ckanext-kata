@@ -646,6 +646,9 @@ class KataPackageController(PackageController):
         return self.search()
     
     def read(self, id, format='html'):
+        '''
+        Package reader, with Kata commenting snippet
+        '''
         if not format == 'html':
             ctype, extension, loader = \
                 self._content_type_from_extension(format)
@@ -702,15 +705,17 @@ class KataPackageController(PackageController):
         template = self._read_template(package_type)
         template = template[:template.index('.') + 1] + format
         
-        # For Kata comments
+        # for Kata comments, gets all comments for this dataset
+        # and renders the list of comments
         c.comments = []
-        # not to run query against  a non-existent table
+        # not to run query against a non-existent table
         if KataComment.check_existence():
             q = KataComment.get_all_for_pkg(c.pkg.id)
         else:
             q = ''
             c.comments_error = 'Comments disabled'
         for res in q:
+            # fetch the user's full name, as id is only saved
             usr_name = model.Session.query(
                 model.User.fullname.label('fullname')).filter_by(id=res.user_id).first()
             res.date = utc_to_local(res.date)
@@ -725,34 +730,50 @@ class KataCommentController(BaseController):
     '''
     Kata commenting features
     '''
-    def new_comment(self, id):
+    def new_comment(self, id, data=None):
         '''
         New comment form
         '''
         c.pkg_id = id
-        c.pkg_title = Package.get(id).title
-        log.debug(request.params)
-        if 'save' in request.params and c.user:
+        lang = session.pop('lang', None)
+        if data:
+            # data to remember comment value
+            # should rating be remembered too?
+            c.comment = data['new_comment']
+        try:
+            c.pkg_title = Package.get(id).title
+        except AttributeError:
+            h.flash_error(_('Dataset you tried to rate or comment does not exist or was deleted'))
+            return h.redirect_to(locale=lang, controller='package',
+                                 action='search')
+        # prepare to save data after POST
+        if 'save' in request.params and c.userobj and not data:
             data_dict = clean_dict(unflatten(
-                tuplize_dict(parse_params(request.POST))))
+                  tuplize_dict(parse_params(request.POST))))
+            log.debug(data_dict)
             try:
-                rating = data_dict['rating']
+                c.rating = data_dict['rating']
             except KeyError:
-                rating = null()
-            comment = data_dict['new_comment']
-            return self._save_comment(id, comment, c.user or c.author, rating)
+                c.rating = null()
+            c.comment = data_dict['new_comment']
+            if len(c.comment) < 10:
+                h.flash_error(_('A comment of minimum length of 10 is required'))
+                return self.new_comment(id, data_dict)
+            return self._save_comment(c.pkg_id, c.comment, c.userobj or c.author, c.rating)
         else:
-            if not c.user:
-                h.flash_error("Requires login")
+            if not c.userobj:
+                h.flash_error(_('Requires login'))
                 came_from = request.params.get('came_from', '')
-                lang = session.pop('lang', None)
                 return h.redirect_to(locale=lang, controller='user',
-                                 action='login', came_from=came_from)
+                                     action='login', came_from=came_from)
             return render('kata_comment/new_comment.html')
         
-    def _save_comment(self, id, comment, user, rating):
+    def _save_comment(self, id, comment, userobj, rating):
+        '''
+        Save comment and rating
+        '''
         try:
-            userid = new_authz.get_user_id_for_username(user, allow_none=True)
+            userid = userobj.id
             cmmt = KataComment(id, userid, comment, rating)
             cmmt.save()
         except ActionError:

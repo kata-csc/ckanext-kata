@@ -95,10 +95,9 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         '''
         A package should have a comments section
         '''
-        extra_environ = {'REMOTE_USER': 'tester'}
         offset = url_for(controller='package', action='read', id=u'annakarenina')
         res = self.app.get(offset)
-        assert '<section class="module module-narrow comments">' in res, 'A logged in user should see comments section'
+        assert '<section class="module module-narrow comments">' in res, 'A user should see comments section'
     
     def test_comments_rendered_not_logged_in(self):
         '''
@@ -106,4 +105,12 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         '''
         offset = url_for(controller='package', action='read', id=u'annakarenina')
         res = self.app.get(offset)
-        assert '<a class="btn btn-primary" href="/dataset/new_comment/' not in res, 'A non-logged in user should not see comments section'
+        assert '<a class="btn btn-primary" href="/dataset/new_comment/' not in res, 'A non-logged in user should not see add new comment button'
+
+    def test_new_comment_rendered(self):
+        '''
+        A user should be able to add a comment to a dataset
+        '''
+        offset = url_for(controller='ckanext.kata.controllers:KataCommentController', action='new_comment', id=u'annakarenina')
+        res = self.app.get(offset)
+        assert res.status==302, 'Wrong status code (should be 302), in new_comment'

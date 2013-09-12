@@ -10,13 +10,12 @@
     <form class="dataset-form form-horizontal" method="post" data-module="basic-form">
       <div class="module-content">
         <h1 class="page-heading">{% block page_heading %}{{ _('Add new comment to dataset') }}{% endblock %}</h1>
-          {% block fields %}
           
+          {% block fields %}
           <div class="control-comment">
             <label class="control-label" for="new_comment">{{ _('Comment') }}</label>
-            
             <div class="controls">
-              <textarea rows="8" cols="20" id="new_comment" name="new_comment" placeholder="{{ _('Your comment') }}"></textarea>
+              <textarea rows="8" cols="20" id="new_comment" name="new_comment" placeholder="{{ _('Your comment') }}" required>{{ c.comment }}</textarea>
             </div>
             <label class="control-label" for="new_comment">{{ _('Rating') }}</label>&nbsp;&nbsp;
             
