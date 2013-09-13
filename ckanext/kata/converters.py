@@ -3,6 +3,7 @@ Functions to convert and validate dataset form fields from or to db fields. Vali
 parts should probably be separated to validators.py.
 """
 
+import re
 import utils
 import logging
 from pylons.i18n import gettext as _
@@ -194,24 +195,20 @@ def ltitle_from_extras(key, data, errors, context):
     orgs = []
     orgauths = data[('langtitles',)]
     for k in data.keys():
-        if k[0] == 'extras' and k[-1] == 'key':
-            if data[k].startswith(('title_', 'ltitle')):
+        if 'extras' in k and 'key' in k:
+            if re.search('^(title_|ltitle)\d+$', data[k]):
                 val = data[(k[0], k[1], 'value')]
-                auth = {}
-                auth['key'] = data[k]
-                auth['value'] = val
-                if not {'key': data[k], 'value': val} in auths:
+                auth = {'key': data[k], 'value': val}
+                if auth not in auths:
                     auths.append(auth)
 
-            if data[k].startswith(('lsel', 'lang_title_')):
-                org = {}
+            if re.search('^(lsel|lang_title_)\d+$', data[k]):
                 val = data[(k[0], k[1], 'value')]
-                org['key'] = data[k]
-                org['value'] = val
-                if not {'key': data[k], 'value': val} in orgs:
+                org = {'key': data[k], 'value': val}
+                if org not in orgs:
                     orgs.append(org)
-    orgs = sorted(orgs, key=lambda ke: int(ke['key'][-1]))
-    auths = sorted(auths, key=lambda ke: int(ke['key'][-1]))
+    orgs = sorted(orgs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
+    auths = sorted(auths, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     for org, auth in zip(orgs, auths):
         if not (auth, org) in orgauths:
             orgauths.append((auth, org))
