@@ -19,26 +19,29 @@ from ckan.plugins.core import unload
 from ckan.lib.base import g, c
 from ckan.model import Package, PackageExtra, user_has_role, repo, Session
 from ckan.lib.plugins import DefaultDatasetForm
-from ckan.logic.schema import db_to_form_package_schema, \
-                                form_to_db_package_schema, \
-                                default_resource_schema
+from ckan.logic.schema import   default_show_package_schema, \
+    default_create_package_schema, \
+    default_update_package_schema, \
+    default_resource_schema
+from ckan.logic.validators import no_http, tag_string_convert, duplicate_extras_key, \
+    package_id_not_changed, name_validator, package_name_validator, owner_org_validator
 from ckan.lib.navl.validators import missing, ignore_missing, ignore, not_empty, not_missing, default
 from ckanext.kata.validators import check_project, validate_access, validate_kata_date, \
-                        check_junk, check_last_and_update_pid, \
-                        validate_language, validate_email, validate_phonenum, \
-                        check_project_dis, check_accessrequesturl, check_accessrights, \
+    check_junk, check_last_and_update_pid, \
+    validate_language, validate_email, validate_phonenum, \
+    check_project_dis, check_accessrequesturl, check_accessrights, \
     check_author_org
 from ckanext.kata.converters import event_from_extras,\
-                        event_to_extras, ltitle_from_extras, ltitle_to_extras, \
-                        org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
+    event_to_extras, ltitle_from_extras, ltitle_to_extras, \
+    org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
     add_to_group
 from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
 
 
-log = logging.getLogger('ckanext.kata')
-t = toolkit
+log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
+t = toolkit                                 # pylint: disable=invalid-name
 
 
 
@@ -53,6 +56,8 @@ class KataMetadata(SingletonPlugin):
     """
     Kata metadata plugin.
     """
+    # pylint: disable=no-init, no-self-use
+
     implements(IRoutes, inherit=True)
     implements(IMapper, inherit=True)
 
@@ -156,36 +161,13 @@ class KataMetadata(SingletonPlugin):
         if isinstance(instance, Package):
             instance.id = utils.generate_pid()
 
-    # def after_insert(self, mapper, connection, instance):
-    #     if isinstance(instance, PackageExtra) and instance.key == u'title_0':
-    #         # Update package.title to match package.extras.title_0
-    #         # package.extras is not created yet, so we can't do it like in before_update()
-    #
-    #         package = Package.get(instance.package_id)
-    #
-    #         transaction = connection.begin()
-    #         connection.execute('UPDATE package SET title = \'' + instance.value + '\' WHERE id LIKE \'' + instance.package_id + '\';')
-    #
-    #         kerpo
-    #         transaction.commit()
-    #
-    #
-    # def before_update(self, mapper, connection, instance):
-    #     """
-    #     Override IMapper.after_update()
-    #     """
-    #     if isinstance(instance, Package):
-    #         # Update package.title to match package.extras.title_0
-    #         title0 = instance.extras.get(u'title_0')
-    #
-    #         if title0:
-    #             instance.title = title0
-
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
     Kata functionality and UI plugin.
     """
+    # pylint: disable=no-init, no-self-use
+
     implements(IDatasetForm, inherit=True)
     implements(IConfigurer, inherit=True)
     implements(IConfigurable, inherit=True)
@@ -209,12 +191,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     kata_field = kata_fields_recommended + kata_fields_required
 
+
     def get_auth_functions(self):
         """
         Returns a dict of all the authorization functions which the
         implementation overrides
         """
         return {'package_update': auth_functions.is_owner}
+
 
     def get_actions(self):
         """ Register actions. """
@@ -226,6 +210,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'related_update': actions.related_update,
                 }
 
+
     def get_helpers(self):
         """ Register helpers """
         return {'is_custom_form': self.is_custom_form,
@@ -234,6 +219,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'reference_update': self.reference_update,
                 'request_access': self.request_access,
                 }
+
 
     def request_access(self, pkg_id):
         """If the user is logged in show the access request button"""
@@ -249,18 +235,23 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                            following=following)
         return ''
 
+
     def reference_update(self, ref):
         #@beaker_cache(type="dbm", expire=2678400)
         def cached_url(url):
             return url
         return cached_url(ref)
 
+
     def is_custom_form(self, _dict):
-        """ Template helper, used to identify ckan custom form """
+        """
+        Template helper, used to identify ckan custom form
+        """
         for key in self.hide_extras_form:
             if _dict.get('key', None) and _dict['key'].find(key) > -1:
                 return False
         return True
+
 
     def kata_metadata_fields(self, list_):
         output = []
@@ -272,8 +263,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 output.append((k, v))
         return output
 
+
     def kata_sorted_extras(self, list_):
-        ''' Used for outputting package extras, skips package_hide_extras '''
+        '''
+        Used for outputting package extras, skips package_hide_extras
+        '''
         output = []
         for extra in sorted(list_, key=lambda x:x['key']):
             if extra.get('state') == 'deleted':
@@ -286,10 +280,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 k.startswith('organization_'):
                 continue
             
-            found=False
+            found = False
             for _k in g.package_hide_extras:
                 if extra['key'].startswith(_k):
-                    found=True
+                    found = True
             if found:
                 continue
             
@@ -297,7 +291,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 v = ", ".join(map(unicode, v))
             output.append((k, v))
         return output
-    
+
+
     def update_config(self, config):
         """
         This IConfigurer implementation causes CKAN to look in the
@@ -318,63 +313,82 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
 
-        log.debug("disable search")
+
+        log.debug("disable synchronous search")
         try:
+            # This controls the operation of the CKAN search indexing. If you don't define this option
+            # then indexing is on. You will want to turn this off if you have a non-synchronous search
+            # index extension installed.
             unload('synchronous_search')
         except:
             pass
-        
+
+
     def package_types(self):
         return ['dataset']
-    
+
+
     def is_fallback(self):
+        """
+        Overrides IDatasetForm.is_fallback()
+        From CKAN documentation:  "Returns true iff this provides the fallback behaviour,
+        when no other plugin instance matches a package's type."
+        """
         return True
-    
+
+
     def configure(self, config):
         self.date_format = config.get('kata.date_format', '%Y-%m-%d')
-    
+
+
     def setup_template_variables(self, context, data_dict):
         c.roles = self.roles
         c.PID = utils.generate_pid()
         c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
+
     def new_template(self):
         """
-        Returns a string representing the location of the template to be
-        rendered for the new page
+        Return location of the package add dataset page
         """
         return 'package/new.html'
 
+
     def comments_template(self):
         """
-        Returns a string representing the location of the template to be
-        rendered for the comments page
+        Return location of the package comments page
         """
         return 'package/comments.html'
 
+
     def search_template(self):
         """
-        Returns a string representing the location of the template to be
-        rendered for the search page (if present)
+        Return location of the package search page
         """
         return 'package/search.html'
 
+
     def read_template(self):
         """
-        Returns a string representing the location of the template to be
-        rendered for the read page
+        Return location of the package read page
         """
         return 'package/read.html'
 
+
     def history_template(self):
         """
-        Returns a string representing the location of the template to be
-        rendered for the history page
+        Return location of the package history page
         """
         return 'package/history.html'
 
     def package_form(self):
+        """
+        Return location of the main package page
+        """
+
+    def package_form(self):
         return 'package/new_package_form.html'
+
 
     def pid_to_extras(self, key, data, errors, context):
         """
@@ -401,25 +415,25 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 if k in data:
                     del data[k]
 
+
     def update_pid(self, key, data, errors, context):
         if type(data[key]) == unicode:
             if len(data[key]) == 0:
                 data[key] = utils.generate_pid()
 
+
     def update_name(self, key, data, errors, context):
         if len(data[key]) == 0:
             data[key] = utils.generate_pid()
 
-    def form_to_db_schema_options(self, package_type=None, options=None):
-        """
-        The data fields that are accepted by CKAN for each dataset can be changed with this method. Invoked also
-        when adding a resource to a dataset.
 
-        This allows the selectino of different schemas for different purposes (like HTML form / API).
-        Can't be switched to form_to_db_schema() since they are used differently.
+    def create_package_schema(self):
+        """
+        Return the schema for validating new dataset dicts.
         """
 
-        schema = form_to_db_package_schema()
+        schema = default_create_package_schema()
+
         for key in self.kata_fields_required:
             schema[key] = [not_empty, self.convert_to_extras_kata, unicode]
         for key in self.kata_fields_recommended:
@@ -450,7 +464,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            '__extras': [check_author_org],
            'projdis': [default(u'False'), unicode, check_project],
            '__junk': [check_junk],
-           'name': [unicode, ignore_missing, self.update_name],
+           'name': [ignore_missing, unicode, self.update_name],
            'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
            'accessrequestURL': [check_accessrequesturl, self.convert_to_extras_kata, unicode],
            'project_name': [check_project_dis, unicode, self.convert_to_extras_kata],
@@ -465,29 +479,36 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras]}
-        schema['groups'] = {
-                'id': [ignore_missing, unicode],
-                'name': [ignore_missing, unicode, add_to_group],
-                'title': [ignore_missing, unicode],
-                '__extras': [ignore],
-            }
+        schema['groups'].update({
+                'name': [ignore_missing, unicode, add_to_group]
+                })
 
         return schema
 
-    def db_to_form_schema_options(self, options = None):
+
+    def update_package_schema(self):
+        """
+        Return the schema for validating updated dataset dicts.
+        """
+
+        schema = self.create_package_schema()
+
+        # Taken from ckan.logic.schema.default_update_package_schema():
+        schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
+
+        return schema
+
+
+    def show_package_schema(self):
         """
         The data fields that are returned from CKAN for each dataset can be changed with this method.
-
-        This allows the selectino of different schemas for different purposes (like HTML form / API).
-        Can't be switched to db_to_form_schema() since they are used differently.
-
         This method is called when viewing or editing a dataset.
         """
 
-        # TODO: Get rid of using db_to_form_package_schema() as it is removed in all CKAN updates.
-        # TODO: Instead use ckan.logic.schema.default_package_schema() ?
+        #schema = self._db_to_form_package_schema()
+        schema = default_show_package_schema()
 
-        schema = db_to_form_package_schema()
         for key in self.kata_field:
             schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
 
@@ -505,6 +526,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         return schema
 
+
     def convert_from_extras_kata(self, key, data, errors, context):
 
         #import pprint
@@ -521,6 +543,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         #pprint.pprint(data)
 
+
     def convert_to_extras_kata(self, key, data, errors, context):
         if data.get(('extras',)) is missing:
             return
@@ -531,6 +554,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if k[-1] in self.kata_field:
                 if not {'key': k[-1], 'value': data[k]} in extras:
                     extras.append({'key': k[-1], 'value': data[k]})
+
 
     def update_facet_titles(self, facet_titles):
         """
@@ -545,6 +569,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         facet_titles.update(get_field_titles(t._))
         return facet_titles
+
 
     def extract_search_params(self, data_dict):
         """
@@ -571,6 +596,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 else: # Extract search terms
                     extra_terms.append((param, value))
         return extra_terms, extra_ops, extra_dates
+
 
     def parse_search_terms(self, data_dict, extra_terms, extra_ops):
         """
@@ -619,6 +645,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 {'field':p_no_index, 'text':value, 'operator':ovalue})
         data_dict['q'] += '))'
 
+
     def parse_search_dates(self, data_dict, extra_dates):
         """
         Parse extra date into query q into data_dict:
@@ -650,6 +677,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         else:
             qdate += '*]'
         data_dict['q'] += ' %s:%s' % (extra_dates['field'], qdate)
+
 
     def before_search(self, data_dict):
         '''
@@ -689,6 +717,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Uncomment below to show query with results and in the search field
         #c.q = data_dict['q']
         return data_dict
+
 
     def after_search(self, search_results, data_dict):
         '''

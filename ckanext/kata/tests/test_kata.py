@@ -1,4 +1,4 @@
-# pylint: disable=no-self-use, missing-docstring
+# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name
 #
 # no-self-use = *Method could be a function*
 
@@ -7,24 +7,20 @@ Test classes for Kata CKAN Extension.
 """
 
 from unittest import TestCase
-from pylons.util import ContextObj, PylonsContext, pylons, AttribSafeContextObj
+from collections import defaultdict
+
+from pylons.util import PylonsContext, pylons, AttribSafeContextObj
+from pylons import config
+import paste.fixture  # pylint: disable=import-error
 
 from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 from ckanext.kata.plugin import KataPlugin
-from ckan.lib.base import c
-
-from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
+from ckan.tests import WsgiAppCase, CommonFixtureMethods
 from ckan.tests.html_check import HtmlCheckMethods
-from pylons import config
-import paste.fixture
-from paste.registry import RegistryManager
 from ckan.config.middleware import make_app
-
-from collections import defaultdict
 from ckanext.kata.validators import validate_kata_date, validate_language, check_project, \
                                     check_project_dis, validate_email, validate_phonenum
 
-from pylons import session
 
 class TestKataExtension(TestCase):
     """General tests for Kata CKAN extension."""
@@ -171,30 +167,46 @@ class TestKataPlugin(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         """Test get_helpers() output type."""
         assert isinstance( self.kata_plugin.get_helpers(), dict), "KataPlugin.get_helpers() didn't output a dict"
 
+
     def test_new_template(self):
-        """Test new_template()."""
         html_location = self.kata_plugin.new_template()
         assert len( html_location ) > 0
 
     def test_comments_template(self):
-        """Test comments_template()."""
         html_location = self.kata_plugin.comments_template()
         assert len( html_location ) > 0
 
     def test_search_template(self):
-        """Test search_template()."""
         html_location = self.kata_plugin.search_template()
         assert len( html_location ) > 0
 
-    def test_form_to_db_schema_options(self):
-        """Test Kata schema."""
-        schema = self.kata_plugin.form_to_db_schema_options()
-        assert isinstance(schema, dict) and len(schema) > 0
+    def test_read_template(self):
+        html_location = self.kata_plugin.read_template()
+        assert len( html_location ) > 0
 
-    def test_db_to_form_schema_options(self):
-        """Test Kata schema."""
-        schema = self.kata_plugin.db_to_form_schema_options()
-        assert isinstance(schema, dict) and len(schema) > 0
+    def test_history_template(self):
+        html_location = self.kata_plugin.history_template()
+        assert len( html_location ) > 0
+
+    def test_package_form(self):
+        html_location = self.kata_plugin.package_form()
+        assert len( html_location ) > 0
+
+
+    def test_create_package_schema(self):
+        schema = self.kata_plugin.create_package_schema()
+        assert isinstance(schema, dict)
+        assert len(schema) > 0
+
+    def test_update_package_schema(self):
+        schema = self.kata_plugin.update_package_schema()
+        assert isinstance(schema, dict)
+        assert len(schema) > 0
+
+    def test_show_package_schema(self):
+        schema = self.kata_plugin.show_package_schema()
+        assert isinstance(schema, dict)
+        assert len(schema) > 0
 
 
 class TestKataValidators(TestCase):
