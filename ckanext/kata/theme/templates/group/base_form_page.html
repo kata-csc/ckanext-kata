@@ -1,0 +1,19 @@
+{% extends "group/index.html" %}
+
+{% block add_action_content %}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{{ h.nav_link(_('Collections'), controller='group', action='index') }}</li>
+  <li class="active">{% block breadcrumb_link %}{{ h.nav_link(_('Add a Collection (Group)'), controller='group', action='new') }}{% endblock %}</li>
+{% endblock %}
+
+{% block primary_content %}
+  <div class="module">
+    <div class="module-content">
+      <h1 class="page-heading">{% block page_heading %}{{ _('Collections Form') }}{% endblock %}</h1>
+      {% block form %}
+        {{ c.form | safe }}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}
