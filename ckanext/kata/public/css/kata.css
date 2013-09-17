@@ -253,7 +253,7 @@ header.masthead .site-search {
 }
 .module {
 	-webkit-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
-	box-shadow: rgba(6, 58, 90, 01) 0 0 3px !important;
+	box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
 	-moz-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
 	background-color: #FFF;
 }
@@ -266,6 +266,16 @@ header.masthead .site-search {
 }
 .tag {
 	color: #139CEC;
+}
+.add_action li {
+	display: inline-block;
+}
+a.tag:hover {
+	background-color: #053A5A !important;
+	border: 1px solid #063A5A !important;
+	box-shadow: rgba(6, 58, 90, 1) inset !important;
+	-webkit-box-shadow: rgba(6, 58, 90, 1) inset !important;
+	-moz-box-shadow: rgba(6, 58, 90, 1) inset !important;
 }
 .wrapper {
 	background: none !important;
