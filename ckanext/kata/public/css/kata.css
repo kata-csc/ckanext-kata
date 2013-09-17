@@ -104,7 +104,8 @@ html, body {
 	min-width: 970px;
 }
 body {
-	background-color: #FFF;
+	background-color: #FFF !important;
+	background: none !important;
 	font-family: Tahoma, Arial, sans-serif;
 }
 header.masthead .header-image .logo {
@@ -206,17 +207,18 @@ header.masthead .site-search {
 	-webkit-box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
 	box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
 	-moz-box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
+	background: none !important;
 }
 [role="main"] .primary {
-	float:left;
-	margin-right:20px;
-	width:700px;
-	margin-left:auto;
+	float: left;
+	margin-right: 0px !important;
+	width: 700px;
+	margin-right: auto;
 }
 [role="main"] .secondary {
-	float:right;
-	margin-left:auto;
-	width:220px;
+	float: right;
+	margin-left: auto;
+	width: 220px;
 	margin-right: 0px;
 }
 .main:after, .main:before, [role="main"]:after, [role="main"]:before {
@@ -250,16 +252,25 @@ header.masthead .site-search {
 	-webkit-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
 	box-shadow: rgba(6, 58, 90, 01) 0 0 3px !important;
 	-moz-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
+	background-color: #FFF;
 }
 .padded-module {
 	padding: 0px 5px 5px 5px;
-	background-color: #F3F3F3;
+	background-color: #F3F3F3 !important;
 }
 .navbar-search .search-query {
 	font-family: Tahoma, Arial, sans-serif;
 }
 .tag {
 	color: #139CEC;
+}
+.wrapper {
+	background: none !important;
+	background-color: #fff !important;
+	border: 0 !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	-moz-box-shadow: none !important;
 }
 .site-footer {
 	background-color: #0A010E;
@@ -275,7 +286,7 @@ header.masthead .site-search {
 	margin-bottom: 0px;
 }
 .site-footer {
-	font-size: 60%;
+	font-size: 90%;
 }
 .site-footer h1 {
 	font-size: 14px;
@@ -495,6 +506,10 @@ input, button, select, textarea {
 	list-style: none outside none;
 	margin: 0;
 	padding: 0;
+}
+#kata_navigation .icon-home {
+	width: 18px;
+	font-size: 18px;
 }
 #nav_wrapper {
 	-webkit-box-shadow: rgba(0, 0, 0, 0) 0 0 5px;
