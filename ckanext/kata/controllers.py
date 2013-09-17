@@ -779,9 +779,8 @@ class KataCommentController(BaseController):
                 # if user is not logged in, redirect her/him
                 # to login page
                 h.flash_error(_('Requires login'))
-                came_from = request.params.get('came_from', '')
                 return h.redirect_to(locale=lang, controller='user',
-                                     action='login', came_from=came_from)
+                                     action='login')
             return render('kata_comment/new_comment.html')
         
     def _save_comment(self, pkgid, comment, userobj, rating):
