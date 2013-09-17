@@ -221,6 +221,9 @@ header.masthead .site-search {
 	width: 220px;
 	margin-right: 0px;
 }
+.box {
+	border: 0px !important;
+}
 .main:after, .main:before, [role="main"]:after, [role="main"]:before {
 	border: 0;
 }
