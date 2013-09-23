@@ -808,6 +808,7 @@ class KataInfoController(BaseController):
         Provides the help page
         '''
         return render('kata/help.html')
+
     def render_faq(self):
         '''
         Provides the FAQ page
@@ -826,19 +827,31 @@ class SystemController(AdminController):
         c.mem.extend(['', '', ''])
         c.mem.insert(0, '')
         c.mem = c.mem[0:18] + ['', '', ''] + c.mem[-7:]
-        
+
         shd = subprocess.Popen(["df", "-h"], stdout=subprocess.PIPE).communicate()[0]
-        c.hd = shd.split( )
-        # Split matches the single phrase "Mounted on", quick fix:
-        c.hd[5] = c.hd[5] + ' ' + c.hd[6]
-        del c.hd[6]
-        
+        c.hd = shd.split()
+        try:
+            # Split matches the single phrase "Mounted on", quick fix:
+            c.hd[5] = c.hd[5] + " " + c.hd.pop(6)
+            if len(c.hd) % 6 != 0:
+                raise ValueError
+        except (IndexError, ValueError):
+            h.flash_error(_("Failed to parse disk usage information"))
+            log.debug("unparseable df output: %s" % shd)
+            del c.hd
+
         sut = subprocess.Popen(["uptime"], stdout=subprocess.PIPE).communicate()[0]
-        c.ut = sut.split(',');
-        del c.ut[1:2]
-        c.ut[2] = c.ut[2] + ', ' + c.ut[3] + ', '+ c.ut[4]
-        del c.ut[3:]
-        
+        uptime_elements = sut.split(',')
+
+        try:
+            uptime = uptime_elements[0]
+            users = uptime_elements[-4]
+            loadavg = ",".join(uptime_elements[-3:])
+            c.ut = [ uptime, users, loadavg ]
+        except IndexError:
+            h.flash_error(_("Failed to parse uptime information"))
+            log.debug("unparseable uptime output: %s" % sut)
+
         return render('admin/system.html')
 
     def report(self):
