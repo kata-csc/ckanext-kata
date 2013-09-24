@@ -81,6 +81,9 @@ def get_extra_contact(context, data_dict, key="contact_name"):
     return q.all()
 
 def get_discipline(context, data_dict):
+    """
+    Tries to get disciplines from group 'KATA'.
+    """
     model = context['model']
 
     terms = data_dict.get('query') or data_dict.get('q') or []
@@ -283,6 +286,10 @@ class KATAApiController(ApiController):
         return self._finish_ok(resultSet)
 
     def discipline_autocomplete(self):
+        """
+        Called from recommended_form.html to get items for discipline autocompletion field.
+        """
+
         q = request.params.get('incomplete', '')
         limit = request.params.get('limit', 10)
         tag_names = []
