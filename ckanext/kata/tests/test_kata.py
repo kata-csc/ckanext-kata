@@ -320,13 +320,13 @@ class TestKataValidators(TestCase):
         errors = defaultdict(list)
 
         dada = self.test_data.copy()
-        dada[('language',)] = u'fin, swe, eng, ice, isl'
+        dada[('language',)] = u'fin, swe, eng, isl'
         dada[('langdis',)] = 'False'
 
         validate_language(('language',), dada, errors, None)
 
         assert len( errors ) == 0
-        assert dada[('language',)] == u'fin, swe, eng, ice, isl'
+        assert dada[('language',)] == u'fin, swe, eng, isl'
 
     def test_validate_language_delete(self):
         errors = defaultdict(list)

@@ -99,12 +99,9 @@ def validate_language(key, data, errors, context):
         lang = lang.strip()
         if lang:
             try:
-                pycountry.languages.get(bibliographic=lang)
+                pycountry.languages.get(terminology=lang)
             except KeyError:
-                try:
-                    pycountry.languages.get(terminology=lang)
-                except KeyError:
-                    errors[key].append(_('Language %s not in ISO 639-2 (B/T) format' % lang))
+                errors[key].append(_('Language %s not in ISO 639-2 T format' % lang))
 
 
 def validate_email(key, data, errors, context):
