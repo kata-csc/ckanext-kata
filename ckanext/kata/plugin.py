@@ -385,8 +385,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
         Return location of the main package page
         """
-
-    def package_form(self):
         return 'package/new_package_form.html'
 
 

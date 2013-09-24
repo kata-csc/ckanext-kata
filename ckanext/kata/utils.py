@@ -25,6 +25,9 @@ def generate_pid():
 
 
 def send_email(req):
+    """
+    Send access request e-mail.
+    """
     requestee = User.get(req.user_id)
     pkg = Package.get(req.pkg_id)
     selrole = False
@@ -70,6 +73,11 @@ def convert_to_text(resource, resource_fname):
 
 
 def send_contact_email(owner, requestee, pkg, message):
+    """
+    Send a contact e-mail to dataset owner. Used only with the "only by contacting the distributor" option in
+    "Dataset is available for use:".
+    """
+
     msg = _("""%s (%s) is requesting access to study material for dataset you have created
     %s.
 
@@ -81,7 +89,7 @@ The message is as follows:
                   pkg.title if pkg.title else pkg.name,
                   message)
     email_dict = {"subject": _("Material access request for dataset %s" % pkg.title \
-                        if pkg.title else pkg.name),
+        if pkg.title else pkg.name),
                   "body": body}
     send_notification(owner.as_dict(), email_dict)
 
