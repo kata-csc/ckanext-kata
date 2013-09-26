@@ -123,13 +123,8 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         
     def test_admin_system_reporting_rendered(self):
         '''
-        An admin user should see system info and reporting pages.
-        '''
-        offset = url_for(controller='ckanext.kata.controllers:SystemController', action='system')
-        username = u'testsysadmin'.encode('utf8')
-        extra_environ = {'REMOTE_USER':username}
-        res = self.app.get(offset, extra_environ=extra_environ)
-        assert res.status == 200, 'Wrong status code (should be 200), in admin/system'        
+        An admin user should see reporting page.
+        '''       
         offset = url_for(controller='ckanext.kata.controllers:SystemController', action='report')
         username = u'testsysadmin'.encode('utf8')
         extra_environ = {'REMOTE_USER':username}

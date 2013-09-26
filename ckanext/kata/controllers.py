@@ -823,47 +823,11 @@ class KataInfoController(BaseController):
         return render('kata/faq.html')
     
 class SystemController(AdminController):
-    def system(self):
-        '''
-        Generates a simple page about very basic system information
-        to admin site
-        '''
-        smem = subprocess.Popen(["free", "-m"], stdout=subprocess.PIPE).communicate()[0]
-        c.mem = smem.split( )
-        # Add empty list items for empty cells to keep template clean
-        c.mem.extend(['', '', ''])
-        c.mem.insert(0, '')
-        c.mem = c.mem[0:18] + ['', '', ''] + c.mem[-7:]
-
-        shd = subprocess.Popen(["df", "-h"], stdout=subprocess.PIPE).communicate()[0]
-        c.hd = shd.split()
-        try:
-            # Split matches the single phrase "Mounted on", quick fix:
-            c.hd[5] = c.hd[5] + " " + c.hd.pop(6)
-            if len(c.hd) % 6 != 0:
-                raise ValueError
-        except (IndexError, ValueError):
-            h.flash_error(_("Failed to parse disk usage information"))
-            log.debug("unparseable df output: %s" % shd)
-            del c.hd
-
-        sut = subprocess.Popen(["uptime"], stdout=subprocess.PIPE).communicate()[0]
-        uptime_elements = sut.split(',')
-
-        try:
-            uptime = uptime_elements[0]
-            users = uptime_elements[-4]
-            loadavg = ",".join(uptime_elements[-3:])
-            c.ut = [ uptime, users, loadavg ]
-        except IndexError:
-            h.flash_error(_("Failed to parse uptime information"))
-            log.debug("unparseable uptime output: %s" % sut)
-
-        return render('admin/system.html')
 
     def report(self):
         '''
         Generates a simple report page to admin site
+        Todo: make this a real quality page
         '''
         # package info
         c.numpackages = c.openpackages = 0
@@ -879,6 +843,7 @@ class SystemController(AdminController):
         c.popen = float(c.openpackages) / float(c.numpackages) * 100
         c.popen = "{0:.2f}".format(c.popen) + ' %'
         
+        # Todo: remove?
         # user info
         c.numusers = 0
         c.numusers = model.Session.query(User.id).count()
