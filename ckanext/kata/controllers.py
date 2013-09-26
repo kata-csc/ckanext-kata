@@ -589,11 +589,12 @@ class ContactController(BaseController):
 
 class KataUserController(UserController):
     """
-    Overwrite logged_in function in super class.
+    Overwrite logged_in function in the super class.
     """
     def logged_in(self):
         """
-        Redirect user to own profile page instead of dashboard.
+        Minor rewrite to redirect the user to the own profile page instead of
+        the dashboard.
         @return - some sort of redirect object??
         """
         # we need to set the language via a redirect
@@ -617,6 +618,7 @@ class KataUserController(UserController):
                         user_dict['display_name'])
             if came_from:
                 return h.redirect_to(str(came_from))
+            # Rewritten in ckanext-kata
             return h.redirect_to(controller='user', action='read', id=c.userobj.name)
         else:
             err = _('Login failed. Bad username or password.')

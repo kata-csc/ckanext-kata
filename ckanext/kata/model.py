@@ -9,6 +9,7 @@ import ckan.model.types as _types
 from sqlalchemy.orm import mapper
 from sqlalchemy import orm as orm
 from sqlalchemy.schema import Table, Column, UniqueConstraint, ForeignKey
+from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.engine.reflection import Inspector
 import datetime
 import vdm.sqlalchemy
@@ -101,14 +102,20 @@ user_extra_table = Table('user_extra', meta.metadata,
     Column('value', _types.JsonType),
 )
 
-vdm.sqlalchemy.make_table_stateful(user_extra_table)
-user_extra_revision_table = core.make_revisioned_table(user_extra_table)
+class UserExtra(domain_object.DomainObject):
 
+    @classmethod
+    def by_userid(cls, userid):
+        q = meta.Session.query(cls).autoflush(False)
+        return q.filter_by(user_id=userid).all()
 
-class UserExtra(vdm.sqlalchemy.RevisionedObjectMixin,
-        vdm.sqlalchemy.StatefulObjectMixin,
-        domain_object.DomainObject):
-    pass
+    @classmethod
+    def by_userid_key(cls, userid, key):
+        q = meta.Session.query(cls).autoflush(False)
+        return q.filter_by(user_id=userid).filter_by(key=key).first()
+
+    def get_user(self):
+        return self.user
 
 meta.mapper(UserExtra, user_extra_table, properties={
     'user': orm.relation(user.User,
@@ -119,21 +126,7 @@ meta.mapper(UserExtra, user_extra_table, properties={
         )
     },
     order_by=[user_extra_table.c.user_id, user_extra_table.c.key],
-    extension=[vdm.sqlalchemy.Revisioner(user_extra_revision_table),],
 )
-
-vdm.sqlalchemy.modify_base_object_mapper(UserExtra, core.Revision, core.State)
-UserExtraRevision = vdm.sqlalchemy.create_object_version(meta.mapper, UserExtra,
-    user_extra_revision_table)
-
-def _create_extra(key, value):
-    return UserExtra(key=unicode(key), value=value)
-
-_extras_active = vdm.sqlalchemy.stateful.DeferredProperty('_extras',
-        vdm.sqlalchemy.stateful.StatefulDict, base_modifier=lambda x: x.get_as_of()) 
-setattr(user.User, 'extras_active', _extras_active)
-user.User.extras = vdm.sqlalchemy.stateful.OurAssociationProxy('extras_active', 'value',
-            creator=_create_extra)
 
 def setup():
     '''
@@ -143,10 +136,10 @@ def setup():
     if model.package_table.exists() and not kata_access_request_table.exists():
         kata_access_request_table.create()
 
-    if model.user_table.exists() and not user_extra_table.exists() \
-        and not user_extra_revision_table.exists():
+    if model.user_table.exists() and not user_extra_table.exists():
+    #    and not user_extra_revision_table.exists():
         user_extra_table.create()
-        user_extra_revision_table.create()
+    #    user_extra_revision_table.create()
         
     if model.user_table.exists() and model.package_table.exists() and not kata_comments_table.exists():
         kata_comments_table.create()
@@ -156,8 +149,8 @@ def delete_tables():
     Delete data from some extra tables to prevent IntegrityError between tests.
     '''
 
-    if user_extra_revision_table.exists():
-        user_extra_revision_table.delete()
+    #if user_extra_revision_table.exists():
+    #    user_extra_revision_table.delete()
     #if user_extra_table.exists():
         #user_extra_table.delete()
     if kata_access_request_table.exists():
