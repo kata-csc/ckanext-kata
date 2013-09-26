@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 Selenium tests for Kata.
 
@@ -27,8 +30,9 @@ or
 """
 
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
@@ -41,16 +45,12 @@ class TestKataBasics(TestCase):
 
     @classmethod
     def setup_class(cls):
-        """
-        Initialize tests.
-        """
+        """Initialize tests."""
         cls.browser = webdriver.Firefox()  # Get local session of firefox
 
     @classmethod
     def teardown_class(cls):
-        """
-        Uninitialize tests.
-        """
+        """Uninitialize tests."""
         cls.browser.quit()
 
 
@@ -101,38 +101,31 @@ class TestKataBasics(TestCase):
 
 
 
-
-class TestKataBasicsWithUser(TestCase):
+class TestKataWithUser(TestCase):
     """Some basic Selenium tests for Kata's user interface with a logged in user."""
-
-    # TODO: Modify tests so that they don't depend on the order in which they are run.
 
     @classmethod
     def setup_class(cls):
-        """
-        Initialize tests.
-        """
-        cls.browser = webdriver.Firefox()  # Get local session of firefox
-        cls.dataset_url = None
+        """Initialize tests."""
 
     @classmethod
     def teardown_class(cls):
-        """
-        Uninitialize tests.
-        """
-        cls.browser.quit()
+        """Uninitialize tests."""
+        pass
 
-    def _register_user(self, reg_browser):
+    def _register_user(self, reg_browser, username = 'seleniumuser', fullname = 'seleniumuser'):
         """Register a new user, will be logged in automatically."""
 
         reg_browser.get("https://localhost/en/user/register")
 
+        username = username + str(int(time.time()*100))
+
         try:
             field = reg_browser.find_element_by_xpath("//input[@id='field-username']")
-            field.send_keys('seleniumuser' + str(int(time.time()*100)))
+            field.send_keys(username)
 
             field = reg_browser.find_element_by_xpath("//input[@id='field-fullname']")
-            field.send_keys('seleniumuser' + str(int(time.time()*100)))
+            field.send_keys(fullname)
 
             field = reg_browser.find_element_by_xpath("//input[@id='field-email']")
             field.send_keys('kata.selenium@gmail.com')
@@ -158,221 +151,226 @@ class TestKataBasicsWithUser(TestCase):
             assert 0, "User registration didn't finish"
 
 
-
-    def _add_dataset(self):
+    def _add_dataset(self, browser):
         """
-        Add a simple dataset.
+        Add a simple dataset. Return dataset address.
         """
 
-        test_browser = webdriver.Firefox()  # Get a new session because of a possible dialog pop-up
-        self._register_user(test_browser)
-        
-        test_browser.get("https://localhost/en/dataset/new")
-        test_browser.implicitly_wait(8)  # Wait for javascript magic to alter fields
+        browser.get("https://localhost/en/dataset/new")
+        browser.implicitly_wait(8)  # Wait for javascript magic to alter fields
 
         try:
-            field = test_browser.find_element_by_xpath("//input[@id='title__0__value_id']")
+            field = browser.find_element_by_xpath("//input[@id='title__0__value_id']")
             field.send_keys('Selenium Dataset')
 
-            field = test_browser.find_element_by_xpath("//input[@id='author__0__value_id']")
+            field = browser.find_element_by_xpath("//input[@id='author__0__value_id']")
             field.send_keys('Selenium')
 
-            field = test_browser.find_element_by_xpath("//input[@id='organization__0__value_id']")
+            field = browser.find_element_by_xpath("//input[@id='organization__0__value_id']")
             field.send_keys('CSC Oy')
 
-            field = test_browser.find_elements_by_class_name('select2-input')[1]  # hopefully this is keywords input
+            field = browser.find_elements_by_class_name('select2-input')[1]  # hopefully this is keywords input
             field.send_keys('Selenium')
             field.send_keys(Keys.RETURN)
 
-            field = test_browser.find_element_by_xpath("//input[@name='langdis']")
+            field = browser.find_element_by_xpath("//input[@name='langdis']")
             field.click()
 
             #field = test_browser.find_elements_by_class_name('select2-input')[2]  # hopefully distributor name
             #field.send_keys('Selenium')
             #field.send_keys(Keys.RETURN)
 
-            field = test_browser.find_element_by_xpath("//input[@id='phone']")
+            field = browser.find_element_by_xpath("//input[@id='phone']")
             field.send_keys('+35891234567')
 
-            field = test_browser.find_element_by_xpath("//input[@id='contactURL']")
+            field = browser.find_element_by_xpath("//input[@id='contactURL']")
             field.send_keys('https://localhost/')
 
-            field = test_browser.find_element_by_xpath("//input[@name='projdis']")
+            field = browser.find_element_by_xpath("//input[@name='projdis']")
             field.click()
 
-            field = test_browser.find_element_by_xpath("//input[@id='owner']")
+            field = browser.find_element_by_xpath("//input[@id='owner']")
             field.send_keys('Selenium')
 
-            field = test_browser.find_element_by_xpath("//input[@id='contact']")
+            field = browser.find_element_by_xpath("//input[@id='contact']")
             field.click()
 
-            field = test_browser.find_element_by_xpath("//input[@id='licenseURL']")
+            field = browser.find_element_by_xpath("//input[@id='licenseURL']")
             field.send_keys('Shareware')
             field.send_keys(Keys.ENTER)
 
-            #btn = test_browser.find_element_by_xpath("//button[@name='save']")
-            #btn.click()
-
         except NoSuchElementException:
-            test_browser.get_screenshot_as_file('_add_dataset.png')
+            browser.get_screenshot_as_file('_add_dataset.png')
             assert 0, "Error processing the create dataset page"
 
         try:
-            WebDriverWait(test_browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ul/li/a[.='RDF']")))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ul/li/a[.='RDF']")))
         except TimeoutException:
-            test_browser.get_screenshot_as_file('_add_dataset.png')
-            test_browser.quit()
+            browser.get_screenshot_as_file('_add_dataset.png')
+            browser.quit()
             assert 0, "Dataset creation didn't finish"
 
-        assert "Kata" in test_browser.title, "Dataset creation failed somehow"
+        assert "Kata" in browser.title, "Dataset creation failed somehow"
 
-        self.dataset_url = ''.join(test_browser.current_url)
-
-        test_browser.quit()
+        return ''.join(browser.current_url)
 
 
-    def test_1_register_user(self):
+    def test_register_user(self):
         """
-        Test for user registration. Named so because tests are run in alphabetical order.
-        The test user is needed when testing contact form functionality.
+        Test for user registration.
         """
+        browser = webdriver.Firefox()
+        self._register_user(browser)
+        browser.quit()
 
-        self._register_user(self.browser)
+
+    def test_register_user_fullname_utf8(self):
+        """
+        Test for user registration with special characters.
+        """
+        browser = webdriver.Firefox()
+        self._register_user(browser, username='selenium', fullname= u'АБВГДЕЁЖЗИЙ κόσμε...')
+        browser.quit()
 
 
-    # def test_2_add_dataset(self):
-    #     '''Test that user can add a dataset.'''
-    #
-    #     self._add_dataset()
-    #
-    #     assert self.dataset_url is not None, "dataset url not found"
-    #
-
-    def test_3_contact_form_can_go_back(self):
+    def test_add_dataset_and_contact_form(self):
         """Test that user can go back from contact form and still go forward to send it."""
 
-        # Dataset must be added first. There is some issue with the self.dataset_url value being cleared between
-        # tests.
+        browser = webdriver.Firefox()
+        self._register_user(browser)
 
-        if self.dataset_url is None:
-            self._add_dataset()
+        dataset_url = self._add_dataset(browser)
+        browser.quit()
 
-        assert self.dataset_url is not None, "dataset url not found"
+        browser = webdriver.Firefox()  # Get a new session
+        self._register_user(browser)
+
+        assert dataset_url is not None, "dataset url not found"
 
         # Go to contact form
-        contact_form_url = self.dataset_url.replace('/dataset/', '/contact/')
-        self.browser.get(self.dataset_url)
+        contact_form_url = dataset_url.replace('/dataset/', '/contact/')
+        browser.get(dataset_url)
 
-        self.browser.get(contact_form_url)
+        browser.get(contact_form_url)
         try:
-            self.browser.find_element_by_xpath("//textarea[@name='msg']")
+            browser.find_element_by_xpath("//textarea[@name='msg']")
         except NoSuchElementException:
-            self.browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
+            browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
             assert 0, 'Contact form expected but not found (first visit)'
 
-        self.browser.back()
-        self.browser.get(contact_form_url)
+        browser.back()
+        browser.get(contact_form_url)
 
         try:
-            field = self.browser.find_element_by_xpath("//textarea[@name='msg']")
+            field = browser.find_element_by_xpath("//textarea[@name='msg']")
             field.send_keys('Selenium is a testing')
 
-            btn = self.browser.find_element_by_xpath("//input[@value='Send']")
+            btn = browser.find_element_by_xpath("//input[@value='Send']")
             btn.click()
 
         except NoSuchElementException:
-            self.browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
+            browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
             assert 0, 'Contact form expected but not found (second visit)'
 
         try:
-            WebDriverWait(self.browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(text(),'Message sent')]")))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(text(),'Message sent')]")))
         except TimeoutException:
-            self.browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
+            browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
             assert 0, "Sending contact form didn't finish"
 
+        browser.quit()
 
-    def test_4_navigation(self):
+
+    def test_navigation(self):
         """
         Test that navigation is ok for logged in user.
         """
         # These should match often twice, clumsy, fix in the future
-        self.browser.get("https://localhost/")
+        browser = webdriver.Firefox()
+        self._register_user(browser)
+
+        browser.get("https://localhost/")
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/dataset')]")           
+            search = browser.find_element_by_xpath("//a[contains(@href, '/dataset')]")
         except NoSuchElementException:
             assert 0, 'Search (dataset) navigation not found for logged in user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/group')]")           
+            search = browser.find_element_by_xpath("//a[contains(@href, '/group')]")
         except NoSuchElementException:
             assert 0, 'Group navigation not found for logged in user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/about')]")
+            search = browser.find_element_by_xpath("//a[contains(@href, '/about')]")
         except NoSuchElementException:
             assert 0, 'About navigation not found for logged in user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/help')]")           
+            search = browser.find_element_by_xpath("//a[contains(@href, '/help')]")
         except NoSuchElementException:
             assert 0, 'Help navigation not found for logged in user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/faq')]")
+            search = browser.find_element_by_xpath("//a[contains(@href, '/faq')]")
         except NoSuchElementException:
             assert 0, 'FAQ navigation not found for logged in user'   
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/applications')]")
+            search = browser.find_element_by_xpath("//a[contains(@href, '/applications')]")
         except NoSuchElementException:
             assert 0, 'Applications navigation not found for logged in user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/dashboard')]")
+            search = browser.find_element_by_xpath("//a[contains(@href, '/dashboard')]")
         except NoSuchElementException:
             assert 0, 'Notifications link not found for logged in user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/user/_logout')]")
+            search = browser.find_element_by_xpath("//a[contains(@href, '/user/_logout')]")
         except NoSuchElementException:
             assert 0, 'Log out link not found for logged in user'
 #        try:
-#            search = self.browser.find_element_by_xpath("//a[contains(@href, '/#')]")
+#            search = browser.find_element_by_xpath("//a[contains(@href, '/#')]")
 #        except NoSuchElementException:
 #            assert 0, 'Drop down (profile menu) link not found for logged in user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/user/selenium')]")
+            search = browser.find_element_by_xpath("//a[contains(@href, '/user/selenium')]")
         except NoSuchElementException:
             assert 0, 'My datasets link not found for logged in user'
 
+        browser.quit()
 
-    def test_5_advanced_search(self):
+
+    def test_advanced_search(self):
         """Test that advanced search returns our shiny new dataset."""
 
-        self.browser.get("https://localhost/en/dataset")
+        browser = webdriver.Firefox()
+        self._register_user(browser)
+
+        browser.get("https://localhost/en/dataset")
 
         try:
-            btn = self.browser.find_element_by_xpath("//a[contains(@href, '#advanced-search-tab')]")
+            btn = browser.find_element_by_xpath("//a[contains(@href, '#advanced-search-tab')]")
             btn.click()
 
         except NoSuchElementException:
-            self.browser.get_screenshot_as_file('test_3_advanced_search.png')
+            browser.get_screenshot_as_file('test_3_advanced_search.png')
             assert 0, 'Advanced search tab not found'
 
         try:
-            WebDriverWait(self.browser, 30).until(expected_conditions.presence_of_element_located((By.ID, 'advanced-search-date-end')))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.ID, 'advanced-search-date-end')))
         except TimeoutException:
-            self.browser.get_screenshot_as_file('test_3_advanced_search.png')
+            browser.get_screenshot_as_file('test_3_advanced_search.png')
             assert 0, "Error switching to advanced search"
 
         try:
-            field = self.browser.find_element_by_id("advanced-search-text-1")
+            field = browser.find_element_by_id("advanced-search-text-1")
             field.send_keys('Selenium')
             field.send_keys(Keys.ENTER)
         except NoSuchElementException:
-            self.browser.get_screenshot_as_file('test_3_advanced_search.png')
+            browser.get_screenshot_as_file('test_3_advanced_search.png')
             assert 0, 'Search text field not found'
 
         try:
-            WebDriverWait(self.browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//footer")))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//footer")))
         except TimeoutException:
-            self.browser.get_screenshot_as_file('test_3_advanced_search.png')
+            browser.get_screenshot_as_file('test_3_advanced_search.png')
             assert 0, "Didn't get the expected search result"
 
-        result = self.browser.find_element_by_xpath("//div/strong[contains(text(),' datasets')]")
+        result = browser.find_element_by_xpath("//div/strong[contains(text(),' datasets')]")
 
         # As the Solr index seems to live it's own life and the database might not have been cleared,
         # we cannot be sure how many hits should be expected. So this works for 1 or more results.
@@ -380,18 +378,166 @@ class TestKataBasicsWithUser(TestCase):
         assert u'no datasets' not in result.text, result.text
         assert u' datasets' in result.text, result.text
 
+        browser.quit()
 
-    def test_9_logout(self):
+
+    def test_logout(self):
         """
         Test logout for Selenium user.
         """
 
-        self.browser.get("https://localhost/en/user/_logout")
+        browser = webdriver.Firefox()
+        self._register_user(browser)
+
+        browser.get("https://localhost/en/user/_logout")
 
         try:
-            search = self.browser.find_element_by_xpath("//h1[.='Logged Out']")
+            search = browser.find_element_by_xpath("//h1[.='Logged Out']")
         except NoSuchElementException:
-            self.browser.get_screenshot_as_file('test_9_test_logout.png')
+            browser.get_screenshot_as_file('test_9_test_logout.png')
             assert 0, "Error logging out"
 
+        browser.quit()
 
+
+    def _add_dataset_advanced(self, browser, dataset_list):
+        """
+        Create a dataset with values from argument dataset_list.
+
+        dataset_list element format:
+        (element_search_function, function_parameter, keyboard_input_to_element (or WebElement.click), wait_for)
+
+        :return dataset url
+        """
+
+        browser.get("https://localhost/en/dataset/new")
+
+        # TODO: rather wait for a certain element that the js creates
+        browser.implicitly_wait(8)  # Wait for javascript magic to alter fields
+
+        try:
+            for (funct, param, values, wait_for) in dataset_list:
+
+                print ("%r ( %r ) : %r " % (funct, param, values))
+                field = funct(param)
+
+                for value in values:
+                    if value == WebElement.click:
+                        field.click()
+                        if wait_for:
+                            browser.implicitly_wait(wait_for)
+                            #WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located(wait_for))
+                    else:
+                        field.send_keys(value)
+
+        except (NoSuchElementException, ElementNotVisibleException) as exception:
+            browser.get_screenshot_as_file('_add_dataset_advanced.png')
+            print exception
+            assert 0, "Error processing the create dataset page"
+
+        try:
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ul/li/a[.='RDF']")))
+        except TimeoutException:
+            browser.get_screenshot_as_file('_add_dataset_advanced.png')
+            browser.quit()
+            assert 0, "Dataset creation didn't finish, URL: %r" % browser.current_url
+
+        assert "Kata" in browser.title, "Dataset creation failed somehow"
+
+        return browser.current_url
+
+
+    def test_add_dataset_all_fields(self):
+        """Create a dataset with all fields filled."""
+
+        browser = webdriver.Firefox()
+
+        def find_select2_inputs(id):
+            """
+            Finds 'select2-input's
+            """
+            elements = browser.find_elements_by_class_name('select2-input')
+            return elements[id]
+
+        def find_select2_choice_inputs(id):
+            """
+            Finds 'select2-choice's
+            """
+            elements = browser.find_elements_by_class_name('select2-choice')
+            return elements[id]
+
+        def find_plus_buttons(id):
+            """
+            Finds '?' and '+' buttons
+            """
+            all_elements = browser.find_elements_by_class_name('kata-plus-btn')
+            visible_elements = filter(lambda elem: elem.is_displayed(), all_elements)
+            return visible_elements[id]
+
+
+        dataset_to_add = [
+            # TODO: Fix random failing when adding titles and authors
+
+            # Add titles
+            #(find_plus_buttons, 1, [WebElement.click], None),
+            #(find_plus_buttons, 1, [WebElement.click], None),
+
+            (browser.find_element_by_id, 'title__0__value_id', [u'Selenium Dataset'], None),
+            (browser.find_element_by_name, 'title__0__lang', [u'en'], None),
+            #(browser.find_element_by_id, 'title__1__value_id', [u'Selenium-tietoaineisto'], None),
+            #(browser.find_element_by_name, 'title__1__lang', [u'fi'], None),
+            #(browser.find_element_by_id, 'title__2__value_id', [u'Selenium ÅÄÖ'], None),
+            #(browser.find_element_by_name, 'title__2__lang', [u'sv'], None),
+
+            # Add authors
+            #(find_plus_buttons, 3, [WebElement.click], None),
+            #(find_plus_buttons, 3, [WebElement.click], None),
+
+            (browser.find_element_by_id, 'author__0__value_id', [u'Ascii Author'], None),
+            (browser.find_element_by_id, 'organization__0__value_id', [u'CSC Oy'], None),
+            #(browser.find_element_by_id, 'author__1__value_id', [u'Åke Author'], None),
+            #(browser.find_element_by_id, 'organization__1__value_id', [u'Organization 2'], None),
+            #(browser.find_element_by_id, 'author__2__value_id', [u'прстуфхцчшчьыъэюя Author'], None),
+            #(browser.find_element_by_id, 'organization__2__value_id', [u'Organization 3'], None),
+
+            (find_select2_inputs, 1, ['Selenium', Keys.ENTER, 'Keyword2', Keys.ENTER], None),  # keywords
+            (browser.find_element_by_id, 'language', [u'rus, fin, eng'], None),
+
+            (browser.find_element_by_id, 'phone', [u'+35891234567'], None),
+            (browser.find_element_by_id, 'contactURL', [u'https://localhost/'], None),
+
+            (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
+            (browser.find_element_by_id, 'funder', [u'Selenium Funder'], None),
+            (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
+            (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
+
+            (browser.find_element_by_id, 'owner', [u'прстуфхцчшчьыъэюя'], None),
+
+            (browser.find_element_by_id, 'field-pid', [u'pid' + str(int(time.time()*100))], None),
+
+            (browser.find_element_by_id, 'free', [Keys.SPACE], None),
+            (browser.find_element_by_id, 'accessURL', [u'https://localhost/'], None),
+
+            (browser.find_element_by_id, 'licenseURL', [u'dada'], None),
+
+            (browser.find_element_by_xpath, "//section[@id='recmod']/h2/a", [Keys.ENTER], None),  # recommended info
+
+            (browser.find_element_by_id, 'geographic_coverage', [u'Espoo, Finland'], None),
+
+            (find_select2_choice_inputs, 2, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
+            #(find_select2_choice_inputs, 3, ['Selenium discipline', Keys.ENTER], None),  # discipline
+
+            (browser.find_element_by_id, 'fformat', [u'application/pdf'], None),
+            (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
+            (browser.find_element_by_id, 'algorithm', [u'md5'], None),
+
+            (browser.find_element_by_id, 'field-notes', [u'Some description about this dataset'], None),
+
+            (browser.find_element_by_xpath, "//button[@name='save']", [WebElement.click], None)
+        ]
+
+        self._register_user(browser)
+
+        dataset_url = self._add_dataset_advanced(browser, dataset_to_add)
+
+        browser.quit()

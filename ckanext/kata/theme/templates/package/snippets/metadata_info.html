@@ -53,7 +53,7 @@
 {% endblock %}
 <section class="module-content additional-info">
 <h3>{{ _('Usage information') }}</h3>
-<div class="info-block{{ ' info-inline' if inline }} icon-large icon-info-sign{{ " " ~ classes | join(' ') }}">
+<div class="info-block{{ ' info-inline' if inline }}{{ " " ~ classes | join(' ') }}">
 This dataset is
 {% if pkg_dict.access == 'form' %} available via an access form in <a href="{{ pkg_dict.accessRights }}">this link</a> {% endif%}
 {% if pkg_dict.access == 'free' %} available freely {% if pkg_dict.accessrequestURL %} <a href="{{pkg_dict.accessrequestURL}}">from this address</a> {% endif %} {% endif %}

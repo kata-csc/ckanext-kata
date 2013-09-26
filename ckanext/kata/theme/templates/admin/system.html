@@ -1,13 +1,9 @@
-{% extends "page.html" %}
 
-{% block subtitle %}{{ _('Administration - Authorization') }}{% endblock %}
+{% extends "admin/base.html" %}
 
-{% block breadcrumb_content %}
-{% endblock %}
-{% block primary %}
+{% block primary_content_inner %}
   <article class="module">
     <div class="module-content">
-      {% snippet 'admin/snippets/header.html', action=c.action %}
 
       <h3 class="m-bottom">{{ _('System statistics') }}</h3>
       {% if c.mem %}
@@ -65,4 +61,3 @@
   </article>
 {% endblock %}
 
-{% block sidebar %}{% endblock %}
