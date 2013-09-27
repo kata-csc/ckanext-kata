@@ -827,9 +827,9 @@ class SystemController(AdminController):
     def report(self):
         '''
         Generates a simple report page to admin site
-        Todo: make this a real quality page
         '''
         # package info
+        # Todo: make this a real quality page
         c.numpackages = c.openpackages = 0
         c.numpackages = model.Session.query(Package.id).count()
         key = 'access'
@@ -840,8 +840,12 @@ class SystemController(AdminController):
                    filter(Package.id==PackageExtra.package_id).\
                    count()
         # format to: d.dd %
-        c.popen = float(c.openpackages) / float(c.numpackages) * 100
+        if c.numpackages > 0:
+            c.popen = float(c.openpackages) / float(c.numpackages) * 100           
+        else:
+            c.popen = 0
         c.popen = "{0:.2f}".format(c.popen) + ' %'
+        
         
         # Todo: remove?
         # user info
