@@ -13,7 +13,9 @@ from ckan.lib import helpers as h
 from pylons.i18n import gettext as _
 import ckanext.kata.utils as utils
 from ckan.lib.navl.validators import not_empty, not_missing
-from ckan.lib.navl.dictization_functions import StopOnError
+from ckan.lib.navl.dictization_functions import StopOnError, Invalid
+from ckan.logic.validators import tag_length_validator
+from itertools import count
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -21,6 +23,37 @@ log = logging.getLogger('ckanext.kata.validators')
 EMAIL_REGEX = re.compile(r'[^@]+@[^@]+\.[^@]+')
 TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
 
+def kata_tag_name_validator(value, context):
+    '''
+    Checks an individual tag for unaccepted characters
+    '''
+
+    tagname_match = re.compile('[\w \-.\(\)\/]*$', re.UNICODE)
+    if not tagname_match.match(value):
+        raise Invalid(_('Tag "%s" must be alphanumeric '
+                        'characters or symbols: -_.()/') % (value))
+    return value
+
+def kata_tag_string_convert(key, data, errors, context):
+    '''Takes a list of tags that is a comma-separated string (in data[key])
+    and parses tag names. These are added to the data dict, enumerated. They
+    are also validated.'''
+
+    if isinstance(data[key], basestring):
+        tags = [tag.strip() \
+                for tag in data[key].split(',') \
+                if tag.strip()]
+    else:
+        tags = data[key]
+
+    current_index = max( [int(k[1]) for k in data.keys() if len(k) == 3 and k[0] == 'tags'] + [-1] )
+
+    for num, tag in zip(count(current_index+1), tags):
+        data[('tags', num, 'name')] = tag
+
+    for tag in tags:
+        tag_length_validator(tag, context)
+        kata_tag_name_validator(tag, context)
 
 def validate_access(key, data, errors, context):
     if data[key] == 'form':
