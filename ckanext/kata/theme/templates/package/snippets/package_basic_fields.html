@@ -129,6 +129,7 @@
     <span class="error-block">{{ errors.tag_string }}</span>
   {% endif %}
 </div>
+<br />
 
 <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset does not have a language') }}</input>
 <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
