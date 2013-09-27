@@ -192,3 +192,25 @@ def check_author_org(key, data, errors, context):
 def set_default_type(key, data, errors, context):
     if data[key] == [] or data[key] == 'None':
         data[key] = u'dataset'
+        
+def validate_discipline(key, data, errors, context):
+    '''
+    Validate discipline
+    
+    :param key: 'discipline'
+    :param data:
+    :param errors:
+    :param context:
+    '''
+    val = data.get(key)
+    # Regexp is specifically for okm-tieteenala, at:
+    # http://onki.fi/fi/browser/overview/okm-tieteenala
+    discipline_match = re.compile('[\w \-\,]*$', re.UNICODE)
+    if val:
+        if not discipline_match.match(val):
+            raise Invalid(_('Discipline "%s" must be alphanumeric '
+                            'characters or symbols: -,') % (val))
+    else:
+        # With ONKI component, the entire parameter might not exist
+        # so we generate it any way
+        data[key] = u''
