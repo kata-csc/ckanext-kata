@@ -659,8 +659,8 @@ class KataPackageController(PackageController):
         log.debug('advanced_search(): request.params.items(): %r' % request.params.items())
         #log.debug('advanced_search(): q: %r' % q)
         log.debug('advanced_search(): call to search()')
-        return self.search()
-    
+        return self.search()    
+        
     def read(self, id, format='html'):
         '''
         Package reader, with Kata commenting snippet
@@ -741,6 +741,7 @@ class KataPackageController(PackageController):
             c.comments.append(list)  
 
         return render(template, loader_class=loader)
+          
     
 class KataCommentController(BaseController):
     '''

@@ -5,7 +5,14 @@
 then itself be extended to add/remove blocks of functionality. #}
 <form class="dataset-form form-horizontal" method="post" action="{{ action }}" data-module="basic-form">
 
-  <input type="hidden" name="_ckan_phase" value="" />
+{# 
+  _ckan_phase was removed when integrating the ONKI selector
+  Its existence lead to inconsistent functionalities when adding a new dataset
+  or editing an old one. The problematic function can be found from:
+  package._save_edit, tag_string lines within if '_ckan_phase'
+  What is the purpose of _ckan_phase?
+ #}
+  {#<input type="hidden" name="_ckan_phase" value="" />#}
   {# pkg_name used in 3 stage edit #}
   <input type="hidden" name="pkg_name" value="{{ data.id }}" />
   {% block errors %}{{ form.errors(error_summary) }}{% endblock %}

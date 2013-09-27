@@ -664,3 +664,13 @@ header.masthead {
 .control-comment textarea {
 	width: 100%;
 }
+/* ONKI selector */
+.onki-area {
+	border: 1px solid;
+	border-color: #DDD;
+	padding: 5px;
+}
+.onki-heading {
+	font-size: 14px;
+	font-weight: bold;
+}

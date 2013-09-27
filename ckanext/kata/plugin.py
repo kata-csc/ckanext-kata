@@ -38,6 +38,7 @@ from ckanext.kata.converters import event_from_extras,\
 from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
+import ckan.lib.helpers as h
 
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
@@ -447,7 +448,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['language'] = [validate_language, self.convert_to_extras_kata, unicode]
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
-        schema['tag_string'].append(not_empty)
+        schema['tag_string'] = [not_missing, not_empty, tag_string_convert]
+        
         # This is a fix for API. Otherwise the package inserted from API will
         # be of type 'None' and won't be accessed from search results. This 
         # problem is also in CKAN, so fixes might be there in future and this
@@ -730,3 +732,20 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #log.debug("data_dict: %r" % data_dict)
         return search_results
     
+
+    def after_show(self, context, pkg_dict):
+        '''
+        Modifications of package dictionary before viewing it
+        
+        :param pkg_dict: pkg_dict to modify
+        '''
+        # ONKI selector is used without the space after comma
+        try:
+            if pkg_dict.get('tags') and not pkg_dict.get('tag_string'):
+                pkg_dict['tag_string'] = ','.join(h.dict_list_reduce(
+                    pkg_dict.get('tags', {}), 'name'))  
+        except:
+            log.debug('tags not found')
+            
+        return pkg_dict
+            
