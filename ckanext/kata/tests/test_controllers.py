@@ -121,7 +121,7 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         assert '<label for="rating-3"' in res, 'Rating should exist in add comment page'
         assert res.status == 200, 'Wrong status code in new comment page'
         
-    def test_admin_system_reporting_rendered(self):
+    def test_admin_reporting_rendered(self):
         '''
         An admin user should see reporting page.
         '''       
