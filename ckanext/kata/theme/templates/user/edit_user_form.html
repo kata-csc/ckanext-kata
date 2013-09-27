@@ -14,6 +14,12 @@ This template fixes input type='text' -> type='password' bug in core CKAN. Bug a
 
     {{ form.input('fullname', label=_('Full name'), id='field-fullname', value=data.fullname, error=errors.fullname, placeholder=_('eg. Joe Bloggs'), classes=['control-medium']) }}
 
+    {{ form.input('organization', label=_('Organization'), id='field-organization', value=data.organization, error=errors.organization, placeholder=_('Your organization'), classes=['control-medium']) }}
+
+    {{ form.input('telephone', label=_('Telephone'), id='field-telephone', value=data.telephone, error=errors.telephone, placeholder=_('eg. +35891234567'), classes=['control-medium']) }}
+
+    {{ form.input('mobile', label=_('Mobile'), id='field-mobile', value=data.mobile, error=errors.mobile, placeholder=_('eg. +358400000000'), classes=['control-medium']) }}
+
     {{ form.input('email', label=_('Email'), id='field-email', type='email', value=data.email, error=errors.email, placeholder=_('eg. joe@example.com'), classes=['control-medium']) }}
 
     {{ form.markdown('about', label=_('About'), id='field-about', value=data.about, error=errors.about, placeholder=_('A little information about yourself')) }}

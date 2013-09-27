@@ -41,12 +41,12 @@
 
           {% if c.is_myself %}
             <p class="empty">
-              {{ _('You haven\'t created any datasets.') }}
+              {{ _("You haven\'t created any datasets.") }}
               {% link_for _('Create one now?'), controller='package', action='new' %}.
             </p>
           {% else %}
             <p class="empty">
-              {{ _('User hasn\'t created any datasets.') }}
+              {{ _("User hasn\'t created any datasets.") }}
             </p>
           {% endif %}
 
@@ -98,7 +98,19 @@
         {% endif %}
         {% endif %}
       </dl>
+        <dl>
+          <dt>{{ _('Organization') }}</dt>
+          <dd>{{ user.organization or _('Undefined')}}</dd>
+        </dl>
       {% if c.is_myself %}
+       <dl>
+          <dt>{{ _('Telephone') }} <span class="label" title="{{ _('This means only you can see this') }}">{{ _('Private') }}</span></dt>
+          <dd>{{ user.telephone or  _('Undefined')}}</dd>
+       </dl>
+       <dl>
+          <dt>{{ _('Mobile') }} <span class="label" title="{{ _('This means only you can see this') }}">{{ _('Private') }}</span></dt>
+          <dd>{{ user.mobile or  _('Undefined')}}</dd>
+       </dl>
       <dl>
         <dt>{{ _('Email') }} <span class="label" title="{{ _('This means only you can see this') }}">{{ _('Private') }}</span></dt>
         <dd>{{ user.email }}</dd>
