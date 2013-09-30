@@ -19,7 +19,9 @@ from ckan.tests import WsgiAppCase, CommonFixtureMethods
 from ckan.tests.html_check import HtmlCheckMethods
 from ckan.config.middleware import make_app
 from ckanext.kata.validators import validate_kata_date, validate_language, check_project, \
-                                    check_project_dis, validate_email, validate_phonenum
+                                    check_project_dis, validate_email, validate_phonenum, \
+                                    validate_discipline
+from ckan.lib.navl.dictization_functions import Invalid
 
 
 class TestKataExtension(TestCase):
@@ -472,3 +474,27 @@ class TestKataValidators(TestCase):
 
         assert len( errors ) == 1
 
+    def test_validate_discipline_valid(self):
+        errors = defaultdict(list)
+        
+        dada = self.test_data.copy()
+        dada[('discipline',)] = u'Matematiikka'
+        
+        validate_discipline(('discipline',), dada, errors, None)
+        assert len( errors ) == 0
+        
+    def test_validate_discipline_nonexistent(self):
+        errors = defaultdict(list)
+        
+        dada = self.test_data.copy()
+        del dada[('discipline',)]
+        
+        assert len( errors ) == 0
+        
+    def test_validate_discipline_invalid(self):
+        errors = defaultdict(list)
+        
+        dada = self.test_data.copy()
+        dada[('discipline',)] = u'Matematiikka (Logiikka!)'
+        
+        self.assertRaises(Invalid, validate_discipline, ('discipline',), dada, errors, None)

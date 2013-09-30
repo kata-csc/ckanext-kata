@@ -30,7 +30,8 @@ from ckanext.kata.validators import check_project, validate_access, validate_kat
     check_junk, check_last_and_update_pid, \
     validate_language, validate_email, validate_phonenum, \
     check_project_dis, check_accessrequesturl, check_accessrights, \
-    check_author_org, set_default_type, kata_tag_string_convert
+    check_author_org, set_default_type, kata_tag_string_convert, \
+    validate_discipline
 from ckanext.kata.converters import event_from_extras,\
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
     org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
@@ -201,6 +202,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """ Register actions. """
         return {'package_show': actions.package_show,
                 'package_create': actions.package_create,
+                'package_update': actions.package_update,
                 'group_list': actions.group_list,
                 'accessreq_show': actions.accessreq_show,
                 'related_create': actions.related_create,
@@ -473,7 +475,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
            'resources': default_resource_schema(),
-           'discipline': [add_to_group],
+           'discipline': [validate_discipline],
         })
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}

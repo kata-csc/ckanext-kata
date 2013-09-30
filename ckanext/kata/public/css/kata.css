@@ -674,3 +674,9 @@ header.masthead {
 	font-size: 14px;
 	font-weight: bold;
 }
+.onkiLangs {
+	width: 100px !important;
+}
+.onkiAutocomplete .control-medium {
+	width: 300px !important;
+}
