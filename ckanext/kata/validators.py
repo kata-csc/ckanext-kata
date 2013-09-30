@@ -188,10 +188,6 @@ def check_author_org(key, data, errors, context):
         if not ('author',) in errors:
             errors[('author',)] = []
         errors[('author',)].append('Missing author and organization pairs!')
-
-def set_default_type(key, data, errors, context):
-    if data[key] == [] or data[key] == 'None':
-        data[key] = u'dataset'
         
 def validate_discipline(key, data, errors, context):
     '''

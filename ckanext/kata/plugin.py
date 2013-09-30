@@ -30,7 +30,7 @@ from ckanext.kata.validators import check_project, validate_access, validate_kat
     check_junk, check_last_and_update_pid, \
     validate_language, validate_email, validate_phonenum, \
     check_project_dis, check_accessrequesturl, check_accessrights, \
-    check_author_org, set_default_type, kata_tag_string_convert, \
+    check_author_org, kata_tag_string_convert, \
     validate_discipline
 from ckanext.kata.converters import event_from_extras,\
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
@@ -451,12 +451,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
-        
-        # This is a fix for API. Otherwise the package inserted from API will
-        # be of type 'None' and won't be accessed from search results. This 
-        # problem is also in CKAN, so fixes might be there in future and this
-        # set_default_type could be removed
-        schema['type'].append(set_default_type)
         schema.update({
            'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
            'versionPID': [self.update_pid, unicode, self.pid_to_extras],

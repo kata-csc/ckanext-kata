@@ -17,9 +17,26 @@
     <section class="module">
       <h2 class="module-heading">{{ _('Coverage') }}</h2>
       <div class="module-content">
-        {% call form.input('geographic_coverage', label=_('Geographic coverage'), id='geographic_coverage', placeholder=_('eg. places'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-  	      {{ kata_form.tooltip(tooltip=_('Geographic coverage can be filled to give information about the geographical area your data covers or geographical area where your data was collected, to name but a few.<br /><br />Start typing to the places field. You will get suggestions from an ontology, from which you can select a word by clicking it or first selecting it and then pressing the enter key. You and also add custom places by typing the word you want and accepting it with the enter key. Remove an added place from the \'x\' button next to the keyword.')) }}
-        {% endcall %}
+        
+        {# ONKI selector for spatial data #}
+
+        <div class="onki-area">
+          <span class="onki-heading">
+          {{ _('Spatial coverage') }}
+          </span><br />
+          {{ _('Search keywords from SUO ontology, select keywords with enter or mouse click.') }}
+          <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Add keywords (tags) that give information about your data\'s spatial coverage. Start typing and the service will give you suggestions of the word. Accept a word you want with a mouse click or enter button. You can add your own word with enter button as well. Remove a keyword by pressing the \'x\'. <br /><br />Change the language of suggested word from the language menu.<br /><br />Learn more about the ONKI from http://onki.fi/en/') }}">
+          <span class="kata-btn-span tta-orange">?</span></button><br /><br />
+          <input name='geographic_coverage_field' id='geographic_coverage_field' placeholder="{{ _('eg. Finland') }}" class='control-medium' onkeyup="onki['suo'].search({'fieldShared' : true, 'fetchLabels' : true, 'fetchUris' : false, 'fieldLabel' : '{{ _('Search:') }}', 'fieldName' : 'geographic_coverage', 'languageMenu' : true, 'onkimenu' : false, 'openonkibutton' : false, 'prefix' : false, 'showOnkiName' : false, 'showCaptions' : false, 'delimiter' : ','})">
+          {% if data.geographic_coverage %}
+            <input class="hidden-concept-value-field" type="hidden" name="geographic_coverage" value='{{ data.geographic_coverage }}'>   
+          {% endif %}
+          {% if errors.geographic_coverage %}
+            <span class="error-block">{{ errors.geographic_coverage }}</span>
+          {% endif %}
+        </div>
+        <br />
+        
         
         <div data-module="dateselect-dcmi-kata">
   		    <label class="control-label" for="temporal_coverage">{{ _('Temporal coverage') }}</label>
