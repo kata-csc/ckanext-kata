@@ -103,7 +103,9 @@ user_extra_table = Table('user_extra', meta.metadata,
 )
 vdm.sqlalchemy.make_table_stateful(user_extra_table)
 
-class UserExtra(domain_object.DomainObject):
+class UserExtra(vdm.sqlalchemy.RevisionedObjectMixin,
+                vdm.sqlalchemy.StatefulObjectMixin,
+                domain_object.DomainObject):
     '''Object for extra user profile info.
     '''
     @classmethod
