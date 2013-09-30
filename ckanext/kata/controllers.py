@@ -80,38 +80,6 @@ def get_extra_contact(context, data_dict, key="contact_name"):
     q = q.limit(limit)
     return q.all()
 
-def get_discipline(context, data_dict):
-    """
-    Tries to get disciplines from group 'KATA'.
-    """
-    model = context['model']
-
-    terms = data_dict.get('query') or data_dict.get('q') or []
-    if isinstance(terms, basestring):
-        terms = [terms]
-    terms = [t.strip() for t in terms if t.strip()]
-
-    if 'fields' in data_dict:
-        log.warning('"fields" parameter is deprecated.  '
-                    'Use the "query" parameter instead')
-
-    offset = data_dict.get('offset')
-    limit = data_dict.get('limit')
-
-    # TODO: should we check for user authentication first?
-    q = model.Session.query(model.Group)
-
-    if not len(terms):
-        return [], 0
-    katagrp = Group.get('KATA')
-    res = []
-    for term in terms:
-        escaped_term = misc.escape_sql_like_special_characters(term, escape='\\')
-        for child in katagrp.get_children_groups():
-            if escaped_term in child['name']:
-                res.append(child)
-    return res
-
 def utc_to_local(utc_dt):
     '''
     Change datetime in utc zone to datetime on local zone
@@ -278,30 +246,6 @@ class KATAApiController(ApiController):
             tag_names = get_extra_contact(context, data_dict)
 
         tag_names = [k.value for k in tag_names]
-        resultSet = {
-            'ResultSet': {
-                'Result': [{'Name': tag} for tag in tag_names]
-            }
-        }
-        return self._finish_ok(resultSet)
-
-    def discipline_autocomplete(self):
-        """
-        Called from recommended_form.html to get items for discipline autocompletion field.
-        """
-
-        q = request.params.get('incomplete', '')
-        limit = request.params.get('limit', 10)
-        tag_names = []
-        if q:
-            context = {'model': model, 'session': model.Session,
-                       'user': c.user or c.author}
-
-            data_dict = {'q': q, 'limit': limit}
-
-            tag_names = get_discipline(context, data_dict)
-
-        tag_names = [k['name'] for k in tag_names]
         resultSet = {
             'ResultSet': {
                 'Result': [{'Name': tag} for tag in tag_names]
