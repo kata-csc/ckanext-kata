@@ -502,7 +502,7 @@ class TestKataWithUser(TestCase):
             #(browser.find_element_by_id, 'organization__2__value_id', [u'Organization 3'], None),
 
             #(find_select2_inputs, 1, ['Selenium', Keys.ENTER, 'Keyword2', Keys.ENTER], None),  # keywords
-            (browser.find_element_by_id, 'field-tags', [u'Keyword2', Keys.ENTER], None)
+            (browser.find_element_by_id, 'field-tags', [u'Keyword2', Keys.ENTER], None),
             (browser.find_element_by_id, 'language', [u'rus, fin, eng'], None),
 
             (browser.find_element_by_id, 'phone', [u'+35891234567'], None),
