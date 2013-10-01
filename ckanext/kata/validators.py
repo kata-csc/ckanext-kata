@@ -210,3 +210,28 @@ def validate_discipline(key, data, errors, context):
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
         data[key] = u''
+        
+def validate_spatial(key, data, errors, context):
+    '''
+    Validate spatial (aka geographical) coverage
+    
+    :param key: eg. 'geographical_coverage'
+    :param data:
+    :param errors:
+    :param context:
+    '''
+    log.debug('################')
+    log.debug('validating geo')
+    val = data.get(key)
+    # Regexp is specifically for the SUO ontology
+    
+    spatial_match=re.compile('[\w \-\,\(\)\:\.]*$', re.UNICODE)
+    if val:
+        if not spatial_match.match(val):
+            raise Invalid(_('Spatial coverage "%s" must be alphanumeric '
+                            'characters or symbols: -,:().') % (val))
+    else:
+        # With ONKI component, the entire parameter might not exist
+        # so we generate it any way
+        data[key] = u''
+    

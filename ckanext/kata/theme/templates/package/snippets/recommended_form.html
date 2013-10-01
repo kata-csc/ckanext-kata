@@ -24,8 +24,8 @@
           <span class="onki-heading">
           {{ _('Spatial coverage') }}
           </span><br />
-          {{ _('Search keywords from SUO ontology, select keywords with enter or mouse click.') }}
-          <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Add keywords (tags) that give information about your data\'s spatial coverage. Start typing and the service will give you suggestions of the word. Accept a word you want with a mouse click or enter button. You can add your own word with enter button as well. Remove a keyword by pressing the \'x\'. <br /><br />Change the language of suggested word from the language menu.<br /><br />Learn more about the ONKI from http://onki.fi/en/') }}">
+          {{ _('Search location from SUO ontology, select locations with enter or mouse click.') }}
+          <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Add locations that give information about your data\'s spatial coverage. Start typing and the service will give you suggestions of the word. Accept a word you want with a mouse click or enter button. You can add your own word with enter button as well. Remove a keyword by pressing the \'x\'. <br /><br />Change the language of suggested word from the language menu.<br /><br />Learn more about the ONKI from http://onki.fi/en/') }}">
           <span class="kata-btn-span tta-orange">?</span></button><br /><br />
           <input name='geographic_coverage_field' id='geographic_coverage_field' placeholder="{{ _('eg. Finland') }}" class='control-medium' onkeyup="onki['suo'].search({'fieldShared' : true, 'fetchLabels' : true, 'fetchUris' : false, 'fieldLabel' : '{{ _('Search:') }}', 'fieldName' : 'geographic_coverage', 'languageMenu' : true, 'onkimenu' : false, 'openonkibutton' : false, 'prefix' : false, 'showOnkiName' : false, 'showCaptions' : false, 'delimiter' : ','})">
           {% if data.geographic_coverage %}

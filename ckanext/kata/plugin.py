@@ -31,7 +31,7 @@ from ckanext.kata.validators import check_project, validate_access, validate_kat
     validate_language, validate_email, validate_phonenum, \
     check_project_dis, check_accessrequesturl, check_accessrights, \
     check_author_org, kata_tag_string_convert, \
-    validate_discipline
+    validate_discipline, validate_spatial
 from ckanext.kata.converters import event_from_extras,\
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
     org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
@@ -451,6 +451,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
+        schema['geographic_coverage'] = [validate_spatial]
         schema.update({
            'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
            'versionPID': [self.update_pid, unicode, self.pid_to_extras],
