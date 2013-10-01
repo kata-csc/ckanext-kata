@@ -220,8 +220,6 @@ def validate_spatial(key, data, errors, context):
     :param errors:
     :param context:
     '''
-    log.debug('################')
-    log.debug('validating geo')
     val = data.get(key)
     # Regexp is specifically for the SUO ontology
     
