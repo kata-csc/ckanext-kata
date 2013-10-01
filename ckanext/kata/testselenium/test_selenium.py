@@ -169,7 +169,8 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@id='organization__0__value_id']")
             field.send_keys('CSC Oy')
 
-            field = browser.find_elements_by_class_name('select2-input')[1]  # hopefully this is keywords input
+            # Add keyword to onki collector via onki search
+            field = browser.find_element_by_xpath("//input[@id='field-tags']")
             field.send_keys('Selenium')
             field.send_keys(Keys.RETURN)
 
@@ -500,7 +501,8 @@ class TestKataWithUser(TestCase):
             #(browser.find_element_by_id, 'author__2__value_id', [u'прстуфхцчшчьыъэюя Author'], None),
             #(browser.find_element_by_id, 'organization__2__value_id', [u'Organization 3'], None),
 
-            (find_select2_inputs, 1, ['Selenium', Keys.ENTER, 'Keyword2', Keys.ENTER], None),  # keywords
+            #(find_select2_inputs, 1, ['Selenium', Keys.ENTER, 'Keyword2', Keys.ENTER], None),  # keywords
+            (browser.find_element_by_id, 'field-tags', [u'Keyword2', Keys.ENTER], None)
             (browser.find_element_by_id, 'language', [u'rus, fin, eng'], None),
 
             (browser.find_element_by_id, 'phone', [u'+35891234567'], None),
@@ -522,11 +524,11 @@ class TestKataWithUser(TestCase):
 
             (browser.find_element_by_xpath, "//section[@id='recmod']/h2/a", [Keys.ENTER], None),  # recommended info
 
-            (browser.find_element_by_id, 'geographic_coverage', [u'Espoo, Finland'], None),
+            (browser.find_element_by_id, 'geographic_coverage_field', [u'Espoo, Finland', Keys.ENTER], None),
 
-            (find_select2_choice_inputs, 2, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
+            (find_select2_choice_inputs, 1, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
             #(find_select2_choice_inputs, 3, ['Selenium discipline', Keys.ENTER], None),  # discipline
-
+            (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.ENTER], None),
             (browser.find_element_by_id, 'fformat', [u'application/pdf'], None),
             (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
             (browser.find_element_by_id, 'algorithm', [u'md5'], None),

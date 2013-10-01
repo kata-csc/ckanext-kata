@@ -28,7 +28,7 @@ def kata_tag_name_validator(value, context):
     Checks an individual tag for unaccepted characters
     '''
 
-    tagname_match = re.compile('[\w \-.\(\)\/]*$', re.UNICODE)
+    tagname_match = re.compile('[\w \-.()/]*$', re.UNICODE)
     if not tagname_match.match(value):
         raise Invalid(_('Tag "%s" must be alphanumeric '
                         'characters or symbols: -_.()/') % (value))
@@ -201,7 +201,7 @@ def validate_discipline(key, data, errors, context):
     val = data.get(key)
     # Regexp is specifically for okm-tieteenala, at:
     # http://onki.fi/fi/browser/overview/okm-tieteenala
-    discipline_match = re.compile('[\w \-\,]*$', re.UNICODE)
+    discipline_match = re.compile('[\w \-,]*$', re.UNICODE)
     if val:
         if not discipline_match.match(val):
             raise Invalid(_('Discipline "%s" must be alphanumeric '
@@ -223,7 +223,7 @@ def validate_spatial(key, data, errors, context):
     val = data.get(key)
     # Regexp is specifically for the SUO ontology
     
-    spatial_match=re.compile('[\w \-\,\(\)\:\.]*$', re.UNICODE)
+    spatial_match = re.compile('[\w \-,():.]*$', re.UNICODE)
     if val:
         if not spatial_match.match(val):
             raise Invalid(_('Spatial coverage "%s" must be alphanumeric '
