@@ -2,8 +2,13 @@
 Controllers for Kata plus some additional functions.
 """
 
+import calendar
+from datetime import datetime, timedelta
 import logging
+from operator import itemgetter
 import os
+from pairtree.storage_exceptions import FileNotFoundException
+from rdflib.term import Identifier
 import tempfile
 import urllib2
 import subprocess
@@ -13,37 +18,28 @@ from paste.deploy.converters import asbool
 from pylons import response, config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import gettext as _
-from rdflib.term import Identifier
-from pairtree.storage_exceptions import FileNotFoundException
+from sqlalchemy import null
 
-import calendar
-from datetime import datetime, timedelta
-
+from ckan.controllers.admin import AdminController
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.storage import get_ofs
 from ckan.controllers.user import UserController
-from ckan.controllers.admin import AdminController
-from ckan.logic import check_access
+import ckan.lib.i18n
 from ckan.lib.munge import substitute_ascii_equivalents
 from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.navl.dictization_functions import unflatten
-from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params
-from ckan.logic import NotFound, NotAuthorized, ActionError
+from ckan.lib.package_saver import PackageSaver
+from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params, \
+    NotFound, NotAuthorized, ActionError, check_access
+import ckan.model as model
 from ckan.model import Package, User, Related, Group, meta, Resource, PackageExtra
 from ckan.model.authz import add_user_to_role
+import ckan.model.misc as misc
 from ckanext.kata.model import KataAccessRequest, KataComment
 from ckanext.kata.urnhelper import URNHelper
-from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, XSD, Graph, URIRef, Literal
 from ckanext.kata.utils import convert_to_text, send_contact_email
-from ckan.lib.package_saver import PackageSaver
-from sqlalchemy import null
-
-import ckan.model as model
-import ckan.model.misc as misc
-import ckan.lib.i18n
-
-from operator import itemgetter
+from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, XSD, Graph, URIRef, Literal
 
 log = logging.getLogger('ckanext.kata.controller')
 

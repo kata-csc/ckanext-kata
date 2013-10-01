@@ -1,30 +1,22 @@
 import sys
-import re
-from pprint import pprint
 import datetime
 from datetime import timedelta
 
-from ckan import model
-from ckan.model import Group, repo, Member
-from ckan.logic import get_action, ValidationError
-
 from ckan.lib.cli import CkanCommand
-import ckanext.kata.tieteet as tieteet
+import ckan.model as model
+from ckan.model import Group, repo, Member
 from ckanext.harvest.model import HarvestSource
 from ckanext.kata.model import setup, KataAccessRequest
+import ckanext.kata.tieteet as tieteet
 from ckanext.kata.utils import send_email
-
-import pylons
-from pylons import config, g
-
 
 class Kata(CkanCommand):
     '''
     Usage:
 
-      kata initdb
+      katacmd initdb
         - Creates the necessary tables in the database
-      kata send_request_emails
+      katacmd send_request_emails
         - Sends edit request messages
     '''
 
