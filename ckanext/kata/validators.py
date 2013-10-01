@@ -12,7 +12,7 @@ from ckan.lib import helpers as h
 
 from pylons.i18n import gettext as _
 import ckanext.kata.utils as utils
-from ckan.lib.navl.validators import not_empty, not_missing
+from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid
 from ckan.logic.validators import tag_length_validator
 from itertools import count
@@ -56,15 +56,23 @@ def kata_tag_string_convert(key, data, errors, context):
         kata_tag_name_validator(tag, context)
 
 def validate_access(key, data, errors, context):
+    '''
+    Validates that accessRights field is filled
+    
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    '''
     if data[key] == 'form':
         if not data[('accessRights',)]:
             errors[key].append(_('You must fill up the form URL'))
 
 
 def check_project(key, data, errors, context):
-    """
+    '''
     Check if user is trying to send project data when project is disabled.
-    """
+    '''
     if data[('project_name',)] or data[('funder',)] or\
         data[('project_funding',)] or data[('project_homepage',)]:
         if data[('projdis',)] != 'False':
@@ -72,9 +80,9 @@ def check_project(key, data, errors, context):
 
 
 def validate_kata_date(key, data, errors, context):
-    """
+    '''
     Validate a date string. Empty strings also pass.
-    """
+    '''
     if data[key] == u'':
         return
     try:
@@ -86,12 +94,18 @@ def validate_kata_date(key, data, errors, context):
 
 
 def check_junk(key, data, errors, context):
+    '''
+    Checks the existence of ambiguous parameters
+    '''
     log.debug(data)
     if key in data:
         log.debug(data[key])
 
 
 def check_last_and_update_pid(key, data, errors, context):
+    '''
+    Generates a pid (URN) for package
+    '''
     if key == ('version',):
         pkg = Package.get(data[('name',)])
         if pkg:
@@ -100,9 +114,9 @@ def check_last_and_update_pid(key, data, errors, context):
 
 
 def validate_language(key, data, errors, context):
-    """
+    '''
     Validate ISO 639 language abbreviations. If langdis == 'True', remove all languages.
-    """
+    '''
 
     value = data.get(key)
     langs = value.split(',')
@@ -138,25 +152,25 @@ def validate_language(key, data, errors, context):
 
 
 def validate_email(key, data, errors, context):
-    """
+    '''
     Validate an e-mail address against a regular expression.
-    """
+    '''
     if not EMAIL_REGEX.match(data[key]):
         errors[key].append(_('Invalid email address'))
 
 
 def validate_phonenum(key, data, errors, context):
-    """
+    '''
     Validate a phone number against a regular expression.
-    """
+    '''
     if not TEL_REGEX.match(data[key]):
         errors[key].append(_('Invalid telephone number, must be like +13221221'))
 
 
 def check_project_dis(key, data, errors, context):
-    """
+    '''
     If projdis checkbox is checked, check out that the project fields have data.
-    """
+    '''
     if not ('projdis',) in data:
         not_empty(key, data, errors, context)
     else:
@@ -184,6 +198,9 @@ def not_empty_kata(key, data, errors, context):
 
 
 def check_author_org(key, data, errors, context):
+    '''
+    Validates author's organisation
+    '''
     if all(k in data[key] for k in ('author', 'organization')):
         if not ('author',) in errors:
             errors[('author',)] = []
@@ -222,7 +239,6 @@ def validate_spatial(key, data, errors, context):
     '''
     val = data.get(key)
     # Regexp is specifically for the SUO ontology
-    
     spatial_match = re.compile('[\w \-,():.]*$', re.UNICODE)
     if val:
         if not spatial_match.match(val):

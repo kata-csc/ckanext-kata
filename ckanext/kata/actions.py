@@ -1,21 +1,16 @@
 import re
-import json
-import datetime
+
 import ckan.logic.action.get
 import ckan.logic.action.create
 import ckan.logic.action.update
 from pylons import c, config
-from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Package, repo
-from ckan.model.authz import add_user_to_role
 import ckan.model as model
 from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from pylons.i18n import gettext as _
-from model import KataAccessRequest
-from sqlalchemy import exceptions
-import utils
+from ckanext.kata.model import KataAccessRequest
 
 import logging
 log = logging.getLogger(__name__)

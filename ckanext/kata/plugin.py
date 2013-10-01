@@ -23,16 +23,16 @@ from ckan.logic.schema import   default_show_package_schema, \
     default_create_package_schema, \
     default_update_package_schema, \
     default_resource_schema
-from ckan.logic.validators import no_http, tag_string_convert, duplicate_extras_key, \
+from ckan.logic.validators import no_http, duplicate_extras_key, \
     package_id_not_changed, name_validator, package_name_validator, owner_org_validator
-from ckan.lib.navl.validators import missing, ignore_missing, ignore, not_empty, not_missing, default
+from ckan.lib.navl.validators import missing, ignore_missing, not_empty, not_missing, default
 from ckanext.kata.validators import check_project, validate_access, validate_kata_date, \
     check_junk, check_last_and_update_pid, \
     validate_language, validate_email, validate_phonenum, \
     check_project_dis, check_accessrequesturl, check_accessrights, \
     check_author_org, kata_tag_string_convert, \
     validate_discipline, validate_spatial
-from ckanext.kata.converters import event_from_extras,\
+from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
     org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
     add_to_group
