@@ -488,7 +488,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
            'resources': default_resource_schema(),
-           'discipline': [validate_discipline, unicode, self.convert_from_extras_kata],
+           'discipline': [validate_discipline, unicode, self.convert_to_extras_kata],
            'geographic_coverage': [validate_spatial, self.convert_to_extras_kata, unicode],
         })
 
