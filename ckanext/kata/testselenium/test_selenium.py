@@ -483,7 +483,7 @@ class TestKataWithUser(TestCase):
             #(find_plus_buttons, 1, [WebElement.click], None),
             #(find_plus_buttons, 1, [WebElement.click], None),
 
-            (browser.find_element_by_id, 'title__0__value_id', [u'Selenium Dataset'], None),
+            (browser.find_element_by_id, 'title__0__value_id', [u'Advanced Selenium Dataset'], None),
             (browser.find_element_by_name, 'title__0__lang', [u'en'], None),
             #(browser.find_element_by_id, 'title__1__value_id', [u'Selenium-tietoaineisto'], None),
             #(browser.find_element_by_name, 'title__1__lang', [u'fi'], None),
@@ -526,7 +526,7 @@ class TestKataWithUser(TestCase):
 
             (browser.find_element_by_id, 'geographic_coverage_field', [u'Espoo, Finland', Keys.ENTER], None),
 
-            (find_select2_choice_inputs, 1, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
+            (find_select2_choice_inputs, 2, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
             #(find_select2_choice_inputs, 3, ['Selenium discipline', Keys.ENTER], None),  # discipline
             (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.ENTER], None),
             (browser.find_element_by_id, 'fformat', [u'application/pdf'], None),

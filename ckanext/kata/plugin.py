@@ -178,14 +178,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     kata_fields_required = ['version', 'language',
                   'publisher', 'phone', 'contactURL',
                   'project_name', 'funder', 'project_funding', 'project_homepage',
-                  'access', 'accessRights', 'accessrequestURL', 'licenseURL',
+                  'access', 'accessRights', 'accessrequestURL',
                   'organization', 'author', 'owner']
 
     # Recommended extras fields
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
                   'temporal_coverage_end', 'discipline', 'fformat', 'checksum',
                   'algorithm', 'evwho', 'evdescr', 'evtype', 'evwhen', 'langdis',
-                  'projdis']
+                  'projdis', 'licenseURL']
 
     kata_field = kata_fields_recommended + kata_fields_required
 
@@ -312,7 +312,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
 
-
         log.debug("disable synchronous search")
         try:
             # This controls the operation of the CKAN search indexing. If you don't define this option
@@ -341,8 +340,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
 
     def setup_template_variables(self, context, data_dict):
+        """
+        Override DefaultDatasetForm.setup_template_variables() form  method from ckan.lib.plugins.py.
+        """
+        super(KataPlugin, self).setup_template_variables(context, data_dict)
+
         c.roles = self.roles
-        c.PID = utils.generate_pid()
         c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
 
@@ -471,7 +474,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
            'resources': default_resource_schema(),
            'discipline': [validate_discipline],
-        })
+           'licenseURL': [ignore_missing, unicode],
+           })
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras]}
@@ -514,8 +518,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['langdis'] = [default(False), unicode]
-        schema['projdis'] = [default(False), unicode]
+        schema['langdis'] = [default(u'False'), unicode]
+        schema['projdis'] = [default(u'False'), unicode]
         schema['title'] = [ltitle_from_extras, ignore_missing]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
@@ -728,7 +732,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #log.debug("search_results: %r" % search_results)
         #log.debug("data_dict: %r" % data_dict)
         return search_results
-    
+
 
     def after_show(self, context, pkg_dict):
         '''
