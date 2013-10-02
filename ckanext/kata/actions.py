@@ -55,7 +55,16 @@ def package_create(context, data_dict):
     :param context    - ?
     :param data_dict  - ?
     """
-    
+    # Remove ONKI generated parameters for tidiness
+    # They won't exist when adding via API
+    try:
+        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs', \
+                     'geographic_coverage_field_langs', 'geographic_coverage_field', \
+                     'discipline_field_langs', 'discipline_field']
+        for key in removable:
+            del data_dict[key]
+    except KeyError:
+        pass
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
@@ -76,6 +85,16 @@ def package_update(context, data_dict):
     :param context:
     :param data_dict: package data as dictionary
     '''
+    # Remove ONKI generated parameters for tidiness
+    # They won't exist when adding via API
+    try:
+        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs', \
+                     'geographic_coverage_field_langs', 'geographic_coverage_field', \
+                     'discipline_field_langs', 'discipline_field']
+        for key in removable:
+            del data_dict[key]
+    except KeyError:
+        pass
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': True}

@@ -25,12 +25,14 @@ from ckan.logic.schema import   default_show_package_schema, \
     default_resource_schema
 from ckan.logic.validators import no_http, duplicate_extras_key, \
     package_id_not_changed, name_validator, package_name_validator, owner_org_validator
-from ckan.lib.navl.validators import missing, ignore_missing, not_empty, not_missing, default
+from ckan.lib.navl.validators import missing, ignore_missing, not_empty, not_missing, default, \
+    ignore
 from ckanext.kata.validators import check_project, validate_access, validate_kata_date, \
     check_junk, check_last_and_update_pid, \
     validate_language, validate_email, validate_phonenum, \
     check_project_dis, check_accessrequesturl, check_accessrights, \
     check_author_org, kata_tag_string_convert, \
+    kata_tag_name_validator, \
     validate_discipline, validate_spatial
 from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
@@ -40,6 +42,7 @@ from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
 import ckan.lib.helpers as h
+from ckan.logic.validators import tag_length_validator, vocabulary_id_exists
 
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
@@ -423,7 +426,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if len(data[key]) == 0:
             data[key] = utils.generate_pid()
 
-
+    def default_tags_schema(self):
+        schema = {
+            'name': [not_missing,
+                 not_empty,
+                 unicode,
+                 tag_length_validator,
+                 kata_tag_name_validator,
+                ],
+            'vocabulary_id': [ignore_missing, unicode, vocabulary_id_exists],
+            'revision_timestamp': [ignore],
+            'state': [ignore],
+            'display_name': [ignore],
+        }
+        return schema
+    
     def create_package_schema(self):
         """
         Return the schema for validating new dataset dicts.
@@ -451,7 +468,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
-        schema['geographic_coverage'] = [validate_spatial]
+        # otherwise the tags would be validated with default tag validator during update
+        schema['tags'] = self.default_tags_schema()
         schema.update({
            'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
            'versionPID': [self.update_pid, unicode, self.pid_to_extras],
@@ -470,7 +488,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
            'resources': default_resource_schema(),
-           'discipline': [validate_discipline],
+           'discipline': [validate_discipline, unicode, self.convert_from_extras_kata],
+           'geographic_coverage': [validate_spatial, self.convert_to_extras_kata, unicode],
         })
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}
@@ -494,7 +513,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Taken from ckan.logic.schema.default_update_package_schema():
         schema['id'] = [ignore_missing, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
-
         return schema
 
 
