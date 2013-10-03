@@ -120,13 +120,3 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         assert '<label class="control-label" for="new_comment">' in res, 'Text area to add a comment should exist'
         assert '<label for="rating-3"' in res, 'Rating should exist in add comment page'
         assert res.status == 200, 'Wrong status code in new comment page'
-        
-    def test_admin_reporting_rendered(self):
-        '''
-        An admin user should see reporting page.
-        '''       
-        offset = url_for(controller='ckanext.kata.controllers:SystemController', action='report')
-        username = u'testsysadmin'.encode('utf8')
-        extra_environ = {'REMOTE_USER':username}
-        res = self.app.get(offset, extra_environ=extra_environ)
-        assert res.status == 200, 'Wrong status code (should be 200), in admin/reporting'

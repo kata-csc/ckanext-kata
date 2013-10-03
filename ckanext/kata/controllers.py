@@ -764,43 +764,4 @@ class KataInfoController(BaseController):
         Provides the FAQ page
         '''
         return render('kata/faq.html')
-    
-class SystemController(AdminController):
 
-    def report(self):
-        '''
-        Generates a simple report page to admin site
-        '''
-        # package info
-        # Todo: make this a real quality page
-        c.numpackages = c.openpackages = 0
-        c.numpackages = model.Session.query(Package.id).count()
-        key = 'access'
-        value = 'free'
-        c.openpackages = model.Session.query(Package.id).\
-                   filter(PackageExtra.key==key).\
-                   filter(PackageExtra.value==value).\
-                   filter(Package.id==PackageExtra.package_id).\
-                   count()
-        # format to: d.dd %
-        if c.numpackages > 0:
-            c.popen = float(c.openpackages) / float(c.numpackages) * 100           
-        else:
-            c.popen = 0
-        c.popen = "{0:.2f}".format(c.popen) + ' %'
-        
-        
-        # Todo: remove?
-        # user info
-        c.numusers = 0
-        c.numusers = model.Session.query(User.id).count()
-        
-        return render('admin/report.html')
-    
-class AVAAController(BaseController):
-    '''
-    Pages for AVAA
-    '''
-    def listapps(self):
-        return render('avaa/applications.html')
-    

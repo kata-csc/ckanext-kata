@@ -145,10 +145,6 @@ class KataMetadata(SingletonPlugin):
                     '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_faq")
-        map.connect('ckanadmin_report',
-                    '/ckan-admin/report',
-                    controller='ckanext.kata.controllers:SystemController',
-                    action='report')
         map.connect('applications',
                     '/applications',
                     controller="ckanext.kata.controllers:AVAAController",
