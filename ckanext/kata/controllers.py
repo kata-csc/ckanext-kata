@@ -20,7 +20,6 @@ from pylons.decorators.cache import beaker_cache
 from pylons.i18n import gettext as _
 from sqlalchemy import null
 
-from ckan.controllers.admin import AdminController
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.storage import get_ofs
