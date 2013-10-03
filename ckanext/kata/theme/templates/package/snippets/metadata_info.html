@@ -60,7 +60,11 @@ This dataset is
 {% if pkg_dict.access == 'ident' %} available via login {% if pkg_dict.accessrequestURL %} <a href="{{pkg_dict.accessrequestURL}}">from this address</a> {% endif %} {% endif %}
 {% if pkg_dict.access == 'contact' %} available by <a href="/contact/{{pkg_dict.id}}">contacting the distributor</a> {% endif %}
 {% if not pkg_dict.access %} available freely{% endif %}
-{% if pkg_dict.licenseURL %} with license as {{pkg_dict.licenseURL}} {% endif %}
+
+{% if pkg_dict.license_title %} with license as {{pkg_dict.license_title}}
+    {%- if pkg_dict.licenseURL %}, {{pkg_dict.licenseURL}}
+    {%- endif -%}
+{%- endif %}.
 </div>
 </section>
 <section class="module-content additional-info">
