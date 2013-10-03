@@ -145,10 +145,6 @@ class KataMetadata(SingletonPlugin):
                     '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_faq")
-        map.connect('applications',
-                    '/applications',
-                    controller="ckanext.kata.controllers:AVAAController",
-                    action="listapps")
         return map
 
     def before_insert(self, mapper, connection, instance):
