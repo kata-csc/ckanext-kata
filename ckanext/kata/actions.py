@@ -95,6 +95,11 @@ def package_update(context, data_dict):
             del data_dict[key]
     except KeyError:
         pass
+    
+    # This is a consequence or removing the ckan_phase!
+    # The solution might not be good, if further problems arise
+    # a better fix will be made
+    context['allow_partial_update'] = True
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': True}
