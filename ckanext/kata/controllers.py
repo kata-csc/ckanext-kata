@@ -8,10 +8,11 @@ import logging
 from operator import itemgetter
 import os
 from pairtree.storage_exceptions import FileNotFoundException
-from rdflib.term import Identifier
 import tempfile
 import urllib2
 import subprocess
+from rdflib.term import Identifier, URIRef, Literal
+from rdflib.namespace import XSD
 
 from _text import orngText
 from paste.deploy.converters import asbool
@@ -32,13 +33,13 @@ from ckan.lib.package_saver import PackageSaver
 from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params, \
     NotFound, NotAuthorized, ActionError, check_access
 import ckan.model as model
-from ckan.model import Package, User, Related, Group, meta, Resource, PackageExtra
+from ckan.model import Package, User, Related, Group, meta, Resource, PackageExtra, license
 from ckan.model.authz import add_user_to_role
 import ckan.model.misc as misc
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
 from ckanext.kata.utils import convert_to_text, send_contact_email
-from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, XSD, Graph, URIRef, Literal
+from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, Graph
 
 log = logging.getLogger('ckanext.kata.controller')
 
@@ -143,27 +144,40 @@ class MetadataController(BaseController):
             graph.add((metadoc, DC.identifier, Literal(data["id"])\
                                 if 'identifier' not in data["extras"]\
                                 else URIRef(data["extras"]["identifier"])))
-            graph.add((metadoc, DC.modified, Literal(data["metadata_modified"],
-                                                 datatype=XSD.dateTime)))
+            if data["metadata_modified"]:
+                graph.add((metadoc, DC.modified, Literal(data["metadata_modified"], datatype=XSD.dateTime)))
             graph.add((metadoc, FOAF.primaryTopic, Identifier(data['name'])))
             uri = URIRef(data['name'])
             if data["license"]:
                 graph.add((uri, DC.rights, Literal(data["license"])))
+
+            licenseRegister = license.LicenseRegister()
+            license_url = licenseRegister.get(data["license_id"]).url
+            if license_url:
+                graph.add((uri, DC.license, URIRef(license_url)))
+
             if "versionPID" in data["extras"]:
                 graph.add((uri, DC.identifier, Literal(data["extras"]["versionPID"])))
+
             graph.add((uri, DC.identifier, Literal(data["name"])))
-            graph.add((uri, DC.modified, Literal(data.get("version", ''),
-                                                 datatype=XSD.dateTime)))
+
+            if data["version"]:
+                graph.add((uri, DC.modified, Literal(data["version"], datatype=XSD.dateTime)))
+
             org = URIRef(FOAF.Person)
             if profileurl:
                 graph.add((uri, DC.publisher, profileurl))
                 graph.add((profileurl, RDF.type, org))
-                graph.add((profileurl, FOAF.name, Literal(data["extras"]["publisher"])))
-                graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["phone"])))
-                graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contactURL"])))
-                graph.add((uri, DC.rightsHolder, URIRef(data["extras"]["owner"])
-                                                if data["extras"]["owner"].startswith(('http','urn'))\
-                                                else Literal(data["extras"]["owner"])))
+                if "publisher" in data["extras"]:
+                    graph.add((profileurl, FOAF.name, Literal(data["extras"]["publisher"])))
+                if "phone" in data["extras"]:
+                    graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["phone"])))
+                if "contactURL" in data["extras"]:
+                    graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contactURL"])))
+                if "owner" in data["extras"]:
+                    graph.add((uri, DC.rightsHolder, URIRef(data["extras"]["owner"])
+                                                    if data["extras"]["owner"].startswith(('http','urn'))\
+                                                    else Literal(data["extras"]["owner"])))
             log.debug(data["extras"])
             if all((k in data["extras"] and data["extras"][k] != "") for k in ("project_name",\
                                                  "project_homepage",\

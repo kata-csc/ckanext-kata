@@ -66,6 +66,30 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         res = self.app.get(offset)
         assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
 
+
+class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+    '''
+    Tests for Kata's ContactController (and related routing).
+    '''
+
+    @classmethod
+    def setup_class(cls):
+        '''Set up testing environment.'''
+
+        kata_model.setup()
+        CreateTestData.create()
+
+        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
+        cls.app = paste.fixture.TestApp(wsgiapp)
+
+    @classmethod
+    def teardown_class(cls):
+        '''Get away from testing environment.'''
+
+        kata_model.delete_tables()
+        CreateTestData.delete()
+
+
     def test_contact_controller_no_user(self):
         """
         Test that we get a redirect when there is no user
@@ -90,3 +114,35 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         print res
 
         assert all(piece in res.body for piece in ['<form', '/contact/send/', '</form>']), 'Contact form not rendered'
+
+
+class TestMetadataController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+    '''
+    Tests for Kata's MetadataController (and related routing).
+    '''
+
+    @classmethod
+    def setup_class(cls):
+        '''Set up testing environment.'''
+
+        kata_model.setup()
+        CreateTestData.create()
+
+        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
+        cls.app = paste.fixture.TestApp(wsgiapp)
+
+    @classmethod
+    def teardown_class(cls):
+        '''Get away from testing environment.'''
+
+        kata_model.delete_tables()
+        CreateTestData.delete()
+
+    def test_tordf(self):
+        '''Test RDF export.'''
+
+        offset = url_for(controller='package', action='read', id=u'warandpeace') + '.rdf'
+        res = self.app.get(offset)
+
+        assert "<rdf" in res
+        assert "</rdf" in res
