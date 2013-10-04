@@ -53,47 +53,6 @@ mapper(KataAccessRequest, kata_access_request_table, extension=[
                ]
             )
 
-class KataComment(DomainObject):
-    '''
-    Standalone commenting for ckanext-kata
-    '''
-    def __init__(self, pkg_id, user_id, cmt, rating):
-        self.pkg_id = pkg_id
-        self.comment = cmt
-        self.user_id = user_id
-        self.rating = rating
-    
-    @classmethod    
-    def get_all_for_pkg(self, pkg_id):
-        '''
-        Get all comments for a specific dataset
-        
-        @return all comments for dataset
-        '''
-        query = meta.Session.query(KataComment)
-        return query.filter_by(pkg_id=pkg_id).all()
-    @classmethod
-    def check_existence(self):
-        '''
-        Checks out whether the comments table exists
-        @return boolean
-        '''
-        return kata_comments_table.exists()
-
-kata_comments_table = Table('kata_comments', meta.metadata,
-    Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
-    Column('pkg_id', types.UnicodeText, ForeignKey('package.id')),
-    Column('user_id', types.UnicodeText, ForeignKey('user.id')),
-    Column('comment', types.UnicodeText),
-    Column('date', types.DateTime, default=datetime.datetime.utcnow),
-    Column('rating', types.Integer),
-    UniqueConstraint('pkg_id', 'user_id', 'date', name='comment_1'),
-)
-
-mapper(KataComment, kata_comments_table, extension=[
-                        extension.PluginMapperExtension(),
-                    ]
-)
 
 user_extra_table = Table('user_extra', meta.metadata,
     Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
@@ -157,11 +116,6 @@ def setup():
         user_extra_table.create()
         log.debug('User extra table created')
 
-    if model.user_table.exists() and model.package_table.exists() \
-        and not kata_comments_table.exists():
-        kata_comments_table.create()
-        log.debug('Kata comments table created')
-
 def delete_tables():
     '''
     Delete data from some extra tables to prevent IntegrityError between tests.
@@ -171,5 +125,3 @@ def delete_tables():
         #user_extra_table.delete()
     if kata_access_request_table.exists():
         kata_access_request_table.delete()
-    if kata_comments_table.exists():
-        kata_comments_table.delete()

@@ -120,23 +120,12 @@ class KataMetadata(SingletonPlugin):
         map.connect('/dataset/import_xml/',
                     controller="ckanext.harvest.controllers.view:ViewController",
                     action="import_xml")
-        map.connect('add dataset', 
-                    '/dataset/new', 
-                    controller='package', 
-                    action='new')
-        map.connect('/dataset/new_comment/{id}',
-                    controller='ckanext.kata.controllers:KataCommentController',
-                    action="new_comment")
         map.connect('/user/logged_in',
                     controller="ckanext.kata.controllers:KataUserController",
                     action="logged_in")
         map.connect('/dataset/',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="advanced_search")
-        map.connect('dataset_read', 
-                    '/dataset/{id}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action="read")
         map.connect('help',
                     '/help',
                     controller="ckanext.kata.controllers:KataInfoController",

@@ -35,7 +35,7 @@ import ckan.model as model
 from ckan.model import Package, User, Related, Group, meta, Resource, PackageExtra
 from ckan.model.authz import add_user_to_role
 import ckan.model.misc as misc
-from ckanext.kata.model import KataAccessRequest, KataComment
+from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
 from ckanext.kata.utils import convert_to_text, send_contact_email
 from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, XSD, Graph, URIRef, Literal
@@ -600,153 +600,8 @@ class KataPackageController(PackageController):
         log.debug('advanced_search(): request.params.items(): %r' % request.params.items())
         #log.debug('advanced_search(): q: %r' % q)
         log.debug('advanced_search(): call to search()')
-        return self.search()    
-        
-    def read(self, id, format='html'):
-        '''
-        Package reader, with Kata commenting snippet
-        '''
-        if not format == 'html':
-            ctype, extension, loader = \
-                self._content_type_from_extension(format)
-            if not ctype:
-                # An unknown format, we'll carry on in case it is a
-                # revision specifier and re-constitute the original id
-                id = "%s.%s" % (id, format)
-                ctype, format, loader = "text/html; charset=utf-8", "html", \
-                    MarkupTemplate
-        else:
-            ctype, format, loader = self._content_type_from_accept()
+        return self.search()
 
-        response.headers['Content-Type'] = ctype
-
-        package_type = self._get_package_type(id.split('@')[0])
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'extras_as_string': True,
-                   'for_view': True}
-        data_dict = {'id': id}
-
-        # interpret @<revision_id> or @<date> suffix
-        split = id.split('@')
-        if len(split) == 2:
-            data_dict['id'], revision_ref = split
-            if model.is_id(revision_ref):
-                context['revision_id'] = revision_ref
-            else:
-                try:
-                    date = date_str_to_datetime(revision_ref)
-                    context['revision_date'] = date
-                except TypeError, e:
-                    abort(400, _('Invalid revision format: %r') % e.args)
-                except ValueError, e:
-                    abort(400, _('Invalid revision format: %r') % e.args)
-        elif len(split) > 2:
-            abort(400, _('Invalid revision format: %r') %
-                  'Too many "@" symbols')
-
-        #check if package exists
-        try:
-            c.pkg_dict = get_action('package_show')(context, data_dict)
-            c.pkg = context['package']
-        except NotFound:
-            abort(404, _('Dataset not found'))
-        except NotAuthorized:
-            abort(401, _('Unauthorized to read package %s') % id)
-
-        # used by disqus plugin
-        c.current_package_id = c.pkg.id
-        c.related_count = c.pkg.related_count
-
-        PackageSaver().render_package(c.pkg_dict, context)
-
-        template = self._read_template(package_type)
-        template = template[:template.index('.') + 1] + format
-        
-        # for Kata comments, gets all comments for this dataset
-        # and renders the list of comments
-        c.comments = []
-        # not to run query against a non-existent table
-        if KataComment.check_existence():
-            q = KataComment.get_all_for_pkg(c.pkg.id)
-        else:
-            q = ''
-            c.comments_error = 'Comments disabled'
-        for res in q:
-            # fetch the user's full name, as id is only saved
-            usr_name = model.Session.query(
-                model.User.fullname.label('fullname')).filter_by(id=res.user_id).first()
-            res.date = utc_to_local(res.date)
-            # Finnish time format
-            res.date = res.date.strftime('%d.%m.%Y %H:%M')
-            list = [res.comment, res.date, usr_name[0], res.rating]
-            c.comments.append(list)  
-
-        return render(template, loader_class=loader)
-          
-    
-class KataCommentController(BaseController):
-    '''
-    Kata commenting features
-    '''
-    def new_comment(self, id, data=None):
-        '''
-        New comment form
-        '''
-        c.pkg_id = id
-        lang = session.pop('lang', None)
-        if data:
-            # data to remember comment value
-            # should rating be remembered too?
-            c.comment = data['new_comment']
-        try:
-            c.pkg_title = Package.get(c.pkg_id).title
-        except AttributeError:
-            h.flash_error(_('Dataset you tried to rate or comment does not exist or was deleted'))
-            return h.redirect_to(locale=lang, controller='package',
-                                 action='search')
-        # prepare to save data after POST
-        # skip, if we render the add_comment page for the first time
-        # or user is not logged in
-        # or there is data (= user has previously provided erratic
-        # data and it was put to data to be remembered, as a default value
-        # for text area)
-        if 'save' in request.params and c.user and not data:
-            data_dict = clean_dict(unflatten(
-                  tuplize_dict(parse_params(request.POST))))
-            try:
-                c.rating = data_dict['rating']
-            except KeyError:
-                c.rating = null()
-            c.comment = data_dict['new_comment']
-            # minimum comment length to not to provide useless comments
-            if len(c.comment) < 10:
-                h.flash_error(_('A comment of minimum length of 10 is required'))
-                return self.new_comment(c.pkg_id, data_dict)
-            return self._save_comment(c.pkg_id, c.comment, c.userobj or c.author, c.rating)
-        else:
-            if not c.userobj:
-                # if user is not logged in, redirect her/him
-                # to login page
-                h.flash_error(_('Requires login'))
-                return h.redirect_to(locale=lang, controller='user',
-                                     action='login')
-            return render('kata_comment/new_comment.html')
-        
-    def _save_comment(self, pkgid, comment, userobj, rating):
-        '''
-        Save comment and rating
-        '''
-        try:
-            userid = userobj.id
-            cmmt = KataComment(pkgid, userid, comment, rating)
-            cmmt.save()
-        except ActionError:
-            log.debug("saving comment failed")
-            h.flash_error(_('Failed to save comment'))
-        lang = session.pop('lang', None)
-        h.redirect_to(locale=lang, controller='package',
-                          action='read', id=pkgid)
-    
 class KataInfoController(BaseController):
     '''
     KataInfoController provides info pages, which

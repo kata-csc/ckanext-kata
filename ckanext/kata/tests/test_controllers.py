@@ -90,33 +90,3 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         print res
 
         assert all(piece in res.body for piece in ['<form', '/contact/send/', '</form>']), 'Contact form not rendered'
-
-    def test_comments_rendered(self):
-        '''
-        A package should have a comments section
-        '''
-        offset = url_for(controller='package', action='read', id=u'annakarenina')
-        res = self.app.get(offset)
-        assert '<section class="module module-narrow comments">' in res, 'A user should see comments section'
-    
-    def test_comments_rendered_not_logged_in(self):
-        '''
-        A package should not have a comments section for a user not logged in
-        '''
-        offset = url_for(controller='package', action='read', id=u'annakarenina')
-        res = self.app.get(offset)
-        assert '<a class="btn btn-primary" href="/dataset/new_comment/' not in res, 'A non-logged in user should not see add new comment button'
-
-    def test_new_comment_rendered(self):
-        '''
-        A user should be able to add a comment to a dataset
-        '''
-        offset = url_for(controller='ckanext.kata.controllers:KataCommentController', action='new_comment', id=u'annakarenina')
-        res = self.app.get(offset)
-        assert res.status == 302, 'Wrong status code (should be 302), in new_comment'
-        extra_environ = {'REMOTE_USER': 'tester'}
-        offset = url_for(controller='ckanext.kata.controllers:KataCommentController', action='new_comment', id=u'annakarenina')
-        res = self.app.get(offset, extra_environ=extra_environ)
-        assert '<label class="control-label" for="new_comment">' in res, 'Text area to add a comment should exist'
-        assert '<label for="rating-3"' in res, 'Rating should exist in add comment page'
-        assert res.status == 200, 'Wrong status code in new comment page'
