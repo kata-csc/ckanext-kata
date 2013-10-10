@@ -7,11 +7,10 @@
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name %}{{data.name}}{% endif %}" />
 {% call form.input_block("titles", _('Titles') , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
-	<div data-module="custom-fields-kata" data-module-id="lastlang" id="lastlang">
-
 	{% set titles = [] %}
 
 	{% if data.langtitles %}
+    {# titles = data.langtitles #}
 		{% for title, lang in data.langtitles %}
 			{% do titles.append((title, lang)) %}
 		{% endfor %}
@@ -21,20 +20,21 @@
 				{% do titles.append((title.value, title.lang)) %}
 			{% endif %}
 		{% endfor %}
-	{% endif%}
+	{% endif %}
 
 	{% if (titles|length) == 0 %}
 		{% for extra in range(1,2) %}
 			{% do titles.append(('', '')) %}
 		{% endfor %}
-	{% endif%}
+	{% endif %}
 
+  <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-lastint={{ (titles|length) }} id="lastlang">
 	{# Render title fields #}
 	{% for title, lang in titles %}
 		{% set index = loop.index0 %}
 		{% call form.input('title__' ~ index ~ '__value', id='title__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, error=errors.title, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
 			{% if index == 0 %}
-				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded but, note that the first title field must have a value.')) }}
+				{{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded but, note that the first title field must have a value.")) }}
 			{% endif %}
 
 			<label class="control-label kata-input-comp" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
@@ -43,7 +43,7 @@
 					{% snippet 'package/snippets/languages.html', selected=lang.value %}
 				</select>
 				{% if index == 0 %}
-					{{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change();") }}
+					{{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();") }}
 				{% endif %}
 
 				{#% if title.value %#}
