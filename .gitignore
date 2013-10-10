@@ -25,5 +25,5 @@ pip-log.txt
 #Mr Developer
 .project
 .pydevproject
-.settings
-.iml
+.settings/
+*.iml

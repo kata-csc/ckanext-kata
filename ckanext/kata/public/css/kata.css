@@ -607,3 +607,7 @@ header.masthead {
 .onkiAutocomplete .control-medium {
 	width: 300px !important;
 }
+.kata-add-dataset-info {
+	float:left;
+	margin-right: 5px;
+}
