@@ -1,7 +1,11 @@
+'''
+RDF Namespace definitions and some related functions.
+'''
+
 import rdflib
 from rdflib.graph import Graph as _Graph
-from rdflib.namespace import Namespace, RDF, RDFS, XSD, ClosedNamespace
-from rdflib.term import URIRef, Literal, BNode, Node
+from rdflib.namespace import Namespace, RDF, RDFS, ClosedNamespace
+from rdflib import plugin, query
 
 rdflib.plugin.register('sparql', rdflib.query.Processor,
                        'rdfextras.sparql.processor', 'Processor')
@@ -47,7 +51,7 @@ UUID = Namespace("urn:uuid:")
 TIME = Namespace("http://www.w3.org/2006/time#")
 VCARD = Namespace("http://www.w3.org/2006/vcard/ns#")
 
-namespaces = {
+NAMESPACES = {
     "rdf": RDF,
     "rdfs": RDFS,
     "owl": OWL,
@@ -65,7 +69,7 @@ namespaces = {
     "licenses": LICENSES
 }
 
-def bind_ns(g):
+def bind_ns(graph):
     """
     Given an :class:`~rdflib.graph.Graph`, bind the namespaces present in
     the dictionary in this module to it for more readable serialisations.
@@ -73,18 +77,20 @@ def bind_ns(g):
     :param g: an instance of :class:`rdflib.graph.Graph`.
     """
     try:
-        [g.bind(*x) for x in namespaces.items()]
+        [graph.bind(*x) for x in NAMESPACES.items()]
     except: 
         pass
 
-from rdflib import plugin, exceptions, query
-def __query(self, query_object, processor='sparql', result='sparql',
-        initBindings={}):
+
+def __query(self, query_object, processor='sparql', result='sparql', init_bindings={}):
+
     if not isinstance(processor, query.Processor):
         processor = plugin.get(processor, query.Processor)(self)
+
     if not isinstance(result, query.Result):
         result = plugin.get(result, query.Result)
-    return result(processor.query(query_object, initBindings, namespaces))
+
+    return result(processor.query(query_object, init_bindings, NAMESPACES))
 
 
 def Graph(*a, **kw):

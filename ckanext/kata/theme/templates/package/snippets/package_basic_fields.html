@@ -245,8 +245,13 @@
           {% endfor %}
         </select>
         {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
-        {{ kata_form.tooltip(tooltip=_('License definitions and additional information can be found
-        at <a target="_blank" href="http://opendefinition.org/licenses/">opendefinition.org/licenses/</a>')) }}
+        <p>
+            <div class="ui-icon ui-icon-info kata-add-dataset-info"></div>
+	        <span class="add-dataset-infotext"> 
+	        {{ _('License information can be found at') }}
+	        <a target="_blank" href="http://opendefinition.org/licenses/">opendefinition.org/licenses/</a>
+	        </span>
+        </p>
       </div>
       {{ form.input('licenseURL', id='licenseURL', label=_('License URL'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.licenseURL, error=errors.licenseURL, classes=['control-medium'])}}
     </div>

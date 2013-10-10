@@ -1,8 +1,0 @@
-{% extends "page.html" %}
-
-{% block subtitle %}{{ _("Applications") }}{% endblock %}
-
-{% block breadcrumb_content %}
-  <li class="active">{{ h.nav_link(_('Applications'), controller='ckanext.kata.controllers:AVAAController', action='listapps', highlight_actions = 'new
-  index') }}</li>
-{% endblock %}
