@@ -10,10 +10,7 @@
 	{% set titles = [] %}
 
 	{% if data.langtitles %}
-    {# titles = data.langtitles #}
-		{% for title, lang in data.langtitles %}
-			{% do titles.append((title, lang)) %}
-		{% endfor %}
+    {% set titles = data.langtitles %}
 	{% else %}
 		{% for title in data.title %}
 			{% if title.value %}
@@ -57,14 +54,10 @@
 {% endcall %}
 
 {% call form.input_block("author", _("Authors and organizations"), error=errors.author or errors.organization, control_classes=["kata-auth-padding"], label_classes=["kata-auth-label"]) %}
-	<div data-module="custom-fields-kata" data-module-id="orgauths" id="orgauths">
-
 	{% set authors = [] %}
 
 	{% if data.orgauths %}
-		{% for auth, org in data.orgauths %}
-			{% do authors.append((auth, org)) %}
-		{% endfor %}
+    {% set authors = data.orgauths %}
 	{% else %}
 		{% if len(data.author) and len(data.organization) %}
 			{% set orgauths = zip(data.author, data.organization) %}
@@ -86,6 +79,7 @@
 		{% endfor %}
 	{% endif %}
 
+  <div data-module="custom-fields-kata" data-module-id="orgauths" data-module-lastint={{ (authors|length) }} id="orgauths">
 	{# Render author and organisation fields #}
 	{% for author, org in authors %}
 
@@ -167,11 +161,11 @@
 		<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked {% endif %}value="True">{{ _('This dataset was not produced in a project.') }}</input>
 		<div class="module-content" id="projdiv" {% if data.projdis != 'False' and data.projdis %}style="display: none;"{% endif %}>
 			{% call form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project\'s name.')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project\'s name.')) }}
 			{% endcall %}
 
 			{% call form.input('funder', label=_('Funder'), id='funder', placeholder=_('my funder'), value=data.funder, error=errors.funder, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project funder\'s name.')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory if checkbox \"This dataset was not produced in a project.\" is unchecked.<br /><br />Type the project funder\'s name.')) }}
 			{% endcall %}
 									
 			{% call form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
