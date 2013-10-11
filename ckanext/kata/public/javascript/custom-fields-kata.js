@@ -9,7 +9,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
     options: {
       /* The selector used for each custom field wrapper */
       fieldSelector: '.control-custom',
-      lastint: 1
+      numFields: 1
     },
 
     /* Initializes the module and attaches custom event listeners. This
@@ -64,9 +64,9 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      * Returns the wiped element.
      */
     resetField: function (field) {
-      var lastint = this.options.lastint;
+      var numFields = this.options.numFields;
       function increment(index, string) {
-        var str = (string || '').replace(/\d+/, function (int) { return parseInt(int, 10) + lastint; })
+        var str = (string || '').replace(/\d+/, function (int) { return parseInt(int, 10) + numFields; })
         return str;
       }
 
@@ -102,7 +102,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       if (event.target.value !== '') {
         var parent = jQuery(event.target).parents('.control-custom');
         this.newField(parent);
-        this.options.lastint += 1
+        this.options.numFields += 1
       }
     },
     /* Event handler called when the remove checkbox is checked */

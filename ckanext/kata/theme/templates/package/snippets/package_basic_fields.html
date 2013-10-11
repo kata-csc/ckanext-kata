@@ -25,7 +25,7 @@
 		{% endfor %}
 	{% endif %}
 
-  <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-lastint={{ (titles|length) }} id="lastlang">
+  <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numFields={{ (titles|length) }} id="lastlang">
 	{# Render title fields #}
 	{% for title, lang in titles %}
 		{% set index = loop.index0 %}
@@ -79,7 +79,7 @@
 		{% endfor %}
 	{% endif %}
 
-  <div data-module="custom-fields-kata" data-module-id="orgauths" data-module-lastint={{ (authors|length) }} id="orgauths">
+  <div data-module="custom-fields-kata" data-module-id="orgauths" data-module-numFields={{ (authors|length) }} id="orgauths">
 	{# Render author and organisation fields #}
 	{% for author, org in authors %}
 
