@@ -106,10 +106,10 @@
       <h2 class="module-heading">{{ _('File information') }}</h2>
       <div class="module-content">
         {% call form.input('fformat', label=_('File format'), id='fformat', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.fformat, error=errors.fformat, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-    	    {{ kata_form.tooltip(tooltip=_('Research data\'s file format can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.')) }}
+    	    {{ kata_form.tooltip(tooltip=_("Research data\'s file format can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.")) }}
         {% endcall %}
         {% call form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, error=errors.checksum, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-    	    {{ kata_form.tooltip(tooltip=_('Research data\'s checksum can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Hash functions are a good way to enable verification of the content to ensure the file is unchanged and genuine.')) }}
+    	    {{ kata_form.tooltip(tooltip=_("Research data\'s checksum can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Hash functions are a good way to enable verification of the content to ensure the file is unchanged and genuine.")) }}
         {% endcall %}
         {% call form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_('eg. MD5'), value=data.algorithm, error=errors.algorithm, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
     	    {{ kata_form.tooltip(tooltip=_('If the checksum is provided above, the hash algorithm should be provided here. There are many different hash algorithms with varying levels of security.')) }}
