@@ -1,6 +1,6 @@
-# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name
+# coding: utf-8
 #
-# no-self-use = *Method could be a function*
+# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name
 
 """
 Test classes for Kata CKAN Extension.
@@ -19,9 +19,10 @@ from ckan.tests import WsgiAppCase, CommonFixtureMethods
 from ckan.tests.html_check import HtmlCheckMethods
 from ckan.config.middleware import make_app
 from ckanext.kata.validators import validate_kata_date, validate_language, check_project, \
-                                    check_project_dis, validate_email, validate_phonenum, \
-                                    validate_discipline, validate_spatial
+    check_project_dis, validate_email, validate_phonenum, \
+    validate_discipline, validate_spatial
 from ckan.lib.navl.dictization_functions import Invalid
+from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean
 
 
 class TestKataExtension(TestCase):
@@ -97,23 +98,23 @@ class TestKataPlugin(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
                                          'ext_title-5': u'testtitle'}
         }
         cls.short_data_dict = {'sort': u'metadata_modified desc',
-                              'fq': '',
-                              'rows': 20,
-                              'facet.field': ['groups',
-                                              'tags',
-                                              'extras_fformat',
-                                              'license',
-                                              'authorstring',
-                                              'organizationstring',
-                                              'extras_language'],
-                              'q': u'',
-                              'start': 0,
+                               'fq': '',
+                               'rows': 20,
+                               'facet.field': ['groups',
+                                               'tags',
+                                               'extras_fformat',
+                                               'license',
+                                               'authorstring',
+                                               'organizationstring',
+                                               'extras_language'],
+                               'q': u'',
+                               'start': 0,
         }
         cls.test_q_terms = u' ((tags:testkeywd) OR ( tags:testkeywd2 AND ' + \
-                     u'organization:testorg AND author:testauthor) OR ' + \
-                     u'( title:testtitle NOT groups:testdiscipline))'
+                           u'organization:testorg AND author:testauthor) OR ' + \
+                           u'( title:testtitle NOT groups:testdiscipline))'
         cls.test_q_dates = u' metadata_modified:[2000-01-01T00:00:00.000Z TO ' + \
-                u'2013-12-31T23:59:59.999Z]'
+                           u'2013-12-31T23:59:59.999Z]'
         cls.kata_plugin = KataPlugin()
 
         # The Pylons globals are not available outside a request. This is a hack to provide context object.
@@ -143,7 +144,8 @@ class TestKataPlugin(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
         self.kata_plugin.parse_search_terms(test_dict, terms, ops)
         assert test_dict['q'] == self.test_q_terms, \
-            "KataPlugin.parse_search_terms() error in query parsing q=%s, test_q_terms=%s" % (test_dict['q'], self.test_q_terms)
+            "KataPlugin.parse_search_terms() error in query parsing q=%s, test_q_terms=%s" % (
+                test_dict['q'], self.test_q_terms)
 
     def test_parse_search_dates(self):
         """Test parse_search_dates() result string."""
@@ -163,36 +165,36 @@ class TestKataPlugin(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
 
     def test_get_actions(self):
         """Test get_actions() output type."""
-        assert isinstance( self.kata_plugin.get_actions(), dict), "KataPlugin.get_actions() didn't output a dict"
+        assert isinstance(self.kata_plugin.get_actions(), dict), "KataPlugin.get_actions() didn't output a dict"
 
     def test_get_helpers(self):
         """Test get_helpers() output type."""
-        assert isinstance( self.kata_plugin.get_helpers(), dict), "KataPlugin.get_helpers() didn't output a dict"
+        assert isinstance(self.kata_plugin.get_helpers(), dict), "KataPlugin.get_helpers() didn't output a dict"
 
 
     def test_new_template(self):
         html_location = self.kata_plugin.new_template()
-        assert len( html_location ) > 0
+        assert len(html_location) > 0
 
     def test_comments_template(self):
         html_location = self.kata_plugin.comments_template()
-        assert len( html_location ) > 0
+        assert len(html_location) > 0
 
     def test_search_template(self):
         html_location = self.kata_plugin.search_template()
-        assert len( html_location ) > 0
+        assert len(html_location) > 0
 
     def test_read_template(self):
         html_location = self.kata_plugin.read_template()
-        assert len( html_location ) > 0
+        assert len(html_location) > 0
 
     def test_history_template(self):
         html_location = self.kata_plugin.history_template()
-        assert len( html_location ) > 0
+        assert len(html_location) > 0
 
     def test_package_form(self):
         html_location = self.kata_plugin.package_form()
-        assert len( html_location ) > 0
+        assert len(html_location) > 0
 
 
     def test_create_package_schema(self):
@@ -221,92 +223,97 @@ class TestKataValidators(TestCase):
         # Some test data from Add dataset.
 
         cls.test_data = {('__extras',): {'_ckan_phase': u'',
-        'evdescr': [],
-        'evwhen': [],
-        'evwho': [],
-        'groups': [],
-        'pkg_name': u''},
-        ('access',): u'contact',
-        ('accessRights',): u'',
-        ('accessrequestURL',): u'',
-        ('algorithm',): u'',
-        ('author', 0, 'value'): u'dada',
-        ('checksum',): u'',
-        ('contactURL',): u'http://google.com',
-        ('discipline',): u'',
-        ('evtype', 0, 'value'): u'collection',
-        ('extras',): [{'key': 'funder', 'value': u''},
-        {'key': 'discipline', 'value': u''},
-        {'key': 'publisher', 'value': u'dada'},
-        {'key': 'fformat', 'value': u''},
-        {'key': 'project_funding', 'value': u''},
-        {'key': 'project_homepage', 'value': u''},
-        {'key': 'owner', 'value': u'dada'},
-        {'key': 'version', 'value': u'2013-08-14T10:37:09Z'},
-        {'key': 'temporal_coverage_begin', 'value': u''},
-        {'key': 'accessrequestURL', 'value': u''},
-        {'key': 'phone', 'value': u'+35805050505'},
-        {'key': 'licenseURL', 'value': u'dada'},
-        {'key': 'geographic_coverage', 'value': u''},
-        {'key': 'access', 'value': u'contact'},
-        {'key': 'algorithm', 'value': u''},
-        {'key': 'langdis', 'value': u'True'},
-        {'key': 'accessRights', 'value': u''},
-        {'key': 'contactURL', 'value': u'http://google.com'},
-        {'key': 'project_name', 'value': u''},
-        {'key': 'checksum', 'value': u''},
-        {'key': 'temporal_coverage_end', 'value': u''},
-        {'key': 'projdis', 'value': u'True'},
-        {'key': 'language', 'value': u''}],
-        ('fformat',): u'',
-        ('funder',): u'',
-        ('geographic_coverage',): u'',
-        ('langdis',): u'False',
-        ('language',): u'swe',
-        ('licenseURL',): u'dada',
-        ('license_id',): u'',
-        ('log_message',): u'',
-        ('name',): u'',
-        ('notes',): u'',
-        ('organization', 0, 'value'): u'dada',
-        ('owner',): u'dada',
-        ('phone',): u'+35805050505',
-        ('maintainer_email',): u'kata.selenium@gmail.com',
-        ('projdis',): u'True',
-        ('project_funding',): u'',
-        ('project_homepage',): u'',
-        ('project_name',): u'',
-        ('publisher',): u'dada',
-        ('save',): u'finish',
-        ('tag_string',): u'dada',
-        ('temporal_coverage_begin',): u'',
-        ('temporal_coverage_end',): u'',
-        ('title', 0, 'lang'): u'sv',
-        ('title', 0, 'value'): u'dada',
-        ('type',): None,
-        ('version',): u'2013-08-14T10:37:09Z',
-        ('versionPID',): u''}
+                                         'evdescr': [],
+                                         'evwhen': [],
+                                         'evwho': [],
+                                         'groups': [],
+                                         'pkg_name': u''},
+                         ('access',): u'contact',
+                         ('accessRights',): u'',
+                         ('accessrequestURL',): u'',
+                         ('algorithm',): u'',
+                         ('author', 0, 'value'): u'dada',
+                         ('checksum',): u'',
+                         ('contactURL',): u'http://google.com',
+                         ('discipline',): u'',
+                         ('evtype', 0, 'value'): u'collection',
+                         ('extras',): [{'key': 'funder', 'value': u''},
+                                       {'key': 'discipline', 'value': u''},
+                                       {'key': 'publisher', 'value': u'dada'},
+                                       {'key': 'fformat', 'value': u''},
+                                       {'key': 'project_funding', 'value': u''},
+                                       {'key': 'project_homepage', 'value': u''},
+                                       {'key': 'owner', 'value': u'dada'},
+                                       {'key': 'version', 'value': u'2013-08-14T10:37:09Z'},
+                                       {'key': 'temporal_coverage_begin', 'value': u''},
+                                       {'key': 'accessrequestURL', 'value': u''},
+                                       {'key': 'phone', 'value': u'+35805050505'},
+                                       {'key': 'licenseURL', 'value': u'dada'},
+                                       {'key': 'geographic_coverage', 'value': u''},
+                                       {'key': 'access', 'value': u'contact'},
+                                       {'key': 'algorithm', 'value': u''},
+                                       {'key': 'langdis', 'value': u'True'},
+                                       {'key': 'accessRights', 'value': u''},
+                                       {'key': 'contactURL', 'value': u'http://google.com'},
+                                       {'key': 'project_name', 'value': u''},
+                                       {'key': 'checksum', 'value': u''},
+                                       {'key': 'temporal_coverage_end', 'value': u''},
+                                       {'key': 'projdis', 'value': u'True'},
+                                       {'key': 'language', 'value': u''}],
+                         ('fformat',): u'',
+                         ('funder',): u'',
+                         ('geographic_coverage',): u'',
+                         ('langdis',): u'False',
+                         ('language',): u'swe',
+                         ('licenseURL',): u'dada',
+                         ('license_id',): u'',
+                         ('log_message',): u'',
+                         ('name',): u'',
+                         ('notes',): u'',
+                         ('organization', 0, 'value'): u'dada',
+                         ('owner',): u'dada',
+                         ('phone',): u'+35805050505',
+                         ('maintainer_email',): u'kata.selenium@gmail.com',
+                         ('projdis',): u'True',
+                         ('project_funding',): u'',
+                         ('project_homepage',): u'',
+                         ('project_name',): u'',
+                         ('publisher',): u'dada',
+                         ('save',): u'finish',
+                         ('tag_string',): u'dada',
+                         ('temporal_coverage_begin',): u'',
+                         ('temporal_coverage_end',): u'',
+                         ('title', 0, 'lang'): u'sv',
+                         ('title', 0, 'value'): u'dada',
+                         ('type',): None,
+                         ('version',): u'2013-08-14T10:37:09Z',
+                         ('versionPID',): u''}
 
     def test_validate_kata_date_valid(self):
         errors = defaultdict(list)
         validate_kata_date('date', {'date': '2012-12-31T13:12:11'}, errors, None)
-        assert len( errors ) == 0
+        assert len(errors) == 0
 
     def test_validate_kata_date_invalid(self):
         errors = defaultdict(list)
         validate_kata_date('date', {'date': '20xx-xx-31T13:12:11'}, errors, None)
-        assert len( errors ) > 0
+        assert len(errors) > 0
 
     def test_validate_kata_date_invalid_2(self):
         errors = defaultdict(list)
         validate_kata_date('date', {'date': '2013-02-29T13:12:11'}, errors, None)
-        assert len( errors ) > 0
+        assert len(errors) > 0
 
 
     def test_validate_language_valid(self):
         errors = defaultdict(list)
         validate_language(('language',), self.test_data, errors, None)
-        assert len( errors ) == 0
+        assert len(errors) == 0
+
+    def test_remove_disabled_languages_valid(self):
+        errors = defaultdict(list)
+        remove_disabled_languages(('language',), self.test_data, errors, None)
+        assert len(errors) == 0
 
     def test_validate_language_valid_2(self):
         errors = defaultdict(list)
@@ -316,7 +323,10 @@ class TestKataValidators(TestCase):
         dada[('langdis',)] = 'True'
 
         validate_language(('language',), dada, errors, None)
-        assert len( errors ) == 0
+        assert len(errors) == 0
+
+        remove_disabled_languages(('language',), dada, errors, None)
+        assert len(errors) == 0
 
     def test_validate_language_valid_3(self):
         errors = defaultdict(list)
@@ -326,9 +336,12 @@ class TestKataValidators(TestCase):
         dada[('langdis',)] = 'False'
 
         validate_language(('language',), dada, errors, None)
+        assert len(errors) == 0
 
-        assert len( errors ) == 0
+        remove_disabled_languages(('language',), dada, errors, None)
+        assert len(errors) == 0
         assert dada[('language',)] == u'fin, swe, eng, isl'
+
 
     def test_validate_language_delete(self):
         errors = defaultdict(list)
@@ -338,8 +351,10 @@ class TestKataValidators(TestCase):
         dada[('langdis',)] = 'True'
 
         validate_language(('language',), dada, errors, None)
+        assert len(errors) == 0
 
-        assert len( errors ) == 0
+        remove_disabled_languages(('language',), dada, errors, None)
+        assert len(errors) == 0
         assert dada[('language',)] == u''
 
     def test_validate_language_invalid(self):
@@ -350,7 +365,7 @@ class TestKataValidators(TestCase):
         dada[('langdis',)] = 'False'
 
         validate_language(('language',), dada, errors, None)
-        assert len( errors ) == 1
+        assert len(errors) == 1
 
     def test_validate_language_invalid_2(self):
         errors = defaultdict(list)
@@ -360,7 +375,8 @@ class TestKataValidators(TestCase):
         dada[('langdis',)] = 'False'
 
         validate_language(('language',), dada, errors, None)
-        assert len( errors ) == 1
+        remove_disabled_languages(('language',), dada, errors, None)
+        assert len(errors) == 1
 
     def test_validate_language_invalid_3(self):
         errors = defaultdict(list)
@@ -370,8 +386,9 @@ class TestKataValidators(TestCase):
         dada[('langdis',)] = 'True'
 
         validate_language(('language',), dada, errors, None)
-        assert len( errors ) == 0
-        
+        assert len(errors) == 1
+
+
     def test_project_valid(self):
         errors = defaultdict(list)
         dada = self.test_data.copy()
@@ -380,20 +397,20 @@ class TestKataValidators(TestCase):
         dada[('project_name',)] = u'project name'
         dada[('project_funding',)] = u'project_funding'
         dada[('project_homepage',)] = u'www.google.fi'
-        
+
         check_project_dis(('project_name',),
                           dada, errors, None)
-        assert len( errors ) == 0
+        assert len(errors) == 0
         check_project_dis(('funder',),
                           dada, errors, None)
-        assert len( errors ) == 0
+        assert len(errors) == 0
         check_project_dis(('project_funding',),
                           dada, errors, None)
-        assert len( errors ) == 0
+        assert len(errors) == 0
         check_project_dis(('project_homepage',),
                           dada, errors, None)
-        assert len( errors ) == 0
-        
+        assert len(errors) == 0
+
     def test_project_invalid(self):
         errors = defaultdict(list)
         dada = self.test_data.copy()
@@ -402,30 +419,31 @@ class TestKataValidators(TestCase):
         dada[('project_name',)] = u'project name'
         dada[('project_funding',)] = u'project_funding'
         dada[('project_homepage',)] = u'www.google.fi'
-        
+
         check_project_dis(('project_name',),
                           dada, errors, None)
-        assert len( errors ) == 0
+        assert len(errors) == 0
         check_project_dis(('funder',),
                           dada, errors, None)
-        assert len( errors ) > 0
-    
+        assert len(errors) > 0
+
     def test_project_notgiven(self):
         errors = defaultdict(list)
         dada = self.test_data.copy()
         dada[('projdis',)] = 'True'
         dada[('project_name',)] = u'project name'
         check_project(('project_name',),
-                          dada, errors, None)
+                      dada, errors, None)
         print errors
-        assert len( errors ) > 0
+        assert len(errors) > 0
+
 
     def test_validate_email_valid(self):
         errors = defaultdict(list)
 
         validate_email(('maintainer_email',), self.test_data, errors, None)
 
-        assert len( errors ) == 0
+        assert len(errors) == 0
 
     def test_validate_email_valid_2(self):
         errors = defaultdict(list)
@@ -435,7 +453,7 @@ class TestKataValidators(TestCase):
 
         validate_email(('maintainer_email',), dada, errors, None)
 
-        assert len( errors ) == 0
+        assert len(errors) == 0
 
     def test_validate_email_invalid(self):
         errors = defaultdict(list)
@@ -445,7 +463,7 @@ class TestKataValidators(TestCase):
 
         validate_email(('maintainer_email',), dada, errors, None)
 
-        assert len( errors ) == 1
+        assert len(errors) == 1
 
     def test_validate_email_invalid_2(self):
         errors = defaultdict(list)
@@ -455,14 +473,14 @@ class TestKataValidators(TestCase):
 
         validate_email(('maintainer_email',), dada, errors, None)
 
-        assert len( errors ) == 1
+        assert len(errors) == 1
 
     def test_validate_phonenum_valid(self):
         errors = defaultdict(list)
 
         validate_phonenum(('phone',), self.test_data, errors, None)
 
-        assert len( errors ) == 0
+        assert len(errors) == 0
 
     def test_validate_phonenum_invalid(self):
         errors = defaultdict(list)
@@ -472,37 +490,56 @@ class TestKataValidators(TestCase):
 
         validate_phonenum(('phone',), dada, errors, None)
 
-        assert len( errors ) == 1
+        assert len(errors) == 1
 
     def test_validate_discipline(self):
         errors = defaultdict(list)
-        
+
         dada = self.test_data.copy()
         dada[('discipline',)] = u'Matematiikka'
-        
+
         validate_discipline(('discipline',), dada, errors, None)
-        assert len( errors ) == 0
+        assert len(errors) == 0
 
         del dada[('discipline',)]
         validate_discipline(('discipline',), dada, errors, None)
-        assert len( errors ) == 0
-        
-        dada[('discipline',)] = u'Matematiikka (Logiikka!)'        
+        assert len(errors) == 0
+
+        dada[('discipline',)] = u'Matematiikka (Logiikka!)'
         self.assertRaises(Invalid, validate_discipline, ('discipline',), dada, errors, None)
-        
+
     def test_validate_spatial(self):
         errors = defaultdict(list)
-        
+
         dada = self.test_data.copy()
         dada[('geographic_coverage',)] = u'Uusimaa (laani)'
-        
+
         validate_spatial(('geographic_coverage',), dada, errors, None)
-        assert len( errors ) == 0
-        
+        assert len(errors) == 0
+
         del dada[('geographic_coverage',)]
         validate_spatial(('geographic_coverage',), dada, errors, None)
-        assert len( errors ) == 0
-        
+        assert len(errors) == 0
+
         dada[('geographic_coverage',)] = u'Uusimaa ([]!)'
         self.assertRaises(Invalid, validate_spatial, ('geographic_coverage',), dada, errors, None)
-    
+
+    def test_checkbox_to_boolean(self):
+        errors = defaultdict(list)
+
+        dada = self.test_data.copy()
+        dada[('langdis',)] = u'True'
+        checkbox_to_boolean(('langdis',), dada, errors, None)
+        assert dada[('langdis',)] == u'True'
+
+        dada[('langdis',)] = u'False'
+        checkbox_to_boolean(('langdis',), dada, errors, None)
+        assert dada[('langdis',)] == u'False'
+
+        dada[('langdis',)] = u'on'
+        checkbox_to_boolean(('langdis',), dada, errors, None)
+        assert dada[('langdis',)] == u'True'
+
+        dada[('langdis',)] = u''
+        checkbox_to_boolean(('langdis',), dada, errors, None)
+        assert dada[('langdis',)] == u'False'

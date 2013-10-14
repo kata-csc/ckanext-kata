@@ -37,7 +37,7 @@ from ckanext.kata.validators import check_project, validate_access, validate_kat
 from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
     org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
-    add_to_group
+    add_to_group, remove_disabled_languages, checkbox_to_boolean
 from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
@@ -47,7 +47,6 @@ from ckan.logic.validators import tag_length_validator, vocabulary_id_exists
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
 t = toolkit                                 # pylint: disable=invalid-name
-
 
 
 def snippet(template_name, **kw):
@@ -444,11 +443,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema['title'] = [not_missing]
         else:
             schema['title'] = {'value': [not_missing, ltitle_to_extras],
-                               'lang': [not_missing]}
+                               'lang': [validate_language]}
 
         schema['temporal_coverage_begin'].append(validate_kata_date)
         schema['temporal_coverage_end'].append(validate_kata_date)
-        schema['language'] = [validate_language, self.convert_to_extras_kata, unicode]
+        schema['language'] = [validate_language, remove_disabled_languages, self.convert_to_extras_kata, unicode]
         schema['phone'].append(validate_phonenum)
         schema['maintainer_email'].append(validate_email)
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
@@ -460,9 +459,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            'author': {'value': [not_empty, unicode, org_auth_to_extras]},
            'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
            'access': [not_missing, self.convert_to_extras_kata, validate_access],
-           'langdis': [default(u'False'), unicode],
+           'langdis': [checkbox_to_boolean],
            '__extras': [check_author_org],
-           'projdis': [default(u'False'), unicode, check_project],
+           'projdis': [checkbox_to_boolean, check_project],
            '__junk': [check_junk],
            'name': [ignore_missing, unicode, self.update_name],
            'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],

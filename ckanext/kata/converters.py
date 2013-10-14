@@ -1,6 +1,5 @@
 """
-Functions to convert and validate dataset form fields from or to db fields. Validating
-parts should probably be separated to validators.py.
+Functions to convert dataset form fields from or to db fields.
 """
 
 import re
@@ -316,6 +315,9 @@ def export_as_related(key, data, errors, context):
 
 
 def add_to_group(key, data, errors, context):
+    '''
+    Add a new group if it doesn't yet exist.
+    '''
     val = data.get(key)
     if val:
         repo.new_revision()
@@ -326,4 +328,46 @@ def add_to_group(key, data, errors, context):
             setup_default_user_roles(grp)
             grp.save()
         repo.commit()
+
+
+def remove_disabled_languages(key, data, errors, context):
+    '''
+    If langdis == 'True', remove all languages.
+
+    Expecting language codes in data['key'].
+    '''
+    langdis = data.get(('langdis',))
+
+    langs = data.get(key).split(',')
+
+    if langdis == 'False':
+        # Language enabled
+
+        if langs == [u'']:
+            errors[key].append(_('No language given.'))
+    else:
+        # Language disabled
+
+        # Display flash message if user is loading a page.
+        if 'session' in globals():
+            h.flash_notice(_("Language is disabled, removing languages: '%s'" % value))
+
+        # Remove languages.
+        del data[key]
+        data[key] = u''
+
+
+def checkbox_to_boolean(key, data, errors, context):
+    '''
+    Convert HTML checkbox's value ('on' / null) to boolean string
+    '''
+    value = data.get(key, None)
+
+    if value not in [u'True', u'False']:
+        if value == u'on':
+            data[key] = u'True'
+        else:
+            data[key] = u'False'
+
+
 

@@ -1,5 +1,5 @@
 """
-Validators for user inputs
+Validators for user inputs.
 """
 
 import iso8601
@@ -115,32 +115,13 @@ def check_last_and_update_pid(key, data, errors, context):
 
 def validate_language(key, data, errors, context):
     '''
-    Validate ISO 639 language abbreviations. If langdis == 'True', remove all languages.
+    Validate ISO 639 language abbreviations.
+
+    data['key'] may be a string with comma separated values or a single language code.
     '''
 
     value = data.get(key)
     langs = value.split(',')
-
-    langdis = data.get(('langdis',), None)
-
-    if langdis == 'False':
-        # Language enabled
-
-        if langs == [u'']:
-            errors[key].append(_('No language given.'))
-            return
-    else:
-        # Language disabled
-
-        # Display flash message if user is loading a page.
-        if 'session' in globals():
-            h.flash_notice(_("Language is disabled, removing languages: '%s'" % value))
-
-        # Remove languages.
-        del data[key]
-        data[key] = u''
-
-        return
 
     for lang in langs:
         lang = lang.strip()
