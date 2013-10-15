@@ -8,14 +8,16 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Contact distributor') }}</h2>
 <div class="module-content">
+{% block contact_form %}
 <form class="dataset-form form-horizontal" method="post" action="/contact/send/{{c.pkg_id}}" data-module="basic-form">
-<p>{{ _("On this page you can send a message to the original material owner to request access to it.") }}</p>
+<p>{{ _("On this page you can send a message to the owner of the dataset.") }}</p>
 <label for="msg">{{ _("Message") }}</label>
 <textarea name="msg" rows="10" cols="50">
 </textarea>
 <br />
 <input type="submit" value="Send"/>
 </form>
+{% endblock %}
 </div>
 </section>
 {% endblock %}

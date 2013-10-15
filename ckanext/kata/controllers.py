@@ -30,6 +30,7 @@ from ckan.lib.munge import substitute_ascii_equivalents
 from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.navl.dictization_functions import unflatten
 from ckan.lib.package_saver import PackageSaver
+from ckan.lib.email_notifications import send_notification
 from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params, \
     NotFound, NotAuthorized, ActionError, check_access
 import ckan.model as model
@@ -38,7 +39,7 @@ from ckan.model.authz import add_user_to_role
 import ckan.model.misc as misc
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
-from ckanext.kata.utils import convert_to_text, send_contact_email
+from ckanext.kata.utils import convert_to_text
 from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, Graph
 
 log = logging.getLogger('ckanext.kata.controller')
@@ -484,51 +485,107 @@ class ContactController(BaseController):
     The feature provides a form for message sending, and the message is sent via e-mail. 
     """
 
-    def send(self, pkg_id):
+    def _send_if_allowed(self, pkg_id, subject, msg, prologue=""):
         """
         Send a contact e-mail if allowed.
         """
-        
+
         package = Package.get(pkg_id)
-        url = h.url_for(controller='package',
-                action="read",
-                id=package.id)
+
+        full_msg = "%s\n%s" % (prologue, msg)
+        email_dict = {"subject": subject,
+                      "body": full_msg}
+
         if c.user:
-            userid = None
-            for role in package.roles:
-                if role.role == "admin":
-                    userid = role.user_id
-                    break
-            if userid:
-                owner = User.get(userid)
-                msg = request.params.get('msg', '')
+            owner_id = self._get_package_owner(package)
+            if owner_id:
+                owner = User.get(owner_id)
                 if msg:
                     model.repo.new_revision()
 
-                    send_contact_email(owner, c.userobj, package, \
-                                        msg)
-
-                    # Mark this user as contacted
-                    if "contacted" in c.userobj.extras:
-                        c.userobj.extras['contacted'].append(pkg_id)
-                    else:
-                        c.userobj.extras['contacted'] = []
-                        c.userobj.extras['contacted'].append(pkg_id)
-                    c.userobj.save()
-
+                    send_notification(owner.as_dict(), email_dict)
+                    self._mark_owner_as_contacted(c.userobj, pkg_id)
+                    h.flash_notice(_("Message sent"))
                 else:
                     h.flash_error(_("No message"))
-                    return redirect(url)
             else:
                 h.flash_error(_("No owner found"))
-                return redirect(url)
-            h.flash_notice(_("Message sent"))
         else:
             h.flash_error(_("Please login"))
+
+    def _get_package_owner(self, package):
+        """Returns the user id of one of the owners of the specified package."""
+        userid = None
+        for role in package.roles:
+            if role.role == "admin":
+                userid = role.user_id
+                break
+        return userid
+
+    def _mark_owner_as_contacted(self, userobj, pkg_id):
+        """Mark this user as having already contacted the package owner"""
+
+        if "contacted" in userobj.extras:
+            userobj.extras['contacted'].append(pkg_id)
+        else:
+            userobj.extras['contacted'] = []
+            userobj.extras['contacted'].append(pkg_id)
+        userobj.save()
+
+    def send_contact(self, pkg_id):
+        prologue_template = _("""%s (%s) has sent you a message regarding dataset
+    %s.
+
+The message is as follows:
+""")
+
+        package = Package.get(pkg_id)
+        package_title = package.title if package.title else package.name
+
+        user_msg = request.params.get('msg', '')
+        prologue = prologue_template % (c.userobj.name,
+                                        c.userobj.email,
+                                        package_title)
+
+        subject = _("Message regarding dataset %s" % package_title)
+        self._send_if_allowed(pkg_id, subject, user_msg, prologue)
+
+        url = h.url_for(controller='package',
+                        action="read",
+                        id=package.id)
+
         return redirect(url)
 
 
-    def render(self, pkg_id):
+    def send_request(self, pkg_id):
+        prologue_template = _("""%s (%s) is requesting access to study material in dataset
+
+    %s
+
+for which you are currently an administrator.
+
+The message is as follows:
+""")
+
+        package = Package.get(pkg_id)
+        package_title = package.title if package.title else package.name
+
+        user_msg = request.params.get('msg', '')
+        prologue = prologue_template % (c.userobj.name,
+                                        c.userobj.email,
+                                        package_title)
+
+        subject = _("Material access request for dataset %s" % package_title)
+        self._send_if_allowed(pkg_id, subject, user_msg, prologue)
+
+        url = h.url_for(controller='package',
+                        action="read",
+                        id=package.id)
+
+        return redirect(url)
+
+
+    def render_contact(self, pkg_id):
         """
         Render the contact form if allowed.
         """
@@ -540,6 +597,25 @@ class ContactController(BaseController):
         if c.user:
             if pkg_id not in c.userobj.extras.get('contacted', []):
                 return render('contact/contact_form.html')
+            else:
+                h.flash_error(_("Already contacted"))
+                return redirect(url)
+        else:
+            h.flash_error(_("Please login"))
+            return redirect(url)
+
+    def render_request(self, pkg_id):
+        """
+        Render the access request contact form if allowed.
+        """
+        
+        c.package = Package.get(pkg_id)
+        url = h.url_for(controller='package',
+                        action="read",
+                        id=c.package.id)
+        if c.user:
+            if pkg_id not in c.userobj.extras.get('contacted', []):
+                return render('contact/dataset_request_form.html')
             else:
                 h.flash_error(_("Already contacted"))
                 return redirect(url)

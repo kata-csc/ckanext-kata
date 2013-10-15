@@ -1,7 +1,7 @@
 {% extends "contact/contact_form.html" %}
 {% block contact_form %}
 <form class="dataset-form form-horizontal" method="post" action="/request_dataset/send/{{c.pkg_id}}" data-module="basic-form">
-<p>{{ _("On this page you can send a message to the original material owner to request access to it.") }}</p>
+<p>{{ _("On this page you can send a message to the owner of the dataset to request access to the material.") }}</p>
 <label for="msg">{{ _("Message") }}</label>
 <textarea name="msg" rows="10" cols="50">
 </textarea>

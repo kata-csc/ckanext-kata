@@ -58,7 +58,7 @@ This dataset is
 {% if pkg_dict.access == 'form' %} available via an access form in <a href="{{ pkg_dict.accessRights }}">this link</a> {% endif%}
 {% if pkg_dict.access == 'free' %} available freely {% if pkg_dict.accessrequestURL %} <a href="{{pkg_dict.accessrequestURL}}">from this address</a> {% endif %} {% endif %}
 {% if pkg_dict.access == 'ident' %} available via login {% if pkg_dict.accessrequestURL %} <a href="{{pkg_dict.accessrequestURL}}">from this address</a> {% endif %} {% endif %}
-{% if pkg_dict.access == 'contact' %} available by <a href="/contact/{{pkg_dict.id}}">contacting the distributor</a> {% endif %}
+{% if pkg_dict.access == 'contact' %} available by <a href="/request_dataset/{{pkg_dict.id}}">contacting the distributor</a> {% endif %}
 {% if not pkg_dict.access %} available freely{% endif %}
 
 {% if pkg_dict.license_title %} with license as {{pkg_dict.license_title}}
@@ -85,7 +85,11 @@ This dataset is
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Email') }}</th>
-		<td class="dataset-details">mailto:{{ pkg_dict.maintainer_email}}</td>
+		{% if h.check_access('package_update', {'id':pkg_dict.id }) %}
+			<td class="dataset-details">mailto:{{ pkg_dict.maintainer_email}}</td>
+		{% else %}
+			<td class="dataset-details"><a href="/contact/{{pkg_dict.id}}">Send a message</a></td>
+		{% endif %}
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Contact URL') }}</th>

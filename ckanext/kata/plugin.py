@@ -110,12 +110,18 @@ class KataMetadata(SingletonPlugin):
         map.connect('/data_mining/save',
                     controller="ckanext.kata.controllers:DataMiningController",
                     action="save")
+        map.connect('/request_dataset/send/{pkg_id}',
+                    controller="ckanext.kata.controllers:ContactController",
+                    action="send_request")
+        map.connect('/request_dataset/{pkg_id}',
+                    controller="ckanext.kata.controllers:ContactController",
+                    action="render_request")
         map.connect('/contact/send/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="send")
+                    action="send_contact")
         map.connect('/contact/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="render")
+                    action="render_contact")
         map.connect('/dataset/import_xml/',
                     controller="ckanext.harvest.controllers.view:ViewController",
                     action="import_xml")

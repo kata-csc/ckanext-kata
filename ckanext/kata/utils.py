@@ -71,29 +71,6 @@ def convert_to_text(resource, resource_fname):
         return convert_fd, convert_path
     return None, None
 
-
-def send_contact_email(owner, requestee, pkg, message):
-    """
-    Send a contact e-mail to dataset owner. Used only with the "only by contacting the distributor" option in
-    "Dataset is available for use:".
-    """
-
-    msg = _("""%s (%s) is requesting access to study material for dataset you have created
-    %s.
-
-The message is as follows:
-%s
-""")
-    body = msg % (requestee.name,
-                  requestee.email,
-                  pkg.title if pkg.title else pkg.name,
-                  message)
-    email_dict = {"subject": _("Material access request for dataset %s" % pkg.title \
-        if pkg.title else pkg.name),
-                  "body": body}
-    send_notification(owner.as_dict(), email_dict)
-
-
 def label_list_yso(tag_url):
     """
     Takes tag keyword URL and fetches the labels that link to it.
