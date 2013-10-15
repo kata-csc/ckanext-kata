@@ -1,3 +1,5 @@
+# pylint: disable=unused-argument
+
 """
 Validators for user inputs.
 """

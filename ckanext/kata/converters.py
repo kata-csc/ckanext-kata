@@ -1,6 +1,10 @@
+# pylint: disable=unused-argument
+
 """
 Functions to convert dataset form fields from or to db fields.
 """
+
+from pylons import h
 
 import re
 import utils
@@ -225,11 +229,10 @@ def event_to_extras(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    if (key[2] == 'value' and len(data[key]) > 0 and
-        type(data[key]) == unicode):
-            extras.append({'key': "%s_%d" % (key[0], key[1]),
-                           'value': data[key]
-                          })
+    if (key[2] == 'value' and len(data[key]) > 0 and type(data[key]) == unicode):
+        extras.append({'key': "%s_%d" % (key[0], key[1]),
+                       'value': data[key]
+                      })
 
 def event_from_extras(evkey, data, errors, context):
     if not ('events',) in data:
