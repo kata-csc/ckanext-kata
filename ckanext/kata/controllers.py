@@ -18,7 +18,7 @@ from _text import orngText
 from paste.deploy.converters import asbool
 from pylons import response, config, request, session, g
 from pylons.decorators.cache import beaker_cache
-from pylons.i18n import gettext as _
+from pylons.i18n import _
 from sqlalchemy import null
 
 from ckan.controllers.api import ApiController

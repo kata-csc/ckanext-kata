@@ -12,7 +12,7 @@ import re
 from ckan.model import Package
 from ckan.lib import helpers as h
 
-from pylons.i18n import gettext as _
+from pylons.i18n import _
 import ckanext.kata.utils as utils
 from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid

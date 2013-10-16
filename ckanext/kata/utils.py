@@ -3,7 +3,7 @@ Utility functions for Kata.
 """
 
 from ckan.lib.email_notifications import send_notification
-from pylons.i18n import gettext as _
+from pylons.i18n import _
 from pylons import config
 from ckan.model import User, Package
 from ckan.lib import helpers as h

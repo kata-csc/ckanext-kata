@@ -9,7 +9,7 @@ from pylons import h
 import re
 import utils
 import logging
-from pylons.i18n import gettext as _
+from pylons.i18n import _
 
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
