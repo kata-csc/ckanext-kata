@@ -27,3 +27,6 @@ pip-log.txt
 .pydevproject
 .settings/
 *.iml
+
+# Backup files
+*~
