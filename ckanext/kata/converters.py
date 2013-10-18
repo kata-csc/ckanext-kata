@@ -327,7 +327,7 @@ def add_to_group(key, data, errors, context):
         grp = Group.get(val)
         # UI code needs group created if it does not match. Hence do so.
         if not grp:
-            grp = Group(name=val, description=val)
+            grp = Group(name=val, description=val, title=val)
             setup_default_user_roles(grp)
             grp.save()
         repo.commit()
