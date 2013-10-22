@@ -65,7 +65,7 @@ TEXTOUTPUTPROGS = {
 # Text string to use for when dataset's URL is not known
 DATASET_URL_UNKNOWN = 'http://'
 
-# Text string to use for when dataset's URL is not known
+# Text string for dataset's resource.resource_type
 RESOURCE_TYPE_DATASET = 'dataset'
 
 
