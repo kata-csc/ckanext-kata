@@ -13,12 +13,17 @@ from pylons.i18n import _
 from ckanext.kata.model import KataAccessRequest
 
 import logging
+import settings
+
 log = logging.getLogger(__name__)
 
 TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
 
 def package_show(context, data_dict):
+    '''
+    Called before showing the dataset in some interface (browser, API).
+    '''
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg = Package.get(pkg_dict1['id'])
     if 'erelated' in pkg.extras:
@@ -31,14 +36,17 @@ def package_show(context, data_dict):
                                  'dataset_id': pkg.id}
                     related_create(context, data_dict)
 
-    # Update package.title to match package.extras.title_0
+    pkg_dict1 = resource_to_dataset(pkg_dict1)
 
+    # Update package.title to match package.extras.title_0
     extras_title = pkg.extras.get(u'title_0')
     if extras_title and extras_title != pkg.title:
         repo.new_revision()
         pkg.title = pkg.extras[u'title_0']
         pkg.save()
         rebuild(pkg.id)  # Rebuild solr-index for this dataset
+
+    c.resource_type_dataset = settings.RESOURCE_TYPE_DATASET
 
     return pkg_dict1
 
@@ -65,6 +73,9 @@ def package_create(context, data_dict):
             del data_dict[key]
     except KeyError:
         pass
+
+    data_dict = dataset_to_resource(data_dict)
+
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
@@ -72,6 +83,7 @@ def package_create(context, data_dict):
     index = index_for('package')
     index.index_package(pkg_dict)
     return pkg_dict1
+
 
 def package_update(context, data_dict):
     '''
@@ -95,7 +107,9 @@ def package_update(context, data_dict):
             del data_dict[key]
     except KeyError:
         pass
-    
+
+    data_dict = dataset_to_resource(data_dict)
+
     # This is a consequence or removing the ckan_phase!
     # The solution might not be good, if further problems arise
     # a better fix will be made
@@ -108,6 +122,48 @@ def package_update(context, data_dict):
     # update_dict calls index_package, so it would basically be the same
     index.update_dict(pkg_dict)
     return pkg_dict1
+
+
+def resource_to_dataset(data_dict):
+    '''
+    Move some fields from resources to dataset. Used for viewing a dataset.
+    '''
+
+    # UI can't handle multiple instances of a single dataset, so now use only the first.
+    try:
+        resource = [res for res in data_dict['resources'] if res['resource_type'] == settings.RESOURCE_TYPE_DATASET ][0]
+    except (KeyError, IndexError):
+        log.debug('Dataset without a dataset resouce: %s' % data_dict['id'])
+        return data_dict
+
+    if resource:
+        data_dict.update({
+            'accessrequestURL' : resource.get('url'),
+            'checksum' : resource.get('hash'),
+            'fformat' : resource.get('mimetype'),
+            'algorithm' : resource.get('algorithm'),
+        })
+
+    return data_dict
+
+
+def dataset_to_resource(data_dict):
+    '''
+    Move some fields from dataset to resources. Used for saving to DB.
+    '''
+
+    if 'resources' not in data_dict:
+        data_dict['resources'] = [{
+            #'package_id' : pkg_dict1['id'],
+            'url' : data_dict.pop('accessrequestURL'),
+            'hash' : data_dict.pop('checksum'),
+            'mimetype' : data_dict.pop('fformat'),
+            'algorithm' : data_dict.pop('algorithm'),
+            'resource_type' : settings.RESOURCE_TYPE_DATASET,
+        }]
+
+    return data_dict
+
 
 def group_list(context, data_dict):
     if not "for_view" in context:

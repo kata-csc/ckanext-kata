@@ -170,7 +170,10 @@ def check_accessrights(key, data, errors, context):
 
 
 def check_accessrequesturl(key, data, errors, context):
-    if data[('access',)] in ('free', 'ident'):
+    '''
+    Validate dataset's access request URL (resource.url).
+    '''
+    if ('access',) in data and data[('access',)] in ('free', 'ident'):
         not_empty(key, data, errors, context)
 
 
@@ -231,4 +234,3 @@ def validate_spatial(key, data, errors, context):
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
         data[key] = u''
-    

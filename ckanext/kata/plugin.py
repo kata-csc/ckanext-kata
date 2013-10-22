@@ -3,9 +3,9 @@ Main plugin file for Kata CKAN extension
 """
 
 import logging
-import os
 import datetime
 
+import os
 from pylons import config
 
 from ckan.plugins import implements, SingletonPlugin, toolkit
@@ -17,14 +17,12 @@ from ckan.plugins import IActions
 from ckan.plugins import IAuthFunctions
 from ckan.plugins.core import unload
 from ckan.lib.base import g, c
-from ckan.model import Package, PackageExtra, user_has_role, repo, Session
+from ckan.model import Package, user_has_role
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import   default_show_package_schema, \
     default_create_package_schema, \
-    default_update_package_schema, \
     default_resource_schema
-from ckan.logic.validators import no_http, duplicate_extras_key, \
-    package_id_not_changed, name_validator, package_name_validator, owner_org_validator
+from ckan.logic.validators import package_id_not_changed, owner_org_validator
 from ckan.lib.navl.validators import missing, ignore_missing, not_empty, not_missing, default, \
     ignore
 from ckanext.kata.validators import check_project, validate_access, validate_kata_date, \
@@ -40,9 +38,9 @@ from ckanext.kata.converters import event_from_extras, \
     add_to_group, remove_disabled_languages, checkbox_to_boolean
 from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
-from ckanext.kata.settings import FACETS, DEFAULT_SORT_BY, get_field_titles, SEARCH_FIELDS
 import ckan.lib.helpers as h
 from ckan.logic.validators import tag_length_validator, vocabulary_id_exists
+import ckanext.kata.settings as settings
 
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
@@ -167,13 +165,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     kata_fields_required = ['version', 'language',
                   'publisher', 'phone', 'contactURL',
                   'project_name', 'funder', 'project_funding', 'project_homepage',
-                  'access', 'accessRights', 'accessrequestURL',
+                  'access', 'accessRights',
                   'organization', 'author', 'owner']
 
     # Recommended extras fields
     kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
-                  'temporal_coverage_end', 'discipline', 'fformat', 'checksum',
-                  'algorithm', 'evwho', 'evdescr', 'evtype', 'evwhen', 'langdis',
+                  'temporal_coverage_end', 'discipline',
+                  'evwho', 'evdescr', 'evtype', 'evwhen', 'langdis',
                   'projdis', 'licenseURL']
 
     kata_field = kata_fields_recommended + kata_fields_required
@@ -184,7 +182,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         Returns a dict of all the authorization functions which the
         implementation overrides
         """
-        return {'package_update': auth_functions.is_owner}
+        return {'package_update': auth_functions.is_owner,
+                'resource_update': auth_functions.allow_edit_resource,
+                }
 
 
     def get_actions(self):
@@ -471,12 +471,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
            '__junk': [check_junk],
            'name': [ignore_missing, unicode, self.update_name],
            'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
-           'accessrequestURL': [check_accessrequesturl, self.convert_to_extras_kata, unicode],
            'project_name': [check_project_dis, unicode, self.convert_to_extras_kata],
            'funder': [check_project_dis, unicode, self.convert_to_extras_kata],
            'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
-           'project_homepage': [check_project_dis, unicode, self.convert_to_extras_kata],
-           'resources': default_resource_schema(),
+           'project_homepage': [ignore_missing, check_project_dis, unicode, self.convert_to_extras_kata],
            'discipline': [validate_discipline, unicode, self.convert_to_extras_kata],
            'geographic_coverage': [validate_spatial, self.convert_to_extras_kata, unicode],
            'licenseURL': [ignore_missing, unicode],
@@ -489,6 +487,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['groups'].update({
                 'name': [ignore_missing, unicode, add_to_group]
                 })
+
+        schema['resources'] = default_resource_schema()
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_accessrequesturl, unicode]
+        schema['resources']['algorithm'] = [ignore_missing, unicode]
 
         return schema
 
@@ -551,6 +553,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
 
     def convert_to_extras_kata(self, key, data, errors, context):
+        '''
+        Convert package fields to extras-format.
+        '''
         if data.get(('extras',)) is missing:
             return
         extras = data.get(('extras',), [])
@@ -573,7 +578,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         The titles show up on the search page.
         """
 
-        facet_titles.update(get_field_titles(t._))
+        facet_titles.update(settings.get_field_titles(t._))
         return facet_titles
 
 
@@ -692,13 +697,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param data_dict: data_dict to modify
         '''
 
-        data_dict['facet.field'] = FACETS
+        data_dict['facet.field'] = settings.FACETS
         if data_dict.has_key('sort') and data_dict['sort'] is None:
-            data_dict['sort'] = DEFAULT_SORT_BY
-            c.sort_by_selected = DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
+            data_dict['sort'] = settings.DEFAULT_SORT_BY
+            c.sort_by_selected = settings.DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
 
-        c.search_fields = SEARCH_FIELDS
-        c.translated_field_titles = get_field_titles(t._)
+        c.search_fields = settings.SEARCH_FIELDS
+        c.translated_field_titles = settings.get_field_titles(t._)
 
         # Start advanced search parameter parsing
         if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
@@ -728,13 +733,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def after_search(self, search_results, data_dict):
         '''
         Things to do after querying Solr.
-
-        :param search_results: ?
-        :param data_dict: data_dict to modify
         '''
-
-        #log.debug("search_results: %r" % search_results)
-        #log.debug("data_dict: %r" % data_dict)
         return search_results
 
 
@@ -753,4 +752,3 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             log.debug('tags not found')
             
         return pkg_dict
-            

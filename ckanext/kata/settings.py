@@ -62,6 +62,12 @@ TEXTOUTPUTPROGS = {
     'odp': '/usr/bin/odp2txt',
     }
 
+# Text string to use for when dataset's URL is not known
+DATASET_URL_UNKNOWN = 'http://'
+
+# Text string to use for when dataset's URL is not known
+RESOURCE_TYPE_DATASET = 'dataset'
+
 
 def get_field_titles(_):
     '''
@@ -77,6 +83,7 @@ def get_field_titles(_):
         translated_field_titles[k] = _(v)
 
     return translated_field_titles
+
 
 def get_field_title(key, _):
     '''

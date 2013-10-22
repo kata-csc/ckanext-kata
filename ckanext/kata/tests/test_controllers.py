@@ -4,12 +4,15 @@
 
 from pylons import config
 import paste.fixture    # pylint: disable=F0401
+import re
 
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
 from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
 from ckan.tests.html_check import HtmlCheckMethods
+import ckan.model as model
 from ckanext.kata import model as kata_model
+import ckanext.kata.settings as settings
 
 
 class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
@@ -65,6 +68,36 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         offset = url_for(controller='package', action='read', id=u'annakarenina')
         res = self.app.get(offset)
         assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
+
+    def test_hidden_edit_button(self):
+        """
+        Resource type settings.RESOURCE_TYPE_DATASET should not render Edit-button.
+        """
+        #offset = url_for(controller='package', action='read', id=u'annakarenina')
+
+        res_id = None
+
+        pkg = model.Package.get(u'annakarenina')
+        for resource in pkg.resources:
+            if 'Full text.' in resource.description:
+                revision = model.repo.new_revision()
+                resource.resource_type = settings.RESOURCE_TYPE_DATASET
+                model.Session.commit()
+                res_id = resource.id
+
+        offset = '/en' + url_for(controller='package', action='resource_read',
+                               id=u'annakarenina', resource_id=res_id)
+
+        extra_environ = {'REMOTE_USER': 'tester'}
+        result = self.app.get(offset, extra_environ=extra_environ)
+
+        assert 'Full text.' in result.body
+
+        regex = re.compile('<a.*href.*>.*Edit\w*</a>')
+        assert not regex.search(result.body), "%r" % result.body
+
+        # Sanity check
+        assert 'Edit Profile' in result.body
 
 
 class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
