@@ -184,6 +184,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
         return {'package_update': auth_functions.is_owner,
                 'resource_update': auth_functions.allow_edit_resource,
+                'package_delete': auth_functions.package_delete,
                 }
 
 
@@ -192,6 +193,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {'package_show': actions.package_show,
                 'package_create': actions.package_create,
                 'package_update': actions.package_update,
+                'package_delete': actions.package_delete,
                 'group_list': actions.group_list,
                 'accessreq_show': actions.accessreq_show,
                 'related_create': actions.related_create,

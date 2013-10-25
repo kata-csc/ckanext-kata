@@ -123,6 +123,22 @@ def package_update(context, data_dict):
     index.update_dict(pkg_dict)
     return pkg_dict1
 
+def package_delete(context, data_dict):
+    '''
+    Deletes a package
+    
+    Extends ckan's similar method to instantly re-index the SOLR index. 
+    Otherwise the changes would only be added during a re-index (a rebuild of search index,
+    to be specific).
+    
+    Arguments:
+    :param context:
+    :param data_dict: package data as dictionary
+    '''
+    index = index_for('package')
+    index.remove_dict(data_dict)
+    ret = ckan.logic.action.delete.package_delete(context, data_dict)
+    return ret
 
 def resource_to_dataset(data_dict):
     '''

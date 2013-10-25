@@ -14,6 +14,7 @@ import ckan.model as model
 from ckanext.kata import model as kata_model
 import ckanext.kata.settings as settings
 
+from ckan.model.authz import add_user_to_role
 
 class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
     """
@@ -179,3 +180,60 @@ class TestMetadataController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods
 
         assert "<rdf" in res
         assert "</rdf" in res
+        
+class TestKataAuthorisation(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+    '''
+    Test Kata authorisation functions
+    '''
+    @classmethod
+    def setup_class(cls):
+        '''Set up testing environment.'''
+
+        kata_model.setup()
+        CreateTestData.create()
+
+        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
+        cls.app = paste.fixture.TestApp(wsgiapp)
+        
+    @classmethod
+    def teardown_class(cls):
+        """Get away from testing environment."""
+
+        kata_model.delete_tables()
+        CreateTestData.delete()
+        
+    def test_edit_not_available(self):
+        '''
+        Test that edit page is not available for random user
+        '''
+        offset = offset = url_for("/dataset/edit/annakarenina")
+
+        extra_environ = {'REMOTE_USER': 'russianfan'}
+        res = self.app.get(offset, extra_environ=extra_environ, status=401)
+
+    def test_delete_not_available(self):
+        '''
+        Test that deletion of a dataset is not available
+        for an unauthorised user
+        '''
+        offset = offset = url_for("/dataset/delete/annakarenina")
+        extra_environ = {'REMOTE_USER': 'russianfan'}
+        res = self.app.get(offset, extra_environ=extra_environ, status=401)
+
+    def test_delete_available(self):
+        '''
+        Test that delete button exists for package editor
+        '''
+        offset = url_for(controller='package', action='edit', id=u'annakarenina')
+        pkg_id = u'annakarenina'
+        user_id = u'tester'
+        user = model.User.get(user_id)
+        pkg = model.Package.get(pkg_id)
+        model.meta.Session.commit()
+        add_user_to_role(user, 'editor', pkg)
+
+        extra_environ = {'REMOTE_USER': 'tester'}
+        res = self.app.get(offset, extra_environ=extra_environ)
+
+        assert 'Are you sure you want to delete this dataset?' in res, \
+            'Dataset owner should have the delete button available'
