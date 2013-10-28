@@ -1,6 +1,8 @@
 #pylint: disable=R0201, R0904
 
-"""Unit tests for controllers"""
+'''
+Functional tests for controllers
+'''
 
 from pylons import config
 import paste.fixture    # pylint: disable=F0401
@@ -16,9 +18,10 @@ import ckanext.kata.settings as settings
 
 from ckan.model.authz import add_user_to_role
 
+
 class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
     """
-    Tests for Kata's controllers and routing.
+    tests for Kata's controllers and routing.
     """
     
     @classmethod

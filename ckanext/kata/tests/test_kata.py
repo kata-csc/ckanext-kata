@@ -23,6 +23,7 @@ from ckanext.kata.validators import validate_kata_date, validate_language, check
     validate_discipline, validate_spatial
 from ckan.lib.navl.dictization_functions import Invalid
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean
+from ckanext.kata import tests, settings, actions
 
 
 class TestKataExtension(TestCase):
@@ -220,74 +221,7 @@ class TestKataValidators(TestCase):
     def setup_class(cls):
         """Set up tests."""
 
-        # Some test data from Add dataset.
-
-        cls.test_data = {('__extras',): {'_ckan_phase': u'',
-                                         'evdescr': [],
-                                         'evwhen': [],
-                                         'evwho': [],
-                                         'groups': [],
-                                         'pkg_name': u''},
-                         ('access',): u'contact',
-                         ('accessRights',): u'',
-                         ('accessrequestURL',): u'',
-                         ('algorithm',): u'',
-                         ('author', 0, 'value'): u'dada',
-                         ('checksum',): u'',
-                         ('contactURL',): u'http://google.com',
-                         ('discipline',): u'',
-                         ('evtype', 0, 'value'): u'collection',
-                         ('extras',): [{'key': 'funder', 'value': u''},
-                                       {'key': 'discipline', 'value': u''},
-                                       {'key': 'publisher', 'value': u'dada'},
-                                       {'key': 'fformat', 'value': u''},
-                                       {'key': 'project_funding', 'value': u''},
-                                       {'key': 'project_homepage', 'value': u''},
-                                       {'key': 'owner', 'value': u'dada'},
-                                       {'key': 'version', 'value': u'2013-08-14T10:37:09Z'},
-                                       {'key': 'temporal_coverage_begin', 'value': u''},
-                                       {'key': 'accessrequestURL', 'value': u''},
-                                       {'key': 'phone', 'value': u'+35805050505'},
-                                       {'key': 'licenseURL', 'value': u'dada'},
-                                       {'key': 'geographic_coverage', 'value': u''},
-                                       {'key': 'access', 'value': u'contact'},
-                                       {'key': 'algorithm', 'value': u''},
-                                       {'key': 'langdis', 'value': u'True'},
-                                       {'key': 'accessRights', 'value': u''},
-                                       {'key': 'contactURL', 'value': u'http://google.com'},
-                                       {'key': 'project_name', 'value': u''},
-                                       {'key': 'checksum', 'value': u''},
-                                       {'key': 'temporal_coverage_end', 'value': u''},
-                                       {'key': 'projdis', 'value': u'True'},
-                                       {'key': 'language', 'value': u''}],
-                         ('fformat',): u'',
-                         ('funder',): u'',
-                         ('geographic_coverage',): u'',
-                         ('langdis',): u'False',
-                         ('language',): u'swe',
-                         ('licenseURL',): u'dada',
-                         ('license_id',): u'',
-                         ('log_message',): u'',
-                         ('name',): u'',
-                         ('notes',): u'',
-                         ('organization', 0, 'value'): u'dada',
-                         ('owner',): u'dada',
-                         ('phone',): u'+35805050505',
-                         ('maintainer_email',): u'kata.selenium@gmail.com',
-                         ('projdis',): u'True',
-                         ('project_funding',): u'',
-                         ('project_homepage',): u'',
-                         ('project_name',): u'',
-                         ('publisher',): u'dada',
-                         ('save',): u'finish',
-                         ('tag_string',): u'dada',
-                         ('temporal_coverage_begin',): u'',
-                         ('temporal_coverage_end',): u'',
-                         ('title', 0, 'lang'): u'sv',
-                         ('title', 0, 'value'): u'dada',
-                         ('type',): None,
-                         ('version',): u'2013-08-14T10:37:09Z',
-                         ('versionPID',): u''}
+        cls.test_data = tests.create_validator_test_data()
 
     def test_validate_kata_date_valid(self):
         errors = defaultdict(list)
@@ -543,3 +477,60 @@ class TestKataValidators(TestCase):
         dada[('langdis',)] = u''
         checkbox_to_boolean(('langdis',), dada, errors, None)
         assert dada[('langdis',)] == u'False'
+
+
+class TestResouceConversions(TestCase):
+    """Unit tests for resource conversion actions."""
+
+    @classmethod
+    def setup_class(cls):
+        """Set up tests."""
+
+        cls.test_data = {
+            'id' : u'test',
+            'accessrequestURL' : u'http://www.csc.fi',
+            'algorithm': u'MD5',
+            'checksum': u'f60e586509d99944e2d62f31979a802f',
+            'fformat': u'application/pdf',
+            }
+
+        cls.test_data2 = {
+            'id' : u'test',
+            'resources': [{
+                'url' : u'http://www.csc.fi',
+                'algorithm': u'MD5',
+                'hash': u'f60e586509d99944e2d62f31979a802f',
+                'mimetype': u'application/pdf',
+                'resource_type' : settings.RESOURCE_TYPE_DATASET,
+                }]
+            }
+
+    def test_dataset_to_resource(self):
+        data_dict = self.test_data.copy()
+        assert 'resources' not in data_dict
+
+        data_dict = actions.dataset_to_resource(data_dict)
+        assert 'resources' in data_dict
+
+        data_dict = actions.dataset_to_resource(data_dict)
+        assert 'resources' in data_dict
+
+    def test_dataset_to_resource_invalid(self):
+        data_dict = self.test_data.copy()
+        data_dict.pop('accessrequestURL')
+        assert 'resources' not in data_dict
+
+        data_dict = actions.dataset_to_resource(data_dict)
+        assert 'resources' not in data_dict
+
+    def test_resource_to_dataset(self):
+        data_dict = self.test_data2.copy()
+        data_dict = actions.resource_to_dataset(data_dict)
+        assert 'accessrequestURL' in data_dict
+
+    def test_resource_to_dataset_invalid(self):
+        data_dict = self.test_data2.copy()
+        data_dict['resources'][0].pop('resource_type')
+        data_dict = actions.resource_to_dataset(data_dict)
+        assert 'accessrequestURL' not in data_dict
+

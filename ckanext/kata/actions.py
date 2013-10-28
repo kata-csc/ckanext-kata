@@ -145,11 +145,11 @@ def resource_to_dataset(data_dict):
     Move some fields from resources to dataset. Used for viewing a dataset.
     '''
 
-    # UI can't handle multiple instances of a single dataset, so now use only the first.
     try:
+        # UI can't handle multiple instances of a dataset, so now use only the first.
         resource = [res for res in data_dict['resources'] if res['resource_type'] == settings.RESOURCE_TYPE_DATASET ][0]
     except (KeyError, IndexError):
-        log.debug('Dataset without a dataset resouce: %s' % data_dict['id'])
+        log.error('Dataset without a dataset resouce: %s' % data_dict['id'])
         return data_dict
 
     if resource:
@@ -169,14 +169,17 @@ def dataset_to_resource(data_dict):
     '''
 
     if 'resources' not in data_dict:
-        data_dict['resources'] = [{
-            #'package_id' : pkg_dict1['id'],
-            'url' : data_dict.pop('accessrequestURL'),
-            'hash' : data_dict.pop('checksum'),
-            'mimetype' : data_dict.pop('fformat'),
-            'algorithm' : data_dict.pop('algorithm'),
-            'resource_type' : settings.RESOURCE_TYPE_DATASET,
-        }]
+        try:
+            data_dict['resources'] = [{
+                #'package_id' : pkg_dict1['id'],
+                'url' : data_dict.pop('accessrequestURL'),
+                'hash' : data_dict.pop('checksum'),
+                'mimetype' : data_dict.pop('fformat'),
+                'algorithm' : data_dict.pop('algorithm'),
+                'resource_type' : settings.RESOURCE_TYPE_DATASET,
+            }]
+        except KeyError as error:
+            log.debug("%s not found in data_dict during dataset_to_resource() conversion" % error)
 
     return data_dict
 
