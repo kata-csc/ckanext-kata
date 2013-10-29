@@ -77,6 +77,18 @@ def get_extra_contact(context, data_dict, key="contact_name"):
     q = q.limit(limit)
     return q.all()
 
+def get_package_owner(package):
+    """Returns the user id of the package admin for the specified package.
+       If multiple user accounts are associated with the package as admins,
+       an arbitrary one is returned.
+    """
+    userid = None
+    for role in package.roles:
+        if role.role == "admin":
+            userid = role.user_id
+            break
+    return userid
+
 def utc_to_local(utc_dt):
     '''
     Change datetime in utc zone to datetime on local zone
@@ -291,18 +303,38 @@ class AccessRequestController(BaseController):
     it also provides the process to grant them upon request.
     '''
 
+    def _have_pending_requests(self, pkg_id, user_id):
+        """
+        Returns whether there are already pending requests
+        from the given user regarding the given package.
+        """
+
+        pending_requests = model.Session.query(KataAccessRequest).filter(
+                KataAccessRequest.pkg_id == pkg_id, KataAccessRequest.user_id == user_id)
+        return pending_requests.count() > 0
+
     def create_request(self, pkg_id):
+        """
+        Creates a new editor access request in the database.
+        """
+
+        url = h.url_for(controller='package', action='read', id=pkg_id)
+        
         pkg = Package.get(pkg_id)
+        pkg_title = pkg.title if pkg.title else pkg.name
+        
         user = c.userobj if c.userobj else None
         if user:
-            req = KataAccessRequest(user.id, pkg.id)
-            req.save()
-            url = h.url_for(controller='package', action='read', id=pkg_id)
-            h.flash_success(_("You now requested editor rights to package %s" % pkg.name))
-            redirect(url)
+            if not self._have_pending_requests(pkg_id, user.id):
+                req = KataAccessRequest(user.id, pkg.id)
+                req.save()
+                h.flash_success(_("You now requested editor rights to package %s" % pkg_title))
+                redirect(url)
+            else:
+                h.flash_error(_("A request is already pending"))
+                redirect(url)
         else:
-            url = h.url_for(controller='package', action='read', id=pkg_id)
-            h.flash_error(_("Please log in!"))
+            h.flash_error(_("You must be logged in to request edit access"))
             redirect(url)
 
     def unlock_access(self, id):
@@ -312,15 +344,37 @@ class AccessRequestController(BaseController):
         if req:
             user = User.get(req.user_id)
             pkg = Package.get(req.pkg_id)
+            pkg_title = pkg.title if pkg.title else pkg.name
             add_user_to_role(user, 'editor', pkg)
             url = h.url_for(controller='package', action='read', id=req.pkg_id)
-            h.flash_success(_("%s now has editor rights to package %s" % (user.name, pkg.name)))
+            h.flash_success(_("%s now has editor rights to package %s" % (user.name, pkg_title)))
             req.delete()
             meta.Session.commit()
             redirect(url)
         else:
             h.flash_error(_("No such request found!"))
             redirect('/')
+
+    def render_edit_request(self, pkg_id):
+        """
+        Renders a page for requesting editor access to the dataset.
+        """
+
+        url = h.url_for(controller='package', action='read', id=pkg_id)
+
+        c.package = Package.get(pkg_id)
+        c.package_owner = get_package_owner(c.package)
+        user = c.userobj if c.userobj else None
+
+        if user:
+            if not self._have_pending_requests(pkg_id, user.id):
+                return render('contact/edit_request_form.html')
+            else:
+                h.flash_error(_("A request is already pending"))
+                redirect(url)
+        else:
+            h.flash_error(_("You must be logged in to request edit access"))
+            redirect(url)
 
 
 class DataMiningController(BaseController):
@@ -497,7 +551,7 @@ class ContactController(BaseController):
                       "body": full_msg}
 
         if c.user:
-            owner_id = self._get_package_owner(package)
+            owner_id = get_package_owner(package)
             if owner_id:
                 owner = User.get(owner_id)
                 if msg:
@@ -512,15 +566,6 @@ class ContactController(BaseController):
                 h.flash_error(_("No owner found"))
         else:
             h.flash_error(_("Please login"))
-
-    def _get_package_owner(self, package):
-        """Returns the user id of one of the owners of the specified package."""
-        userid = None
-        for role in package.roles:
-            if role.role == "admin":
-                userid = role.user_id
-                break
-        return userid
 
     def _mark_owner_as_contacted(self, userobj, pkg_id):
         """Mark this user as having already contacted the package owner"""
