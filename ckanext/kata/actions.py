@@ -46,8 +46,6 @@ def package_show(context, data_dict):
         pkg.save()
         rebuild(pkg.id)  # Rebuild solr-index for this dataset
 
-    c.resource_type_dataset = settings.RESOURCE_TYPE_DATASET
-
     return pkg_dict1
 
 
