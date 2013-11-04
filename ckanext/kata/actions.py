@@ -11,6 +11,7 @@ from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from pylons.i18n import _
 from ckanext.kata.model import KataAccessRequest
+from ckan.logic import check_access, NotAuthorized
 
 import logging
 import settings
@@ -25,6 +26,15 @@ def package_show(context, data_dict):
     Called before showing the dataset in some interface (browser, API).
     '''
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
+    # Normally logic function should not catch the raised errors
+    # but here it is needed so action package_show won't catch it instead
+    # Hiding information from API calls
+    try:
+        show_hidden = check_access('package_update', context)
+    except NotAuthorized:
+        pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
+        pkg_dict1['project_funding'] = _('Not authorized to see this information')
+        
     pkg = Package.get(pkg_dict1['id'])
     if 'erelated' in pkg.extras:
         erelated = pkg.extras['erelated']
@@ -45,7 +55,7 @@ def package_show(context, data_dict):
         pkg.title = pkg.extras[u'title_0']
         pkg.save()
         rebuild(pkg.id)  # Rebuild solr-index for this dataset
-
+   
     return pkg_dict1
 
 
