@@ -13,13 +13,13 @@ import subprocess
 import urllib2
 from lxml import etree
 import socket
-from ckanext.kata.settings import TEXTOUTPUTPROGS
+from ckanext.kata import settings
 
 log = logging.getLogger(__name__)
 
 
 def generate_pid():
-    """ Generates dummy pid """
+    """ Generate dummy pid """
     import datetime
     return "urn:nbn:fi:csc-kata%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
 
@@ -59,7 +59,7 @@ def convert_to_text(resource, resource_fname):
     Convert structured documents to pure text.
     """
     fmt = resource.format.lower()
-    prog = TEXTOUTPUTPROGS[fmt] if (fmt in TEXTOUTPUTPROGS and
+    prog = settings.TEXTOUTPUTPROGS[fmt] if (fmt in settings.TEXTOUTPUTPROGS and
                                     fmt is not 'txt') else ''
     if not prog:
         return None, None
@@ -70,6 +70,7 @@ def convert_to_text(resource, resource_fname):
         p.communicate()
         return convert_fd, convert_path
     return None, None
+
 
 def label_list_yso(tag_url):
     """
@@ -115,3 +116,47 @@ def label_list_yso(tag_url):
                     labels.append(t)
     return labels
 
+
+def resource_to_dataset(data_dict):
+    '''
+    Move some fields from resources to dataset. Used for viewing a dataset.
+    '''
+
+    try:
+        # UI can't handle multiple instances of a dataset, so now use only the first.
+        resource = [res for res in data_dict['resources'] if res['resource_type'] == settings.RESOURCE_TYPE_DATASET ][0]
+    except (KeyError, IndexError):
+        log.error('Dataset without a dataset resource: %s' % data_dict['id'])
+        return data_dict
+
+    if resource:
+        data_dict.update({
+            'accessrequestURL' : resource.get('url'),
+            'checksum' : resource.get('hash'),
+            'fformat' : resource.get('mimetype'),
+            'algorithm' : resource.get('algorithm'),
+        })
+
+    return data_dict
+
+
+def dataset_to_resource(data_dict):
+    '''
+    Move some fields from dataset to resources. Used for saving to DB.
+    '''
+
+    if 'resources' not in data_dict:
+        try:
+            data_dict['resources'] = [{
+                #'package_id' : pkg_dict1['id'],
+                'url' : data_dict.pop('accessrequestURL'),
+                'hash' : data_dict.pop('checksum'),
+                'mimetype' : data_dict.pop('fformat'),
+                'algorithm' : data_dict.pop('algorithm'),
+                'resource_type' : settings.RESOURCE_TYPE_DATASET,
+                'name' : data_dict.get('title'),
+            }]
+        except KeyError as error:
+            log.debug("%s not found in data_dict during dataset_to_resource() conversion" % error)
+
+    return data_dict

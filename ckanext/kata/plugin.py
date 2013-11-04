@@ -102,6 +102,9 @@ class KataMetadata(SingletonPlugin):
         map.connect('/create_request/{pkg_id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="create_request")
+        map.connect('/render_edit_request/{pkg_id}',
+                    controller="ckanext.kata.controllers:AccessRequestController",
+                    action="render_edit_request")
         map.connect('/read_data/{id}/{resource_id}',
                     controller="ckanext.kata.controllers:DataMiningController",
                     action="read_data")

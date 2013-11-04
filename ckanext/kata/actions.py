@@ -12,9 +12,9 @@ from ckan.logic.validators import url_validator
 from pylons.i18n import _
 from ckanext.kata.model import KataAccessRequest
 from ckan.logic import check_access, NotAuthorized
+from ckanext.kata import utils
 
 import logging
-import settings
 
 log = logging.getLogger(__name__)
 
@@ -46,7 +46,7 @@ def package_show(context, data_dict):
                                  'dataset_id': pkg.id}
                     related_create(context, data_dict)
 
-    pkg_dict1 = resource_to_dataset(pkg_dict1)
+    pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
 
     # Update package.title to match package.extras.title_0
     extras_title = pkg.extras.get(u'title_0')
@@ -82,7 +82,7 @@ def package_create(context, data_dict):
     except KeyError:
         pass
 
-    data_dict = dataset_to_resource(data_dict)
+    data_dict = utils.dataset_to_resource(data_dict)
 
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
     context = {'model': model, 'ignore_auth': True, 'validate': False,
@@ -116,7 +116,7 @@ def package_update(context, data_dict):
     except KeyError:
         pass
 
-    data_dict = dataset_to_resource(data_dict)
+    data_dict = utils.dataset_to_resource(data_dict)
 
     # This is a consequence or removing the ckan_phase!
     # The solution might not be good, if further problems arise
@@ -130,6 +130,7 @@ def package_update(context, data_dict):
     # update_dict calls index_package, so it would basically be the same
     index.update_dict(pkg_dict)
     return pkg_dict1
+
 
 def package_delete(context, data_dict):
     '''
@@ -148,51 +149,11 @@ def package_delete(context, data_dict):
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
-def resource_to_dataset(data_dict):
-    '''
-    Move some fields from resources to dataset. Used for viewing a dataset.
-    '''
-
-    try:
-        # UI can't handle multiple instances of a dataset, so now use only the first.
-        resource = [res for res in data_dict['resources'] if res['resource_type'] == settings.RESOURCE_TYPE_DATASET ][0]
-    except (KeyError, IndexError):
-        log.error('Dataset without a dataset resouce: %s' % data_dict['id'])
-        return data_dict
-
-    if resource:
-        data_dict.update({
-            'accessrequestURL' : resource.get('url'),
-            'checksum' : resource.get('hash'),
-            'fformat' : resource.get('mimetype'),
-            'algorithm' : resource.get('algorithm'),
-        })
-
-    return data_dict
-
-
-def dataset_to_resource(data_dict):
-    '''
-    Move some fields from dataset to resources. Used for saving to DB.
-    '''
-
-    if 'resources' not in data_dict:
-        try:
-            data_dict['resources'] = [{
-                #'package_id' : pkg_dict1['id'],
-                'url' : data_dict.pop('accessrequestURL'),
-                'hash' : data_dict.pop('checksum'),
-                'mimetype' : data_dict.pop('fformat'),
-                'algorithm' : data_dict.pop('algorithm'),
-                'resource_type' : settings.RESOURCE_TYPE_DATASET,
-            }]
-        except KeyError as error:
-            log.debug("%s not found in data_dict during dataset_to_resource() conversion" % error)
-
-    return data_dict
-
 
 def group_list(context, data_dict):
+    '''
+    Return a list of the names of the site's groups.
+    '''
     if not "for_view" in context:
         return {}
     else:
