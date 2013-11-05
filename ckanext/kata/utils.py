@@ -160,3 +160,13 @@ def dataset_to_resource(data_dict):
             log.debug("%s not found in data_dict during dataset_to_resource() conversion" % error)
 
     return data_dict
+
+
+def debug_here():
+    '''
+    Throw an error to stop executing code and do some debugging in CKAN's debug mode.
+    '''
+    import pprint
+    pp = pprint.pprint
+    raise RuntimeError('Time to debug!')
+
