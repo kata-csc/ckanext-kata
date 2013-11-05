@@ -20,6 +20,9 @@ log = logging.getLogger('ckanext.kata.converters')
 
 
 def pid_from_extras(key, data, errors, context):
+    '''
+    Get versionPID from extras or generate a new one.
+    '''
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key' and data[k] == 'versionPID':
             data[('versionPID',)] = data[(k[0], k[1], 'value')]
@@ -32,76 +35,10 @@ def pid_from_extras(key, data, errors, context):
         data[('versionPID',)] = utils.generate_pid()
 
 
-def roles_to_extras(key, data, errors, context):
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
-
-    extra_number = 0
-    for k in data.keys():
-        if k[0] == 'extras' and k[-1] == 'key':
-            extra_number = max(extra_number, k[1] + 1)
-
-    role_number = 0
-    for k in data.keys():
-        try:
-            if k[0] == 'role' and k[-1] == 'key' and (k[0], k[1], 'value') in data \
-                and len(data[(k[0], k[1], 'value')]) > 0:
-
-                _keyval = data[('role', k[1], 'key')]
-                _valval = data[('role', k[1], 'value')]
-
-                extras.append({'key': 'role_%d_%s' % (role_number, _keyval),
-                               'value': _valval})
-
-                for _del in data.keys():
-                    if _del[0] == 'role' and _del[1] == k[1] and k in data:
-                        del data[k]
-
-                role_number += 1
-        except:
-            pass
-
-
-def roles_from_extras(key, data, errors, context):
-    if not ('roles',) in data:
-        data[('roles',)] = []
-    roles = data[('roles',)]
-
-    for k in data.keys():
-        if k[0] == 'extras' and k[-1] == 'key':
-            if 'role_' in data[k]:
-                role = {}
-                role['key'] = data[k]
-                role['value'] = data[(k[0], k[1], 'value')]
-                roles.append(role)
-
-                if context.get('for_edit', False):
-                    del data[k]
-                    del data[(k[0], k[1], 'value')]
-
-
-def custom_to_extras(key, data, errors, context):
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
-    for k in data.keys():
-        try:
-            if k[0] == 'extras' and k[-1] == 'key' and (k[0], k[1], 'value') in data:
-                if type(data[(k[0], k[1], 'key')]) == unicode \
-                    and len(data[(k[0], k[1], 'key')]) > 0 \
-                    and type(data[(k[0], k[1], 'value')]) == unicode \
-                    and len(data[(k[0], k[1], 'value')]) > 0:
-                    extras.append({'key': data[(k[0], k[1], 'key')],
-                               'value': data[(k[0], k[1], 'value')]})
-                for _del in data.keys():
-                    if len(_del) == 3 and _del[0] == 'extras' and _del[1] == k[1]:
-                        del data[_del]
-        except:
-            pass
-
-
 def org_auth_to_extras(key, data, errors, context):
+    '''
+    Convert author and organization to extras
+    '''
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
@@ -117,6 +54,9 @@ def org_auth_to_extras(key, data, errors, context):
 
 
 def org_auth_from_extras(key, data, errors, context):
+    '''
+    Convert (author, organization) pairs from package.extra to 'orgauths' dict
+    '''
     if not ('orgauths',) in data:
         data[('orgauths',)] = []
     auths = []
@@ -218,12 +158,12 @@ def ltitle_from_extras(key, data, errors, context):
 
 
 def event_to_extras(key, data, errors, context):
-    """
+    '''
     Parses separate 'ev*' parameters from 'data' data_dict to 'extra' field
     in that same 'data'.
     @param key: key from schema, 'evtype', 'evdescr' etc.
     @param data: whole data_dict passed for modification
-    """
+    '''
     #log.debug("event_to_extras(): key: %s : %s", str(key), str(data[key]))
 
     extras = data.get(('extras',), [])
@@ -295,17 +235,6 @@ def event_from_extras(evkey, data, errors, context):
             events.append((etype, ewho, ewhen, edescr))
 
 
-def copy_from_titles(key, data, errors, context):
-    for k in data.keys():
-        try:
-            if k[0] == 'extras' and k[-1] == 'key':
-                if 'ltitle' in data[k] and not data[key]:
-                    data[key] = data[(k[0], k[1], 'value')]
-                    break
-        except:
-            pass
-
-
 def export_as_related(key, data, errors, context):
     if 'id' in data[('__extras',)]:
         for value in data[key].split(';'):
@@ -353,7 +282,7 @@ def remove_disabled_languages(key, data, errors, context):
 
         # Display flash message if user is loading a page.
         if 'session' in globals():
-            h.flash_notice(_("Language is disabled, removing languages: '%s'" % value))
+            h.flash_notice(_("Language is disabled, removing languages: '%s'" % data[key]))
 
         # Remove languages.
         del data[key]
