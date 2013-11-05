@@ -224,7 +224,7 @@ def event_to_extras(key, data, errors, context):
     @param key: key from schema, 'evtype', 'evdescr' etc.
     @param data: whole data_dict passed for modification
     """
-    log.debug("event_to_extras(): key: %s : %s", str(key), str(data[key]))
+    #log.debug("event_to_extras(): key: %s : %s", str(key), str(data[key]))
 
     extras = data.get(('extras',), [])
     if not extras:

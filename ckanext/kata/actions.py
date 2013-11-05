@@ -30,7 +30,7 @@ def package_show(context, data_dict):
     # but here it is needed so action package_show won't catch it instead
     # Hiding information from API calls
     try:
-        show_hidden = check_access('package_update', context)
+        check_access('package_update', context)
     except NotAuthorized:
         pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
         pkg_dict1['project_funding'] = _('Not authorized to see this information')
