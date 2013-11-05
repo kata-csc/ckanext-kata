@@ -269,7 +269,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             k, v = extra['key'], extra['value']
             if k in g.package_hide_extras and\
                 k in self.kata_field and\
-                k.starswith('author_') and\
+                k.startswith('author_') and\
                 k.startswith('organization_'):
                 continue
             
