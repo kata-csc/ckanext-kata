@@ -9,42 +9,36 @@
 {% call form.input_block("titles", _('Titles') , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
 	{% set titles = [] %}
 
-	{% if data.langtitles %}
-    {% set titles = data.langtitles %}
-	{% else %}
-		{% for title in data.title %}
-			{% if title.value %}
-				{% do titles.append((title.value, title.lang)) %}
-			{% endif %}
-		{% endfor %}
+	{% if data.langtitle %}
+    {% set titles = data.langtitle %}
 	{% endif %}
 
 	{% if (titles|length) == 0 %}
 		{% for extra in range(1,2) %}
-			{% do titles.append(('', '')) %}
+			{% do titles.append({'value': '', 'lang': ''}) %}
 		{% endfor %}
 	{% endif %}
 
   <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numFields={{ (titles|length) }} id="lastlang">
 	{# Render title fields #}
-	{% for title, lang in titles %}
+	{% for langtitle in titles %}
 		{% set index = loop.index0 %}
-		{% call form.input('title__' ~ index ~ '__value', id='title__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, error=errors.title, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+		{% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, error=errors.langtitle, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
 			{% if index == 0 %}
 				{{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded but, note that the first title field must have a value.")) }}
 			{% endif %}
 
-			<label class="control-label kata-input-comp" for="title__{{index}}__lang_id">{{ _('Language') }}</label>
+			<label class="control-label kata-input-comp" for="langtitle__{{index}}__lang_id">{{ _('Language') }}</label>
 			<div class="controls kata-input-comp">
-				<select name="title__{{index}}__lang">
-					{% snippet 'package/snippets/languages.html', selected=lang.value %}
+				<select name="langtitle__{{ index }}__lang">
+					{% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
 				</select>
 				{% if index == 0 %}
 					{{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();") }}
 				{% endif %}
 
 				{#% if title.value %#}
-					<input style="display: none;" type="checkbox" id="lbtn__{{index}}__value_id" name="lbtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+					<input style="display: none;" type="checkbox" id="lbtn__{{ index }}__value_id" name="lbtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 				{#% endif %#}
 			</div>
 		{% endcall %}

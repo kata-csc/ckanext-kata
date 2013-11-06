@@ -10,7 +10,6 @@ import pycountry
 import re
 
 from ckan.model import Package
-from ckan.lib import helpers as h
 
 from pylons.i18n import _
 import ckanext.kata.utils as utils
@@ -60,11 +59,6 @@ def kata_tag_string_convert(key, data, errors, context):
 def validate_access(key, data, errors, context):
     '''
     Validates that accessRights field is filled
-    
-    :param key:
-    :param data:
-    :param errors:
-    :param context:
     '''
     if data[key] == 'form':
         if not data[('accessRights',)]:
@@ -99,14 +93,13 @@ def check_junk(key, data, errors, context):
     '''
     Checks the existence of ambiguous parameters
     '''
-    log.debug(data)
     if key in data:
-        log.debug(data[key])
+        log.debug('Junk: %r' % (data[key]))
 
 
 def check_last_and_update_pid(key, data, errors, context):
     '''
-    Generates a pid (URN) for package
+    Generates a pid (URN) for package if package.extras.version has changed.
     '''
     if key == ('version',):
         pkg = Package.get(data[('name',)])
@@ -123,6 +116,9 @@ def validate_language(key, data, errors, context):
     '''
 
     value = data.get(key)
+
+    if type(value) not in [str, unicode]:
+        return
     langs = value.split(',')
 
     for lang in langs:

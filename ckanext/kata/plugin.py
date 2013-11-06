@@ -23,6 +23,7 @@ from ckan.logic.schema import   default_show_package_schema, \
     default_create_package_schema, \
     default_resource_schema
 from ckan.logic.validators import package_id_not_changed, owner_org_validator
+from ckan.logic.converters import convert_from_extras, convert_to_extras
 from ckan.lib.navl.validators import missing, ignore_missing, not_empty, not_missing, default, \
     ignore
 from ckanext.kata.validators import check_project, validate_access, validate_kata_date, \
@@ -34,8 +35,8 @@ from ckanext.kata.validators import check_project, validate_access, validate_kat
     validate_discipline, validate_spatial
 from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
-    org_auth_from_extras, org_auth_to_extras, pid_from_extras, \
-    add_to_group, remove_disabled_languages, checkbox_to_boolean
+    org_auth_from_extras, pid_from_extras, \
+    add_to_group, remove_disabled_languages, checkbox_to_boolean, org_auth_to_extras, add_dummy_to_extras, update_pid, update_name
 from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
 import ckan.lib.helpers as h
@@ -164,21 +165,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IActions, inherit=True)
     implements(IAuthFunctions, inherit=True)
 
-    # Required extras fields
-    kata_fields_required = ['version', 'language',
-                  'publisher', 'phone', 'contactURL',
-                  'project_name', 'funder', 'project_funding', 'project_homepage',
-                  'access', 'accessRights',
-                  'organization', 'author', 'owner']
-
-    # Recommended extras fields
-    kata_fields_recommended = ['geographic_coverage', 'temporal_coverage_begin',
-                  'temporal_coverage_end', 'discipline',
-                  'evwho', 'evdescr', 'evtype', 'evwhen', 'langdis',
-                  'projdis', 'licenseURL']
-
-    kata_field = kata_fields_recommended + kata_fields_required
-
 
     def get_auth_functions(self):
         """
@@ -252,7 +238,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if extra.get('state') == 'deleted':
                 continue
             k, v = extra['key'], extra['value']
-            if k in self.kata_field:
+            if k in settings.KATA_FIELDS:
                 output.append((k, v))
         return output
 
@@ -268,7 +254,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             
             k, v = extra['key'], extra['value']
             if k in g.package_hide_extras and\
-                k in self.kata_field and\
+                k in settings.KATA_FIELDS and\
                 k.startswith('author_') and\
                 k.startswith('organization_'):
                 continue
@@ -300,7 +286,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         config['extra_public_paths'] = ','.join([public_dir, config.get('extra_public_paths', '')])
         toolkit.add_resource(public_dir, 'kata-resources')
         roles = config.get('kata.contact_roles', 'Please, Configure')
-        config['package_hide_extras'] = ' '.join(self.kata_field)
+        config['package_hide_extras'] = ' '.join(settings.KATA_FIELDS)
         config['ckan.i18n_directory'] = os.path.join(rootdir, 'ckanext', 'kata')
         roles = [r for r in roles.split(', ')]
         self.roles = roles
@@ -377,48 +363,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
         return 'package/history.html'
 
+
     def package_form(self):
         """
         Return location of the main package page
         """
         return 'package/new_package_form.html'
 
-
-    def pid_to_extras(self, key, data, errors, context):
-        """
-        Check's that pid exists in data, if not then pid element is created with kata pid.
-        """
-#        extra_number = 0
-#        for k in data.keys():
-#            if k[0] == 'extras' and k[-1] == 'key':
-#                extra_number = max(extra_number, k[1] + 1)
-#
-#        for k in data.keys():
-#            if k[-1] == 'pid':
-#                data[('extras', extra_number, 'key')] = 'pid'
-#                data[('extras', extra_number, 'value')] = data[k]
-
-        extras = data.get(('extras',), [])
-        if not extras:
-            data[('extras',)] = extras
-
-        for k in data.keys():
-            if k[-1] == 'versionPID':
-                extras.append({'key': 'versionPID', 'value': data[k]})
-
-                if k in data:
-                    del data[k]
-
-
-    def update_pid(self, key, data, errors, context):
-        if type(data[key]) == unicode:
-            if len(data[key]) == 0:
-                data[key] = utils.generate_pid()
-
-
-    def update_name(self, key, data, errors, context):
-        if len(data[key]) == 0:
-            data[key] = utils.generate_pid()
 
     def default_tags_schema(self):
         schema = {
@@ -434,7 +385,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'display_name': [ignore],
         }
         return schema
-    
+
+
     def create_package_schema(self):
         """
         Return the schema for validating new dataset dicts.
@@ -442,47 +394,47 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema = default_create_package_schema()
 
-        for key in self.kata_fields_required:
-            schema[key] = [not_empty, self.convert_to_extras_kata, unicode]
-        for key in self.kata_fields_recommended:
-            schema[key] = [ignore_missing, self.convert_to_extras_kata, unicode]
+        for key in settings.KATA_FIELDS_REQUIRED:
+            schema[key] = [not_empty, convert_to_extras, unicode]
+        for key in settings.KATA_FIELDS_RECOMMENDED:
+            schema[key] = [ignore_missing, convert_to_extras, unicode]
 
-        # When adding a resource the data comes straight from DB and 'title' is not in the same format
-        # than the title data coming from the dataset form.
+        schema['langtitle'] = {'value': [not_missing, ltitle_to_extras],
+                               'lang': [not_missing, validate_language]}
 
-        if c.action in ['new_resource']:
-            schema['title'] = [not_missing]
-        else:
-            schema['title'] = {'value': [not_missing, ltitle_to_extras],
-                               'lang': [validate_language]}
+        # This is only needed to increase amount of fields converted to extras.
+        # TODO: Get rid of this conversion and add_dummy_to_extras().
+        schema['orgauths'] = [ignore_missing, unicode, convert_to_extras, add_dummy_to_extras, add_dummy_to_extras]
 
-        schema['temporal_coverage_begin'].append(validate_kata_date)
-        schema['temporal_coverage_end'].append(validate_kata_date)
-        schema['language'] = [validate_language, remove_disabled_languages, self.convert_to_extras_kata, unicode]
-        schema['phone'].append(validate_phonenum)
+        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
+        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
+        schema['language'] = [validate_language, remove_disabled_languages, convert_to_extras, unicode]
+        schema['phone'] = [ignore_missing, validate_phonenum, convert_to_extras, unicode]
         schema['maintainer_email'].append(validate_email)
+
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = self.default_tags_schema()
+
         schema.update({
-           'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
-           'versionPID': [self.update_pid, unicode, self.pid_to_extras],
-           'author': {'value': [not_empty, unicode, org_auth_to_extras]},
-           'organization': {'value': [not_empty, unicode, org_auth_to_extras]},
-           'access': [not_missing, self.convert_to_extras_kata, validate_access],
-           'langdis': [checkbox_to_boolean],
-           '__extras': [check_author_org],
-           'projdis': [checkbox_to_boolean, check_project],
-           '__junk': [check_junk],
-           'name': [ignore_missing, unicode, self.update_name],
-           'accessRights': [check_accessrights, self.convert_to_extras_kata, unicode],
-           'project_name': [check_project_dis, unicode, self.convert_to_extras_kata],
-           'funder': [check_project_dis, unicode, self.convert_to_extras_kata],
-           'project_funding': [check_project_dis, unicode, self.convert_to_extras_kata],
-           'project_homepage': [ignore_missing, check_project_dis, unicode, self.convert_to_extras_kata],
-           'discipline': [validate_discipline, unicode, self.convert_to_extras_kata],
-           'geographic_coverage': [validate_spatial, self.convert_to_extras_kata, unicode],
-           'licenseURL': [ignore_missing, unicode],
+            'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid, convert_to_extras],
+            'versionPID': [default(u''), update_pid, unicode, convert_to_extras],
+            'author': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras]},
+            'organization': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras]},
+            'access': [not_missing, validate_access, convert_to_extras],
+            'langdis': [checkbox_to_boolean, convert_to_extras],
+            '__extras': [check_author_org],
+            'projdis': [checkbox_to_boolean, check_project, convert_to_extras],
+            '__junk': [check_junk],
+            'name': [ignore_missing, unicode, update_name],
+            'accessRights': [check_accessrights, convert_to_extras, unicode],
+            'project_name': [check_project_dis, unicode, convert_to_extras],
+            'funder': [check_project_dis, convert_to_extras, unicode],
+            'project_funding': [check_project_dis, convert_to_extras, unicode],
+            'project_homepage': [ignore_missing, check_project_dis, convert_to_extras, unicode],
+            'discipline': [validate_discipline, convert_to_extras, unicode],
+            'geographic_coverage': [validate_spatial, convert_to_extras, unicode],
+            'licenseURL': [ignore_missing, convert_to_extras, unicode],
         })
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}
@@ -490,8 +442,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras]}
         schema['groups'].update({
-                'name': [ignore_missing, unicode, add_to_group]
-                })
+            'name': [ignore_missing, unicode, add_to_group]
+        })
 
         schema['resources'] = default_resource_schema()
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_accessrequesturl, unicode]
@@ -522,15 +474,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #schema = self._db_to_form_package_schema()
         schema = default_show_package_schema()
 
-        for key in self.kata_field:
-            schema[key] = [self.convert_from_extras_kata, ignore_missing, unicode]
+        for key in settings.KATA_FIELDS:
+            schema[key] = [convert_from_extras, ignore_missing, unicode]
 
         schema['versionPID'] = [pid_from_extras, ignore_missing, unicode]
 
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['organization'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['langdis'] = [default(u'False'), unicode]
-        schema['projdis'] = [default(u'False'), unicode]
+        schema['organization'] = [ignore_missing, unicode]
         schema['title'] = [ltitle_from_extras, ignore_missing]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
@@ -538,38 +488,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
 
         return schema
-
-
-    def convert_from_extras_kata(self, key, data, errors, context):
-
-        #import pprint
-        #pprint.pprint(data)
-        #print("Key: " + repr(key))
-
-        for k in data.keys():
-            if k[0] == 'extras' and k[-1] == 'key' and data[k] in self.kata_field:
-                key = ''.join(data[k])
-                data[(key,)] = data[(k[0], k[1], 'value')]
-                for _remove in data.keys():
-                    if _remove[0] == 'extras' and _remove[1] == k[1]:
-                        del data[_remove]
-
-        #pprint.pprint(data)
-
-
-    def convert_to_extras_kata(self, key, data, errors, context):
-        '''
-        Convert package fields to extras-format.
-        '''
-        if data.get(('extras',)) is missing:
-            return
-        extras = data.get(('extras',), [])
-        if not extras:
-            data[('extras',)] = extras
-        for k in data.keys():
-            if k[-1] in self.kata_field:
-                if not {'key': k[-1], 'value': data[k]} in extras:
-                    extras.append({'key': k[-1], 'value': data[k]})
 
 
     def update_facet_titles(self, facet_titles):
@@ -644,7 +562,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         (param, value) = extra_terms[0]
         p_no_index = param.split("-")[0]
         data_dict['q'] += ' ((%s:%s' % (p_no_index[4:], value)  # Add field search to query q
-        c.current_search_rows.append({'field':p_no_index, 'text':value})
+        c.current_search_rows.append({'field': p_no_index, 'text': value})
 
         n = min(len(extra_terms)-1, len(extra_ops))
         for i1 in range(0, n):
@@ -757,3 +675,4 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             log.debug('tags not found')
             
         return pkg_dict
+

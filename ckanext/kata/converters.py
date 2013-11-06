@@ -13,7 +13,6 @@ from pylons.i18n import _
 
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
-from ckan.lib.navl.validators import not_empty
 from ckan.model.authz import setup_default_user_roles
 
 log = logging.getLogger('ckanext.kata.converters')
@@ -26,10 +25,6 @@ def pid_from_extras(key, data, errors, context):
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key' and data[k] == 'versionPID':
             data[('versionPID',)] = data[(k[0], k[1], 'value')]
-
-            for _remove in data.keys():
-                if _remove[0] == 'extras' and _remove[1] == k[1]:
-                    del data[_remove]
 
     if not ('versionPID',) in data:
         data[('versionPID',)] = utils.generate_pid()
@@ -97,26 +92,18 @@ def org_auth_from_extras(key, data, errors, context):
 
 
 def ltitle_to_extras(key, data, errors, context):
-    """
+    '''
     Convert title & language pair from dataset form to db format and validate.
     Title & language pairs will be stored in package_extra.
-    """
+    '''
 
     extras = data.get(('extras',), [])
-    langs = []
-
     if not extras:
         data[('extras',)] = extras
 
     if len(data[key]) > 0:
         # Get title's language from data dictionary. key[0] == 'title'.
         lval = data[(key[0], key[1], 'lang')]
-
-        if not lval in langs:
-            langs.append(lval)
-        else:
-            if not _("Duplicate language found.") in errors[key]:
-                errors[key].append(_("Duplicate language found."))
 
         extras.append({'key': "title_%s" % key[1],
                       'value': data[key]})
@@ -129,32 +116,36 @@ def ltitle_to_extras(key, data, errors, context):
 
 
 def ltitle_from_extras(key, data, errors, context):
-    """
-    Convert title & language pair from db format to dataset form format.
-    """
-    if not ('langtitles',) in data:
-        data[('langtitles',)] = []
-    auths = []
-    orgs = []
-    orgauths = data[('langtitles',)]
+    '''
+    Convert all title & language pairs from db format to dataset form format.
+    '''
+    langtitles = data.get(('langtitle',), [])
+    if not langtitles:
+        data[('langtitle',)] = langtitles
+    titles = []
+    langs = []
     for k in data.keys():
         if 'extras' in k and 'key' in k:
             if re.search('^(title_|ltitle)\d+$', data[k]):
                 val = data[(k[0], k[1], 'value')]
-                auth = {'key': data[k], 'value': val}
-                if auth not in auths:
-                    auths.append(auth)
+                title = {'key': data[k], 'value': val}
+                if title not in titles:
+                    titles.append(title)
 
             if re.search('^(lsel|lang_title_)\d+$', data[k]):
                 val = data[(k[0], k[1], 'value')]
-                org = {'key': data[k], 'value': val}
-                if org not in orgs:
-                    orgs.append(org)
-    orgs = sorted(orgs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
-    auths = sorted(auths, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
-    for org, auth in zip(orgs, auths):
-        if not (auth, org) in orgauths:
-            orgauths.append((auth, org))
+                lang = {'key': data[k], 'lang': val}
+                if lang not in langs:
+                    langs.append(lang)
+    langs = sorted(langs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
+    titles = sorted(titles, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
+    for lang, title in zip(langs, titles):
+        langtitle = {}
+        langtitle.update({'value': title['value']})
+        langtitle.update({'lang': lang['lang']})
+        if not langtitle in langtitles:
+            langtitles.append(langtitle)
+
 
 
 def event_to_extras(key, data, errors, context):
@@ -169,7 +160,7 @@ def event_to_extras(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    if (key[2] == 'value' and len(data[key]) > 0 and type(data[key]) == unicode):
+    if key[2] == 'value' and len(data[key]) > 0 and type(data[key]) == unicode:
         extras.append({'key': "%s_%d" % (key[0], key[1]),
                        'value': data[key]
                       })
@@ -302,4 +293,26 @@ def checkbox_to_boolean(key, data, errors, context):
             data[key] = u'False'
 
 
+def add_dummy_to_extras(key, data, errors, context):
+    '''
+    Add some dummy content to extras.
+    '''
+    data[('extras',)].append({'key': u'dummy', 'value': u'dummy'})
+
+
+def update_pid(key, data, errors, context):
+    '''
+    Replace an empty unicode string with random PID.
+    '''
+    if type(data[key]) == unicode:
+        if len(data[key]) == 0:
+            data[key] = utils.generate_pid()
+
+
+def update_name(key, data, errors, context):
+    '''
+    If name is empty, generate a PID
+    '''
+    if len(data[key]) == 0:
+        data[key] = utils.generate_pid()
 

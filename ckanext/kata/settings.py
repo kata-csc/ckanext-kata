@@ -68,6 +68,38 @@ DATASET_URL_UNKNOWN = 'http://'
 # Text string for dataset's resource.resource_type
 RESOURCE_TYPE_DATASET = 'dataset'
 
+# Required extras fields
+KATA_FIELDS_REQUIRED = ['access',
+                        'accessRights',
+                        'author',
+                        'contactURL',
+                        'funder',
+                        'langdis',
+                        'language',
+                        'organization',
+                        'owner',
+                        'phone',
+                        'projdis',
+                        'project_funding',
+                        'project_homepage',
+                        'project_name',
+                        'publisher',
+                        'version',
+                        'versionPID']
+
+# Recommended extras fields
+KATA_FIELDS_RECOMMENDED = ['discipline',
+                           'evdescr',
+                           'evtype',
+                           'evwhen',
+                           'evwho',
+                           'geographic_coverage',
+                           'licenseURL',
+                           'temporal_coverage_begin',
+                           'temporal_coverage_end']
+
+KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
+
 
 def get_field_titles(_):
     '''
