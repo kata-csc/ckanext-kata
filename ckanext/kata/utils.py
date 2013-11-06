@@ -121,12 +121,13 @@ def resource_to_dataset(data_dict):
     '''
     Move some fields from resources to dataset. Used for viewing a dataset.
     '''
+    # TODO: Use converters and show_package_schema instead.
 
     try:
         # UI can't handle multiple instances of a dataset, so now use only the first.
         resource = [res for res in data_dict['resources'] if res['resource_type'] == settings.RESOURCE_TYPE_DATASET ][0]
     except (KeyError, IndexError):
-        log.error('Dataset without a dataset resource: %s' % data_dict['id'])
+        log.debug('Dataset without a dataset resource: %s' % data_dict['id'])
         return data_dict
 
     if resource:
@@ -144,6 +145,7 @@ def dataset_to_resource(data_dict):
     '''
     Move some fields from dataset to resources. Used for saving to DB.
     '''
+    # TODO: Use converters and create_package_schema instead.
 
     if 'resources' not in data_dict:
         try:
