@@ -26,7 +26,7 @@
 	<tr>
 		<th>Name</th>
 		<th>Organisation</th>
-	</td>
+	</tr>
 		{% for auth, org in pkg_dict.orgauths %}
 		<tr>
 			<td>{{ h.reference_update(auth.value) }}</td>
@@ -208,6 +208,12 @@ This dataset is
 <section class="module-content additional-info">
 <h3>{{ _('Dataset lifecycle events') }}</h3>
 <table class="table table-striped table-bordered table-condensed">
+    <colgroup>
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+    </colgroup>
 	<tr>
 		<th>{{ _('Type') }}</th>
 		<th>{{ _('Who') }}</th>
