@@ -8,14 +8,14 @@
 		<td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}No language{% endif%}</td>
 	</tr>
 	{% endif %}
-	{% if pkg_dict.langtitles %}
+	{% if pkg_dict.langtitle %}
 	<tr>
 		<th class="dataset-label" colspan="2">{{ _('Titles') }}</th>
 	</tr>
-	{% for title, lang in pkg_dict.langtitles %}
+	{% for langtitle in pkg_dict.langtitle %}
 	<tr>
-		<td>{{lang.value}}</td>
-		<td>{{title.value}}</td>
+		<td>{{ langtitle.lang }}</td>
+		<td>{{ langtitle.value }}</td>
 	</tr>
 	{% endfor %}
 	{% endif %}
@@ -30,7 +30,7 @@
 		{% for auth, org in pkg_dict.orgauths %}
 		<tr>
 			<td>{{ h.reference_update(auth.value) }}</td>
-			<td>{{org.value}}</td>
+			<td>{{ org.value }}</td>
 		</tr>
 		{% endfor %}
 	{% endif %}

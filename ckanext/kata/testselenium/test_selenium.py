@@ -156,7 +156,7 @@ class TestKataWithUser(TestCase):
         browser.implicitly_wait(8)  # Wait for javascript magic to alter fields
 
         try:
-            field = browser.find_element_by_xpath("//input[@id='title__0__value_id']")
+            field = browser.find_element_by_xpath("//input[@id='langtitle__0__value_id']")
             field.send_keys('Selenium Dataset')
 
             field = browser.find_element_by_xpath("//input[@id='author__0__value_id']")
@@ -186,14 +186,14 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@name='projdis']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@id='owner']")
-            field.send_keys('Selenium')
-
             field = browser.find_element_by_xpath("//input[@id='contact']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@id='licenseURL']")
-            field.send_keys('Shareware')
+            field = browser.find_element_by_xpath("//input[@id='owner']")
+            field.send_keys('Selenium')
+
+            #field = browser.find_element_by_xpath("//input[@id='licenseURL']")
+            #field.send_keys('Shareware')
             field.send_keys(Keys.ENTER)
 
         except NoSuchElementException:
@@ -475,8 +475,8 @@ class TestKataWithUser(TestCase):
             #(find_plus_buttons, 1, [WebElement.click], None),
             #(find_plus_buttons, 1, [WebElement.click], None),
 
-            (browser.find_element_by_id, 'title__0__value_id', [u'Advanced Selenium Dataset'], None),
-            (browser.find_element_by_name, 'title__0__lang', [u'en'], None),
+            (browser.find_element_by_id, 'langtitle__0__value_id', [u'Advanced Selenium Dataset'], None),
+            (browser.find_element_by_name, 'langtitle__0__lang', [u'en'], None),
             #(browser.find_element_by_id, 'title__1__value_id', [u'Selenium-tietoaineisto'], None),
             #(browser.find_element_by_name, 'title__1__lang', [u'fi'], None),
             #(browser.find_element_by_id, 'title__2__value_id', [u'Selenium ÅÄÖ'], None),
@@ -512,7 +512,7 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_id, 'free', [Keys.SPACE], None),
             (browser.find_element_by_id, 'accessURL', [u'https://localhost/'], None),
 
-            (browser.find_element_by_id, 'licenseURL', [u'dada'], None),
+            #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
 
             (browser.find_element_by_xpath, "//section[@id='recmod']/h2/a", [Keys.ENTER], None),  # recommended info
 
