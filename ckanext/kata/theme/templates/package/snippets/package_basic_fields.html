@@ -144,7 +144,7 @@
 				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact phone number. The phone number must be in form \"+35812341234\".')) }} 
 			{% endcall %}			
 
-			{% call form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+			{% call form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, type='email', classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
 				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address.')) }} 
 			{% endcall %}			
 
