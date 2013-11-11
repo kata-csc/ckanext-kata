@@ -186,14 +186,14 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@name='projdis']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@id='owner']")
-            field.send_keys('Selenium')
-
             field = browser.find_element_by_xpath("//input[@id='contact']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@id='licenseURL']")
-            field.send_keys('Shareware')
+            field = browser.find_element_by_xpath("//input[@id='owner']")
+            field.send_keys('Selenium')
+
+            #field = browser.find_element_by_xpath("//input[@id='licenseURL']")
+            #field.send_keys('Shareware')
             field.send_keys(Keys.ENTER)
 
         except NoSuchElementException:
@@ -512,7 +512,7 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_id, 'free', [Keys.SPACE], None),
             (browser.find_element_by_id, 'accessURL', [u'https://localhost/'], None),
 
-            (browser.find_element_by_id, 'licenseURL', [u'dada'], None),
+            #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
 
             (browser.find_element_by_xpath, "//section[@id='recmod']/h2/a", [Keys.ENTER], None),  # recommended info
 
