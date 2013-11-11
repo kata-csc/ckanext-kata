@@ -22,7 +22,8 @@ from itertools import count
 log = logging.getLogger('ckanext.kata.validators')
 
 # Regular expressions for validating e-mail and telephone number
-EMAIL_REGEX = re.compile(r'[^@]+@[^@]+\.[^@]+')
+# Characters accepted for e-mail. Note that the first character can't be .
+EMAIL_REGEX = re.compile(r'^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~][\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~.]+@[a-z.]+\.[a-z]{2,6}$')
 TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
 
 def kata_tag_name_validator(value, context):
@@ -30,7 +31,7 @@ def kata_tag_name_validator(value, context):
     Checks an individual tag for unaccepted characters
     '''
 
-    tagname_match = re.compile('[\w \-.()/]*$', re.UNICODE)
+    tagname_match = re.compile('[\w \-.()/#]*$', re.UNICODE)
     if not tagname_match.match(value):
         raise Invalid(_('Tag "%s" must be alphanumeric '
                         'characters or symbols: -_.()/') % (value))
