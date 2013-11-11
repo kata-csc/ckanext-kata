@@ -258,7 +258,10 @@ header.masthead .not-authed a {
 }
 .hero-secondary {
 	position: relative;
-	float: right !important
+	float: right !important;
+}
+.hero-primary, .hero-secondary {
+        width: 450px !important;
 }
 .hero:after {
 	background-image: none !important;
@@ -268,6 +271,8 @@ header.masthead .not-authed a {
 	-webkit-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
 	box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
 	-moz-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
+	border: 1px solid;
+	border-color: #829CAC;
 	background-color: #FFF;
 }
 .padded-module {
@@ -361,27 +366,35 @@ input, button, select, textarea {
 	border: 1px solid #666;
 }
 .btn-primary {
-	background-color: #1C8770;
+	background-color: #17735F !important;
 	background-image: -webkit-linear-gradient(top, #209D82, #17725F);
 	background-image: -moz-linear-gradient(top, #209D82, #17725F);
 	background-image: -ms-linear-gradient(top, #209D82, #17725F);
 	background-image: -o-linear-gradient(top, #209D82, #17725F);
 }
 .btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
-	background-color:#17725F;
+	background-color: #17725F !important;
+	background-image: -webkit-linear-gradient(top, #209D82, #17725F);
+	background-image: -moz-linear-gradient(top, #209D82, #17725F);
+	background-image: -ms-linear-gradient(top, #209D82, #17725F);
+	background-image: -o-linear-gradient(top, #209D82, #17725F);
 }
 .toolbar .btn-primary {
-	background-color: #1C8770;
+	background-color: #17725F !important;
 	background-image: -webkit-linear-gradient(top, #209D82, #17725F);
 	background-image: -moz-linear-gradient(top, #209D82, #17725F);
 	background-image: -ms-linear-gradient(top, #209D82, #17725F);
 	background-image: -o-linear-gradient(top, #209D82, #17725F);
 }
 .toolbar .btn-primary:hover, .toolbar .btn-primary:active, .toolbar .btn-primary.active, .toolbar .btn-primary.disabled, .toolbar .btn-primary[disabled] {
-	background-color:#17725F;
+	background-color: #17725F !important;
+	background-image: -webkit-linear-gradient(top, #209D82, #17725F);
+	background-image: -moz-linear-gradient(top, #209D82, #17725F);
+	background-image: -ms-linear-gradient(top, #209D82, #17725F);
+	background-image: -o-linear-gradient(top, #209D82, #17725F);
 }
 .control-custom.disabled .checkbox.btn {
-	background-color: #1C8770;
+	background-color: #17725F !important;
 	background-image: -webkit-linear-gradient(top, #209D82, #17725F);
 	background-image: -moz-linear-gradient(top, #209D82, #17725F);
 	background-image: -ms-linear-gradient(top, #209D82, #17725F);
@@ -610,4 +623,19 @@ header.masthead {
 .kata-add-dataset-info {
 	float:left;
 	margin-right: 5px;
+}
+.ie8 .module-content {
+	padding: 9px !important;
+}
+.ie8 .kata-multi-label {
+    width: 120px !important;
+}
+.ie8 .kata-input-comp {
+    width: 120px !important;
+}
+.ie8 .kata-auth-label {
+    width: 120px !important;
+}
+.ie8 .katalabel1 {
+    width: 120px !important;
 }
