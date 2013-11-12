@@ -5,17 +5,17 @@
 {% set errors = errors or {} %}
 {% set lastevent = 1 %}
 
-<section class="module" id="recmod">
-  <h2 class="module-heading tta-orange">{{ _('Recommended information') }}&nbsp;&nbsp;
+<section class="module module-grey" id="recmod">
+  <h2 class="module-heading-add-dataset tta-orange">{{ _('Recommended information') }}&nbsp;&nbsp;
     <a class="tta-lblue" href="#recmod" onclick="$('#recommended').toggle()">
     <i class="icon-chevron-down tta-orange"></i></a>
-    &nbsp;&nbsp;<span class="module-link tta-dblue">
+    &nbsp;&nbsp;<span class="module-link">
     {{ _('Click chevron to hide/show recommended fields') }}</span>
   </h2>
   <div class="module-content" style="display: none;" id="recommended">
 
     <section class="module">
-      <h2 class="module-heading">{{ _('Coverage') }}</h2>
+      <h2 class="module-heading-add-dataset">{{ _('Coverage') }}</h2>
       <div class="module-content">
         
         {# ONKI selector for spatial data #}
@@ -57,7 +57,7 @@
     </section>
 
     <section class="module">
-      <h2 class="module-heading">{{ _('Relations') }}</h2>
+      <h2 class="module-heading-add-dataset">{{ _('Relations') }}</h2>
       <div class="module-content">
 
       {% if data.groups and 'title' in data.groups.0 %}
@@ -105,7 +105,7 @@
     </section>
 
     <section class="module">
-      <h2 class="module-heading">{{ _('File information') }}</h2>
+      <h2 class="module-heading-add-dataset">{{ _('File information') }}</h2>
       <div class="module-content">
         {% call form.input('fformat', label=_('File format'), id='fformat', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.fformat, error=errors.fformat, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
     	    {{ kata_form.tooltip(tooltip=_("Research data\'s file format can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.")) }}
@@ -120,7 +120,7 @@
     </section>
 
     <section class="module">
-      <h2 class="module-heading">{{ _('Dataset lifecycle events') }}</h2>
+      <h2 class="module-heading-add-dataset">{{ _('Dataset lifecycle events') }}</h2>
       <div class="module-content">
         <div data-module="custom-fields-kata" data-module-id="lifecycle" id="lifecycle">
           <label class="control-label katalabel1"><span>{{ _('event') }}</span></label>
@@ -262,7 +262,7 @@
     </section>
 
     <section class="module">
-      <h2 class="module-heading">{{ _('Free description') }}</h2>
+      <h2 class="module-heading-add-dataset">{{ _('Free description') }}</h2>
       <div class="module-content">
         {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('a freeform description'), value=data.notes, error=errors.notes) }}
         {# The tooltip can't be inserted so that it would look nice. If needed, add the tooltip below later. #}
