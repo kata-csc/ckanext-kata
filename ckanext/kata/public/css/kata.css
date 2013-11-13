@@ -108,10 +108,10 @@ body {
 	background: none !important;
 	font-family: Tahoma, Arial, sans-serif;
 }
-header.masthead .header-image .logo {
+header.masthead a.logo img {
 	height: 87px !important;
 }
-header.masthead .header-image {
+header.masthead a.logo img {
 	padding-top: 10px;
 }
 header.masthead {
@@ -355,6 +355,9 @@ a.tag:hover {
 }
 .tta-info {
 	margin-top: 50px;
+}
+.tta-info img {
+	height: 60px !important;
 }
 input, button, select, textarea {
 	font-family: Tahoma, Arial, sans-serif;
