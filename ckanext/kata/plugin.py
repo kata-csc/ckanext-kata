@@ -31,12 +31,14 @@ from ckanext.kata.validators import check_project, validate_access, validate_kat
     validate_language, validate_email, validate_phonenum, \
     check_project_dis, check_accessrequesturl, check_accessrights, \
     check_author_org, kata_tag_string_convert, \
-    kata_tag_name_validator, \
-    validate_discipline, validate_spatial
+    kata_tag_name_validator, validate_general, \
+    validate_discipline, validate_spatial, \
+    validate_mimetype, validate_algorithm
 from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
     org_auth_from_extras, pid_from_extras, \
-    add_to_group, remove_disabled_languages, checkbox_to_boolean, org_auth_to_extras, add_dummy_to_extras, update_pid, update_name
+    add_to_group, remove_disabled_languages, checkbox_to_boolean, \
+    org_auth_to_extras, add_dummy_to_extras, update_pid, update_name
 from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
 import ckan.lib.helpers as h
@@ -395,7 +397,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema = default_create_package_schema()
 
         for key in settings.KATA_FIELDS_REQUIRED:
-            schema[key] = [not_empty, convert_to_extras, unicode]
+            schema[key] = [not_empty, convert_to_extras, unicode, validate_general]
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras, unicode]
 
@@ -419,35 +421,38 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema.update({
             'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid, convert_to_extras],
             'versionPID': [default(u''), update_pid, unicode, convert_to_extras],
-            'author': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras]},
-            'organization': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras]},
+            'author': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras, validate_general]},
+            'organization': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras, validate_general]},
             'access': [not_missing, validate_access, convert_to_extras],
             'langdis': [checkbox_to_boolean, convert_to_extras],
             '__extras': [check_author_org],
             'projdis': [checkbox_to_boolean, check_project, convert_to_extras],
             '__junk': [check_junk],
-            'name': [ignore_missing, unicode, update_name],
-            'accessRights': [check_accessrights, convert_to_extras, unicode],
-            'project_name': [check_project_dis, unicode, convert_to_extras],
-            'funder': [check_project_dis, convert_to_extras, unicode],
-            'project_funding': [check_project_dis, convert_to_extras, unicode],
-            'project_homepage': [ignore_missing, check_project_dis, convert_to_extras, unicode],
+            'name': [ignore_missing, unicode, update_name, validate_general],
+            'accessRights': [check_accessrights, convert_to_extras, unicode, validate_general],
+            'project_name': [check_project_dis, unicode, convert_to_extras, validate_general],
+            'funder': [check_project_dis, convert_to_extras, unicode, validate_general],
+            'project_funding': [check_project_dis, convert_to_extras, unicode, validate_general],
+            'project_homepage': [ignore_missing, check_project_dis, convert_to_extras, unicode, validate_general],
             'discipline': [validate_discipline, convert_to_extras, unicode],
             'geographic_coverage': [validate_spatial, convert_to_extras, unicode],
-            'licenseURL': [ignore_missing, convert_to_extras, unicode],
+            'licenseURL': [ignore_missing, convert_to_extras, unicode, validate_general],
         })
 
-        schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras]}
-        schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras]}
-        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras]}
-        schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras]}
+        schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
+        schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
+        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date]}
+        schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
         schema['groups'].update({
             'name': [ignore_missing, unicode, add_to_group]
         })
 
         schema['resources'] = default_resource_schema()
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_accessrequesturl, unicode]
-        schema['resources']['algorithm'] = [ignore_missing, unicode]
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_accessrequesturl, unicode, validate_general]
+        schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
+        schema['resources']['hash'].append(validate_general)
+        schema['resources']['mimetype'].append(validate_mimetype)
+        log.debug(schema)
 
         return schema
 

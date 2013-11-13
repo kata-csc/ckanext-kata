@@ -20,8 +20,9 @@ from ckan.tests.html_check import HtmlCheckMethods
 from ckan.config.middleware import make_app
 from ckanext.kata.validators import validate_kata_date, validate_language, check_project, \
     check_project_dis, validate_email, validate_phonenum, \
-    validate_discipline, validate_spatial
-from ckan.lib.navl.dictization_functions import Invalid
+    validate_discipline, validate_spatial, validate_algorithm, \
+    validate_mimetype, validate_general
+from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean
 from ckanext.kata import settings, utils, actions
 
@@ -491,6 +492,15 @@ class TestKataValidators(TestCase):
         validate_phonenum(('phone',), dada, errors, None)
 
         assert len(errors) == 1
+        
+    def test_general_validator_invalid(self):
+        errors = defaultdict(list)
+        
+        dada = self.test_data.copy()
+        dada[('project_homepage',)] = u'http://www.<asdf123456>'
+        
+        validate_general(('project_homepage',), dada, errors, None)
+        assert len(errors) == 1
 
     def test_validate_discipline(self):
         errors = defaultdict(list)
@@ -599,7 +609,68 @@ class TestResouceConversions(TestCase):
         data_dict['resources'][0].pop('resource_type')
         data_dict = utils.resource_to_dataset(data_dict)
         assert 'accessrequestURL' not in data_dict
+        
+class TestResourceValidators(TestCase):
+    '''
+    Test validators for resources
+    '''
+    
+    @classmethod
+    def setup_class(cls):
+        '''
+        Using the resource's format for resource validator tests
+        '''
+        cls.test_data = {
+            'resources': [{
+                'url' : u'http://www.csc.fi',
+                'algorithm': u'MD5',
+                'hash': u'f60e586509d99944e2d62f31979a802f',
+                'mimetype': u'application/pdf',
+                'resource_type' : settings.RESOURCE_TYPE_DATASET,
+                }]
+            }
+    
+    def test_validate_mimetype_valid(self):
+        errors = defaultdict(list)
+        
+        data_dict = self.test_data.copy()
+        data_dict['resources'][0]['mimetype'] = u'vnd.3gpp2.bcmcsinfo+xml/'
+        # flatten dict (or change test_data to flattened form?)
+        data = flatten_dict(data_dict)
+        try:
+            validate_mimetype(('resources', 0, 'mimetype',), data, errors, None)
+        except Invalid:
+            raise AssertionError('Mimetype raised exception, it should not')
+    
+    def test_validate_mimetype_invalid(self):
+        errors = defaultdict(list)
+        
+        data_dict = self.test_data.copy()
+        data_dict['resources'][0]['mimetype'] = u'application/pdf><'
+        data = flatten_dict(data_dict)
+        
+        self.assertRaises(Invalid, validate_mimetype, ('resources', 0, 'mimetype',), data, errors, None)
 
+    def test_validate_algorithm_valid(self):
+        errors = defaultdict(list)
+        
+        data_dict = self.test_data.copy()
+        data_dict['resources'][0]['algorithm'] = u'RadioGatún-1216'
+        data = flatten_dict(data_dict)
+        
+        try:
+            validate_algorithm(('resources', 0, 'algorithm',), data, errors, None)
+        except Invalid:
+            raise AssertionError('Algorithm raised exception, it should not')
+        
+    def test_validate_algorithm_invalid(self):
+        errors = defaultdict(list)
+        
+        data_dict = self.test_data.copy()
+        data_dict['resources'][0]['algorithm'] = u'RadioGatún-1216!>'
+        data = flatten_dict(data_dict)
+        
+        self.assertRaises(Invalid, validate_algorithm, ('resources', 0, 'algorithm',), data, errors, None)
 
 class TestUtils(TestCase):
     """Unit tests for other functions in utils.py."""

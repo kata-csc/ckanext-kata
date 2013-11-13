@@ -24,6 +24,10 @@ log = logging.getLogger('ckanext.kata.validators')
 # Characters accepted for e-mail. Note that the first character can't be .
 EMAIL_REGEX = re.compile(r'^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~][\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~.]+@[a-z.]+\.[a-z]{2,6}$')
 TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
+# General regex to use in fields with no specific input
+GEN_REGEX = re.compile(r'^[^><]*$')
+HASH_REGEX = re.compile(r'^[\w\d\ \-(),]*$', re.U)
+MIME_REGEX = re.compile(r'^[\w\d\ \-.\/+]*$', re.U)
 
 def kata_tag_name_validator(value, context):
     '''
@@ -33,7 +37,7 @@ def kata_tag_name_validator(value, context):
     tagname_match = re.compile('[\w \-.()/#]*$', re.UNICODE)
     if not tagname_match.match(value):
         raise Invalid(_('Tag "%s" must be alphanumeric '
-                        'characters or symbols: -_.()/') % (value))
+                        'characters or symbols: -_.()/#') % (value))
     return value
 
 def kata_tag_string_convert(key, data, errors, context):
@@ -138,6 +142,15 @@ def validate_email(key, data, errors, context):
     if not EMAIL_REGEX.match(data[key]):
         errors[key].append(_('Invalid email address'))
 
+def validate_general(key, data, errors, context):
+    '''
+    General input validator.
+    Validate random data for characters specified by GEN_REGEX
+    '''
+    if len(data[key]) == 0:
+        pass
+    if not GEN_REGEX.match(data[key]):
+        errors[key].append(_('Invalid characters: <> not allowed'))
 
 def validate_phonenum(key, data, errors, context):
     '''
@@ -231,3 +244,26 @@ def validate_spatial(key, data, errors, context):
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
         data[key] = u''
+
+def validate_mimetype(key, data, errors, context):
+    '''
+    Validate mimetype, match to characters in
+    http://www.freeformatter.com/mime-types-list.html#mime-types-list
+    Also: http://www.iana.org/assignments/media-types
+    '''
+
+    val = data.get(key)
+    if not MIME_REGEX.match(val):
+        raise Invalid(_('File type (mimetype) "%s" must be alphanumeric '
+                        'characters or symbols: _-+./') % (val))
+    
+
+def validate_algorithm(key, data, errors, context):
+    '''
+    Matching to hash functions according to list in
+    http://en.wikipedia.org/wiki/List_of_hash_functions
+    '''
+    val = data.get(key)
+    if not HASH_REGEX.match(val):
+        raise Invalid(_('Algorithm "%s" must be alphanumeric characters '
+                        'or symbols _-()') % (val))
