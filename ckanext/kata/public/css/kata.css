@@ -88,6 +88,7 @@ ul.kata {
 .ui-timepicker-div dl { text-align: left; }
 .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
 .ui-timepicker-div .ui_tpicker_timezone_label { margin-bottom: -10px; }
+.ui_tpicker_timezone select { margin-top: 5px !important; }
 .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
 .ui-timepicker-div .ui_tpicker_timezone { margin: 0 10px 10px 10px; }
 .ui-timepicker-div td { font-size: 90%; }
@@ -275,7 +276,41 @@ header.masthead .not-authed a {
 	border: 1px solid;
 	border-color: #829CAC;
     border-radius: 3px 0 0 0 !important;
-    border-top-width: 0 !important;
+    border-top-width: 1 !important;
+}
+.module-heading {
+  /* CKAN style override */
+  *zoom: 1;
+  margin: 0;
+  padding: 7px 25px;
+  font-size: 14px;
+  line-height: 1.3;
+  background-color: #dddddd;
+  border-top: 0px !important;
+  border-bottom: 0px !important;
+  color: #03263E;
+}
+.module-heading-add-dataset {
+  *zoom: 1;
+  margin: 0;
+  padding: 7px 25px;
+  font-size: 14px;
+  line-height: 1.3;
+  background-color: #209D82;
+  border-top: 0px !important;
+  border-bottom: 0px !important;
+  color: #ffffff;
+  background-image: -webkit-linear-gradient(top, #209D82, #125b4b);
+  background-image: -moz-linear-gradient(top, #209D82, #125b4b);
+  background-image: -o-linear-gradient(top, #209D82, #125b4b);
+  background-image: -ms-linear-gradient(top, #209D82, #125b4b);
+  background-repeat: repeat no-repeat;  
+}
+.module-grey {
+	background-color: #dddddd;
+}
+.module-heading a.action {
+  color: #063A5A !important;
 }
 .padded-module {
 	padding: 15px 5px 5px 5px;
@@ -612,6 +647,31 @@ header.masthead {
     margin-right: 10px;
     float: right !important;
 }
+/* Multi inputs in add dataset */
+.kata-multi-input {
+	border: 1px solid;
+	border-color: #DDD;
+	padding: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.kata-multi-heading {
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+#orgauths {
+	padding-top: 15px;
+}
+#lastlang {
+	padding-top: 15px;
+}
+#temporal_coverage {
+	padding-top: 15px;
+}
+#temporal_coverage label {
+	margin: 0 !important;
+}
 /* ONKI selector */
 .onki-area {
 	border: 1px solid;
@@ -646,38 +706,4 @@ header.masthead {
 }
 .ie8 .katalabel1 {
     width: 120px !important;
-}
-.module-heading {
-  /* CKAN style override */
-  *zoom: 1;
-  margin: 0;
-  padding: 7px 25px;
-  font-size: 14px;
-  line-height: 1.3;
-  background-color: #dddddd;
-  border-top: 0px !important;
-  border-bottom: 0px !important;
-  color: #03263E;
-}
-.module-heading-add-dataset {
-  *zoom: 1;
-  margin: 0;
-  padding: 7px 25px;
-  font-size: 14px;
-  line-height: 1.3;
-  background-color: #dddddd;
-  border-top: 0px !important;
-  border-bottom: 0px !important;
-  color: #ffffff;
-  background-image:-webkit-linear-gradient(top, #209D82, #125b4b);
-  background-image:-moz-linear-gradient(top, #209D82, #125b4b);
-  background-image:-o-linear-gradient(top, #209D82, #125b4b);
-  background-image:-ms-linear-gradient(top, #209D82, #125b4b);
-  background-repeat:repeat no-repeat;
-}
-.module-grey {
-	background-color: #dddddd;
-}
-.module-heading a.action {
-  color: #063A5A !important;
 }
