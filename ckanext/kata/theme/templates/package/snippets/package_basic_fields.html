@@ -7,7 +7,10 @@
 <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
 <div class="module-content">
 <input type="hidden" name="name" value="{% if data.name %}{{data.name}}{% endif %}" />
-{% call form.input_block("titles", _('Titles') , error=errors.title, control_classes=["kata-multi-padding"], label_classes=["kata-multi-label"]) %}
+<div class="kata-multi-input">
+ <span class="kata-multi-heading">
+    {{ _('Titles') }}
+  </span><br />
 	{% set titles = [] %}
 
 	{% if data.langtitle %}
@@ -24,7 +27,7 @@
 	{# Render title fields #}
 	{% for langtitle in titles %}
 		{% set index = loop.index0 %}
-		{% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, error=errors.langtitle, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+		{% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
 			{% if index == 0 %}
 				{{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded but, note that the first title field must have a value.")) }}
 			{% endif %}
@@ -44,14 +47,20 @@
 			</div>
 		{% endcall %}
 	{% endfor %}
+	{% if errors.langtitle %}
+        <span class="error-block">{{ errors.langtitle[0].value[0]}}</span>
+    {% endif %}
 
 	</div>
-{% endcall %}
+</div>
 
-{% call form.input_block("author", _("Authors and organizations"), error=errors.author or errors.organization, control_classes=["kata-auth-padding"], label_classes=["kata-auth-label"]) %}
+<div class="kata-multi-input">
+ <span class="kata-multi-heading">
+    {{ _('Authors and organizations') }}
+  </span><br />
 	{% set authors = [] %}
 
-	{% if data.orgauths %}
+    {% if data.orgauths %}
     {% set authors = data.orgauths %}
 	{% else %}
 		{% if len(data.author) and len(data.organization) %}
@@ -73,7 +82,6 @@
 			{% do authors.append(('', '')) %}
 		{% endfor %}
 	{% endif %}
-
   <div data-module="custom-fields-kata" data-module-id="orgauths" data-module-numFields={{ (authors|length) }} id="orgauths">
 	{# Render author and organisation fields #}
 	{% for author, org in authors %}
@@ -99,7 +107,26 @@
 			</div>
 	  {% endfor %}
 	</div>
-{% endcall %}
+	{% if errors.author or errors.organization %}
+        <span class="error-block">
+        {% if errors.author %}
+          {% for item in errors.author %}
+            {% if item.value and item.value[0]|length > 2 %}             
+              {{ item.value[0] }}<br />
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% if errors.organization %}
+          {% for item in errors.organization %}
+            {% if item.value and item.value[0]|length > 2 %}
+              {{ item.value[0] }}<br />
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        </span>
+    {% endif %}
+</div>
 
 {# ONKI selector for keywords #}
 
@@ -115,7 +142,7 @@
     <input class="hidden-concept-value-field" type="hidden" name="tag_string" value='{{ data.tag_string }}'>   
   {% endif %}
   {% if errors.tag_string %}
-    <span class="error-block">{{ errors.tag_string }}</span>
+    <span class="error-block">{{ errors.tag_string[0] }}</span>
   {% endif %}
 </div>
 <br />

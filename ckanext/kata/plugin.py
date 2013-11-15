@@ -32,7 +32,7 @@ from ckanext.kata.validators import check_project, validate_access, validate_kat
     check_project_dis, check_accessrequesturl, check_accessrights, \
     check_author_org, kata_tag_string_convert, \
     kata_tag_name_validator, validate_general, \
-    validate_discipline, validate_spatial, \
+    validate_discipline, validate_spatial, validate_title, \
     validate_mimetype, validate_algorithm
 from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
@@ -401,7 +401,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras, unicode]
 
-        schema['langtitle'] = {'value': [not_missing, ltitle_to_extras],
+        schema['langtitle'] = {'value': [not_missing, ltitle_to_extras, validate_title],
                                'lang': [not_missing, validate_language]}
 
         # This is only needed to increase amount of fields converted to extras.
@@ -443,9 +443,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
         schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date]}
         schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
-        schema['groups'].update({
-            'name': [ignore_missing, unicode, add_to_group]
-        })
+        #schema['groups'].update({
+        #    'name': [ignore_missing, unicode, add_to_group]
+        #})
 
         schema['resources'] = default_resource_schema()
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_accessrequesturl, unicode, validate_general]

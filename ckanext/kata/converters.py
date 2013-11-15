@@ -40,10 +40,10 @@ def org_auth_to_extras(key, data, errors, context):
     if len(data[key]) > 0:
         if key[0] == 'author':
             if not ('organization', key[1], key[2]) in data:
-                errors[key].append(_('This author is without organization!'))
+                errors[key].append(_('Author is missing organization'))
         if key[0] == 'organization':
             if not ('author', key[1], key[2]) in data:
-                errors[key].append(_('This organization is without author!'))
+                errors[key].append(_('Organization is missing author'))
         extras.append({'key': "%s_%s" % (key[0], key[1]),
                   'value': data[key]})
 
@@ -110,9 +110,6 @@ def ltitle_to_extras(key, data, errors, context):
         extras.append({'key': 'lang_title_%s' % key[1],
                        'value': lval
                        })
-
-    if key[1] == 0 and len(data[key]) == 0 and not (key[0], key[1] + 1, 'value') in data:
-        errors[key].append(_('Add at least one non-empty title!'))
 
 
 def ltitle_from_extras(key, data, errors, context):

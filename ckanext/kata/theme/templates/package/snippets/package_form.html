@@ -1,4 +1,5 @@
 {% import 'macros/form.html' as form %}
+{% import 'macros/kata_form.html' as kataform %}
 {% set action = c.form_action or '' %}
 
 {# This provides a full page that renders a form for adding a dataset. It can
@@ -15,7 +16,7 @@ then itself be extended to add/remove blocks of functionality. #}
   {#<input type="hidden" name="_ckan_phase" value="" />#}
   {# pkg_name used in 3 stage edit #}
   <input type="hidden" name="pkg_name" value="{{ data.id }}" />
-  {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
+  {% block errors %}{{ kataform.kataerrors(error_summary) }}{% endblock %}
 
   {% block basic_fields %}
     {% snippet 'package/snippets/package_basic_fields.html', data=data, errors=errors, licences=c.licences, groups_available=c.groups_available, roles=c.roles, versionPID=c.versionPID, lastmod=c.lastmod, user=c.userobj %}

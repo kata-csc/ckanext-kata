@@ -21,3 +21,32 @@ onclick     - Javascript content for onclick element.
 {% macro plusbutton(id='', onclick='', attrs={}) %}
   <button type="button" class="btn checkbox kata-plus-btn" onclick="{{ onclick }}" title="{{ _('Add') }}"><span class="kata-btn-span">+</span></button>
 {% endmacro %}
+
+{#
+Builds a list of errors for the current form.
+
+errors  - A dict of field/message pairs.
+type    - The alert-* class that should be applied (default: "error")
+classes - A list of classes to apply to the wrapper (default: [])
+
+Example:
+
+  {% import 'macros/form.html' as form %}
+  {{ form.errors(error_summary, type="warning") }}
+
+#}
+{% macro kataerrors(errors={}, type="error", classes=[]) %}
+  {% if errors %}
+    <div class="error-explanation alert alert-{{ type }}{{ " " ~ classes | join(' ') }}">
+      <p>{{ _('The form contains invalid entries:') }}</p>
+      <ul>
+        {% for key, error in errors.items() %}
+          {#<li data-field-label="{{ key }}">{% if key %}{{ key }}: {% endif %}{{ error }}</li>#}
+          <li data-field-label="{{ key }}">{% if key %}{{ key }}{% endif %}</li>
+        {% endfor %}
+        <br />
+        <p>{{ _('See further information about the error(s) from the field in question. Note, that errors in resource url may be in resource related data, like file type and algorithm.') }}</p>
+      </ul>
+    </div>
+  {% endif %}
+{% endmacro %}

@@ -267,3 +267,12 @@ def validate_algorithm(key, data, errors, context):
     if not HASH_REGEX.match(val):
         raise Invalid(_('Algorithm "%s" must be alphanumeric characters '
                         'or symbols _-()') % (val))
+        
+def validate_title(key, data, errors, context):
+    '''
+    Check the existence of first title
+    '''
+    if key[1] == 0:
+        val = data.get(key)
+        if len(val) == 0:
+            raise Invalid(_('First title can not be empty'))
