@@ -76,6 +76,7 @@ def package_create(context, data_dict):
     try:
         removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs', \
                      'geographic_coverage_field_langs', 'geographic_coverage_field', \
+                     'geographic_coverage_tmp', \
                      'discipline_field_langs', 'discipline_field']
         for key in removable:
             del data_dict[key]
