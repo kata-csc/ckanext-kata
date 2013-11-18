@@ -26,10 +26,10 @@ from ckan.logic.validators import package_id_not_changed, owner_org_validator
 from ckan.logic.converters import convert_from_extras, convert_to_extras
 from ckan.lib.navl.validators import missing, ignore_missing, not_empty, not_missing, default, \
     ignore
-from ckanext.kata.validators import check_project, validate_access, validate_kata_date, \
+from ckanext.kata.validators import check_project, validate_kata_date, \
     check_junk, check_last_and_update_pid, \
     validate_language, validate_email, validate_phonenum, \
-    check_project_dis, check_accessrequesturl, check_accessrights, \
+    check_project_dis, check_direct_download_url, check_access_request_url, check_access_application_url, \
     check_author_org, kata_tag_string_convert, \
     kata_tag_name_validator, validate_general, \
     validate_discipline, validate_spatial, validate_title, \
@@ -399,7 +399,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_REQUIRED:
             schema[key] = [not_empty, convert_to_extras, unicode, validate_general]
         for key in settings.KATA_FIELDS_RECOMMENDED:
-            schema[key] = [ignore_missing, convert_to_extras, unicode]
+            schema[key] = [ignore_missing, convert_to_extras, unicode, validate_general]
 
         schema['langtitle'] = {'value': [not_missing, ltitle_to_extras, validate_title],
                                'lang': [not_missing, validate_language]}
@@ -411,7 +411,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
         schema['language'] = [validate_language, remove_disabled_languages, convert_to_extras, unicode]
-        schema['phone'] = [ignore_missing, validate_phonenum, convert_to_extras, unicode]
+        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras, unicode]
         schema['maintainer_email'].append(validate_email)
 
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
@@ -419,24 +419,25 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['tags'] = self.default_tags_schema()
 
         schema.update({
-            'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid, convert_to_extras],
-            'versionPID': [default(u''), update_pid, unicode, convert_to_extras],
+            'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
+            'version_PID': [default(u''), update_pid, unicode, convert_to_extras],
             'author': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras, validate_general]},
             'organization': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras, validate_general]},
-            'access': [not_missing, validate_access, convert_to_extras],
+            'availability': [not_missing, convert_to_extras],
             'langdis': [checkbox_to_boolean, convert_to_extras],
             '__extras': [check_author_org],
             'projdis': [checkbox_to_boolean, check_project, convert_to_extras],
             '__junk': [check_junk],
             'name': [ignore_missing, unicode, update_name, validate_general],
-            'accessRights': [check_accessrights, convert_to_extras, unicode, validate_general],
+            'access_application_URL': [ignore_missing, check_access_application_url, convert_to_extras, unicode, validate_general],
+            'access_request_url': [ignore_missing, check_access_request_url, convert_to_extras, unicode, validate_general],
             'project_name': [check_project_dis, unicode, convert_to_extras, validate_general],
-            'funder': [check_project_dis, convert_to_extras, unicode, validate_general],
+            'project_funder': [check_project_dis, convert_to_extras, unicode, validate_general],
             'project_funding': [check_project_dis, convert_to_extras, unicode, validate_general],
             'project_homepage': [ignore_missing, check_project_dis, convert_to_extras, unicode, validate_general],
             'discipline': [validate_discipline, convert_to_extras, unicode],
             'geographic_coverage': [validate_spatial, convert_to_extras, unicode],
-            'licenseURL': [ignore_missing, convert_to_extras, unicode, validate_general],
+            'license_URL': [ignore_missing, convert_to_extras, unicode, validate_general],
         })
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
@@ -448,7 +449,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #})
 
         schema['resources'] = default_resource_schema()
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_accessrequesturl, unicode, validate_general]
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_direct_download_url, unicode, validate_general]
         schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
         schema['resources']['hash'].append(validate_general)
         schema['resources']['mimetype'].append(validate_mimetype)
@@ -482,7 +483,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS:
             schema[key] = [convert_from_extras, ignore_missing, unicode]
 
-        schema['versionPID'] = [pid_from_extras, ignore_missing, unicode]
+        schema['version_PID'] = [pid_from_extras, ignore_missing, unicode]
 
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['organization'] = [ignore_missing, unicode]

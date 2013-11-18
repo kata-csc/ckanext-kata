@@ -228,44 +228,43 @@ class TestKataValidators(TestCase):
                 'evwho': [],
                 'groups': [],
                 'pkg_name': u''},
-            ('access',): u'contact',
-            ('accessRights',): u'',
-            ('accessrequestURL',): u'',
+            ('availability',): u'contact',
+            ('access_application_URL',): u'',
+            ('access_request_URL',): u'',
             ('algorithm',): u'',
             ('author', 0, 'value'): u'dada',
             ('checksum',): u'',
-            ('contactURL',): u'http://google.com',
+            ('contact_URL',): u'http://google.com',
             ('discipline',): u'',
             ('evtype', 0, 'value'): u'collection',
             ('extras',): [{'key': 'funder', 'value': u''},
                 {'key': 'discipline', 'value': u''},
-                {'key': 'publisher', 'value': u'dada'},
-                {'key': 'fformat', 'value': u''},
+                {'key': 'maintainer', 'value': u'dada'},
+                {'key': 'mimetype', 'value': u''},
                 {'key': 'project_funding', 'value': u''},
                 {'key': 'project_homepage', 'value': u''},
                 {'key': 'owner', 'value': u'dada'},
-                {'key': 'version', 'value': u'2013-08-14T10:37:09Z'},
                 {'key': 'temporal_coverage_begin', 'value': u''},
-                {'key': 'accessrequestURL', 'value': u''},
+                {'key': 'direct_download_url', 'value': u''},
                 {'key': 'phone', 'value': u'+35805050505'},
                 {'key': 'licenseURL', 'value': u'dada'},
                 {'key': 'geographic_coverage', 'value': u''},
                 {'key': 'access', 'value': u'contact'},
                 {'key': 'algorithm', 'value': u''},
                 {'key': 'langdis', 'value': u'True'},
-                {'key': 'accessRights', 'value': u''},
+                {'key': 'access_application_URL', 'value': u''},
                 {'key': 'contactURL', 'value': u'http://google.com'},
                 {'key': 'project_name', 'value': u''},
                 {'key': 'checksum', 'value': u''},
                 {'key': 'temporal_coverage_end', 'value': u''},
                 {'key': 'projdis', 'value': u'True'},
                 {'key': 'language', 'value': u''}],
-            ('fformat',): u'',
+            ('mimetype',): u'',
             ('funder',): u'',
             ('geographic_coverage',): u'',
             ('langdis',): u'False',
             ('language',): u'swe',
-            ('licenseURL',): u'dada',
+            ('license_URL',): u'dada',
             ('license_id',): u'',
             ('log_message',): u'',
             ('name',): u'',
@@ -278,7 +277,7 @@ class TestKataValidators(TestCase):
             ('project_funding',): u'',
             ('project_homepage',): u'',
             ('project_name',): u'',
-            ('publisher',): u'dada',
+            ('maintainer',): u'dada',
             ('save',): u'finish',
             ('tag_string',): u'dada',
             ('temporal_coverage_begin',): u'',
@@ -564,10 +563,10 @@ class TestResouceConversions(TestCase):
 
         cls.test_data = {
             'id' : u'test',
-            'accessrequestURL' : u'http://www.csc.fi',
+            'direct_download_url' : u'http://www.csc.fi',
             'algorithm': u'MD5',
             'checksum': u'f60e586509d99944e2d62f31979a802f',
-            'fformat': u'application/pdf',
+            'mimetype': u'application/pdf',
             }
 
         cls.test_data2 = {
@@ -593,22 +592,25 @@ class TestResouceConversions(TestCase):
 
     def test_dataset_to_resource_invalid(self):
         data_dict = self.test_data.copy()
-        data_dict.pop('accessrequestURL')
+        data_dict.pop('direct_download_url')
+        data_dict.pop('checksum')
+        data_dict.pop('mimetype')
         assert 'resources' not in data_dict
 
         data_dict = utils.dataset_to_resource(data_dict)
-        assert 'resources' not in data_dict
+        # dataset_to_resource can handle missing data, so resources is created
+        assert 'resources' in data_dict
 
     def test_resource_to_dataset(self):
         data_dict = self.test_data2.copy()
         data_dict = utils.resource_to_dataset(data_dict)
-        assert 'accessrequestURL' in data_dict
+        assert 'direct_download_url' in data_dict
 
     def test_resource_to_dataset_invalid(self):
         data_dict = self.test_data2.copy()
         data_dict['resources'][0].pop('resource_type')
         data_dict = utils.resource_to_dataset(data_dict)
-        assert 'accessrequestURL' not in data_dict
+        assert 'direct_download_url' not in data_dict
         
 class TestResourceValidators(TestCase):
     '''

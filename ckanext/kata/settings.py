@@ -69,32 +69,37 @@ DATASET_URL_UNKNOWN = 'http://'
 RESOURCE_TYPE_DATASET = 'dataset'
 
 # Required extras fields
-KATA_FIELDS_REQUIRED = ['access',
-                        'accessRights',
+KATA_FIELDS_REQUIRED = ['availability',
                         'author',
-                        'contactURL',
-                        'funder',
+                        'contact_URL',
                         'langdis',
                         'language',
                         'organization',
                         'owner',
-                        'phone',
+                        'contact_phone',
                         'projdis',
-                        'project_funding',
-                        'project_homepage',
-                        'project_name',
-                        'publisher',
+                        'maintainer',
+                        'maintainer_email',
                         'version',
-                        'versionPID']
+                        'version_PID']
 
 # Recommended extras fields
-KATA_FIELDS_RECOMMENDED = ['discipline',
+KATA_FIELDS_RECOMMENDED = ['access_application_URL',
+                           'access_request_URL',
+                           'algorithm',
+                           'direct_download_URL',
+                           'discipline',
                            'evdescr',
                            'evtype',
                            'evwhen',
                            'evwho',
                            'geographic_coverage',
-                           'licenseURL',
+                           'license_URL',
+                           'mimetype',
+                           'project_funder',
+                           'project_funding',
+                           'project_homepage',
+                           'project_name',
                            'temporal_coverage_begin',
                            'temporal_coverage_end']
 

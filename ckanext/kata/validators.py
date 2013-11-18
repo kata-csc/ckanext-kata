@@ -29,6 +29,7 @@ GEN_REGEX = re.compile(r'^[^><]*$')
 HASH_REGEX = re.compile(r'^[\w\d\ \-(),]*$', re.U)
 MIME_REGEX = re.compile(r'^[\w\d\ \-.\/+]*$', re.U)
 
+
 def kata_tag_name_validator(value, context):
     '''
     Checks an individual tag for unaccepted characters
@@ -39,6 +40,7 @@ def kata_tag_name_validator(value, context):
         raise Invalid(_('Tag "%s" must be alphanumeric '
                         'characters or symbols: -_.()/#+') % (value))
     return value
+
 
 def kata_tag_string_convert(key, data, errors, context):
     '''Takes a list of tags that is a comma-separated string (in data[key])
@@ -61,20 +63,12 @@ def kata_tag_string_convert(key, data, errors, context):
         tag_length_validator(tag, context)
         kata_tag_name_validator(tag, context)
 
-def validate_access(key, data, errors, context):
-    '''
-    Validates that accessRights field is filled
-    '''
-    if data[key] == 'form':
-        if not data[('accessRights',)]:
-            errors[key].append(_('You must fill up the form URL'))
-
 
 def check_project(key, data, errors, context):
     '''
     Check if user is trying to send project data when project is disabled.
     '''
-    if data[('project_name',)] or data[('funder',)] or\
+    if data[('project_name',)] or data[('project_funder',)] or\
         data[('project_funding',)] or data[('project_homepage',)]:
         if data[('projdis',)] != 'False':
             errors[key].append(_('Project data received even if no project is associated.'))
@@ -88,8 +82,8 @@ def validate_kata_date(key, data, errors, context):
         return
     try:
         iso8601.parse_date(data[key])
-    except iso8601.ParseError:
-        errors[key].append(_('Invalid date format, must be like 2012-12-31T13:12:11.'))
+    except (iso8601.ParseError, TypeError):
+        errors[key].append(_('Invalid date format, must be ISO 8601. Example: 2001-01-01'))
     except ValueError:
         errors[key].append(_('Invalid date'))
 
@@ -142,15 +136,17 @@ def validate_email(key, data, errors, context):
     if not EMAIL_REGEX.match(data[key]):
         errors[key].append(_('Invalid email address'))
 
+
 def validate_general(key, data, errors, context):
     '''
     General input validator.
-    Validate random data for characters specified by GEN_REGEX
+    Validate arbitrary data for characters specified by GEN_REGEX
     '''
     if len(data[key]) == 0:
-        pass
+        return
     if not GEN_REGEX.match(data[key]):
         errors[key].append(_('Invalid characters: <> not allowed'))
+
 
 def validate_phonenum(key, data, errors, context):
     '''
@@ -162,7 +158,7 @@ def validate_phonenum(key, data, errors, context):
 
 def check_project_dis(key, data, errors, context):
     '''
-    If projdis checkbox is checked, check out that the project fields have data.
+    If projdis checkbox is checked, check that the project fields have data.
     '''
     if not ('projdis',) in data:
         not_empty(key, data, errors, context)
@@ -174,16 +170,24 @@ def check_project_dis(key, data, errors, context):
                 errors[(key[0],)].append(_('Missing value'))
 
 
-def check_accessrights(key, data, errors, context):
-    if data[('access',)] == 'form':
+def check_access_application_url(key, data, errors, context):
+    if data[('availability',)] == 'access_application':
         not_empty(key, data, errors, context)
 
 
-def check_accessrequesturl(key, data, errors, context):
+def check_direct_download_url(key, data, errors, context):
     '''
-    Validate dataset's access request URL (resource.url).
+    Validate dataset's direct download URL (resource.url).
     '''
-    if ('access',) in data and data[('access',)] in ('free', 'ident'):
+    if ('availability',) in data and data[('availability',)] == 'direct_download':
+        not_empty(key, data, errors, context)
+
+
+def check_access_request_url(key, data, errors, context):
+    '''
+    Validate dataset's access request URL.
+    '''
+    if ('availability',) in data and data[('availability',)] == 'access_request':
         not_empty(key, data, errors, context)
 
 

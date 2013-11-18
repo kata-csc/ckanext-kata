@@ -132,9 +132,9 @@ def resource_to_dataset(data_dict):
 
     if resource:
         data_dict.update({
-            'accessrequestURL' : resource.get('url'),
+            'direct_download_url' : resource.get('url'),
             'checksum' : resource.get('hash'),
-            'fformat' : resource.get('mimetype'),
+            'mimetype' : resource.get('mimetype'),
             'algorithm' : resource.get('algorithm'),
         })
 
@@ -148,18 +148,16 @@ def dataset_to_resource(data_dict):
     # TODO: Use converters and create_package_schema instead.
 
     if 'resources' not in data_dict:
-        try:
-            data_dict['resources'] = [{
-                #'package_id' : pkg_dict1['id'],
-                'url' : data_dict.pop('accessrequestURL'),
-                'hash' : data_dict.pop('checksum'),
-                'mimetype' : data_dict.pop('fformat'),
-                'algorithm' : data_dict.pop('algorithm'),
-                'resource_type' : settings.RESOURCE_TYPE_DATASET,
-                'name' : data_dict.get('title'),
-            }]
-        except KeyError as error:
-            log.debug("%s not found in data_dict during dataset_to_resource() conversion" % error)
+        data_dict['resources'] = []
+
+    data_dict['resources'].append({
+        #'package_id' : pkg_dict1['id'],
+        'url' : data_dict.pop('direct_download_url', settings.DATASET_URL_UNKNOWN),
+        'hash' : data_dict.pop('checksum', u''),
+        'mimetype' : data_dict.pop('mimetype', u''),
+        'algorithm' : data_dict.pop('algorithm', u''),
+        'resource_type' : settings.RESOURCE_TYPE_DATASET,
+    })
 
     return data_dict
 
