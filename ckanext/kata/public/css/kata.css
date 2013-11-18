@@ -692,18 +692,3 @@ header.masthead {
 	float:left;
 	margin-right: 5px;
 }
-.ie8 .module-content {
-	padding: 9px !important;
-}
-.ie8 .kata-multi-label {
-    width: 120px !important;
-}
-.ie8 .kata-input-comp {
-    width: 120px !important;
-}
-.ie8 .kata-auth-label {
-    width: 120px !important;
-}
-.ie8 .katalabel1 {
-    width: 120px !important;
-}
