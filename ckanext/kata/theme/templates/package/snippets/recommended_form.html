@@ -111,7 +111,7 @@
     <section class="module">
       <h2 class="module-heading-add-dataset">{{ _('File information') }}</h2>
       <div class="module-content">
-      {% if data.resources is defined %}
+      {% if data.resources is defined and data.resources|length > 0 %}
         {% call form.input('mimetype', label=_('File format'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.resources[0].mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
     	    {{ kata_form.tooltip(tooltip=_("Research data\'s file format can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.")) }}
             {% if errors.resources %}
