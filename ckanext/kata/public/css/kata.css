@@ -732,3 +732,43 @@ h3.question {
 	padding: 2px;
 	width: 100%;	
 }
+.help-toc {
+	padding: 0px;
+	margin: 0px;
+}
+.help-toc ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	text-align: left;
+}
+.help-toc li {
+	background-color: #fafafa;
+	padding: 2px;
+	margin: 2px;
+	width: auto;
+	border: 1px solid #139CEC;
+}
+.help-toc li a {
+	display: inline-block;
+	color: #444;
+	display: block;
+	text-decoration: none;
+	padding: 2px;
+	width: 100%;	
+}
+.help-toc li a.toc-sub {
+	display: inline-block;
+    width: 100%;
+	color: #444;
+	display: block;
+	text-decoration: none;
+	padding: 4px;
+	padding-left: 20px;
+}
+.example {
+	background-color: #EEE;
+	border: 1px solid #139CEC;
+	padding: 5px;
+	margin: 5px;
+}

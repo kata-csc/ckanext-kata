@@ -11,184 +11,280 @@
 {% block primary_content %}
   <section class="help" id="kata_help">
     <section class="module">
-      <h2 class="module-heading"><a id="help-general" class="help-h2">{{ _('General') }}</a></h2>
+      <h3 class="module-heading"><a id="help-general" class="help-h3">{{ _('General information') }}</a></h3>
       <div class="module-content">
         <p> 
-        {{ _('All pages in Kata service are structured similarly with some page-specific exceptions. The upmost part of the page contains the TTA logo leading to front page, a search bar and a couple of user specific links or buttons, depending whether you are logged in or not. Beneath the aforementioned section is the main navigation bar. It is always visible and provides the most important features of the web service. The contents of the navigation bar differs slightly depending on whether you are currently logged in or not.') }}
+        {{ _('This Kata metadata catalogue\'s help page will guide you through the most common tasks in the service. 
+        Use the right side\'s links to quickly navigate to the desired section.') }}
         </p>
         <p>
-        {{ _('Beneath the navigation bar main content of the page is located. It is often divided into two or three parts, all of them providing different features. Typically, the upmost section contains the header and possibly some action buttons. The left part of the main content contains the main functionalities of the page and the right bar on the other hand some additional tools depending greatly on the displayed page. On the bottom of every page is a black coloured area, which displays contact information about the service.') }}
-        <h3 class="module-heading"><a id="help-common-phrases" class="help-h2">{{ _('Common phrases') }}</a></h3>
-        <div class="module-content">
-          <ul>
-            <li>{{ _('Dataset: a single set of metadata (of data)') }}</li>
-            <li>{{ _('Shibboleth: a single-sign in or logging-in system, typically known as HAKA login') }}</li>
-          </ul>
+        {{ _('See also the FAQ page. It might give you an answer to a specific question in mind.') }}
+        </p>
+        <h3 class="help-page">{{ _('Common phrases') }}</h3>
+        <ul class="help">
+          <li>{{ _('Dataset: a single set of metadata (of data)') }}</li>
+          <li>{{ _('Shibboleth: a single-sign in or logging-in system, typically known as HAKA login') }}</li>
+        </ul>
+      </div>
+    </section>
+    <section class="module">
+      <h3 class="module-heading"><a id="help-datasets" class="help-h3">{{ _('Search (Datasets)') }}</a></h3>
+      <div class="module-content">
+        <p>
+        {{ _('Search can be accessed from the Datasets page. You can submit your queries using the Search tab or
+        the Advanced search tab, which will provide a guided interface for more complex queries. Note that you can
+        also provide more complex queries to the search field by providing a correct syntax, which will be discussed later
+        in this section.') }}
+        </p>
+        <h3 class="help-page">{{ _('Limiting the search with facets') }}</h3>
+        <p>
+        {{ _('The right side of the search page provides facets from different categories. You can choose multiple 
+        and from different categories with a mouse click. You can remove a facet selection by pressing the "x" button. 
+        For example choosing free licenses from the License facet selection would search through the free data.') }}
+        </p>
+        <h3 class="help-page">{{ _('Using advanced search') }}</h3>
+        <p>
+        {{ _('Advanced search feature makes it easy for you to construct more complex searches. You can add 
+        as many search criteria as you want from the "ADD" button: Choose the desired target field from the menu 
+        and add logical operators from the leftmost menu. Note that the AND operators are grouped together by Kata so that
+        they will take precedence over criteria bound by OR.') }}
+        </p>
+        <h3 class="help-page">{{ _('Wildcards') }}</h3>
+        <p>
+        {{ _('The searches support two different wildcard characters. Symbol "?" provides a single character wildcard search. 
+        The following search would match both "text" and test: ') }}
+        </p>
+        <div class="example">
+        {{ _('te?t') }}
+        </div>
+        <p>
+        {{ _('To match multiple characters you can use the symbol "*". It matches 0 or more characters and can be placed in
+        the middle of the term as well as the end: ') }}
+        </p>
+        <div class="example">
+        {{ _('test*') }}
+        </div>
+        <div class="example">
+        {{ _('te*t') }}
+        </div>
+        <h3 class="help-page">{{ _('Logical operators and grouping') }}</h3>
+        <p>
+        {{ _('The search engine Kata uses supports the boolean operators AND, "+", OR, NOT and "-". Note that
+        the boolean operators must be provided as upper case characters. To search datasets containing both 
+        "climate" and "rain" you would type: ') }}
+        </p>
+        <div class="example">
+        {{ _('climate AND rain') }}
+        </div>
+        <p>
+        {{ _('To search for datasets that must contain climate and may also contain rain the search would be: ') }}
+        </p>
+        <div class="example">
+        {{ _('+climate rain') }}
+        </div>
+        <p>
+        {{ _('NOT and "-" work similarly. These can be used to rule out words. For example, to search for datasets
+        containing "climate" but not the word "rain" you would search for: ') }}
+        </p>
+        <div class="example">
+        {{ _('climate NOT rain') }}
+        </div>
+        <p>
+        {{ _('If needed, you can group the search criteria with parentheses. This will enable sub queries. For example,
+        to search for either "sun" or "rain" and "climate", use query: ') }}
+        </p>
+        <div class="example">
+        {{ _('(sun OR rain) AND climate') }}
+        </div>
+        <h3 class="help-page">{{ _('Fuzzy Searches') }}</h3>
+        <p>
+        {{ _('With fuzzy search you can match a word that is similar to the given one. Fuzzy search is constructed with symbol "~".
+        To search spellings similar to "roam" you could make a search: ') }}
+        </p>
+        <div class="example">
+        {{ _('roam~') }}
+        </div>
+        <h3 class="help-page">{{ _('Range Searches') }}</h3>
+        <p>
+        {{ _('The range searches work for both date fields to non-date fields. You can search for datasets added between the
+        lower and upper bounds of the provided dates with: ') }}
+        </p>
+        <div class="example">
+        {{ _('version:[20131212 TO 20141212]') }}
+        </div>
+        <h3 class="help-page">{{ _('Boosting a term') }}</h3>
+        <p>
+        {{ _('You can raise any word\'s importance by boosting it with the symbol "^" and a number. The number is so called boost factor
+        and the higher the number is, the more relevant the word will be. For example, to search for terms "northern hemisphere" and 
+        "southern hemisphere" with the "northern hemisphere" wanted to be more relevant, you could construct a search like: ') }}
+        </p>
+        <div class="example">
+        {{ _('"northern hemisphere"^5 "southern hemisphere"') }}
         </div>
       </div>
     </section>
     <section class="module">
-      <h2 class="module-heading"><a id="help-pages" class="help-h2">{{ _('Pages') }}</a></h2>
+      <h3 class="module-heading"><a id="help-dataset" class="help-h3">{{ _('Dataset') }}</a></h3>
       <div class="module-content">
-        <p>
-        {{ _('This section contains basic information about the pages in Kata service. Each page is explained separately to give basic information about its functions, usage and purpose.') }}
-        </p>
-
-        <h3 class="module-heading"><a id="help-front-page" class="help-h3">{{ _('Front page') }}</a></h3>
-        <div class="module-content">
-          <p>
-          {{ _('The front page contains a brief description of the Kata service and metadata in general. It also contains a search field which functions as a basic search for datasets and will eventually take user to page "Datasets". You can always return to the front page via clicking the TTA logo in the upper left corner of any page.') }}
-          </p>
-        </div>
-
-        <h3 class="module-heading"><a id="help-datasets" class="help-h3">{{ _('Datasets (Search)') }}</a></h3>
-        <div class="module-content">
-          <p>
-          {{ _('The Datasets page is the search page of Kata service. From this page you can easily search and browse for datasets. Type a word or set of words to the search field to find the type of dataset you want to browse and press enter or click the search button (shape of magnifying glass). You can also use advanced search which can be accessed from the tab \"Advanced Search\". Here you can direct the search criteria to a specific field, add several search criteria accompanied with boolean operators (AND, OR, NOT) of your choise and additionally add time limits. An advanced search criteria can also be manually constructed in the normal search by using Solr search engine\'s syntax, like: ') }}
-          <br />
-          {{ _('"text:forest AND text:industry AND title:atmosphere"') }}
-          <br />
-          </p>
-          <p>
-          {{ _('There are several ways to modify the result set. Using the "Order by" popup menu just beneath the search field, you can change the order of the displayed result.') }}
-          </p>
-          <p>
-          {{ _('From the toolbox (on the right side of the search page area) you can add different criteria to limit the result set. For example, you can click different words in the "Tags" window which will then limit the result to those containing these criteria. The inserted tags or other limiting criteria can always be removed pressing the "x" beside the added word. The list of limiting tags etc. are located under the search field.') }}
-          </p>
-        </div>
-        <h4 class="module-heading"><a id="help-dataset" class="help-h4">{{ _('Dataset') }}</a></h4>
-        <div class="module-content">
-          <p>
-          {{ _('From the search result you can open the dataset of your choise by clicking the dataset\'s header. Here you can see all the metadata and access the data itself via links provided. Note that in some cases additional data can be found from the "Additional Info" part toggling the link "hide/show". On top of the dataset\'s main area several buttons are usually provided. These will provide some useful actions like "Follow", "Edit", "Request Edit Rights" depending on the datasets and your current user rights.') }}
-          </p>
-          <p>
-          {{ _('The toolbox on the right side of the dataset contains several helpful tools. For example, it shows the groups this dataset belongs to - you can browse these groups by clicking its header. You can also acquire the metadata in RDF format via the "Metadata information" area\'s RDF link. From the "Related" area you can add a publication or a dataset related to the current dataset by clicking the button.') }}
-          </p>
-          <p>
-          {{ _('Note that you can always return back to your search results by clicking the browser\'s \'back\' button or typically also using the backspace button of your keyboard.') }}
-          </p>
-        </div>
-        <h3 class="module-heading"><a id="help-organizations" class="help-h3">{{ _('Organizations') }}</a></h3>
-        <div class="module-content">
-          <p>
-          {{ _('The organizations page provides features related to organizations. You can browse through the excisting organizations and see the information about it and browse through the datasets under this organization. If you are logged in you can also add new organizations, modify the ones you administer, add new users to organizations you administer, and add new datasets under the organization. Most of the features can be accessed via buttons on an organization\'s information page or tabs just above the organization\'s information area.') }}
-          </p>
-          <p>
-          {{ _('Any logged in user can add new organizations. Typically, you could add an organization for your research group to gather all your datasets under this one set so they would be easy to find and administer.') }}
-          </p>
-        </div>
-        <h3 class="module-heading"><a id="help-groups" class="help-h3">{{ _('Groups') }}</a></h3>
-        <div class="module-content">
-          <p>
-          {{ _('The actions of the groups page are quite similar to the organizations page. A group is typically a branch of science. Thus it may contain a broad variety of datasets. You can browse through the list of groups and see the information about a group by clicking its header or logo. If you are logged in you can also add a new dataset under this group or follow this specific group. It is also possible to add a new group and edit the ones you administer. The features accessible by you depend on your current login status. All features are accessible via the buttons above the group\'s main information area or the tabs on top of the group information.') }}
-          </p>
-        </div>
-        <h3 class="module-heading"><a id="help-about" class="help-h3">{{ _('About') }}</a></h3>
-        <div class="module-content">
-          <p>
-          {{ _('About provides some general information about the Kata metadata catalogue.') }}
-          </p>
-        </div>
-        <h3 class="module-heading"><a id="help-add-dataset" class="help-h3">{{ _('Add Dataset') }}</a> {{ _(' (requires login)') }}</h3>
-        <div class="module-content">
-          <p>
-          {{ _('The "Add Dataset" page will display a form for adding metadata of data. The fields in "General Information" are all mandatory. From "+" buttons you can add more fields, for example in case there are more than one author, the "+" signe next to "Organisation" field will add a new pair of Author and Organisation fields. In some cases you can check a box to bypass some fields, for example if the dataset has not been produced in a project you can check the button which will then hide the fields this feature allows you to skip. In addition, the "Permanent Identifier" can be left empty, the service can automatically generate a permanent identifier (PID) of an URN type. In "Usage information" part you can also provide the location of data this dataset\'s metadata is about.') }}
-          </p>
-          <p>
-          {{ _('Some fields have extra functionalities. For example the "Keywords" field tries to make suggestions of correct words. By hitting the enter key of your keyboard, you can accept a word and it is added to the field. If the system can not suggest the word you require, you can always add the word you typed, again with the enter key. Any such word can be removed from the list clicking the "x" beside the word. Date fields have a graphical selection tool to easier selection of dates and times. Select the right date and time with your mouse and you can even change the time zone from the default one if you need to. Clicking "Done" will insert the date and time to the field with a correct syntax.') }}
-          </p>
-          <p>
-          {{ _('In addition to the mandatory fields also some obligatory metadata can be given. These fields can be toggled visible using the "Hide/show" button in the "Recommended information" area. Note that all the data inserted is metadata of the data. The (target) data is never located in Kata service but in the storage service of your choise - Kata just tells what the data is, how it can be accessed etc.') }}
-          </p>
-          <p>
-          {{ _('When all required metadata is inserted, you can save the dataset by clicking the "Done" button. If there are some errors, the service will take you back to edit the metadata and will guide you to correct erratic fields. When the metadata is correct, your new dataset is automatically published to everyone and begins to be shown on search results. If you need to edit the metadata, you can do it any time via the "Edit" button. Via the "Edit" page you can also remove your dataset clicking the "Delete" button on the bottom of the dataset page.') }}
-          </p>
-        </div>
+      <p>
+      {{ _('Choosing a dataset from the search result will show the dataset\'s information. The dataset page also provides additional features:') }}
+      </p>
+      <ul class="help">
+        <li>{{ _('If you have sufficient privileges, you can choose to edit the dataset.') }}</li>
+        <li>{{ _('If you don\'t have enough priveleges but you are logged in, you can request for edit rights.') }}</li>
+        <li>{{ _('From the tabs you can see dataset\'s past activities and followers.') }}</li>
+        <li>{{ _('In the related tab you can see publications and datasets related to this one and if you are logged in
+        you can add a relation to this dataset.') }}</li>
+        <li>{{ _('In the right hand navigation you can choose to export the dataset\'s basic metadata in RDF format from the "RDF" link.') }}</li>
+        <li>{{ _('If you are logged in, you can choose to follow the dataset. By following the dataset you would start to receive changes to this data
+        to your Dashboard\'s news feed.') }}</li>
+      </ul>
+      
       </div>
     </section>
-
     <section class="module">
-      <h2 class="module-heading"><a id="help-user" class="help-h2">{{ _('User features') }}</a></h2>
+      <h3 class="module-heading"><a id="help-add-dataset" class="help-h3">{{ _('Add Dataset') }}</a></h3>
+      <div class="module-content">
+      <p>
+      {{ _('If you are logged in you can find "Add Dataset" buttons for example from the Datasets and Dashboard pages. This button
+      brings you to the Add Dataset form. The Add Dataset page encourages and guides you to fullfill the metadata as well as possible to
+      ensure that metadata is of good quality and your data is as well described as possible. The fields are accompanied with a 
+      tooltip, "?", which will give instructions for that specific field.') }}
+      </p>
+      <h3 class="help-page">{{ _('Required information') }}</h3>
+      {{ _('The upper part of the page contains the data fields that are the compulsory minimum for every dataset. Language and
+      project information can be skipped by checking the checkbox in the section in question. The fields are shortly explained here.') }}
+      <br /><br /><p>
+      {{ _('Basic information about the dataset:') }}
+      </p>
+      <div class="example">
+        {{ _('Titles: Title and its language. Multiple titles with different languages can be given.') }}
+      </div>
+      <div class="example">
+        {{ _('Authors: Author and author\'s organisation. Multiple author/organisation pairs can be given.') }}
+      </div>
+      <div class="example">
+        {{ _('Keywords: Keywords use YSO ontology from http://onki.fi/. The keywords are chosen from suggestions or you
+        can also provide your own word if suitable is not available.') }}
+      </div>
+      <div class="example">
+        {{ _('Languages: List of languages the data contains, in ISO 639-3 format. If there is no language, you can check the checkbox.') }}
+      </div>
+      <div class="example">
+        {{ _('Distributor / publisher contact information: Provide a name, phone number, valid email address and a homepage so
+        that others can contact the publisher / distributor about the data. This can be you as well. The email address will be hidden
+        from others than dataset editors and a messaging tool is provided for others instead.') }}
+      </div>
+      <p>
+      {{ _('Actors and roles:') }}
+      </p>
+      <div class="example">
+        {{ _('Project that produced this dataset: This information can be skipped by checking the checkbox. If the information is given,
+        all four fields must be filled with project data: Project name, project\'s funder, funding id (will be hidden to non-editors) and 
+        project\'s homepage.') }}
+      </div>
+      <div class="example">
+        {{ _('Owner information: Data\'s owner\'s information, for example a name or an identification URL.') }}
+      </div>
+      <p>
+      {{ _('Identification information:') }}
+      </p>
+      <div class="example">
+        {{ _('Permanent identifier: The permanent identifier is the data\'s unique identifier. If none is provided, Kata will give
+        it an URN identifier from National Library of Finland\'s address space, from a subspace given to Kata. This field can NOT be changed afterwards.') }}
+      </div>
+      <div class="example">
+        {{ _('Version identifier: The version PID can be given or if left empty is generated by Kata. If left to Kata, it will generate
+         an URN identifier from National Library of Finland\'s address space, from a subspace given to Kata.') }}
+      </div>
+      <div class="example">
+        {{ _('Modification date: Choose a modification date from the language selector. The default value is this moment.') }}
+      </div>
+      <p>
+      {{ _('Usage information tells where the data is located and/or how it can be accessed:') }}
+      </p>
+      <div class="example">
+        {{ _('Dataset is available for use: Choose a suitable option for your data. Provide also the URL\'s required, the URL fields are
+        displayed according to your choice. No URL is asked for if you choose the option "only by contacting the distributor".') }}
+      </div>
+      <div class="example">
+        {{ _('License: Choose a license from the popup menu. This will define who can use your data and possibly how they can use it.') }}
+      </div>
+      <h3 class="help-page">{{ _('Recommended information') }}</h3>
+      <p>
+      {{ _('Beneath the required information are the recommended data fields that are by default hidden but can be toggled visible.
+      It is useful to describe your data as well as possible, so if the fields in recommended information are valid to your data,
+      please fill them. Here are short explanations of the fields:') }}
+      </p>
+      <p>
+      {{ _('Coverage provides fields for spatial and temporal coverage:') }}
+      </p>
+      <div class="example">
+        {{ _('Spatial coverage: Places are provided from SUO ontology from http://onki.fi/. Choose the locations covered in your
+        data from the suggestions. You can also add your own location by typing and accepting it.') }}
+      </div>
+      <div class="example">
+        {{ _('Temporal coverage: Choose a time period covered in your data using the date selector.') }}
+      </div>
+      <p>
+      {{ _('Relations:') }}
+      </p>
+      <div class="example">
+        {{ _('Discipline/branch of science: The disciplines are chosen from the OKM-TIETEENALA ontology, from http://onki.fi/. 
+        The disciplines are provided only in Finnish and you should use these Finnish versions to help grouping and searching
+        of the data.') }}
+      </div>
+      <p>
+      {{ _('File information is especially technical information about your data:') }}
+      </p>
+      <div class="example">
+        {{ _('File format: The mimetype of the file, see http://www.iana.org/assignments/media-types for a complete list.') }}
+      </div>
+      <div class="example">
+        {{ _('Checksum and Algorithm: Checksum and the algorithm it was taken with, especially to verify that the file has not 
+        changed.') }}
+      </div>
+      <p>
+      {{ _('Dataset lifecycle events:') }}
+      </p>
+      <div class="example">
+        {{ _('In case there are events in this dataset, fill all four (event, by whom, when, description) fields. 
+        Choose the event type from the list and provide who did the act. Add also the time in format "1111-11-11T11:11:11" and
+        a description. Multiple events can be added, but all four are required when adding one.') }}
+      </div>
+      <p>
+      {{ _('Free description:') }}
+      </p>
+      <div class="example">
+        {{ _('Description: The description field can contain almost anything. Note, that the contents of the description field
+        are visible in the search results, so giving a good description may bring more attention to your dataset.') }}
+      </div>
+      </div>
+    </section>
+    <section class="module">
+      <h3 class="module-heading"><a id="help-other" class="help-h3">{{ _('Additional features') }}</a></h3>
       <div class="module-content">
         <p>
-        {{ _('Kata service provides several features to provide user specific information and actions. These features are usually accessible from the upper right corner of the page. Each feature is briefly explained in the next sections. The set of user specific actions depend on whether you are logged in to the service or not.') }}
+          {{ _('Kata contains several other features which are shortly covered here.') }}
         </p>
-        <h3 class="module-heading"><a id="help-user-login" class="help-h3">{{ _('Login') }}</a></h3>
-        <div class="module-content">
-          <p>
-          {{ _('While you are browsing the service anonymously, you have a "Log in" link visible in the page\'s upper right corner. Clicking the link will take you to login page, where you can log in via your HAKA credentials using the HAKA-button which will take you to HAKA login page, or in case you have only Kata login instead of HAKA login typing your "Username" and "Password" to the fields and click "Log in" button beneath them.') }}
-          </p>
-          <p>
-          {{ _('If you are using Kata login you can reset your password using the "Forgot you password?" button from the toolbox. This will ask your username and send you an email which will guide you to reset your password.') }}
-          </p>
-        </div>
-        <h3 class="module-heading"><a id="help-user-register" class="help-h3">{{ _('Register') }}</a></h3>
-        <div class="module-content">
-          <p>
-          {{ _('The register page provides creation of user credentials to Kata service in case HAKA login is unavailable to you. Registration is not open publicly.') }}
-          </p>
-          <p>
-          {{ _('The registration form contains several mandatory fields:') }}
-          </p>
-          <ul>
-            <li>
-              {{ _('Username: your login name. Username must consist of lower case alphanumeric characters and \'_\'-sign.') }}
-            </li>
-            <li>
-              {{ _('Full Name: your name.') }}
-            </li>
-            <li>
-              {{ _('Email: your valid email address. Note, that email address is compulsory and provides a way to reset your password if you should ever forget it.') }}
-            </li>
-            <li>
-              {{ _('Password: your password. Minimum is four characters but it is strongly advisable to use strong passwords.') }}
-            </li>
-            <li>
-              {{ _('Confirm: type the same password again.') }}
-            </li>
-            </ul>
-          <p>
-          {{ _('Before you hit the "Create Account" button you have to confirm that you are a valid user. This is done via the reCAPTCHA field just beneath the "Confirm" text field. Type the two words you see in the upmost part of the reCAPTCHA block to the text field. If the words are too messy, you can always require a new pair of words using the reCAPTCHA block\'s tiny refresh button, just next to the reCAPTCHA\'s text field, on its right side. ReCAPTCHA helps to prevent creation of machine-generated user accounts. ') }}
-          </p>
-        </div>
-        <h3 class="module-heading"><a id="help-user-notifications" class="help-h3">{{ _('Notifications') }}</a> {{ _(' (requires login)') }}</h3>
-        <div class="module-content">
-          <p>
-          {{ _('When you are logged in, in the upper right corner of the page there is a notification button showing a number. Clicking this button will open a dashboard page showing a news feed of activities from users and datasets that you follow. If you are not following any users or datasets, the news feed is of course empty and the button will display a white \"0\".') }}
-          </p>
-        </div>
-        <h3 class="module-heading"><a id="help-user-logout" class="help-h3">{{ _('Log out') }}</a> {{ _(' (requires login)') }}</h3>
-        <div class="module-content">
-          <p>
-          {{ _('When you are logged in, in the upper right corner of the page there is a link to provide quick log out. The same log out function is available in the profile menu as well.') }}
-          </p>
-        </div>
-        <h3 class="module-heading"><a id="help-user-profile" class="help-h3">{{ _('Profile menu') }}</a> {{ _(' (requires login)') }}</h3>
-        <div class="module-content">
-          <p>
-          {{ _('When you are logged in, in the upper right corner a button with avatar (your account specific logo) accompanied with a dropdown list. Clicking this button will show you links to the following pages:') }}
-          </p>
-          <ul>
-            <li>
-              {{ _('Dashboard: this will contain the news feed of activities from users and datasets you follow') }}
-            </li>
-            <li>
-              {{ _('My profile: my profile page will show basic information about you, list of your datasets, activity stream and information about followers. From the \'Edit\' button you can edit your account settings.') }}
-            </li>
-            <li>
-              {{ _('Edit profile: from this page you can edit your account\'s settings. If you have logged in with HAKA credentials, changes made here won\'t affect your HAKA account but only the information specifically in Kata service. From the \'Change your password\' part of the page you can change your password, by typing the same password to both fields. Finally, updates to your profile can be confirmed clicking the \'Update Profile\' button.') }}
-            </li>
-            <li>
-              {{ _('Log out: this action will log you out from the Kata service. After this the account specific actions will be out of your reach, eg. \'Add Dataset\' and \'Edit Profile\'.') }}
-            </li>
-          </ul>
-        </div>
-        <h3 class="module-heading"><a id="help-user-mydatasets" class="help-h3">{{ _('My Datasets') }}</a> {{ _(' (requires login)') }}</h3>
-        <div class="module-content">
-          <p>
-          {{ _('When you are logged in, in the upper right corner of the page there is a link to access the list of your own datasets. The opening page will also provide access to other features, like the followers page.') }}
-          </p>
-        </div>
+        <h3 class="help-page"><a id="user-profile" class="help-h4">{{ _('User profile') }}</a></h3>
+        <p>
+        {{ _('User profile provides basic information about you, your dataset and actions. The user profile
+        can be accessed from the upper right corner. The upper right corner also provides a direct link to
+        your own datasets. Note that if you have logged in using Haka, you can not change your profile information
+        from Kata: the changes must be done by your home organisation.') }}
+        </p>
+        <h3 class="help-page"><a id="stats" class="help-h4">{{ _('Stats') }}</a></h3>
+        <p>
+        {{ _('The Stats link will take you to the statistics page. The page will show you some general information
+        about Kata, its datasets and users.') }}
+        </p>
+        <h3 class="help-page"><a id="collections" class="help-h4">{{ _('Collections') }}</a></h3>
+        <p>
+        {{ _('The Collections page shows categories which may have datasets under them, grouped together under one set.
+        You can also add a new collection and from the collection page also add a dataset under this collection. Note, 
+        that for now only collections\' administrators can add datasets under it.') }}
+        </p>
       </div>
     </section>
   </section>
@@ -198,67 +294,35 @@
   <section class="help_right" id="kata_help_right">
     <h2 class="module-heading">{{ _('Table of contents') }}</h2>
     <div class="module-content">
-      <i>{{ _('Navigate through page content:') }}</i><br /><br />
-      <ul>
-        <li>
-          <a href="#help-general">{{ _('General') }}</a>
-          <ul>
-            <li>
-              <a href="#help-common-phrases">{{ _('Common phrases') }}</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="#help-pages">{{ _('Pages') }}</a>
+      <div class="help-toc">
         <ul>
           <li>
-            <a href="#help-front-page">{{ _('Front page') }}</a>
+            <a href="#help-general">{{ _('General information') }}</a>
           </li>
           <li>
-            <a href="#help-datasets">{{ _('Datasets (Search)') }}</a>
-            <ul>
-              <li>
-                <a href="#help-dataset">{{ _('Dataset') }}</a>
-              </li>
-            </ul>
+            <a href="#help-datasets">{{ _('Search (Datasets)') }}</a>
           </li>
           <li>
-            <a href="#help-organizations">{{ _('Organizations') }}</a>
+            <a href="#help-dataset">{{ _('Dataset') }}</a>
           </li>
           <li>
-            <a href="#help-groups">{{ _('Groups') }}</a>
+            <a href="#help-add-dataset">{{ _('Add Dataset') }}</a>
           </li>
           <li>
-            <a href="#help-about">{{ _('About') }}</a>
+            <a href="#help-other">{{ _('Additional features') }}</a>
           </li>
           <li>
-            <a href="#help-add-dataset">{{ _('Add Dataset') }}</a> {{ _(' (requires login)') }}
+            <a href="#user-profile" class="toc-sub">{{ _('- User profile') }}</a>
+          </li>
+          <li>
+            <a href="#stats" class="toc-sub">{{ _('- Stats') }}</a>
+          </li>
+          <li>
+            <a href="#collections" class="toc-sub">{{ _('- Collections') }}</a>
           </li>
         </ul>
-        <li>
-          <a href="#help-user">{{ _('User features') }}</a>
-          <ul>
-            <li>
-              <a href="#help-user-login">{{ _('Login') }}</a>
-            </li>
-            <li>
-              <a href="#help-user-register">{{ _('Register') }}</a>
-            </li>
-            <li>
-              <a href="#help-user-notifications">{{ _('Notifications') }}</a> {{ _(' (requires login)') }}
-            </li>
-            <li>
-              <a href="#help-user-logout">{{ _('Logout') }}</a> {{ _(' (requires login)') }}
-            </li>
-            <li>
-              <a href="#help-user-profile">{{ _('Profile menu') }}</a> {{ _(' (requires login)') }}
-            </li>
-            <li>
-              <a href="#help-user-mydatasets">{{ _('My Datasets') }}</a> {{ _(' (requires login)') }}
-            </li>
-          </ul>
-        </li>
-      </ul>
+      </div>
+    
     </div>
   </section>
 </div>
