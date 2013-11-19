@@ -5,7 +5,7 @@
 	{% if pkg_dict.language or pkg_dict.langdis %}
 	<tr>
 		<th class="dataset-label">{{ _('Language') }}</th>
-		<td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}No language{% endif%}</td>
+		<td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}{{ _('No language') }}{% endif%}</td>
 	</tr>
 	{% endif %}
 	{% if pkg_dict.langtitle %}
@@ -24,8 +24,8 @@
 		<th class="dataset-label" colspan="2">{{ _('Authors')}}</th>
 	</tr>
 	<tr>
-		<th>Name</th>
-		<th>Organisation</th>
+		<th>{{ _('Name') }}</th>
+		<th>{{ _('Organisation') }}</th>
 	</tr>
 		{% for orgauth in pkg_dict.orgauth %}
 		<tr>
@@ -38,7 +38,7 @@
 </table>
 </section>
 <section class="module-content">
-<h3>Description</h3>
+<h3>{{ _('Description') }}</h3>
   {% if not pkg_notes_formatted == '' %}
     <div class="notes embedded-content">
       {{ pkg_notes_formatted }}
@@ -48,20 +48,20 @@
   {% endif%}
 </section>
 {% block package_tags %}
-	{% if pkg_dict.tags %}<h3 class="module-content">Keywords</h3>{% endif %}
+	{% if pkg_dict.tags %}<h3 class="module-content">{{ _('Keywords') }}</h3>{% endif %}
 	{% snippet "package/snippets/tags.html", tags=pkg_dict.tags %}
 {% endblock %}
 <section class="module-content additional-info">
 <h3>{{ _('Usage information') }}</h3>
 <div class="info-block{{ ' info-inline' if inline }}{{ " " ~ classes | join(' ') }}">
-This dataset is
-{% if pkg_dict.access == 'form' %} available via an access form in <a href="{{ pkg_dict.accessRights }}">this link</a> {% endif%}
-{% if pkg_dict.access == 'free' %} available freely {% if pkg_dict.accessrequestURL %} <a href="{{pkg_dict.accessrequestURL}}">from this address</a> {% endif %} {% endif %}
-{% if pkg_dict.access == 'ident' %} available via login {% if pkg_dict.accessrequestURL %} <a href="{{pkg_dict.accessrequestURL}}">from this address</a> {% endif %} {% endif %}
-{% if pkg_dict.access == 'contact' %} available by <a href="/request_dataset/{{pkg_dict.id}}">contacting the distributor</a> {% endif %}
-{% if not pkg_dict.access %} available freely{% endif %}
+{{ _('This dataset is') }}
+{% if pkg_dict.availability == 'access_application' %}{{ _(' available via an access form in ') }}<a href="{{ pkg_dict.access_application_URL }}">{{ _('this link') }}</a> {% endif%}
+{% if pkg_dict.availability == 'direct_download' %}{{ _(' available freely ') }}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}">{{ _('from this address') }}</a> {% endif %} {% endif %}
+{% if pkg_dict.availability == 'access_request' %}{{ _(' available via login ') }}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}">{{ _('from this address') }}</a> {% endif %} {% endif %}
+{% if pkg_dict.availability == 'contact_owner' %}{{ _(' available by ') }}<a href="/request_dataset/{{pkg_dict.id}}">contacting the distributor</a> {% endif %}
+{% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}{% endif %}
 
-{% if pkg_dict.license_title %} with license as {{pkg_dict.license_title}}
+{% if pkg_dict.license_title %}{{ _(' with license as ') }}{{pkg_dict.license_title}}
     {%- if pkg_dict.licenseURL %}, {{pkg_dict.licenseURL}}
     {%- endif -%}
 {%- endif %}.
@@ -71,40 +71,40 @@ This dataset is
 <h3>{{ _('Contact information') }}</h3>
 <table class="table table-striped table-bordered table-condensed">
 	<tbody>
-	 {% if pkg_dict.publisher %}
+	 {% if pkg_dict.maintainer %}
 	<tr>
 		<th class="dataset-label" colspan="2">{{ _('Primary contact') }}</th>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Name') }}</th>
-		<td class="dataset-details">{{ pkg_dict.publisher }}</td>
+		<td class="dataset-details">{{ pkg_dict.maintainer }}</td>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Phone') }}</th>
-		<td class="dataset-details">tel:{{ pkg_dict.phone }}</td>
+		<td class="dataset-details">tel:{{ pkg_dict.contact_phone }}</td>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Email') }}</th>
 		{% if h.check_access('package_update', {'id':pkg_dict.id }) %}
 			<td class="dataset-details">mailto:{{ pkg_dict.maintainer_email}}</td>
 		{% else %}
-			<td class="dataset-details"><a href="/contact/{{pkg_dict.id}}">Send a message</a></td>
+			<td class="dataset-details"><a href="/contact/{{pkg_dict.id}}">{{ _('Send a message') }}</a></td>
 		{% endif %}
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Contact URL') }}</th>
-		<td class="dataset-details">{{ pkg_dict.contactURL }}</td>
+		<td class="dataset-details"><a href="{{ pkg_dict.contact_URL }}">{{ pkg_dict.contact_URL }}</a></td>
 	</tr>
     {% endif%}
     {% if pkg_dict.project_name %}
 	<tr>
-		<th class="dataset-label" colspan="2">{{ _('Project contact') }}</th>
+		<th class="dataset-label" colspan="2">{{ _('Project information') }}</th>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.project_name }}</td>
 	</tr>
 	<tr>
-		<th class="dataset-label">{{ _('Funding contact') }}</th><td class="dataset-details">{{ pkg_dict.funder }}</td>
+		<th class="dataset-label">{{ _('Funding contact') }}</th><td class="dataset-details">{{ pkg_dict.project_funder }}</td>
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Homepage') }}</th><td class="dataset-details"><a href="{{ pkg_dict.project_homepage }}">{{ pkg_dict.project_homepage }}</a></td>
@@ -115,7 +115,7 @@ This dataset is
 		<th class="dataset-label" colspan="2">{{ _('Contributor') }}</th>
 	</tr>
 	<tr>
-		<td class="dataset-details">{{ pkg_dict.contibutor }}</td>
+		<td class="dataset-details">{{ pkg_dict.contributor }}</td>
 	</tr>
     {% endif %}
     {% if pkg_dict.producer %}
@@ -124,6 +124,15 @@ This dataset is
 	</tr>
 	<tr>
 		<td class="dataset-details">{{ pkg_dict.producer }}</td>
+	</tr>
+    {% endif %}
+    {% if pkg_dict.owner %}
+    <tr>
+		<th class="dataset-label" colspan="2">{{ _('Owner') }}</th>
+	</tr>
+	<tr>
+	    <th class="dataset-details">{{ _('Owner identity') }}</th>
+		<td class="dataset-details">{{ pkg_dict.owner }}</td>
 	</tr>
     {% endif %}
 	</tbody>
@@ -158,7 +167,7 @@ This dataset is
 {% if pkg_dict.temporal_coverage_begin and pkg_dict.temporal_coverage_end %}
 <tr>
 	<th class="dataset-label">{{ _('Period of time covered') }}</th>
-	<td class="dataset-details">{{pkg_dict.temporal_coverage_begin}} to {{pkg_dict.temporal_coverage_end}}</td>
+	<td class="dataset-details">{{pkg_dict.temporal_coverage_begin}}{{_(' to ') }}{{pkg_dict.temporal_coverage_end}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.publications %}
@@ -185,10 +194,10 @@ This dataset is
 	<td class="dataset-details">{{pkg_dict.discipline}}</td>
 </tr>
 {% endif %}
-{% if pkg_dict.fformat %}
+{% if pkg_dict.mimetype %}
 <tr>
 	<th class="dataset-label">{{ _('File format') }}</th>
-	<td class="dataset-details">{{pkg_dict.fformat}}</td>
+	<td class="dataset-details">{{pkg_dict.mimetype}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.algorithm and pkg_dict.checksum %}
@@ -227,7 +236,7 @@ This dataset is
 		<td class="dataset-details">{{when.value}}</td>
 		<td class="dataset-details">{{descr.value}}</td>
 	</tr>
-{% endfor %}
+    {% endfor %}
 </table>
 </section>
 {% endif %}

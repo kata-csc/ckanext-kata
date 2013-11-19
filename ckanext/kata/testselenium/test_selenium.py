@@ -486,8 +486,8 @@ class TestKataWithUser(TestCase):
             #(find_plus_buttons, 3, [WebElement.click], None),
             #(find_plus_buttons, 3, [WebElement.click], None),
 
-            (browser.find_element_by_id, 'author__0__value_id', [u'Ascii Author'], None),
-            (browser.find_element_by_id, 'organization__0__value_id', [u'CSC Oy'], None),
+            (browser.find_element_by_id, 'orgauth__0__value_id', [u'Ascii Author'], None),
+            (browser.find_element_by_id, 'orgauth__0__org', [u'CSC Oy'], None),
             #(browser.find_element_by_id, 'author__1__value_id', [u'Åke Author'], None),
             #(browser.find_element_by_id, 'organization__1__value_id', [u'Organization 2'], None),
             #(browser.find_element_by_id, 'author__2__value_id', [u'прстуфхцчшчьыъэюя Author'], None),
