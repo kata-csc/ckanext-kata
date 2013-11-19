@@ -384,8 +384,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras, unicode, validate_general]
 
-        schema['langtitle'] = {'value': [not_missing, ltitle_to_extras, validate_title],
-                               'lang': [not_missing, validate_language]}
+        schema['langtitle'] = {'value': [not_missing, unicode, ltitle_to_extras, validate_title],
+                               'lang': [not_missing, unicode, validate_language]}
 
         # This is only needed to increase amount of fields converted to extras.
         # TODO: Get rid of this conversion and add_dummy_to_extras().
