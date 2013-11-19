@@ -692,3 +692,43 @@ header.masthead {
 	float:left;
 	margin-right: 5px;
 }
+/* FAQ and help */
+
+.faq-helpdesk {
+	color: #555;
+	font-size: 13px;
+}
+.faq-helpdesk p {
+	padding-top: 10px;
+}
+h3.question {
+	color: #139CEC;
+	font-size: 15px;
+	font-weight: bold;
+}
+.faq-toc {
+	padding: 0px;
+	margin: 0px;
+}
+.faq-toc ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	text-align: left;
+	
+}
+.faq-toc li {
+	background-color: #fafafa;
+	padding: 2px;
+	margin: 2px;
+	width: auto;
+	border: 1px solid #139CEC;
+}
+.faq-toc li a {
+	display: inline-block;
+	color: #444;
+	display: block;
+	text-decoration: none;
+	padding: 2px;
+	width: 100%;	
+}
