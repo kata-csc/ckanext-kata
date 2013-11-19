@@ -159,10 +159,10 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@id='langtitle__0__value_id']")
             field.send_keys('Selenium Dataset')
 
-            field = browser.find_element_by_xpath("//input[@id='author__0__value_id']")
+            field = browser.find_element_by_xpath("//input[@id='orgauth__0__value_id']")
             field.send_keys('Selenium')
 
-            field = browser.find_element_by_xpath("//input[@id='organization__0__value_id']")
+            field = browser.find_element_by_xpath("//input[@name='orgauth__0__org']")
             field.send_keys('CSC Oy')
 
             # Add keyword to onki collector via onki search
