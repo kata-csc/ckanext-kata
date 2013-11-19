@@ -161,44 +161,6 @@ def group_list(context, data_dict):
         return ckan.logic.action.get.group_list(context, data_dict)
 
 
-def accessreq_show(context, data_dict):
-    """
-    Handles the requests of edit rights to the dataset. 
-    
-    From the web page you can find this when viewing a dataset not owned by you. In the upper right corner you can 
-    request edit rights to this package from a button. The owner will receive a url via e-mail (sent daily) and by 
-    clicking the url (s)he can provide edit rights to the requesting person. 
-    """
-    
-    ret = {}
-    ret['title'] = _('Request edit rights')
-    smtp = config.get('smtp.server', '')
-    if not len(smtp):
-        ret['ret'] = 'Yes'
-        return ret
-    pkg = Package.get(data_dict['id'])
-    selrole = False
-    ret['id'] = pkg.id
-    for role in pkg.roles:
-        if role.role == "admin":
-            selrole = True
-    ret['no_owner'] = not selrole
-    if c.userobj:
-        if 'id' in data_dict:
-            req = KataAccessRequest.is_requesting(c.userobj.id, data_dict['id'])
-            if req:
-                ret['ret'] = 'Yes'
-                return ret
-            else:
-                ret['ret'] = 'No'
-                return ret
-        else:
-            ret['ret'] = 'No'
-            return ret
-    ret['ret'] = 'No'
-    return ret
-
-
 def related_create(context, data_dict):
     schema = {
         'id': [ignore_missing, unicode],

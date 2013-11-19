@@ -186,7 +186,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'package_update': actions.package_update,
                 'package_delete': actions.package_delete,
                 'group_list': actions.group_list,
-                'accessreq_show': actions.accessreq_show,
                 'related_create': actions.related_create,
                 'related_update': actions.related_update,
                 }
@@ -197,24 +196,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': self.kata_sorted_extras,
                 'kata_metadata_fields': self.kata_metadata_fields,
-                'reference_update': self.reference_update,
-                'request_access': self.request_access,
+                'reference_update': self.reference_update
                 }
-
-
-    def request_access(self, pkg_id):
-        """If the user is logged in show the access request button"""
-        pkg = Package.get(pkg_id)
-        if c.user and not user_has_role(c.userobj, 'admin', pkg) and\
-                        not user_has_role(c.userobj, 'editor', pkg) and\
-                        not c.userobj.sysadmin and\
-                        not config.get('smtp_server', False):
-            following = KataAccessRequest.is_requesting(c.userobj.id, pkg_id)
-            if not following:
-                return snippet('snippets/access_button.html',
-                           obj_id=pkg_id,
-                           following=following)
-        return ''
 
 
     def reference_update(self, ref):
@@ -401,8 +384,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras, unicode, validate_general]
 
-        schema['langtitle'] = {'value': [not_missing, ltitle_to_extras, validate_title],
-                               'lang': [not_missing, validate_language]}
+        schema['langtitle'] = {'value': [not_missing, unicode, ltitle_to_extras, validate_title],
+                               'lang': [not_missing, unicode, validate_language]}
 
         # This is only needed to increase amount of fields converted to extras.
         # TODO: Get rid of this conversion and add_dummy_to_extras().

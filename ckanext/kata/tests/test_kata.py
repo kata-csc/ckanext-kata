@@ -222,6 +222,8 @@ class TestKataValidators(TestCase):
     def setup_class(cls):
         """Set up tests."""
 
+        # TODO: Get a new flattened data_dict
+
         cls.test_data = {('__extras',): {'_ckan_phase': u'',
                 'evdescr': [],
                 'evwhen': [],
@@ -247,20 +249,20 @@ class TestKataValidators(TestCase):
                 {'key': 'temporal_coverage_begin', 'value': u''},
                 {'key': 'direct_download_url', 'value': u''},
                 {'key': 'phone', 'value': u'+35805050505'},
-                {'key': 'licenseURL', 'value': u'dada'},
+                {'key': 'license_URL', 'value': u'dada'},
                 {'key': 'geographic_coverage', 'value': u''},
                 {'key': 'access', 'value': u'contact'},
                 {'key': 'algorithm', 'value': u''},
                 {'key': 'langdis', 'value': u'True'},
                 {'key': 'access_application_URL', 'value': u''},
-                {'key': 'contactURL', 'value': u'http://google.com'},
+                {'key': 'contact_URL', 'value': u'http://google.com'},
                 {'key': 'project_name', 'value': u''},
                 {'key': 'checksum', 'value': u''},
                 {'key': 'temporal_coverage_end', 'value': u''},
                 {'key': 'projdis', 'value': u'True'},
                 {'key': 'language', 'value': u''}],
             ('mimetype',): u'',
-            ('funder',): u'',
+            ('project_funder',): u'',
             ('geographic_coverage',): u'',
             ('langdis',): u'False',
             ('language',): u'swe',

@@ -254,7 +254,9 @@
 	        </span>
         </p>
       </div>
-      {#{ form.input('license_URL', id='license_URL', label=_('License URL'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.license_URL, error=errors.license_URL, classes=['control-medium']) }#}
+      {% if data.license_URL %}
+        {{ form.input('license_URL', id='license_URL', label=_('License URL'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.license_URL, error=errors.license_URL, classes=['control-medium']) }}
+      {% endif %}
     </div>
 </div>
 

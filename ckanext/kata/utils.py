@@ -160,13 +160,3 @@ def dataset_to_resource(data_dict):
     })
 
     return data_dict
-
-
-def debug_here():
-    '''
-    Throw an error to stop executing code and do some debugging in CKAN's debug mode.
-    '''
-    import pprint
-    pp = pprint.pprint
-    raise RuntimeError('Time to debug!')
-
