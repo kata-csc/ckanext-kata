@@ -111,12 +111,12 @@ class MetadataController(BaseController):
         '''
 
         xmlstr = ""
-        if extras["access"] == 'contact':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras['accessrequestURL'] + '</RightsDeclaration>'
-        if extras["access"] in ('ident', 'free'):
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['licenseURL'] + '</RightsDeclaration>'
-        if extras["access"] == 'form':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['accessRights'] + '</RightsDeclaration>'
+        if extras["availability"] == 'contact_owner':
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras['access_request_URL'] + '</RightsDeclaration>'
+        if extras["availability"] in ('direct_download', 'access_request'):
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['license_URL'] + '</RightsDeclaration>'
+        if extras["availability"] == 'access_application':
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['access_application_URL'] + '</RightsDeclaration>'
         return Literal(xmlstr, datatype=RDF.XMLLiteral)
 
     def _make_temporal(self, extras):
@@ -169,8 +169,8 @@ class MetadataController(BaseController):
             if license_url:
                 graph.add((uri, DC.license, URIRef(license_url)))
 
-            if "versionPID" in data["extras"]:
-                graph.add((uri, DC.identifier, Literal(data["extras"]["versionPID"])))
+            if "version_PID" in data["extras"]:
+                graph.add((uri, DC.identifier, Literal(data["extras"]["version_PID"])))
 
             graph.add((uri, DC.identifier, Literal(data["name"])))
 
@@ -181,12 +181,12 @@ class MetadataController(BaseController):
             if profileurl:
                 graph.add((uri, DC.publisher, profileurl))
                 graph.add((profileurl, RDF.type, org))
-                if "publisher" in data["extras"]:
-                    graph.add((profileurl, FOAF.name, Literal(data["extras"]["publisher"])))
-                if "phone" in data["extras"]:
-                    graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["phone"])))
-                if "contactURL" in data["extras"]:
-                    graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contactURL"])))
+                if "maintainer" in data["extras"]:
+                    graph.add((profileurl, FOAF.name, Literal(data["maintainer"])))
+                if "contact_phone" in data["extras"]:
+                    graph.add((profileurl, FOAF.phone, Identifier(data["extras"]["contact_phone"])))
+                if "contact_URL" in data["extras"]:
+                    graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contact_URL"])))
                 if "owner" in data["extras"]:
                     graph.add((uri, DC.rightsHolder, URIRef(data["extras"]["owner"])
                                                     if data["extras"]["owner"].startswith(('http','urn'))\
@@ -195,7 +195,7 @@ class MetadataController(BaseController):
             if all((k in data["extras"] and data["extras"][k] != "") for k in ("project_name",\
                                                  "project_homepage",\
                                                  "project_funding",\
-                                                 "funder")):
+                                                 "project_funder")):
                 project = URIRef(FOAF.Project)
                 projecturl = URIRef(data["extras"]["project_homepage"])
                 graph.add((uri, DC.contributor, projecturl))
@@ -203,14 +203,17 @@ class MetadataController(BaseController):
                 graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
                 graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
                 graph.add((projecturl, RDFS.comment,
-                            Literal(" ".join((data["extras"]["funder"],
+                            Literal(" ".join((data["extras"]["project_funder"],
                                               data["extras"]["project_funding"])))))
             for key in data["extras"]:
                 log.debug(key)
+                # TODO: Fix authors to new format
                 if key.startswith('author'):
                     graph.add((uri, DC.creator, URIRef(data["extras"][key])\
                                                 if data["extras"][key].startswith(('http','urn'))\
                                                 else Literal(data["extras"][key])))
+
+                # TODO: Fix titles to new format
                 if key.startswith("title"):
                     lastlangnum = key.split('_')[-1]
                     log.debug(lastlangnum)
@@ -221,20 +224,20 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.subject, Literal(tag)))
             for lang in data["extras"].get("language", "").split(','):
                 graph.add((uri, DC.language, Literal(lang.strip())))
-            if "access" in data["extras"]:
+            if "availability" in data["extras"]:
                 graph.add((uri, DC.rights, self._make_rights_element(data["extras"])))
 
             # Extended metadatamodel
 
-            if all(k in data["extras"] for k in ("temporal_coverage_begin",
-                                                  "temporal_coverage_end")):
+            if all(k in data["extras"] for k in ("temporal_coverage_begin","temporal_coverage_end")) \
+                            and data["extras"]["temporal_coverage_begin"] and data["extras"]["temporal_coverage_end"]:
                 graph.add((uri, DC.temporal, Literal(self._make_temporal(data["extras"]))))
             if "geographical_coverage" in data["extras"]:
                 graph.add((uri, DC.spatial, Literal(data["extras"]["geographical_coverage"])))
             for rel in Related.get_for_dataset(pkg):
                 graph.add((uri, DC.isReferencedBy, Literal(rel.related.title)))
-            if "notes_rendered" in data:
-                graph.add((uri, DC.description, Literal(data["notes_rendered"])))
+            if "notes" in data:
+                graph.add((uri, DC.description, Literal(data["notes"])))
 
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
