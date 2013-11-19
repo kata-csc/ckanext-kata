@@ -77,7 +77,7 @@
 		    <div class="control-group control-custom">
 		    <label class="control-label kata-input-comp" for="orgauth__{{ index }}__id">{{ _('Author') }}</label>
 		        <div class="controls editor">
-		            <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or firstname familyname') }}" id="orgauth__{{ index }}__value_id" name="orgauth__{{ index }}__value" value="{{ orgauth.value }}" />
+		            <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname firstname') }}" id="orgauth__{{ index }}__value_id" name="orgauth__{{ index }}__value" value="{{ orgauth.value }}" />
 		            {% if index == 0 %}
 					    {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave and added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />Author can be a name or an identifier URL, like an orcid identifier.')) }}
 				    {% endif %}
