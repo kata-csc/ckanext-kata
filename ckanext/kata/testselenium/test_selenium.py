@@ -177,16 +177,16 @@ class TestKataWithUser(TestCase):
             #field.send_keys('Selenium')
             #field.send_keys(Keys.RETURN)
 
-            field = browser.find_element_by_xpath("//input[@id='phone']")
+            field = browser.find_element_by_xpath("//input[@id='contact_phone']")
             field.send_keys('+35891234567')
 
-            field = browser.find_element_by_xpath("//input[@id='contactURL']")
+            field = browser.find_element_by_xpath("//input[@id='contact_URL']")
             field.send_keys('https://localhost/')
 
             field = browser.find_element_by_xpath("//input[@name='projdis']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@id='contact']")
+            field = browser.find_element_by_xpath("//input[@id='contact_owner']")
             field.click()
 
             field = browser.find_element_by_xpath("//input[@id='owner']")
@@ -497,11 +497,11 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_id, 'field-tags', [u'Keyword2', Keys.ENTER], None),
             (browser.find_element_by_id, 'language', [u'rus, fin, eng'], None),
 
-            (browser.find_element_by_id, 'phone', [u'+35891234567'], None),
-            (browser.find_element_by_id, 'contactURL', [u'https://localhost/'], None),
+            (browser.find_element_by_id, 'contact_phone', [u'+35891234567'], None),
+            (browser.find_element_by_id, 'contact_URL', [u'https://localhost/'], None),
 
             (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
-            (browser.find_element_by_id, 'funder', [u'Selenium Funder'], None),
+            (browser.find_element_by_id, 'project_funder', [u'Selenium Funder'], None),
             (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
             (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
 
@@ -509,8 +509,8 @@ class TestKataWithUser(TestCase):
 
             (browser.find_element_by_id, 'field-pid', [u'pid' + str(int(time.time()*100))], None),
 
-            (browser.find_element_by_id, 'free', [Keys.SPACE], None),
-            (browser.find_element_by_id, 'accessURL', [u'https://localhost/'], None),
+            (browser.find_element_by_id, 'direct_download', [Keys.SPACE], None),
+            (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),
 
             #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
 
@@ -521,7 +521,7 @@ class TestKataWithUser(TestCase):
             #(find_select2_choice_inputs, 2, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
             #(find_select2_choice_inputs, 3, ['Selenium discipline', Keys.ENTER], None),  # discipline
             (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.ENTER], None),
-            (browser.find_element_by_id, 'fformat', [u'application/pdf'], None),
+            (browser.find_element_by_id, 'mimetype', [u'application/pdf'], None),
             (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
             (browser.find_element_by_id, 'algorithm', [u'md5'], None),
 

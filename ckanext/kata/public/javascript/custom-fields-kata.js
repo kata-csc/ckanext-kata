@@ -9,7 +9,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
     options: {
       /* The selector used for each custom field wrapper */
       fieldSelector: '.control-custom',
-      numFields: 1
+      numfields: 1
     },
 
     /* Initializes the module and attaches custom event listeners. This
@@ -64,9 +64,9 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      * Returns the wiped element.
      */
     resetField: function (field) {
-      var numFields = this.options.numFields;
+      var numfields = this.options.numfields;
       function increment(index, string) {
-        var str = (string || '').replace(/\d+/, function (int) { return parseInt(int, 10) + numFields; })
+        var str = (string || '').replace(/\d+/, function (int) { return parseInt(int, 10) + numfields; })
         return str;
       }
 
@@ -102,7 +102,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       if (event.target.value !== '') {
         var parent = jQuery(event.target).parents('.control-custom');
         this.newField(parent);
-        this.options.numFields += 1
+        this.options.numfields += 1
       }
     },
     /* Event handler called when the remove checkbox is checked */
@@ -115,37 +115,27 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
 
 KATA = function() {}
 KATA.toggleAccess = function(obj) {
-	/* Shows and hides data access inputs according to selection, also juggles the accessURL input HTML code back and forth */
+	/* Shows and hides data access inputs according to selection */
 	switch (obj.id) {
-		case 'form':
-			$('#accessDiv').show();
-			$('#urlDiv_ident').hide();
-			$('#urlDiv_free').hide();
+		case 'access_application':
+			$('#urlDiv_access_application').show();
+			$('#urlDiv_access_request').hide();
+			$('#urlDiv_direct_download').hide();
 			break;
-		case 'free':
-			$('#accessDiv').hide();
-			$('#urlDiv_ident').hide();
-			$('#urlDiv_free').show();
-			if ($('#urlDiv_ident').html().length > 10) {
-				/* Consider length <= 10 as empty */
-				$('#urlDiv_free').html($('#urlDiv_ident').html());
-				$('#urlDiv_ident').html('');
-			}
+		case 'direct_download':
+			$('#urlDiv_access_application').hide();
+			$('#urlDiv_access_request').hide();
+			$('#urlDiv_direct_download').show();
 			break;
-		case 'ident':
-			$('#accessDiv').hide();
-			$('#urlDiv_ident').show();
-			$('#urlDiv_free').hide();
-			if ($('#urlDiv_free').html().length > 10) {
-				/* Consider length <= 10 as empty */
-				$('#urlDiv_ident').html($('#urlDiv_free').html());
-				$('#urlDiv_free').html('');
-			}
+		case 'access_request':
+			$('#urlDiv_access_application').hide();
+			$('#urlDiv_access_request').show();
+			$('#urlDiv_direct_download').hide();
 			break;
-		case 'contact':
-			$('#accessDiv').hide();
-			$('#urlDiv_ident').hide();
-			$('#urlDiv_free').hide();
+		case 'contact_owner':
+			$('#urlDiv_access_application').hide();
+			$('#urlDiv_access_request').hide();
+			$('#urlDiv_direct_download').hide();
 			break;
 		}
 	}
