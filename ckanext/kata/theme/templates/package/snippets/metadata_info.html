@@ -19,7 +19,7 @@
 	</tr>
 	{% endfor %}
 	{% endif %}
-	{% if pkg_dict.orgauths %}
+	{% if pkg_dict.orgauth %}
 	<tr>
 		<th class="dataset-label" colspan="2">{{ _('Authors')}}</th>
 	</tr>
@@ -27,10 +27,10 @@
 		<th>Name</th>
 		<th>Organisation</th>
 	</tr>
-		{% for auth, org in pkg_dict.orgauths %}
+		{% for orgauth in pkg_dict.orgauth %}
 		<tr>
-			<td>{{ h.reference_update(auth.value) }}</td>
-			<td>{{ org.value }}</td>
+			<td>{{ orgauth.value }}</td>
+			<td>{{ orgauth.org }}</td>
 		</tr>
 		{% endfor %}
 	{% endif %}

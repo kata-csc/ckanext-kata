@@ -38,57 +38,52 @@ def org_auth_to_extras(key, data, errors, context):
     if not extras:
         data[('extras',)] = extras
     if len(data[key]) > 0:
-        if key[0] == 'author':
-            if not ('organization', key[1], key[2]) in data:
-                errors[key].append(_('Author is missing organization'))
-        if key[0] == 'organization':
-            if not ('author', key[1], key[2]) in data:
-                errors[key].append(_('Organization is missing author'))
-        extras.append({'key': "%s_%s" % (key[0], key[1]),
-                  'value': data[key]})
+        if key[0] == 'orgauth':
+            
+            if not ('orgauth', key[1], 'org') in data or len(data[('orgauth', key[1], 'org')]) == 0:
+                errors[key].append(_('Organisation is missing'))
+            if not ('orgauth', key[1], 'value') in data or len(data[('orgauth', key[1], 'value')]) == 0:
+                errors[key].append(_('Author is missing'))
+
+        oval = data[(key[0], key[1], 'org')]
+
+        extras.append({'key': "author_%s" % key[1],
+                      'value': data[key]})
+        extras.append({'key': 'organization_%s' % key[1],
+                       'value': oval
+                       })
 
 
 def org_auth_from_extras(key, data, errors, context):
     '''
     Convert (author, organization) pairs from package.extra to 'orgauths' dict
     '''
-    if not ('orgauths',) in data:
-        data[('orgauths',)] = []
-    auths = []
+    orgauths = data.get(('orgauth',), [])
+    if not orgauths:
+        data[('orgauth',)] = orgauths
+    authors = []
     orgs = []
-    orgauths = data[('orgauths',)]
     for k in data.keys():
-        if k[0] == 'extras' and k[-1] == 'key':
-            if 'author_' in data[k]:
+        if 'extras' in k and 'key' in k:
+            if re.search('^(author_)\d+$', data[k]):
                 val = data[(k[0], k[1], 'value')]
-                auth = {}
-                auth['key'] = data[k]
-                auth['value'] = val
-                if not {'key': data[k], 'value': val} in auths:
-                    auths.append(auth)
+                author = {'key': data[k], 'value': val}
+                if author not in authors:
+                    authors.append(author)
 
-            if 'organization_' in data[k]:
-                org = {}
+            if re.search('^(organization_)\d+$', data[k]):
                 val = data[(k[0], k[1], 'value')]
-                org['key'] = data[k]
-                org['value'] = val
-                if not {'key': data[k], 'value': val} in orgs:
+                org = {'key': data[k], 'org': val}
+                if org not in orgs:
                     orgs.append(org)
-
-    orgs = sorted(orgs, key=lambda ke: int(ke['key'][-1]))
-    auths = sorted(auths, key=lambda ke: int(ke['key'][-1]))
-    zipped = zip(orgs, auths)
-    if zipped:
-        for org, auth in zipped:
-            if not (auth, org) in orgauths:
-                orgauths.append((auth, org))
-    else:
-        for org in orgs:
-            if not ("", org) in orgauths:
-                orgauths.append(("", org))
-        for auth in auths:
-            if not (auth, "") in orgauths:
-                orgauths.append((auth, ""))
+    orgs = sorted(orgs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
+    authors = sorted(authors, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
+    for org, author in zip(orgs, authors):
+        orgauth = {}
+        orgauth.update({'value': author['value']})
+        orgauth.update({'org': org['org']})
+        if not orgauth in orgauths:
+            orgauths.append(orgauth)
 
 
 def ltitle_to_extras(key, data, errors, context):

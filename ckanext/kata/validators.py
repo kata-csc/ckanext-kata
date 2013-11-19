@@ -195,12 +195,14 @@ def not_empty_kata(key, data, errors, context):
 
 def check_author_org(key, data, errors, context):
     '''
-    Validates author's organisation
+    Validates author and organisation
     '''
-    if all(k in data[key] for k in ('author', 'organization')):
-        if not ('author',) in errors:
-            errors[('author',)] = []
-        errors[('author',)].append('Missing author and organization pairs!')
+    # index 0 must exist, for plain orgauth is false positive
+    if not (('orgauth', 0, 'org') in data):
+        if not ('orgauth', 0, 'value') in errors:
+            errors[('orgauth', 0, 'value',)] = []
+        # To 0, to orgauth would mess the unflatten function with multiple authors
+        errors[('orgauth', 0, 'value')].append('Missing author and organisation pairs')
         
 def validate_discipline(key, data, errors, context):
     '''

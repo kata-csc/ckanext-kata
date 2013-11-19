@@ -23,7 +23,8 @@
 		{% endfor %}
 	{% endif %}
 
-  <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numFields={{ (titles|length) }} id="lastlang">
+
+  <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numFields={{ titles|length }} id="lastlang">
 	{# Render title fields #}
 	{% for langtitle in titles %}
 		{% set index = loop.index0 %}
@@ -60,21 +61,8 @@
   </span><br />
 	{% set authors = [] %}
 
-    {% if data.orgauths %}
-    {% set authors = data.orgauths %}
-	{% else %}
-		{% if len(data.author) and len(data.organization) %}
-			{% set orgauths = zip(data.author, data.organization) %}
-		{% else %}
-			{% if not len(data.author) %}
-				{% set orgauths = zip(range(len(data.organization)), data.organization) %}
-			{% elif not len(data.organization) %}
-				{% set orgauths = zip(data.author, range(len(data.author)) ) %}
-			{% endif %}
-		{% endif %}
-		{% for auth, org in orgauths %}
-			{% do authors.append((auth, org)) %}
-		{% endfor %}
+    {% if data.orgauth %}
+        {% set authors = data.orgauth %}
 	{% endif %}
 
 	{% if authors|length == 0 %}
@@ -84,43 +72,38 @@
 	{% endif %}
   <div data-module="custom-fields-kata" data-module-id="orgauths" data-module-numFields={{ (authors|length) }} id="orgauths">
 	{# Render author and organisation fields #}
-	{% for author, org in authors %}
+	{% for orgauth in authors %}
 
 		{% set index = loop.index0 %}
-
-			<div class="control-group control-custom">
-			<label class="control-label kata-input-comp" for="author__{{ index }}__id">{{ _('Author') }}</label>
-				<div class="controls editor">
-					<input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or name') }}" id="author__{{ index }}__value_id" name="author__{{ index }}__value" value="{{ author.value }}" />
-					{% if index == 0 %}
-						{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave and added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />Author can be a name or an identifier URL, like an orcid identifier.')) }}
-					{% endif %}
-				</div>
-			<label class="control-label kata-input-comp" for="organization__{{ index }}__id">{{ _('Organisation') }}</label>
-				<div class="controls editor" style="margin-top: 5px;">
-				<input class="kata-medium-input" type="text" id="organization__{{ index }}__value_id" name="organization__{{ index }}__value" value="{{ org.value }}" />
-				{% if index == 0 %}
-					{{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
-				{% endif %}
-				<input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-				</div>
-			</div>
+		    <div class="control-group control-custom">
+		    <label class="control-label kata-input-comp" for="orgauth__{{ index }}__id">{{ _('Author') }}</label>
+		        <div class="controls editor">
+		            <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or firstname familyname') }}" id="orgauth__{{ index }}__value_id" name="orgauth__{{ index }}__value" value="{{ orgauth.value }}" />
+		            {% if index == 0 %}
+					    {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave and added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />Author can be a name or an identifier URL, like an orcid identifier.')) }}
+				    {% endif %}
+		        </div>
+		        <label class="control-label kata-input-comp" for="orgauth__{{index}}__org_id">{{ _('Organization') }}</label>
+			    <div class="controls editor" style="margin-top: 5px;">
+				    <input type="text" name="orgauth__{{ index }}__org" class="kata-medium-input" value="{{ orgauth.org }}">
+				    {% if index == 0 %}
+					    {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+				    {% endif %}
+				    <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+                </div>
+		    </div>
 	  {% endfor %}
 	</div>
-	{% if errors.author or errors.organization %}
+	{# Clumsy generation of error messages, but it does the trick and won't display python types #}
+	{% if errors.orgauth %}
         <span class="error-block">
-        {% if errors.author %}
-          {% for item in errors.author %}
+        {% if errors.orgauth %}
+          {% for item in errors.orgauth %}
             {% if item.value and item.value[0]|length > 2 %}             
               {{ item.value[0] }}<br />
             {% endif %}
-          {% endfor %}
-        {% endif %}
-
-        {% if errors.organization %}
-          {% for item in errors.organization %}
-            {% if item.value and item.value[0]|length > 2 %}
-              {{ item.value[0] }}<br />
+            {% if item.org and item.org[0]|length > 2 %}
+              {{ item.org[0] }}<br />
             {% endif %}
           {% endfor %}
         {% endif %}

@@ -406,7 +406,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # This is only needed to increase amount of fields converted to extras.
         # TODO: Get rid of this conversion and add_dummy_to_extras().
-        schema['orgauths'] = [ignore_missing, unicode, convert_to_extras, add_dummy_to_extras, add_dummy_to_extras]
+        #schema['orgauths'] = [ignore_missing, unicode, convert_to_extras, add_dummy_to_extras, add_dummy_to_extras]
+        schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras],
+                              'org': [not_missing, unicode, org_auth_to_extras]}
 
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
