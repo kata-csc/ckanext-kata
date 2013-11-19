@@ -11,7 +11,7 @@ setup(
     classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     keywords='',
     author='CSC',
-    author_email='',
+    author_email='kata-project@postit.csc.fi',
     url='https://github.com/kata-csc/ckanext-kata',
     license='AGPL',
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
