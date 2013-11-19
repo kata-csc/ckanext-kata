@@ -62,7 +62,7 @@
 {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}{% endif %}
 
 {% if pkg_dict.license_title %}{{ _(' with license as ') }}{{pkg_dict.license_title}}
-    {%- if pkg_dict.licenseURL %}, {{pkg_dict.licenseURL}}
+    {%- if pkg_dict.license_URL %}, {{pkg_dict.license_URL}}
     {%- endif -%}
 {%- endif %}.
 </div>
