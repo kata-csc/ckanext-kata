@@ -10,7 +10,6 @@ class URNHelper(object):
     @classmethod
     def list_packages(cls):
         xmlns = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping"
-
         def locns(loc):
             return "{%s}%s" % (xmlns, loc)
         xsi = "http://www.w3.org/2001/XMLSchema-instance"
@@ -19,7 +18,7 @@ class URNHelper(object):
                          attrib={"{" + xsi + "}schemaLocation": schemaLocation},
                          nsmap={'xsi': xsi, None: xmlns})
         q = Session.query(Package)
-        q = q.filter(Package.name.ilike('urn:nbn:fi:csc-kata%'))
+        q = q.filter(Package.name.ilike('urn:nbn:fi:csc-kata%')|Package.name.ilike('urn:nbn:fi:csc-ida%'))
         pkgs = q.all()
         prot = SubElement(records, locns('protocol-version'))
         prot.text = '3.0'
