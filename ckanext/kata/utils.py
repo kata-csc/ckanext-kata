@@ -28,7 +28,7 @@ def send_email(req):
     """
     Send access request e-mail.
     """
-    requestee = User.get(req.user_id)
+    requester = User.get(req.user_id)
     pkg = Package.get(req.pkg_id)
     selrole = False
     for role in pkg.roles:
@@ -36,14 +36,24 @@ def send_email(req):
             selrole = role
     if not selrole:
         return
-    admin = User.get(selrole.user_id)
-    msg = _("""%s (%s) is requesting editor access to a dataset you have created
-    %s.
 
-Please click this link if you want to give this user write access:
+    admin = User.get(selrole.user_id)
+    admin_dict = admin.as_dict()
+    admin_dict['name'] = admin.fullname if admin.fullname else admin.name
+    
+    msg = _("""%s (%s) is requesting editing rights to dataset
+
+    %s
+
+for which you are currently an administrator.
+
+Please click this link if you want to allow this user to edit the metadata of the dataset:
 %s%s""")
+
     controller = 'ckanext.kata.controllers:AccessRequestController'
-    body = msg % (requestee.name, requestee.email, pkg.title if pkg.title else pkg.name,
+    
+    requester_name = requester.fullname if requester.fullname else requester.name
+    body = msg % (requester_name, requester.email, pkg.title if pkg.title else pkg.name,
                 config.get('ckan.site_url', ''),
                 h.url_for(controller=controller,
                 action="unlock_access",
@@ -51,7 +61,7 @@ Please click this link if you want to give this user write access:
     email_dict = {}
     email_dict["subject"] = _("Access request for dataset %s" % pkg.title if pkg.title else pkg.name)
     email_dict["body"] = body
-    send_notification(admin.as_dict(), email_dict)
+    send_notification(admin_dict, email_dict)
 
 
 def convert_to_text(resource, resource_fname):

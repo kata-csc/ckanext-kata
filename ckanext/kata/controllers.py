@@ -542,14 +542,17 @@ class ContactController(BaseController):
     The feature provides a form for message sending, and the message is sent via e-mail. 
     """
 
-    def _send_if_allowed(self, pkg_id, subject, msg, prologue=""):
+    def _send_if_allowed(self, pkg_id, subject, msg, prologue=None, epilogue=None):
         """
         Send a contact e-mail if allowed.
         """
 
         package = Package.get(pkg_id)
 
-        full_msg = "%s\n%s" % (prologue, msg)
+        prologue = prologue + "\n\n\n" if prologue else ""
+        epilogue = "\n\n\n" + epilogue if epilogue else ""
+
+        full_msg = "%s%s%s" % (prologue, msg, epilogue)
         email_dict = {"subject": subject,
                       "body": full_msg}
 
@@ -557,10 +560,12 @@ class ContactController(BaseController):
             owner_id = get_package_owner(package)
             if owner_id:
                 owner = User.get(owner_id)
+                owner_dict = owner.as_dict()
+                owner_dict['name'] = owner.fullname if owner.fullname else owner.name
                 if msg:
                     model.repo.new_revision()
 
-                    send_notification(owner.as_dict(), email_dict)
+                    send_notification(owner_dict, email_dict)
                     self._mark_owner_as_contacted(c.userobj, pkg_id)
                     h.flash_notice(_("Message sent"))
                 else:
@@ -581,22 +586,27 @@ class ContactController(BaseController):
         userobj.save()
 
     def send_contact(self, pkg_id):
-        prologue_template = _("""%s (%s) has sent you a message regarding dataset
-    %s.
+        prologue_template = _("""%s (%s) has sent you a message regarding the following dataset:
+
+    %s
 
 The message is as follows:
 """)
 
+        epilogue = _("""Please do not reply directly to this e-mail.
+If you need to reply to the sender, use the direct e-mail address above.""")
+
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
+        user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
         user_msg = request.params.get('msg', '')
-        prologue = prologue_template % (c.userobj.name,
+        prologue = prologue_template % (user_name,
                                         c.userobj.email,
                                         package_title)
 
         subject = _("Message regarding dataset %s" % package_title)
-        self._send_if_allowed(pkg_id, subject, user_msg, prologue)
+        self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
 
         url = h.url_for(controller='package',
                         action="read",
@@ -615,16 +625,20 @@ for which you are currently an administrator.
 The message is as follows:
 """)
 
+        epilogue = _("""Please do not reply directly to this e-mail.
+If you need to reply to the sender, use the direct e-mail address above.""")
+
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
+        user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
         user_msg = request.params.get('msg', '')
-        prologue = prologue_template % (c.userobj.name,
+        prologue = prologue_template % (user_name,
                                         c.userobj.email,
                                         package_title)
 
         subject = _("Material access request for dataset %s" % package_title)
-        self._send_if_allowed(pkg_id, subject, user_msg, prologue)
+        self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
 
         url = h.url_for(controller='package',
                         action="read",
