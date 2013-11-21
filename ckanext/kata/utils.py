@@ -142,7 +142,7 @@ def resource_to_dataset(data_dict):
 
     if resource:
         data_dict.update({
-            'direct_download_url' : resource.get('url'),
+            'direct_download_URL' : resource.get('url'),
             'checksum' : resource.get('hash'),
             'mimetype' : resource.get('mimetype'),
             'algorithm' : resource.get('algorithm'),
@@ -162,7 +162,7 @@ def dataset_to_resource(data_dict):
 
     data_dict['resources'].append({
         #'package_id' : pkg_dict1['id'],
-        'url' : data_dict.pop('direct_download_url', settings.DATASET_URL_UNKNOWN),
+        'url' : data_dict.pop('direct_download_URL', settings.DATASET_URL_UNKNOWN),
         'hash' : data_dict.pop('checksum', u''),
         'mimetype' : data_dict.pop('mimetype', u''),
         'algorithm' : data_dict.pop('algorithm', u''),

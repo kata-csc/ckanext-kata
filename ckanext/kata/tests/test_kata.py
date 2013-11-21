@@ -247,7 +247,7 @@ class TestKataValidators(TestCase):
                 {'key': 'project_homepage', 'value': u''},
                 {'key': 'owner', 'value': u'dada'},
                 {'key': 'temporal_coverage_begin', 'value': u''},
-                {'key': 'direct_download_url', 'value': u''},
+                {'key': 'direct_download_URL', 'value': u''},
                 {'key': 'phone', 'value': u'+35805050505'},
                 {'key': 'license_URL', 'value': u'dada'},
                 {'key': 'geographic_coverage', 'value': u''},
@@ -565,7 +565,7 @@ class TestResouceConversions(TestCase):
 
         cls.test_data = {
             'id' : u'test',
-            'direct_download_url' : u'http://www.csc.fi',
+            'direct_download_URL' : u'http://www.csc.fi',
             'algorithm': u'MD5',
             'checksum': u'f60e586509d99944e2d62f31979a802f',
             'mimetype': u'application/pdf',
@@ -594,7 +594,7 @@ class TestResouceConversions(TestCase):
 
     def test_dataset_to_resource_invalid(self):
         data_dict = self.test_data.copy()
-        data_dict.pop('direct_download_url')
+        data_dict.pop('direct_download_URL')
         data_dict.pop('checksum')
         data_dict.pop('mimetype')
         assert 'resources' not in data_dict
@@ -606,13 +606,13 @@ class TestResouceConversions(TestCase):
     def test_resource_to_dataset(self):
         data_dict = self.test_data2.copy()
         data_dict = utils.resource_to_dataset(data_dict)
-        assert 'direct_download_url' in data_dict
+        assert 'direct_download_URL' in data_dict
 
     def test_resource_to_dataset_invalid(self):
         data_dict = self.test_data2.copy()
         data_dict['resources'][0].pop('resource_type')
         data_dict = utils.resource_to_dataset(data_dict)
-        assert 'direct_download_url' not in data_dict
+        assert 'direct_download_URL' not in data_dict
         
 class TestResourceValidators(TestCase):
     '''
