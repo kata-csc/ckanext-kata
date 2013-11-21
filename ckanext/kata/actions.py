@@ -1,8 +1,11 @@
 import re
+import datetime
+import inspect
 
 import ckan.logic.action.get
 import ckan.logic.action.create
 import ckan.logic.action.update
+import ckan.logic.action.delete
 from pylons import c, config
 from ckan.model import Related, Session, Package, repo
 import ckan.model as model
@@ -86,6 +89,16 @@ def package_create(context, data_dict):
     data_dict = utils.dataset_to_resource(data_dict)
 
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
+    
+    # Logging for production use
+    try:
+        log_str = '[' + str(datetime.datetime.now())
+        log_str += ']' + ' Package created ' + 'by: ' + context['user']
+        log_str += ' target: ' + pkg_dict1['id']
+        log.info(log_str)
+    except:
+        pass
+    
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
     pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
@@ -124,6 +137,16 @@ def package_update(context, data_dict):
     # a better fix will be made
     context['allow_partial_update'] = True
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
+    
+    # Logging for production use
+    try:
+        log_str = '[' + str(datetime.datetime.now())
+        log_str += ']' + ' Package updated ' + 'by: ' + context['user']
+        log_str += ' target: ' + data_dict['id']
+        log.info(log_str)
+    except:
+        pass
+    
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': True}
     pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
@@ -145,10 +168,59 @@ def package_delete(context, data_dict):
     :param context:
     :param data_dict: package data as dictionary
     '''
+    # Logging for production use
+    try:
+        log_str = '[' + str(datetime.datetime.now())
+        log_str += ']' + ' Package deleted ' + 'by: ' + context['user']
+        log_str += ' target: ' + data_dict['id']
+        log.info(log_str)
+    except:
+        pass
+    
     index = index_for('package')
     index.remove_dict(data_dict)
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
+
+# Log should show who did what and when
+def _decorate(f, type, action):
+    def call(*args, **kwargs):
+        log_str = '[ ' + type + ' ] [ ' + str(datetime.datetime.now())
+        if action is 'delete':
+            # log id before we delete the data
+            try:
+                log_str += ' ] ' + type + ' deleted by: ' + args[0]['user']
+                log_str += ' target: ' + args[1]['id']
+                log.info(log_str)
+            except:
+                log.info('Debug failed! Action not logged')
+                
+        ret = f(*args, **kwargs)
+        if action is 'create' or action is 'update':
+            try:
+                log_str += ' ] ' + type + ' ' + action + 'd by: ' + args[0]['user']
+                log_str += ' target: ' + ret['id']
+                log.info(log_str)
+            except:
+                log.info('Debug failed! Action not logged')
+
+        return ret
+    return call
+
+# Overwriting to add logging
+resource_create = _decorate(ckan.logic.action.create.resource_create, 'resource', 'create')
+resource_update = _decorate(ckan.logic.action.update.resource_update, 'resource', 'update')
+resource_delete = _decorate(ckan.logic.action.delete.resource_delete, 'resource', 'delete')
+related_delete = _decorate(ckan.logic.action.delete.related_delete, 'related', 'delete')
+member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'create')
+member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
+group_create = _decorate(ckan.logic.action.create.group_create, 'group', 'create')
+group_update = _decorate(ckan.logic.action.update.group_update, 'group', 'update')
+group_delete = _decorate(ckan.logic.action.delete.group_delete, 'group', 'delete')
+organization_create = _decorate(ckan.logic.action.create.organization_create, 'organization', 'create')
+organization_update = _decorate(ckan.logic.action.update.organization_update, 'organization', 'update')
+organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'organization', 'delete')
+
 
 
 def group_list(context, data_dict):
@@ -175,7 +247,17 @@ def related_create(context, data_dict):
     }
     context['schema'] = schema
 
-    return ckan.logic.action.create.related_create(context, data_dict)
+    ret = ckan.logic.action.create.related_create(context, data_dict)
+    # Logging for production use
+    try:
+        log_str = '[' + str(datetime.datetime.now())
+        log_str += ']' + ' related created ' + 'by: ' + context['user']
+        log_str += ' target: ' + ret['id']
+        log.info(log_str)
+    except:
+        pass
+    
+    return ret
 
 
 def related_update(context, data_dict):
@@ -191,5 +273,14 @@ def related_update(context, data_dict):
         'featured': [ignore_missing, int],
     }
     context['schema'] = schema
+    
+    # Logging for production use
+    try:
+        log_str = '[' + str(datetime.datetime.now())
+        log_str += ']' + ' related updated ' + 'by: ' + context['user']
+        log_str += ' target: ' + data_dict['id']
+        log.info(log_str)
+    except:
+        pass
 
     return ckan.logic.action.update.related_update(context, data_dict)

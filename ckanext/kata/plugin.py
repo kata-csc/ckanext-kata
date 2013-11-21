@@ -185,9 +185,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'package_create': actions.package_create,
                 'package_update': actions.package_update,
                 'package_delete': actions.package_delete,
+                'resource_create': actions.resource_create,
+                'resource_update': actions.resource_update,
+                'resource_delete': actions.resource_delete,
                 'group_list': actions.group_list,
+                'group_create': actions.group_create,
+                'group_update': actions.group_update,
+                'group_delete': actions.group_delete,
                 'related_create': actions.related_create,
                 'related_update': actions.related_update,
+                'related_delete': actions.related_delete,
+                'member_create': actions.member_create,
+                'member_delete': actions.member_delete,
+                'organization_create': actions.organization_create,
+                'organization_update': actions.organization_update,
+                'organization_delete': actions.organization_delete,
                 }
 
 
