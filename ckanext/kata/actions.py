@@ -183,13 +183,13 @@ def package_delete(context, data_dict):
     return ret
 
 # Log should show who did what and when
-def _decorate(f, type, action):
+def _decorate(f, actiontype, action):
     def call(*args, **kwargs):
-        log_str = '[ ' + type + ' ] [ ' + str(datetime.datetime.now())
+        log_str = '[ ' + actiontype + ' ] [ ' + str(datetime.datetime.now())
         if action is 'delete':
             # log id before we delete the data
             try:
-                log_str += ' ] ' + type + ' deleted by: ' + args[0]['user']
+                log_str += ' ] ' + actiontype + ' deleted by: ' + args[0]['user']
                 log_str += ' target: ' + args[1]['id']
                 log.info(log_str)
             except:
@@ -198,7 +198,7 @@ def _decorate(f, type, action):
         ret = f(*args, **kwargs)
         if action is 'create' or action is 'update':
             try:
-                log_str += ' ] ' + type + ' ' + action + 'd by: ' + args[0]['user']
+                log_str += ' ] ' + actiontype + ' ' + action + 'd by: ' + args[0]['user']
                 log_str += ' target: ' + ret['id']
                 log.info(log_str)
             except:
