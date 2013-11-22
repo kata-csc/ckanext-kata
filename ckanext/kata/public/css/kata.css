@@ -444,11 +444,14 @@ a.tag:hover {
 .footer-third {
 	margin: 0px;
 	float: right;
-	background-image: none;
+	background-image: none !important;
 	background-position: 0 0;
 	background-repeat: no-repeat no-repeat;
  	padding-left: 55px;
 	background: none;
+}
+.footer-third img {
+	width: 90px;
 }
 .tta-info {
 	margin-top: 50px;
