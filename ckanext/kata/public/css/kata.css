@@ -109,6 +109,11 @@ a:hover, a:focus {
     color: #437692;
     text-decoration: underline;
 }
+a.download {
+	color: #dc3620;
+	font-weight: bold;
+	font-size: 14px;
+}
 body {
 	background-color: #FFF !important;
 	background: none !important;
