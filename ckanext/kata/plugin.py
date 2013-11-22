@@ -42,7 +42,8 @@ from ckanext.kata.converters import event_from_extras, \
 from ckanext.kata import actions, auth_functions, utils
 from ckanext.kata.model import KataAccessRequest
 import ckan.lib.helpers as h
-from ckan.logic.validators import tag_length_validator, vocabulary_id_exists
+from ckan.logic.validators import tag_length_validator, vocabulary_id_exists, \
+    url_validator, package_name_validator
 import ckanext.kata.settings as settings
 
 
@@ -425,9 +426,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             '__extras': [check_author_org],
             'projdis': [checkbox_to_boolean, check_project, convert_to_extras],
             '__junk': [check_junk],
-            'name': [ignore_missing, unicode, update_name, validate_general],
+            'name': [ignore_missing, unicode, update_name, package_name_validator, validate_general],
             'access_application_URL': [ignore_missing, check_access_application_url, convert_to_extras, unicode, validate_general],
-            'access_request_url': [ignore_missing, check_access_request_url, convert_to_extras, unicode, validate_general],
+            'access_request_url': [ignore_missing, check_access_request_url, url_validator, convert_to_extras, unicode, validate_general],
             'project_name': [check_project_dis, unicode, convert_to_extras, validate_general],
             'project_funder': [check_project_dis, convert_to_extras, unicode, validate_general],
             'project_funding': [check_project_dis, convert_to_extras, unicode, validate_general],
