@@ -81,9 +81,6 @@
         </nav>
       {% endif %}
     </hgroup>
-    <div id="kata_header">
-      <h1>Kata-aineistokatalogi</h1>
-    </div>
     <div class="content">
       <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
         <div class="field">
@@ -115,7 +112,7 @@
       <ul>
       <li>
       <a href="/">
-        <i class="icon-home tta-orange"></i>
+        <i class="icon-home"></i>
       </a>
       </li>
       {{ h.build_nav_main(

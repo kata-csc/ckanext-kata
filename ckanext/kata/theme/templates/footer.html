@@ -3,69 +3,26 @@
     {% block footer_content %}
       
       <div class="footer-first">
-        {% block csc_contact_fi %}
-        <h1>{{ _('Kata data catalogue is maintained by:') }}<br />{{ _('CSC - IT CENTER FOR SCIENCE LTD') }}</h1>
-        <p>
-          <span class="footer-data">{{ _('Visiting address:') }}</span>
-          <span class="footer-data">{{ _('Life Science Center') }}</span>
-          <span class="footer-data">{{ _('Keilaranta 14') }}</span>
-          <span class="footer-data">{{ _('Keilaniemi, Espoo') }}</span>
-          <span class="footer-data">{{ _('Finland') }}</span>
-        </p>
-        <p>
-          <span class="footer-data">{{ _('Postal address:') }}</span>
-          <span class="footer-data">{{ _('P.O. Box 405') }}</span>
-          <span class="footer-data">{{ _('FI-02101 Espoo') }}</span>
-          <span class="footer-data">{{ _('Finland') }}</span>
-        </p>
-        <p>
-          <span class="footer-data">{{ _('Switchboard:') }}</span>
-          <span class="footer-data">{{ _('+358 (09) 457 2001') }}</span>
-        </p>
+        {% block footer_left %}
+          &nbsp;
         {% endblock %}
       </div>
       <div class="footer-second">
-        {% block csc_contact %}
-        <h1>{{ _('CSC - IT CENTER FOR SCIENCE LTD / ') }}<br />{{ _('DATA CENTER CSC KAJAANI') }}</h1>
+        {% block footer_contact %}
         <p>
-          <span class="footer-data">{{ _('Visiting address:') }}</span>
-          <span class="footer-data">{{ _('Tehdaskatu 15') }}</span>
-          <span class="footer-data">{{ _('FI-87100 Kajaani') }}</span>
-          <span class="footer-data">{{ _('Finland') }}</span>
+          {{ _('Kata is a service of the ') }}<a href="{{ _('http://www.tdata.fi/tta-frontpage?param=param') }}">{{ _('Finnish National Research Data Initiative (TTA)') }}</a>
         </p>
         <p>
-          <span class="footer-data">{{ _('Postal address:') }}</span>
-          <span class="footer-data">{{ _('Tehdaskatu 15 P21') }}</span>
-          <span class="footer-data">{{ _('FI-87100 Kajaani') }}</span>
-          <span class="footer-data">{{ _('Finland') }}</span>
-        </p>
-        <p>
-          <span class="footer-data">{{ _('Switchboard:') }}</span>
-          <span class="footer-data">{{ _('+358 (09) 457 2001') }}</span>
+          {{ _('Service is provided by ') }}<a href="{{ _('http://www.csc.fi/english') }}">{{ _('CSC - IT Center for Science Ltd') }}</a>
         </p>
         {% endblock %}
       </div>
       <div class="footer-third">
-        {% block service_desk %}
-	    <h1>{{ _('CSC SERVICE DESK') }}</h1>
-        <p>
-          <span class="footer-data">{{ _('Monday to friday') }}</span>
-          <span class="footer-data">{{ _('from 8.30 a.m. to 4 p.m.') }}</span>
-        </p>
-        <p>
-          <span class="footer-data">{{ _('Phone (09) 457 2821') }}</span>
-          <span class="footer-data">{{ _('helpdesk (at) csc.fi') }}</span>
-        </p>
-        
-        <div class='tta-info'>
-          <h1>{{ _('Kata is provided by:') }}</h1>
-          <p>
-            <span class="footer-data"><a href="{{ _('http://datakeskus.csc.fi/en/web/tta') }}"><img src="/base/images/TTA_tp_40.png"></a></span>
-          </p>
-        </div>
+        {% block footer_logo %}
         
         {% endblock %}
       </div>
+      
     {% endblock %}
   </div>
 

@@ -98,16 +98,13 @@ ul.kata {
 .ui-timepicker-rtl dl { text-align: right; }
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
 /* overwriting min.main*/
-p {
-	font-family: Tahoma, Arial, sans-serif;
-}
 html, body {
 	min-width: 970px;
 }
 body {
 	background-color: #FFF !important;
 	background: none !important;
-	font-family: Tahoma, Arial, sans-serif;
+	font-family: Arial, Tahoma, sans-serif;
 }
 header.masthead a.logo img {
 	height: 87px !important;
@@ -128,9 +125,10 @@ header.masthead .content {
 }
 header.masthead .container {
 	height: 120px !important;
-	background-image: url("/base/images/TTA-bg.png") !important;
+	background-image: none !important;
 	background-size: 100% !important;
 	width: 971px;
+	padding-top: 5px;
 }
 header.masthead .content a,
 header.masthead .account a,
@@ -146,12 +144,12 @@ header.masthead .account {
 
 }
 header.masthead .account .button {
-	-moz-box-shadow: 0 0 0 0 #fff;
-	-webkit-box-shadow: 0 0 0 0 #fff;
-	box-shadow: 0 0 0 0 #fff;
-	background-color: rgba(0,0,0,0.3) !important;
+	-moz-box-shadow: 0 0 0 0 #70c4f3;
+	-webkit-box-shadow: 0 0 0 0 #70c4f3;
+	box-shadow: 0 0 0 0 #70c4f3;
+	background-color: rgba(112,196,243,0.9) !important;
 	border: 0px;
-	color: #fff !important;
+	color: #000 !important;
 	margin: 2px 5px 2px 0;
 	padding: 4px 8px 3px;
 	text-shadow: none !important;
@@ -162,10 +160,13 @@ header.masthead .account .button {
 	display: block;
 	text-decoration: none;
 }
+header.masthead .account .button:hover {
+	background-color: rgba(82,166,203,0.8) !important;
+}
 header.masthead .account .dropdown.open .button,
 header.masthead .account .dropdown .button:hover {
 /* Overwrite profile section buttons shadow color in main.css */
-    box-shadow: 0 1px 0 #666 inset;
+    box-shadow: 0 1px 0 #52A6CD inset;
 }
 header.masthead .dropup, header.masthead .dropdown {
 	display: inline-block;
@@ -189,14 +190,18 @@ header.masthead .site-search {
     margin-right: 17px;
 }
 header.masthead .not-authed a {
-	padding: 4px 10px;
+	padding: 10px;
 	font-weight: bold;
+	color: black;
 }
 #help_navi {
-	color: #FFF;
+	color: #000;
 	margin-bottom: 5px;
 	float: right;
 	margin-right: 17px;
+}
+#help_navi a {
+	color: black;
 }
 .tta-orange {
 	color: #E24632;
@@ -217,10 +222,10 @@ header.masthead .not-authed a {
 	margin: auto auto 10px auto;
 	background-color: #FFF;
 	border: 1px solid;
-	border-color: #063A5A;
-	-webkit-box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
-	box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
-	-moz-box-shadow: rgba(6, 58, 90, 0.8) 0 0 10px !important;
+	border-color: #000;
+	-webkit-box-shadow: rgba(66, 66, 66, 0.8) 0 0 10px !important;
+	box-shadow: rgba(66, 66, 66, 0.8) 0 0 10px !important;
+	-moz-box-shadow: rgba(66, 66, 66, 0.8) 0 0 10px !important;
 	background: none !important;
 }
 [role="main"] .primary {
@@ -269,13 +274,13 @@ header.masthead .not-authed a {
 	border: 0;
 }
 .module {
-	-webkit-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
-	box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
-	-moz-box-shadow: rgba(6, 58, 90, 1) 0 0 3px !important;
+	-webkit-box-shadow: rgba(66, 66, 66 1) 0 0 3px !important;
+	box-shadow: rgba(66, 66, 66, 1) 0 0 3px !important;
+	-moz-box-shadow: rgba(66, 66, 66, 1) 0 0 3px !important;
 	background-color: #FFF;
 	border: 1px solid;
-	border-color: #829CAC;
-    border-radius: 3px 0 0 0 !important;
+	border-color: #000;
+    border-radius: 0px 0 0 0 !important;
     border-top-width: 1 !important;
 }
 .module-heading {
@@ -320,7 +325,7 @@ header.masthead .not-authed a {
 	padding: 0px 0px 0px 0px;
 }
 .navbar-search .search-query {
-	font-family: Tahoma, Arial, sans-serif;
+	font-family: Arial, Tahoma, sans-serif;
 }
 .tag {
 	color: #139CEC;
@@ -344,20 +349,26 @@ a.tag:hover {
 	-moz-box-shadow: none !important;
 }
 .site-footer {
-	background-color: #0A010E;
+	background-color: #f2f2f2;
 	background-image: none;
 	padding: 20px 0;
-	background-image:-webkit-linear-gradient(top, #0A010E, #0A010E);
-	background-image:-moz-linear-gradient(top, #0A010E, #0A010E);
-	background-image:-o-linear-gradient(top, #0A010E, #0A010E);
-	background-image:-ms-linear-gradient(top, #0A010E, #0A010E);
+	background-image:-webkit-linear-gradient(bottom, #f2f2f2, #eeeeee);
+	background-image:-moz-linear-gradient(bottom, #f2f2f2, #eeeeee);
+	background-image:-o-linear-gradient(bottom, #f2f2f2, #eeeeee);
+	background-image:-ms-linear-gradient(bottom, #f2f2f2, #eeeeee);
 	background-repeat:repeat no-repeat;
 	min-height: 75px;
 	height: auto;
 	margin-bottom: 0px;
 }
+.site-footer a {
+	color: #70c4f3 !important;
+}
 .site-footer {
 	font-size: 90%;
+}
+.site-footer p {
+	color: black;
 }
 .site-footer h1 {
 	font-size: 14px;
@@ -365,33 +376,35 @@ a.tag:hover {
 .footer-data {
 	display: block;
 }
+.footer-data a {
+	color: #70c4f3;
+}
 .footer-first {
 	margin: 0px;
 	float: left;
-	background-image: url(/base/images/location.png);
+	background-image: none;
 	background-position: 0 0;
 	background-repeat: no-repeat no-repeat;
-	padding-left: 55px;
-	background: url("/base/images/location.png") no-repeat scroll left top transparent;
-	padding-right: 30px;
+	padding-left: 200px;
+	background: none;
 }
 .footer-second {
 	margin: 0px;
 	float: left;
-	background-image: url(/base/images/location.png);
+	background-image: none;
 	background-position: 0 0;
 	background-repeat: no-repeat no-repeat;
 	padding-left: 55px;
-	background: url("/base/images/location.png") no-repeat scroll left top transparent;
+	background: none;
 }
 .footer-third {
 	margin: 0px;
 	float: right;
-	background-image: url(/base/images/cscportal/helpdesk.png);
+	background-image: none;
 	background-position: 0 0;
 	background-repeat: no-repeat no-repeat;
  	padding-left: 55px;
-	background: url("/base/images/helpdesk.png") no-repeat scroll left top transparent;
+	background: none;
 }
 .tta-info {
 	margin-top: 50px;
@@ -400,10 +413,14 @@ a.tag:hover {
 	height: 60px !important;
 }
 input, button, select, textarea {
-	font-family: Tahoma, Arial, sans-serif;
+	font-family: Arial, Tahoma, sans-serif;
 }
 .dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover {
-	background-color:#03264E;
+	background-color: #dc3520;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+    background-color: #70c4f3;
+    background-image: linear-gradient(to bottom, #70c4f3, #60b4ff);
 }
 .btn {
 	border: 1px solid #666;
@@ -465,14 +482,6 @@ input, button, select, textarea {
 	left: 300px;
 	top: 45px;
 }
-#kata_header h1 {
-	color: #FFF;
-	padding-top: 8px;
-	font-size: 16px;
-	font-family: Tahoma, Arial, sans-serif;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-}
 .pp-body h1 {
 	font-size: 16px;
 }
@@ -516,11 +525,11 @@ input, button, select, textarea {
 	padding-top: 25px;
 }
 #nav_wrapper {
-	color: #063A5A;
-	background-color: #063A5A;
+	color: #454545;
+	background-color: #454545;
 }
 #kata_navigation {
-	background-color: #063A5A;
+	background-color: #454545;
 }
 #kata_navigation li.selected a {
 	-webkit-box-shadow: none;
@@ -550,9 +559,8 @@ input, button, select, textarea {
 /*  padding: 3px 5px;*/
 	text-decoration: none;
 }
-
 #kata_navigation .selected a, #kata_navigation li.hover a, #kata_navigation a:hover, #kata_navigation a:focus {
-	background-color: #03263E;
+	background-color: #dc3620;
 	background-position: initial initial;
 	background-repeat: initial initial;
 	color: #FFFFFF;
@@ -592,6 +600,7 @@ input, button, select, textarea {
 #kata_navigation .icon-home {
 	width: 18px;
 	font-size: 18px;
+	color: #36A78E;
 }
 #nav_wrapper {
 	-webkit-box-shadow: rgba(0, 0, 0, 0) 0 0 5px;
@@ -771,4 +780,30 @@ h3.question {
 	border: 1px solid #139CEC;
 	padding: 5px;
 	margin: 5px;
+}
+
+/* Fonts */
+.onkiAutocomplete .onkiFinder {
+	font-family: Arial, sans-serif !important;
+}
+.onkiAutocomplete .onkiCollector .remove-fetched-concept {
+	font-family: Arial, Sans-Serif !important;
+}
+.ui-widget {
+    font-family: Arial,Verdana,sans-serif !important;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-family: Arial,Verdana,sans-serif !important;
+}
+p {
+    font-family: Arial,Tahoma,sans-serif;
+}
+body {
+    font-family: Arial,Tahoma,sans-serif;
+}
+.navbar-search .search-query {
+    font-family: Arial,Tahoma,sans-serif;
+}
+input, button, select, textarea {
+    font-family: Arial,Tahoma,sans-serif;
 }
