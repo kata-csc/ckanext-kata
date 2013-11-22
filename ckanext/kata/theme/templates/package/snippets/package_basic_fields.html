@@ -6,7 +6,6 @@
 <section class="module">
 <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
 <div class="module-content">
-<input type="hidden" name="name" value="{% if data.name %}{{data.name}}{% endif %}" />
 <div class="kata-multi-input">
  <span class="kata-multi-heading">
     {{ _('Titles') }}
@@ -79,7 +78,7 @@
 		        <div class="controls editor">
 		            <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname firstname') }}" id="orgauth__{{ index }}__value_id" name="orgauth__{{ index }}__value" value="{{ orgauth.value }}" />
 		            {% if index == 0 %}
-					    {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave and added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />Author can be a name or an identifier URL, like an orcid identifier.')) }}
+					    {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />Author can be a name or an identifier URL, like an orcid identifier. If you choose to write a name, please use format "familyname firstname".')) }}
 				    {% endif %}
 		        </div>
 		        <label class="control-label kata-input-comp" for="orgauth__{{index}}__org_id">{{ _('Organization') }}</label>
@@ -132,7 +131,7 @@
 <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset does not have a language') }}</input>
 <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
  {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
-	{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a comma separated list of languages used in your research material, for example \"en, fi, sv\".')) }}
+	{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a comma separated list of languages used in your data, for example \"eng, fin, swe\".')) }}
 {% endcall %}
 </div>
 </div>
@@ -147,7 +146,7 @@
 			{% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
 
 			{% call form.input('maintainer', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.maintainer, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone that can be contacted if more information about the data is required or the person responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone that can be contacted if more information about the data is required or the person or organisation responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }} 
 			{% endcall %}			
 
 			{% call form.input('contact_phone', label=_('Phone'), id='contact_phone', placeholder=_('+35844122123'), value=data.contact_phone, error=errors.contact_phone, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
@@ -155,7 +154,7 @@
 			{% endcall %}			
 
 			{% call form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, type='email', classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address.')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly.')) }} 
 			{% endcall %}			
 
 			{% call form.input('contact_URL', label=_('Homepage'), id='contact_URL', placeholder=_('http://johndoe.com/contact'), value=data.contact_URL, error=errors.contact_URL, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
@@ -197,8 +196,21 @@
 <section class="module">
 <h2 class="module-heading-add-dataset">{{ _('Identification information') }}</h2>
 <div class="module-content">
-{% call form.input('version_PID', id='field-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.version_PID, error=errors.version_PID, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-	{{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier of the data, preferrably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is an URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/index.html for more information.')) }}
+{% if data.name and data.name|length > 0 %}
+  <div class="control-group control-custom">
+    <label class="cotrol-label kata-input-comp" for="name-pid">{{ _('Permanent Identifier') }}</label>
+    <div class="controls">
+      <input id="name-pid" type="text" name="name" value="{{ data.name }}" class="kata-medium-input" readonly>
+      {{ kata_form.tooltip(tooltip=_('Permanent identifier was already given. It can\'t be changed.')) }}
+    </div>
+  </div>
+{% else %}
+    {% call form.input('name', id='name-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.name, error=errors.name, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+    {{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier of the data, preferrably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is an URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/index.html for more information.')) }}
+    {% endcall %}
+{% endif %}
+{% call form.input('version_PID', id='field-pid', label=_('Version Identifier'), placeholder=_('will be automatically generated if empty'), value=data.version_PID, error=errors.version_PID, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+	{{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier of the data, preferrably a URI. This specific PID is for the current data version. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is an URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/index.html for more information.')) }}
 {% endcall %}						
 {% call form.input_block("date", _('Modification date'), error=errors.version, control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) %}
 	<div class="control-group control-custom">

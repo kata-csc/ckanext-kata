@@ -147,12 +147,18 @@
 		<td class="dataset-details">{{pkg_dict.version}}</td>
 	</tr>
 	{% endif %}
-	{% if pkg_dict.versionPID %}
+	{% if pkg_dict.name %}
 	<tr>
 		<th class="dataset-label">{{ _('Permanent identifier') }}</th>
-		<td class="dataset-details">{{pkg_dict.versionPID}}</td>
+		<td class="dataset-details">{{pkg_dict.name}}</td>
 	</tr>
-	{% endif %}
+	{% endif %}	
+	{% if pkg_dict.version_PID %}
+	<tr>
+		<th class="dataset-label">{{ _('Version identifier') }}</th>
+		<td class="dataset-details">{{pkg_dict.version_PID}}</td>
+	</tr>
+	{% endif %}	
 </table>
 </section>
 <section class="module-content additional-info">

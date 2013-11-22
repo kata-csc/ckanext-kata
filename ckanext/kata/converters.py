@@ -20,14 +20,14 @@ log = logging.getLogger('ckanext.kata.converters')
 
 def pid_from_extras(key, data, errors, context):
     '''
-    Get versionPID from extras or generate a new one.
+    Get version_PID from extras or generate a new one.
     '''
     for k in data.keys():
-        if k[0] == 'extras' and k[-1] == 'key' and data[k] == 'versionPID':
-            data[('versionPID',)] = data[(k[0], k[1], 'value')]
+        if k[0] == 'extras' and k[-1] == 'key' and data[k] == 'version_PID':
+            data[('version_PID',)] = data[(k[0], k[1], 'value')]
 
-    if not ('versionPID',) in data:
-        data[('versionPID',)] = utils.generate_pid()
+    if not ('version_PID',) in data:
+        data[('version_PID',)] = utils.generate_pid()
 
 
 def org_auth_to_extras(key, data, errors, context):
@@ -305,6 +305,7 @@ def update_name(key, data, errors, context):
     '''
     If name is empty, generate a PID
     '''
-    if len(data[key]) == 0:
-        data[key] = utils.generate_pid()
+    if type(data[key]) == unicode:
+        if len(data[key]) == 0:
+            data[key] = utils.generate_pid()
 

@@ -288,7 +288,7 @@ class TestKataValidators(TestCase):
             ('title', 0, 'value'): u'dada',
             ('type',): None,
             ('version',): u'2013-08-14T10:37:09Z',
-            ('versionPID',): u''}
+            ('version_PID',): u''}
 
 
     def test_validate_kata_date_valid(self):

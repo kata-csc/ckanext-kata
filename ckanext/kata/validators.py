@@ -104,7 +104,7 @@ def check_last_and_update_pid(key, data, errors, context):
         pkg = Package.get(data[('name',)])
         if pkg:
             if not data[key] == pkg.as_dict()['version']:
-                data[('versionPID',)] = utils.generate_pid()
+                data[('version_PID',)] = utils.generate_pid()
 
 
 def validate_language(key, data, errors, context):
