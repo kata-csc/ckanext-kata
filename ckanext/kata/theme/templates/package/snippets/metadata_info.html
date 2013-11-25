@@ -58,7 +58,7 @@
 {% if pkg_dict.availability == 'access_application' %}{{ _(' available via an access form in ') }}<a href="{{ pkg_dict.access_application_URL }}" class="download">{{ _('this link') }}</a> {% endif%}
 {% if pkg_dict.availability == 'direct_download' %}{{ _(' available freely ') }}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}" class="download">{{ _('from this address') }}</a> {% endif %} {% endif %}
 {% if pkg_dict.availability == 'access_request' %}{{ _(' available via login ') }}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}" class="download">{{ _('from this address') }}</a> {% endif %} {% endif %}
-{% if pkg_dict.availability == 'contact_owner' %}{{ _(' available by ') }}<a href="/request_dataset/{{pkg_dict.id}}" class="download">contacting the distributor</a> {% endif %}
+{% if pkg_dict.availability == 'contact_owner' %}{{ _(' available by ') }}<a href="/request_dataset/{{pkg_dict.id}}" class="download">{{ _('contacting the distributor') }}</a> {% endif %}
 {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}{% endif %}
 
 {% if pkg_dict.license_title %}{{ _(' with license as ') }}{{pkg_dict.license_title}}

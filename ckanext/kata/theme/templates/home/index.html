@@ -18,7 +18,7 @@
   {% block home_search %}
     <div class="module module-shallow module-narrow module-dark info">
       <form class="dataset-search module-content clearfix" method="get" action="{% url_for controller='package', action='search' %}">
-        <h3 class="heading">{{ _("Search Research Data") }}</h3>
+        <h3 class="heading">{{ _("Search metadata") }}</h3>
         <span class="control-group search-giant">
           <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('eg. climate') }}" />
           <button type="submit" value="{{ _('Search') }}">Submit</button>
@@ -32,6 +32,10 @@
     <p>
     {{ _('The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:') }}<br /><br />
     <a href="{{ _('http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli.pdf/f7456999-fc4e-4b95-be55-b2a9de9e9a0e') }}"><span class="format-label" data-format="pdf" property="dc:format"></span> {{ _('Minimum metadata model') }}</a> {{ _('(In Finnish)') }}
+    </p>
+    <p>
+    {{ _('The preferred license recommended by TTA is Creative Commons 3.0 family. Learn more about licenses from:') }}<br /><br />
+    <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/3.0/88x31.png"></a>
     </p>
     
   </div>
@@ -60,10 +64,10 @@
   </h4>
   <p>
     {{ _('Kata service aims to collect data from various places and from various branches of science to be a single point of access to all kinds of research data.') }}
-    {{ _('To search for data or even to add your own data doesn\'t require you to be a professional scientist or researcher - useful data can be generated and reused anywhere and by anyone.') }}
+    {{ _('To search for data doesn\'t require you to be a professional scientist or researcher - useful data can be generated and reused anywhere and by anyone.') }}
   </p>
   <h4>
     {{ _('Is all data open?') }}
   </h4>
-    {{ _('All metadata is open, but it is for the author to decide how the data is accessed and by who. Nevertheless, providing your data openly is recommended.') }}
+    {{ _('Almost all metadata is open, but it is for the author to decide how the data is accessed and by who. Nevertheless, providing your data openly is recommended.') }}
 {% endblock %}

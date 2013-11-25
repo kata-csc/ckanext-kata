@@ -131,7 +131,7 @@
 <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset does not have a language') }}</input>
 <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
  {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
-	{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a comma separated list of languages used in your data, for example \"eng, fin, swe\".')) }}
+	{{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
 {% endcall %}
 </div>
 </div>
@@ -146,7 +146,7 @@
 			{% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
 
 			{% call form.input('maintainer', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.maintainer, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone that can be contacted if more information about the data is required or the person or organisation responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }} 
+				{{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone or something that can be contacted if more information about the data is required or the person or organisation responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }} 
 			{% endcall %}			
 
 			{% call form.input('contact_phone', label=_('Phone'), id='contact_phone', placeholder=_('+35844122123'), value=data.contact_phone, error=errors.contact_phone, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
@@ -227,7 +227,7 @@
 <h2 class="module-heading-add-dataset">{{ _('Usage information') }}</h2>
 <div class="module-content">
 	<p>
-		{{ _('Dataset is available for use:') }}
+		{{ _('Dataset is available for use:') }}{{ kata_form.tooltip(tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts some criteria in some service, choose the third option. If the data can be accessed only after contacting the distributor, choose the last option. In this case an email is sent to the address you provided in distributor section.<br /><br />Choose a license from the selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family.")) }}
 	</p>
 	<div class="control-group ">
 		<div class="controls ">

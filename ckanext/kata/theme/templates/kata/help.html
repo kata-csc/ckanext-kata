@@ -14,8 +14,7 @@
       <h3 class="module-heading"><a id="help-general" class="help-h3">{{ _('General information') }}</a></h3>
       <div class="module-content">
         <p> 
-        {{ _('This Kata metadata catalogue\'s help page will guide you through the most common tasks in the service. 
-        Use the right side\'s links to quickly navigate to the desired section.') }}
+        {{ _('This Kata metadata catalogue\'s help page will guide you through the most common tasks in the service. Use the right side\'s links to quickly navigate to the desired section.') }}
         </p>
         <p>
         {{ _('Also, have a look at the FAQ page. It might give you an answer to a specific question in mind.') }}
@@ -31,35 +30,25 @@
       <h3 class="module-heading"><a id="help-datasets" class="help-h3">{{ _('Search (Datasets)') }}</a></h3>
       <div class="module-content">
         <p>
-        {{ _('Search can be accessed from the Datasets page. You can submit your queries using the Search tab or
-        the Advanced search tab, which will provide a guided interface for more complex queries. Note that you can
-        also provide more complex queries to the search field by providing a correct syntax, which will be discussed later
-        in this section.') }}
+        {{ _('Search can be accessed from the Datasets page. You can submit your queries using the Search tab or the Advanced search tab, which will provide a guided interface for more complex queries. Note that you can also provide more complex queries to the search field by providing a correct syntax, which will be discussed later in this section.') }}
         </p>
         <h3 class="help-page">{{ _('Limiting the search with facets') }}</h3>
         <p>
-        {{ _('The right side of the search page provides facets from different categories. You can choose multiple 
-        and from different categories with a mouse click. You can remove a facet selection by pressing the "x" button. 
-        For example choosing free licenses from the License facet selection would search through the free data.') }}
+        {{ _('The right side of the search page provides facets from different categories. You can choose multiple and from different categories with a mouse click. You can remove a facet selection by pressing the "x" button. For example choosing free licenses from the License facet selection would search through the free data.') }}
         </p>
         <h3 class="help-page">{{ _('Using advanced search') }}</h3>
         <p>
-        {{ _('Advanced search feature makes it easy for you to construct more complex searches. You can add 
-        as many search criteria as you want from the "ADD" button: Choose the desired target field from the menu 
-        and add logical operators from the leftmost menu. Note that the AND operators are grouped together by Kata so that
-        they will take precedence over criteria bound by OR.') }}
+        {{ _('Advanced search feature makes it easy for you to construct more complex searches. You can add as many search criteria as you want from the "ADD" button: Choose the desired target field from the menu and add logical operators from the leftmost menu. Note that the AND operators are grouped together by Kata so that they will take precedence over criteria bound by OR.') }}
         </p>
         <h3 class="help-page">{{ _('Wildcards') }}</h3>
         <p>
-        {{ _('The searches support two different wildcard characters. Symbol "?" provides a single character wildcard search. 
-        The following search would match both "text" and test: ') }}
+        {{ _('The searches support two different wildcard characters. Symbol "?" provides a single character wildcard search. The following search would match both "text" and "test": ') }}
         </p>
         <div class="example">
         {{ _('te?t') }}
         </div>
         <p>
-        {{ _('To match multiple characters you can use the symbol "*". It matches 0 or more characters and can be placed in
-        the middle of the term as well as the end: ') }}
+        {{ _('To match multiple characters you can use the symbol "*". It matches 0 or more characters and can be placed in the middle of the term as well as the end: ') }}
         </p>
         <div class="example">
         {{ _('test*') }}
@@ -69,9 +58,7 @@
         </div>
         <h3 class="help-page">{{ _('Logical operators and grouping') }}</h3>
         <p>
-        {{ _('The search engine Kata uses supports the boolean operators AND, "+", OR, NOT and "-". Note that
-        the boolean operators must be provided as upper case characters. To search datasets containing both 
-        "climate" and "rain" you would type: ') }}
+        {{ _('The search engine Kata uses supports the boolean operators AND, "+", OR, NOT and "-". Note that the boolean operators must be provided as upper case characters. To search datasets containing both "climate" and "rain" you would type: ') }}
         </p>
         <div class="example">
         {{ _('climate AND rain') }}
@@ -83,40 +70,34 @@
         {{ _('+climate rain') }}
         </div>
         <p>
-        {{ _('NOT and "-" work similarly. These can be used to rule out words. For example, to search for datasets
-        containing "climate" but not the word "rain" you would search for: ') }}
+        {{ _('NOT and "-" work similarly. These can be used to rule out words. For example, to search for datasets containing "climate" but not the word "rain" you would search for: ') }}
         </p>
         <div class="example">
         {{ _('climate NOT rain') }}
         </div>
         <p>
-        {{ _('If needed, you can group the search criteria with parentheses. This will enable sub queries. For example,
-        to search for either "sun" or "rain" and "climate", use query: ') }}
+        {{ _('If needed, you can group the search criteria with parentheses. This will enable sub queries. For example, to search for either "sun" or "rain" and "climate", use query: ') }}
         </p>
         <div class="example">
         {{ _('(sun OR rain) AND climate') }}
         </div>
         <h3 class="help-page">{{ _('Fuzzy Searches') }}</h3>
         <p>
-        {{ _('With fuzzy search you can match a word that is similar to the given one. Fuzzy search is constructed with symbol "~".
-        To search spellings similar to "roam" you could make a search: ') }}
+        {{ _('With fuzzy search you can match a word that is similar to the given one. Fuzzy search is constructed with symbol "~". To search spellings similar to "roam" you could make a search: ') }}
         </p>
         <div class="example">
         {{ _('roam~') }}
         </div>
         <h3 class="help-page">{{ _('Range Searches') }}</h3>
         <p>
-        {{ _('The range searches work for both date fields and non-date fields. You can search for datasets added between the
-        lower and upper bounds of the provided dates with: ') }}
+        {{ _('The range searches work for both date fields and non-date fields. You can search for datasets added between the lower and upper bounds of the provided dates with: ') }}
         </p>
         <div class="example">
         {{ _('version:[20131212 TO 20141212]') }}
         </div>
         <h3 class="help-page">{{ _('Boosting a term') }}</h3>
         <p>
-        {{ _('You can raise any word\'s importance by boosting it with the symbol "^" and a number. The number is so called boost factor
-        and the higher the number is, the more relevant the word will be. For example, to search for terms "northern hemisphere" and 
-        "southern hemisphere" with the "northern hemisphere" wanted to be more relevant, you could construct a search like: ') }}
+        {{ _('You can raise any word\'s importance by boosting it with the symbol "^" and a number. The number is so called boost factor and the higher the number is, the more relevant the word will be. For example, to search for terms "northern hemisphere" and "southern hemisphere" with the "northern hemisphere" wanted to be more relevant, you could construct a search like: ') }}
         </p>
         <div class="example">
         {{ _('"northern hemisphere"^5 "southern hemisphere"') }}
@@ -133,11 +114,9 @@
         <li>{{ _('If you have sufficient privileges, you can choose to edit the dataset.') }}</li>
         <li>{{ _('If you don\'t have enough priveleges but you are logged in, you can request for edit rights.') }}</li>
         <li>{{ _('From the tabs you can see dataset\'s past activities and followers.') }}</li>
-        <li>{{ _('In the related tab you can see publications and datasets related to the dataset in question and if you are logged in
-        you can add a relation to this dataset.') }}</li>
+        <li>{{ _('In the related tab you can see publications and datasets related to the dataset in question and if you are logged in you can add a relation to this dataset.') }}</li>
         <li>{{ _('In the right hand navigation you can choose to export the dataset\'s basic metadata in RDF format from the "RDF" link.') }}</li>
-        <li>{{ _('If you are logged in, you can choose to follow the dataset. By following the dataset you would start to receive changes to this data
-        to your Dashboard\'s news feed.') }}</li>
+        <li>{{ _('If you are logged in, you can choose to follow the dataset. By following the dataset you would start to receive changes to this data to your Dashboard\'s news feed.') }}</li>
       </ul>
       
       </div>
@@ -146,14 +125,10 @@
       <h3 class="module-heading"><a id="help-add-dataset" class="help-h3">{{ _('Add Dataset') }}</a></h3>
       <div class="module-content">
       <p>
-      {{ _('If you are logged in you will find "Add Dataset" button for example from the Datasets and Dashboard pages. This button
-      brings you to the Add Dataset form. The Add Dataset page encourages and guides you to fullfill the metadata as well as possible to
-      ensure that metadata is of good quality and your data is as well described as possible. The fields are accompanied with a 
-      tooltip, "?", which will give instructions for that specific field.') }}
+      {{ _('If you are logged in you will find "Add Dataset" button for example from the Datasets and Dashboard pages. This button brings you to the Add Dataset form. The Add Dataset page encourages and guides you to fullfill the metadata as well as possible to ensure that metadata is of good quality and your data is as well described as possible. The fields are accompanied with a tooltip, "?", which will give instructions for that specific field.') }}
       </p>
       <h3 class="help-page">{{ _('Required information') }}</h3>
-      {{ _('The upper part of the page contains the data fields that are the compulsory minimum for every dataset. Language and
-      project information can be skipped by checking the checkbox in the section in question. The fields are shortly explained here.') }}
+      {{ _('The upper part of the page contains the data fields that are the compulsory minimum for every dataset. Language and project information can be skipped by checking the checkbox in the section in question. The fields are shortly explained here.') }}
       <br /><br /><p>
       {{ _('Basic information about the dataset:') }}
       </p>
@@ -164,24 +139,19 @@
         {{ _('Authors: Author and author\'s organisation. Multiple author/organisation pairs can be given.') }}
       </div>
       <div class="example">
-        {{ _('Keywords: Keywords use YSO ontology from http://onki.fi/. The keywords are chosen from suggestions or you
-        can also provide your own word if suitable is not available.') }}
+        {{ _('Keywords: Keywords use YSO ontology from http://onki.fi/. The keywords are chosen from suggestions or you can also provide your own word if suitable is not available.') }}
       </div>
       <div class="example">
         {{ _('Languages: List of languages the data contains, in ISO 639-3 format. If there is no language, you can check the checkbox.') }}
       </div>
       <div class="example">
-        {{ _('Distributor / publisher contact information: Provide a name, phone number, valid email address and a homepage so
-        that others can contact the publisher / distributor about the data. This can be you as well. The email address will be hidden
-        from others than dataset editors and a messaging tool is provided for others instead.') }}
+        {{ _('Distributor / publisher contact information: Provide a name, phone number, valid email address and a homepage so that others can contact the publisher / distributor about the data. This can be you as well. The email address will be hidden from others than dataset editors and a messaging tool is provided for others instead.') }}
       </div>
       <p>
       {{ _('Actors and roles:') }}
       </p>
       <div class="example">
-        {{ _('Project that produced this dataset: This information can be skipped by checking the checkbox. If the information is given,
-        all four fields must be filled with project data: Project name, project\'s funder, funding id (will be hidden to non-editors) and 
-        project\'s homepage.') }}
+        {{ _('Project that produced this dataset: This information can be skipped by checking the checkbox. If the information is given, all four fields must be filled with project data: Project name, project\'s funder, funding id (will be hidden to non-editors) and project\'s homepage.') }}
       </div>
       <div class="example">
         {{ _('Owner information: Data\'s owner\'s information, for example a name or an identification URL.') }}
@@ -190,38 +160,32 @@
       {{ _('Identification information:') }}
       </p>
       <div class="example">
-        {{ _('Permanent identifier: The permanent identifier is the data\'s unique identifier. If none is provided, Kata will give
-        it an URN identifier from National Library of Finland\'s address space, from a subspace given to Kata. This field can NOT be changed afterwards.') }}
+        {{ _('Permanent identifier: The permanent identifier is the data\'s unique identifier. If none is provided, Kata will give it an URN identifier from National Library of Finland\'s address space, from a subspace given to Kata. This field can NOT be changed afterwards.') }}
       </div>
       <div class="example">
-        {{ _('Version identifier: The version PID can be given or if left empty is generated by Kata. If left to Kata, it will generate
-         an URN identifier from National Library of Finland\'s address space, from a subspace given to Kata.') }}
+        {{ _('Version identifier: The version PID can be given or if left empty is generated by Kata. If left to Kata, it will generate an URN identifier from National Library of Finland\'s address space, from a subspace given to Kata.') }}
       </div>
       <div class="example">
-        {{ _('Modification date: Choose a modification date from the language selector. The default value is this moment.') }}
+        {{ _('Modification date: Choose a modification date from the calendar tool. The default value is this moment.') }}
       </div>
       <p>
       {{ _('Usage information tells where the data is located and/or how it can be accessed:') }}
       </p>
       <div class="example">
-        {{ _('Dataset is available for use: Choose a suitable option for your data. Provide also the URL\'s required, the URL fields are
-        displayed according to your choice. No URL is asked for if you choose the option "only by contacting the distributor".') }}
+        {{ _('Dataset is available for use: Choose a suitable option for your data. Provide also the URL\'s required, the URL fields are displayed according to your choice. No URL is asked for if you choose the option "only by contacting the distributor".') }}
       </div>
       <div class="example">
         {{ _('License: Choose a license from the popup menu. This will define who can use your data and possibly how they can use it.') }}
       </div>
       <h3 class="help-page">{{ _('Recommended information') }}</h3>
       <p>
-      {{ _('Beneath the required information are the recommended data fields that are by default hidden but can be toggled visible.
-      It is useful to describe your data as well as possible, so if the fields in recommended information are valid to your data,
-      please fill them. Here are short explanations of the fields:') }}
+      {{ _('Beneath the required information are the recommended data fields that are by default hidden but can be toggled visible. It is useful to describe your data as well as possible, so if the fields in recommended information are valid to your data, please fill them. Here are short explanations of the fields:') }}
       </p>
       <p>
       {{ _('Coverage provides fields for spatial and temporal coverage:') }}
       </p>
       <div class="example">
-        {{ _('Spatial coverage: Places are provided from SUO ontology from http://onki.fi/. Choose the locations covered in your
-        data from the suggestions. You can also add your own location by typing and accepting it.') }}
+        {{ _('Spatial coverage: Places are provided from SUO ontology from http://onki.fi/. Choose the locations covered in your data from the suggestions. You can also add your own location by typing and accepting it.') }}
       </div>
       <div class="example">
         {{ _('Temporal coverage: Choose a time period covered in your data using the date selector.') }}
@@ -230,9 +194,7 @@
       {{ _('Relations:') }}
       </p>
       <div class="example">
-        {{ _('Discipline/branch of science: The disciplines are chosen from the OKM-TIETEENALA ontology, from http://onki.fi/. 
-        The disciplines are provided only in Finnish and you should use these Finnish versions to help grouping and searching
-        of the data.') }}
+        {{ _('Discipline/branch of science: The disciplines are chosen from the OKM-TIETEENALA ontology, from http://onki.fi/. The disciplines are provided only in Finnish and you should use these Finnish versions to help grouping and searching of the data.') }}
       </div>
       <p>
       {{ _('File information is especially technical information about your data:') }}
@@ -241,23 +203,19 @@
         {{ _('File format: The mimetype of the file, see http://www.iana.org/assignments/media-types for a complete list.') }}
       </div>
       <div class="example">
-        {{ _('Checksum and Algorithm: Checksum and the algorithm it was taken with, especially to verify that the file has not 
-        changed.') }}
+        {{ _('Checksum and Algorithm: Checksum and the algorithm it was taken with, especially to verify that the file has not changed.') }}
       </div>
       <p>
       {{ _('Dataset lifecycle events:') }}
       </p>
       <div class="example">
-        {{ _('In case there are events in this dataset, fill all four (event, by whom, when, description) fields. 
-        Choose the event type from the list and provide who did the act. Add also the time in format "1111-11-11T11:11:11" and
-        a description. Multiple events can be added, but all four are required when adding one.') }}
+        {{ _('In case there are events in this dataset, fill all four (event, by whom, when, description) fields. Choose the event type from the list and provide who did the act. Add also the time in format "1111-11-11T11:11:11" and a description. Multiple events can be added, but all four are required when adding one.') }}
       </div>
       <p>
       {{ _('Free description:') }}
       </p>
       <div class="example">
-        {{ _('Description: The description field can contain almost anything. Note, that the contents of the description field
-        are visible in the search results, so giving a good description may bring more attention to your dataset.') }}
+        {{ _('Description: The description field can contain almost anything. Note, that the contents of the description field are visible in the search results, so giving a good description may bring more attention to your dataset.') }}
       </div>
       </div>
     </section>
@@ -269,21 +227,15 @@
         </p>
         <h3 class="help-page"><a id="user-profile" class="help-h4">{{ _('User profile') }}</a></h3>
         <p>
-        {{ _('User profile provides basic information about you, your dataset and actions. The user profile
-        can be accessed from the upper right corner. The upper right corner also provides a direct link to
-        your own datasets. Note that if you have logged in using Haka, you can not change your profile information
-        from Kata: the changes must be done by your home organisation.') }}
+        {{ _('User profile provides basic information about you, your dataset and actions. The user profile can be accessed from the upper right corner. The upper right corner also provides a direct link to your own datasets. Note that if you have logged in using Haka, you can not change your profile information from Kata: the changes must be done by your home organisation.') }}
         </p>
         <h3 class="help-page"><a id="stats" class="help-h4">{{ _('Stats') }}</a></h3>
         <p>
-        {{ _('The Stats link will take you to the statistics page. The page will show you some general information
-        about Kata, its datasets and users.') }}
+        {{ _('The Stats link will take you to the statistics page. The page will show you some general information about Kata, its datasets and users.') }}
         </p>
         <h3 class="help-page"><a id="collections" class="help-h4">{{ _('Collections') }}</a></h3>
         <p>
-        {{ _('The Collections page shows categories which may have datasets under them, grouped together under one set.
-        You can also add a new collection and from the collection page also add a dataset under this collection. Note, 
-        that for now only collections\' administrators can add datasets under it.') }}
+        {{ _('The Collections page shows categories which may have datasets under them, grouped together under one set. You can also add a new collection and from the collection page also add a dataset under this collection. Note, that for now only collections\' administrators can add datasets under it.') }}
         </p>
       </div>
     </section>

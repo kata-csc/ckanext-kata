@@ -41,6 +41,12 @@ setup(
                         ('kata/theme/templates/header.html', 'ckan', None),
                         ('kata/theme/templates/footer.html', 'ckan', None),
                         ('kata/theme/templates/kata/**.html', 'ckan', None),
+                        ('kata/theme/templates/group/**.html', 'ckan', None),
+                        ('kata/theme/templates/datamining/**.html', 'ckan', None),
+                        ('kata/theme/templates/revision/**.html', 'ckan', None),
+                        ('kata/theme/templates/contact/**.html', 'ckan', None),
+                        ('kata/theme/templates/snippets/**.html', 'ckan', None),
+                        
                         ],
     },
     entry_points=\

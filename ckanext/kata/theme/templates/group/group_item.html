@@ -27,7 +27,7 @@ Example:
     {% if group.description %}
       <p>{{ h.truncate(group.description, whole_word=True) }}</p>
     {% else %}
-      <p class="empty">{{ _('This group has no description') }}</p>
+      <p class="empty">{{ _('This collection (group) has no description') }}</p>
     {% endif %}
     {% if group.packages %}
       <a class="btn btn-small btn-primary" href="{{ url }}">{{ ungettext('{num} Dataset', '{num} Datasets', group.packages).format(num=group.packages) }}</a>

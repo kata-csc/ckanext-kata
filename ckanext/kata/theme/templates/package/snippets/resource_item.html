@@ -22,7 +22,7 @@
   {% if res.url != 'http://' and h.resource_display_name(res) != 'http://' %}
   <p class="btn-group">
     <a class="btn btn-primary" href="{{ url }}">{{ _('Explore') }}</a>
-    <a class="btn resource-url-analytics" href="{{ res.url }}" target="_blank">{{ _('Raw metadata') }}</a>
+    <a class="btn resource-url-analytics" href="{{ res.url }}" target="_blank">{{ _('Data') }}</a>
   </p>
   {% endif %}
 </li>

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 0.1.2\n"
+"Project-Id-Version: ckanext-kata 0.333\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-08-07 07:49+0300\n"
+"POT-Creation-Date: 2013-11-23 13:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,159 +17,258 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:32 ckanext/kata/converters.py:315
+#: ckanext/kata/actions.py:38 ckanext/kata/actions.py:39
+msgid "Not authorized to see this information"
+msgstr ""
+
+#: ckanext/kata/actions.py:48 ckanext/kata/converters.py:227
 msgid "Paper"
 msgstr ""
 
-#: ckanext/kata/actions.py:84
-msgid "Request edit rights"
+#: ckanext/kata/auth_functions.py:38
+#, python-format
+msgid "Resource %s not editable"
 msgstr ""
 
-#: ckanext/kata/controllers.py:313
+#: ckanext/kata/auth_functions.py:59
+#, python-format
+msgid "User %s not authorized to delete package %s"
+msgstr ""
+
+#: ckanext/kata/controllers.py:334
 #, python-format
 msgid "You now requested editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:317
-msgid "Please log in!"
+#: ckanext/kata/controllers.py:337 ckanext/kata/controllers.py:376
+msgid "A request is already pending"
 msgstr ""
 
-#: ckanext/kata/controllers.py:329
+#: ckanext/kata/controllers.py:340 ckanext/kata/controllers.py:379
+msgid "You must be logged in to request edit access"
+msgstr ""
+
+#: ckanext/kata/controllers.py:353
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:334
+#: ckanext/kata/controllers.py:358
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:355
+#: ckanext/kata/controllers.py:406
 msgid "Cannot do data mining on remote resource!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:392
+#: ckanext/kata/controllers.py:458
 msgid "This file could not be mined for any data!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:427
+#: ckanext/kata/controllers.py:502
 msgid "This metadata document is not in proper format for data mining!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:496
-msgid "No message"
-msgstr ""
-
-#: ckanext/kata/controllers.py:499
-msgid "No owner found"
-msgstr ""
-
-#: ckanext/kata/controllers.py:501
+#: ckanext/kata/controllers.py:570
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:503 ckanext/kata/controllers.py:523
+#: ckanext/kata/controllers.py:572
+msgid "No message"
+msgstr ""
+
+#: ckanext/kata/controllers.py:574
+msgid "No owner found"
+msgstr ""
+
+#: ckanext/kata/controllers.py:576 ckanext/kata/controllers.py:666
+#: ckanext/kata/controllers.py:685
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:520
-msgid "Already contacted"
-msgstr ""
-
-#: ckanext/kata/controllers.py:552
-#, python-format
-msgid "%s is now logged in"
-msgstr ""
-
-#: ckanext/kata/controllers.py:558
-msgid "Login failed. Bad username or password."
-msgstr ""
-
-#: ckanext/kata/controllers.py:560
-msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
-msgstr ""
-
-#: ckanext/kata/converters.py:102
-msgid "This author is without organization!"
-msgstr ""
-
-#: ckanext/kata/converters.py:105
-msgid "This organization is without author!"
-msgstr ""
-
-#: ckanext/kata/converters.py:160 ckanext/kata/converters.py:161
-msgid "Duplicate language found."
-msgstr ""
-
-#: ckanext/kata/converters.py:169
-msgid "Add at least one non-empty title!"
-msgstr ""
-
-#: ckanext/kata/utils.py:32
+#: ckanext/kata/controllers.py:589
 #, python-format
 msgid ""
-"%s (%s) is requesting editor access to a dataset you have created\n"
-"    %s.\n"
+"%s (%s) has sent you a message regarding the following dataset:\n"
 "\n"
-"Please click this link if you want to give this user write access:\n"
-"%s%s"
-msgstr ""
-
-#: ckanext/kata/utils.py:44
-#, python-format
-msgid "Access request for dataset %s"
-msgstr ""
-
-#: ckanext/kata/utils.py:75
-#, python-format
-msgid ""
-"%s (%s) is requesting access to study material for dataset you have created\n"
-"    %s.\n"
+"    %s\n"
 "\n"
 "The message is as follows:\n"
-"%s\n"
 msgstr ""
 
-#: ckanext/kata/utils.py:89
+#: ckanext/kata/controllers.py:596 ckanext/kata/controllers.py:628
+msgid ""
+"Please do not reply directly to this e-mail.\n"
+"If you need to reply to the sender, use the direct e-mail address above."
+msgstr ""
+
+#: ckanext/kata/controllers.py:608
+#, python-format
+msgid "Message regarding dataset %s"
+msgstr ""
+
+#: ckanext/kata/controllers.py:619
+#, python-format
+msgid ""
+"%s (%s) is requesting access to study material in dataset\n"
+"\n"
+"    %s\n"
+"\n"
+"for which you are currently an administrator.\n"
+"\n"
+"The message is as follows:\n"
+msgstr ""
+
+#: ckanext/kata/controllers.py:640
 #, python-format
 msgid "Material access request for dataset %s"
 msgstr ""
 
-#: ckanext/kata/validators.py:20
-msgid "You must fill up the form URL"
+#: ckanext/kata/controllers.py:663 ckanext/kata/controllers.py:682
+msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/validators.py:27
-msgid "Project data received even if no project is associated."
-msgstr ""
-
-#: ckanext/kata/validators.py:36
-msgid "Invalid date format, must be like 2012-12-31T13:12:11"
-msgstr ""
-
-#: ckanext/kata/validators.py:58
+#: ckanext/kata/controllers.py:715
 #, python-format
-msgid "Language was deleted as it is disabled. Value was: %s"
+msgid "%s is now logged in"
 msgstr ""
 
-#: ckanext/kata/validators.py:66
+#: ckanext/kata/controllers.py:722
+msgid "Login failed. Bad username or password."
+msgstr ""
+
+#: ckanext/kata/controllers.py:724
+msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
+msgstr ""
+
+#: ckanext/kata/converters.py:44
+msgid "Organisation is missing"
+msgstr ""
+
+#: ckanext/kata/converters.py:46
+msgid "Author is missing"
+msgstr ""
+
+#: ckanext/kata/converters.py:262
 msgid "No language given."
 msgstr ""
 
-#: ckanext/kata/validators.py:69
+#: ckanext/kata/converters.py:268
 #, python-format
-msgid "Invalid language %s, not in ISO 639."
+msgid "Language is disabled, removing languages: '%s'"
 msgstr ""
 
-#: ckanext/kata/validators.py:77
+#: ckanext/kata/utils.py:44
+#, python-format
+msgid ""
+"%s (%s) is requesting editing rights to dataset\n"
+"\n"
+"    %s\n"
+"\n"
+"for which you are currently an administrator.\n"
+"\n"
+"Please click this link if you want to allow this user to edit the metadata of"
+" the dataset:\n"
+"%s%s"
+msgstr ""
+
+#: ckanext/kata/utils.py:62
+#, python-format
+msgid "Access request for dataset %s"
+msgstr ""
+
+#: ckanext/kata/validators.py:40
+#, python-format
+msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+"
+msgstr ""
+
+#: ckanext/kata/validators.py:74
+msgid "Project data received even if no project is associated."
+msgstr ""
+
+#: ckanext/kata/validators.py:86
+msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
+msgstr ""
+
+#: ckanext/kata/validators.py:88
+msgid "Invalid date"
+msgstr ""
+
+#: ckanext/kata/validators.py:129
+#, python-format
+msgid "Language %s not in ISO 639-2 T format"
+msgstr ""
+
+#: ckanext/kata/validators.py:137
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/validators.py:82
+#: ckanext/kata/validators.py:148
+msgid "Invalid characters: <> not allowed"
+msgstr ""
+
+#: ckanext/kata/validators.py:156
 msgid "Invalid telephone number, must be like +13221221"
 msgstr ""
 
-#: ckanext/kata/validators.py:102
+#: ckanext/kata/validators.py:170 ckanext/kata/validators.py:196
 msgid "Missing value"
+msgstr ""
+
+#: ckanext/kata/validators.py:226
+#, python-format
+msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
+msgstr ""
+
+#: ckanext/kata/validators.py:247
+#, python-format
+msgid "Spatial coverage \"%s\" must be alphanumeric characters or symbols: -,:()."
+msgstr ""
+
+#: ckanext/kata/validators.py:263
+#, python-format
+msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
+msgstr ""
+
+#: ckanext/kata/validators.py:274
+#, python-format
+msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
+msgstr ""
+
+#: ckanext/kata/validators.py:284
+msgid "First title can not be empty"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:13
+msgid "Kata is a service of the "
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:13
+msgid "http://www.tdata.fi/tta-frontpage?param=param"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:13
+msgid "Finnish National Research Data Initiative (TTA)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:16
+msgid "Service is provided by "
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:16
+msgid "http://www.csc.fi/english"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:16
+msgid "CSC - IT Center for Science Ltd"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:9
+msgid "http://datakeskus.csc.fi/en/web/tta"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:9
+msgid "TTA - Tutkimuksen Tietoaineistot"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:19
@@ -177,14 +276,11 @@ msgid "new notifications"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:20
-#: ckanext/kata/theme/templates/kata/help.html:133
-#: ckanext/kata/theme/templates/kata/help.html:219
 msgid "Notifications"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:26
 #: ckanext/kata/theme/templates/header.html:56
-#: ckanext/kata/theme/templates/kata/help.html:137
 msgid "Log out"
 msgstr ""
 
@@ -201,522 +297,889 @@ msgid "Edit Profile"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:64
-#: ckanext/kata/theme/templates/kata/help.html:159
-#: ckanext/kata/theme/templates/kata/help.html:228
 msgid "My Datasets"
 msgstr ""
 
+#: ckanext/kata/theme/templates/header.html:69
 #: ckanext/kata/theme/templates/header.html:71
+msgid "Sysadmin settings"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:79
 msgid "Log in"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:82
-#: ckanext/kata/theme/templates/package/search.html:6
+#: ckanext/kata/theme/templates/header.html:87
+#: ckanext/kata/theme/templates/package/search.html:13
 msgid "Search Datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:83
-#: ckanext/kata/theme/templates/header.html:84
-#: ckanext/kata/theme/templates/package/search.html:36
-#: ckanext/kata/theme/templates/package/search.html:62
-#: ckanext/kata/theme/templates/package/search.html:150
+#: ckanext/kata/theme/templates/header.html:88
+#: ckanext/kata/theme/templates/header.html:89
+#: ckanext/kata/theme/templates/package/search.html:50
+#: ckanext/kata/theme/templates/package/search.html:71
+#: ckanext/kata/theme/templates/package/search.html:160
 msgid "Search"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:93
-#: ckanext/kata/theme/templates/kata/help.html:77
-#: ckanext/kata/theme/templates/kata/help.html:206
-msgid "Add Dataset"
-msgstr ""
-
-#: ckanext/kata/theme/templates/header.html:95
-#: ckanext/kata/theme/templates/package/read.html:9
-msgid "Datasets"
-msgstr ""
-
 #: ckanext/kata/theme/templates/header.html:96
-#: ckanext/kata/theme/templates/kata/help.html:62
-#: ckanext/kata/theme/templates/kata/help.html:197
-msgid "Organizations"
-msgstr ""
-
-#: ckanext/kata/theme/templates/header.html:97
-#: ckanext/kata/theme/templates/kata/help.html:69
-#: ckanext/kata/theme/templates/kata/help.html:200
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:40
-msgid "Groups"
-msgstr ""
-
-#: ckanext/kata/theme/templates/header.html:98
-#: ckanext/kata/theme/templates/kata/help.html:73
-#: ckanext/kata/theme/templates/kata/help.html:203
-msgid "About"
-msgstr ""
-
-#: ckanext/kata/theme/templates/header.html:99
 #: ckanext/kata/theme/templates/kata/help.html:6
 msgid "Help"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:100
+#: ckanext/kata/theme/templates/header.html:101
 #: ckanext/kata/theme/templates/kata/faq.html:6
-#: ckanext/kata/theme/templates/kata/faq.html:25
+#: ckanext/kata/theme/templates/kata/faq.html:49
 msgid "FAQ"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:106
+#: ckanext/kata/theme/templates/kata/help.html:277
+msgid "Stats"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:119
+#: ckanext/kata/theme/templates/contact/contact_form.html:3
+#: ckanext/kata/theme/templates/contact/edit_request_form.html:3
+#: ckanext/kata/theme/templates/datamining/read.html:7
+#: ckanext/kata/theme/templates/group/read_base.html:24
+#: ckanext/kata/theme/templates/group/read_base.html:58
+#: ckanext/kata/theme/templates/package/read.html:23
+#: ckanext/kata/theme/templates/revision/diff.html:11
+#: ckanext/kata/theme/templates/revision/read.html:64
+msgid "Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:120
+#: ckanext/kata/theme/templates/group/base_form_page.html:6
+#: ckanext/kata/theme/templates/group/index.html:6
+#: ckanext/kata/theme/templates/group/index.html:18
+#: ckanext/kata/theme/templates/group/read_base.html:14
+#: ckanext/kata/theme/templates/kata/help.html:282
+msgid "Collections"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:121
+#: ckanext/kata/theme/templates/group/read_base.html:26
+msgid "About"
 msgstr ""
 
 #: ckanext/kata/theme/templates/privacypolicy.html:2
 msgid "Tietosuojaseloste / Privacy Policy"
 msgstr ""
 
+#: ckanext/kata/theme/templates/contact/contact_form.html:5
+msgid "Contact"
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/contact_form.html:9
+msgid "Contact distributor"
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/contact_form.html:13
+msgid "On this page you can send a message to the owner of the dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/contact_form.html:14
+#: ckanext/kata/theme/templates/contact/dataset_request_form.html:5
+msgid "Message"
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/dataset_request_form.html:4
+msgid ""
+"On this page you can send a message to the owner of the dataset to request "
+"access to the material."
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/edit_request_form.html:5
+#: ckanext/kata/theme/templates/contact/edit_request_form.html:9
+#: ckanext/kata/theme/templates/package/read.html:13
+msgid "Request edit rights"
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/edit_request_form.html:13
+msgid "You do not currently have the access rights required to edit this dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/edit_request_form.html:18
+msgid ""
+"If you wish, you can click the button below, and a request for editing access"
+" will be sent to the owner of the dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/edit_request_form.html:23
+msgid "Request edit"
+msgstr ""
+
+#: ckanext/kata/theme/templates/contact/edit_request_form.html:29
+msgid ""
+"This dataset does not have an owner. No request for editing access can be "
+"sent. Sorry."
+msgstr ""
+
+#: ckanext/kata/theme/templates/datamining/read.html:12
+msgid "Data mining"
+msgstr ""
+
+#: ckanext/kata/theme/templates/datamining/read.html:19
+msgid "Data mining results"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/base_form_page.html:7
+msgid "Add a Collection (Group)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/base_form_page.html:13
+msgid "Collections Form"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/group_item.html:23
+msgid "View {name}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/group_item.html:30
+msgid "This group has no description"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/group_item.html:33
+msgid "{num} Dataset"
+msgid_plural "{num} Datasets"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/kata/theme/templates/group/group_item.html:35
+msgid "0 Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/index.html:3
+msgid "Collections of Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/index.html:11
+msgid "Add Collection"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/index.html:23
+msgid "There are currently no collections for this site"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/index.html:25
+msgid "How about creating one?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/index.html:38
+msgid "What are Collections?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/index.html:41
+msgid ""
+" <p>Collections, also known as groups, allow you to group together datasets "
+"under a community (for example, Civil Liberty data) or topic (e.g. Transport,"
+" Health, Environment) to make it easier for users to browse datasets by "
+"theme. Datasets can be part of a collection, but do not belong to the "
+"collection for editing or authorisation purposes.</p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/new.html:3
+msgid "Create a Collection (Group)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/new.html:5
+msgid "Create Collection"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/new.html:7
+msgid "Create a Collection"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/read_base.html:7
+#: ckanext/kata/theme/templates/kata/help.html:146
+#: ckanext/kata/theme/templates/kata/help.html:309
+#: ckanext/kata/theme/templates/package/search.html:8
+msgid "Add Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/read_base.html:8
+#: ckanext/kata/theme/templates/package/edit.html:13
+#: ckanext/kata/theme/templates/package/read.html:8
+#: ckanext/kata/theme/templates/package/read_base.html:14
+#: ckanext/kata/theme/templates/package/resource_edit.html:12
+#: ckanext/kata/theme/templates/package/resource_read.html:21
+msgid "Edit"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/read_base.html:25
+#: ckanext/kata/theme/templates/package/read.html:54
+#: ckanext/kata/theme/templates/package/read_base.html:26
+msgid "Activity Stream"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/read_base.html:47
+msgid "read more"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/read_base.html:50
+msgid "There is no description for this group"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/read_base.html:54
+#: ckanext/kata/theme/templates/package/read.html:57
+#: ckanext/kata/theme/templates/package/read_base.html:27
+msgid "Followers"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:10
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:29
+msgid "Title"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:10
+msgid "My Group"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:18
+#: ckanext/kata/theme/templates/package/snippets/import_xml.html:7
+msgid "URL"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:18
+msgid "my-group"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:20
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:41
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:236
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:334
+msgid "Description"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:20
+msgid "A little information about my group..."
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:22
+msgid "Image URL"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:22
+msgid "http://example.com/my-image.jpg"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:51
+msgid "Are you sure you want to delete this Group?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:52
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:43
+#: ckanext/kata/theme/templates/revision/read.html:19
+msgid "Delete"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/snippets/group_form.html:55
+msgid "Save Group"
+msgstr ""
+
 #: ckanext/kata/theme/templates/kata/faq.html:3
 msgid "Kata FAQ"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:11
-msgid "Frequently asked questions"
+#: ckanext/kata/theme/templates/kata/faq.html:12
+#: ckanext/kata/theme/templates/kata/faq.html:56
+msgid "Kata and metadata"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:12
 #: ckanext/kata/theme/templates/kata/faq.html:14
-msgid "Q: "
+msgid "What is Kata?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:12
+#: ckanext/kata/theme/templates/kata/faq.html:15
+msgid ""
+"Kata is a metadata catalogue service of TTA (Finnish National Research Data "
+"Initiative). TTA is a data effort of Ministry of Education and Culture."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:17
 msgid "What kind of data Kata contains?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:13
-#: ckanext/kata/theme/templates/kata/faq.html:15
-msgid "A: "
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/faq.html:13
+#: ckanext/kata/theme/templates/kata/faq.html:18
 msgid "Kata contains metadata of research data, from various branches of science."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:14
+#: ckanext/kata/theme/templates/kata/faq.html:21
+#: ckanext/kata/theme/templates/kata/faq.html:59
+msgid "Add dataset page"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:23
+msgid "Why can't I add any keywords?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:24
+msgid ""
+"Most likely the script files haven't loaded because of your browsers security"
+" features. The script files are loaded via an unencrypted connection which "
+"causes a warning. You must permit this content from your browser. Usually you"
+" can do this temporarily from a button in the address bar or from a tab on "
+"the bottom of the page, depending on the browser you are using."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:29
+msgid ""
+"I added extra fields for titles/authors I do not want to fill. How do I "
+"remove these?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:30
+msgid "You don't need to remove them. Leave them empty and Kata will ignore them."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:33
+#: ckanext/kata/theme/templates/kata/faq.html:62
+msgid "Search: page and features"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:35
 msgid "There are two search fields, why?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:15
+#: ckanext/kata/theme/templates/kata/faq.html:36
 msgid ""
 "The search field in the upmost part makes it easier to search for data from "
 "anywhere in the site. You can use any search field you prefer."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:29
-msgid " "
+#: ckanext/kata/theme/templates/kata/faq.html:38
+msgid "I can't make a search query I want from advanced search"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:39
+msgid ""
+"You can make more complex search queries by using Solr query syntax. See more"
+" in: "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:40
+msgid "Solr query syntax"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:68
+msgid ""
+"Didn't find the question and answer you were looking for? You can submit "
+"additional questions to: "
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:3
 msgid "Kata instructions"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:12
-#: ckanext/kata/theme/templates/kata/help.html:175
-msgid "General"
+#: ckanext/kata/theme/templates/kata/help.html:14
+#: ckanext/kata/theme/templates/kata/help.html:300
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:2
+msgid "General information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:15
+#: ckanext/kata/theme/templates/kata/help.html:17
 msgid ""
-"All pages in Kata service are structured similarly with some page-specific "
-"exceptions. The upmost part of the page contains the TTA logo leading to "
-"front page, a search bar and a couple of user specific links or buttons, "
-"depending whether you are logged in or not. Beneath the aforementioned "
-"section is the main navigation bar. It is always visible and provides the "
-"most important features of the web service. The contents of the navigation "
-"bar differs slightly depending on whether you are currently logged in or not."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:18
-msgid ""
-"Beneath the navigation bar main content of the page is located. It is often "
-"divided into two or three parts, all of them providing different features. "
-"Typically, the upmost section contains the header and possibly some action "
-"buttons. The left part of the main content contains the main functionalities "
-"of the page and the right bar on the other hand some additional tools "
-"depending greatly on the displayed page. On the bottom of every page is a "
-"black coloured area, which displays contact information about the service."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:19
-#: ckanext/kata/theme/templates/kata/help.html:178
-msgid "Common phrases"
+"This Kata metadata catalogue's help page will guide you through the most "
+"common tasks in the service. Use the right side's links to quickly navigate "
+"to the desired section."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:21
+msgid ""
+"Also, have a look at the FAQ page. It might give you an answer to a specific "
+"question in mind."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:23
+msgid "Common phrases"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:25
 msgid "Dataset: a single set of metadata (of data)"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:22
+#: ckanext/kata/theme/templates/kata/help.html:26
 msgid ""
 "Shibboleth: a single-sign in or logging-in system, typically known as HAKA "
 "login"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:27
-#: ckanext/kata/theme/templates/kata/help.html:183
-msgid "Pages"
+#: ckanext/kata/theme/templates/kata/help.html:31
+#: ckanext/kata/theme/templates/kata/help.html:303
+msgid "Search (Datasets)"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:30
+#: ckanext/kata/theme/templates/kata/help.html:34
 msgid ""
-"This section contains basic information about the pages in Kata service. Each"
-" page is explained separately to give basic information about its functions, "
-"usage and purpose."
+"Search can be accessed from the Datasets page. You can submit your queries "
+"using the Search tab or the Advanced search tab, which will provide a guided "
+"interface for more complex queries. Note that you can also provide more "
+"complex queries to the search field by providing a correct syntax, which will"
+" be discussed later in this section."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:33
-#: ckanext/kata/theme/templates/kata/help.html:186
-msgid "Front page"
+#: ckanext/kata/theme/templates/kata/help.html:39
+msgid "Limiting the search with facets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:35
+#: ckanext/kata/theme/templates/kata/help.html:41
 msgid ""
-"The front page contains a brief description of the Kata service and metadata "
-"in general. It also contains a search field which functions as a basic search"
-" for datasets and will eventually take user to page \"Datasets\". You can "
-"always return to the front page via clicking the TTA logo in the upper left "
-"corner of any page."
+"The right side of the search page provides facets from different categories. "
+"You can choose multiple and from different categories with a mouse click. You"
+" can remove a facet selection by pressing the \"x\" button. For example "
+"choosing free licenses from the License facet selection would search through "
+"the free data."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:38
-#: ckanext/kata/theme/templates/kata/help.html:189
-msgid "Datasets (Search)"
+#: ckanext/kata/theme/templates/kata/help.html:45
+msgid "Using advanced search"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:40
+#: ckanext/kata/theme/templates/kata/help.html:47
 msgid ""
-"The Datasets page is the search page of Kata service. From this page you can "
-"easily search and browse for datasets. Type a word or set of words to the "
-"search field to find the type of dataset you want to browse and press enter "
-"or click the search button (shape of magnifying glass). You can also use "
-"advanced search which can be accessed from the tab \"Advanced Search\". Here "
-"you can direct the search criteria to a specific field, add several search "
-"criteria accompanied with boolean operators (AND, OR, NOT) of your choise and"
-" additionally add time limits. An advanced search criteria can also be "
-"manually constructed in the normal search by using Solr search engine's "
-"syntax, like: "
+"Advanced search feature makes it easy for you to construct more complex "
+"searches. You can add as many search criteria as you want from the \"ADD\" "
+"button: Choose the desired target field from the menu and add logical "
+"operators from the leftmost menu. Note that the AND operators are grouped "
+"together by Kata so that they will take precedence over criteria bound by OR."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:42
-msgid "\"text:forest AND text:industry AND title:atmosphere\""
+#: ckanext/kata/theme/templates/kata/help.html:52
+msgid "Wildcards"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:46
+#: ckanext/kata/theme/templates/kata/help.html:54
 msgid ""
-"There are several ways to modify the result set. Using the \"Order by\" popup"
-" menu just beneath the search field, you can change the order of the "
-"displayed result."
+"The searches support two different wildcard characters. Symbol \"?\" provides"
+" a single character wildcard search. The following search would match both "
+"\"text\" and test: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:49
+#: ckanext/kata/theme/templates/kata/help.html:58
+msgid "te?t"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:61
 msgid ""
-"From the toolbox (on the right side of the search page area) you can add "
-"different criteria to limit the result set. For example, you can click "
-"different words in the \"Tags\" window which will then limit the result to "
-"those containing these criteria. The inserted tags or other limiting criteria"
-" can always be removed pressing the \"x\" beside the added word. The list of "
-"limiting tags etc. are located under the search field."
+"To match multiple characters you can use the symbol \"*\". It matches 0 or "
+"more characters and can be placed in the middle of the term as well as the "
+"end: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:51
-#: ckanext/kata/theme/templates/kata/help.html:192
-#: ckanext/kata/theme/templates/package/read.html:55
-msgid "Dataset"
+#: ckanext/kata/theme/templates/kata/help.html:65
+msgid "test*"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:53
+#: ckanext/kata/theme/templates/kata/help.html:68
+msgid "te*t"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:70
+msgid "Logical operators and grouping"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:72
 msgid ""
-"From the search result you can open the dataset of your choise by clicking "
-"the dataset's header. Here you can see all the metadata and access the data "
-"itself via links provided. Note that in some cases additional data can be "
-"found from the \"Additional Info\" part toggling the link \"hide/show\". On "
-"top of the dataset's main area several buttons are usually provided. These "
-"will provide some useful actions like \"Follow\", \"Edit\", \"Request Edit "
-"Rights\" depending on the datasets and your current user rights."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:56
-msgid ""
-"The toolbox on the right side of the dataset contains several helpful tools. "
-"For example, it shows the groups this dataset belongs to - you can browse "
-"these groups by clicking its header. You can also acquire the metadata in RDF"
-" format via the \"Metadata information\" area's RDF link. From the "
-"\"Related\" area you can add a publication or a dataset related to the "
-"current dataset by clicking the button."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:59
-msgid ""
-"Note that you can always return back to your search results by clicking the "
-"browser's 'back' button or typically also using the backspace button of your "
-"keyboard."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:64
-msgid ""
-"The organizations page provides features related to organizations. You can "
-"browse through the excisting organizations and see the information about it "
-"and browse through the datasets under this organization. If you are logged in"
-" you can also add new organizations, modify the ones you administer, add new "
-"users to organizations you administer, and add new datasets under the "
-"organization. Most of the features can be accessed via buttons on an "
-"organization's information page or tabs just above the organization's "
-"information area."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:67
-msgid ""
-"Any logged in user can add new organizations. Typically, you could add an "
-"organization for your research group to gather all your datasets under this "
-"one set so they would be easy to find and administer."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:71
-msgid ""
-"The actions of the groups page are quite similar to the organizations page. A"
-" group is typically a branch of science. Thus it may contain a broad variety "
-"of datasets. You can browse through the list of groups and see the "
-"information about a group by clicking its header or logo. If you are logged "
-"in you can also add a new dataset under this group or follow this specific "
-"group. It is also possible to add a new group and edit the ones you "
-"administer. The features accessible by you depend on your current login "
-"status. All features are accessible via the buttons above the group's main "
-"information area or the tabs on top of the group information."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:75
-msgid "About provides some general information about the Kata metadata catalogue."
+"The search engine Kata uses supports the boolean operators AND, \"+\", OR, "
+"NOT and \"-\". Note that the boolean operators must be provided as upper case"
+" characters. To search datasets containing both \"climate\" and \"rain\" you "
+"would type: "
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:77
-#: ckanext/kata/theme/templates/kata/help.html:133
-#: ckanext/kata/theme/templates/kata/help.html:137
-#: ckanext/kata/theme/templates/kata/help.html:141
-#: ckanext/kata/theme/templates/kata/help.html:159
-#: ckanext/kata/theme/templates/kata/help.html:206
-#: ckanext/kata/theme/templates/kata/help.html:219
-#: ckanext/kata/theme/templates/kata/help.html:222
-#: ckanext/kata/theme/templates/kata/help.html:225
-#: ckanext/kata/theme/templates/kata/help.html:228
-msgid " (requires login)"
+msgid "climate AND rain"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:79
+#: ckanext/kata/theme/templates/kata/help.html:80
 msgid ""
-"The \"Add Dataset\" page will display a form for adding metadata of data. The"
-" fields in \"General Information\" are all mandatory. From \"+\" buttons you "
-"can add more fields, for example in case there are more than one author, the "
-"\"+\" signe next to \"Organisation\" field will add a new pair of Author and "
-"Organisation fields. In some cases you can check a box to bypass some fields,"
-" for example if the dataset has not been produced in a project you can check "
-"the button which will then hide the fields this feature allows you to skip. "
-"In addition, the \"Permanent Identifier\" can be left empty, the service can "
-"automatically generate a permanent identifier (PID) of an URN type. In "
-"\"Usage information\" part you can also provide the location of data this "
-"dataset's metadata is about."
+"To search for datasets that must contain climate and may also contain rain "
+"the search would be: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:82
+#: ckanext/kata/theme/templates/kata/help.html:83
+msgid "+climate rain"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:86
 msgid ""
-"Some fields have extra functionalities. For example the \"Keywords\" field "
-"tries to make suggestions of correct words. By hitting the enter key of your "
-"keyboard, you can accept a word and it is added to the field. If the system "
-"can not suggest the word you require, you can always add the word you typed, "
-"again with the enter key. Any such word can be removed from the list clicking"
-" the \"x\" beside the word. Date fields have a graphical selection tool to "
-"easier selection of dates and times. Select the right date and time with your"
-" mouse and you can even change the time zone from the default one if you need"
-" to. Clicking \"Done\" will insert the date and time to the field with a "
-"correct syntax."
+"NOT and \"-\" work similarly. These can be used to rule out words. For "
+"example, to search for datasets containing \"climate\" but not the word "
+"\"rain\" you would search for: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:85
+#: ckanext/kata/theme/templates/kata/help.html:90
+msgid "climate NOT rain"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:93
 msgid ""
-"In addition to the mandatory fields also some obligatory metadata can be "
-"given. These fields can be toggled visible using the \"Hide/show\" button in "
-"the \"Recommended information\" area. Note that all the data inserted is "
-"metadata of the data. The (target) data is never located in Kata service but "
-"in the storage service of your choise - Kata just tells what the data is, how"
-" it can be accessed etc."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:88
-msgid ""
-"When all required metadata is inserted, you can save the dataset by clicking "
-"the \"Done\" button. If there are some errors, the service will take you back"
-" to edit the metadata and will guide you to correct erratic fields. When the "
-"metadata is correct, your new dataset is automatically published to everyone "
-"and begins to be shown on search results. If you need to edit the metadata, "
-"you can do it any time via the \"Edit\" button. Via the \"Edit\" page you can"
-" also remove your dataset clicking the \"Delete\" button on the bottom of the"
-" dataset page."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:94
-#: ckanext/kata/theme/templates/kata/help.html:210
-msgid "User features"
+"If needed, you can group the search criteria with parentheses. This will "
+"enable sub queries. For example, to search for either \"sun\" or \"rain\" and"
+" \"climate\", use query: "
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:97
-msgid ""
-"Kata service provides several features to provide user specific information "
-"and actions. These features are usually accessible from the upper right "
-"corner of the page. Each feature is briefly explained in the next sections. "
-"The set of user specific actions depend on whether you are logged in to the "
-"service or not."
+msgid "(sun OR rain) AND climate"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:99
-#: ckanext/kata/theme/templates/kata/help.html:213
-msgid "Login"
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:76
+msgid "Fuzzy Searches"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:101
 msgid ""
-"While you are browsing the service anonymously, you have a \"Log in\" link "
-"visible in the page's upper right corner. Clicking the link will take you to "
-"login page, where you can log in via your HAKA credentials using the HAKA-"
-"button which will take you to HAKA login page, or in case you have only Kata "
-"login instead of HAKA login typing your \"Username\" and \"Password\" to the "
-"fields and click \"Log in\" button beneath them."
+"With fuzzy search you can match a word that is similar to the given one. "
+"Fuzzy search is constructed with symbol \"~\". To search spellings similar to"
+" \"roam\" you could make a search: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:104
+#: ckanext/kata/theme/templates/kata/help.html:105
+msgid "roam~"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:107
+#: ckanext/kata/theme/templates/package/snippets/search_help.html:116
+msgid "Range Searches"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:109
 msgid ""
-"If you are using Kata login you can reset your password using the \"Forgot "
-"you password?\" button from the toolbox. This will ask your username and send"
-" you an email which will guide you to reset your password."
+"The range searches work for both date fields and non-date fields. You can "
+"search for datasets added between the lower and upper bounds of the provided "
+"dates with: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:106
-#: ckanext/kata/theme/templates/kata/help.html:216
-msgid "Register"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:108
-msgid ""
-"The register page provides creation of user credentials to Kata service in "
-"case HAKA login is unavailable to you. Registration is not open publicly."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:111
-msgid "The registration form contains several mandatory fields:"
+#: ckanext/kata/theme/templates/kata/help.html:113
+msgid "version:[20131212 TO 20141212]"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:115
-msgid ""
-"Username: your login name. Username must consist of lower case alphanumeric "
-"characters and '_'-sign."
+msgid "Boosting a term"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:118
-msgid "Full Name: your name."
+#: ckanext/kata/theme/templates/kata/help.html:117
+msgid ""
+"You can raise any word's importance by boosting it with the symbol \"^\" and "
+"a number. The number is so called boost factor and the higher the number is, "
+"the more relevant the word will be. For example, to search for terms "
+"\"northern hemisphere\" and \"southern hemisphere\" with the \"northern "
+"hemisphere\" wanted to be more relevant, you could construct a search like: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:121
-msgid ""
-"Email: your valid email address. Note, that email address is compulsory and "
-"provides a way to reset your password if you should ever forget it."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:124
-msgid ""
-"Password: your password. Minimum is four characters but it is strongly "
-"advisable to use strong passwords."
+#: ckanext/kata/theme/templates/kata/help.html:122
+msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:127
-msgid "Confirm: type the same password again."
+#: ckanext/kata/theme/templates/kata/help.html:306
+#: ckanext/kata/theme/templates/package/read.html:51
+#: ckanext/kata/theme/templates/package/read_base.html:25
+msgid "Dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:131
+#: ckanext/kata/theme/templates/kata/help.html:130
 msgid ""
-"Before you hit the \"Create Account\" button you have to confirm that you are"
-" a valid user. This is done via the reCAPTCHA field just beneath the "
-"\"Confirm\" text field. Type the two words you see in the upmost part of the "
-"reCAPTCHA block to the text field. If the words are too messy, you can always"
-" require a new pair of words using the reCAPTCHA block's tiny refresh button,"
-" just next to the reCAPTCHA's text field, on its right side. ReCAPTCHA helps "
-"to prevent creation of machine-generated user accounts. "
+"Choosing a dataset from the search result will show the dataset's "
+"information. The dataset page also provides additional features:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:133
+msgid "If you have sufficient privileges, you can choose to edit the dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:134
+msgid ""
+"If you don't have enough priveleges but you are logged in, you can request "
+"for edit rights."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:135
+msgid "From the tabs you can see dataset's past activities and followers."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:136
 msgid ""
-"When you are logged in, in the upper right corner of the page there is a "
-"notification button showing a number. Clicking this button will open a "
-"dashboard page showing a news feed of activities from users and datasets that"
-" you follow. If you are not following any users or datasets, the news feed is"
-" of course empty and the button will display a white \"0\"."
+"In the related tab you can see publications and datasets related to the "
+"dataset in question and if you are logged in you can add a relation to this "
+"dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:138
+msgid ""
+"In the right hand navigation you can choose to export the dataset's basic "
+"metadata in RDF format from the \"RDF\" link."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:139
 msgid ""
-"When you are logged in, in the upper right corner of the page there is a link"
-" to provide quick log out. The same log out function is available in the "
-"profile menu as well."
+"If you are logged in, you can choose to follow the dataset. By following the "
+"dataset you would start to receive changes to this data to your Dashboard's "
+"news feed."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:141
-#: ckanext/kata/theme/templates/kata/help.html:225
-msgid "Profile menu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:143
+#: ckanext/kata/theme/templates/kata/help.html:149
 msgid ""
-"When you are logged in, in the upper right corner a button with avatar (your "
-"account specific logo) accompanied with a dropdown list. Clicking this button"
-" will show you links to the following pages:"
+"If you are logged in you will find \"Add Dataset\" button for example from "
+"the Datasets and Dashboard pages. This button brings you to the Add Dataset "
+"form. The Add Dataset page encourages and guides you to fullfill the metadata"
+" as well as possible to ensure that metadata is of good quality and your data"
+" is as well described as possible. The fields are accompanied with a tooltip,"
+" \"?\", which will give instructions for that specific field."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:147
-msgid ""
-"Dashboard: this will contain the news feed of activities from users and "
-"datasets you follow"
+#: ckanext/kata/theme/templates/kata/help.html:154
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:4
+msgid "Required information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:150
+#: ckanext/kata/theme/templates/kata/help.html:155
 msgid ""
-"My profile: my profile page will show basic information about you, list of "
-"your datasets, activity stream and information about followers. From the "
-"'Edit' button you can edit your account settings."
+"The upper part of the page contains the data fields that are the compulsory "
+"minimum for every dataset. Language and project information can be skipped by"
+" checking the checkbox in the section in question. The fields are shortly "
+"explained here."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:153
-msgid ""
-"Edit profile: from this page you can edit your account's settings. If you "
-"have logged in with HAKA credentials, changes made here won't affect your "
-"HAKA account but only the information specifically in Kata service. From the "
-"'Change your password' part of the page you can change your password, by "
-"typing the same password to both fields. Finally, updates to your profile can"
-" be confirmed clicking the 'Update Profile' button."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:156
-msgid ""
-"Log out: this action will log you out from the Kata service. After this the "
-"account specific actions will be out of your reach, eg. 'Add Dataset' and "
-"'Edit Profile'."
+#: ckanext/kata/theme/templates/kata/help.html:158
+msgid "Basic information about the dataset:"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:161
 msgid ""
-"When you are logged in, in the upper right corner of the page there is a link"
-" to access the list of your own datasets. The opening page will also provide "
-"access to other features, like the followers page."
+"Titles: Title and its language. Multiple titles with different languages can "
+"be given."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:170
+#: ckanext/kata/theme/templates/kata/help.html:164
+msgid ""
+"Authors: Author and author's organisation. Multiple author/organisation pairs"
+" can be given."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:167
+msgid ""
+"Keywords: Keywords use YSO ontology from http://onki.fi/. The keywords are "
+"chosen from suggestions or you can also provide your own word if suitable is "
+"not available."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:171
+msgid ""
+"Languages: List of languages the data contains, in ISO 639-3 format. If there"
+" is no language, you can check the checkbox."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:174
+msgid ""
+"Distributor / publisher contact information: Provide a name, phone number, "
+"valid email address and a homepage so that others can contact the publisher /"
+" distributor about the data. This can be you as well. The email address will "
+"be hidden from others than dataset editors and a messaging tool is provided "
+"for others instead."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:179
+msgid "Actors and roles:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:182
+msgid ""
+"Project that produced this dataset: This information can be skipped by "
+"checking the checkbox. If the information is given, all four fields must be "
+"filled with project data: Project name, project's funder, funding id (will be"
+" hidden to non-editors) and project's homepage."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:187
+msgid ""
+"Owner information: Data's owner's information, for example a name or an "
+"identification URL."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:190
+msgid "Identification information:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:193
+msgid ""
+"Permanent identifier: The permanent identifier is the data's unique "
+"identifier. If none is provided, Kata will give it an URN identifier from "
+"National Library of Finland's address space, from a subspace given to Kata. "
+"This field can NOT be changed afterwards."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:197
+msgid ""
+"Version identifier: The version PID can be given or if left empty is "
+"generated by Kata. If left to Kata, it will generate an URN identifier from "
+"National Library of Finland's address space, from a subspace given to Kata."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:201
+msgid ""
+"Modification date: Choose a modification date from the language selector. The"
+" default value is this moment."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:204
+msgid ""
+"Usage information tells where the data is located and/or how it can be "
+"accessed:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:207
+msgid ""
+"Dataset is available for use: Choose a suitable option for your data. Provide"
+" also the URL's required, the URL fields are displayed according to your "
+"choice. No URL is asked for if you choose the option \"only by contacting the"
+" distributor\"."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:211
+msgid ""
+"License: Choose a license from the popup menu. This will define who can use "
+"your data and possibly how they can use it."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:213
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:9
+msgid "Recommended information"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:215
+msgid ""
+"Beneath the required information are the recommended data fields that are by "
+"default hidden but can be toggled visible. It is useful to describe your data"
+" as well as possible, so if the fields in recommended information are valid "
+"to your data, please fill them. Here are short explanations of the fields:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:220
+msgid "Coverage provides fields for spatial and temporal coverage:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:223
+msgid ""
+"Spatial coverage: Places are provided from SUO ontology from http://onki.fi/."
+" Choose the locations covered in your data from the suggestions. You can also"
+" add your own location by typing and accepting it."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:227
+msgid ""
+"Temporal coverage: Choose a time period covered in your data using the date "
+"selector."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:230
+msgid "Relations:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:233
+msgid ""
+"Discipline/branch of science: The disciplines are chosen from the OKM-"
+"TIETEENALA ontology, from http://onki.fi/. The disciplines are provided only "
+"in Finnish and you should use these Finnish versions to help grouping and "
+"searching of the data."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:238
+msgid "File information is especially technical information about your data:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:241
+msgid ""
+"File format: The mimetype of the file, see http://www.iana.org/assignments"
+"/media-types for a complete list."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:244
+msgid ""
+"Checksum and Algorithm: Checksum and the algorithm it was taken with, "
+"especially to verify that the file has not changed."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:248
+msgid "Dataset lifecycle events:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:251
+msgid ""
+"In case there are events in this dataset, fill all four (event, by whom, "
+"when, description) fields. Choose the event type from the list and provide "
+"who did the act. Add also the time in format \"1111-11-11T11:11:11\" and a "
+"description. Multiple events can be added, but all four are required when "
+"adding one."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:256
+msgid "Free description:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:259
+msgid ""
+"Description: The description field can contain almost anything. Note, that "
+"the contents of the description field are visible in the search results, so "
+"giving a good description may bring more attention to your dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:265
+#: ckanext/kata/theme/templates/kata/help.html:312
+msgid "Additional features"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:268
+msgid "Kata contains several other features which are shortly covered here."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:270
+msgid "User profile"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:272
+msgid ""
+"User profile provides basic information about you, your dataset and actions. "
+"The user profile can be accessed from the upper right corner. The upper right"
+" corner also provides a direct link to your own datasets. Note that if you "
+"have logged in using Haka, you can not change your profile information from "
+"Kata: the changes must be done by your home organisation."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:279
+msgid ""
+"The Stats link will take you to the statistics page. The page will show you "
+"some general information about Kata, its datasets and users."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:284
+msgid ""
+"The Collections page shows categories which may have datasets under them, "
+"grouped together under one set. You can also add a new collection and from "
+"the collection page also add a dataset under this collection. Note, that for "
+"now only collections' administrators can add datasets under it."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:295
 msgid "Table of contents"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:172
-msgid "Navigate through page content:"
+#: ckanext/kata/theme/templates/kata/help.html:315
+msgid "- User profile"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:222
-msgid "Logout"
+#: ckanext/kata/theme/templates/kata/help.html:318
+msgid "- Stats"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:321
+msgid "- Collections"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/edit.html:8
+msgid "View dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/new.html:3
@@ -733,33 +1196,120 @@ msgid ""
 "found under a single url with a description and licensing information. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read.html:17
-#: ckanext/kata/theme/templates/package/read.html:22
-msgid "Edit"
+#: ckanext/kata/theme/templates/package/new_resource.html:9
+msgid "Add data to the dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read.html:40
+#: ckanext/kata/theme/templates/package/new_resource.html:18
+msgid "What's a resource?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/new_resource.html:20
+msgid "A resource can be any file or link to a file containing useful data."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/read.html:9
+msgid "History"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/read.html:36
+#: ckanext/kata/theme/templates/package/read_base.html:42
 #, python-format
 msgid ""
 "This is an old revision of this dataset, as edited at %(timestamp)s. It may "
 "differ significantly from the <a href=\"%(url)s\">current revision</a>."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read.html:42
+#: ckanext/kata/theme/templates/package/read.html:38
+#: ckanext/kata/theme/templates/package/read_base.html:44
 #, python-format
 msgid "This is the current revision of this dataset, as edited at %(timestamp)s."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read.html:58
-msgid "Activity Stream"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/read.html:61
-msgid "Followers"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/read.html:64
+#: ckanext/kata/theme/templates/package/read.html:60
+#: ckanext/kata/theme/templates/package/read_base.html:28
 msgid "Related"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/read_base.html:68
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:68
+#: ckanext/kata/theme/templates/revision/diff.html:16
+#: ckanext/kata/theme/templates/revision/read.html:83
+msgid "Groups"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_edit.html:16
+msgid "View resource"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:27
+msgid "View"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:29
+msgid "API Endpoint"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:31
+msgid "Download"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:45
+msgid "URL:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:52
+msgid "There is no description for this resource"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:55
+msgid "From the dataset abstract"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:57
+#, python-format
+msgid "Source: <a href=\"%(url)s\">%(dataset)s</a>"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:74
+msgid "Additional Information"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:78
+#: ckanext/kata/theme/templates/package/snippets/additional_info.html:8
+#: ckanext/kata/theme/templates/revision/diff.html:45
+msgid "Field"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:79
+#: ckanext/kata/theme/templates/package/role_fields.html:25
+#: ckanext/kata/theme/templates/package/role_fields.html:48
+#: ckanext/kata/theme/templates/package/snippets/additional_info.html:9
+msgid "Value"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:84
+msgid "Last updated"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:85
+#: ckanext/kata/theme/templates/package/resource_read.html:89
+#: ckanext/kata/theme/templates/package/resource_read.html:93
+msgid "unknown"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:88
+msgid "Created"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:92
+msgid "Format"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/resource_read.html:96
+#: ckanext/kata/theme/templates/package/search.html:247
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:253
+msgid "License"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/role_fields.html:13
@@ -767,86 +1317,118 @@ msgstr ""
 msgid "Role"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/role_fields.html:25
-#: ckanext/kata/theme/templates/package/role_fields.html:48
-#: ckanext/kata/theme/templates/package/snippets/additional_info.html:9
-msgid "Value"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/search.html:3
+#: ckanext/kata/theme/templates/package/search.html:4
 msgid "Search for a Dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:42
+#: ckanext/kata/theme/templates/package/search.html:53
 #: ckanext/kata/theme/templates/package/snippets/search_help.html:33
 msgid "Advanced search"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:61
-#: ckanext/kata/theme/templates/package/search.html:121
+#: ckanext/kata/theme/templates/package/search.html:70
+#: ckanext/kata/theme/templates/package/search.html:129
 msgid "Search..."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:101
+#: ckanext/kata/theme/templates/package/search.html:109
 msgid "AND"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:102
+#: ckanext/kata/theme/templates/package/search.html:110
 msgid "OR"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:103
+#: ckanext/kata/theme/templates/package/search.html:111
 msgid "NOT"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:135
+#: ckanext/kata/theme/templates/package/search.html:134
+msgid ""
+"Multiple search terms are bind together with ANDs and grouped with ORs. "
+"Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:144
 msgid "Year"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:140
+#: ckanext/kata/theme/templates/package/search.html:149
 msgid "Start year"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:145
+#: ckanext/kata/theme/templates/package/search.html:154
 msgid "End year"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:174
-msgid " found for \"{query}\""
+#: ckanext/kata/theme/templates/package/search.html:183
+msgid " datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:176
-msgid "Sorry no datasets found for \"{query}\""
+#: ckanext/kata/theme/templates/package/search.html:183
+msgid " found for"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:178
+#: ckanext/kata/theme/templates/package/search.html:187
+msgid "Sorry no datasets found."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:189
 msgid "All datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:192
+#: ckanext/kata/theme/templates/package/search.html:203
 msgid "Remove"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:202
-msgid "add your own data"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/search.html:208
+#: ckanext/kata/theme/templates/package/search.html:216
 msgid ""
 " <p><strong>There was an error while searching.</strong> Please try "
 "again.</p> "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:222
+#: ckanext/kata/theme/templates/package/search.html:230
 msgid "API"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:225
+#: ckanext/kata/theme/templates/package/search.html:233
 msgid "API Docs"
 msgstr ""
 
+#: ckanext/kata/theme/templates/package/search.html:242
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:51
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:116
+msgid "Keywords"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:243
+msgid "File formats"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:244
+msgid "Discipline"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:245
+#: ckanext/kata/theme/templates/package/snippets/additional_info.html:22
+#: ckanext/kata/theme/templates/package/snippets/additional_info.html:27
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:77
+#: ckanext/kata/theme/templates/revision/read.html:49
+msgid "Author"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:246
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:84
+msgid "Organization"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:248
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:7
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:34
+msgid "Language"
+msgstr ""
+
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:1
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:10
 msgid "Hide/show"
 msgstr ""
 
@@ -854,18 +1436,8 @@ msgstr ""
 msgid "Additional Info"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/additional_info.html:8
-msgid "Field"
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:15
 msgid "Source"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/additional_info.html:22
-#: ckanext/kata/theme/templates/package/snippets/additional_info.html:27
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:97
-msgid "Author"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:34
@@ -889,10 +1461,6 @@ msgstr ""
 msgid "Import XML"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/import_xml.html:7
-msgid "URL"
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:9
 msgid "Import"
 msgstr ""
@@ -905,396 +1473,2485 @@ msgstr ""
 msgid "Metadata documents"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/info.html:29
+#: ckanext/kata/theme/templates/package/snippets/info.html:31
 msgid "Add new metadata document"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:2
-msgid "General information"
+#: ckanext/kata/theme/templates/package/snippets/languages.html:2
+msgid "Finnish"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:7
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:42
-msgid "Language"
+#: ckanext/kata/theme/templates/package/snippets/languages.html:3
+msgid "English"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:4
+msgid "Swedish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:6
+msgid "Abkhazian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:7
+msgid "Achinese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:8
+msgid "Acoli"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:9
+msgid "Adangme"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:10
+msgid "Adyghe; Adygei"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:11
+msgid "Afar"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:12
+msgid "Afrihili"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:13
+msgid "Afrikaans"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:14
+msgid "Afro-Asiatic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:15
+msgid "Ainu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:16
+msgid "Akan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:17
+msgid "Akkadian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:18
+msgid "Albanian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:19
+msgid "Aleut"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:20
+msgid "Algonquian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:21
+msgid "Altaic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:22
+msgid "Amharic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:23
+msgid "Angika"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:24
+msgid "Apache languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:25
+msgid "Arabic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:26
+msgid "Aragonese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:27
+msgid "Arapaho"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:28
+msgid "Arawak"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:29
+msgid "Armenian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:30
+msgid "Aromanian; Arumanian; Macedo-Romanian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:31
+msgid "Artificial languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:32
+msgid "Assamese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:33
+msgid "Asturian; Bable; Leonese; Asturleonese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:34
+msgid "Athapascan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:35
+msgid "Australian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:36
+msgid "Austronesian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:37
+msgid "Avaric"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:38
+msgid "Avestan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:39
+msgid "Awadhi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:40
+msgid "Aymara"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:41
+msgid "Azerbaijani"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:42
+msgid "Balinese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:43
+msgid "Baltic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:44
+msgid "Baluchi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:45
+msgid "Bambara"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:46
+msgid "Bamileke languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:47
+msgid "Banda languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:48
+msgid "Bantu languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:49
+msgid "Basa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:50
+msgid "Bashkir"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:51
+msgid "Basque"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:52
+msgid "Batak languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:53
+msgid "Beja; Bedawiyet"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:54
+msgid "Belarusian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:55
+msgid "Bemba"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:56
+msgid "Bengali"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:57
+msgid "Berber languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:58
+msgid "Bhojpuri"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:59
+msgid "Bihari languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:60
+msgid "Bikol"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:61
+msgid "Bini; Edo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:62
+msgid "Bislama"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:63
+msgid "Blin; Bilin"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:64
+msgid "Blissymbols; Blissymbolics; Bliss"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:65
+msgid "Bokmål, Norwegian; Norwegian Bokmål"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:66
+msgid "Bosnian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:67
+msgid "Braj"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:68
+msgid "Breton"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:69
+msgid "Buginese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:70
+msgid "Bulgarian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:71
+msgid "Buriat"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:72
+msgid "Burmese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:73
+msgid "Caddo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:74
+msgid "Catalan; Valencian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:75
+msgid "Caucasian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:76
+msgid "Cebuano"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:77
+msgid "Celtic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:78
+msgid "Central American Indian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:79
+msgid "Central Khmer"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:80
+msgid "Chagatai"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:81
+msgid "Chamic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:82
+msgid "Chamorro"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:83
+msgid "Chechen"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:84
+msgid "Cherokee"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:85
+msgid "Cheyenne"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:86
+msgid "Chibcha"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:87
+msgid "Chichewa; Chewa; Nyanja"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:88
+msgid "Chinese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:89
+msgid "Chinook jargon"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:90
+msgid "Chipewyan; Dene Suline"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:91
+msgid "Choctaw"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:92
+msgid ""
+"Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church "
+"Slavonic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:93
+msgid "Chuukese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:94
+msgid "Chuvash"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:95
+msgid "Classical Newari; Old Newari; Classical Nepal Bhasa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:96
+msgid "Classical Syriac"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:97
+msgid "Coptic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:98
+msgid "Cornish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:99
+msgid "Corsican"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:100
+msgid "Cree"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:101
+msgid "Creek"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:102
+msgid "Creoles and pidgins"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:103
+msgid "Creoles and pidgins, English based"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:104
+msgid "Creoles and pidgins, French-based"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:105
+msgid "Creoles and pidgins, Portuguese-based"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:106
+msgid "Crimean Tatar; Crimean Turkish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:107
+msgid "Croatian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:108
+msgid "Cushitic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:109
+msgid "Czech"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:110
+msgid "Dakota"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:111
+msgid "Danish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:112
+msgid "Dargwa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:113
+msgid "Delaware"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:114
+msgid "Dinka"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:115
+msgid "Divehi; Dhivehi; Maldivian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:116
+msgid "Dogri"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:117
+msgid "Dogrib"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:118
+msgid "Dravidian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:119
+msgid "Duala"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:120
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:121
+msgid "Dutch; Flemish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:122
+msgid "Dyula"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:123
+msgid "Dzongkha"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:124
+msgid "Eastern Frisian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:125
+msgid "Efik"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:126
+msgid "Egyptian (Ancient)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:127
+msgid "Ekajuk"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:128
+msgid "Elamite"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:129
+msgid "English, Middle (1100-1500)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:130
+msgid "English, Old (ca. 450-1100)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:131
+msgid "Erzya"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:132
+msgid "Esperanto"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:133
+msgid "Estonian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:134
+msgid "Ewe"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:135
+msgid "Ewondo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:136
+msgid "Fang"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:137
+msgid "Fanti"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:138
+msgid "Faroese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:139
+msgid "Fijian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:140
+msgid "Filipino; Pilipino"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:141
+msgid "Finno-Ugrian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:142
+msgid "Fon"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:143
+msgid "French"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:144
+msgid "French, Middle (ca. 1400-1600)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:145
+msgid "French, Old (842-ca. 1400)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:146
+msgid "Friulian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:147
+msgid "Fulah"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:148
+msgid "Ga"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:149
+msgid "Gaelic; Scottish Gaelic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:150
+msgid "Galibi Carib"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:151
+msgid "Galician"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:152
+msgid "Ganda"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:153
+msgid "Gayo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:154
+msgid "Gbaya"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:155
+msgid "Geez"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:156
+msgid "Georgian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:157
+msgid "German"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:158
+msgid "German, Middle High (ca. 1050-1500)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:159
+msgid "German, Old High (ca. 750-1050)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:160
+msgid "Germanic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:161
+msgid "Gilbertese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:162
+msgid "Gondi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:163
+msgid "Gorontalo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:164
+msgid "Gothic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:165
+msgid "Grebo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:166
+msgid "Greek, Ancient (to 1453)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:167
+msgid "Greek, Modern (1453-)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:168
+msgid "Guarani"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:169
+msgid "Gujarati"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:170
+msgid "Gwich'in"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:171
+msgid "Haida"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:172
+msgid "Haitian; Haitian Creole"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:173
+msgid "Hausa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:174
+msgid "Hawaiian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:175
+msgid "Hebrew"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:176
+msgid "Herero"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:177
+msgid "Hiligaynon"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:178
+msgid "Himachali languages; Western Pahari languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:179
+msgid "Hindi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:180
+msgid "Hiri Motu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:181
+msgid "Hittite"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:182
+msgid "Hmong; Mong"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:183
+msgid "Hungarian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:184
+msgid "Hupa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:185
+msgid "Iban"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:186
+msgid "Icelandic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:187
+msgid "Ido"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:188
+msgid "Igbo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:189
+msgid "Ijo languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:190
+msgid "Iloko"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:191
+msgid "Inari Sami"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:192
+msgid "Indic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:193
+msgid "Indo-European languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:194
+msgid "Indonesian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:195
+msgid "Ingush"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:196
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:197
+msgid "Interlingue; Occidental"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:198
+msgid "Inuktitut"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:199
+msgid "Inupiaq"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:200
+msgid "Iranian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:201
+msgid "Irish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:202
+msgid "Irish, Middle (900-1200)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:203
+msgid "Irish, Old (to 900)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:204
+msgid "Iroquoian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:205
+msgid "Italian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:206
+msgid "Japanese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:207
+msgid "Javanese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:208
+msgid "Judeo-Arabic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:209
+msgid "Judeo-Persian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:210
+msgid "Kabardian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:211
+msgid "Kabyle"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:212
+msgid "Kachin; Jingpho"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:213
+msgid "Kalaallisut; Greenlandic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:214
+msgid "Kalmyk; Oirat"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:215
+msgid "Kamba"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:216
+msgid "Kannada"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:217
+msgid "Kanuri"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:218
+msgid "Kara-Kalpak"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:219
+msgid "Karachay-Balkar"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:220
+msgid "Karelian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:221
+msgid "Karen languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:222
+msgid "Kashmiri"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:223
+msgid "Kashubian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:224
+msgid "Kawi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:225
+msgid "Kazakh"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:226
+msgid "Khasi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:227
+msgid "Khoisan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:228
+msgid "Khotanese;Sakan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:229
+msgid "Kikuyu; Gikuyu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:230
+msgid "Kimbundu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:231
+msgid "Kinyarwanda"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:232
+msgid "Kirghiz; Kyrgyz"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:233
+msgid "Klingon; tlhIngan-Hol"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:234
+msgid "Komi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:235
+msgid "Kongo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:236
+msgid "Konkani"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:237
+msgid "Korean"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:238
+msgid "Kosraean"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:239
+msgid "Kpelle"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:240
+msgid "Kru languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:241
+msgid "Kuanyama; Kwanyama"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:242
+msgid "Kumyk"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:243
+msgid "Kurdish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:244
+msgid "Kurukh"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:245
+msgid "Kutenai"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:246
+msgid "Ladino"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:247
+msgid "Lahnda"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:248
+msgid "Lamba"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:249
+msgid "Land Dayak languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:250
+msgid "Lao"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:251
+msgid "Latin"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:252
+msgid "Latvian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:253
+msgid "Lezghian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:254
+msgid "Limburgan; Limburger; Limburgish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:255
+msgid "Lingala"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:256
+msgid "Lithuanian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:257
+msgid "Lojban"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:258
+msgid "Low German; Low Saxon; German, Low; Saxon, Low"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:259
+msgid "Lower Sorbian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:260
+msgid "Lozi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:261
+msgid "Luba-Katanga"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:262
+msgid "Luba-Lulua"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:263
+msgid "Luiseno"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:264
+msgid "Lule Sami"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:265
+msgid "Lunda"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:266
+msgid "Luo (Kenya and Tanzania)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:267
+msgid "Lushai"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:268
+msgid "Luxembourgish; Letzeburgesch"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:269
+msgid "Macedonian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:270
+msgid "Madurese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:271
+msgid "Magahi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:272
+msgid "Maithili"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:273
+msgid "Makasar"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:274
+msgid "Malagasy"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:275
+msgid "Malay"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:276
+msgid "Malayalam"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:277
+msgid "Maltese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:278
+msgid "Manchu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:279
+msgid "Mandar"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:280
+msgid "Mandingo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:281
+msgid "Manipuri"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:282
+msgid "Manobo languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:283
+msgid "Manx"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:284
+msgid "Maori"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:285
+msgid "Mapudungun; Mapuche"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:286
+msgid "Marathi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:287
+msgid "Mari"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:288
+msgid "Marshallese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:289
+msgid "Marwari"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:290
+msgid "Masai"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:291
+msgid "Mayan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:292
+msgid "Mende"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:293
+msgid "Mi'kmaq; Micmac"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:294
+msgid "Minangkabau"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:295
+msgid "Mirandese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:296
+msgid "Mohawk"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:297
+msgid "Moksha"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:298
+msgid "Moldavian; Moldovan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:299
+msgid "Mon-Khmer languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:300
+msgid "Mongo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:301
+msgid "Mongolian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:302
+msgid "Mossi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:303
+msgid "Multiple languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:304
+msgid "Munda languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:305
+msgid "N'Ko"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:306
+msgid "Nahuatl languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:307
+msgid "Nauru"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:308
+msgid "Navajo; Navaho"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:309
+msgid "Ndebele, North; North Ndebele"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:310
+msgid "Ndebele, South; South Ndebele"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:311
+msgid "Ndonga"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:312
+msgid "Neapolitan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:313
+msgid "Nepal Bhasa; Newari"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:314
+msgid "Nepali"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:315
+msgid "Nias"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:316
+msgid "Niger-Kordofanian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:317
+msgid "Nilo-Saharan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:318
+msgid "Niuean"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:319
+msgid "No linguistic content; Not applicable"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:320
+msgid "Nogai"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:321
+msgid "Norse, Old"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:322
+msgid "North American Indian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:323
+msgid "Northern Frisian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:324
+msgid "Northern Sami"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:325
+msgid "Norwegian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:326
+msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:327
+msgid "Nubian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:328
+msgid "Nyamwezi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:329
+msgid "Nyankole"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:330
+msgid "Nyoro"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:331
+msgid "Nzima"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:332
+msgid "Occitan (post 1500)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:333
+msgid "Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:334
+msgid "Ojibwa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:335
+msgid "Oriya"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:336
+msgid "Oromo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:337
+msgid "Osage"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:338
+msgid "Ossetian; Ossetic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:339
+msgid "Otomian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:340
+msgid "Pahlavi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:341
+msgid "Palauan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:342
+msgid "Pali"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:343
+msgid "Pampanga; Kapampangan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:344
+msgid "Pangasinan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:345
+msgid "Panjabi; Punjabi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:346
+msgid "Papiamento"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:347
+msgid "Papuan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:348
+msgid "Pedi; Sepedi; Northern Sotho"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:349
+msgid "Persian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:350
+msgid "Persian, Old (ca. 600-400 B.C.)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:351
+msgid "Philippine languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:352
+msgid "Phoenician"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:353
+msgid "Pohnpeian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:354
+msgid "Polish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:355
+msgid "Portuguese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:356
+msgid "Prakrit languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:357
+msgid "Provençal, Old (to 1500); Occitan, Old (to 1500)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:358
+msgid "Pushto; Pashto"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:359
+msgid "Quechua"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:360
+msgid "Rajasthani"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:361
+msgid "Rapanui"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:362
+msgid "Rarotongan; Cook Islands Maori"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:363
+msgid "Romance languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:364
+msgid "Romanian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:365
+msgid "Romansh"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:366
+msgid "Romany"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:367
+msgid "Rundi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:368
+msgid "Russian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:369
+msgid "Salishan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:370
+msgid "Samaritan Aramaic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:371
+msgid "Sami languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:372
+msgid "Samoan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:373
+msgid "Sandawe"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:374
+msgid "Sango"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:375
+msgid "Sanskrit"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:376
+msgid "Santali"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:377
+msgid "Sardinian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:378
+msgid "Sasak"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:379
+msgid "Scots"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:380
+msgid "Selkup"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:381
+msgid "Semitic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:382
+msgid "Serbian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:383
+msgid "Serer"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:384
+msgid "Shan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:385
+msgid "Shona"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:386
+msgid "Sichuan Yi; Nuosu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:387
+msgid "Sicilian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:388
+msgid "Sidamo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:389
+msgid "Sign Languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:390
+msgid "Siksika"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:391
+msgid "Sindhi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:392
+msgid "Sinhala; Sinhalese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:393
+msgid "Sino-Tibetan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:394
+msgid "Siouan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:395
+msgid "Skolt Sami"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:396
+msgid "Slave (Athapascan)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:397
+msgid "Slavic languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:398
+msgid "Slovak"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:399
+msgid "Slovenian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:400
+msgid "Sogdian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:401
+msgid "Somali"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:402
+msgid "Songhai languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:403
+msgid "Soninke"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:404
+msgid "Sorbian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:405
+msgid "Sotho, Southern"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:406
+msgid "South American Indian languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:407
+msgid "Southern Altai"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:408
+msgid "Southern Sami"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:409
+msgid "Spanish; Castilian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:410
+msgid "Sranan Tongo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:411
+msgid "Standard Moroccan Tamazight"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:412
+msgid "Sukuma"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:413
+msgid "Sumerian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:414
+msgid "Sundanese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:415
+msgid "Susu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:416
+msgid "Swahili"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:417
+msgid "Swati"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:418
+msgid "Swiss German; Alemannic; Alsatian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:419
+msgid "Syriac"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:420
+msgid "Tagalog"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:421
+msgid "Tahitian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:422
+msgid "Tai languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:423
+msgid "Tajik"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:424
+msgid "Tamashek"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:425
+msgid "Tamil"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:426
+msgid "Tatar"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:427
+msgid "Telugu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:428
+msgid "Tereno"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:429
+msgid "Tetum"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:430
+msgid "Thai"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:431
+msgid "Tibetan"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:432
+msgid "Tigre"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:433
+msgid "Tigrinya"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:434
+msgid "Timne"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:435
+msgid "Tiv"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:436
+msgid "Tlingit"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:437
+msgid "Tok Pisin"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:438
+msgid "Tokelau"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:439
+msgid "Tonga (Nyasa)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:440
+msgid "Tonga (Tonga Islands)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:441
+msgid "Tsimshian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:442
+msgid "Tsonga"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:443
+msgid "Tswana"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:444
+msgid "Tumbuka"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:445
+msgid "Tupi languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:446
+msgid "Turkish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:447
+msgid "Turkish, Ottoman (1500-1928)"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:448
+msgid "Turkmen"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:449
+msgid "Tuvalu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:450
+msgid "Tuvinian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:451
+msgid "Twi"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:452
+msgid "Udmurt"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:453
+msgid "Ugaritic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:454
+msgid "Uighur; Uyghur"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:455
+msgid "Ukrainian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:456
+msgid "Umbundu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:457
+msgid "Uncoded languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:458
+msgid "Undetermined"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:459
+msgid "Upper Sorbian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:460
+msgid "Urdu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:461
+msgid "Uzbek"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:462
+msgid "Vai"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:463
+msgid "Venda"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:464
+msgid "Vietnamese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:465
+msgid "Volapük"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:466
+msgid "Votic"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:467
+msgid "Wakashan languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:468
+msgid "Walloon"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:469
+msgid "Waray"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:470
+msgid "Washo"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:471
+msgid "Welsh"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:472
+msgid "Western Frisian"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:473
+msgid "Wolaitta; Wolaytta"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:474
+msgid "Wolof"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:475
+msgid "Xhosa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:476
+msgid "Yakut"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:477
+msgid "Yao"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:478
+msgid "Yapese"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:479
+msgid "Yiddish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:480
+msgid "Yoruba"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:481
+msgid "Yupik languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:482
+msgid "Zande languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:483
+msgid "Zapotec"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:484
+msgid "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:485
+msgid "Zenaga"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:486
+msgid "Zhuang; Chuang"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:487
+msgid "Zulu"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/languages.html:488
+msgid "Zuni"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:8
+msgid "No language"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:13
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:11
 msgid "Titles"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:23
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:24
 msgid "Authors"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:44
-msgid "No description"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:52
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:206
-msgid "Usage information"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:64
-msgid "Contact information"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:69
-msgid "Primary contact"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:72
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:89
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:141
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:160
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:27
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:79
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:104
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:148
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:167
 msgid "Name"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:75
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:145
-msgid "Phone"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:78
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:149
-msgid "Email"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:81
-msgid "Contact URL"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:86
-msgid "Project contact"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:92
-msgid "Funding contact"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:95
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:153
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:172
-msgid "Homepage"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:100
-msgid "Contributor"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:108
-msgid "Producer"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:118
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:189
-msgid "Identification information"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:122
-msgid "Last modified"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:128
-msgid "Permanent identifier"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:135
-msgid "Additional information on dataset"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:138
-msgid "Geographical areas covered:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:141
-msgid "Period of time covered:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:144
-msgid "Publications based on this data:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:147
-msgid "Dataset belongs to collection/series:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:150
-msgid "Other related datasets:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:153
-msgid "Discipline/branch of science:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:156
-msgid "File format:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:159
-msgid "Algorithm:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:160
-msgid "Checksum:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:167
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:82
-msgid "Dataset lifecycle events"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:5
-msgid "Required information"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:36
-msgid "Title"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:39
-msgid "Cool help text about title"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:61
-msgid "Authors and organizations"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:99
-msgid "http://orcid.org/ or name"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:101
-msgid "Cool help text about author"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:104
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:28
 msgid "Organisation"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:119
-msgid "Keywords"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:47
+msgid "No description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:119
-msgid "eg. economy, mental health, government"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:55
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:227
+msgid "Usage information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:120
-msgid "Cool help text about keywords"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:57
+msgid "This dataset is"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:123
-msgid "This dataset does not have a language"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:58
+msgid " available via an access form in "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:125
-msgid "Languages"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:58
+msgid "this link"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:125
-msgid "en, fi, sv ..."
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:59
+msgid " available freely "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:126
-msgid "Cool help text about languages"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:59
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:60
+msgid "from this address"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:133
-msgid "Actors and roles"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:60
+msgid " available via login "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:135
-msgid "Distributor / publisher contact information"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:61
+msgid " available by "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:141
-msgid "John Doe"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:62
+msgid " available freely or availability is not specified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:142
-msgid "Cool help text about publisher"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:64
+msgid " with license as "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:145
-msgid "+35844122123"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:71
+msgid "Contact information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:146
-msgid "Cool help text about phone"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:76
+msgid "Primary contact"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:149
-msgid "john.doe@example.com"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:152
+msgid "Phone"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:150
-msgid "Cool help text about email"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:87
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:156
+msgid "Email"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:153
-msgid "http://johndoe.com/contact"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:91
+msgid "Send a message"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:154
-msgid "Cool help text about homepage"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:95
+msgid "Contact URL"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:157
-msgid "Project that produced this dataset"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:101
+msgid "Project information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:158
-msgid "This dataset was not produced in a project."
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:107
+msgid "Funding contact"
 msgstr ""
 
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:110
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:160
-msgid "my project"
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:179
+msgid "Homepage"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:161
-msgid "Cool help text about project name"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:115
+msgid "Contributor"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:164
-msgid "Funder"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:123
+msgid "Producer"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:164
-msgid "my funder"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:131
+msgid "Owner"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:165
-msgid "Cool help text about funder"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:168
-msgid "Funding id"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:168
-msgid "1234"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:169
-msgid "Cool help text about funding id"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:172
-msgid "http://myproject"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:173
-msgid "Cool help text about project homepage"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:176
-msgid "Owner information"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:178
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:134
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:185
 msgid "Owner identity"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:178
-msgid "identification URL or name"
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:142
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:197
+msgid "Identification information"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:146
+msgid "Last modified"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:152
+msgid "Permanent identifier"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:158
+msgid "Version identifier"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:165
+msgid "Additional information on dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:169
+msgid "Geographical areas covered"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:175
+msgid "Period of time covered"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:176
+msgid " to "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:181
+msgid "Publications based on this data"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:187
+msgid "Dataset belongs to collection/series"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:193
+msgid "Other related datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:199
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:93
+msgid "Discipline/branch of science"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:205
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:115
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:149
+msgid "File format"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:126
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:152
+msgid "Checksum"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:215
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:137
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:155
+msgid "Algorithm"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:224
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:163
+msgid "Dataset lifecycle events"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:233
+msgid "Type"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:234
+msgid "Who"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:235
+msgid "Date"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:7
+msgid "Basic information"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:31
+msgid ""
+"Field is compulsory.<br /><br />Type an informative title for the research "
+"data. Choose the title's language from the language menu. You can add several"
+" titles in different languages using the '+' button. If you leave an added "
+"title field empty it is discarded but, note that the first title field must "
+"have a value."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:58
+msgid "Authors and organizations"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:79
+msgid "http://orcid.org/ or familyname firstname"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:81
+msgid ""
+"Field is compulsory.<br /><br />Type names of authors and organisations to "
+"the corresponding fields, one author per a field pair. You can add more "
+"fields for additional authors by pressing the '+' button. If you leave an "
+"added title field empty, it is discarded, but note that the first "
+"author/organisation field pair must have values.<br /><br />Author can be a "
+"name or an identifier URL, like an orcid identifier. If you choose to write a"
+" name, please use format \"familyname firstname\"."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:118
+msgid "Search keywords from YSO ontology, select keywords with enter or mouse click."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:119
+msgid ""
+"Field is compulsory. Note, that the ONKI selector requires JavaScript to work"
+" in your browser.<br /><br />Add keywords (tags) that describe your data. "
+"Start typing and the service will give you suggestions of the word. Accept a "
+"word you want with a mouse click or enter button. You can add your own word "
+"with enter button as well. Remove a keyword by pressing the 'x'. <br /><br "
+"/>Change the language of suggested word from the language menu.<br /><br "
+"/>Learn more about the ONKI from http://onki.fi/en/"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:121
+msgid "eg. economy, mental health"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:121
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:30
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:99
+msgid "Search:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:131
+msgid "This dataset does not have a language"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:133
+msgid "Languages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:133
+msgid "eng, fin, swe ..."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:134
+msgid ""
+"Field is compulsory.<br /><br />Type a comma separated list of languages used"
+" in your data, for example \"eng, fin, swe\"."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:141
+msgid "Actors and roles"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:143
+msgid "Distributor / publisher contact information"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:148
+msgid "John Doe"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:149
+msgid ""
+"Field is compulsory.<br /><br />Type the name of the publisher. Publisher is "
+"someone that can be contacted if more information about the data is required "
+"or the person or organisation responsible for the data needs to be contacted."
+" By default, the system suggests you to be this person."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:152
+msgid "+35844122123"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:153
+msgid ""
+"Field is compulsory.<br /><br />Type the contact phone number. The phone "
+"number must be in form \"+35812341234\"."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:156
+msgid "john.doe@example.com"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:157
+msgid ""
+"Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail "
+"address is not shown publicly."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:160
+msgid "http://johndoe.com/contact"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:161
+msgid ""
+"Field is compulsory.<br /><br />Type a valid web address to your web page. In"
+" case you don't have one, you could for example give an address to your "
+"research group's site or any site that could make it possible to contact the "
+"origin of the dataset in case of need."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:164
+msgid "Project that produced this dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:165
+msgid "This dataset was not produced in a project."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:167
+msgid "my project"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:168
+msgid ""
+"Field is compulsory if checkbox 'This dataset was not produced in a project.'"
+" is unchecked.<br /><br />Type the project's name."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:171
+msgid "Funder"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:171
+msgid "my funder"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:172
+msgid ""
+"Field is compulsory if checkbox 'This dataset was not produced in a project.'"
+" is unchecked.<br /><br />Type the project funder's name."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:175
+msgid "Funding id"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:175
+msgid "1234"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:176
+msgid ""
+"Field is compulsory if checkbox 'This dataset was not produced in a project.'"
+" is unchecked.<br /><br />Type the project's funding id."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:179
-msgid "Cool help text about owner"
+msgid "http://myproject"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:191
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:180
+msgid ""
+"Field is compulsory if checkbox 'This dataset was not produced in a project.'"
+" is unchecked.<br /><br />Type the project's homepage"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:183
+msgid "Owner information"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:185
+msgid "identification URL or name"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:186
+msgid ""
+"Field is compulsory.<br /><br />Type the dataset owner's name or an "
+"identifier, for example and orcid identifier."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:201
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:208
 msgid "Permanent Identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:191
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:204
+msgid "Permanent identifier was already given. It can't be changed."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:208
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:212
 msgid "will be automatically generated if empty"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:192
-msgid "Cool help text about permanent identifier"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:194
-msgid "Modification date"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:198
-msgid "Cool help text about modification date"
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:209
-msgid "Dataset is available for use:"
+msgid ""
+"Field is compulsory but automatically generated if left empty.<br /><br />PID"
+" is a permanent, unique, identifier of the data, preferrably a URI. You can "
+"add your own identifier or use one generated by the service. <br /><br />The "
+"automatically generated PID is an URN identifier from the national library of"
+" Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit "
+"http://www.nationallibrary.fi/index.html for more information."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:212
+msgid "Version Identifier"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:213
-msgid "with data access application"
+msgid ""
+"Field is compulsory but automatically generated if left empty.<br /><br />PID"
+" is a permanent, unique, identifier of the data, preferrably a URI. This "
+"specific PID is for the current data version. You can add your own identifier"
+" or use one generated by the service. <br /><br />The automatically generated"
+" PID is an URN identifier from the national library of Finland, of form "
+"\"urn:nbn:fi:csc-kata[unique number]\". Visit "
+"http://www.nationallibrary.fi/index.html for more information."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:215
-msgid "Web address of access application"
+msgid "Modification date"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:215
-msgid "http://remsid/"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:216
-msgid "Create a new access request form"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:218
-msgid "directly downloadable"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:220
-msgid "Web address for downloading the dataset"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:220
-msgid "http://mydata.com"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:222
-msgid "downloadable after registration / identification"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:225
-msgid "only by contacting the distributor"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:229
-msgid "License"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:229
-msgid "eg. http://www.gnu.org/licenses/gpl.html or freeform"
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:219
+msgid ""
+"Field is compulsory but an automatically generated date is provided.<br /><br"
+" />The modification date tells when the data has last been modified. Click "
+"the field to open a calendar tool to choose the modification date and time "
+"for this dataset. Accept and insert the date to the field by pressing the "
+"Done button. By default, the time zone is Z (Zulu Time Zone), which "
+"corresponds the UTC time zone.<br /><br />Note that this tool requires "
+"javascript to be enabled in the browser."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:230
-msgid "Cool help text about license"
+msgid "Dataset is available for use:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:25
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:234
+msgid "directly downloadable"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:236
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:240
+msgid "Web address for downloading the dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:236
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:240
+msgid "http://mydata.com"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:238
+msgid "downloadable after registration / identification"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:242
+msgid "with data access application"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:244
+msgid "Web address of access application"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:244
+msgid "http://remsid/"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:247
+msgid "only by contacting the distributor"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:264
+msgid "License information can be found at"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:270
+msgid "License URL"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:270
+msgid "eg. http://www.gnu.org/licenses/gpl.html or freeform"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:33
 msgid ""
 "Important: By submitting content, you agree to release your contributions "
 "under the Open Database License."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:34
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:42
 msgid "Are you sure you want to delete this dataset?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:35
-msgid "Delete"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:39
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:47
 msgid "Cancel"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:41
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:49
 msgid "Done"
 msgstr ""
 
@@ -1302,216 +3959,272 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:9
-msgid "Recommended information"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:15
-msgid "Coverage"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:17
-msgid "Geographic coverage"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:17
-msgid "eg. places"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:13
+msgid "Click chevron to hide/show recommended fields"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:18
-msgid "Cool help text about geographic coverage"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:21
-msgid "Temporal coverage"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:22
-msgid "Begin"
+msgid "Coverage"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:25
-msgid "Cool help text about temporal coverage - begin"
+msgid "Spatial coverage"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:27
-msgid "End"
+msgid "Search location from SUO ontology, select locations with enter or mouse click."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:28
+msgid ""
+"Note, that the ONKI selector requires JavaScript to work in your browser.<br "
+"/><br />Add locations that give information about your data's spatial "
+"coverage. Start typing and the service will give you suggestions of places. "
+"Accept a place you want with a mouse click or enter button. You can add your "
+"own place with enter button as well. Remove a place by pressing the 'x'.<br "
+"/><br />Change the language of suggested word from the language menu.<br "
+"/><br />Learn more about the ONKI from http://onki.fi/en/"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:30
-msgid "Cool help text about temporal coverage - end"
+msgid "eg. Finland"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:36
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:42
+msgid "Temporal coverage"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:46
+msgid "Begin"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:49
+msgid ""
+"Temporal coverage - begin - can be filled to include the starting time of the"
+" time period during which your data was collected or for example to tell what"
+" time period your data is linked to.<br /><br />Click the field to open a "
+"calendar tool to choose a modification date and time for this dataset. Accept"
+" and insert the date to the field by pressing the Done button. By default, "
+"the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br "
+"/><br />Note that this tool requires javascript to be enabled in the browser."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:51
+msgid "End"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:54
+msgid ""
+"Temporal coverage - end - can be filled to include the ending time of the "
+"time period during which your data was collected or for example to tell what "
+"time period your data is linked to.<br /><br />Click the field to open a "
+"calendar tool to choose a modification date and time for this dataset. Accept"
+" and insert the date to the field by pressing the Done button. By default, "
+"the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br "
+"/><br />Note that this tool requires javascript to be enabled in the browser."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:63
 msgid "Relations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:55
-msgid "Dataset belongs to collection/series"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:95
+msgid ""
+"Search keywords from OKM-TIETEENALA ontology, select keywords with enter or "
+"mouse click."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:56
-msgid "Cool help text about collection/series"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:96
+msgid ""
+"Note, that the discipline must be selected from the available, Finnish "
+"versions. Note, that the ONKI selector requires JavaScript to work in your "
+"browser.<br /><br />You can provide a branch of science your dataset belongs "
+"to by typing the correct word and accepting it with the enter key. When you "
+"start typing the word, the service will search for matches among available "
+"branches of science and will give suggestions. Pick a branch of science of "
+"your choice by clicking it or selecting it and then pressing the enter key. "
+"Remove a branch of science by pressing the 'x'.<br /><br />Learn more about "
+"the ONKI from http://onki.fi/en/"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:60
-msgid "Discipline/branch of science"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:99
+msgid "eg. Matematiikka"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:61
-msgid "Cool help text about science"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:67
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:112
 msgid "File information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:69
-msgid "File format"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:69
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:115
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:149
 msgid "MIME. eg. application/pdf, application/txt"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:70
-msgid "Cool help text about file format"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:116
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:150
+msgid ""
+"Research data's file format can be provided here by typing the MIME type "
+"information to this field. Examples of MIME types are: application/octet-"
+"stream, application/pdf and text/plain."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:72
-msgid "Checksum"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:72
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:126
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:152
 msgid "hex string from eg. MD5, SHA-1"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:73
-msgid "Cool help text about checksum"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:127
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:153
+msgid ""
+"Research data's checksum can be provided here. This can be for example a "
+"fixed length hex string taken from the data generated with a hash algorithm, "
+"like SHA-2.<br /><br />Hash functions are a good way to enable verification "
+"of the content to ensure the file is unchanged and genuine."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:75
-msgid "Algorithm"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:75
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:137
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:155
 msgid "eg. MD5"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:76
-msgid "Cool help text about algorithm"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:138
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:156
+msgid ""
+"If the checksum is provided above, the hash algorithm should be provided "
+"here. There are many different hash algorithms with varying levels of "
+"security."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:85
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:166
 msgid "event"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:86
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:167
 msgid "by whom"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:87
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:168
 msgid "when"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:88
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:169
 msgid "description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:98
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:100
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:141
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:142
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:183
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:180
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:222
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:263
 msgid "collection"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:101
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:143
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:184
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:181
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:223
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:264
 msgid "creation"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:102
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:144
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:185
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:182
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:224
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:265
 msgid "checked"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:103
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:145
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:186
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:183
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:225
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:266
 msgid "extended"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:104
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:146
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:187
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:184
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:226
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:267
 msgid "changed"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:105
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:147
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:188
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:185
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:227
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:268
 msgid "removed"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:106
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:148
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:189
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:186
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:228
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:269
 msgid "published"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:107
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:149
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:190
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:187
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:229
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:270
 msgid "sent"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:108
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:150
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:191
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:188
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:230
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:271
 msgid "received"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:109
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:151
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:192
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:189
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:231
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:272
 msgid "modified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:110
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:152
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:193
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:190
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:232
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:273
 msgid "used"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:215
-msgid "Cool help text about lifecycle events"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:295
+msgid ""
+"To Dataset lifecycle events you can add events related to the data. A single "
+"event consists of four fields: event, by whom, when and description. Fill all"
+" four fields when adding an event.<br /><br />You can add additional events "
+"by first adding a new set of fields by clicking the '+' button."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:225
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:305
+msgid "By whom "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:314
+msgid "When "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:324
+msgid "Description "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:332
 msgid "Free description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:227
-msgid "Description"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:227
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:334
 msgid "a freeform description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/resource_item.html:13
-msgid "No description for this resource"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/resource_item.html:17
-msgid "Explore Data"
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:336
+msgid ""
+"Type a description about the data over here. The field can be filled with "
+"free text and you can format the text with Markdown formatting."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:18
-msgid "Raw Data"
+msgid "No description available"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/resource_item.html:24
+msgid "Explore"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/resource_item.html:25
+msgid "Raw metadata"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/resources_list.html:14
+msgid "Downloadable resources"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/search_help.html:1
@@ -1566,10 +4279,6 @@ msgid ""
 "of course all other<br /> letters in the location in question)<br /> "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/search_help.html:76
-msgid "Fuzzy Searches"
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/snippets/search_help.html:78
 msgid ""
 " CKAN supports fuzzy searches based on the Levenshtein Distance, or Edit "
@@ -1593,10 +4302,6 @@ msgid ""
 "<br /> Example:<br /> <br /> To search for a \"international\" and "
 "\"domestic\" within 5 words of each other in the abstract of a dataset use "
 "the search:<br /> <br /> extras_abstract:\"international domestic\"~5<br /> "
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/search_help.html:116
-msgid "Range Searches"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/search_help.html:118
@@ -1738,5 +4443,93 @@ msgid ""
 " not the whole functionality is offered through the simplified serach "
 "interface in CKAN.<br /> This description is heavily based on the original "
 "documentation.<br /> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/diff.html:6
+msgid "Differences"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/diff.html:13
+#: ckanext/kata/theme/templates/revision/diff.html:18
+#: ckanext/kata/theme/templates/revision/diff.html:23
+msgid "Revision Differences"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/diff.html:46
+msgid "Difference"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/diff.html:56
+msgid "No Differences"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/diff.html:59
+msgid "Changes are visible only to package owners and moderators"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/read.html:5
+#: ckanext/kata/theme/templates/revision/read.html:34
+#: ckanext/kata/theme/templates/revision/read.html:38
+msgid "Revision"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/read.html:25
+msgid "Undelete"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/read.html:33
+msgid "Revisions"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/read.html:52
+msgid "Timestamp"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/read.html:55
+msgid "Log Message"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/read.html:63
+msgid "Changes"
+msgstr ""
+
+#: ckanext/kata/theme/templates/revision/read.html:73
+msgid "Datasets' Tags"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/facet_list.html:34
+msgid "Clear All"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/facet_list.html:54
+msgid "Show More"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/facet_list.html:56
+msgid "Show Only Popular"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/facet_list.html:60
+msgid "There are no filters for this search"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/language_selector.html:12
+msgid "Go"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/package_item.html:29
+msgid "Draft"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/package_item.html:31
+msgid "Deleted"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/package_item.html:41
+msgid "This dataset has no description"
+msgstr ""
+
+#: ckanext/kata/theme/templates/snippets/related.html:16
+msgid "Add publication or related dataset"
 msgstr ""
 
