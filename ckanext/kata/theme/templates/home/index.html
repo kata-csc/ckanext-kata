@@ -26,6 +26,16 @@
       </form>
     </div>
   {% endblock %}
+  {% block package_list %}
+    <div class="module module-shallow module-narrow info">
+      <div class="module-content">
+        <h4>{{ _("Newest datasets") }}</h4>
+        {% set list_class = "unstyled dataset-list" %}
+        {% set item_class = "dataset-item module-content" %}
+        {% snippet 'snippets/package_list.html', packages=c.datasets, list_class=list_class, item_class=item_class, truncate=50 %}
+      </div>
+    </div>
+  {% endblock %}
   <div class="index-additional-info">
     <h4>{{ _('Tools and additional infromation') }}</h4>
   

@@ -186,6 +186,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'package_create': actions.package_create,
                 'package_update': actions.package_update,
                 'package_delete': actions.package_delete,
+                'package_search': actions.package_search,
                 'resource_create': actions.resource_create,
                 'resource_update': actions.resource_update,
                 'resource_delete': actions.resource_delete,
