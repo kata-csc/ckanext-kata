@@ -862,15 +862,13 @@ input, button, select, textarea {
 }
 /* New items in front page */
 .index-additional-info {
-	width: 450px;
+	width: 90%;
 	border: 1px solid;
 	border-color: #70c4f3;
 	background-color: #fff;
-	margin-left: 16px;
+	margin: 20px;
 	padding: 0px;
-}
-.dataset-list {
-	background-color: white;
+	float: left;
 }
 .new-dataset {
 	border: none !important;
