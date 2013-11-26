@@ -1,86 +1,121 @@
-{% ckan_extends %}
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _("Welcome") }}{% endblock %}
+
+{% block maintag %}{% endblock %}
 
 {% block content %}
   <div role="main" class="hero">
     <div id="content" class="container">
-      {{ self.primary_content() }}
-    </div>
-    {% block additional_info %}
-    <div class="index-additional-info">     
-      <h4 class="module-heading-add-dataset">{{ _('Tools and additional infromation') }}</h4>
-      <div class="module-content"> 
-        <p>
-          {{ _('The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:') }}<br /><br />
-          <a href="{{ _('http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli.pdf/f7456999-fc4e-4b95-be55-b2a9de9e9a0e') }}"><span class="format-label" data-format="pdf" property="dc:format"></span> {{ _('Minimum metadata model') }}</a> {{ _('(In Finnish)') }}
-        </p>
-        <p>
-          {{ _('The preferred license recommended by TTA is Creative Commons 3.0 family. Learn more about licenses from:') }}<br /><br />
-        <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/3.0/88x31.png"></a>
-        </p>
-      </div>   
-  </div>
-  {% endblock %}
-  </div>
-  
-{% endblock %}
+      {{ self.flash() }}
+      {% block primary_content %}
+        <div class="hero-primary module module-popup">
+          <div class="module-content">
+            {% block home_primary %}
+              <header>
+                {% if g.site_intro_text %}
+                  {{ h.render_markdown(g.site_intro_text) }}
+                {% else %}
+                  {% block home_primary_content %}
+                    {% block home_primary_heading %}
+                    {% endblock %}
+                    {% block home_primary_text %}
+                      <h4>
+                        {{ _('What is Kata?') }}
+                      </h4>
+                      <p>
+                        {{ _('Kata metadata catalogue contains metadata of research data. Here you can search and find research data for your needs or even add you own data for others to reuse.') }}
+                      </p>
+                      <h4>
+                        {{ _('What is metadata?') }}
+                      </h4>
+                      <p>
+                        {{ _('Shortly explained metadata is data of data. Metadata describes important features of data which can be for example authors, subject, format and license.') }}
+                        {{ _('The content of metadata varies a lot depending on the data, but this service will provide a uniform set of metadata fields tailored for research data, the metadata information defined by the minimum metadata model by TTA.') }}
+                      </p>
+                      <h4>
+                        {{ _('Is this service for me?') }}
+                      </h4>
+                      <p>
+                        {{ _('Kata service aims to collect data from various places and from various branches of science to be a single point of access to all kinds of research data.') }}
+                        {{ _('To search for data doesn\'t require you to be a professional scientist or researcher - useful data can be generated and reused anywhere and by anyone.') }}
+                      </p>
+                      <h4>
+                        {{ _('Is all data open?') }}
+                      </h4>
+                      <p>
+                        {{ _('Almost all metadata is open, but it is for the author to decide how the data is accessed and by who. Nevertheless, providing your data openly is recommended.') }}
+                      </p>
+                    {% endblock %}
+                  {% endblock %}
+                {% endif %}
+              </header>
+            {% endblock %}
 
-{% block secondary_content %}
-{% endblock %}
-
-{% block home_image %}
-{% endblock %}
-
-{% block home_secondary_content %}
-  {% block home_search %}
-    <div class="module module-shallow module-narrow module-dark info">
-      <form class="dataset-search module-content clearfix" method="get" action="{% url_for controller='package', action='search' %}">
-        <h3 class="heading">{{ _("Search metadata") }}</h3>
-        <span class="control-group search-giant">
-          <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('eg. climate') }}" />
-          <button type="submit" value="{{ _('Search') }}">Submit</button>
-        </span>
-      </form>
-    </div>
-  {% endblock %}
-  {% block package_list %}
-    <section class="module">
-        <h4 class="module-heading-add-dataset">{{ _("Newest datasets") }}</h4>
-        <div class="module-content dataset-list">
-          {% set list_class = "unstyled dataset-list" %}
-          {% set item_class = "dataset-item module-content new-dataset" %}
-          {% snippet 'snippets/package_list.html', packages=c.datasets, list_class=list_class, item_class=item_class, truncate=50 %}
+            {% block home_image %}
+            {% endblock %}
+          </div>
+          {% block additional_info %}
+            <div class="index-additional-info">     
+              <h4 class="module-heading-add-dataset">{{ _('Tools and additional infromation') }}</h4>
+              <div class="module-content"> 
+                <p>
+                  {{ _('The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:') }}<br /><br />
+                  <a href="{{ _('http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli.pdf/f7456999-fc4e-4b95-be55-b2a9de9e9a0e') }}"><span class="format-label" data-format="pdf" property="dc:format"></span> {{ _('Minimum metadata model') }}</a> {{ _('(In Finnish)') }}
+                </p>
+                <p>
+                  {{ _('The preferred license recommended by TTA is Creative Commons 3.0 family. Learn more about licenses from:') }}<br /><br />
+                <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/3.0/88x31.png"></a>
+                </p>
+              </div>   
+            </div>
+          {% endblock %}
+    
         </div>
-    </section>
-  {% endblock %}  
+      {% endblock %}
+      
+      <div class="hero-secondary">
+        <div class="hero-secondary-inner">
+      
+          {% block home_secondary_content %}
+            {% block home_search %}
+              <div class="module module-shallow module-narrow module-dark info">
+                <form class="dataset-search module-content clearfix" method="get" action="{% url_for controller='package', action='search' %}">
+                  <h3 class="heading">{{ _("Search metadata") }}</h3>
+                  <span class="control-group search-giant">
+                    <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('eg. climate') }}" />
+                    <button type="submit" value="{{ _('Search') }}">Submit</button>
+                  </span>
+                </form>
+              </div>
+            {% endblock %}
+            {% block package_list %}
+              <section class="module">
+                  <h4 class="module-heading-add-dataset">{{ _("Newest datasets") }}</h4>
+                  <div class="module-content">
+                    {% set list_class = "unstyled dataset-list" %}
+                    {% set item_class = "dataset-item module-content new-dataset" %}
+                    {% snippet 'snippets/package_list.html', packages=c.datasets, list_class=list_class, item_class=item_class, truncate=50 %}
+                  </div>
+              </section>
+            {% endblock %}  
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {#<div class="main homepage">
+    <div class="container">
+      {{ self.secondary_content() }}
+    </div>
+  </div>#}
 {% endblock %}
 
+{# Add here links to services that provide data to Kata, as we get them #}
+{#
+{% block secondary_content %}
+
+{% endblock %}
+#}
 {% block home_tags %}
-{% endblock %}
-
-{% block home_primary_heading %}
-{{ _('What is Kata?') }}
-{% endblock%}
-{% block home_primary_text %}
-{# TODO: make this prettier, insert graphics etc. #}
-  <p>
-    {{ _('Kata metadata catalogue contains metadata of research data. Here you can search and find research data for your needs or even add you own data for others to reuse.') }}
-  </p>
-  <h4>
-    {{ _('What is metadata?') }}
-  </h4>
-  <p>
-    {{ _('Shortly explained metadata is data of data. Metadata describes important features of data which can be for example authors, subject, format and license.') }}
-    {{ _('The content of metadata varies a lot depending on the data, but this service will provide a uniform set of metadata fields tailored for research data, the metadata information defined by the minimum metadata model by TTA.') }}
-  </p>
-  <h4>
-    {{ _('Is this service for me?') }}
-  </h4>
-  <p>
-    {{ _('Kata service aims to collect data from various places and from various branches of science to be a single point of access to all kinds of research data.') }}
-    {{ _('To search for data doesn\'t require you to be a professional scientist or researcher - useful data can be generated and reused anywhere and by anyone.') }}
-  </p>
-  <h4>
-    {{ _('Is all data open?') }}
-  </h4>
-    {{ _('Almost all metadata is open, but it is for the author to decide how the data is accessed and by who. Nevertheless, providing your data openly is recommended.') }}
 {% endblock %}
