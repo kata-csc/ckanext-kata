@@ -5,7 +5,23 @@
     <div id="content" class="container">
       {{ self.primary_content() }}
     </div>
+    {% block additional_info %}
+    <div class="index-additional-info">     
+      <h4 class="module-heading-add-dataset">{{ _('Tools and additional infromation') }}</h4>
+      <div class="module-content"> 
+        <p>
+          {{ _('The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:') }}<br /><br />
+          <a href="{{ _('http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli.pdf/f7456999-fc4e-4b95-be55-b2a9de9e9a0e') }}"><span class="format-label" data-format="pdf" property="dc:format"></span> {{ _('Minimum metadata model') }}</a> {{ _('(In Finnish)') }}
+        </p>
+        <p>
+          {{ _('The preferred license recommended by TTA is Creative Commons 3.0 family. Learn more about licenses from:') }}<br /><br />
+        <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/3.0/88x31.png"></a>
+        </p>
+      </div>   
   </div>
+  {% endblock %}
+  </div>
+  
 {% endblock %}
 
 {% block secondary_content %}
@@ -27,28 +43,15 @@
     </div>
   {% endblock %}
   {% block package_list %}
-    <div class="module module-shallow module-narrow info">
-      <div class="module-content">
-        <h4>{{ _("Newest datasets") }}</h4>
-        {% set list_class = "unstyled dataset-list" %}
-        {% set item_class = "dataset-item module-content" %}
-        {% snippet 'snippets/package_list.html', packages=c.datasets, list_class=list_class, item_class=item_class, truncate=50 %}
-      </div>
-    </div>
-  {% endblock %}
-  <div class="index-additional-info">
-    <h4>{{ _('Tools and additional infromation') }}</h4>
-  
-    <p>
-    {{ _('The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:') }}<br /><br />
-    <a href="{{ _('http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli.pdf/f7456999-fc4e-4b95-be55-b2a9de9e9a0e') }}"><span class="format-label" data-format="pdf" property="dc:format"></span> {{ _('Minimum metadata model') }}</a> {{ _('(In Finnish)') }}
-    </p>
-    <p>
-    {{ _('The preferred license recommended by TTA is Creative Commons 3.0 family. Learn more about licenses from:') }}<br /><br />
-    <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/3.0/88x31.png"></a>
-    </p>
-    
-  </div>
+    <section class="module">
+        <h4 class="module-heading-add-dataset">{{ _("Newest datasets") }}</h4>
+        <div class="module-content dataset-list">
+          {% set list_class = "unstyled dataset-list" %}
+          {% set item_class = "dataset-item module-content new-dataset" %}
+          {% snippet 'snippets/package_list.html', packages=c.datasets, list_class=list_class, item_class=item_class, truncate=50 %}
+        </div>
+    </section>
+  {% endblock %}  
 {% endblock %}
 
 {% block home_tags %}
