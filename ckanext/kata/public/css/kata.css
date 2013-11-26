@@ -644,6 +644,7 @@ input, button, select, textarea {
 }
 #kata_navigation ul li {
 	border-style: solid;
+	display: inline;
 }
 #kata_navigation ul {
 	list-style: none outside none;
