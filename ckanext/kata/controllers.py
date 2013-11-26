@@ -612,15 +612,18 @@ kayta ylla olevaa sahkopostiosoitetta.'
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
-        user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-        email = package.maintainer_email
-        recipient = package.maintainer
-
-        user_msg = request.params.get('msg', '')
-        prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
-
-        subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
-        self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
+        if c.userobj:
+            user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
+            email = package.maintainer_email
+            recipient = package.maintainer
+    
+            user_msg = request.params.get('msg', '')
+            prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
+    
+            subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
+            self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
+        else:
+            h.flash_error(_("Please login"))
 
         url = h.url_for(controller='package',
                         action="read",
@@ -643,15 +646,18 @@ lahettajalle, kayta ylla olevaa sahkapostiosoitetta.'
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
-        user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-        email = package.maintainer_email
-        recipient = package.maintainer
-
-        user_msg = request.params.get('msg', '')
-        prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
-
-        subject = _("Data access request for dataset / Datapyynto tietoaineistolle %s" % package_title)
-        self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
+        if c.userobj:
+            user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
+            email = package.maintainer_email
+            recipient = package.maintainer
+    
+            user_msg = request.params.get('msg', '')
+            prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
+    
+            subject = _("Data access request for dataset / Datapyynto tietoaineistolle %s" % package_title)
+            self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
+        else:
+            h.flash_error(_("Please login"))
 
         url = h.url_for(controller='package',
                         action="read",
