@@ -11049,6 +11049,9 @@ msgstr "Lähes kaikki metadata on avointa, mutta datan omistaja päättää mite
 msgid "eg. climate"
 msgstr "esim. ilmasto"
 
+msgid "Newest datasets"
+msgstr "Uusimmat tietoaineistot"
+
 # View dataset
 msgid "contacting the distributor"
 msgstr "ottamalla yhteyttä jakelijaan"
@@ -11067,7 +11070,7 @@ msgid "Identifier"
 msgstr "Tunniste"
 
 msgid "http://example.com/ or identifier"
-msgstr "http://exampli.fi/ tai tunniste"
+msgstr "http://example.fi/ tai tunniste"
 
 msgid "Publication"
 msgstr "Julkaisu"
@@ -11076,13 +11079,7 @@ msgstr "Julkaisu"
 msgid "Compare"
 msgstr "Vertaa"
 
-msgid ""
-msgstr ""
-
 # Add dataset
 msgid "Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts some criteria in some service, choose the third option. If the data can be accessed only after contacting the distributor, choose the last option. In this case an email is sent to the address you provided in distributor section.<br /><br />Choose a license from the selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family."
 msgstr "Käyttö- ja lisenssitietokentät ovat pakollisia.<br /><br />Valitse, miten dataan pääsee käsiksi. Kirjoita web-osoitetiedot, kun niitä kysytään (riippuu valinnastasi). Jos data on ladattavissa, valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data on saavutettavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy määrittelemäsi ehdot jossain ulkopuolisessa palvelussa, valitse kolmas vaihtoehto. Jos dataan pääsee käsiksi vain ottamalla yhteyttä, valitse viimeinen vaihtoehto. Tässä tapauksessa yllä annettuun jakelijan sähköpostiosoitteeseen lähtee datapyyntö.<br /><br />Valitse lisenssi annetuista vaihtoehdoista. TTA:n suositus on CC 3.0 tai tulevaisuudessa CC 4.0 lisenssiperheet."
-
-msgid ""
-msgstr ""
 

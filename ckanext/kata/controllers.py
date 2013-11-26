@@ -1,3 +1,4 @@
+# coding=utf8
 """
 Controllers for Kata plus some additional functions.
 """
@@ -541,8 +542,18 @@ class ContactController(BaseController):
     From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author. 
     The feature provides a form for message sending, and the message is sent via e-mail. 
     """
+    
+    def _send_message(self, recipient, email, email_dict):
+        ''' Send message to given email '''
+        import ckan.lib.mailer
 
-    def _send_if_allowed(self, pkg_id, subject, msg, prologue=None, epilogue=None):
+        try:
+            ckan.lib.mailer.mail_recipient(recipient, email,
+                    email_dict['subject'], email_dict['body'])
+        except ckan.lib.mailer.MailerException:
+            raise
+
+    def _send_if_allowed(self, pkg_id, subject, msg, prologue=None, epilogue=None, recipient=None, email=None):
         """
         Send a contact e-mail if allowed.
         """
@@ -564,8 +575,10 @@ class ContactController(BaseController):
                 owner_dict['name'] = owner.fullname if owner.fullname else owner.name
                 if msg:
                     model.repo.new_revision()
-
-                    send_notification(owner_dict, email_dict)
+                    if recipient == None:
+                        send_notification(owner_dict, email_dict)
+                    else:
+                        self._send_message(recipient, email, email_dict)
                     self._mark_owner_as_contacted(c.userobj, pkg_id)
                     h.flash_notice(_("Message sent"))
                 else:
@@ -586,27 +599,28 @@ class ContactController(BaseController):
         userobj.save()
 
     def send_contact(self, pkg_id):
-        prologue_template = _("""%s (%s) has sent you a message regarding the following dataset:
+        
+        prologue_template = '{a} ({b}) has sent you a message regarding the following dataset:\
+\n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lahettanyt sinulle viestin koskien tietoaineistoa:\
+\n\n{c} (Tunniste: {d})\n\nViesti:\n\n    ---'
 
-    %s
-
-The message is as follows:
-""")
-
-        epilogue = _("""Please do not reply directly to this e-mail.
-If you need to reply to the sender, use the direct e-mail address above.""")
+        epilogue = '    ---\
+\n\nPlease do not reply directly to this e-mail.\
+\nIf you need to reply to the sender, use the direct e-mail address above.\
+\n\nAla vastaa suoraan tahan viestiin. Jos vastaat lahettajalle, \
+kayta ylla olevaa sahkopostiosoitetta.'
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
         user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
+        email = package.maintainer_email
+        recipient = package.maintainer
 
         user_msg = request.params.get('msg', '')
-        prologue = prologue_template % (user_name,
-                                        c.userobj.email,
-                                        package_title)
+        prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
-        subject = _("Message regarding dataset %s" % package_title)
-        self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
+        subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
+        self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
 
         url = h.url_for(controller='package',
                         action="read",
@@ -616,29 +630,28 @@ If you need to reply to the sender, use the direct e-mail address above.""")
 
 
     def send_request(self, pkg_id):
-        prologue_template = _("""%s (%s) is requesting access to study material in dataset
+        
+        prologue_template = '{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
+for which you are currently marked as distributor.\n\nThe message is below.\n\n\
+{a} ({b}) pyytaa dataa, joka liittyy tietoaineistoon\n\n{c} (Tunniste: {d}\n\nja johon sinut on merkitty jakelijaksi. \
+Mukaan liitetty viesti on alla.\n\n    ---'
 
-    %s
-
-for which you are currently an administrator.
-
-The message is as follows:
-""")
-
-        epilogue = _("""Please do not reply directly to this e-mail.
-If you need to reply to the sender, use the direct e-mail address above.""")
+        epilogue = '    ---\n\nPlease do not reply directly to this e-mail.\n\
+If you need to reply to the sender, use the direct e-mail address above.\n\n\
+Ala vastaa suoraan tahan viestiin. Jos haluat lahettaa viestin \
+lahettajalle, kayta ylla olevaa sahkapostiosoitetta.'
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
         user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
+        email = package.maintainer_email
+        recipient = package.maintainer
 
         user_msg = request.params.get('msg', '')
-        prologue = prologue_template % (user_name,
-                                        c.userobj.email,
-                                        package_title)
+        prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
-        subject = _("Material access request for dataset %s" % package_title)
-        self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
+        subject = _("Data access request for dataset / Datapyynto tietoaineistolle %s" % package_title)
+        self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
 
         url = h.url_for(controller='package',
                         action="read",

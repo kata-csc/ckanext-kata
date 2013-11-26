@@ -41,25 +41,21 @@ def send_email(req):
     admin_dict = admin.as_dict()
     admin_dict['name'] = admin.fullname if admin.fullname else admin.name
     
-    msg = _("""%s (%s) is requesting editing rights to dataset
-
-    %s
-
-for which you are currently an administrator.
-
-Please click this link if you want to allow this user to edit the metadata of the dataset:
-%s%s""")
+    msg = '{a} ({b}) is requesting editing rights to dataset\n\n{c}\n\
+for which you are currently an administrator. Please click this \
+link if you want to allow this user to edit the metadata of the dataset\
+\n{c}: {d}\n\n{a} ({b}) pyytaa muokkausoikeuksia tietoaineistoon\n\n{c}\n\
+jonka administraattori olet. Klikkaa linkkia, jos haluat taman kayttajan \
+saavan muokkausoikeudet tietoaineistoon\
+\n{c}: {d}\n'
 
     controller = 'ckanext.kata.controllers:AccessRequestController'
     
     requester_name = requester.fullname if requester.fullname else requester.name
-    body = msg % (requester_name, requester.email, pkg.title if pkg.title else pkg.name,
-                config.get('ckan.site_url', ''),
-                h.url_for(controller=controller,
-                action="unlock_access",
-                id=req.id))
+    accessurl = config.get('ckan.site_url', '') + h.url_for(controller=controller, action="unlock_access", id=req.id)
+    body = msg.format(a=requester_name, b= requester.email, c=pkg.title if pkg.title else pkg.name, d=accessurl)
     email_dict = {}
-    email_dict["subject"] = _("Access request for dataset %s" % pkg.title if pkg.title else pkg.name)
+    email_dict["subject"] = _("Access request for dataset / pyynto koskien tietoaineistoa %s" % pkg.title if pkg.title else pkg.name)
     email_dict["body"] = body
     send_notification(admin_dict, email_dict)
 
