@@ -451,7 +451,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
         schema['resources']['hash'].append(validate_general)
         schema['resources']['mimetype'].append(validate_mimetype)
-        log.debug(schema)
 
         return schema
 
