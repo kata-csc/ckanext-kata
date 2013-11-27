@@ -362,22 +362,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
         return 'package/history.html'
 
-
     def package_form(self):
         """
         Return location of the main package page
         """
         return 'package/new_package_form.html'
 
-
-    def default_tags_schema(self):
+    @classmethod
+    def default_tags_schema(cls):
         schema = {
             'name': [not_missing,
-                 not_empty,
-                 unicode,
-                 tag_length_validator,
-                 kata_tag_name_validator,
-                ],
+                     not_empty,
+                     unicode,
+                     tag_length_validator,
+                     kata_tag_name_validator,
+                     ],
             'vocabulary_id': [ignore_missing, unicode, vocabulary_id_exists],
             'revision_timestamp': [ignore],
             'state': [ignore],
@@ -385,8 +384,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         }
         return schema
 
-
-    def create_package_schema(self):
+    @classmethod
+    def create_package_schema(cls):
         """
         Return the schema for validating new dataset dicts.
         """
@@ -409,13 +408,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
-        schema['language'] = [validate_language, remove_disabled_languages, convert_to_extras, unicode]
+        schema['language'] = [ignore_missing, validate_language, remove_disabled_languages, convert_to_extras, unicode]
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras, unicode]
         schema['maintainer_email'].append(validate_email)
 
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
-        schema['tags'] = self.default_tags_schema()
+        schema['tags'] = cls.default_tags_schema()
 
         schema.update({
             'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
@@ -625,7 +624,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param data_dict: data_dict to modify
         '''
 
-        data_dict['facet.field'] = settings.FACETS
         if data_dict.has_key('sort') and data_dict['sort'] is None:
             data_dict['sort'] = settings.DEFAULT_SORT_BY
             c.sort_by_selected = settings.DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
@@ -651,6 +649,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 c.current_search_limiters: %s" % (c.current_search_rows,
                 c.current_search_limiters))
         # End advanced search parameter parsing
+
+        data_dict['facet.field'] = settings.FACETS
 
         log.debug("before_search(): data_dict: %r" % data_dict)
         # Uncomment below to show query with results and in the search field

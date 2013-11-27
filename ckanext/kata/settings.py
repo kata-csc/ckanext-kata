@@ -3,7 +3,7 @@
 
 # Facets used in Solr queries
 # Facets need also to be changed to search.html. This all should be fixed in newer CKAN versions with IFacets interface.
-FACETS = ['groups','tags','fformatstring','license','authorstring','organizationstring','extras_language']
+FACETS = ['extras_discipline','tags','fformatstring','license_id','authorstring','organizationstring','extras_language']
 
 # Default sorting method. Pre-selects the corresponding option on search form.
 DEFAULT_SORT_BY = u'metadata_modified desc'
@@ -19,9 +19,12 @@ _FIELD_TITLES = {'organizationstring': 'Organization',
                 'ext_extras_fformat': 'File formats',
                 'fformatstring': 'File formats',
                 'ext_fformatstring': 'File formats',
-                'groups': 'Discipline',
-                'ext_groups': 'Discipline',
+                #'groups': 'Discipline',
+                #'ext_groups': 'Discipline',
+                'ext_discipline': 'Discipline',
+                'extras_discipline': 'Discipline',
                 'license': 'License',
+                'license_id': 'License',
                 'ext_license': 'License',
                 'ext_licensetext': 'License',
                 'authorstring': 'Author',
@@ -38,18 +41,18 @@ _FIELD_TITLES = {'organizationstring': 'Organization',
 
 # Ordered list of fields for advanced search. First one will be used as the default search field.
 SEARCH_FIELDS = ['ext_text',
-                    'ext_author',
-                    'ext_title',
-                    'ext_tags',
-                    'ext_pids',
-                    'ext_actor',
-                    'ext_organization',
-                    'ext_groups',
-                    'ext_extras_funder',
-                    'ext_licensetext',
-                    'ext_extras_fformat',
-                    'ext_extras_language',
-                    ]
+                 'ext_author',
+                 'ext_title',
+                 'ext_tags',
+                 'ext_pids',
+                 'ext_actor',
+                 'ext_organization',
+                 'ext_groups',
+                 'ext_extras_funder',
+                 'ext_licensetext',
+                 'ext_extras_fformat',
+                 'ext_extras_language',
+                 ]
 
 # File types and converters used by DataMiningController.
 TEXTOUTPUTPROGS = {
