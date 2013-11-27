@@ -6,7 +6,7 @@
     {# The .header-image class hides the main text and uses image replacement for the title #}
     <hgroup class="{{ g.header_class }}">
       {% if g.site_logo %}
-        <a class="logo" href="{{ _('http://datakeskus.csc.fi/en/web/tta') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ _('TTA - Tutkimuksen Tietoaineistot') }}" title="{{ _('TTA - Tutkimuksen Tietoaineistot') }}" /></a>
+        <a class="logo" href="{{ h.url('home') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ _('Kata') }}" title="{{ _('Kata') }}" /></a>
       {% else %}
         <h1>
           <a href="{{ h.url('home') }}">{{ g.site_title }}</a>
