@@ -104,7 +104,8 @@ html, body {
 	min-width: 970px;
 }
 a {
-    color: #5A9DC2;
+    /*color: #5A9DC2;*/
+    color: #2AAAE6;
     text-decoration: none;
 }
 a:hover, a:focus {
@@ -694,7 +695,7 @@ header.masthead {
 }
 #debug-toggle  {
     /* Overwrite .site-footer font-size upwards and inline style */
-    color: #FFFF80 !important;
+    color: #FF00FF !important;
     font-size: 12px !important;
     opacity: 1 !important;
 }
