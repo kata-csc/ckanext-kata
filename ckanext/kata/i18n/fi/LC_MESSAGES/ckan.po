@@ -10995,8 +10995,8 @@ msgid "Create Collection"
 msgstr "Luo kokoelma"
 
 # Front page
-msgid "Search metadata"
-msgstr "Hae metadataa"
+msgid "Search Data"
+msgstr "Hae Dataa"
 
 msgid "Tools and additional infromation"
 msgstr "Työkalut ja lisätietoa"
