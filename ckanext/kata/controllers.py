@@ -556,6 +556,8 @@ class ContactController(BaseController):
     def _send_if_allowed(self, pkg_id, subject, msg, prologue=None, epilogue=None, recipient=None, email=None):
         """
         Send a contact e-mail if allowed.
+
+        All of the arguments should be unicode strings.
         """
 
         package = Package.get(pkg_id)
@@ -563,7 +565,7 @@ class ContactController(BaseController):
         prologue = prologue + "\n\n\n" if prologue else ""
         epilogue = "\n\n\n" + epilogue if epilogue else ""
 
-        full_msg = "%s%s%s" % (prologue, msg, epilogue)
+        full_msg = u"{a}{b}{c}".format(a=prologue, b=msg, c=epilogue)
         email_dict = {"subject": subject,
                       "body": full_msg}
 
@@ -600,15 +602,15 @@ class ContactController(BaseController):
 
     def send_contact(self, pkg_id):
         
-        prologue_template = '{a} ({b}) has sent you a message regarding the following dataset:\
-\n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lahettanyt sinulle viestin koskien tietoaineistoa:\
+        prologue_template = u'{a} ({b}) has sent you a message regarding the following dataset:\
+\n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
 \n\n{c} (Tunniste: {d})\n\nViesti:\n\n    ---'
 
-        epilogue = '    ---\
+        epilogue = u'    ---\
 \n\nPlease do not reply directly to this e-mail.\
 \nIf you need to reply to the sender, use the direct e-mail address above.\
-\n\nAla vastaa suoraan tahan viestiin. Jos vastaat lahettajalle, \
-kayta ylla olevaa sahkopostiosoitetta.'
+\n\nÄlä vastaa suoraan tähän viestiin. Jos vastaat lähettäjälle, \
+käytä yllä olevaa sähköpostiosoitetta.'
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
@@ -636,13 +638,13 @@ kayta ylla olevaa sahkopostiosoitetta.'
         
         prologue_template = '{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
 for which you are currently marked as distributor.\n\nThe message is below.\n\n\
-{a} ({b}) pyytaa dataa, joka liittyy tietoaineistoon\n\n{c} (Tunniste: {d}\n\nja johon sinut on merkitty jakelijaksi. \
+{a} ({b}) pyytää dataa, joka liittyy tietoaineistoon\n\n{c} (Tunniste: {d})\n\nja johon sinut on merkitty jakelijaksi. \
 Mukaan liitetty viesti on alla.\n\n    ---'
 
         epilogue = '    ---\n\nPlease do not reply directly to this e-mail.\n\
 If you need to reply to the sender, use the direct e-mail address above.\n\n\
-Ala vastaa suoraan tahan viestiin. Jos haluat lahettaa viestin \
-lahettajalle, kayta ylla olevaa sahkapostiosoitetta.'
+Älä vastaa suoraan tähän viestiin. Jos haluat lähettää viestin \
+lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name

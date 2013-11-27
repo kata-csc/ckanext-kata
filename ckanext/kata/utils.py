@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Utility functions for Kata.
 """
@@ -41,13 +42,13 @@ def send_email(req):
     admin_dict = admin.as_dict()
     admin_dict['name'] = admin.fullname if admin.fullname else admin.name
     
-    msg = '{a} ({b}) is requesting editing rights to dataset\n\n{c}\n\
+    msg = u'{a} ({b}) is requesting editing rights to dataset\n\n{c}\n\n\
 for which you are currently an administrator. Please click this \
-link if you want to allow this user to edit the metadata of the dataset\
-\n{c}: {d}\n\n{a} ({b}) pyytaa muokkausoikeuksia tietoaineistoon\n\n{c}\n\
-jonka administraattori olet. Klikkaa linkkia, jos haluat taman kayttajan \
-saavan muokkausoikeudet tietoaineistoon\
-\n{c}: {d}\n'
+link if you want to allow this user to edit the metadata of the dataset:\n\
+{d}\n\n{a} ({b}) pyytää muokkausoikeuksia tietoaineistoon\n\n{c}\n\n\
+jonka ylläpitäjä olet. Klikkaa linkkiä, jos haluat tämän käyttäjän \
+saavan muokkausoikeudet aineiston metatietoihin:\n\
+{d}\n'
 
     controller = 'ckanext.kata.controllers:AccessRequestController'
     
@@ -55,7 +56,7 @@ saavan muokkausoikeudet tietoaineistoon\
     accessurl = config.get('ckan.site_url', '') + h.url_for(controller=controller, action="unlock_access", id=req.id)
     body = msg.format(a=requester_name, b= requester.email, c=pkg.title if pkg.title else pkg.name, d=accessurl)
     email_dict = {}
-    email_dict["subject"] = _("Access request for dataset / pyynto koskien tietoaineistoa %s" % pkg.title if pkg.title else pkg.name)
+    email_dict["subject"] = u"Access request for dataset / pyyntö koskien tietoaineistoa %s" % pkg.title if pkg.title else pkg.name
     email_dict["body"] = body
     send_notification(admin_dict, email_dict)
 
