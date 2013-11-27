@@ -150,7 +150,7 @@ class KataMetadata(SingletonPlugin):
         """
         Override IMapper.before_insert(). Receive an object instance before that instance is INSERTed.
         """
-        if isinstance(instance, Package):
+        if isinstance(instance, Package) and not instance.id:
             instance.id = utils.generate_pid()
 
 
