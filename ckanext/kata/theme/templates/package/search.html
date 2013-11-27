@@ -241,10 +241,10 @@
 {% block secondary_content %}
 {{ h.snippet('snippets/facet_list.html', title=_('Keywords'), name='tags') }}
 {{ h.snippet('snippets/facet_list.html', title=_('File formats'), name='fformatstring') }}
-{{ h.snippet('snippets/facet_list.html', title=_('Discipline'), name='groups') }}
+{{ h.snippet('snippets/facet_list.html', title=_('Discipline'), name='extras_discipline') }}
 {{ h.snippet('snippets/facet_list.html', title=_('Author'), name='authorstring') }}
 {{ h.snippet('snippets/facet_list.html', title=_('Organization'), name='organizationstring') }}
-{{ h.snippet('snippets/facet_list.html', title=_('License'), name='license') }}
+{{ h.snippet('snippets/facet_list.html', title=_('License'), name='license_id') }}
 {{ h.snippet('snippets/facet_list.html', title=_('Language'), name='extras_language') }}
 {% endblock %}
 
