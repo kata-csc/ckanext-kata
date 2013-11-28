@@ -150,7 +150,7 @@ class KataMetadata(SingletonPlugin):
         """
         Override IMapper.before_insert(). Receive an object instance before that instance is INSERTed.
         """
-        if isinstance(instance, Package):
+        if isinstance(instance, Package) and not instance.id:
             instance.id = utils.generate_pid()
 
 
@@ -451,7 +451,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
         schema['resources']['hash'].append(validate_general)
         schema['resources']['mimetype'].append(validate_mimetype)
-        log.debug(schema)
 
         return schema
 
