@@ -7823,1949 +7823,1983 @@ msgstr "Lisää uusi metatietodokumentti"
 
 #: ckanext/kata/theme/templates/package/snippets/languages.html:2
 msgid "Finnish"
-msgstr ""
+msgstr "suomi"
 
 #: ckanext/kata/theme/templates/package/snippets/languages.html:3
 msgid "English"
-msgstr ""
+msgstr "englanti"
 
 #: ckanext/kata/theme/templates/package/snippets/languages.html:4
 msgid "Swedish"
-msgstr ""
+msgstr "ruotsi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:6
-msgid "Abkhazian"
-msgstr ""
+# rest of the language translation from pycountry package.
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:7
-msgid "Achinese"
+# Finnish translations for iso_639 package.
+# Copyright (C) 2005-2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the iso-codes package.
+# Tommi Vainikainen <Tommi.Vainikainen@iki.fi>, 2005-2010.
+#
+msgid ""
 msgstr ""
+"Project-Id-Version: iso_639\n"
+"Report-Msgid-Bugs-To: Debian iso-codes team <pkg-isocodes-devel@lists.alioth."
+"debian.org>\n"
+"POT-Creation-Date: 2013-01-11 07:25+0100\n"
+"PO-Revision-Date: 2010-04-08 07:44+0300\n"
+"Last-Translator: Tommi Vainikainen <Tommi.Vainikainen@iki.fi>\n"
+"Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:8
-msgid "Acoli"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:9
-msgid "Adangme"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:10
-msgid "Adyghe; Adygei"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:11
+#. name for aar, aa
 msgid "Afar"
-msgstr ""
+msgstr "afar"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:12
-msgid "Afrihili"
-msgstr ""
+#. name for abk, ab
+msgid "Abkhazian"
+msgstr "abhaasi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:13
-msgid "Afrikaans"
-msgstr ""
+#. name for ace
+msgid "Achinese"
+msgstr "aceh"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:14
+#. name for ach
+msgid "Acoli"
+msgstr "atšoli"
+
+#. name for ada
+msgid "Adangme"
+msgstr "adangme"
+
+#. name for ady
+msgid "Adyghe; Adygei"
+msgstr "agyde"
+
+#. name for afa
 msgid "Afro-Asiatic languages"
-msgstr ""
+msgstr "afroaasialaiset kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:15
+#. name for afh
+msgid "Afrihili"
+msgstr "afrihili"
+
+#. name for afr, af
+msgid "Afrikaans"
+msgstr "afrikaans"
+
+#. name for ain
 msgid "Ainu"
-msgstr ""
+msgstr "ainu"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:16
+#. name for aka, ak
 msgid "Akan"
-msgstr ""
+msgstr "akan"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:17
+#. name for akk
 msgid "Akkadian"
-msgstr ""
+msgstr "akkadi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:18
+#. name for sqi, sq
 msgid "Albanian"
-msgstr ""
+msgstr "albania"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:19
+#. name for ale
 msgid "Aleut"
-msgstr ""
+msgstr "aleutti"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:20
+#. name for alg
 msgid "Algonquian languages"
-msgstr ""
+msgstr "algonkinkielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:21
-msgid "Altaic languages"
-msgstr ""
+#. name for alt
+msgid "Southern Altai"
+msgstr "eteläaltai"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:22
+#. name for amh, am
 msgid "Amharic"
-msgstr ""
+msgstr "amhara"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:23
+#. name for ang
+msgid "English, Old (ca. 450-1100)"
+msgstr "muinaisenglanti"
+
+#. name for anp
 msgid "Angika"
-msgstr ""
+msgstr "angika"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:24
+#. name for apa
 msgid "Apache languages"
-msgstr ""
+msgstr "apaššikielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:25
+#. name for ara, ar
 msgid "Arabic"
-msgstr ""
+msgstr "arabia"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:26
+#. name for arc
+msgid "Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)"
+msgstr "aramea"
+
+#. name for arg, an
 msgid "Aragonese"
-msgstr ""
+msgstr "aragonia"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:27
-msgid "Arapaho"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:28
-msgid "Arawak"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:29
+#. name for hye, hy
 msgid "Armenian"
-msgstr ""
+msgstr "armenia"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:30
-msgid "Aromanian; Arumanian; Macedo-Romanian"
-msgstr ""
+#. name for arn
+msgid "Mapudungun; Mapuche"
+msgstr "araukaani"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:31
+#. name for arp
+msgid "Arapaho"
+msgstr "arapaho"
+
+#. name for art
 msgid "Artificial languages"
-msgstr ""
+msgstr "keinotekoiset kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:32
+#. name for arw
+msgid "Arawak"
+msgstr "arawak"
+
+#. name for asm, as
 msgid "Assamese"
-msgstr ""
+msgstr "asami"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:33
+#. name for ast
 msgid "Asturian; Bable; Leonese; Asturleonese"
-msgstr ""
+msgstr "asturia"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:34
+#. name for ath
 msgid "Athapascan languages"
-msgstr ""
+msgstr "athabasca-kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:35
+#. name for aus
 msgid "Australian languages"
-msgstr ""
+msgstr "australialaiset kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:36
-msgid "Austronesian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:37
+#. name for ava, av
 msgid "Avaric"
-msgstr ""
+msgstr "avaari"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:38
+#. name for ave, ae
 msgid "Avestan"
-msgstr ""
+msgstr "avestan"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:39
+#. name for awa
 msgid "Awadhi"
-msgstr ""
+msgstr "awadhi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:40
+#. name for aym, ay
 msgid "Aymara"
-msgstr ""
+msgstr "aymara"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:41
+#. name for aze, az
 msgid "Azerbaijani"
-msgstr ""
+msgstr "azeri"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:42
-msgid "Balinese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:43
-msgid "Baltic languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:44
-msgid "Baluchi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:45
-msgid "Bambara"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:46
-msgid "Bamileke languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:47
+#. name for bad
 msgid "Banda languages"
-msgstr ""
+msgstr "banda"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:48
-msgid "Bantu languages"
-msgstr ""
+#. name for bai
+msgid "Bamileke languages"
+msgstr "bamileke-kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:49
-msgid "Basa"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:50
+#. name for bak, ba
 msgid "Bashkir"
-msgstr ""
+msgstr "baškiiri"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:51
+#. name for bal
+msgid "Baluchi"
+msgstr "belutši"
+
+#. name for bam, bm
+msgid "Bambara"
+msgstr "bambara"
+
+#. name for ban
+msgid "Balinese"
+msgstr "bali"
+
+#. name for eus, eu
 msgid "Basque"
-msgstr ""
+msgstr "baski"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:52
-msgid "Batak languages"
-msgstr ""
+#. name for bas
+msgid "Basa"
+msgstr "basa"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:53
+#. name for bat
+msgid "Baltic languages"
+msgstr "balttilaiset kielet"
+
+#. name for bej
 msgid "Beja; Bedawiyet"
-msgstr ""
+msgstr "bedža"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:54
+#. name for bel, be
 msgid "Belarusian"
-msgstr ""
+msgstr "valkovenäjä"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:55
+#. name for bem
 msgid "Bemba"
-msgstr ""
+msgstr "bemba"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:56
+#. name for ben, bn
 msgid "Bengali"
+msgstr "bengali"
+
+#. common_name for ben, bn
+msgid "Bangla"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:57
+#. name for ber
 msgid "Berber languages"
-msgstr ""
+msgstr "berberikielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:58
+#. name for bho
 msgid "Bhojpuri"
-msgstr ""
+msgstr "bhojpuri"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:59
+#. name for bih, bh
 msgid "Bihari languages"
-msgstr ""
+msgstr "bihari-kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:60
+#. name for bik
 msgid "Bikol"
-msgstr ""
+msgstr "bikol"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:61
+#. name for bin
 msgid "Bini; Edo"
-msgstr ""
+msgstr "bini"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:62
+#. name for bis, bi
 msgid "Bislama"
-msgstr ""
+msgstr "bislama"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:63
-msgid "Blin; Bilin"
-msgstr ""
+#. name for bla
+msgid "Siksika"
+msgstr "mustajalka (siksika)"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:64
-msgid "Blissymbols; Blissymbolics; Bliss"
-msgstr ""
+#. name for bnt
+msgid "Bantu languages"
+msgstr "bantukielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:65
-msgid "Bokmål, Norwegian; Norwegian Bokmål"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:66
+#. name for bos, bs
 msgid "Bosnian"
-msgstr ""
+msgstr "bosnia"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:67
+#. name for bra
 msgid "Braj"
-msgstr ""
+msgstr "bradž"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:68
+#. name for bre, br
 msgid "Breton"
-msgstr ""
+msgstr "bretoni"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:69
-msgid "Buginese"
-msgstr ""
+#. name for btk
+msgid "Batak languages"
+msgstr "batak"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:70
-msgid "Bulgarian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:71
+#. name for bua
 msgid "Buriat"
-msgstr ""
+msgstr "burjaatti"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:72
+#. name for bug
+msgid "Buginese"
+msgstr "bugi"
+
+#. name for bul, bg
+msgid "Bulgarian"
+msgstr "bulgaria"
+
+#. name for mya, my
 msgid "Burmese"
-msgstr ""
+msgstr "burma"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:73
+#. name for byn
+msgid "Blin; Bilin"
+msgstr "bilen (bilin, blin)"
+
+#. name for cad
 msgid "Caddo"
-msgstr ""
+msgstr "caddo"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:74
-msgid "Catalan; Valencian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:75
-msgid "Caucasian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:76
-msgid "Cebuano"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:77
-msgid "Celtic languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:78
+#. name for cai
 msgid "Central American Indian languages"
-msgstr ""
+msgstr "Keski-Amerikan intiaanikielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:79
-msgid "Central Khmer"
-msgstr ""
+#. name for car
+msgid "Galibi Carib"
+msgstr "karibi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:80
-msgid "Chagatai"
-msgstr ""
+#. name for cat, ca
+msgid "Catalan; Valencian"
+msgstr "katalaani"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:81
-msgid "Chamic languages"
-msgstr ""
+#. name for cau
+msgid "Caucasian languages"
+msgstr "kaukasialaiset kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:82
+#. name for ceb
+msgid "Cebuano"
+msgstr "cebuano"
+
+#. name for cel
+msgid "Celtic languages"
+msgstr "kelttiläiset kielet"
+
+#. name for cha, ch
 msgid "Chamorro"
-msgstr ""
+msgstr "chamorro"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:83
-msgid "Chechen"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:84
-msgid "Cherokee"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:85
-msgid "Cheyenne"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:86
+#. name for chb
 msgid "Chibcha"
-msgstr ""
+msgstr "chibcha"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:87
-msgid "Chichewa; Chewa; Nyanja"
-msgstr ""
+#. name for che, ce
+msgid "Chechen"
+msgstr "tšetšeeni"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:88
+#. name for chg
+msgid "Chagatai"
+msgstr "tšagatai"
+
+#. name for zho, zh
 msgid "Chinese"
-msgstr ""
+msgstr "kiina"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:89
+#. name for chk
+msgid "Chuukese"
+msgstr "chuuk"
+
+#. name for chm
+msgid "Mari"
+msgstr "mari"
+
+#. name for chn
 msgid "Chinook jargon"
-msgstr ""
+msgstr "chinook-jargon"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:90
-msgid "Chipewyan; Dene Suline"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:91
+#. name for cho
 msgid "Choctaw"
-msgstr ""
+msgstr "choctaw"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:92
+#. name for chp
+msgid "Chipewyan; Dene Suline"
+msgstr "chipewyan"
+
+#. name for chr
+msgid "Cherokee"
+msgstr "cherokee"
+
+#. name for chu, cu
 msgid ""
 "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church "
 "Slavonic"
-msgstr ""
+msgstr "kirkkoslaavi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:93
-msgid "Chuukese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:94
+#. name for chv, cv
 msgid "Chuvash"
-msgstr ""
+msgstr "tšuvassi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:95
-msgid "Classical Newari; Old Newari; Classical Nepal Bhasa"
-msgstr ""
+#. name for chy
+msgid "Cheyenne"
+msgstr "cheyenne"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:96
-msgid "Classical Syriac"
-msgstr ""
+#. name for cmc
+msgid "Chamic languages"
+msgstr "cham-kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:97
+#. name for cop
 msgid "Coptic"
-msgstr ""
+msgstr "kopti"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:98
+#. name for cor, kw
 msgid "Cornish"
-msgstr ""
+msgstr "korni"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:99
+#. name for cos, co
 msgid "Corsican"
-msgstr ""
+msgstr "korsika"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:100
-msgid "Cree"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:101
-msgid "Creek"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:102
-msgid "Creoles and pidgins"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:103
+#. name for cpe
 msgid "Creoles and pidgins, English based"
-msgstr ""
+msgstr "kreolit ja pidginit, englantiin perustuvat"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:104
+#. name for cpf
 msgid "Creoles and pidgins, French-based"
-msgstr ""
+msgstr "kreolit ja pidginit, ranskaan perustuvat"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:105
+#. name for cpp
 msgid "Creoles and pidgins, Portuguese-based"
-msgstr ""
+msgstr "kreolit ja pidginit, portugaliin perustuvat"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:106
+#. name for cre, cr
+msgid "Cree"
+msgstr "cree"
+
+#. name for crh
 msgid "Crimean Tatar; Crimean Turkish"
-msgstr ""
+msgstr "krimintataari; kriminturkki"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:107
-msgid "Croatian"
-msgstr ""
+#. name for crp
+msgid "Creoles and pidgins"
+msgstr "kreolit ja pidginit"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:108
-msgid "Cushitic languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:109
-msgid "Czech"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:110
-msgid "Dakota"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:111
-msgid "Danish"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:112
-msgid "Dargwa"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:113
-msgid "Delaware"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:114
-msgid "Dinka"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:115
-msgid "Divehi; Dhivehi; Maldivian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:116
-msgid "Dogri"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:117
-msgid "Dogrib"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:118
-msgid "Dravidian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:119
-msgid "Duala"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:120
-msgid "Dutch, Middle (ca. 1050-1350)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:121
-msgid "Dutch; Flemish"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:122
-msgid "Dyula"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:123
-msgid "Dzongkha"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:124
-msgid "Eastern Frisian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:125
-msgid "Efik"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:126
-msgid "Egyptian (Ancient)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:127
-msgid "Ekajuk"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:128
-msgid "Elamite"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:129
-msgid "English, Middle (1100-1500)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:130
-msgid "English, Old (ca. 450-1100)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:131
-msgid "Erzya"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:132
-msgid "Esperanto"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:133
-msgid "Estonian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:134
-msgid "Ewe"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:135
-msgid "Ewondo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:136
-msgid "Fang"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:137
-msgid "Fanti"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:138
-msgid "Faroese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:139
-msgid "Fijian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:140
-msgid "Filipino; Pilipino"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:141
-msgid "Finno-Ugrian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:142
-msgid "Fon"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:143
-msgid "French"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:144
-msgid "French, Middle (ca. 1400-1600)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:145
-msgid "French, Old (842-ca. 1400)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:146
-msgid "Friulian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:147
-msgid "Fulah"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:148
-msgid "Ga"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:149
-msgid "Gaelic; Scottish Gaelic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:150
-msgid "Galibi Carib"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:151
-msgid "Galician"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:152
-msgid "Ganda"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:153
-msgid "Gayo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:154
-msgid "Gbaya"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:155
-msgid "Geez"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:156
-msgid "Georgian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:157
-msgid "German"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:158
-msgid "German, Middle High (ca. 1050-1500)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:159
-msgid "German, Old High (ca. 750-1050)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:160
-msgid "Germanic languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:161
-msgid "Gilbertese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:162
-msgid "Gondi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:163
-msgid "Gorontalo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:164
-msgid "Gothic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:165
-msgid "Grebo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:166
-msgid "Greek, Ancient (to 1453)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:167
-msgid "Greek, Modern (1453-)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:168
-msgid "Guarani"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:169
-msgid "Gujarati"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:170
-msgid "Gwich'in"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:171
-msgid "Haida"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:172
-msgid "Haitian; Haitian Creole"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:173
-msgid "Hausa"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:174
-msgid "Hawaiian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:175
-msgid "Hebrew"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:176
-msgid "Herero"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:177
-msgid "Hiligaynon"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:178
-msgid "Himachali languages; Western Pahari languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:179
-msgid "Hindi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:180
-msgid "Hiri Motu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:181
-msgid "Hittite"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:182
-msgid "Hmong; Mong"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:183
-msgid "Hungarian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:184
-msgid "Hupa"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:185
-msgid "Iban"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:186
-msgid "Icelandic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:187
-msgid "Ido"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:188
-msgid "Igbo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:189
-msgid "Ijo languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:190
-msgid "Iloko"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:191
-msgid "Inari Sami"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:192
-msgid "Indic languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:193
-msgid "Indo-European languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:194
-msgid "Indonesian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:195
-msgid "Ingush"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:196
-msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:197
-msgid "Interlingue; Occidental"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:198
-msgid "Inuktitut"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:199
-msgid "Inupiaq"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:200
-msgid "Iranian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:201
-msgid "Irish"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:202
-msgid "Irish, Middle (900-1200)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:203
-msgid "Irish, Old (to 900)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:204
-msgid "Iroquoian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:205
-msgid "Italian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:206
-msgid "Japanese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:207
-msgid "Javanese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:208
-msgid "Judeo-Arabic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:209
-msgid "Judeo-Persian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:210
-msgid "Kabardian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:211
-msgid "Kabyle"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:212
-msgid "Kachin; Jingpho"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:213
-msgid "Kalaallisut; Greenlandic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:214
-msgid "Kalmyk; Oirat"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:215
-msgid "Kamba"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:216
-msgid "Kannada"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:217
-msgid "Kanuri"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:218
-msgid "Kara-Kalpak"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:219
-msgid "Karachay-Balkar"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:220
-msgid "Karelian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:221
-msgid "Karen languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:222
-msgid "Kashmiri"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:223
+#. name for csb
 msgid "Kashubian"
-msgstr ""
+msgstr "kašubi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:224
-msgid "Kawi"
-msgstr ""
+#. name for cus
+msgid "Cushitic languages"
+msgstr "kuušilaiset kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:225
-msgid "Kazakh"
-msgstr ""
+#. name for ces, cs
+msgid "Czech"
+msgstr "tšekki"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:226
-msgid "Khasi"
-msgstr ""
+#. name for dak
+msgid "Dakota"
+msgstr "dakota"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:227
-msgid "Khoisan languages"
-msgstr ""
+#. name for dan, da
+msgid "Danish"
+msgstr "tanska"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:228
-msgid "Khotanese;Sakan"
-msgstr ""
+#. name for dar
+msgid "Dargwa"
+msgstr "dargva"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:229
-msgid "Kikuyu; Gikuyu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:230
-msgid "Kimbundu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:231
-msgid "Kinyarwanda"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:232
-msgid "Kirghiz; Kyrgyz"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:233
-msgid "Klingon; tlhIngan-Hol"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:234
-msgid "Komi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:235
-msgid "Kongo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:236
-msgid "Konkani"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:237
-msgid "Korean"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:238
-msgid "Kosraean"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:239
-msgid "Kpelle"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:240
-msgid "Kru languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:241
-msgid "Kuanyama; Kwanyama"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:242
-msgid "Kumyk"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:243
-msgid "Kurdish"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:244
-msgid "Kurukh"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:245
-msgid "Kutenai"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:246
-msgid "Ladino"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:247
-msgid "Lahnda"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:248
-msgid "Lamba"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:249
+#. name for day
 msgid "Land Dayak languages"
-msgstr ""
+msgstr "dajakki"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:250
-msgid "Lao"
-msgstr ""
+#. name for del
+msgid "Delaware"
+msgstr "delaware"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:251
-msgid "Latin"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:252
-msgid "Latvian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:253
-msgid "Lezghian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:254
-msgid "Limburgan; Limburger; Limburgish"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:255
-msgid "Lingala"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:256
-msgid "Lithuanian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:257
-msgid "Lojban"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:258
-msgid "Low German; Low Saxon; German, Low; Saxon, Low"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:259
-msgid "Lower Sorbian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:260
-msgid "Lozi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:261
-msgid "Luba-Katanga"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:262
-msgid "Luba-Lulua"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:263
-msgid "Luiseno"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:264
-msgid "Lule Sami"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:265
-msgid "Lunda"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:266
-msgid "Luo (Kenya and Tanzania)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:267
-msgid "Lushai"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:268
-msgid "Luxembourgish; Letzeburgesch"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:269
-msgid "Macedonian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:270
-msgid "Madurese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:271
-msgid "Magahi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:272
-msgid "Maithili"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:273
-msgid "Makasar"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:274
-msgid "Malagasy"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:275
-msgid "Malay"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:276
-msgid "Malayalam"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:277
-msgid "Maltese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:278
-msgid "Manchu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:279
-msgid "Mandar"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:280
-msgid "Mandingo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:281
-msgid "Manipuri"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:282
-msgid "Manobo languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:283
-msgid "Manx"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:284
-msgid "Maori"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:285
-msgid "Mapudungun; Mapuche"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:286
-msgid "Marathi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:287
-msgid "Mari"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:288
-msgid "Marshallese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:289
-msgid "Marwari"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:290
-msgid "Masai"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:291
-msgid "Mayan languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:292
-msgid "Mende"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:293
-msgid "Mi'kmaq; Micmac"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:294
-msgid "Minangkabau"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:295
-msgid "Mirandese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:296
-msgid "Mohawk"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:297
-msgid "Moksha"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:298
-msgid "Moldavian; Moldovan"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:299
-msgid "Mon-Khmer languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:300
-msgid "Mongo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:301
-msgid "Mongolian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:302
-msgid "Mossi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:303
-msgid "Multiple languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:304
-msgid "Munda languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:305
-msgid "N'Ko"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:306
-msgid "Nahuatl languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:307
-msgid "Nauru"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:308
-msgid "Navajo; Navaho"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:309
-msgid "Ndebele, North; North Ndebele"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:310
-msgid "Ndebele, South; South Ndebele"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:311
-msgid "Ndonga"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:312
-msgid "Neapolitan"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:313
-msgid "Nepal Bhasa; Newari"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:314
-msgid "Nepali"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:315
-msgid "Nias"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:316
-msgid "Niger-Kordofanian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:317
-msgid "Nilo-Saharan languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:318
-msgid "Niuean"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:319
-msgid "No linguistic content; Not applicable"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:320
-msgid "Nogai"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:321
-msgid "Norse, Old"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:322
-msgid "North American Indian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:323
-msgid "Northern Frisian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:324
-msgid "Northern Sami"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:325
-msgid "Norwegian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:326
-msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:327
-msgid "Nubian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:328
-msgid "Nyamwezi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:329
-msgid "Nyankole"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:330
-msgid "Nyoro"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:331
-msgid "Nzima"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:332
-msgid "Occitan (post 1500)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:333
-msgid "Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:334
-msgid "Ojibwa"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:335
-msgid "Oriya"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:336
-msgid "Oromo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:337
-msgid "Osage"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:338
-msgid "Ossetian; Ossetic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:339
-msgid "Otomian languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:340
-msgid "Pahlavi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:341
-msgid "Palauan"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:342
-msgid "Pali"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:343
-msgid "Pampanga; Kapampangan"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:344
-msgid "Pangasinan"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:345
-msgid "Panjabi; Punjabi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:346
-msgid "Papiamento"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:347
-msgid "Papuan languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:348
-msgid "Pedi; Sepedi; Northern Sotho"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:349
-msgid "Persian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:350
-msgid "Persian, Old (ca. 600-400 B.C.)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:351
-msgid "Philippine languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:352
-msgid "Phoenician"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:353
-msgid "Pohnpeian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:354
-msgid "Polish"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:355
-msgid "Portuguese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:356
-msgid "Prakrit languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:357
-msgid "Provençal, Old (to 1500); Occitan, Old (to 1500)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:358
-msgid "Pushto; Pashto"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:359
-msgid "Quechua"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:360
-msgid "Rajasthani"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:361
-msgid "Rapanui"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:362
-msgid "Rarotongan; Cook Islands Maori"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:363
-msgid "Romance languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:364
-msgid "Romanian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:365
-msgid "Romansh"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:366
-msgid "Romany"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:367
-msgid "Rundi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:368
-msgid "Russian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:369
-msgid "Salishan languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:370
-msgid "Samaritan Aramaic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:371
-msgid "Sami languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:372
-msgid "Samoan"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:373
-msgid "Sandawe"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:374
-msgid "Sango"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:375
-msgid "Sanskrit"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:376
-msgid "Santali"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:377
-msgid "Sardinian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:378
-msgid "Sasak"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:379
-msgid "Scots"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:380
-msgid "Selkup"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:381
-msgid "Semitic languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:382
-msgid "Serbian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:383
-msgid "Serer"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:384
-msgid "Shan"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:385
-msgid "Shona"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:386
-msgid "Sichuan Yi; Nuosu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:387
-msgid "Sicilian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:388
-msgid "Sidamo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:389
-msgid "Sign Languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:390
-msgid "Siksika"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:391
-msgid "Sindhi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:392
-msgid "Sinhala; Sinhalese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:393
-msgid "Sino-Tibetan languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:394
-msgid "Siouan languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:395
-msgid "Skolt Sami"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:396
+#. name for den
 msgid "Slave (Athapascan)"
-msgstr ""
+msgstr "athapaski-slavi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:397
-msgid "Slavic languages"
-msgstr ""
+#. name for dgr
+msgid "Dogrib"
+msgstr "dogrib"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:398
-msgid "Slovak"
-msgstr ""
+#. name for din
+msgid "Dinka"
+msgstr "dinka"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:399
-msgid "Slovenian"
-msgstr ""
+#. name for div, dv
+msgid "Divehi; Dhivehi; Maldivian"
+msgstr "divehi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:400
-msgid "Sogdian"
-msgstr ""
+#. name for doi
+msgid "Dogri"
+msgstr "dogri"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:401
-msgid "Somali"
-msgstr ""
+#. name for dra
+msgid "Dravidian languages"
+msgstr "dravidakielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:402
-msgid "Songhai languages"
-msgstr ""
+#. name for dsb
+msgid "Lower Sorbian"
+msgstr "alasorbi"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:403
-msgid "Soninke"
-msgstr ""
+#. name for dua
+msgid "Duala"
+msgstr "duala"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:404
-msgid "Sorbian languages"
-msgstr ""
+#. name for dum
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr "keskihollanti"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:405
-msgid "Sotho, Southern"
-msgstr ""
+#. name for nld, nl
+msgid "Dutch; Flemish"
+msgstr "hollanti"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:406
+#. name for dyu
+msgid "Dyula"
+msgstr "dyula"
+
+#. name for dzo, dz
+msgid "Dzongkha"
+msgstr "dzongkha"
+
+#. name for efi
+msgid "Efik"
+msgstr "efik"
+
+#. name for egy
+msgid "Egyptian (Ancient)"
+msgstr "muinaisegypti"
+
+#. name for eka
+msgid "Ekajuk"
+msgstr "ekajuk"
+
+#. name for elx
+msgid "Elamite"
+msgstr "elami"
+
+#. name for enm
+msgid "English, Middle (1100-1500)"
+msgstr "keskienglanti"
+
+#. name for epo, eo
+msgid "Esperanto"
+msgstr "esperanto"
+
+#. name for est, et
+msgid "Estonian"
+msgstr "viro"
+
+#. name for ewe, ee
+msgid "Ewe"
+msgstr "ewe"
+
+#. name for ewo
+msgid "Ewondo"
+msgstr "ewondo"
+
+#. name for fan
+msgid "Fang"
+msgstr "fang"
+
+#. name for fao, fo
+msgid "Faroese"
+msgstr "fääri"
+
+#. name for fat
+msgid "Fanti"
+msgstr "fanti"
+
+#. name for fij, fj
+msgid "Fijian"
+msgstr "fidži"
+
+#. name for fil
+msgid "Filipino; Pilipino"
+msgstr "filippiino"
+
+#. name for fiu
+msgid "Finno-Ugrian languages"
+msgstr "suomalais-ugrilaiset kielet"
+
+#. name for fon
+msgid "Fon"
+msgstr "fon"
+
+#. name for fra, fr
+msgid "French"
+msgstr "ranska"
+
+#. name for frm
+msgid "French, Middle (ca. 1400-1600)"
+msgstr "keskiranska"
+
+#. name for fro
+msgid "French, Old (842-ca. 1400)"
+msgstr "muinaisranska"
+
+#. name for frr
+msgid "Northern Frisian"
+msgstr "pohjoisfriisi"
+
+#. name for frs
+msgid "Eastern Frisian"
+msgstr "itäfriisi"
+
+#. name for fry, fy
+msgid "Western Frisian"
+msgstr "länsifriisi"
+
+#. name for ful, ff
+msgid "Fulah"
+msgstr "fulani"
+
+#. name for fur
+msgid "Friulian"
+msgstr "friuli"
+
+#. name for gaa
+msgid "Ga"
+msgstr "gã"
+
+#. name for gay
+msgid "Gayo"
+msgstr "gayo"
+
+#. name for gba
+msgid "Gbaya"
+msgstr "gbaya"
+
+#. name for gem
+msgid "Germanic languages"
+msgstr "germaaniset kielet"
+
+#. name for kat, ka
+msgid "Georgian"
+msgstr "georgia"
+
+#. name for deu, de
+msgid "German"
+msgstr "saksa"
+
+#. name for gez
+msgid "Geez"
+msgstr "ge'ez"
+
+#. name for gil
+msgid "Gilbertese"
+msgstr "kiribati"
+
+#. name for gla, gd
+msgid "Gaelic; Scottish Gaelic"
+msgstr "gaeli"
+
+#. name for gle, ga
+msgid "Irish"
+msgstr "iiri"
+
+#. name for glg, gl
+msgid "Galician"
+msgstr "galicia"
+
+#. name for glv, gv
+msgid "Manx"
+msgstr "manksi"
+
+#. name for gmh
+msgid "German, Middle High (ca. 1050-1500)"
+msgstr "keskiyläsaksa"
+
+#. name for goh
+msgid "German, Old High (ca. 750-1050)"
+msgstr "muinaisyläsaksa"
+
+#. name for gon
+msgid "Gondi"
+msgstr "gondi"
+
+#. name for gor
+msgid "Gorontalo"
+msgstr "gorontalo"
+
+#. name for got
+msgid "Gothic"
+msgstr "gootti"
+
+#. name for grb
+msgid "Grebo"
+msgstr "grebo"
+
+#. name for grc
+msgid "Greek, Ancient (to 1453)"
+msgstr "muinaiskreikka"
+
+#. name for ell, el
+msgid "Greek, Modern (1453-)"
+msgstr "nykykreikka"
+
+#. name for grn, gn
+msgid "Guarani"
+msgstr "guarani"
+
+#. name for gsw
+msgid "Swiss German; Alemannic; Alsatian"
+msgstr "sveitsinsaksa"
+
+#. name for guj, gu
+msgid "Gujarati"
+msgstr "gujarati"
+
+#. name for gwi
+msgid "Gwich'in"
+msgstr "gwitšin"
+
+#. name for hai
+msgid "Haida"
+msgstr "haida"
+
+#. name for hat, ht
+msgid "Haitian; Haitian Creole"
+msgstr "haiti"
+
+#. name for hau, ha
+msgid "Hausa"
+msgstr "hausa"
+
+#. name for haw
+msgid "Hawaiian"
+msgstr "havaiji"
+
+#. name for heb, he
+msgid "Hebrew"
+msgstr "heprea"
+
+#. name for her, hz
+msgid "Herero"
+msgstr "herero"
+
+#. name for hil
+msgid "Hiligaynon"
+msgstr "hiligaynon"
+
+#. name for him
+msgid "Himachali languages; Western Pahari languages"
+msgstr "Himachal-kielet; läntiset pahari-kielet"
+
+#. name for hin, hi
+msgid "Hindi"
+msgstr "hindi"
+
+#. name for hit
+msgid "Hittite"
+msgstr "heetti"
+
+#. name for hmn
+msgid "Hmong; Mong"
+msgstr "hmong; mong"
+
+#. name for hmo, ho
+msgid "Hiri Motu"
+msgstr "hiri-motu"
+
+#. name for hrv, hr
+msgid "Croatian"
+msgstr "kroatia"
+
+#. name for hsb
+msgid "Upper Sorbian"
+msgstr "yläsorbi"
+
+#. name for hun, hu
+msgid "Hungarian"
+msgstr "unkari"
+
+#. name for hup
+msgid "Hupa"
+msgstr "hupa"
+
+#. name for iba
+msgid "Iban"
+msgstr "iban"
+
+#. name for ibo, ig
+msgid "Igbo"
+msgstr "igbo"
+
+#. name for isl, is
+msgid "Icelandic"
+msgstr "islanti"
+
+#. name for ido, io
+msgid "Ido"
+msgstr "ido"
+
+#. name for iii, ii
+msgid "Sichuan Yi; Nuosu"
+msgstr "sichuanin-yi"
+
+#. name for ijo
+msgid "Ijo languages"
+msgstr "idžo"
+
+#. name for iku, iu
+msgid "Inuktitut"
+msgstr "inuktitut"
+
+#. name for ile, ie
+msgid "Interlingue; Occidental"
+msgstr "interlingue"
+
+#. name for ilo
+msgid "Iloko"
+msgstr "iloko"
+
+#. name for ina, ia
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr "interlingua"
+
+#. name for inc
+msgid "Indic languages"
+msgstr "indoarjalaiset kielet"
+
+#. name for ind, id
+msgid "Indonesian"
+msgstr "indonesia"
+
+#. name for ine
+msgid "Indo-European languages"
+msgstr "indoeurooppalaiset kielet"
+
+#. name for inh
+msgid "Ingush"
+msgstr "inguuši"
+
+#. name for ipk, ik
+msgid "Inupiaq"
+msgstr "iñupiaq"
+
+#. name for ira
+msgid "Iranian languages"
+msgstr "iranilaiset kielet"
+
+#. name for iro
+msgid "Iroquoian languages"
+msgstr "irokeesikielet"
+
+#. name for ita, it
+msgid "Italian"
+msgstr "italia"
+
+#. name for jav, jv
+msgid "Javanese"
+msgstr "jaava"
+
+#. name for jbo
+msgid "Lojban"
+msgstr "lojban"
+
+#. name for jpn, ja
+msgid "Japanese"
+msgstr "japani"
+
+#. name for jpr
+msgid "Judeo-Persian"
+msgstr "juutalaispersia"
+
+#. name for jrb
+msgid "Judeo-Arabic"
+msgstr "juutalaisarabia"
+
+#. name for kaa
+msgid "Kara-Kalpak"
+msgstr "karakalpakki"
+
+#. name for kab
+msgid "Kabyle"
+msgstr "kabyyli"
+
+#. name for kac
+msgid "Kachin; Jingpho"
+msgstr "kachin"
+
+#. name for kal, kl
+msgid "Kalaallisut; Greenlandic"
+msgstr "kalaallisut; grönlanti"
+
+#. name for kam
+msgid "Kamba"
+msgstr "kamba"
+
+#. name for kan, kn
+msgid "Kannada"
+msgstr "kannada"
+
+#. name for kar
+msgid "Karen languages"
+msgstr "karen"
+
+#. name for kas, ks
+msgid "Kashmiri"
+msgstr "kashmiri"
+
+#. name for kau, kr
+msgid "Kanuri"
+msgstr "kanuri"
+
+#. name for kaw
+msgid "Kawi"
+msgstr "kavi"
+
+#. name for kaz, kk
+msgid "Kazakh"
+msgstr "kazakki"
+
+#. name for kbd
+msgid "Kabardian"
+msgstr "kabardi"
+
+#. name for kha
+msgid "Khasi"
+msgstr "khasi"
+
+#. name for khi
+msgid "Khoisan languages"
+msgstr "khoisan-kielet"
+
+#. name for khm, km
+msgid "Central Khmer"
+msgstr "khmer"
+
+#. name for kho
+msgid "Khotanese;Sakan"
+msgstr "khotani"
+
+#. name for kik, ki
+msgid "Kikuyu; Gikuyu"
+msgstr "kikuju"
+
+#. name for kin, rw
+msgid "Kinyarwanda"
+msgstr "ruanda"
+
+#. name for kir, ky
+msgid "Kirghiz; Kyrgyz"
+msgstr "kirgiisi"
+
+#. name for kmb
+msgid "Kimbundu"
+msgstr "kimbundu"
+
+#. name for kok
+msgid "Konkani"
+msgstr "konkani"
+
+#. name for kom, kv
+msgid "Komi"
+msgstr "komi"
+
+#. name for kon, kg
+msgid "Kongo"
+msgstr "kongo"
+
+#. name for kor, ko
+msgid "Korean"
+msgstr "korea"
+
+#. name for kos
+msgid "Kosraean"
+msgstr "kosrae"
+
+#. name for kpe
+msgid "Kpelle"
+msgstr "kpelle"
+
+#. name for krc
+msgid "Karachay-Balkar"
+msgstr "karatšai-balkaari"
+
+#. name for krl
+msgid "Karelian"
+msgstr "karjala"
+
+#. name for kro
+msgid "Kru languages"
+msgstr "kru-kielet"
+
+#. name for kru
+msgid "Kurukh"
+msgstr "kurukh"
+
+# Vai kwanyama?
+#. name for kua, kj
+msgid "Kuanyama; Kwanyama"
+msgstr "kuanjama"
+
+#. name for kum
+msgid "Kumyk"
+msgstr "kumykki"
+
+#. name for kur, ku
+msgid "Kurdish"
+msgstr "kurdi"
+
+#. name for kut
+msgid "Kutenai"
+msgstr "kutenai"
+
+# judezmo, juutalaisespanja
+#. name for lad
+msgid "Ladino"
+msgstr "ladino"
+
+#. name for lah
+msgid "Lahnda"
+msgstr "lahnda"
+
+#. name for lam
+msgid "Lamba"
+msgstr "lamba"
+
+#. name for lao, lo
+msgid "Lao"
+msgstr "lao"
+
+#. name for lat, la
+msgid "Latin"
+msgstr "latina"
+
+#. name for lav, lv
+msgid "Latvian"
+msgstr "latvia"
+
+#. name for lez
+msgid "Lezghian"
+msgstr "lezgi"
+
+#. name for lim, li
+msgid "Limburgan; Limburger; Limburgish"
+msgstr "limburg"
+
+#. name for lin, ln
+msgid "Lingala"
+msgstr "lingala"
+
+#. name for lit, lt
+msgid "Lithuanian"
+msgstr "liettua"
+
+#. name for lol
+msgid "Mongo"
+msgstr "mongo"
+
+#. name for loz
+msgid "Lozi"
+msgstr "lozi"
+
+#. name for ltz, lb
+msgid "Luxembourgish; Letzeburgesch"
+msgstr "luxemburg"
+
+#. name for lua
+msgid "Luba-Lulua"
+msgstr "luba (Lulua)"
+
+#. name for lub, lu
+msgid "Luba-Katanga"
+msgstr "luba (Katanga)"
+
+#. name for lug, lg
+msgid "Ganda"
+msgstr "ganda"
+
+#. name for lui
+msgid "Luiseno"
+msgstr "luiseño"
+
+#. name for lun
+msgid "Lunda"
+msgstr "lunda"
+
+#. name for luo
+msgid "Luo (Kenya and Tanzania)"
+msgstr "luo"
+
+#. name for lus
+msgid "Lushai"
+msgstr "lushai"
+
+#. name for mkd, mk
+msgid "Macedonian"
+msgstr "makedonia"
+
+#. name for mad
+msgid "Madurese"
+msgstr "madura"
+
+#. name for mag
+msgid "Magahi"
+msgstr "magahi"
+
+#. name for mah, mh
+msgid "Marshallese"
+msgstr "marshallinsaaret"
+
+#. name for mai
+msgid "Maithili"
+msgstr "maithili"
+
+#. name for mak
+msgid "Makasar"
+msgstr "makassar"
+
+#. name for mal, ml
+msgid "Malayalam"
+msgstr "malayalam"
+
+#. name for man
+msgid "Mandingo"
+msgstr "mandingo"
+
+#. name for mri, mi
+msgid "Maori"
+msgstr "maori"
+
+#. name for map
+msgid "Austronesian languages"
+msgstr "austronesialaiset kielet"
+
+#. name for mar, mr
+msgid "Marathi"
+msgstr "marathi"
+
+#. name for mas
+msgid "Masai"
+msgstr "masai"
+
+#. name for msa, ms
+msgid "Malay"
+msgstr "malaiji"
+
+#. name for mdf
+msgid "Moksha"
+msgstr "mokša"
+
+#. name for mdr
+msgid "Mandar"
+msgstr "mandar"
+
+#. name for men
+msgid "Mende"
+msgstr "mende"
+
+#. name for mga
+msgid "Irish, Middle (900-1200)"
+msgstr "keski-iiri"
+
+#. name for mic
+msgid "Mi'kmaq; Micmac"
+msgstr "micmac"
+
+#. name for min
+msgid "Minangkabau"
+msgstr "minangkabau"
+
+#. name for mis
+msgid "Uncoded languages"
+msgstr "kooditon kieli"
+
+#. name for mkh
+msgid "Mon-Khmer languages"
+msgstr "mon-khmer-kielet"
+
+#. name for mlg, mg
+msgid "Malagasy"
+msgstr "malagassi"
+
+#. name for mlt, mt
+msgid "Maltese"
+msgstr "malta"
+
+#. name for mnc
+msgid "Manchu"
+msgstr "mantšu"
+
+#. name for mni
+msgid "Manipuri"
+msgstr "manipuri"
+
+#. name for mno
+msgid "Manobo languages"
+msgstr "manobokielet"
+
+#. name for moh
+msgid "Mohawk"
+msgstr "mohawk"
+
+#. name for mol, mo
+msgid "Moldavian; Moldovan"
+msgstr "moldavia"
+
+#. name for mon, mn
+msgid "Mongolian"
+msgstr "mongoli"
+
+#. name for mos
+msgid "Mossi"
+msgstr "mossi"
+
+#. name for mul
+msgid "Multiple languages"
+msgstr "monia kieliä"
+
+#. name for mun
+msgid "Munda languages"
+msgstr "mundakielet"
+
+#. name for mus
+msgid "Creek"
+msgstr "muskogi"
+
+#. name for mwl
+msgid "Mirandese"
+msgstr "mirandês"
+
+#. name for mwr
+msgid "Marwari"
+msgstr "marwari"
+
+#. name for myn
+msgid "Mayan languages"
+msgstr "mayakielet"
+
+#. name for myv
+msgid "Erzya"
+msgstr "ersä"
+
+#. name for nah
+msgid "Nahuatl languages"
+msgstr "nahuatl"
+
+#. name for nai
+msgid "North American Indian languages"
+msgstr "Pohjois-Amerikan intiaanikielet"
+
+#. name for nap
+msgid "Neapolitan"
+msgstr "napoli"
+
+#. name for nau, na
+msgid "Nauru"
+msgstr "nauru"
+
+#. name for nav, nv
+msgid "Navajo; Navaho"
+msgstr "navajo"
+
+#. name for nbl, nr
+msgid "Ndebele, South; South Ndebele"
+msgstr "ndebele, etelä-"
+
+#. name for nde, nd
+msgid "Ndebele, North; North Ndebele"
+msgstr "ndebele, pohjois-"
+
+#. name for ndo, ng
+msgid "Ndonga"
+msgstr "ndonga"
+
+#. name for nds
+msgid "Low German; Low Saxon; German, Low; Saxon, Low"
+msgstr "alasaksa"
+
+#. name for nep, ne
+msgid "Nepali"
+msgstr "nepali"
+
+#. name for new
+msgid "Nepal Bhasa; Newari"
+msgstr "newari"
+
+#. name for nia
+msgid "Nias"
+msgstr "nias"
+
+#. name for nic
+msgid "Niger-Kordofanian languages"
+msgstr "nigeriläis-kongolaiset kielet"
+
+#. name for niu
+msgid "Niuean"
+msgstr "niue"
+
+#. name for nno, nn
+msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
+msgstr "norja (nynorsk)"
+
+#. name for nob, nb
+msgid "Bokmål, Norwegian; Norwegian Bokmål"
+msgstr "norja (bokmål)"
+
+#. name for nog
+msgid "Nogai"
+msgstr "nogai"
+
+#. name for non
+msgid "Norse, Old"
+msgstr "muinaisnorja"
+
+#. name for nor, no
+msgid "Norwegian"
+msgstr "norja"
+
+#. name for nqo
+msgid "N'Ko"
+msgstr "n'ko"
+
+#. name for nso
+msgid "Pedi; Sepedi; Northern Sotho"
+msgstr "pohjoissotho"
+
+#. name for nub
+msgid "Nubian languages"
+msgstr "nubialaiset kielet"
+
+#. name for nwc
+msgid "Classical Newari; Old Newari; Classical Nepal Bhasa"
+msgstr "klassinen newari"
+
+#. name for nya, ny
+msgid "Chichewa; Chewa; Nyanja"
+msgstr "nyanja (chewa)"
+
+#. name for nym
+msgid "Nyamwezi"
+msgstr "nyamwezi"
+
+#. name for nyn
+msgid "Nyankole"
+msgstr "nyankole"
+
+#. name for nyo
+msgid "Nyoro"
+msgstr "nyoro"
+
+#. name for nzi
+msgid "Nzima"
+msgstr "nzima"
+
+#. name for oci, oc
+msgid "Occitan (post 1500)"
+msgstr "oksitaani"
+
+#. name for oji, oj
+msgid "Ojibwa"
+msgstr "odžibwa"
+
+#. name for ori, or
+msgid "Oriya"
+msgstr "oriya"
+
+#. name for orm, om
+msgid "Oromo"
+msgstr "oromo"
+
+#. name for osa
+msgid "Osage"
+msgstr "osage"
+
+#. name for oss, os
+msgid "Ossetian; Ossetic"
+msgstr "osseetti"
+
+#. name for ota
+msgid "Turkish, Ottoman (1500-1928)"
+msgstr "osmaninturkki"
+
+#. name for oto
+msgid "Otomian languages"
+msgstr "otomikielet"
+
+#. name for paa
+msgid "Papuan languages"
+msgstr "papualaiset kielet"
+
+#. name for pag
+msgid "Pangasinan"
+msgstr "pangasinan"
+
+#. name for pal
+msgid "Pahlavi"
+msgstr "pahlavi"
+
+#. name for pam
+msgid "Pampanga; Kapampangan"
+msgstr "pampanga"
+
+#. name for pan, pa
+msgid "Panjabi; Punjabi"
+msgstr "panjabi"
+
+#. name for pap
+msgid "Papiamento"
+msgstr "papiamentu"
+
+#. name for pau
+msgid "Palauan"
+msgstr "palau"
+
+#. name for peo
+msgid "Persian, Old (ca. 600-400 B.C.)"
+msgstr "muinaispersia"
+
+#. name for fas, fa
+msgid "Persian"
+msgstr "persia"
+
+#. name for phi
+msgid "Philippine languages"
+msgstr "filippiiniläiset kielet"
+
+#. name for phn
+msgid "Phoenician"
+msgstr "foinikia"
+
+#. name for pli, pi
+msgid "Pali"
+msgstr "paali"
+
+#. name for pol, pl
+msgid "Polish"
+msgstr "puola"
+
+#. name for pon
+msgid "Pohnpeian"
+msgstr "pohnpei"
+
+#. name for por, pt
+msgid "Portuguese"
+msgstr "portugali"
+
+#. name for pra
+msgid "Prakrit languages"
+msgstr "prakrit-kielet"
+
+#. name for pro
+msgid "Provençal, Old (to 1500); Occitan, Old (to 1500)"
+msgstr "muinaisprovensaali"
+
+#. name for pus, ps
+msgid "Pushto; Pashto"
+msgstr "pašto"
+
+#. name for qaa-qtz
+msgid "Reserved for local use"
+msgstr "(varattu paikalliseen käyttöön)"
+
+#. name for que, qu
+msgid "Quechua"
+msgstr "ketšua"
+
+#. name for raj
+msgid "Rajasthani"
+msgstr "rajasthani"
+
+#. name for rap
+msgid "Rapanui"
+msgstr "rapanui"
+
+#. name for rar
+msgid "Rarotongan; Cook Islands Maori"
+msgstr "rarotonga"
+
+#. name for roa
+msgid "Romance languages"
+msgstr "romaaniset kielet"
+
+#. name for roh, rm
+msgid "Romansh"
+msgstr "retoromaani"
+
+#. name for rom
+msgid "Romany"
+msgstr "romani"
+
+#. name for ron, ro
+msgid "Romanian"
+msgstr "romania"
+
+#. name for run, rn
+msgid "Rundi"
+msgstr "rundi"
+
+#. name for rup
+msgid "Aromanian; Arumanian; Macedo-Romanian"
+msgstr "aromaani"
+
+#. name for rus, ru
+msgid "Russian"
+msgstr "venäjä"
+
+#. name for sad
+msgid "Sandawe"
+msgstr "sandawe"
+
+#. name for sag, sg
+msgid "Sango"
+msgstr "sango"
+
+#. name for sah
+msgid "Yakut"
+msgstr "jakuutti"
+
+#. name for sai
 msgid "South American Indian languages"
-msgstr ""
+msgstr "Etelä-Amerikan intiaanikielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:407
-msgid "Southern Altai"
-msgstr ""
+#. name for sal
+msgid "Salishan languages"
+msgstr "sališilaiset kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:408
+#. name for sam
+msgid "Samaritan Aramaic"
+msgstr "samarianaramea"
+
+#. name for san, sa
+msgid "Sanskrit"
+msgstr "sanskrit"
+
+#. name for sas
+msgid "Sasak"
+msgstr "sasak"
+
+#. name for sat
+msgid "Santali"
+msgstr "santali"
+
+#. name for scn
+msgid "Sicilian"
+msgstr "sisilia"
+
+#. name for sco
+msgid "Scots"
+msgstr "skotti"
+
+#. name for sel
+msgid "Selkup"
+msgstr "selkuppi"
+
+#. name for sem
+msgid "Semitic languages"
+msgstr "seemiläiset kielet"
+
+#. name for sga
+msgid "Irish, Old (to 900)"
+msgstr "muinaisiiri"
+
+#. name for sgn
+msgid "Sign Languages"
+msgstr "viittomakielet"
+
+#. name for shn
+msgid "Shan"
+msgstr "shan"
+
+#. name for sid
+msgid "Sidamo"
+msgstr "sidamo"
+
+#. name for sin, si
+msgid "Sinhala; Sinhalese"
+msgstr "sinhala"
+
+#. name for sio
+msgid "Siouan languages"
+msgstr "sioux-kielet"
+
+#. name for sit
+msgid "Sino-Tibetan languages"
+msgstr "sinotiibetiläiset kielet"
+
+#. name for sla
+msgid "Slavic languages"
+msgstr "slaavilaiset kielet"
+
+#. name for slk, sk
+msgid "Slovak"
+msgstr "slovakki"
+
+#. name for slv, sl
+msgid "Slovenian"
+msgstr "sloveeni"
+
+#. name for sma
 msgid "Southern Sami"
-msgstr ""
+msgstr "eteläsaame"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:409
+#. name for sme, se
+msgid "Northern Sami"
+msgstr "pohjoissaame"
+
+#. name for smi
+msgid "Sami languages"
+msgstr "saamelaiskielet"
+
+#. name for smj
+msgid "Lule Sami"
+msgstr "luulajansaame"
+
+#. name for smn
+msgid "Inari Sami"
+msgstr "inarinsaame"
+
+#. name for smo, sm
+msgid "Samoan"
+msgstr "samoa"
+
+#. name for sms
+msgid "Skolt Sami"
+msgstr "koltansaame"
+
+#. name for sna, sn
+msgid "Shona"
+msgstr "shona"
+
+#. name for snd, sd
+msgid "Sindhi"
+msgstr "sindhi"
+
+#. name for snk
+msgid "Soninke"
+msgstr "soninke"
+
+#. name for sog
+msgid "Sogdian"
+msgstr "sogdi"
+
+#. name for som, so
+msgid "Somali"
+msgstr "somali"
+
+#. name for son
+msgid "Songhai languages"
+msgstr "songhai"
+
+#. name for sot, st
+msgid "Sotho, Southern"
+msgstr "eteläsotho"
+
+#. name for spa, es
 msgid "Spanish; Castilian"
-msgstr ""
+msgstr "espanja"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:410
+#. name for srd, sc
+msgid "Sardinian"
+msgstr "sardi"
+
+#. name for srn
 msgid "Sranan Tongo"
-msgstr ""
+msgstr "Sranan tongo"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:411
+#. name for srp, sr
+msgid "Serbian"
+msgstr "serbia"
+
+#. name for srr
+msgid "Serer"
+msgstr "serer"
+
+#. name for ssa
+msgid "Nilo-Saharan languages"
+msgstr "nilosaharalaiset kielet"
+
+#. name for ssw, ss
+msgid "Swati"
+msgstr "swazi"
+
+#. name for suk
+msgid "Sukuma"
+msgstr "sukuma"
+
+#. name for sun, su
+msgid "Sundanese"
+msgstr "sunda"
+
+#. name for sus
+msgid "Susu"
+msgstr "susu"
+
+#. name for sux
+msgid "Sumerian"
+msgstr "sumeri"
+
+# suahili
+#. name for swa, sw
+msgid "Swahili"
+msgstr "swahili"
+
+#. name for syc
+msgid "Classical Syriac"
+msgstr "klassinen syyria"
+
+#. name for syr
+msgid "Syriac"
+msgstr "syyria"
+
+#. name for tah, ty
+msgid "Tahitian"
+msgstr "tahiti"
+
+#. name for tai
+msgid "Tai languages"
+msgstr "tai-kielet"
+
+#. name for tam, ta
+msgid "Tamil"
+msgstr "tamili"
+
+#. name for tat, tt
+msgid "Tatar"
+msgstr "tataari"
+
+#. name for tel, te
+msgid "Telugu"
+msgstr "telugu"
+
+#. name for tem
+msgid "Timne"
+msgstr "temne"
+
+#. name for ter
+msgid "Tereno"
+msgstr "tereno"
+
+#. name for tet
+msgid "Tetum"
+msgstr "tetum"
+
+#. name for tgk, tg
+msgid "Tajik"
+msgstr "tadžikki"
+
+#. name for tgl, tl
+msgid "Tagalog"
+msgstr "tagalog"
+
+#. name for tha, th
+msgid "Thai"
+msgstr "thai"
+
+#. name for bod, bo
+msgid "Tibetan"
+msgstr "tiibetti"
+
+#. name for tig
+msgid "Tigre"
+msgstr "tigre"
+
+#. name for tir, ti
+msgid "Tigrinya"
+msgstr "tigrinya"
+
+#. name for tiv
+msgid "Tiv"
+msgstr "tiv"
+
+#. name for tkl
+msgid "Tokelau"
+msgstr "tokelau"
+
+#. name for tlh
+msgid "Klingon; tlhIngan-Hol"
+msgstr "klingon"
+
+#. name for tli
+msgid "Tlingit"
+msgstr "tlinglit"
+
+#. name for tmh
+msgid "Tamashek"
+msgstr "tamashek"
+
+#. name for tog
+msgid "Tonga (Nyasa)"
+msgstr "Malawin tonga"
+
+#. name for ton, to
+msgid "Tonga (Tonga Islands)"
+msgstr "Tongan tonga"
+
+#. name for tpi
+msgid "Tok Pisin"
+msgstr "tok-pisin"
+
+#. name for tsi
+msgid "Tsimshian"
+msgstr "tsimshian"
+
+#. name for tsn, tn
+msgid "Tswana"
+msgstr "tswana"
+
+#. name for tso, ts
+msgid "Tsonga"
+msgstr "tsonga"
+
+#. name for tuk, tk
+msgid "Turkmen"
+msgstr "turkmeeni"
+
+#. name for tum
+msgid "Tumbuka"
+msgstr "tumbuka"
+
+#. name for tup
+msgid "Tupi languages"
+msgstr "tupikielet"
+
+#. name for tur, tr
+msgid "Turkish"
+msgstr "turkki"
+
+#. name for tut
+msgid "Altaic languages"
+msgstr "altailaiset kielet"
+
+#. name for tvl
+msgid "Tuvalu"
+msgstr "tuvalu"
+
+#. name for twi, tw
+msgid "Twi"
+msgstr "twi"
+
+#. name for tyv
+msgid "Tuvinian"
+msgstr "tuva"
+
+#. name for udm
+msgid "Udmurt"
+msgstr "udmurtti"
+
+#. name for uga
+msgid "Ugaritic"
+msgstr "ugarit"
+
+#. name for uig, ug
+msgid "Uighur; Uyghur"
+msgstr "uiguuri"
+
+#. name for ukr, uk
+msgid "Ukrainian"
+msgstr "ukraina"
+
+#. name for umb
+msgid "Umbundu"
+msgstr "umbundu"
+
+#. name for und
+msgid "Undetermined"
+msgstr "määrittämätön"
+
+#. name for urd, ur
+msgid "Urdu"
+msgstr "urdu"
+
+#. name for uzb, uz
+msgid "Uzbek"
+msgstr "uzbekki"
+
+#. name for vai
+msgid "Vai"
+msgstr "vai"
+
+#. name for ven, ve
+msgid "Venda"
+msgstr "venda"
+
+#. name for vie, vi
+msgid "Vietnamese"
+msgstr "vietnam"
+
+#. name for vol, vo
+msgid "Volapük"
+msgstr "volapük"
+
+#. name for vot
+msgid "Votic"
+msgstr "vatja"
+
+#. name for wak
+msgid "Wakashan languages"
+msgstr "wakashkielet"
+
+#. name for wal
+msgid "Wolaitta; Wolaytta"
+msgstr "wolaytta"
+
+#. name for war
+msgid "Waray"
+msgstr "waray"
+
+#. name for was
+msgid "Washo"
+msgstr "washo"
+
+#. name for cym, cy
+msgid "Welsh"
+msgstr "kymri"
+
+# teknisesti on yksi puhekieli mutta kaksi kirjakieltä, joille omat koodit...
+#. name for wen
+msgid "Sorbian languages"
+msgstr "sorbi"
+
+#. name for wln, wa
+msgid "Walloon"
+msgstr "valloni"
+
+#. name for wol, wo
+msgid "Wolof"
+msgstr "wolof"
+
+#. name for xal
+msgid "Kalmyk; Oirat"
+msgstr "kalmukki"
+
+#. name for xho, xh
+msgid "Xhosa"
+msgstr "xhosa"
+
+#. name for yao
+msgid "Yao"
+msgstr "mien"
+
+#. name for yap
+msgid "Yapese"
+msgstr "yap"
+
+#. name for yid, yi
+msgid "Yiddish"
+msgstr "jiddiš"
+
+#. name for yor, yo
+msgid "Yoruba"
+msgstr "yoruba"
+
+#. name for ypk
+msgid "Yupik languages"
+msgstr "jupikkikielet"
+
+#. name for zap
+msgid "Zapotec"
+msgstr "sapoteekki"
+
+#. name for zbl
+msgid "Blissymbols; Blissymbolics; Bliss"
+msgstr "Bliss-symbolit"
+
+#. name for zen
+msgid "Zenaga"
+msgstr "zenaga"
+
+#. name for zgh
 msgid "Standard Moroccan Tamazight"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:412
-msgid "Sukuma"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:413
-msgid "Sumerian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:414
-msgid "Sundanese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:415
-msgid "Susu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:416
-msgid "Swahili"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:417
-msgid "Swati"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:418
-msgid "Swiss German; Alemannic; Alsatian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:419
-msgid "Syriac"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:420
-msgid "Tagalog"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:421
-msgid "Tahitian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:422
-msgid "Tai languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:423
-msgid "Tajik"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:424
-msgid "Tamashek"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:425
-msgid "Tamil"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:426
-msgid "Tatar"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:427
-msgid "Telugu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:428
-msgid "Tereno"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:429
-msgid "Tetum"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:430
-msgid "Thai"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:431
-msgid "Tibetan"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:432
-msgid "Tigre"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:433
-msgid "Tigrinya"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:434
-msgid "Timne"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:435
-msgid "Tiv"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:436
-msgid "Tlingit"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:437
-msgid "Tok Pisin"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:438
-msgid "Tokelau"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:439
-msgid "Tonga (Nyasa)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:440
-msgid "Tonga (Tonga Islands)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:441
-msgid "Tsimshian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:442
-msgid "Tsonga"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:443
-msgid "Tswana"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:444
-msgid "Tumbuka"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:445
-msgid "Tupi languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:446
-msgid "Turkish"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:447
-msgid "Turkish, Ottoman (1500-1928)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:448
-msgid "Turkmen"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:449
-msgid "Tuvalu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:450
-msgid "Tuvinian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:451
-msgid "Twi"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:452
-msgid "Udmurt"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:453
-msgid "Ugaritic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:454
-msgid "Uighur; Uyghur"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:455
-msgid "Ukrainian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:456
-msgid "Umbundu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:457
-msgid "Uncoded languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:458
-msgid "Undetermined"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:459
-msgid "Upper Sorbian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:460
-msgid "Urdu"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:461
-msgid "Uzbek"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:462
-msgid "Vai"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:463
-msgid "Venda"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:464
-msgid "Vietnamese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:465
-msgid "Volapük"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:466
-msgid "Votic"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:467
-msgid "Wakashan languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:468
-msgid "Walloon"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:469
-msgid "Waray"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:470
-msgid "Washo"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:471
-msgid "Welsh"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:472
-msgid "Western Frisian"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:473
-msgid "Wolaitta; Wolaytta"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:474
-msgid "Wolof"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:475
-msgid "Xhosa"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:476
-msgid "Yakut"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:477
-msgid "Yao"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:478
-msgid "Yapese"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:479
-msgid "Yiddish"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:480
-msgid "Yoruba"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:481
-msgid "Yupik languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:482
-msgid "Zande languages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:483
-msgid "Zapotec"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:484
-msgid "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:485
-msgid "Zenaga"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/languages.html:486
+#. name for zha, za
 msgid "Zhuang; Chuang"
-msgstr ""
+msgstr "zhuang"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:487
+#. name for znd
+msgid "Zande languages"
+msgstr "zande"
+
+#. name for zul, zu
 msgid "Zulu"
-msgstr ""
+msgstr "zulu"
 
-#: ckanext/kata/theme/templates/package/snippets/languages.html:488
+#. name for zun
 msgid "Zuni"
-msgstr ""
+msgstr "zuni"
+
+#. name for zxx
+msgid "No linguistic content; Not applicable"
+msgstr "ei kielellistä sisältöä; ei sovellu"
+
+#. name for zza
+msgid "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
+msgstr "zaza; dimili; dimli; kirdki; kirmanjki; zazaki"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:8
 msgid "No language"
