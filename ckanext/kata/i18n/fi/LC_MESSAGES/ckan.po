@@ -11044,8 +11044,8 @@ msgstr "Minimimetatietomalli"
 msgid "In Finnish"
 msgstr " "
 
-msgid "The preferred license recommended by TTA is Creative Commons 4.0 family. Learn more about licenses from:"
-msgstr "TTA:n suosittelema lisenssi on Creative Commons 4.0 -lisenssiperhe. Lisätietoa lisensseistä:"
+msgid "The preferred license recommended by TTA is Creative Commons 3.0 family. Learn more about licenses from:"
+msgstr "TTA:n suosittelema lisenssi on Creative Commons 3.0 -lisenssiperhe. Lisätietoa lisensseistä:"
 
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr "http://creativecommons.org/choose/?lang=fi"
