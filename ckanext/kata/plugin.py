@@ -399,7 +399,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                                'lang': [not_missing, unicode, convert_languages]}
 
         schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
-                             'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
+                             'org': [not_missing, unicode, validate_general]}
 
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
@@ -414,8 +414,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema.update({
             'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
             'version_PID': [default(u''), update_pid, unicode, convert_to_extras_kata],
-            'author': [default(u'')],
-            'organization': [default(u'')],
+            #'author': [],
+            #'organization': [],
             'availability': [not_missing, convert_to_extras_kata],
             'langdis': [checkbox_to_boolean, convert_to_extras_kata],
             '__extras': [check_author_org],
@@ -435,6 +435,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'geographic_coverage': [validate_spatial, convert_to_extras_kata, unicode],
             'license_URL': [default(u''), convert_to_extras_kata, unicode, validate_general],
         })
+
+        schema.pop('author')
+        schema.pop('organization')
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
@@ -470,7 +473,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         This method is called when viewing or editing a dataset.
         """
 
-        #schema = self._db_to_form_package_schema()
         schema = default_show_package_schema()
 
         for key in settings.KATA_FIELDS:
@@ -479,8 +481,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['version_PID'] = [pid_from_extras, ignore_missing, unicode]
 
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['organization'] = [ignore_missing, unicode]
+        schema['organization'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['title'] = [ltitle_from_extras, ignore_missing]
+        schema['langdis'] = [unicode]
+        schema['projdis'] = [unicode]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
         schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
