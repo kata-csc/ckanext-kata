@@ -3,17 +3,20 @@
 """
 Functions to convert dataset form fields from or to db fields.
 """
+import pycountry
 
 from pylons import h
 
 import re
-import utils
 import logging
 from pylons.i18n import _
+from ckan.lib.navl.validators import missing
 
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
 from ckan.model.authz import setup_default_user_roles
+
+from ckanext.kata import settings, utils
 
 log = logging.getLogger('ckanext.kata.converters')
 
@@ -285,13 +288,6 @@ def checkbox_to_boolean(key, data, errors, context):
             data[key] = u'False'
 
 
-def add_dummy_to_extras(key, data, errors, context):
-    '''
-    Add some dummy content to extras.
-    '''
-    data[('extras',)].append({'key': u'dummy', 'value': u'dummy'})
-
-
 def update_pid(key, data, errors, context):
     '''
     Replace an empty unicode string with random PID.
@@ -301,11 +297,113 @@ def update_pid(key, data, errors, context):
             data[key] = utils.generate_pid()
 
 
-def update_name(key, data, errors, context):
+def to_resource(key, data, errors, context):
     '''
-    If name is empty, generate a PID
-    '''
-    if type(data[key]) == unicode:
-        if len(data[key]) == 0:
-            data[key] = utils.generate_pid()
+    Convert some dataset fields into resource fields.
 
+    Fields to convert are hard coded at the moment.
+    '''
+    if 'resources' not in data:
+        data['resources'] = []
+
+    if data.get('direct_download_URL', ''):
+
+        data['resources'].append({
+            'url' : data.pop('direct_download_URL', settings.DATASET_URL_UNKNOWN),
+            'hash' : data.pop('checksum', u''),
+            'format' : data.pop('mimetype', u''),
+            'algorithm' : data.pop('algorithm', u''),
+            'resource_type' : settings.RESOURCE_TYPE_DATASET,
+        })
+
+
+def from_resource(key, data, errors, context):
+    '''
+    Convert some fields from resource fields into dataset fields.
+
+    Fields to convert are hard coded at the moment.
+    '''
+    try:
+        for i in range(len(data['resources'])):
+            if data['resources'][i]['resource_type'] == settings.RESOURCE_TYPE_DATASET:
+                # UI can't handle multiple instances of dataset resources, so now use only the first.
+                resource = data['resources'].pop(i)
+                break
+    except (KeyError, IndexError):
+        if 'id' in data:
+            log.debug('Dataset without a dataset resource: %s' % data['id'])
+        return
+
+    if resource:
+        data.update({
+            'direct_download_URL' : resource.get('url'),
+            'checksum' : resource.get('hash'),
+            'mimetype' : resource.get('mimetype'),
+            'algorithm' : resource.get('algorithm'),
+        })
+
+
+def convert_from_extras_kata(key, data, errors, context):
+    '''
+    Convert all extras fields from extras to data dict and remove
+    fields from extras. Removal helps counter IndexError with unflatten after
+    validation.
+    '''
+    for k in data.keys():
+        if k[0] == 'extras' and k[-1] == 'key' and data[k] in settings.KATA_FIELDS:
+            key = ''.join(data[k])
+            data[(key,)] = data[(k[0], k[1], 'value')]
+            for _remove in data.keys():
+                if _remove[0] == 'extras' and _remove[1] == k[1]:
+                    del data[_remove]
+
+
+def convert_to_extras_kata(key, data, errors, context):
+    '''
+    Convert all extras fields from extras to data dict and remove
+    fields from extras. Removal helps counter IndexError with unflatten after
+    validation.
+    '''
+    if data.get(('extras',)) is missing:
+        return
+    extras = data.get(('extras',), [])
+    if not extras:
+        data[('extras',)] = extras
+    for k in data.keys():
+        if k[-1] in settings.KATA_FIELDS:
+            if not {'key': k[-1], 'value': data[k]} in extras:
+                extras.append({'key': k[-1], 'value': data[k]})
+
+
+def convert_languages(key, data, errors, context):
+    '''
+    Convert language abbreviations to ISO 639-2 T
+
+    data['key'] may be a string with comma separated values or a single language code.
+    '''
+
+    value = data.get(key)
+
+    if not isinstance(value, basestring):
+        return
+
+    langs = value.split(',')
+    new_langs = []
+
+    for lang in langs:
+        lang = lang.strip()
+        if lang:
+            try:
+                pycountry.languages.get(terminology=lang)
+                new_langs.append(lang)
+            except KeyError:
+                try:
+                    # Convert two character language codes
+                    lang_object = pycountry.languages.get(alpha2=lang)
+                    new_langs.append(lang_object.terminology)
+                except KeyError as ke:
+                    # TODO: Try to convert from ISO 639-2 B ?
+                    errors[key].append(_('Language %s not in ISO 639-2 T format' % lang))
+
+    if new_langs:
+        data[key] = ', '.join(new_langs)

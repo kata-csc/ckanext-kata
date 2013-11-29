@@ -17,18 +17,16 @@ from ckan.plugins import IActions
 from ckan.plugins import IAuthFunctions
 from ckan.plugins.core import unload
 from ckan.lib.base import g, c
-from ckan.model import Package, user_has_role
+from ckan.model import Package
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.logic.schema import   default_show_package_schema, \
-    default_create_package_schema, \
-    default_resource_schema
+    default_create_package_schema
 from ckan.logic.validators import package_id_not_changed, owner_org_validator
-from ckan.logic.converters import convert_from_extras, convert_to_extras
-from ckan.lib.navl.validators import missing, ignore_missing, not_empty, not_missing, default, \
+from ckan.lib.navl.validators import ignore_missing, not_empty, not_missing, default, \
     ignore
 from ckanext.kata.validators import check_project, validate_kata_date, \
     check_junk, check_last_and_update_pid, \
-    validate_language, validate_email, validate_phonenum, \
+    validate_email, validate_phonenum, \
     check_project_dis, check_direct_download_url, check_access_request_url, check_access_application_url, \
     check_author_org, kata_tag_string_convert, \
     kata_tag_name_validator, validate_general, \
@@ -37,10 +35,10 @@ from ckanext.kata.validators import check_project, validate_kata_date, \
 from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
     org_auth_from_extras, pid_from_extras, \
-    add_to_group, remove_disabled_languages, checkbox_to_boolean, \
-    org_auth_to_extras, add_dummy_to_extras, update_pid, update_name
+    remove_disabled_languages, checkbox_to_boolean, \
+    org_auth_to_extras, update_pid, to_resource, from_resource, convert_from_extras_kata, convert_to_extras_kata, \
+    convert_languages
 from ckanext.kata import actions, auth_functions, utils
-from ckanext.kata.model import KataAccessRequest
 import ckan.lib.helpers as h
 from ckan.logic.validators import tag_length_validator, vocabulary_id_exists, \
     url_validator, package_name_validator
@@ -393,49 +391,49 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema = default_create_package_schema()
 
         for key in settings.KATA_FIELDS_REQUIRED:
-            schema[key] = [not_empty, convert_to_extras, unicode, validate_general]
+            schema[key] = [not_empty, convert_to_extras_kata, unicode, validate_general]
         for key in settings.KATA_FIELDS_RECOMMENDED:
-            schema[key] = [ignore_missing, convert_to_extras, unicode, validate_general]
+            schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
 
-        schema['langtitle'] = {'value': [not_missing, unicode, ltitle_to_extras, validate_title],
-                               'lang': [not_missing, unicode, validate_language]}
+        schema['langtitle'] = {'value': [not_missing, unicode, validate_title, ltitle_to_extras],
+                               'lang': [not_missing, unicode, convert_languages]}
 
-        # This is only needed to increase amount of fields converted to extras.
-        # TODO: Get rid of this conversion and add_dummy_to_extras().
-        #schema['orgauths'] = [ignore_missing, unicode, convert_to_extras, add_dummy_to_extras, add_dummy_to_extras]
         schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
-                              'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
+                             'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
 
-        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
-        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras, unicode]
-        schema['language'] = [ignore_missing, validate_language, remove_disabled_languages, convert_to_extras, unicode]
-        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras, unicode]
+        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
+        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
+        schema['language'] = [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
+        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['maintainer_email'].append(validate_email)
 
-        schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
+        schema['tag_string'] = [ignore_missing, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.default_tags_schema()
 
         schema.update({
             'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
-            'version_PID': [default(u''), update_pid, unicode, convert_to_extras],
-            'author': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras, validate_general]},
-            'organization': {'value': [not_empty, unicode, org_auth_to_extras, convert_to_extras, validate_general]},
-            'availability': [not_missing, convert_to_extras],
-            'langdis': [checkbox_to_boolean, convert_to_extras],
+            'version_PID': [default(u''), update_pid, unicode, convert_to_extras_kata],
+            'author': [default(u'')],
+            'organization': [default(u'')],
+            'availability': [not_missing, convert_to_extras_kata],
+            'langdis': [checkbox_to_boolean, convert_to_extras_kata],
             '__extras': [check_author_org],
-            'projdis': [checkbox_to_boolean, check_project, convert_to_extras],
+            'projdis': [checkbox_to_boolean, check_project, convert_to_extras_kata],
             '__junk': [check_junk],
-            'name': [ignore_missing, unicode, update_name, package_name_validator, validate_general],
-            'access_application_URL': [ignore_missing, check_access_application_url, convert_to_extras, unicode, validate_general],
-            'access_request_url': [ignore_missing, check_access_request_url, url_validator, convert_to_extras, unicode, validate_general],
-            'project_name': [check_project_dis, unicode, convert_to_extras, validate_general],
-            'project_funder': [check_project_dis, convert_to_extras, unicode, validate_general],
-            'project_funding': [check_project_dis, convert_to_extras, unicode, validate_general],
-            'project_homepage': [ignore_missing, check_project_dis, convert_to_extras, unicode, validate_general],
-            'discipline': [validate_discipline, convert_to_extras, unicode],
-            'geographic_coverage': [validate_spatial, convert_to_extras, unicode],
-            'license_URL': [ignore_missing, convert_to_extras, unicode, validate_general],
+            'name': [ignore_missing, unicode, update_pid, package_name_validator, validate_general],
+            'access_application_URL': [ignore_missing, check_access_application_url, convert_to_extras_kata,
+                                       unicode, validate_general],
+            'access_request_url': [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
+                                   unicode, validate_general],
+
+            'project_name': [ignore_missing, check_project_dis, unicode, convert_to_extras_kata, validate_general],
+            'project_funder': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
+            'project_funding': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
+            'project_homepage': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
+            'discipline': [validate_discipline, convert_to_extras_kata, unicode],
+            'geographic_coverage': [validate_spatial, convert_to_extras_kata, unicode],
+            'license_URL': [default(u''), convert_to_extras_kata, unicode, validate_general],
         })
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
@@ -446,14 +444,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #    'name': [ignore_missing, unicode, add_to_group]
         #})
 
-        schema['resources'] = default_resource_schema()
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_direct_download_url, unicode, validate_general]
-        schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
-        schema['resources']['hash'].append(validate_general)
-        schema['resources']['mimetype'].append(validate_mimetype)
+        schema['direct_download_URL'] = [default(settings.DATASET_URL_UNKNOWN), check_direct_download_url, unicode,
+                                         validate_general, to_resource]
+        schema['algorithm'] = [ignore_missing, unicode, validate_algorithm]
+        schema['checksum'] = [validate_general]
+        schema['mimetype'] = [validate_mimetype]
 
         return schema
-
 
     def update_package_schema(self):
         """
@@ -467,7 +464,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
         return schema
 
-
     def show_package_schema(self):
         """
         The data fields that are returned from CKAN for each dataset can be changed with this method.
@@ -478,7 +474,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema = default_show_package_schema()
 
         for key in settings.KATA_FIELDS:
-            schema[key] = [convert_from_extras, ignore_missing, unicode]
+            schema[key] = [convert_from_extras_kata, ignore_missing, unicode]
 
         schema['version_PID'] = [pid_from_extras, ignore_missing, unicode]
 
@@ -489,6 +485,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
         schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
         schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
+
+        schema['resources']['resource_type'] = [from_resource]
 
         return schema
 

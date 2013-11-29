@@ -4,19 +4,19 @@
 Validators for user inputs.
 """
 
-import iso8601
 import logging
-import pycountry
+from itertools import count
+
+import iso8601
 import re
+from pylons.i18n import _
 
 from ckan.model import Package
-
-from pylons.i18n import _
 import ckanext.kata.utils as utils
 from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid
 from ckan.logic.validators import tag_length_validator
-from itertools import count
+
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -78,14 +78,13 @@ def validate_kata_date(key, data, errors, context):
     '''
     Validate a date string. Empty strings also pass.
     '''
-    if data[key] == u'':
-        return
-    try:
-        iso8601.parse_date(data[key])
-    except (iso8601.ParseError, TypeError):
-        errors[key].append(_('Invalid date format, must be ISO 8601. Example: 2001-01-01'))
-    except ValueError:
-        errors[key].append(_('Invalid date'))
+    if isinstance(data[key], basestring) and data[key]:
+        try:
+            iso8601.parse_date(data[key])
+        except (iso8601.ParseError, TypeError):
+            errors[key].append(_('Invalid date format, must be ISO 8601. Example: 2001-01-01'))
+        except ValueError:
+            errors[key].append(_('Invalid date'))
 
 
 def check_junk(key, data, errors, context):
@@ -107,34 +106,13 @@ def check_last_and_update_pid(key, data, errors, context):
                 data[('version_PID',)] = utils.generate_pid()
 
 
-def validate_language(key, data, errors, context):
-    '''
-    Validate ISO 639 language abbreviations.
-
-    data['key'] may be a string with comma separated values or a single language code.
-    '''
-
-    value = data.get(key)
-
-    if type(value) not in [str, unicode]:
-        return
-    langs = value.split(',')
-
-    for lang in langs:
-        lang = lang.strip()
-        if lang:
-            try:
-                pycountry.languages.get(terminology=lang)
-            except KeyError:
-                errors[key].append(_('Language %s not in ISO 639-2 T format' % lang))
-
-
 def validate_email(key, data, errors, context):
     '''
     Validate an e-mail address against a regular expression.
     '''
-    if not EMAIL_REGEX.match(data[key]):
-        errors[key].append(_('Invalid email address'))
+    if isinstance(data[key], basestring) and data[key]:
+        if not EMAIL_REGEX.match(data[key]):
+            errors[key].append(_('Invalid email address'))
 
 
 def validate_general(key, data, errors, context):
@@ -142,18 +120,18 @@ def validate_general(key, data, errors, context):
     General input validator.
     Validate arbitrary data for characters specified by GEN_REGEX
     '''
-    if len(data[key]) == 0:
-        return
-    if not GEN_REGEX.match(data[key]):
-        errors[key].append(_('Invalid characters: <> not allowed'))
+    if isinstance(data[key], basestring) and data[key]:
+        if not GEN_REGEX.match(data[key]):
+            errors[key].append(_('Invalid characters: <> not allowed'))
 
 
 def validate_phonenum(key, data, errors, context):
     '''
     Validate a phone number against a regular expression.
     '''
-    if not TEL_REGEX.match(data[key]):
-        errors[key].append(_('Invalid telephone number, must be like +13221221'))
+    if isinstance(data[key], basestring) and data[key]:
+        if not TEL_REGEX.match(data[key]):
+            errors[key].append(_('Invalid telephone number, must be like +13221221'))
 
 
 def check_project_dis(key, data, errors, context):
@@ -259,9 +237,10 @@ def validate_mimetype(key, data, errors, context):
     '''
 
     val = data.get(key)
-    if not MIME_REGEX.match(val):
-        raise Invalid(_('File type (mimetype) "%s" must be alphanumeric '
-                        'characters or symbols: _-+./') % (val))
+    if isinstance(val, basestring):
+        if not MIME_REGEX.match(val):
+            raise Invalid(_('File type (mimetype) "%s" must be alphanumeric '
+                            'characters or symbols: _-+./') % (val))
     
 
 def validate_algorithm(key, data, errors, context):
@@ -270,9 +249,10 @@ def validate_algorithm(key, data, errors, context):
     http://en.wikipedia.org/wiki/List_of_hash_functions
     '''
     val = data.get(key)
-    if not HASH_REGEX.match(val):
-        raise Invalid(_('Algorithm "%s" must be alphanumeric characters '
-                        'or symbols _-()') % (val))
+    if isinstance(val, basestring):
+        if not HASH_REGEX.match(val):
+            raise Invalid(_('Algorithm "%s" must be alphanumeric characters '
+                            'or symbols _-()') % (val))
         
 def validate_title(key, data, errors, context):
     '''
