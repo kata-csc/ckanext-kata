@@ -831,17 +831,17 @@ class TestCreateDataset(TestCase):
         assert output
 
     def test_create_dataset_and_resources(self):
-
-        # Create a dataset
-
+        '''
+        Add a dataset and 2 resources through API
+        '''
+        print 'Create dataset'
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **self.test_data)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
 
-        # Add a resource
-
+        print 'Add resource #1'
         new_res = copy.deepcopy(self.some_resource)
         new_res['package_id'] = output['id']
 
@@ -851,15 +851,44 @@ class TestCreateDataset(TestCase):
             assert output['__type'] != 'Validation Error'
         assert output
 
-        ## Add another resource
-        ## TODO: FIX KATA TO BE ABLE TO RUN THIS
-        #
-        #
-        #output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
-        #                         status=200, **new_res)
-        #if '__type' in output:
-        #    assert output['__type'] != 'Validation Error'
-        #assert output
+        print 'Add resource #2'
+        output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **new_res)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+    def test_create_update_delete_dataset(self):
+        '''
+        Add, modify and delete a dataset through API
+        '''
+        print 'Create dataset'
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **self.test_data)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert 'id' in output
+
+        data_dict = copy.deepcopy(self.test_data)
+        data_dict['id'] = output['id']
+
+        print 'Update dataset'
+        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+                                 status=200, **data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+        print 'Update dataset'
+        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+                                 status=200, **data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+        print 'Delete dataset'
+        output = call_action_api(self.app, 'package_delete', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=data_dict['id'])
 
     def test_create_dataset_fails(self):
         data = copy.deepcopy(self.test_data)

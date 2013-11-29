@@ -85,7 +85,7 @@ def package_create(context, data_dict):
         pass
 
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
-    
+
     # Logging for production use
     try:
         log_str = '[' + str(datetime.datetime.now())
@@ -130,6 +130,11 @@ def package_update(context, data_dict):
     # The solution might not be good, if further problems arise
     # a better fix will be made
     context['allow_partial_update'] = True
+    # This fixes extras fields being cleared when adding a resource. This is be because the extras are not properly
+    # cleared in show_package_schema conversions. Some fields stay in extras and they cause all other fields to be
+    # dropped in package_update(). When updating a dataset vai UI or API, the conversion to extras occur in
+    # package_update() and popping extras here should have no effect.
+    data_dict.pop('extras', None)
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
     
     # Logging for production use
