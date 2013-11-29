@@ -78,14 +78,13 @@ def validate_kata_date(key, data, errors, context):
     '''
     Validate a date string. Empty strings also pass.
     '''
-    if data[key] == u'':
-        return
-    try:
-        iso8601.parse_date(data[key])
-    except (iso8601.ParseError, TypeError):
-        errors[key].append(_('Invalid date format, must be ISO 8601. Example: 2001-01-01'))
-    except ValueError:
-        errors[key].append(_('Invalid date'))
+    if isinstance(data[key], basestring) and data[key]:
+        try:
+            iso8601.parse_date(data[key])
+        except (iso8601.ParseError, TypeError):
+            errors[key].append(_('Invalid date format, must be ISO 8601. Example: 2001-01-01'))
+        except ValueError:
+            errors[key].append(_('Invalid date'))
 
 
 def check_junk(key, data, errors, context):
@@ -111,8 +110,9 @@ def validate_email(key, data, errors, context):
     '''
     Validate an e-mail address against a regular expression.
     '''
-    if not EMAIL_REGEX.match(data[key]):
-        errors[key].append(_('Invalid email address'))
+    if isinstance(data[key], basestring) and data[key]:
+        if not EMAIL_REGEX.match(data[key]):
+            errors[key].append(_('Invalid email address'))
 
 
 def validate_general(key, data, errors, context):
@@ -129,8 +129,9 @@ def validate_phonenum(key, data, errors, context):
     '''
     Validate a phone number against a regular expression.
     '''
-    if not TEL_REGEX.match(data[key]):
-        errors[key].append(_('Invalid telephone number, must be like +13221221'))
+    if isinstance(data[key], basestring) and data[key]:
+        if not TEL_REGEX.match(data[key]):
+            errors[key].append(_('Invalid telephone number, must be like +13221221'))
 
 
 def check_project_dis(key, data, errors, context):
