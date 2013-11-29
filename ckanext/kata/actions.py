@@ -49,8 +49,6 @@ def package_show(context, data_dict):
                                  'dataset_id': pkg.id}
                     related_create(context, data_dict)
 
-    pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
-
     # Update package.title to match package.extras.title_0
     extras_title = pkg.extras.get(u'title_0')
     if extras_title and extras_title != pkg.title:
@@ -86,8 +84,6 @@ def package_create(context, data_dict):
     except KeyError:
         pass
 
-    data_dict = utils.dataset_to_resource(data_dict)
-
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
     
     # Logging for production use
@@ -122,15 +118,13 @@ def package_update(context, data_dict):
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
     try:
-        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs', \
-                     'geographic_coverage_field_langs', 'geographic_coverage_field', \
+        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs',
+                     'geographic_coverage_field_langs', 'geographic_coverage_field',
                      'discipline_field_langs', 'discipline_field']
         for key in removable:
             del data_dict[key]
     except KeyError:
         pass
-
-    data_dict = utils.dataset_to_resource(data_dict)
 
     # This is a consequence or removing the ckan_phase!
     # The solution might not be good, if further problems arise
