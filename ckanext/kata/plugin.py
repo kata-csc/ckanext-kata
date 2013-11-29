@@ -37,7 +37,7 @@ from ckanext.kata.converters import event_from_extras, \
     org_auth_from_extras, pid_from_extras, \
     remove_disabled_languages, checkbox_to_boolean, \
     org_auth_to_extras, update_pid, to_resource, from_resource, convert_from_extras_kata, convert_to_extras_kata, \
-    convert_languages
+    convert_languages, org_auth_to_extras_oai
 from ckanext.kata import actions, auth_functions, utils
 import ckan.lib.helpers as h
 from ckan.logic.validators import tag_length_validator, vocabulary_id_exists, \
@@ -451,6 +451,33 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['mimetype'] = [validate_mimetype]
 
         return schema
+    
+    @classmethod
+    def create_package_schema_oai_dc(cls):
+        '''
+        Modified schema for datasets imported with oai_dc reader.
+        Some fields are missing, as the dublin core format
+        doesn't provide so many options
+        
+        :return schema
+        '''
+        # Todo: requires additional testing and planning
+        schema = cls.create_package_schema()
+        
+        schema['owner'] = [ignore_missing]
+        schema['contact_phone'].insert(0, ignore_missing)
+        #schema['contact_URL'].insert(0, ignore_missing)
+        schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
+        #schema['maintainer_email'].insert(0, ignore_missing)
+        schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
+        schema['maintainer'].insert(0, ignore_missing)
+        schema['availability'].insert(0, ignore_missing)
+        schema['discipline'].insert(0, ignore_missing)
+        schema['geographic_coverage'].insert(0, ignore_missing)
+        schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
+                             'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
+        
+        return schema
 
     def update_package_schema(self):
         """
@@ -462,6 +489,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Taken from ckan.logic.schema.default_update_package_schema():
         schema['id'] = [ignore_missing, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
+        return schema
+    
+    def update_package_schema_oai_dc(self):
+        '''
+        Modified schema for datasets imported with oai_dc reader.
+        Some fields are missing, as the dublin core format
+        doesn't provide so many options
+        
+        :return schema
+        '''
+        schema = self.create_package_schema_oai_dc()
+        
+        schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
+        
         return schema
 
     def show_package_schema(self):
