@@ -469,8 +469,6 @@ class TestKataWithUser(TestCase):
 
 
         dataset_to_add = [
-            # TODO: Fix random failing when adding titles and authors
-
             # Add titles
             #(find_plus_buttons, 1, [WebElement.click], None),
             #(find_plus_buttons, 1, [WebElement.click], None),

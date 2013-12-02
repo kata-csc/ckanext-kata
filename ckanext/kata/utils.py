@@ -123,3 +123,49 @@ def label_list_yso(tag_url):
                     labels.append(t)
     return labels
 
+
+def resource_to_dataset(data_dict):
+    '''
+    Move some fields from resources to dataset. Used for viewing a dataset.
+    '''
+    resource = None
+
+    if 'resources' in data_dict:
+        for i in range(len(data_dict['resources'])):
+            if data_dict['resources'][i].get('resource_type', None) == settings.RESOURCE_TYPE_DATASET:
+                # UI can't handle multiple instances of dataset resources, so now use only the first.
+                resource = data_dict['resources'].pop(i)
+                break
+
+    if not resource and 'id' in data_dict:
+        log.debug('Dataset without a dataset resource: %s' % data_dict['id'])
+        return data_dict
+
+    if resource:
+        data_dict.update({
+            'direct_download_URL': resource.get('url', u''),
+            'checksum': resource.get('hash', u''),
+            'mimetype': resource.get('format', u''),
+            'algorithm': resource.get('algorithm', u''),
+        })
+
+    return data_dict
+
+
+def dataset_to_resource(data_dict):
+    '''
+    Move some fields from dataset to resources. Used for saving to DB.
+    '''
+    if 'resources' not in data_dict:
+        data_dict['resources'] = []
+
+    data_dict['resources'].insert(0, {
+        #'package_id': pkg_dict1['id'],
+        'url': data_dict.pop('direct_download_URL', settings.DATASET_URL_UNKNOWN),
+        'hash': data_dict.pop('checksum', u''),
+        'format': data_dict.pop('mimetype', u''),
+        'algorithm': data_dict.pop('algorithm', u''),
+        'resource_type': settings.RESOURCE_TYPE_DATASET,
+    })
+
+    return data_dict
