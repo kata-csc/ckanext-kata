@@ -1,25 +1,29 @@
-import re
+# pylint: disable=no-member
+'''
+Kata's action overrides.
+'''
+
 import datetime
-import inspect
+import logging
+
+import re
+from pylons import c
+from pylons.i18n import _
 
 import ckan.logic.action.get
 import ckan.logic.action.create
 import ckan.logic.action.update
 import ckan.logic.action.delete
-from pylons import c, config
 from ckan.model import Related, Session, Package, repo
 import ckan.model as model
 from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
-from pylons.i18n import _
-from ckanext.kata.model import KataAccessRequest
 from ckan.logic import check_access, NotAuthorized
 from ckanext.kata import utils
 
-import logging
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)     # pylint: disable=invalid-name
 
 TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
@@ -29,6 +33,8 @@ def package_show(context, data_dict):
     Called before showing the dataset in some interface (browser, API).
     '''
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
+    pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
+
     # Normally logic function should not catch the raised errors
     # but here it is needed so action package_show won't catch it instead
     # Hiding information from API calls
@@ -84,6 +90,7 @@ def package_create(context, data_dict):
     except KeyError:
         pass
 
+    data_dict = utils.dataset_to_resource(data_dict)
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 
     # Logging for production use
@@ -126,6 +133,8 @@ def package_update(context, data_dict):
     except KeyError:
         pass
 
+    data_dict = utils.dataset_to_resource(data_dict)
+
     # This is a consequence or removing the ckan_phase!
     # The solution might not be good, if further problems arise
     # a better fix will be made
@@ -136,7 +145,7 @@ def package_update(context, data_dict):
     # package_update() and popping extras here should have no effect.
     data_dict.pop('extras', None)
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
-    
+
     # Logging for production use
     try:
         log_str = '[' + str(datetime.datetime.now())

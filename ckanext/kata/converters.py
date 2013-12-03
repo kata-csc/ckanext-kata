@@ -319,52 +319,6 @@ def update_pid(key, data, errors, context):
             data[key] = utils.generate_pid()
 
 
-def to_resource(key, data, errors, context):
-    '''
-    Convert some dataset fields into resource fields.
-
-    Fields to convert are hard coded at the moment.
-    '''
-    if 'resources' not in data:
-        data['resources'] = []
-
-    if data.get('direct_download_URL', ''):
-
-        data['resources'].append({
-            'url' : data.pop('direct_download_URL', settings.DATASET_URL_UNKNOWN),
-            'hash' : data.pop('checksum', u''),
-            'format' : data.pop('mimetype', u''),
-            'algorithm' : data.pop('algorithm', u''),
-            'resource_type' : settings.RESOURCE_TYPE_DATASET,
-        })
-
-
-def from_resource(key, data, errors, context):
-    '''
-    Convert some fields from resource fields into dataset fields.
-
-    Fields to convert are hard coded at the moment.
-    '''
-    try:
-        for i in range(len(data['resources'])):
-            if data['resources'][i]['resource_type'] == settings.RESOURCE_TYPE_DATASET:
-                # UI can't handle multiple instances of dataset resources, so now use only the first.
-                resource = data['resources'].pop(i)
-                break
-    except (KeyError, IndexError):
-        if 'id' in data:
-            log.debug('Dataset without a dataset resource: %s' % data['id'])
-        return
-
-    if resource:
-        data.update({
-            'direct_download_URL' : resource.get('url'),
-            'checksum' : resource.get('hash'),
-            'mimetype' : resource.get('mimetype'),
-            'algorithm' : resource.get('algorithm'),
-        })
-
-
 def convert_from_extras_kata(key, data, errors, context):
     '''
     Convert all extras fields from extras to data dict and remove
@@ -399,7 +353,7 @@ def convert_to_extras_kata(key, data, errors, context):
 
 def convert_languages(key, data, errors, context):
     '''
-    Convert language abbreviations to ISO 639-2 T
+    Convert ISO 639 language abbreviations to ISO 639-2 T
 
     data['key'] may be a string with comma separated values or a single language code.
     '''
@@ -424,8 +378,8 @@ def convert_languages(key, data, errors, context):
                     lang_object = pycountry.languages.get(alpha2=lang)
                     new_langs.append(lang_object.terminology)
                 except KeyError as ke:
-                    # TODO: Try to convert from ISO 639-2 B ?
                     errors[key].append(_('Language %s not in ISO 639-2 T format' % lang))
+                    # We could still try to convert from ISO 639-2 B if it shows up somewhere
 
     if new_langs:
         data[key] = ', '.join(new_langs)

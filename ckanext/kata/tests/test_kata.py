@@ -25,7 +25,7 @@ from ckanext.kata.validators import validate_kata_date, check_project, \
     validate_mimetype, validate_general
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages
-from ckanext.kata import settings, utils, actions, converters, model as kata_model
+from ckanext.kata import settings, utils, actions, model as kata_model
 from ckan.lib.create_test_data import CreateTestData
 from ckan import model
 
@@ -576,7 +576,7 @@ class TestResouceConverters(TestCase):
                 'url': u'http://www.csc.fi',
                 'algorithm': u'MD5',
                 'hash': u'f60e586509d99944e2d62f31979a802f',
-                'mimetype': u'application/pdf',
+                'format': u'application/pdf',
                 'resource_type': settings.RESOURCE_TYPE_DATASET,
             }]}
 
@@ -586,14 +586,14 @@ class TestResouceConverters(TestCase):
                 'url': u'http://www.csc.fi',
                 'algorithm': u'MD5',
                 'hash': u'f60e586509d99944e2d62f31979a802f',
-                'mimetype': u'application/pdf',
+                'format': u'application/pdf',
                 'resource_type': settings.RESOURCE_TYPE_DATASET,
             },
             {
                 'url': u'http://www.helsinki.fi',
                 'algorithm': u'SHA',
                 'hash': u'somehash',
-                'mimetype': u'application/csv',
+                'format': u'application/csv',
                 'resource_type': 'file',
             }]}
 
@@ -601,10 +601,10 @@ class TestResouceConverters(TestCase):
         data_dict = copy.deepcopy(self.test_data)
         assert 'resources' not in data_dict
 
-        converters.to_resource('direct_download_URL', data_dict, [], {})
+        utils.dataset_to_resource(data_dict)
         assert 'resources' in data_dict
 
-        converters.to_resource('direct_download_URL', data_dict, [], {})
+        utils.dataset_to_resource(data_dict)
         assert 'resources' in data_dict
 
     def test_dataset_to_resource_invalid(self):
@@ -614,54 +614,54 @@ class TestResouceConverters(TestCase):
         data_dict.pop('mimetype')
         assert 'resources' not in data_dict
 
-        converters.to_resource('direct_download_URL', data_dict, [], {})
+        utils.dataset_to_resource(data_dict)
         # dataset_to_resource can handle missing data, so resources is created
         assert 'resources' in data_dict
 
     def test_resource_to_dataset(self):
         data_dict = copy.deepcopy(self.test_data2)
-        converters.from_resource('key', data_dict, [], {})
+        utils.resource_to_dataset(data_dict)
         assert 'direct_download_URL' in data_dict
 
     def test_resource_to_dataset_invalid(self):
         data_dict = copy.deepcopy(self.test_data2)
         data_dict['resources'][0].pop('resource_type')
-        converters.from_resource('key', data_dict, [], {})
+        utils.resource_to_dataset(data_dict)
         assert 'direct_download_URL' not in data_dict
 
-    def test_resource_juggling(self):
-        data_dict = copy.deepcopy(self.test_data3)
-
-        converters.from_resource('key', data_dict, [], {})
-        converters.to_resource('direct_download_URL', data_dict, [], {})
-        converters.from_resource('key', data_dict, [], {})
-        converters.to_resource('direct_download_URL', data_dict, [], {})
-        converters.from_resource('key', data_dict, [], {})
-
-        assert len(data_dict['resources']) == 1
-        assert 'direct_download_URL' in data_dict
-        assert data_dict['direct_download_URL'] == self.test_data2['resources'][0]['url']
-
-        # Add a new dataset resource manually
-        data_dict['resources'].append(copy.deepcopy(self.test_data2['resources'][0]))
-
-        print len(data_dict['resources'])
-        converters.to_resource('direct_download_URL', data_dict, [], {})
-        converters.from_resource('key', data_dict, [], {})
-        converters.to_resource('direct_download_URL', data_dict, [], {})
-        converters.from_resource('key', data_dict, [], {})
-        print len(data_dict['resources'])
-
-        assert len(data_dict['resources']) == 2
-        assert 'direct_download_URL' in data_dict
-        assert data_dict['direct_download_URL'] == self.test_data2['resources'][0]['url']
-
+    #def test_resource_juggling(self):
+    #    data_dict = copy.deepcopy(self.test_data3)
+    #
+    #    converters.from_resource('key', data_dict, [], {})
+    #    converters.to_resource('direct_download_URL', data_dict, [], {})
+    #    converters.from_resource('key', data_dict, [], {})
+    #    converters.to_resource('direct_download_URL', data_dict, [], {})
+    #    converters.from_resource('key', data_dict, [], {})
+    #
+    #    assert len(data_dict['resources']) == 1
+    #    assert 'direct_download_URL' in data_dict
+    #    assert data_dict['direct_download_URL'] == self.test_data2['resources'][0]['url']
+    #
+    #    # Add a new dataset resource manually
+    #    data_dict['resources'].append(copy.deepcopy(self.test_data2['resources'][0]))
+    #
+    #    print len(data_dict['resources'])
+    #    converters.to_resource('direct_download_URL', data_dict, [], {})
+    #    converters.from_resource('key', data_dict, [], {})
+    #    converters.to_resource('direct_download_URL', data_dict, [], {})
+    #    converters.from_resource('key', data_dict, [], {})
+    #    print len(data_dict['resources'])
+    #
+    #    assert len(data_dict['resources']) == 2
+    #    assert 'direct_download_URL' in data_dict
+    #    assert data_dict['direct_download_URL'] == self.test_data2['resources'][0]['url']
+    #
 
 class TestResourceValidators(TestCase):
     '''
     Test validators for resources
     '''
-    
+
     @classmethod
     def setup_class(cls):
         '''
@@ -676,12 +676,12 @@ class TestResourceValidators(TestCase):
                 'resource_type' : settings.RESOURCE_TYPE_DATASET,
                 }]
             }
-    
+
     def test_validate_mimetype_valid(self):
         errors = defaultdict(list)
         
         data_dict = copy.deepcopy(self.test_data)
-        data_dict['resources'][0]['mimetype'] = u'vnd.3gpp2.bcmcsinfo+xml/'
+        data_dict['resources'][0]['format'] = u'vnd.3gpp2.bcmcsinfo+xml/'
         # flatten dict (or change test_data to flattened form?)
         data = flatten_dict(data_dict)
         try:
@@ -693,10 +693,10 @@ class TestResourceValidators(TestCase):
         errors = defaultdict(list)
         
         data_dict = copy.deepcopy(self.test_data)
-        data_dict['resources'][0]['mimetype'] = u'application/pdf><'
+        data_dict['resources'][0]['format'] = u'application/pdf><'
         data = flatten_dict(data_dict)
         
-        self.assertRaises(Invalid, validate_mimetype, ('resources', 0, 'mimetype',), data, errors, None)
+        self.assertRaises(Invalid, validate_mimetype, ('resources', 0, 'format',), data, errors, None)
 
     def test_validate_algorithm_valid(self):
         errors = defaultdict(list)
@@ -873,15 +873,13 @@ class TestCreateDataset(TestCase):
         data_dict['id'] = output['id']
 
         print 'Update dataset'
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
-                                 status=200, **data_dict)
+        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=200, **data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert output
 
         print 'Update dataset'
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
-                                 status=200, **data_dict)
+        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=200, **data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert output

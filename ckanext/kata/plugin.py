@@ -1,3 +1,5 @@
+# pylint: disable=unused-argument
+
 """
 Main plugin file for Kata CKAN extension
 """
@@ -6,7 +8,6 @@ import logging
 import datetime
 
 import os
-from pylons import config
 
 from ckan.plugins import implements, SingletonPlugin, toolkit
 from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers
@@ -19,7 +20,7 @@ from ckan.plugins.core import unload
 from ckan.lib.base import g, c
 from ckan.model import Package
 from ckan.lib.plugins import DefaultDatasetForm
-from ckan.logic.schema import   default_show_package_schema, \
+from ckan.logic.schema import default_show_package_schema, \
     default_create_package_schema
 from ckan.logic.validators import package_id_not_changed, owner_org_validator
 from ckan.lib.navl.validators import ignore_missing, not_empty, not_missing, default, \
@@ -36,7 +37,7 @@ from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
     org_auth_from_extras, pid_from_extras, \
     remove_disabled_languages, checkbox_to_boolean, \
-    org_auth_to_extras, update_pid, to_resource, from_resource, convert_from_extras_kata, convert_to_extras_kata, \
+    org_auth_to_extras, update_pid, convert_from_extras_kata, convert_to_extras_kata, \
     convert_languages, org_auth_to_extras_oai
 from ckanext.kata import actions, auth_functions, utils
 import ckan.lib.helpers as h
@@ -166,7 +167,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IActions, inherit=True)
     implements(IAuthFunctions, inherit=True)
 
-
     def get_auth_functions(self):
         """
         Returns a dict of all the authorization functions which the
@@ -176,7 +176,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'resource_update': auth_functions.allow_edit_resource,
                 'package_delete': auth_functions.package_delete,
                 }
-
 
     def get_actions(self):
         """ Register actions. """
@@ -202,22 +201,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'organization_delete': actions.organization_delete,
                 }
 
-
     def get_helpers(self):
         """ Register helpers """
         return {'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': self.kata_sorted_extras,
-                'kata_metadata_fields': self.kata_metadata_fields,
                 'reference_update': self.reference_update
                 }
-
 
     def reference_update(self, ref):
         #@beaker_cache(type="dbm", expire=2678400)
         def cached_url(url):
             return url
         return cached_url(ref)
-
 
     def is_custom_form(self, _dict):
         """
@@ -228,18 +223,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 return False
         return True
 
-
-    def kata_metadata_fields(self, list_):
-        output = []
-        for extra in sorted(list_, key=lambda x:x['key']):
-            if extra.get('state') == 'deleted':
-                continue
-            k, v = extra['key'], extra['value']
-            if k in settings.KATA_FIELDS:
-                output.append((k, v))
-        return output
-
-
     def kata_sorted_extras(self, list_):
         '''
         Used for outputting package extras, skips package_hide_extras
@@ -249,25 +232,24 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if extra.get('state') == 'deleted':
                 continue
             
-            k, v = extra['key'], extra['value']
-            if k in g.package_hide_extras and\
-                k in settings.KATA_FIELDS and\
-                k.startswith('author_') and\
-                k.startswith('organization_'):
+            key, val = extra['key'], extra['value']
+            if key in g.package_hide_extras and\
+                key in settings.KATA_FIELDS and\
+                key.startswith('author_') and\
+                key.startswith('organization_'):
                 continue
             
             found = False
-            for _k in g.package_hide_extras:
-                if extra['key'].startswith(_k):
+            for _key in g.package_hide_extras:
+                if extra['key'].startswith(_key):
                     found = True
             if found:
                 continue
             
-            if isinstance(v, (list, tuple)):
-                v = ", ".join(map(unicode, v))
-            output.append((k, v))
+            if isinstance(val, (list, tuple)):
+                val = ", ".join(map(unicode, val))
+            output.append((key, val))
         return output
-
 
     def update_config(self, config):
         """
@@ -298,23 +280,26 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         except:
             pass
 
-
     def package_types(self):
+        '''
+        Return an iterable of package types that this plugin handles.
+        '''
         return ['dataset']
 
-
     def is_fallback(self):
-        """
+        '''
         Overrides IDatasetForm.is_fallback()
         From CKAN documentation:  "Returns true iff this provides the fallback behaviour,
         when no other plugin instance matches a package's type."
-        """
+        '''
         return True
 
-
     def configure(self, config):
+        '''
+        Pass configuration to plugins and extensions.
+        Called by load_environment.
+        '''
         self.date_format = config.get('kata.date_format', '%Y-%m-%d')
-
 
     def setup_template_variables(self, context, data_dict):
         """
@@ -325,13 +310,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.roles = self.roles
         c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
-
     def new_template(self):
         """
         Return location of the package add dataset page
         """
         return 'package/new.html'
-
 
     def comments_template(self):
         """
@@ -339,20 +322,17 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
         return 'package/comments.html'
 
-
     def search_template(self):
         """
         Return location of the package search page
         """
         return 'package/search.html'
 
-
     def read_template(self):
         """
         Return location of the package read page
         """
         return 'package/read.html'
-
 
     def history_template(self):
         """
@@ -367,7 +347,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return 'package/new_package_form.html'
 
     @classmethod
-    def default_tags_schema(cls):
+    def tags_schema(cls):
         schema = {
             'name': [not_missing,
                      not_empty,
@@ -409,7 +389,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['tag_string'] = [ignore_missing, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
-        schema['tags'] = cls.default_tags_schema()
+        schema['tags'] = cls.tags_schema()
 
         schema.update({
             'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
@@ -447,11 +427,24 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #    'name': [ignore_missing, unicode, add_to_group]
         #})
 
-        schema['direct_download_URL'] = [default(settings.DATASET_URL_UNKNOWN), check_direct_download_url, unicode,
-                                         validate_general, to_resource]
-        schema['algorithm'] = [ignore_missing, unicode, validate_algorithm]
-        schema['checksum'] = [validate_general]
-        schema['mimetype'] = [validate_mimetype]
+        #schema['direct_download_URL'] = [ignore_missing, default(settings.DATASET_URL_UNKNOWN),
+        #                                 check_direct_download_url, unicode, validate_general, to_resource]
+        #schema['algorithm'] = [ignore_missing, unicode, validate_algorithm]
+        #schema['checksum'] = [ignore_missing, validate_general]
+        #schema['mimetype'] = [ignore_missing, validate_mimetype]
+
+        # Dataset resources might currently be present in two different format.
+        #schema['resources']['url'] = [ignore_missing, default(settings.DATASET_URL_UNKNOWN),
+        #                              check_direct_download_url, unicode, validate_general]
+        #schema['resources']['algorithm'] = schema['algorithm']
+        #schema['resources']['checksum'] = schema['checksum']
+        #schema['resources']['mimetype'] = schema['mimetype']
+
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_direct_download_url, unicode,
+                                      validate_general]
+        schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
+        schema['resources']['hash'].append(validate_general)
+        schema['resources']['format'].append(validate_mimetype)
 
         return schema
     
@@ -532,10 +525,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
         schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
 
-        schema['resources']['resource_type'] = [from_resource]
+        #schema['resources']['resource_type'] = [from_resource]
 
         return schema
-
 
     def update_facet_titles(self, facet_titles):
         """
@@ -550,7 +542,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         facet_titles.update(settings.get_field_titles(t._))
         return facet_titles
-
 
     def extract_search_params(self, data_dict):
         """
@@ -577,7 +568,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 else: # Extract search terms
                     extra_terms.append((param, value))
         return extra_terms, extra_ops, extra_dates
-
 
     def parse_search_terms(self, data_dict, extra_terms, extra_ops):
         """
@@ -626,7 +616,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 {'field':p_no_index, 'text':value, 'operator':ovalue})
         data_dict['q'] += '))'
 
-
     def parse_search_dates(self, data_dict, extra_dates):
         """
         Parse extra date into query q into data_dict:
@@ -659,7 +648,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             qdate += '*]'
         data_dict['q'] += ' %s:%s' % (extra_dates['field'], qdate)
 
-
     def before_search(self, data_dict):
         '''
         Things to do before querying Solr.
@@ -676,37 +664,35 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # Start advanced search parameter parsing
         if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
-            log.debug("before_search(): data_dict['extras']: %r" %
-                      data_dict['extras'].items())
+            #log.debug("before_search(): data_dict['extras']: %r" %
+            #          data_dict['extras'].items())
 
             extra_terms, extra_ops, extra_dates = self.extract_search_params(data_dict)
-            log.debug("before_search(): extra_terms: %r; extra_ops: %r; "
-                      + "extra_dates: %r", extra_terms, extra_ops, extra_dates)
+            #log.debug("before_search(): extra_terms: %r; extra_ops: %r; "
+            #          + "extra_dates: %r", extra_terms, extra_ops, extra_dates)
 
             if len(extra_terms) > 0:
                 self.parse_search_terms(data_dict, extra_terms, extra_ops)
             if len(extra_dates) > 0:
                 self.parse_search_dates(data_dict, extra_dates)
 
-            log.debug("before_search(): c.current_search_rows: %s; \
-                c.current_search_limiters: %s" % (c.current_search_rows,
-                c.current_search_limiters))
+            #log.debug("before_search(): c.current_search_rows: %s; \
+            #    c.current_search_limiters: %s" % (c.current_search_rows,
+            #    c.current_search_limiters))
         # End advanced search parameter parsing
 
         data_dict['facet.field'] = settings.FACETS
 
-        log.debug("before_search(): data_dict: %r" % data_dict)
+        #log.debug("before_search(): data_dict: %r" % data_dict)
         # Uncomment below to show query with results and in the search field
         #c.q = data_dict['q']
         return data_dict
-
 
     def after_search(self, search_results, data_dict):
         '''
         Things to do after querying Solr.
         '''
         return search_results
-
 
     def after_show(self, context, pkg_dict):
         '''
