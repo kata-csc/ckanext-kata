@@ -166,7 +166,12 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.rights, Literal(data["license"])))
 
             licenseRegister = license.LicenseRegister()
-            license_url = licenseRegister.get(data["license_id"]).url
+            # harvested data fails without the declaration and try-except
+            license_url = ''
+            try:
+                license_url = licenseRegister.get(data["license_id"]).url
+            except:
+                log.debug('licenseRegister had no url')
             if license_url:
                 graph.add((uri, DC.license, URIRef(license_url)))
 
