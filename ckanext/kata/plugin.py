@@ -404,7 +404,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'name': [ignore_missing, unicode, update_pid, package_name_validator, validate_general],
             'access_application_URL': [ignore_missing, check_access_application_url, convert_to_extras_kata,
                                        unicode, validate_general],
-            'access_request_url': [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
+            'access_request_URL': [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
                                    unicode, validate_general],
 
             'project_name': [ignore_missing, check_project_dis, unicode, convert_to_extras_kata, validate_general],
