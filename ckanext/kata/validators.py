@@ -35,10 +35,10 @@ def kata_tag_name_validator(value, context):
     Checks an individual tag for unaccepted characters
     '''
 
-    tagname_match = re.compile('[\w \-.()/#+]*$', re.UNICODE)
+    tagname_match = re.compile('[\w \-.()/#+:]*$', re.UNICODE)
     if not tagname_match.match(value):
         raise Invalid(_('Tag "%s" must be alphanumeric '
-                        'characters or symbols: -_.()/#+') % (value))
+                        'characters or symbols: -_.()/#+:') % (value))
     return value
 
 
