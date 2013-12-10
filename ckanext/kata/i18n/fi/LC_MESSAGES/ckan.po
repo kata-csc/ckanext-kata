@@ -492,7 +492,7 @@ msgstr "Ole hyvä <a href=\"{link}\">ja päivitä profiilisi</a> ja lisää säh
 #: ckan/controllers/home.py:96
 #, python-format
 msgid "Please <a href=\"%s\">update your profile</a> and add your email address. "
-msgstr "Ole hyvä ja <a href=\"%s\">päivitä profiilisi</a> ja lisää sähköpostiosoitteesi."
+msgstr "Ole hyvä ja <a href=\"%s\">päivitä profiilisi</a> ja lisää sähköpostiosoitteesi. "
 
 #: ckan/controllers/home.py:98
 #, python-format
@@ -10023,13 +10023,13 @@ msgid ""
 "Field is compulsory.<br /><br />Type an informative title for the "
 "research data. Choose the title's language from the language menu. You "
 "can add several titles in different languages using the '+' button. If "
-"you leave an added title field empty it is discarded but, note that the "
-"first title field must have a value."
+"you leave an added title field empty it is discarded. "
+"However, at least the first title field must have a value."
 msgstr ""
-"Kenttä on pakollinen. <br /><br />Anna kuvaava otsikko datalle. "
-"Valitse otsikon kieli kielivalikosta. Voit lisätä useita otsikoita, eri "
-"kielillä, lisäämällä kenttiä '+'-nappulasta. Jos jätät otsikon tyhjäksi, "
-"se jätetään huomiotta. Huomaa, että ensimmäisessä kentässä on "
+"Kenttä on pakollinen.<br /><br />Anna kuvaava otsikko datalle. "
+"Valitse otsikon kieli kielivalikosta. Voit lisätä useita erikielisiä otsikoita "
+"lisäämällä kenttiä '+'-painikkeella. Jos jätät jonkin otsikkokentän tyhjäksi, "
+"se jätetään huomiotta. Huomaa, että ainakin ensimmäisessä kentässä on kuitenkin "
 "oltava otsikko."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:58
@@ -10037,8 +10037,8 @@ msgid "Authors and organizations"
 msgstr "Laatijat ja organisaatiot"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:79
-msgid "http://orcid.org/ or familyname firstname"
-msgstr "http://orcid.org/ tai sukunimi etunimi"
+msgid "http://orcid.org/ or familyname, firstname"
+msgstr "http://orcid.org/ tai sukunimi, etunimi"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:81
 msgid ""
@@ -10046,16 +10046,16 @@ msgid ""
 "to the corresponding fields, one author per a field pair. You can add "
 "more fields for additional authors by pressing the '+' button. If you "
 "leave an added title field empty, it is discarded, but note that the "
-"first author/organisation field pair must have values.<br /><br />Author "
-"can be a name or an identifier URL, like an orcid identifier. If you "
-"choose to write a name, please use format \"familyname firstname\"."
+"first author/organisation field pair must have values.<br /><br />You "
+"can enter either the author's name or an identifier URI, such as an ORCID identifier. "
+"If you choose to enter a name, please use format \"familyname, firstname\"."
 msgstr ""
 "Kenttä on pakollinen.<br /><br />Kirjoita laatijat ja laatijoiden "
 "organisaatiot riveilleen, yksi laatija kenttäparia kohti. Voit lisätä "
-"kenttiä painamalla '+'-nappulasta. Jos jätät lisätyn kenttäparin tyhjäksi, "
-"se jätetään huomiotta. Huomaa, että ensimmäinen kenttäpari on "
-"täytettävä.<br /><br />Laatija voi olla sekä nimi että URL-tunniste, "
-"kuten orcid-tunnista. Jos kirjoitat nimen, käytä mieluiten muotoa \"sukunimi etunimi\"."
+"kenttiä '+'-painikkeella. Jos jätät lisätyn kenttäparin tyhjäksi, "
+"se jätetään huomiotta. Huomaa, että ainakin ensimmäinen kenttäpari on "
+"täytettävä.<br /><br />Voit antaa joko laatijan nimen tai tunnisteen, "
+"esimerkiksi ORCID-tunnisteen. Jos kirjoitat nimen, käytä mieluiten muotoa \"sukunimi, etunimi\"."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:118
 msgid ""
@@ -10065,22 +10065,24 @@ msgstr "Etsi avainsanoja (tageja) YSO-ontologiasta. Valitse valittu avainsana n�
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:119
 msgid ""
-"Field is compulsory. Note, that the ONKI selector requires JavaScript to "
-"work in your browser.<br /><br />Add keywords (tags) that describe your "
-"data. Start typing and the service will give you suggestions of the word."
-" Accept a word you want with a mouse click or enter button. You can add "
-"your own word with enter button as well. Remove a keyword by pressing the"
-" 'x'. <br /><br />Change the language of suggested word from the language"
-" menu.<br /><br />Learn more about the ONKI from http://onki.fi/en/"
+"Field is compulsory.<br /><br />Add keywords (tags) that describe your data. "
+"Once you start typing, you will automatically get suggestions for matching "
+"keywords. You can then select the appropriate suggestion with a mouse "
+"click, or you can enter your own keywords. If you make a mistake, you can "
+"remove a keyword by clicking the 'x' next to it.<br /><br />You can "
+"change the language of suggested words from the language menu.<br /><br />"
+"The suggestions are retrieved from the ONKI ontology service at http://onki.fi/en/. "
+"Note that you must have JavaScript enabled in your browser in order for the "
+"automatic suggestions to work."
 msgstr ""
-"Kenttä on pakollinen. Huomaa, että ONKI-valitsin vaatii että JavaScript "
-"toimii selaimessasi.<br /><br />Lisää avainsanoja (tag) jotka kuvailevat "
-"dataasi. Aloita kirjoittamaan sanaa ja palvelu tarjoaa sinulle sopivia vaihtoehtoja. "
-"Valitse haluamasi sana hiirenklikkauksella tai näppäimistösi enter-painikkeella. "
-"Voit lisätä myös oman sanasi, jollei vaihtoehdoista löydy sopivaa. Poista "
-"valittu avainsana 'x'-painikkeesta.<br /><br />Valitse ehdotettavien sanojen"
-" kieli kielivalinnasta.<br /><br />Lue lisää ONKI-palvelusta osoitteessa "
-"http://onki.fi."
+"Kenttä on pakollinen.<br /><br />Lisää avainsanoja (tag) jotka kuvailevat "
+"dataasi. Kun alat kirjoittaa sanaa, saat automaattisesti ehdotuksia avainsanoiksi. "
+"Voit valita ehdotuksista sopivan klikkaamalla sitä hiirellä. Voit myös lisätä "
+"oman sanasi, jos ehdotetuista vaihtoehdoista ei löydy sopivaa. Voit poistaa valitun "
+"avainsanan 'x'-painikkeesta.<br /><br />Voit vaihtaa ehdotettavien avainsanojen "
+"kieltä kielivalikosta.<br /><br />Ehdotukset haetaan ONKI-ontologiapalvelusta "
+"(http://onki.fi). JavaScript-tuen on oltava käytössä selaimessasi, jotta "
+"automaattiset ehdotukset toimisivat."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:121
 msgid "eg. economy, mental health"
@@ -10229,8 +10231,8 @@ msgstr "yksilöivä URL tai nimi"
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:186
 msgid ""
 "Field is compulsory.<br /><br />Type the dataset owner's name or an "
-"identifier, for example and orcid identifier."
-msgstr "Kenttä on pakollinen.<br /><br />Anna datan omistajan nimi tai tunniste, esimerkiksi orcid-tunnus."
+"identifier, for example and ORCID identifier."
+msgstr "Kenttä on pakollinen.<br /><br />Anna datan omistajan nimi tai tunniste, esimerkiksi ORCID-tunnus."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:201
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:208
@@ -10253,14 +10255,13 @@ msgid ""
 "You can add your own identifier or use one generated by the service. <br "
 "/><br />The automatically generated PID is an URN identifier from the "
 "national library of Finland, of form \"urn:nbn:fi:csc-kata[unique "
-"number]\". Visit http://www.nationallibrary.fi/index.html for more "
-"information."
+"number]\". Visit http://www.nationallibrary.fi/ for more information."
 msgstr ""
 "Kenttä on pakollinen, mutta generoidaan automaattisesti jos jätetty tyhjäksi.<br /><br />"
 "PID on pysyvä, uniikki datan tunniste. Voit lisätä oman tunnisteesi tai käyttää "
 "palvelun generoimaa tunnistetta<br /><br />Automaattisesti generoitu PID on "
 "URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi:csc-kata[numerosarja]\"."
-"Lisää tietoa osoitteessa http://http://www.kansalliskirjasto.fi/."
+"Lisää tietoa osoitteessa http://www.kansalliskirjasto.fi/."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:212
 msgid "Version Identifier"
@@ -11114,6 +11115,6 @@ msgid "Compare"
 msgstr "Vertaa"
 
 # Add dataset
-msgid "Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts some criteria in some service, choose the third option. If the data can be accessed only after contacting the distributor, choose the last option. In this case an email is sent to the address you provided in distributor section.<br /><br />Choose a license from the selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family."
-msgstr "Käyttö- ja lisenssitietokentät ovat pakollisia.<br /><br />Valitse, miten dataan pääsee käsiksi. Kirjoita web-osoitetiedot, kun niitä kysytään (riippuu valinnastasi). Jos data on ladattavissa, valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data on saavutettavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy määrittelemäsi ehdot jossain ulkopuolisessa palvelussa, valitse kolmas vaihtoehto. Jos dataan pääsee käsiksi vain ottamalla yhteyttä, valitse viimeinen vaihtoehto. Tässä tapauksessa yllä annettuun jakelijan sähköpostiosoitteeseen lähtee datapyyntö.<br /><br />Valitse lisenssi annetuista vaihtoehdoista. TTA:n suositus on CC 3.0 tai tulevaisuudessa CC 4.0 lisenssiperheet."
+msgid "Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family."
+msgstr "Käyttö- ja lisenssitietokentät ovat pakollisia.<br /><br />Valitse, miten dataan pääsee käsiksi. Kirjoita web-osoitetiedot, jos niitä kysytään (riippuu valinnastasi). Jos data on ladattavissa verkosta, valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data on saatavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy määrittelemäsi ehdot jossain ulkopuolisessa palvelussa, valitse kolmas vaihtoehto. Jos dataan pääsee käsiksi vain ottamalla suoraan yhteyttä jakelijaan, valitse viimeinen vaihtoehto. Tässä tapauksessa datapyynnöt lähetetään edellä antamaasi jakelijan sähköpostiosoitteeseen.<br /><br />Valitse lisenssi annetuista vaihtoehdoista. TTA:n suositus on CC 3.0 tai tulevaisuudessa CC 4.0 lisenssiperheet."
 

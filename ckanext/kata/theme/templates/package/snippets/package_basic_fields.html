@@ -28,7 +28,7 @@
 		{% set index = loop.index0 %}
 		{% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
 			{% if index == 0 %}
-				{{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded but, note that the first title field must have a value.")) }}
+				{{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
 			{% endif %}
 
 			<label class="control-label kata-input-comp" for="langtitle__{{index}}__lang_id">{{ _('Language') }}</label>
@@ -76,9 +76,9 @@
 		    <div class="control-group control-custom">
 		    <label class="control-label kata-input-comp" for="orgauth__{{ index }}__id">{{ _('Author') }}</label>
 		        <div class="controls editor">
-		            <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname firstname') }}" id="orgauth__{{ index }}__value_id" name="orgauth__{{ index }}__value" value="{{ orgauth.value }}" />
+		            <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname, firstname') }}" id="orgauth__{{ index }}__value_id" name="orgauth__{{ index }}__value" value="{{ orgauth.value }}" />
 		            {% if index == 0 %}
-					    {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />Author can be a name or an identifier URL, like an orcid identifier. If you choose to write a name, please use format "familyname firstname".')) }}
+					    {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
 				    {% endif %}
 		        </div>
 		        <label class="control-label kata-input-comp" for="orgauth__{{index}}__org_id">{{ _('Organization') }}</label>
@@ -116,7 +116,7 @@
     {{ _('Keywords') }}
   </span><br />
   {{ _('Search keywords from YSO ontology, select keywords with enter or mouse click.') }}
-  <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory. Note, that the ONKI selector requires JavaScript to work in your browser.<br /><br />Add keywords (tags) that describe your data. Start typing and the service will give you suggestions of the word. Accept a word you want with a mouse click or enter button. You can add your own word with enter button as well. Remove a keyword by pressing the \'x\'. <br /><br />Change the language of suggested word from the language menu.<br /><br />Learn more about the ONKI from http://onki.fi/en/') }}">
+  <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords (tags) that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />You can change the language of suggested words from the language menu.<br /><br />The suggestions are retrieved from the ONKI ontology service at http://onki.fi/en/. Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
   <span class="kata-btn-span tta-orange">?</span></button><br /><br />
   <input name='field-tags' id='field-tags' placeholder="{{ _('eg. economy, mental health') }}" class='control-medium' onkeyup="onki['yso'].search({'fieldShared' : true, 'fetchLabels' : true, 'fetchUris' : false, 'fieldLabel' : '{{ _('Search:') }}', 'fieldName' : 'tag_string', 'languageMenu' : true, 'onkimenu' : false, 'openonkibutton' : false, 'prefix' : false, 'showOnkiName' : false, 'showCaptions' : false, 'delimiter' : ','})">
   {% if data.tag_string %}
@@ -183,7 +183,7 @@
 		<h3 class="module-heading-add-dataset">{{ _('Owner information')}}</h3>
 		<div class="module-content">
 			{% call form.input('owner', label=_('Owner identity'), id="owner", placeholder=_('identification URL or name'), value=data.owner, error=errors.owner, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-				{{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example and orcid identifier.")) }}
+				{{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example and ORCID identifier.")) }}
 			{% endcall %}						
 		</div>
 	</div>
@@ -206,7 +206,7 @@
   </div>
 {% else %}
     {% call form.input('name', id='name-pid', label=_('Permanent Identifier'), placeholder=_('will be automatically generated if empty'), value=data.name, error=errors.name, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-    {{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier of the data, preferrably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is an URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/index.html for more information.')) }}
+    {{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier of the data, preferrably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is an URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/ for more information.')) }}
     {% endcall %}
 {% endif %}
 {% call form.input('version_PID', id='field-pid', label=_('Version Identifier'), placeholder=_('will be automatically generated if empty'), value=data.version_PID, error=errors.version_PID, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
@@ -227,7 +227,7 @@
 <h2 class="module-heading-add-dataset">{{ _('Usage information') }}</h2>
 <div class="module-content">
 	<p>
-		{{ _('Dataset is available for use:') }}{{ kata_form.tooltip(tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts some criteria in some service, choose the third option. If the data can be accessed only after contacting the distributor, choose the last option. In this case an email is sent to the address you provided in distributor section.<br /><br />Choose a license from the selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family.")) }}
+		{{ _('Dataset is available for use:') }}{{ kata_form.tooltip(tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family.")) }}
 	</p>
 	<div class="control-group ">
 		<div class="controls ">
