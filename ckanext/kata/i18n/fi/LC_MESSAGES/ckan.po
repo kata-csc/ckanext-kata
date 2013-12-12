@@ -7312,8 +7312,8 @@ msgid ""
 msgstr "Omistajatiedot: datan omistajan tiedot, esimerkiksi nimi tai URL-tunniste."
 
 #: ckanext/kata/theme/templates/kata/help.html:190
-msgid "Identification information:"
-msgstr "Tunnistustiedot:"
+msgid "Identification information of data:"
+msgstr "Aineiston tunnistustiedot:"
 
 #: ckanext/kata/theme/templates/kata/help.html:193
 msgid ""
@@ -9931,8 +9931,8 @@ msgstr "Omistajan tunniste"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:142
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:197
-msgid "Identification information"
-msgstr "Tunnistustiedot"
+msgid "Identification information of data"
+msgstr "Aineiston tunnistustiedot"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:146
 msgid "Last modified"
