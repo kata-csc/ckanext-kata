@@ -36,25 +36,46 @@ def pid_from_extras(key, data, errors, context):
 def org_auth_to_extras(key, data, errors, context):
     '''
     Convert author and organization to extras
+        >>> data = {('orgauth', 0, 'value'): 'Brian', \
+                    ('orgauth', 0, 'org'): 'Some Organization', \
+                    ('extras', 40, 'key'): 'some_other_extra_to_take_account'}
+        >>> org_auth_to_extras(('orgauth', 0, 'value'), data, \
+                               {('orgauth', 0, 'value'): []})
+        >>> data
+        {('extras', 41, 'value'): 'Brian',
+         ('extras', 42, 'key'): 'organization_0',
+         ('orgauth', 0, 'value'): 'Brian',
+         ('extras', 40, 'key'): 'some_other_extra_to_take_account',
+         ('extras', 41, 'key'): 'author_0',
+         ('orgauth', 0, 'org'): 'Some Organization',
+         ('extras', 42, 'value'): 'Some Organization'}
     '''
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
+    # extras = data.get(('extras',), [])
+    # if not extras:
+    #     data[('extras',)] = extras
+    # if len(data[key]) > 0:
+    #     if key[0] == 'orgauth':
+    #         if not ('orgauth', key[1], 'org') in data or len(data[('orgauth', key[1], 'org')]) == 0:
+    #             errors[key].append(_('Organisation is missing'))
+    #         if not ('orgauth', key[1], 'value') in data or len(data[('orgauth', key[1], 'value')]) == 0:
+    #             errors[key].append(_('Author is missing'))
+    #     oval = data[(key[0], key[1], 'org')]
+    #     extras.append({'key': "author_%s" % key[1],
+    #                   'value': data[key]})
+    #     extras.append({'key': 'organization_%s' % key[1],
+    #                    'value': oval})
+    max_extra = max(filter(lambda x: x[0] == 'extras' and len(x) > 1, data), key=lambda x: x[1])
     if len(data[key]) > 0:
         if key[0] == 'orgauth':
-            
             if not ('orgauth', key[1], 'org') in data or len(data[('orgauth', key[1], 'org')]) == 0:
                 errors[key].append(_('Organisation is missing'))
             if not ('orgauth', key[1], 'value') in data or len(data[('orgauth', key[1], 'value')]) == 0:
                 errors[key].append(_('Author is missing'))
-
-        oval = data[(key[0], key[1], 'org')]
-
-        extras.append({'key': "author_%s" % key[1],
-                      'value': data[key]})
-        extras.append({'key': 'organization_%s' % key[1],
-                       'value': oval
-                       })
+        authors_org = data[(key[0], key[1], 'org')]
+        data[('extras', max_extra[1] + 1, 'key')] = "author_%s" % key[1]
+        data[('extras', max_extra[1] + 1, 'value')] = data[key]
+        data[('extras', max_extra[1] + 2, 'key')] = 'organization_%s' % key[1]
+        data[('extras', max_extra[1] + 2, 'value')] = authors_org
         
 def org_auth_to_extras_oai(key, data, errors, context):
     '''
@@ -115,21 +136,38 @@ def ltitle_to_extras(key, data, errors, context):
     '''
     Convert title & language pair from dataset form to db format and validate.
     Title & language pairs will be stored in package_extra.
+
+        >>> data = {('langtitle', 0, 'value'): 'sometitle',\
+                    ('langtitle', 0, 'lang'): '', \
+                    ('extras', 40, 'key'): 'some_other_extra_to_take_account'}
+        >>> ltitle_to_extras(('langtitle', 0, 'value'), data, {}, {})
+        >>> data
+        {('extras', 40, 'key'): 'some_other_extra_to_take_account',
+         ('extras', 41, 'key'): 'title_0',
+         ('extras', 41, 'value'): 'sometitle',
+         ('extras', 42, 'key'): 'lang_title_0',
+         ('extras', 42, 'value'): '',
+         ('langtitle', 0, 'lang'): '',
+         ('langtitle', 0, 'value'): 'sometitle'}
     '''
-
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
-
+    # extras = data.get(('extras',), [])
+    # if not extras:
+    #     data[('extras',)] = extras
+    # if len(data[key]) > 0:
+    #     # Get title's language from data dictionary. key[0] == 'title'.
+    #     lval = data[(key[0], key[1], 'lang')]
+    #
+    #     extras.append({'key': "title_%s" % key[1],
+    #                   'value': data[key]})
+    #     extras.append({'key': 'lang_title_%s' % key[1],
+    #                    'value': lval})
+    max_extra = max(filter(lambda x: x[0] == 'extras' and len(x) > 1, data), key=lambda x: x[1])
     if len(data[key]) > 0:
-        # Get title's language from data dictionary. key[0] == 'title'.
-        lval = data[(key[0], key[1], 'lang')]
-
-        extras.append({'key': "title_%s" % key[1],
-                      'value': data[key]})
-        extras.append({'key': 'lang_title_%s' % key[1],
-                       'value': lval
-                       })
+        lang_title = data[(key[0], key[1], 'lang')]
+        data[('extras', max_extra[1] + 1, 'key')] = "title_%s" % key[1]
+        data[('extras', max_extra[1] + 1, 'value')] = data[key]
+        data[('extras', max_extra[1] + 2, 'key')] = 'lang_title_%s' % key[1]
+        data[('extras', max_extra[1] + 2, 'value')] = lang_title
 
 
 def ltitle_from_extras(key, data, errors, context):
@@ -174,13 +212,16 @@ def event_to_extras(key, data, errors, context):
     '''
     #log.debug("event_to_extras(): key: %s : %s", str(key), str(data[key]))
 
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
+    # extras = data.get(('extras',), [])
+    # if not extras:
+    #     data[('extras',)] = extras
+    # if key[2] == 'value' and len(data[key]) > 0 and type(data[key]) == unicode:
+    #     extras.append({'key': "%s_%d" % (key[0], key[1]), 'value': data[key]})
+    max_extra = max(filter(lambda x: x[0] == 'extras' and len(x) > 1, data), key=lambda x: x[1])
     if key[2] == 'value' and len(data[key]) > 0 and type(data[key]) == unicode:
-        extras.append({'key': "%s_%d" % (key[0], key[1]),
-                       'value': data[key]
-                      })
+        data[('extras', max_extra[1] + 1, 'key')] = "%s_%d" % (key[0], key[1])
+        data[('extras', max_extra[1] + 1, 'value')] = data[key]
+
 
 def event_from_extras(evkey, data, errors, context):
     if not ('events',) in data:
@@ -342,13 +383,10 @@ def convert_to_extras_kata(key, data, errors, context):
     '''
     if data.get(('extras',)) is missing:
         return
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
-    for k in data.keys():
-        if k[-1] in settings.KATA_FIELDS:
-            if not {'key': k[-1], 'value': data[k]} in extras:
-                extras.append({'key': k[-1], 'value': data[k]})
+    max_extra = max(filter(lambda x: x[0] == 'extras' and len(x) > 1, data), key=lambda x: x[1])
+    if key[-1] in settings.KATA_FIELDS:
+        data[('extras', max_extra[1] + 1, 'key')] = key[-1]
+        data[('extras', max_extra[1] + 1, 'value')] = data[key]
 
 
 def convert_languages(key, data, errors, context):
