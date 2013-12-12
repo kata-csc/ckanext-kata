@@ -47,6 +47,14 @@ ul.kata {
     position: relative;
     top: 0;
 }
+.kata-warning-btn {
+	margin-left: 4px !important;
+	background: yellow !important;
+	color: red !important;
+}
+.kata-btn-warn-span {
+	padding-left: 2px !important;
+}
 .kata-btn-span {
 	display: inline !important;
 	left: -4px;
