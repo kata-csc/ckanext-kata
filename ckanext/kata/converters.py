@@ -64,7 +64,8 @@ def org_auth_to_extras(key, data, errors, context):
     #                   'value': data[key]})
     #     extras.append({'key': 'organization_%s' % key[1],
     #                    'value': oval})
-    max_extra = max(filter(lambda x: x[0] == 'extras' and len(x) > 1, data), key=lambda x: x[1])
+    filtered = filter(lambda x: x[0] == 'extras' and len(x) > 1, data)
+    max_extra = max(filtered, key=lambda x: x[1])[1] if filtered else 0
     if len(data[key]) > 0:
         if key[0] == 'orgauth':
             if not ('orgauth', key[1], 'org') in data or len(data[('orgauth', key[1], 'org')]) == 0:
@@ -72,10 +73,10 @@ def org_auth_to_extras(key, data, errors, context):
             if not ('orgauth', key[1], 'value') in data or len(data[('orgauth', key[1], 'value')]) == 0:
                 errors[key].append(_('Author is missing'))
         authors_org = data[(key[0], key[1], 'org')]
-        data[('extras', max_extra[1] + 1, 'key')] = "author_%s" % key[1]
-        data[('extras', max_extra[1] + 1, 'value')] = data[key]
-        data[('extras', max_extra[1] + 2, 'key')] = 'organization_%s' % key[1]
-        data[('extras', max_extra[1] + 2, 'value')] = authors_org
+        data[('extras', max_extra + 1, 'key')] = "author_%s" % key[1]
+        data[('extras', max_extra + 1, 'value')] = data[key]
+        data[('extras', max_extra + 2, 'key')] = 'organization_%s' % key[1]
+        data[('extras', max_extra + 2, 'value')] = authors_org
         
 def org_auth_to_extras_oai(key, data, errors, context):
     '''
@@ -161,13 +162,14 @@ def ltitle_to_extras(key, data, errors, context):
     #                   'value': data[key]})
     #     extras.append({'key': 'lang_title_%s' % key[1],
     #                    'value': lval})
-    max_extra = max(filter(lambda x: x[0] == 'extras' and len(x) > 1, data), key=lambda x: x[1])
+    filtered = filter(lambda x: x[0] == 'extras' and len(x) > 1, data)
+    max_extra = max(filtered, key=lambda x: x[1])[1] if filtered else 0
     if len(data[key]) > 0:
         lang_title = data[(key[0], key[1], 'lang')]
-        data[('extras', max_extra[1] + 1, 'key')] = "title_%s" % key[1]
-        data[('extras', max_extra[1] + 1, 'value')] = data[key]
-        data[('extras', max_extra[1] + 2, 'key')] = 'lang_title_%s' % key[1]
-        data[('extras', max_extra[1] + 2, 'value')] = lang_title
+        data[('extras', max_extra + 1, 'key')] = "title_%s" % key[1]
+        data[('extras', max_extra + 1, 'value')] = data[key]
+        data[('extras', max_extra + 2, 'key')] = 'lang_title_%s' % key[1]
+        data[('extras', max_extra + 2, 'value')] = lang_title
 
 
 def ltitle_from_extras(key, data, errors, context):
@@ -217,10 +219,11 @@ def event_to_extras(key, data, errors, context):
     #     data[('extras',)] = extras
     # if key[2] == 'value' and len(data[key]) > 0 and type(data[key]) == unicode:
     #     extras.append({'key': "%s_%d" % (key[0], key[1]), 'value': data[key]})
-    max_extra = max(filter(lambda x: x[0] == 'extras' and len(x) > 1, data), key=lambda x: x[1])
+    filtered = filter(lambda x: x[0] == 'extras' and len(x) > 1, data)
+    max_extra = max(filtered, key=lambda x: x[1])[1] if filtered else 0
     if key[2] == 'value' and len(data[key]) > 0 and type(data[key]) == unicode:
-        data[('extras', max_extra[1] + 1, 'key')] = "%s_%d" % (key[0], key[1])
-        data[('extras', max_extra[1] + 1, 'value')] = data[key]
+        data[('extras', max_extra + 1, 'key')] = "%s_%d" % (key[0], key[1])
+        data[('extras', max_extra + 1, 'value')] = data[key]
 
 
 def event_from_extras(evkey, data, errors, context):
@@ -383,10 +386,11 @@ def convert_to_extras_kata(key, data, errors, context):
     '''
     if data.get(('extras',)) is missing:
         return
-    max_extra = max(filter(lambda x: x[0] == 'extras' and len(x) > 1, data), key=lambda x: x[1])
+    filtered = filter(lambda x: x[0] == 'extras' and len(x) > 1, data)
+    max_extra = max(filtered, key=lambda x: x[1])[1] if filtered else 0
     if key[-1] in settings.KATA_FIELDS:
-        data[('extras', max_extra[1] + 1, 'key')] = key[-1]
-        data[('extras', max_extra[1] + 1, 'value')] = data[key]
+        data[('extras', max_extra + 1, 'key')] = key[-1]
+        data[('extras', max_extra + 1, 'value')] = data[key]
 
 
 def convert_languages(key, data, errors, context):
