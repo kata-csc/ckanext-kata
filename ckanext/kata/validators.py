@@ -22,12 +22,28 @@ log = logging.getLogger('ckanext.kata.validators')
 
 # Regular expressions for validating e-mail and telephone number
 # Characters accepted for e-mail. Note that the first character can't be .
-EMAIL_REGEX = re.compile(r'^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~][\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~.]+@[a-z.]+\.[a-z]{2,6}$')
+EMAIL_REGEX = re.compile(
+    r"""
+    ^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~]
+    [\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~.]+
+    @
+    [a-z.]+
+    \.
+    [a-z]{2,6}$
+    """,
+    re.VERBOSE)
 TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
 # General regex to use in fields with no specific input
 GEN_REGEX = re.compile(r'^[^><]*$')
 HASH_REGEX = re.compile(r'^[\w\d\ \-(),]*$', re.U)
 MIME_REGEX = re.compile(r'^[\w\d\ \-.\/+]*$', re.U)
+EVWHEN_REGEX = re.compile(
+    r"""
+    (?P<year>[0-9]{4})
+    (-{0,1}(?P<month>[0-9]{1,2})){0,1}
+    (-{0,1}(?P<day>[0-9]{1,2})){0,1}
+    """,
+    re.VERBOSE)
 
 
 def kata_tag_name_validator(value, context):
@@ -82,9 +98,23 @@ def validate_kata_date(key, data, errors, context):
         try:
             iso8601.parse_date(data[key])
         except (iso8601.ParseError, TypeError):
-            errors[key].append(_('Invalid date format, must be ISO 8601. Example: 2001-01-01'))
+            errors[key].append(_('Invalid date format: {val}, must be ISO 8601.'
+                                 ' Example: 2001-01-01'.format(val=data[key])))
         except ValueError:
             errors[key].append(_('Invalid date'))
+
+
+def validate_event_date(key, data, errors, context):
+    '''
+    Validate a event date string. Empty strings also pass.
+    '2001-01-01',
+    '2001-01' and
+    '2001' pass.
+    '''
+    if isinstance(data[key], basestring) and data[key]:
+        if not EVWHEN_REGEX.match(data[key]):
+            errors[key].append(_('Invalid event date: {val}'.format(
+                val=data[key])))
 
 
 def check_junk(key, data, errors, context):
