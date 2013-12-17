@@ -41,7 +41,7 @@ def send_email(req):
     admin = User.get(selrole.user_id)
     admin_dict = admin.as_dict()
     admin_dict['name'] = admin.fullname if admin.fullname else admin.name
-    
+
     msg = u'{a} ({b}) is requesting editing rights to dataset\n\n{c}\n\n\
 for which you are currently an administrator. Please click this \
 link if you want to allow this user to edit the metadata of the dataset:\n\
@@ -51,10 +51,10 @@ saavan muokkausoikeudet aineiston metatietoihin:\n\
 {d}\n'
 
     controller = 'ckanext.kata.controllers:AccessRequestController'
-    
+
     requester_name = requester.fullname if requester.fullname else requester.name
     accessurl = config.get('ckan.site_url', '') + h.url_for(controller=controller, action="unlock_access", id=req.id)
-    body = msg.format(a=requester_name, b= requester.email, c=pkg.title if pkg.title else pkg.name, d=accessurl)
+    body = msg.format(a=requester_name, b=requester.email, c=pkg.title if pkg.title else pkg.name, d=accessurl)
     email_dict = {}
     email_dict["subject"] = u"Access request for dataset / pyyntö koskien tietoaineistoa %s" % pkg.title if pkg.title else pkg.name
     email_dict["body"] = body
@@ -67,7 +67,7 @@ def convert_to_text(resource, resource_fname):
     """
     fmt = resource.format.lower()
     prog = settings.TEXTOUTPUTPROGS[fmt] if (fmt in settings.TEXTOUTPUTPROGS and
-                                    fmt is not 'txt') else ''
+                                             fmt is not 'txt') else ''
     if not prog:
         return None, None
     else:
@@ -76,7 +76,6 @@ def convert_to_text(resource, resource_fname):
         p = subprocess.Popen([prog, resource_fname], stdout=convert_fd)
         p.communicate()
         return convert_fd, convert_path
-    return None, None
 
 
 def label_list_yso(tag_url):
@@ -85,25 +84,25 @@ def label_list_yso(tag_url):
     """
 
     _tagspaces = {
-    'rdf' : 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-    'yso-meta' : 'http://www.yso.fi/onto/yso-meta/2007-03-02/',
-    'rdfs' : "http://www.w3.org/2000/01/rdf-schema#",
-    'ysa' : "http://www.yso.fi/onto/ysa/",
-    'skos' : "http://www.w3.org/2004/02/skos/core#",
-    'om' : "http://www.yso.fi/onto/yso-peilaus/2007-03-02/",
-    'dc' : "http://purl.org/dc/elements/1.1/",
-    'allars' : "http://www.yso.fi/onto/allars/",
-    'daml' : "http://www.daml.org/2001/03/daml+oil#",
-    'yso-kehitys' : "http://www.yso.fi/onto/yso-kehitys/",
-    'owl' : "http://www.w3.org/2002/07/owl#",
-    'xsd' : "http://www.w3.org/2001/XMLSchema#",
-    'yso' : "http://www.yso.fi/onto/yso/",
+        'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        'yso-meta': 'http://www.yso.fi/onto/yso-meta/2007-03-02/',
+        'rdfs': "http://www.w3.org/2000/01/rdf-schema#",
+        'ysa': "http://www.yso.fi/onto/ysa/",
+        'skos': "http://www.w3.org/2004/02/skos/core#",
+        'om': "http://www.yso.fi/onto/yso-peilaus/2007-03-02/",
+        'dc': "http://purl.org/dc/elements/1.1/",
+        'allars': "http://www.yso.fi/onto/allars/",
+        'daml': "http://www.daml.org/2001/03/daml+oil#",
+        'yso-kehitys': "http://www.yso.fi/onto/yso-kehitys/",
+        'owl': "http://www.w3.org/2002/07/owl#",
+        'xsd': "http://www.w3.org/2001/XMLSchema#",
+        'yso': "http://www.yso.fi/onto/yso/",
     }
 
     labels = []
     if not tag_url.endswith("?rdf=xml"):
         tag_url += "?rdf=xml" # Small necessary bit.
-    request = urllib2.Request(tag_url, headers={"Accept":"application/rdf+xml"})
+    request = urllib2.Request(tag_url, headers={"Accept": "application/rdf+xml"})
     try:
         contents = urllib2.urlopen(request).read()
     except (socket.error, urllib2.HTTPError, urllib2.URLError,):
@@ -127,14 +126,17 @@ def label_list_yso(tag_url):
 def resource_to_dataset(data_dict):
     '''
     Move some fields from resources to dataset. Used for viewing a dataset.
+
+    We need field conversions to make sure the whole 'resources' key in datadict doesn't get overwritten when
+    modifying the dataset in WUI. That would drop all manually added resources if resources was already present.
     '''
     resource = None
 
     if 'resources' in data_dict:
         for i in range(len(data_dict['resources'])):
             if data_dict['resources'][i].get('resource_type', None) == settings.RESOURCE_TYPE_DATASET:
-                # UI can't handle multiple instances of dataset resources, so now use only the first.
-                resource = data_dict['resources'].pop(i)
+                # UI can't handle multiple instances of 'dataset' resources, so now use only the first.
+                resource = data_dict['resources'][i]
                 break
 
     if not resource and 'id' in data_dict:
@@ -155,17 +157,39 @@ def resource_to_dataset(data_dict):
 def dataset_to_resource(data_dict):
     '''
     Move some fields from dataset to resources. Used for saving to DB.
-    '''
-    if 'resources' not in data_dict:
-        data_dict['resources'] = []
 
-    data_dict['resources'].insert(0, {
-        #'package_id': pkg_dict1['id'],
-        'url': data_dict.pop('direct_download_URL', settings.DATASET_URL_UNKNOWN),
-        'hash': data_dict.pop('checksum', u''),
-        'format': data_dict.pop('mimetype', u''),
-        'algorithm': data_dict.pop('algorithm', u''),
+    Now finds the first 'dataset' resource and updates it. Not sure how this should be handled with multiple
+    'dataset' resources. Maybe just remove all of them and add new ones as they all are expected to be present
+    when updating a dataset.
+    '''
+    resource_index = None
+
+    if 'resources' in data_dict:
+        for i in range(len(data_dict['resources'])):
+            if data_dict['resources'][i].get('resource_type', None) == settings.RESOURCE_TYPE_DATASET:
+                # Use the first 'dataset' resource.
+                resource_index = i
+                break
+    else:
+        data_dict['resources'] = [None]
+        resource_index = 0
+
+    if data_dict.get('availability') != 'direct_download':
+        if resource_index is not None:
+            data_dict['resources'].pop(resource_index)
+        return data_dict
+
+    if resource_index is None:
+        # Resources present, but no 'dataset' resource found. Add resource to the end of list.
+        data_dict['resources'].insert(0, {})
+        resource_index = 0
+
+    data_dict['resources'][resource_index] = {
+        'url': data_dict.get('direct_download_URL', settings.DATASET_URL_UNKNOWN),
+        'hash': data_dict.get('checksum', u''),
+        'format': data_dict.get('mimetype', u''),
+        'algorithm': data_dict.get('algorithm', u''),
         'resource_type': settings.RESOURCE_TYPE_DATASET,
-    })
+    }
 
     return data_dict

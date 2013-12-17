@@ -1,9 +1,8 @@
-from ckan.logic.auth import update
+import ckan.new_authz as new_authz
+from ckan.logic.auth import get_package_object, update
 from ckan.model import User, Package
 import ckanext.kata.settings as settings
 from pylons.i18n import _
-import ckan.new_authz as new_authz
-from ckan.logic.auth import get_package_object
 import logging
 
 log = logging.getLogger(__name__)
@@ -27,18 +26,18 @@ def is_owner(context, data_dict):
     return {'success': False}
 
 
-def allow_edit_resource(context, data_dict):
+def edit_resource(context, data_dict):
     '''
     Check if a user is allowed edit a resource.
     '''
-
     auth_dict = update.resource_update(context, data_dict)
 
-    if (data_dict['resource_type'] == settings.RESOURCE_TYPE_DATASET):
+    if data_dict['resource_type'] == settings.RESOURCE_TYPE_DATASET:
         return {'success': False, 'msg': _('Resource %s not editable') % (data_dict['id'])}
     else:
         return auth_dict
-    
+
+
 def package_delete(context, data_dict):
     '''
     Modified check from CKAN, whether the user has a permission to

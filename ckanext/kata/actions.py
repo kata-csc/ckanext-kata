@@ -133,9 +133,22 @@ def package_update(context, data_dict):
     except KeyError:
         pass
 
-    data_dict = utils.dataset_to_resource(data_dict)
+    # Get all resources here since we get only 'dataset' resources from WUI.
+    temp_context = {'model': model, 'ignore_auth': True, 'validate': False,
+               'extras_as_string': True}
+    temp_pkg_dict = ckan.logic.action.get.package_show(temp_context, data_dict)
 
-    # This is a consequence or removing the ckan_phase!
+    old_resources = temp_pkg_dict.get('resources', [])
+
+    if 'resources' in data_dict:
+        # Creating a new resource
+        data_dict['resources'] = old_resources + data_dict['resources']
+    else:
+        # Updating a dataset
+        data_dict['resources'] = old_resources
+        data_dict = utils.dataset_to_resource(data_dict)
+
+    # This is a consequence of removing the ckan_phase!
     # The solution might not be good, if further problems arise
     # a better fix will be made
     context['allow_partial_update'] = True
