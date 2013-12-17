@@ -173,7 +173,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         implementation overrides
         """
         return {'package_update': auth_functions.is_owner,
-                'resource_update': auth_functions.allow_edit_resource,
+                'resource_update': auth_functions.edit_resource,
                 'package_delete': auth_functions.package_delete,
                 }
 

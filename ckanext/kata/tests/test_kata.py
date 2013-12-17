@@ -629,33 +629,6 @@ class TestResouceConverters(TestCase):
         utils.resource_to_dataset(data_dict)
         assert 'direct_download_URL' not in data_dict
 
-    #def test_resource_juggling(self):
-    #    data_dict = copy.deepcopy(self.test_data3)
-    #
-    #    converters.from_resource('key', data_dict, [], {})
-    #    converters.to_resource('direct_download_URL', data_dict, [], {})
-    #    converters.from_resource('key', data_dict, [], {})
-    #    converters.to_resource('direct_download_URL', data_dict, [], {})
-    #    converters.from_resource('key', data_dict, [], {})
-    #
-    #    assert len(data_dict['resources']) == 1
-    #    assert 'direct_download_URL' in data_dict
-    #    assert data_dict['direct_download_URL'] == self.test_data2['resources'][0]['url']
-    #
-    #    # Add a new dataset resource manually
-    #    data_dict['resources'].append(copy.deepcopy(self.test_data2['resources'][0]))
-    #
-    #    print len(data_dict['resources'])
-    #    converters.to_resource('direct_download_URL', data_dict, [], {})
-    #    converters.from_resource('key', data_dict, [], {})
-    #    converters.to_resource('direct_download_URL', data_dict, [], {})
-    #    converters.from_resource('key', data_dict, [], {})
-    #    print len(data_dict['resources'])
-    #
-    #    assert len(data_dict['resources']) == 2
-    #    assert 'direct_download_URL' in data_dict
-    #    assert data_dict['direct_download_URL'] == self.test_data2['resources'][0]['url']
-    #
 
 class TestResourceValidators(TestCase):
     '''
@@ -902,4 +875,33 @@ class TestCreateDataset(TestCase):
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
         assert 'projdis' in output
+
+    def test_create_and_delete_resources(self):
+        '''
+        Add a dataset and add and delete a resource through API
+        '''
+        print 'Create dataset'
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **self.test_data)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert 'id' in output
+
+        print 'Add resource #1'
+        new_res = copy.deepcopy(self.some_resource)
+        new_res['package_id'] = output['id']
+
+        output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **new_res)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+        res_id = output['id']
+
+        print 'Delete resource #1'
+        output = call_action_api(self.app, 'resource_delete', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=res_id)
+        if output is not None and '__type' in output:
+            assert output['__type'] != 'Validation Error'
 
