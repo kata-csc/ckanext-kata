@@ -384,10 +384,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['language'] = [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
-        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
+        schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
         schema['maintainer_email'].append(validate_email)
 
-        schema['tag_string'] = [ignore_missing, kata_tag_string_convert]
+        schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
 
@@ -474,6 +474,27 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                              'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
         
         return schema
+
+    @classmethod
+    def create_package_schema_ddi(cls):
+        '''
+        Modified schema for datasets imported with ddi reader.
+        Some fields in ddi import are allowed to be  missing.
+
+        :return schema
+        '''
+        # Todo: requires additional testing and planning
+        schema = cls.create_package_schema()
+        # schema['contact_phone'].insert(0, ignore_missing)
+        schema['contact_phone'] = [ignore_missing]
+        schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
+        schema['discipline'].insert(0, ignore_missing)
+        schema['geographic_coverage'].insert(0, ignore_missing)
+        # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
+        #                      'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
+
+        return schema
+
 
     def update_package_schema(self):
         """
