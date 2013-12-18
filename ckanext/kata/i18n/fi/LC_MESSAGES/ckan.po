@@ -6644,8 +6644,8 @@ msgstr "Tältä sivulta voit lähettää viestin tietoaineiston omistajalle saad
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:5
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:9
 #: ckanext/kata/theme/templates/package/read.html:13
-msgid "Request edit rights"
-msgstr "Pyydä muokkausoikeuksia"
+msgid "Request metadata editing rights"
+msgstr "Pyydä metatiedon muokkausoikeuksia"
 
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:13
 msgid "You do not currently have the access rights required to edit this dataset."

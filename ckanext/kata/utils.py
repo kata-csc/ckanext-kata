@@ -42,11 +42,11 @@ def send_email(req):
     admin_dict = admin.as_dict()
     admin_dict['name'] = admin.fullname if admin.fullname else admin.name
 
-    msg = u'{a} ({b}) is requesting editing rights to dataset\n\n{c}\n\n\
+    msg = u'{a} ({b}) is requesting editing rights to the metadata in dataset\n\n{c}\n\n\
 for which you are currently an administrator. Please click this \
 link if you want to allow this user to edit the metadata of the dataset:\n\
-{d}\n\n{a} ({b}) pyytää muokkausoikeuksia tietoaineistoon\n\n{c}\n\n\
-jonka ylläpitäjä olet. Klikkaa linkkiä, jos haluat tämän käyttäjän \
+{d}\n\n{a} ({b}) pyytää muokkausoikeuksia tietoaineiston\n\n{c}\n\n\
+metatietoihin, joiden ylläpitäjä olet. Klikkaa linkkiä, jos haluat tämän käyttäjän \
 saavan muokkausoikeudet aineiston metatietoihin:\n\
 {d}\n'
 
