@@ -6852,11 +6852,11 @@ msgid ""
 "Kata is a metadata catalogue service of TTA (Finnish National Research "
 "Data Initiative). TTA is a data effort of Ministry of Education and "
 "Culture."
-msgstr "Kata on TTA:n (Tutkimuksen Tietoaineistot) metatietokatalogipalvelu. TTA on Opetus ja Kulttuuriministeriön hanke."
+msgstr "Kata on TTA:n (Tutkimuksen Tietoaineistot) metatietokatalogipalvelu. TTA on opetus- ja kulttuuriministeriön hanke."
 
 #: ckanext/kata/theme/templates/kata/faq.html:17
 msgid "What kind of data Kata contains?"
-msgstr "Mikälaista dataa Kata sisältää?"
+msgstr "Minkälaista dataa Kata sisältää?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:18
 msgid "Kata contains metadata of research data, from various branches of science."
@@ -6923,7 +6923,7 @@ msgstr "Tarkennettu haku ei mahdollista haluamani haun tekemistä"
 msgid ""
 "You can make more complex search queries by using Solr query syntax. See "
 "more in: "
-msgstr "Voit tehdä monimuotoisempia hakua käyttäen Solr-hakukoneen syntaksia. Lue lisää osoitteesta: "
+msgstr "Voit tehdä monimuotoisempia hakuja käyttäen Solr-hakukoneen syntaksia. Lue lisää osoitteesta: "
 
 #: ckanext/kata/theme/templates/kata/faq.html:40
 msgid "Solr query syntax"
