@@ -3810,11 +3810,11 @@ msgstr "Relevanssi"
 
 #: ckan/templates/snippets/sort_by.html:15
 msgid "Name Ascending"
-msgstr "Nimi (aakkosjärjestys)"
+msgstr "Nimi (A-Ö)"
 
 #: ckan/templates/snippets/sort_by.html:16
 msgid "Name Descending"
-msgstr "Nimi (käänteinen aakkosjärjestys)"
+msgstr "Nimi (Ö-A)"
 
 #: ckan/templates/snippets/subscribe.html:2
 msgid "Subscribe"
