@@ -74,9 +74,9 @@ class TestKataBasics(TestCase):
         except NoSuchElementException:
             assert 0, 'Search (dataset) navigation not found for anonymous user'
         try:
-            search = self.browser.find_element_by_xpath("//a[contains(@href, '/group')]")
+            search = self.browser.find_element_by_xpath("//a[contains(@href, '/dataset/new')]")
         except NoSuchElementException:
-            assert 0, 'Group navigation not found for anonymous user'
+            assert 0, 'Add dataset navigation not found for anonymous user'
         try:
             search = self.browser.find_element_by_xpath("//a[contains(@href, '/about')]")
         except NoSuchElementException:
@@ -292,9 +292,9 @@ class TestKataWithUser(TestCase):
         except NoSuchElementException:
             assert 0, 'Search (dataset) navigation not found for logged in user'
         try:
-            search = browser.find_element_by_xpath("//a[contains(@href, '/group')]")
+            search = browser.find_element_by_xpath("//a[contains(@href, '/dataset/new')]")
         except NoSuchElementException:
-            assert 0, 'Group navigation not found for logged in user'
+            assert 0, 'Add dataset navigation not found for logged in user'
         try:
             search = browser.find_element_by_xpath("//a[contains(@href, '/about')]")
         except NoSuchElementException:
