@@ -460,8 +460,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
         
-        schema['owner'] = [ignore_missing]
-        schema['contact_phone'].insert(0, ignore_missing)
+        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         #schema['contact_URL'].insert(0, ignore_missing)
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         #schema['maintainer_email'].insert(0, ignore_missing)
