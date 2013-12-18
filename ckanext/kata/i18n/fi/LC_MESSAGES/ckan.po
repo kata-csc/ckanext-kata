@@ -6859,13 +6859,13 @@ msgid "What kind of data Kata contains?"
 msgstr "Minkälaista dataa Kata sisältää?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:18
-msgid "Kata contains metadata of research data, from various branches of science."
-msgstr "Kata sisältää tutkimusaineistojen metadataa erinäisiltä tieteenaloilta."
+msgid "Kata contains metadata of research data, from various branches of science. Kata does not contain the actual data itself, but the metadata catalogue allows you to browse and search for available data and lets you know how and where to gain access to it."
+msgstr "Kata sisältää tutkimusaineistojen metadataa erinäisiltä tieteenaloilta. Kata ei sisällä varsinaista tutkimusdataa itsessään, mutta metatietokatalogin avulla voit selata ja hakea saatavilla olevia aineistoja. Metatiedoista selviää myös, mistä ja miten varsinainen tutkimusdata on saatavilla."
 
 #: ckanext/kata/theme/templates/kata/faq.html:21
 #: ckanext/kata/theme/templates/kata/faq.html:59
-msgid "Add dataset page"
-msgstr "Lisää tietoaineisto -sivu"
+msgid "Adding and modifying metadata"
+msgstr "Metatietojen lisääminen ja muokkaaminen"
 
 #: ckanext/kata/theme/templates/kata/faq.html:23
 msgid "Why can't I add any keywords?"
@@ -6896,6 +6896,14 @@ msgstr "Lisäsin ylimääräisiä kenttiä otsikoille/laatijoille, mutta en halu
 #: ckanext/kata/theme/templates/kata/faq.html:30
 msgid "You don't need to remove them. Leave them empty and Kata will ignore them."
 msgstr "Sinun ei tarvitse poistaa niitä. Jätä ne tyhjäksi ja Kata jättää ne huomiotta."
+
+#: ckanext/kata/theme/templates/kata/faq.html:26
+msgid "How can I remove a dataset from the catalogue?"
+msgstr "Kuinka poistan aineiston tiedot katalogista?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:27
+msgid "Open the dataset for editing. There is a button for removing the entire metadata record at the bottom of the page. You must have modification privileges to the dataset in order to remove it."
+msgstr "Avaa tietoaineiston muokkaussivu. Sivun lopussa on painike, jolla aineiston metatiedot voi poistaa Katasta. Tarvitset muokkausoikeudet aineiston metatietoihin, jotta voisit poistaa ne."
 
 #: ckanext/kata/theme/templates/kata/faq.html:33
 #: ckanext/kata/theme/templates/kata/faq.html:62
