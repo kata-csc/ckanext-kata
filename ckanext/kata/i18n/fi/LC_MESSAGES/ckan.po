@@ -9896,7 +9896,7 @@ msgstr "Lähetä viesti"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:95
 msgid "Contact URL"
-msgstr "Yhteystietolomake"
+msgstr "Yhteystietojen kotisivu"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:101
 msgid "Project information"
@@ -9977,7 +9977,7 @@ msgstr "Muut liittyvät tietoaineistot"
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:199
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:93
 msgid "Discipline/branch of science"
-msgstr "Tieteenhaara"
+msgstr "Tieteenala"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:205
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:115
@@ -11028,6 +11028,14 @@ msgstr "Dataan pääsee käsiksi myös kohteesta "
 msgid "see "
 msgstr "katso "
 
+# Search
+
+msgid "Please try another search term."
+msgstr "Ole hyvä ja yritä toista hakutermiä."
+
+msgid " found with query"
+msgstr " löydetty haulla"
+
 # Changes to group -> collection
 msgid "This collection (group) has no description"
 msgstr "Tällä kokoelmalla (ryhmällä) ei ole kuvausta"
@@ -11132,3 +11140,41 @@ msgstr "Käyttö- ja lisenssitietokentät ovat pakollisia.<br /><br />Valitse, m
 
 msgid "Note that the PID can NOT be edited after saving the dataset."
 msgstr "Huomaa, että tunnistetta EI voi muokata sen jälkeen kun tietoaineisto on tallennettu."
+
+
+# Resource, Additional Information (the key - value -variables)
+msgid "created"
+msgstr "luotu"
+
+msgid "id"
+msgstr "id"
+
+msgid "format"
+msgstr "tiedostomuoto"
+
+msgid "position"
+msgstr "sijainti"
+
+msgid "resource group id"
+msgstr "resurssiryhmän id"
+
+msgid "resource type"
+msgstr "resurssin tyyppi"
+
+msgid "revision id"
+msgstr "revision tunniste"
+
+msgid "revision timestamp"
+msgstr "revision aikaleima"
+
+msgid "state"
+msgstr "tila"
+
+msgid "active"
+msgstr "aktiivinen"
+
+msgid "dataset"
+msgstr "tietoaineisto"
+
+msgid "on same domain"
+msgstr "samassa domainissa"

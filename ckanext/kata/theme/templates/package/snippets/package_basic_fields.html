@@ -233,7 +233,7 @@
 	<div class="control-group ">
 		<div class="controls ">
 			<input type="radio" name="availability" id="direct_download" onclick="KATA.toggleAccess(this)" style="top: 0px" value="direct_download" {% if data.availability == 'direct_download'%}checked{% endif %}>{{ _('directly downloadable') }}</input><br />
-			<div id="urlDiv_direct_download" {% if not data.direct_download_URL %}style="display:none"{% endif%}>
+			<div id="urlDiv_direct_download" {% if not data.direct_download_URL or data.direct_download_URL == 'http://' %}style="display:none"{% endif%}>
 				{{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=errors.direct_download_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
 			</div> 
 			<input type="radio" name="availability" id="access_request" onclick="KATA.toggleAccess(this)" style="top: 0px" value="access_request" {% if data.availability == 'access_request'%}checked{% endif %}>{{ _('downloadable after registration / identification') }}</input><br />
