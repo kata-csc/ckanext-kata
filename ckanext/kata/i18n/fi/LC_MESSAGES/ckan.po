@@ -11190,3 +11190,46 @@ msgstr "tietoaineisto"
 
 msgid "on same domain"
 msgstr "samassa domainissa"
+
+# Kata macro
+msgid "See further information about the error(s) from the field in question. Note, that errors in resource url may be in resource related data, like file type and algorithm."
+msgstr "Virheen tarkemmat tiedot löydät kyseisen kentän kohdalta. Huomaa, että resurssiin liittyvät virheet saattavat olla käyttötietojen lisäksi suositeltavissa tiedoissa, esimerkiksi tiedostotyypissä ja algoritmissa."
+
+msgid "Evwhen"
+msgstr "Tapahtuma (milloin)"
+
+msgid "Project homepage"
+msgstr "Projektin kotisivu"
+
+msgid "Project name"
+msgstr "Projektin nimi"
+
+msgid "Project funder"
+msgstr "Projektin rahoittaja"
+
+msgid "Contact phone"
+msgstr "Jakelijan/julkaisijan puhelinnumero"
+
+msgid "Evdescr"
+msgstr "Tapahtuma (kuvaus)"
+
+msgid "Contact URL"
+msgstr "Jakelijan/julkaisijan kotisivu"
+
+msgid "Geographic coverage"
+msgstr "Maantieteellinen kattavuus"
+
+msgid "Tag string"
+msgstr "Avainsanat"
+
+msgid "Orgauth"
+msgstr "Laatijat ja organisaatiot"
+
+msgid "Availability"
+msgstr "Käyttötiedot"
+
+msgid "Evwho"
+msgstr "Tapahtuma (kenen toimesta)"
+
+msgid "Project funding"
+msgstr "Projektin rahoitustunniste"

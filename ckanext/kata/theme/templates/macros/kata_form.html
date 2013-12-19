@@ -51,7 +51,7 @@ Example:
       <ul>
         {% for key, error in errors.items() %}
           {#<li data-field-label="{{ key }}">{% if key %}{{ key }}: {% endif %}{{ error }}</li>#}
-          <li data-field-label="{{ key }}">{% if key %}{{ key }}{% endif %}</li>
+          <li data-field-label="{{ key }}">{% if key %}{{ _(key) }}{% endif %}</li>
         {% endfor %}
         <br />
         <p>{{ _('See further information about the error(s) from the field in question. Note, that errors in resource url may be in resource related data, like file type and algorithm.') }}</p>
