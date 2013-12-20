@@ -495,7 +495,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         return schema
 
-
     def update_package_schema(self):
         """
         Return the schema for validating updated dataset dicts.
@@ -508,7 +507,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
         return schema
     
-    def update_package_schema_oai_dc(self):
+    @classmethod
+    def update_package_schema_oai_dc(cls):
         '''
         Modified schema for datasets imported with oai_dc reader.
         Some fields are missing, as the dublin core format
@@ -516,7 +516,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         
         :return schema
         '''
-        schema = self.create_package_schema_oai_dc()
+        schema = cls.create_package_schema_oai_dc()
         
         schema['id'] = [ignore_missing, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
