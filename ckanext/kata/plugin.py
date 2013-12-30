@@ -32,7 +32,7 @@ from ckanext.kata.validators import check_project, validate_kata_date, \
     check_author_org, kata_tag_string_convert, \
     kata_tag_name_validator, validate_general, \
     validate_discipline, validate_spatial, validate_title, \
-    validate_mimetype, validate_algorithm, validate_event_date
+    validate_mimetype, validate_algorithm, validate_kata_date_relaxed
 from ckanext.kata.converters import event_from_extras, \
     event_to_extras, ltitle_from_extras, ltitle_to_extras, \
     org_auth_from_extras, pid_from_extras, \
@@ -392,7 +392,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['tags'] = cls.tags_schema()
 
         schema.update({
-            'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
+            'version': [not_empty, unicode, validate_kata_date_relaxed, check_last_and_update_pid],
             'version_PID': [default(u''), update_pid, unicode, convert_to_extras_kata],
             #'author': [],
             #'organization': [],
@@ -421,7 +421,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
         schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
-        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_event_date]}
+        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date_relaxed]}
         schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
         #schema['groups'].update({
         #    'name': [ignore_missing, unicode, add_to_group]

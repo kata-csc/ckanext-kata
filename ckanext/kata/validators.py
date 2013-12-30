@@ -104,7 +104,8 @@ def validate_kata_date(key, data, errors, context):
             errors[key].append(_('Invalid date'))
 
 
-def validate_event_date(key, data, errors, context):
+def validate_kata_date_relaxed(key, data, errors, context):
+    # TODO: validate_kata_date() should be replaced with this
     '''
     Validate a event date string. Empty strings also pass.
     '2001-01-01',
@@ -112,9 +113,16 @@ def validate_event_date(key, data, errors, context):
     '2001' pass.
     '''
     if isinstance(data[key], basestring) and data[key]:
-        if not EVWHEN_REGEX.match(data[key]):
-            errors[key].append(_('Invalid event date: {val}'.format(
-                val=data[key])))
+        try:
+            iso8601.parse_date(data[key])
+        except (iso8601.ParseError, TypeError):
+            if not EVWHEN_REGEX.match(data[key]):
+                errors[key].append(_('Invalid {key} date format: {val}, must be'
+                                     ' ISO 8601 or truncated: 2001-01-01 or '
+                                     '2001-01'.format(key=key[0],
+                                                      val=data[key])))
+        except ValueError:
+            errors[key].append(_('Invalid date'))
 
 
 def check_junk(key, data, errors, context):

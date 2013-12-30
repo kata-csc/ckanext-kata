@@ -349,7 +349,6 @@ def convert_to_extras_kata(key, data, errors, context):
 def xpath_to_extras(key, data, errors, context):
     '''
     '''
-    #log.debug("event_to_extras(): key: %s : %s", str(key), str(data[key]))
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
