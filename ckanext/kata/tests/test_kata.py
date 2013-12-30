@@ -802,6 +802,7 @@ class TestCreateDataset(TestCase):
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert output
+        assert output['id'].startswith('urn:nbn:fi:csc-kata')
 
     def test_create_dataset_and_resources(self):
         '''

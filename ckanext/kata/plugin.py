@@ -145,13 +145,6 @@ class KataMetadata(SingletonPlugin):
                     action="render_faq")
         return map
 
-    def before_insert(self, mapper, connection, instance):
-        """
-        Override IMapper.before_insert(). Receive an object instance before that instance is INSERTed.
-        """
-        if isinstance(instance, Package) and not instance.id:
-            instance.id = utils.generate_pid()
-
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
@@ -375,6 +368,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
 
+        schema['id'] = [default(utils.generate_pid())]
         schema['langtitle'] = {'value': [not_missing, unicode, validate_title, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
 
