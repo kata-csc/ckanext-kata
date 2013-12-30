@@ -43,7 +43,7 @@ def package_show(context, data_dict):
     except NotAuthorized:
         pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
         pkg_dict1['project_funding'] = _('Not authorized to see this information')
-        
+
     pkg = Package.get(pkg_dict1['id'])
     if 'erelated' in pkg.extras:
         erelated = pkg.extras['erelated']
@@ -62,7 +62,7 @@ def package_show(context, data_dict):
         pkg.title = pkg.extras[u'title_0']
         pkg.save()
         rebuild(pkg.id)  # Rebuild solr-index for this dataset
-   
+
     return pkg_dict1
 
 
@@ -81,9 +81,9 @@ def package_create(context, data_dict):
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
     try:
-        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs', \
-                     'geographic_coverage_field_langs', 'geographic_coverage_field', \
-                     'geographic_coverage_tmp', \
+        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs',
+                     'geographic_coverage_field_langs', 'geographic_coverage_field',
+                     'geographic_coverage_tmp',
                      'discipline_field_langs', 'discipline_field']
         for key in removable:
             del data_dict[key]
@@ -101,7 +101,7 @@ def package_create(context, data_dict):
         log.info(log_str)
     except:
         pass
-    
+
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
     pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
@@ -135,7 +135,7 @@ def package_update(context, data_dict):
 
     # Get all resources here since we get only 'dataset' resources from WUI.
     temp_context = {'model': model, 'ignore_auth': True, 'validate': False,
-               'extras_as_string': True}
+                    'extras_as_string': True}
     temp_pkg_dict = ckan.logic.action.get.package_show(temp_context, data_dict)
 
     old_resources = temp_pkg_dict.get('resources', [])
@@ -167,7 +167,7 @@ def package_update(context, data_dict):
         log.info(log_str)
     except:
         pass
-    
+
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': True}
     pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
@@ -197,7 +197,7 @@ def package_delete(context, data_dict):
         log.info(log_str)
     except:
         pass
-    
+
     index = index_for('package')
     index.remove_dict(data_dict)
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
@@ -215,7 +215,7 @@ def _decorate(f, actiontype, action):
                 log.info(log_str)
             except:
                 log.info('Debug failed! Action not logged')
-                
+
         ret = f(*args, **kwargs)
         if action is 'create' or action is 'update':
             try:
@@ -226,6 +226,7 @@ def _decorate(f, actiontype, action):
                 log.info('Debug failed! Action not logged')
 
         return ret
+
     return call
 
 # Overwriting to add logging
@@ -241,7 +242,6 @@ group_delete = _decorate(ckan.logic.action.delete.group_delete, 'group', 'delete
 organization_create = _decorate(ckan.logic.action.create.organization_create, 'organization', 'create')
 organization_update = _decorate(ckan.logic.action.update.organization_update, 'organization', 'update')
 organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'organization', 'delete')
-
 
 
 def package_search(context, data_dict):
@@ -291,7 +291,7 @@ def related_create(context, data_dict):
         log.info(log_str)
     except:
         pass
-    
+
     return ret
 
 
@@ -308,7 +308,7 @@ def related_update(context, data_dict):
         'featured': [ignore_missing, int],
     }
     context['schema'] = schema
-    
+
     # Logging for production use
     try:
         log_str = '[' + str(datetime.datetime.now())
