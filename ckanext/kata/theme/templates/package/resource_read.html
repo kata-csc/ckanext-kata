@@ -97,7 +97,7 @@
                 <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
               </tr>
               {% for key, value in h.format_resource_items(res.items()) %}
-                <tr class="toggle-more"><th scope="row">{{ key }}</th><td>{{ value }}</td></tr>
+                <tr class="toggle-more"><th scope="row">{{ _(key) }}</th><td>{{ _(value) }}</td></tr>
               {% endfor %}
             </tbody>
           </table>

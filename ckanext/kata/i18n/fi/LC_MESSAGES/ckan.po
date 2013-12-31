@@ -3810,11 +3810,11 @@ msgstr "Relevanssi"
 
 #: ckan/templates/snippets/sort_by.html:15
 msgid "Name Ascending"
-msgstr "Nimi (aakkosjärjestys)"
+msgstr "Nimi (A-Ö)"
 
 #: ckan/templates/snippets/sort_by.html:16
 msgid "Name Descending"
-msgstr "Nimi (käänteinen aakkosjärjestys)"
+msgstr "Nimi (Ö-A)"
 
 #: ckan/templates/snippets/subscribe.html:2
 msgid "Subscribe"
@@ -6644,8 +6644,8 @@ msgstr "Tältä sivulta voit lähettää viestin tietoaineiston omistajalle saad
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:5
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:9
 #: ckanext/kata/theme/templates/package/read.html:13
-msgid "Request edit rights"
-msgstr "Pyydä muokkausoikeuksia"
+msgid "Request metadata editing rights"
+msgstr "Pyydä metatiedon muokkausoikeuksia"
 
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:13
 msgid "You do not currently have the access rights required to edit this dataset."
@@ -6852,20 +6852,20 @@ msgid ""
 "Kata is a metadata catalogue service of TTA (Finnish National Research "
 "Data Initiative). TTA is a data effort of Ministry of Education and "
 "Culture."
-msgstr "Kata on TTA:n (Tutkimuksen Tietoaineistot) metatietokatalogipalvelu. TTA on Opetus ja Kulttuuriministeriön hanke."
+msgstr "Kata on TTA:n (Tutkimuksen Tietoaineistot) metatietokatalogipalvelu. TTA on opetus- ja kulttuuriministeriön hanke."
 
 #: ckanext/kata/theme/templates/kata/faq.html:17
 msgid "What kind of data Kata contains?"
-msgstr "Mikälaista dataa Kata sisältää?"
+msgstr "Minkälaista dataa Kata sisältää?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:18
-msgid "Kata contains metadata of research data, from various branches of science."
-msgstr "Kata sisältää tutkimusaineistojen metadataa erinäisiltä tieteenaloilta."
+msgid "Kata contains metadata of research data, from various branches of science. Kata does not contain the actual data itself, but the metadata catalogue allows you to browse and search for available data and lets you know how and where to gain access to it."
+msgstr "Kata sisältää tutkimusaineistojen metadataa erinäisiltä tieteenaloilta. Kata ei sisällä varsinaista tutkimusdataa itsessään, mutta metatietokatalogin avulla voit selata ja hakea saatavilla olevia aineistoja. Metatiedoista selviää myös, mistä ja miten varsinainen tutkimusdata on saatavilla."
 
 #: ckanext/kata/theme/templates/kata/faq.html:21
 #: ckanext/kata/theme/templates/kata/faq.html:59
-msgid "Add dataset page"
-msgstr "Lisää tietoaineisto -sivu"
+msgid "Adding and modifying metadata"
+msgstr "Metatietojen lisääminen ja muokkaaminen"
 
 #: ckanext/kata/theme/templates/kata/faq.html:23
 msgid "Why can't I add any keywords?"
@@ -6897,6 +6897,14 @@ msgstr "Lisäsin ylimääräisiä kenttiä otsikoille/laatijoille, mutta en halu
 msgid "You don't need to remove them. Leave them empty and Kata will ignore them."
 msgstr "Sinun ei tarvitse poistaa niitä. Jätä ne tyhjäksi ja Kata jättää ne huomiotta."
 
+#: ckanext/kata/theme/templates/kata/faq.html:26
+msgid "How can I remove a dataset from the catalogue?"
+msgstr "Kuinka poistan aineiston tiedot katalogista?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:27
+msgid "Open the dataset for editing. There is a button for removing the entire metadata record at the bottom of the page. You must have modification privileges to the dataset in order to remove it."
+msgstr "Avaa tietoaineiston muokkaussivu. Sivun lopussa on painike, jolla aineiston metatiedot voi poistaa Katasta. Tarvitset muokkausoikeudet aineiston metatietoihin, jotta voisit poistaa ne."
+
 #: ckanext/kata/theme/templates/kata/faq.html:33
 #: ckanext/kata/theme/templates/kata/faq.html:62
 msgid "Search: page and features"
@@ -6923,7 +6931,7 @@ msgstr "Tarkennettu haku ei mahdollista haluamani haun tekemistä"
 msgid ""
 "You can make more complex search queries by using Solr query syntax. See "
 "more in: "
-msgstr "Voit tehdä monimuotoisempia hakua käyttäen Solr-hakukoneen syntaksia. Lue lisää osoitteesta: "
+msgstr "Voit tehdä monimuotoisempia hakuja käyttäen Solr-hakukoneen syntaksia. Lue lisää osoitteesta: "
 
 #: ckanext/kata/theme/templates/kata/faq.html:40
 msgid "Solr query syntax"
@@ -9895,8 +9903,8 @@ msgid "Send a message"
 msgstr "Lähetä viesti"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:95
-msgid "Contact URL"
-msgstr "Yhteystietolomake"
+msgid "Homepage"
+msgstr "Kotisivu"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:101
 msgid "Project information"
@@ -9911,6 +9919,10 @@ msgstr "Rahoittajan yhteyshenkilö"
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:179
 msgid "Homepage"
 msgstr "Kotisivu"
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:121
+msgid "Other stakeholders"
+msgstr "Muut toimijat"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:115
 msgid "Contributor"
@@ -9932,7 +9944,7 @@ msgstr "Omistajan tunniste"
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:142
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:197
 msgid "Identification information of data"
-msgstr "Aineiston tunnistustiedot"
+msgstr "Aineiston tunnistetiedot"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:146
 msgid "Last modified"
@@ -9977,7 +9989,7 @@ msgstr "Muut liittyvät tietoaineistot"
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:199
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:93
 msgid "Discipline/branch of science"
-msgstr "Tieteenhaara"
+msgstr "Tieteenala"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:205
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:115
@@ -11028,6 +11040,14 @@ msgstr "Dataan pääsee käsiksi myös kohteesta "
 msgid "see "
 msgstr "katso "
 
+# Search
+
+msgid "Please try another search term."
+msgstr "Ole hyvä ja yritä toista hakutermiä."
+
+msgid " found with query"
+msgstr " löydetty haulla"
+
 # Changes to group -> collection
 msgid "This collection (group) has no description"
 msgstr "Tällä kokoelmalla (ryhmällä) ei ole kuvausta"
@@ -11132,3 +11152,84 @@ msgstr "Käyttö- ja lisenssitietokentät ovat pakollisia.<br /><br />Valitse, m
 
 msgid "Note that the PID can NOT be edited after saving the dataset."
 msgstr "Huomaa, että tunnistetta EI voi muokata sen jälkeen kun tietoaineisto on tallennettu."
+
+
+# Resource, Additional Information (the key - value -variables)
+msgid "created"
+msgstr "luotu"
+
+msgid "id"
+msgstr "id"
+
+msgid "format"
+msgstr "tiedostomuoto"
+
+msgid "position"
+msgstr "sijainti"
+
+msgid "resource group id"
+msgstr "resurssiryhmän id"
+
+msgid "resource type"
+msgstr "resurssin tyyppi"
+
+msgid "revision id"
+msgstr "revision tunniste"
+
+msgid "revision timestamp"
+msgstr "revision aikaleima"
+
+msgid "state"
+msgstr "tila"
+
+msgid "active"
+msgstr "aktiivinen"
+
+msgid "dataset"
+msgstr "tietoaineisto"
+
+msgid "on same domain"
+msgstr "samassa domainissa"
+
+# Kata macro
+msgid "See further information about the error(s) from the field in question. Note, that errors in resource url may be in resource related data, like file type and algorithm."
+msgstr "Virheen tarkemmat tiedot löydät kyseisen kentän kohdalta. Huomaa, että resurssiin liittyvät virheet saattavat olla käyttötietojen lisäksi suositeltavissa tiedoissa, esimerkiksi tiedostotyypissä ja algoritmissa."
+
+msgid "Evwhen"
+msgstr "Tapahtuma (milloin)"
+
+msgid "Project homepage"
+msgstr "Projektin kotisivu"
+
+msgid "Project name"
+msgstr "Projektin nimi"
+
+msgid "Project funder"
+msgstr "Projektin rahoittaja"
+
+msgid "Contact phone"
+msgstr "Jakelijan/julkaisijan puhelinnumero"
+
+msgid "Evdescr"
+msgstr "Tapahtuma (kuvaus)"
+
+msgid "Contact URL"
+msgstr "Jakelijan/julkaisijan kotisivu"
+
+msgid "Geographic coverage"
+msgstr "Maantieteellinen kattavuus"
+
+msgid "Tag string"
+msgstr "Avainsanat"
+
+msgid "Orgauth"
+msgstr "Laatijat ja organisaatiot"
+
+msgid "Availability"
+msgstr "Käyttötiedot"
+
+msgid "Evwho"
+msgstr "Tapahtuma (kenen toimesta)"
+
+msgid "Project funding"
+msgstr "Projektin rahoitustunniste"

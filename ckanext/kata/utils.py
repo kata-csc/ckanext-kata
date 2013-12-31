@@ -4,7 +4,6 @@ Utility functions for Kata.
 """
 
 from ckan.lib.email_notifications import send_notification
-from pylons.i18n import _
 from pylons import config
 from ckan.model import User, Package
 from ckan.lib import helpers as h
@@ -16,7 +15,7 @@ from lxml import etree
 import socket
 from ckanext.kata import settings
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)     # pylint: disable=invalid-name
 
 
 def generate_pid():
@@ -42,11 +41,11 @@ def send_email(req):
     admin_dict = admin.as_dict()
     admin_dict['name'] = admin.fullname if admin.fullname else admin.name
 
-    msg = u'{a} ({b}) is requesting editing rights to dataset\n\n{c}\n\n\
+    msg = u'{a} ({b}) is requesting editing rights to the metadata in dataset\n\n{c}\n\n\
 for which you are currently an administrator. Please click this \
 link if you want to allow this user to edit the metadata of the dataset:\n\
-{d}\n\n{a} ({b}) pyytää muokkausoikeuksia tietoaineistoon\n\n{c}\n\n\
-jonka ylläpitäjä olet. Klikkaa linkkiä, jos haluat tämän käyttäjän \
+{d}\n\n{a} ({b}) pyytää muokkausoikeuksia tietoaineiston\n\n{c}\n\n\
+metatietoihin, joiden ylläpitäjä olet. Klikkaa linkkiä, jos haluat tämän käyttäjän \
 saavan muokkausoikeudet aineiston metatietoihin:\n\
 {d}\n'
 
@@ -73,8 +72,8 @@ def convert_to_text(resource, resource_fname):
     else:
         convert_fd, convert_path = tempfile.mkstemp()
         log.debug(resource_fname)
-        p = subprocess.Popen([prog, resource_fname], stdout=convert_fd)
-        p.communicate()
+        process = subprocess.Popen([prog, resource_fname], stdout=convert_fd)
+        process.communicate()
         return convert_fd, convert_path
 
 
@@ -117,9 +116,9 @@ def label_list_yso(tag_url):
         for tag in ('yso-meta:prefLabel', 'rdfs:label', 'yso-meta:altLabel',):
             nodes = descr.xpath('./%s' % tag, namespaces=_tagspaces)
             for node in nodes:
-                t = node.text.strip() if node.text else ''
-                if t:
-                    labels.append(t)
+                text = node.text.strip() if node.text else ''
+                if text:
+                    labels.append(text)
     return labels
 
 
@@ -140,7 +139,7 @@ def resource_to_dataset(data_dict):
                 break
 
     if not resource and 'id' in data_dict:
-        log.debug('Dataset without a dataset resource: %s' % data_dict['id'])
+        log.debug('Dataset without a dataset resource: %s', data_dict['id'])
         return data_dict
 
     if resource:
@@ -176,11 +175,12 @@ def dataset_to_resource(data_dict):
 
     if data_dict.get('availability') != 'direct_download':
         if resource_index is not None:
+            # Remove the found 'dataset' resource if availability is not 'direct_download'.
             data_dict['resources'].pop(resource_index)
         return data_dict
 
     if resource_index is None:
-        # Resources present, but no 'dataset' resource found. Add resource to the end of list.
+        # Resources present, but no 'dataset' resource found. Add resource to the beginning of list.
         data_dict['resources'].insert(0, {})
         resource_index = 0
 

@@ -145,13 +145,6 @@ class KataMetadata(SingletonPlugin):
                     action="render_faq")
         return map
 
-    def before_insert(self, mapper, connection, instance):
-        """
-        Override IMapper.before_insert(). Receive an object instance before that instance is INSERTed.
-        """
-        if isinstance(instance, Package) and not instance.id:
-            instance.id = utils.generate_pid()
-
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
@@ -375,6 +368,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
 
+        schema['id'] = [default(utils.generate_pid())]
         schema['langtitle'] = {'value': [not_missing, unicode, validate_title, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
 
@@ -460,8 +454,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
         
-        schema['owner'] = [ignore_missing]
-        schema['contact_phone'].insert(0, ignore_missing)
+        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         #schema['contact_URL'].insert(0, ignore_missing)
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         #schema['maintainer_email'].insert(0, ignore_missing)
@@ -495,7 +489,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         return schema
 
-
     def update_package_schema(self):
         """
         Return the schema for validating updated dataset dicts.
@@ -508,7 +501,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
         return schema
     
-    def update_package_schema_oai_dc(self):
+    @classmethod
+    def update_package_schema_oai_dc(cls):
         '''
         Modified schema for datasets imported with oai_dc reader.
         Some fields are missing, as the dublin core format
@@ -516,7 +510,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         
         :return schema
         '''
-        schema = self.create_package_schema_oai_dc()
+        schema = cls.create_package_schema_oai_dc()
         
         schema['id'] = [ignore_missing, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]

@@ -1,41 +1,49 @@
 <section class="module-content additional-info">
 <h3>{{ _('General information') }}</h3>
+{% if pkg_dict.language or pkg_dict.langdis %}
 <table class="table table-striped table-bordered table-condensed">
      <tbody>
-	{% if pkg_dict.language or pkg_dict.langdis %}
 	<tr>
 		<th class="dataset-label">{{ _('Language') }}</th>
 		<td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}{{ _('No language') }}{% endif%}</td>
 	</tr>
-	{% endif %}
-	{% if pkg_dict.langtitle %}
+	</tbody>
+</table>
+{% endif %}
+{% if pkg_dict.langtitle %}
+<h4>{{ _('Titles') }}</h4>
+<table class="table table-striped table-bordered table-condensed">
+	<tbody>
 	<tr>
-		<th class="dataset-label" colspan="2">{{ _('Titles') }}</th>
+		<th>{{ _('Title') }}</th>
+		<th>{{ _('Language') }}</th>
 	</tr>
 	{% for langtitle in pkg_dict.langtitle %}
 	<tr>
-		<td>{{ langtitle.lang }}</td>
 		<td>{{ langtitle.value }}</td>
+		<td>{{ langtitle.lang }}</td>
 	</tr>
 	{% endfor %}
-	{% endif %}
-	{% if pkg_dict.orgauth %}
-	<tr>
-		<th class="dataset-label" colspan="2">{{ _('Authors')}}</th>
-	</tr>
+	</tbody>
+</table>
+{% endif %}
+{% if pkg_dict.orgauth %}
+<h4>{{ _('Authors')}}</h4>
+<table class="table table-striped table-bordered table-condensed">
+	<tbody>
 	<tr>
 		<th>{{ _('Name') }}</th>
 		<th>{{ _('Organisation') }}</th>
 	</tr>
-		{% for orgauth in pkg_dict.orgauth %}
-		<tr>
-			<td>{{ orgauth.value }}</td>
-			<td>{{ orgauth.org }}</td>
-		</tr>
-		{% endfor %}
-	{% endif %}
+	{% for orgauth in pkg_dict.orgauth %}
+	<tr>
+		<td>{{ orgauth.value }}</td>
+		<td>{{ orgauth.org }}</td>
+	</tr>
+	{% endfor %}
 	</tbody>
 </table>
+{% endif %}
 </section>
 <section class="module-content">
 <h3>{{ _('Description') }}</h3>
@@ -64,17 +72,15 @@
 {% if pkg_dict.license_title %}{{ _(' with license as ') }}{{pkg_dict.license_title}}
     {%- if pkg_dict.license_URL %}, {{pkg_dict.license_URL}}
     {%- endif -%}
-{%- endif %}.
+{%- endif %}
 </div>
 </section>
 <section class="module-content additional-info">
 <h3>{{ _('Contact information') }}</h3>
+{% if pkg_dict.maintainer %}
+<h4>{{ _('Primary contact') }}</h4>
 <table class="table table-striped table-bordered table-condensed">
 	<tbody>
-	 {% if pkg_dict.maintainer %}
-	<tr>
-		<th class="dataset-label" colspan="2">{{ _('Primary contact') }}</th>
-	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Name') }}</th>
 		<td class="dataset-details">{{ pkg_dict.maintainer }}</td>
@@ -92,14 +98,16 @@
 		{% endif %}
 	</tr>
 	<tr>
-		<th class="dataset-label">{{ _('Contact URL') }}</th>
+		<th class="dataset-label">{{ _('Homepage') }}</th>
 		<td class="dataset-details"><a href="{{ pkg_dict.contact_URL }}">{{ pkg_dict.contact_URL }}</a></td>
 	</tr>
-    {% endif%}
-    {% if pkg_dict.project_name %}
-	<tr>
-		<th class="dataset-label" colspan="2">{{ _('Project information') }}</th>
-	</tr>
+	</tbody>
+</table>
+{% endif%}
+{% if pkg_dict.project_name %}
+<h4>{{ _('Project information') }}</h4>
+<table class="table table-striped table-bordered table-condensed">
+	<tbody>
 	<tr>
 		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.project_name }}</td>
 	</tr>
@@ -109,29 +117,27 @@
 	<tr>
 		<th class="dataset-label">{{ _('Homepage') }}</th><td class="dataset-details"><a href="{{ pkg_dict.project_homepage }}">{{ pkg_dict.project_homepage }}</a></td>
 	</tr>
-    {% endif%}
+	</tbody>
+</table>
+{% endif%}
+<h4>{{ _('Other stakeholders') }}</h4>
+<table class="table table-striped table-bordered table-condensed">
+	<tbody>
     {% if pkg_dict.contributor %}
 	<tr>
-		<th class="dataset-label" colspan="2">{{ _('Contributor') }}</th>
-	</tr>
-	<tr>
-		<td class="dataset-details" colspan="2">{{ pkg_dict.contributor }}</td>
+		<th class="dataset-label">{{ _('Contributor') }}</th>
+		<td class="dataset-details">{{ pkg_dict.contributor }}</td>
 	</tr>
     {% endif %}
     {% if pkg_dict.producer %}
 	<tr>
-		<th class="dataset-label" colspan="2">{{ _('Producer') }}</th>
-	</tr>
-	<tr>
-		<td class="dataset-details" colspan="2">{{ pkg_dict.producer }}</td>
+		<th class="dataset-label">{{ _('Producer') }}</th>
+		<td class="dataset-details">{{ pkg_dict.producer }}</td>
 	</tr>
     {% endif %}
     {% if pkg_dict.owner %}
     <tr>
-		<th class="dataset-label" colspan="2">{{ _('Owner') }}</th>
-	</tr>
-	<tr>
-	    <th class="dataset-details">{{ _('Owner identity') }}</th>
+		<th class="dataset-label">{{ _('Owner') }}</th>
 		<td class="dataset-details">{{ pkg_dict.owner }}</td>
 	</tr>
     {% endif %}
@@ -139,7 +145,7 @@
 </table>
 </section>
 <section class="module-content additional-info">
-<h3>{{ _('Identification information') }}</h3>
+<h3>{{ _('Identification information of data') }}</h3>
 <table class="table table-striped table-bordered table-condensed">
 	{% if pkg_dict.version %}
 	<tr>
