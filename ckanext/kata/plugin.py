@@ -4,45 +4,75 @@
 Main plugin file for Kata CKAN extension
 """
 
-import logging
 import datetime
-
+import logging
 import os
 
-from ckan.plugins import implements, SingletonPlugin, toolkit
-from ckan.plugins import IPackageController, IDatasetForm, IConfigurer, ITemplateHelpers
-from ckan.plugins import IRoutes
-from ckan.plugins import IConfigurable
-from ckan.plugins import IMapper
-from ckan.plugins import IActions
-from ckan.plugins import IAuthFunctions
-from ckan.plugins.core import unload
 from ckan.lib.base import g, c
-from ckan.model import Package
-from ckan.lib.plugins import DefaultDatasetForm
-from ckan.logic.schema import default_show_package_schema, \
-    default_create_package_schema
-from ckan.logic.validators import package_id_not_changed, owner_org_validator
-from ckan.lib.navl.validators import ignore_missing, not_empty, not_missing, default, \
-    ignore
-from ckanext.kata.validators import check_project, validate_kata_date, \
-    check_junk, check_last_and_update_pid, \
-    validate_email, validate_phonenum, \
-    check_project_dis, check_direct_download_url, check_access_request_url, check_access_application_url, \
-    check_author_org, kata_tag_string_convert, \
-    kata_tag_name_validator, validate_general, \
-    validate_discipline, validate_spatial, validate_title, \
-    validate_mimetype, validate_algorithm, validate_kata_date_relaxed
-from ckanext.kata.converters import event_from_extras, \
-    event_to_extras, ltitle_from_extras, ltitle_to_extras, \
-    org_auth_from_extras, pid_from_extras, \
-    remove_disabled_languages, checkbox_to_boolean, \
-    org_auth_to_extras, update_pid, convert_from_extras_kata, convert_to_extras_kata, \
-    convert_languages, org_auth_to_extras_oai
-from ckanext.kata import actions, auth_functions, utils
 import ckan.lib.helpers as h
-from ckan.logic.validators import tag_length_validator, vocabulary_id_exists, \
-    url_validator, package_name_validator
+from ckan.lib.navl.validators import (default,
+                                      ignore,
+                                      ignore_missing,
+                                      not_empty,
+                                      not_missing)
+from ckan.lib.plugins import DefaultDatasetForm
+from ckan.logic.schema import (default_create_package_schema,
+                               default_show_package_schema)
+from ckan.logic.validators import (owner_org_validator,
+                                   package_id_not_changed,
+                                   package_name_validator,
+                                   tag_length_validator,
+                                   url_validator,
+                                   vocabulary_id_exists)
+from ckan.plugins import (implements,
+                          toolkit,
+                          IActions,
+                          IAuthFunctions,
+                          IConfigurable,
+                          IConfigurer,
+                          IDatasetForm,
+                          IMapper,
+                          IPackageController,
+                          IRoutes,
+                          ITemplateHelpers,
+                          SingletonPlugin)
+from ckan.plugins.core import unload
+from ckanext.kata.validators import (check_access_application_url,
+                                     check_access_request_url,
+                                     check_author_org,
+                                     check_direct_download_url,
+                                     check_junk,
+                                     check_last_and_update_pid,
+                                     check_project,
+                                     check_project_dis,
+                                     kata_tag_name_validator,
+                                     kata_tag_string_convert,
+                                     validate_algorithm,
+                                     validate_discipline,
+                                     validate_email,
+                                     validate_general,
+                                     validate_kata_date,
+                                     validate_kata_date_relaxed,
+                                     validate_mimetype,
+                                     validate_phonenum,
+                                     validate_spatial,
+                                     validate_title)
+from ckanext.kata.converters import (checkbox_to_boolean,
+                                     convert_from_extras_kata,
+                                     convert_languages,
+                                     convert_to_extras_kata,
+                                     event_from_extras,
+                                     event_to_extras,
+                                     ltitle_from_extras,
+                                     ltitle_to_extras,
+                                     org_auth_from_extras,
+                                     org_auth_to_extras,
+                                     org_auth_to_extras_oai,
+                                     pid_from_extras,
+                                     remove_disabled_languages,
+                                     update_pid,
+                                     xpath_to_extras)
+from ckanext.kata import actions, auth_functions, utils
 import ckanext.kata.settings as settings
 
 
@@ -484,6 +514,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
+        schema['xpaths'] = [xpath_to_extras]
         # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
         #                      'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
 
