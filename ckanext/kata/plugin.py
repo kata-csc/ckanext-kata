@@ -72,7 +72,7 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      remove_disabled_languages,
                                      update_pid,
                                      xpath_to_extras)
-from ckanext.kata import actions, auth_functions, utils
+from ckanext.kata import actions, auth_functions
 import ckanext.kata.settings as settings
 
 
@@ -398,7 +398,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
 
-        schema['id'] = [default(utils.generate_pid())]
+        schema['id'] = [default(u''), update_pid, unicode]
         schema['langtitle'] = {'value': [not_missing, unicode, validate_title, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
 
@@ -409,7 +409,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['language'] = [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
         schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
-        schema['maintainer_email'].append(validate_email)
+        schema['maintainer_email'] = [not_empty, unicode, validate_email]
 
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update

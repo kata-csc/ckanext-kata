@@ -81,7 +81,7 @@ KATA_FIELDS_REQUIRED = ['availability',
                         'owner',
                         'contact_phone',
                         'projdis',
-                        'maintainer_email',
+                        #'maintainer_email',
                         'version_PID']
 
 # Recommended extras fields
