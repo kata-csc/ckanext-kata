@@ -21,6 +21,7 @@ from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized
 from ckanext.kata import utils
+import ckanext.kata.schemas as schemas
 
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
@@ -157,6 +158,13 @@ def package_update(context, data_dict):
     # dropped in package_update(). When updating a dataset via UI or API, the conversion to extras occur in
     # package_update() and popping extras here should have no effect.
     data_dict.pop('extras', None)
+    # TODO Apply correct schema depending on dataset
+    # This is quick resolution. More robust way would be to check through
+    # model.Package to which harvest source the dataset belongs and then get the
+    # type of the harvester (eg. DDI)
+    # if data_dict['name'].startswith('FSD'):
+    #     context['schema'] = schemas.update_package_schema_ddi()
+
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
 
     # Logging for production use
