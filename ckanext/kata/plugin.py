@@ -404,9 +404,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
                              'org': [not_missing, unicode, validate_general]}
-
-        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
-        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
+        # TODO: Move these *_relaxed versions to DDI specific schema
+        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
+        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['language'] = [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
         schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
         schema['maintainer_email'].append(validate_email)
@@ -509,11 +509,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         '''
         # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
-        # schema['contact_phone'].insert(0, ignore_missing)
-        schema['contact_phone'] = [ignore_missing]
+
+        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
+        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
+        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['xpaths'] = [xpath_to_extras]
         # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
         #                      'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
