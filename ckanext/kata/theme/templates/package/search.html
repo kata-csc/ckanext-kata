@@ -179,12 +179,8 @@
 
       <div class="results">
         <strong>
-          {%- if request.params and c.page.item_count -%}
-            {{ c.page.item_count }} {{ _(" datasets") }} {{ _(" found with query") if c.q }}
-            <br/>
-            {#{{ "\"{query}\"".format(query=c.q.encode('utf8')) if c.q }}#}
-          {%- elif request.params and c.page.item_count == 0 -%}
-            {{ _('Sorry no datasets found.').format(query=c.q) }}
+          {%- if c.q -%}
+            {% snippet 'snippets/search_result_text.html', query=c.q, count=c.page.item_count, type='dataset' %}
           {%- else -%}
             {{ _('All datasets') }}
           {%- endif -%}
@@ -207,8 +203,8 @@
           {% endfor %}
         </div>
 
-        {% if request.params and c.page.item_count == 0 %}
-        <p class="extra">{{ _('Please try another search term.') }}</p>
+        {% if c.q and c.page.item_count == 0 %}
+          <p class="extra">{{ _('Please try another search term.') }}</p>
         {% endif %}
       </div>
 
