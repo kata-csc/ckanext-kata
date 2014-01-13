@@ -7,6 +7,7 @@ Test classes for Kata CKAN Extension.
 """
 
 import copy
+import logging
 from unittest import TestCase
 from collections import defaultdict
 
@@ -870,8 +871,13 @@ class TestCreateDataset(TestCase):
         data.pop('language')
         data['projdis'] = u'True'
 
+        # Hide validation error message
+        # log = logging.getLogger('ckan.controllers')     # pylint: disable=invalid-name
+        # log.disabled = True
+
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
                                 status=409, **data)
+        # log.disabled = False
 
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
