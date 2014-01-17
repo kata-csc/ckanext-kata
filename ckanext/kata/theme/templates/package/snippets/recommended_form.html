@@ -28,7 +28,7 @@
           <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Specify the geographical areas or locations that your dataset pertains to. This could be for example the location where the data has been collected or the region where the research subjects live.<br /><br />Once you start typing, you will automatically get suggestions for matching geographical names. You can then select the appropriate location from the list of suggestions with a mouse click, or you can enter one of your own. If you make a mistake, you can remove a location by clicking the \'x\' next to it.<br /><br />You can change the language of suggested names from the language menu.<br /><br />The suggestions are retrieved from the ONKI vocabulary service (http://onki.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
           <span class="kata-btn-span tta-orange">?</span></button><br /><br />
           {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/location_autocomplete?incomplete=?'} %}
-          {{ form.input('geographic_coverage', id='geographic_coverage_field', label=_('Locations'), placeholder=_('eg. Finland'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-full'], attrs=tag_attrs) }}
+          {{ form.input('geographic_coverage', id='geographic_coverage_field', label=_('Locations'), placeholder=_('eg. Finland'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium'], attrs=tag_attrs) }}
           {% if errors.geographic_coverage %}
             <span class="error-block">{{ errors.geographic_coverage[0] }}</span>
           {% endif %}
@@ -101,7 +101,7 @@
           <span class="kata-btn-span tta-orange">?</span></button><br /><br />
 
           {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?'} %}
-          {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-full'], attrs=tag_attrs) }}
+          {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-medium'], attrs=tag_attrs) }}
           {% if errors.discipline %}
             <span class="error-block">{{ errors.discipline[0] }}</span>
           {% endif %}
