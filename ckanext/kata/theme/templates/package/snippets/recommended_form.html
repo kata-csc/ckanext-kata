@@ -92,8 +92,8 @@
         
         {# ONKI selector for discipline/branch of science #}
 
-        <div class="onki-area">
-          <span class="onki-heading">
+        <div class="kata-multi-input">
+          <span class="kata-multi-heading">
           {{ _('Discipline/branch of science') }}
           </span><br />
           {{ _('Search keywords from OKM-TIETEENALA ontology, select keywords with enter or mouse click.') }}
@@ -101,7 +101,7 @@
           <span class="kata-btn-span tta-orange">?</span></button><br /><br />
 
           {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?'} %}
-          {{ form.input('discipline', id='field-discipline', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-full'], attrs=tag_attrs) }}
+          {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-full'], attrs=tag_attrs) }}
           {% if errors.discipline %}
             <span class="error-block">{{ errors.discipline[0] }}</span>
           {% endif %}
