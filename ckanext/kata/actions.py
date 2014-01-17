@@ -183,11 +183,6 @@ def package_update(context, data_dict):
     #             u'type': u'version',
     #         })
 
-    # This is a consequence of removing the ckan_phase!
-    # The solution might not be good, if further problems arise
-    # a better fix will be made
-    context['allow_partial_update'] = True
-
     # This fixes extras fields being cleared when adding a resource. This is be because the extras are not properly
     # cleared in show_package_schema conversions. Some fields stay in extras and they cause all other fields to be
     # dropped in package_update(). When updating a dataset via UI or API, the conversion to extras occur in
