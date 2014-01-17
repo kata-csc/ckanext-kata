@@ -4,6 +4,8 @@ Controllers for Kata.
 """
 
 import logging
+import urllib2
+import json
 from rdflib.term import Identifier, URIRef, Literal
 from rdflib.namespace import XSD
 
@@ -12,6 +14,7 @@ from pylons import response, config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
 
+from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.user import UserController
 import ckan.lib.i18n
@@ -214,6 +217,33 @@ class MetadataController(BaseController):
         else:
             return ""
 
+
+class KATAApiController(ApiController):
+    '''
+    Functions for autocomplete fields in add dataset form
+    '''
+
+    def tag_autocomplete(self):
+        q = request.params.get('incomplete', '')
+        tag_names = []
+        if q:
+            url = self._get_onki_url(q, "yso")
+            data = urllib2.urlopen(url).read()
+            jsondata = json.loads(data)
+            if u'results' in jsondata:
+                results = jsondata['results']
+                tag_names = [concept['prefLabel'].encode('utf-8') for concept in results]
+
+        result_set = {
+            'ResultSet': {
+                'Result': [{'Name': label} for label in tag_names]
+            }
+        }
+        return self._finish_ok(result_set)
+
+    def _get_onki_url(self, query, vocab):
+        url_template = "http://kansalliskirjasto.onki.fi/rest/v1/search?query={q}*&vocab={v}"
+        return url_template.format(q=query, v=vocab)
 
 class AccessRequestController(BaseController):
     '''
