@@ -231,6 +231,10 @@ class KATAApiController(ApiController):
         query = request.params.get('incomplete', '')
         return self._onki_autocomplete(query, "okm-tieteenala")
 
+    def location_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "paikat")
+
     def _onki_autocomplete(self, query, vocab):
         url_template = "http://kansalliskirjasto.onki.fi/rest/v1/search?query={q}*&vocab={v}"
 

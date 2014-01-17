@@ -117,6 +117,10 @@ class KataMetadata(SingletonPlugin):
                     controller=api_controller,
                     conditions=get,
                     action="discipline_autocomplete")
+        map.connect('/api/2/util/location_autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="location_autocomplete")
         map.connect('/api/2/util/tag/autocomplete',
                     controller=api_controller,
                     conditions=get,

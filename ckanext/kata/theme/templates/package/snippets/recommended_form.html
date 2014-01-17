@@ -20,17 +20,15 @@
         
         {# ONKI selector for spatial data #}
 
-        <div class="onki-area">
-          <span class="onki-heading">
+        <div class="kata-multi-input">
+          <span class="kata-multi-heading">
           {{ _('Spatial coverage') }}
           </span><br />
-          {{ _('Search location from SUO ontology, select locations with enter or mouse click.') }}
+          {{ _('Search location from location name database, select locations with enter or mouse click.') }}
           <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Specify the geographical areas or locations that your dataset pertains to. This could be for example the location where the data has been collected or the region where the research subjects live.<br /><br />Once you start typing, you will automatically get suggestions for matching geographical names. You can then select the appropriate location from the list of suggestions with a mouse click, or you can enter one of your own. If you make a mistake, you can remove a location by clicking the \'x\' next to it.<br /><br />You can change the language of suggested names from the language menu.<br /><br />The suggestions are retrieved from the ONKI vocabulary service (http://onki.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
           <span class="kata-btn-span tta-orange">?</span></button><br /><br />
-          <input name='geographic_coverage_field' id='geographic_coverage_field' placeholder="{{ _('eg. Finland') }}" class='control-medium' onkeyup="onki['suo'].search({'fieldShared' : true, 'fetchLabels' : true, 'fetchUris' : false, 'fieldLabel' : '{{ _('Search:') }}', 'fieldName' : 'geographic_coverage', 'languageMenu' : true, 'onkimenu' : false, 'openonkibutton' : false, 'prefix' : false, 'showOnkiName' : false, 'showCaptions' : false, 'delimiter' : ','})">
-          {% if data.geographic_coverage %}
-            <input class="hidden-concept-value-field" type="hidden" name="geographic_coverage" value='{{ data.geographic_coverage }}'>   
-          {% endif %}
+          {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/location_autocomplete?incomplete=?'} %}
+          {{ form.input('geographic_coverage', id='geographic_coverage_field', label=_('Locations'), placeholder=_('eg. Finland'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-full'], attrs=tag_attrs) }}
           {% if errors.geographic_coverage %}
             <span class="error-block">{{ errors.geographic_coverage[0] }}</span>
           {% endif %}
