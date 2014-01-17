@@ -101,11 +101,9 @@
           {{ _('Search keywords from OKM-TIETEENALA ontology, select keywords with enter or mouse click.') }}
           <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the ONKI vocabulary service (http://onki.fi/en/). The vocabulary is only available in Finnish at this time. Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
           <span class="kata-btn-span tta-orange">?</span></button><br /><br />
-          {# Note: there seems to be problems with default values (in edit) if language menu is disabled. #}
-          <input name='discipline_field' id='discipline_field' placeholder="{{ _('eg. Matematiikka') }}" class='control-medium' onkeyup="onki['okm-tieteenala'].search({'fetchLabels' : true, 'fetchUris' : false, 'fieldLabel' : '{{ _('Search:') }}', 'fieldName' : 'discipline', 'languageMenu' : true, 'onkimenu' : false, 'openonkibutton' : false, 'prefix' : false, 'showOnkiName' : false, 'showCaptions' : false, 'maxSelect' : 1})">
-          {% if data.discipline %}
-            <input class="hidden-concept-value-field" type="hidden" name="discipline" value='{{ data.discipline }}'>   
-          {% endif %}
+
+          {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?'} %}
+          {{ form.input('discipline', id='field-discipline', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-full'], attrs=tag_attrs) }}
           {% if errors.discipline %}
             <span class="error-block">{{ errors.discipline[0] }}</span>
           {% endif %}

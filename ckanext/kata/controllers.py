@@ -224,26 +224,32 @@ class KATAApiController(ApiController):
     '''
 
     def tag_autocomplete(self):
-        q = request.params.get('incomplete', '')
-        tag_names = []
-        if q:
-            url = self._get_onki_url(q, "yso")
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "yso")
+
+    def discipline_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "okm-tieteenala")
+
+    def _onki_autocomplete(self, query, vocab):
+        url_template = "http://kansalliskirjasto.onki.fi/rest/v1/search?query={q}*&vocab={v}"
+
+        labels = []
+        if query:
+            url = url_template.format(q=query, v=vocab)
             data = urllib2.urlopen(url).read()
             jsondata = json.loads(data)
             if u'results' in jsondata:
                 results = jsondata['results']
-                tag_names = [concept['prefLabel'].encode('utf-8') for concept in results]
+                labels = [concept['prefLabel'].encode('utf-8') for concept in results]
 
         result_set = {
             'ResultSet': {
-                'Result': [{'Name': label} for label in tag_names]
+                'Result': [{'Name': label} for label in labels]
             }
         }
         return self._finish_ok(result_set)
 
-    def _get_onki_url(self, query, vocab):
-        url_template = "http://kansalliskirjasto.onki.fi/rest/v1/search?query={q}*&vocab={v}"
-        return url_template.format(q=query, v=vocab)
 
 class AccessRequestController(BaseController):
     '''
