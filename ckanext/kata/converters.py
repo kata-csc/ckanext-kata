@@ -42,9 +42,11 @@ def org_auth_to_extras(key, data, errors, context):
         data[('extras',)] = extras
     if len(data[key]) > 0:
         if key[0] == 'orgauth':
-            if not ('orgauth', key[1], 'org') in data or len(data[('orgauth', key[1], 'org')]) == 0:
+            if (not ('orgauth', key[1], 'org') in data or
+                    len(data[('orgauth', key[1], 'org')]) == 0):
                 errors[key].append(_('Organisation is missing'))
-            if not ('orgauth', key[1], 'value') in data or len(data[('orgauth', key[1], 'value')]) == 0:
+            if (not ('orgauth', key[1], 'value') in data or
+                    len(data[('orgauth', key[1], 'value')]) == 0):
                 errors[key].append(_('Author is missing'))
 
         oval = data[(key[0], key[1], 'org')]
@@ -65,9 +67,31 @@ def org_auth_to_extras_oai(key, data, errors, context):
     if len(data[key]) > 0:
         if key[0] == 'orgauth':
             # Todo, this is not needed, requires replanning
-            if (not ('orgauth', key[1], 'org') in data or len(data[('orgauth', key[1], 'org')]) == 0) and \
-            (not ('orgauth', key[1], 'value') in data or len(data[('orgauth', key[1], 'value')]) == 0):
+            if (not ('orgauth', key[1], 'org') in data or
+                        len(data[('orgauth', key[1], 'org')]) == 0) and \
+               (not ('orgauth', key[1], 'value') in data or
+                        len(data[('orgauth', key[1], 'value')]) == 0):
                 errors[key].append(_('Author and organization is missing'))
+
+        oval = data[(key[0], key[1], 'org')]
+
+        extras.append({'key': "author_%s" % key[1],
+                      'value': data[key]})
+        extras.append({'key': 'organization_%s' % key[1],
+                       'value': oval
+                       })
+
+
+# TODO This and *_oai above should be merged and reviewed.
+def org_auth_to_extras_ddi(key, data, errors, context):
+    extras = data.get(('extras',), [])
+    if not extras:
+        data[('extras',)] = extras
+    if len(data[key]) > 0:
+        if key[0] == 'orgauth':
+            if (not ('orgauth', key[1], 'value') in data or
+                        len(data[('orgauth', key[1], 'value')]) == 0):
+                errors[key].append(_('Author is missing'))
 
         oval = data[(key[0], key[1], 'org')]
 

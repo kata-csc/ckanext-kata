@@ -68,6 +68,7 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      org_auth_from_extras,
                                      org_auth_to_extras,
                                      org_auth_to_extras_oai,
+                                     org_auth_to_extras_ddi,
                                      pid_from_extras,
                                      remove_disabled_languages,
                                      update_pid,
@@ -517,8 +518,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['xpaths'] = [xpath_to_extras]
-        # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
-        #                      'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
+        schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_ddi, validate_general],
+                             'org': [ignore_missing, unicode, validate_general]}
 
         return schema
 
