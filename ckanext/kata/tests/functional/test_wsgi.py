@@ -1,61 +1,44 @@
-#pylint: disable=R0201, R0904
+# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable
 
 '''
-Functional tests for controllers
+Test Kata's web user interface with Pylons WSGI application.
 '''
 
-from pylons import config
-import paste.fixture    # pylint: disable=F0401
 import re
 
-from ckan.config.middleware import make_app
-from ckan.lib.create_test_data import CreateTestData
-from ckan.tests import WsgiAppCase, CommonFixtureMethods, url_for
-from ckan.tests.html_check import HtmlCheckMethods
+from ckan.tests import url_for
 import ckan.model as model
-from ckanext.kata import model as kata_model
+
 import ckanext.kata.settings as settings
+from ckanext.kata.tests.functional import KataWsgiTestCase
 
-from ckan.model.authz import add_user_to_role
 
-
-class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+class TestPages(KataWsgiTestCase):
     """
-    tests for Kata's controllers and routing.
+    Simple tests to see that pages render properly.
     """
-    
-    @classmethod
-    def setup_class(cls):
-        """Set up testing environment."""
-
-        kata_model.setup()
-        CreateTestData.create()
-
-        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
-        cls.app = paste.fixture.TestApp(wsgiapp)
-
-    @classmethod
-    def teardown_class(cls):
-        """Get away from testing environment."""
-
-        kata_model.delete_tables()
-        CreateTestData.delete()
 
     def test_help_page(self):
         """
         Test that help page is found and rendered.
         """
         offset = url_for('/help')
-        res = self.app.post(offset)
-        assert res.status == 200, 'Wrong HTTP status code (not 200)'
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
 
     def test_faq_page(self):
         """
         Test that faq page is found and rendered.
         """
         offset = url_for('/faq')
-        res = self.app.post(offset)
-        assert res.status == 200, 'Wrong HTTP status code (not 200)'
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+
+
+class TestResources(KataWsgiTestCase):
+    """
+    Test that resources are handled properly in WUI.
+    """
 
     def test_data_and_resources_not_rendered(self):
         """
@@ -77,8 +60,6 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
         """
         Resource type settings.RESOURCE_TYPE_DATASET should not render Edit-button.
         """
-        #offset = url_for(controller='package', action='read', id=u'annakarenina')
-
         res_id = None
 
         pkg = model.Package.get(u'annakarenina')
@@ -90,42 +71,36 @@ class TestKataControllers(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
                 res_id = resource.id
 
         offset = '/en' + url_for(controller='package', action='resource_read',
-                               id=u'annakarenina', resource_id=res_id)
+                                 id=u'annakarenina', resource_id=res_id)
 
         extra_environ = {'REMOTE_USER': 'tester'}
         result = self.app.get(offset, extra_environ=extra_environ)
 
         assert 'Full text.' in result.body
 
-        regex = re.compile('<a.*href.*>.*Edit\w*</a>')
+        regex = re.compile(r'<a.*href.*>.*Edit\w*</a>')
         assert not regex.search(result.body), "%r" % result.body
 
-        # Sanity check
-        assert 'Edit Profile' in result.body
+        assert 'Edit Profile' in result.body    # Sanity check
 
 
-class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+class TestRdfExport(KataWsgiTestCase):
     '''
-    Tests for Kata's ContactController (and related routing).
+    Test RDF export.
     '''
 
-    @classmethod
-    def setup_class(cls):
-        '''Set up testing environment.'''
+    def test_has_rdf_tags(self):
+        offset = url_for(controller='package', action='read', id=u'warandpeace') + '.rdf'
+        res = self.app.get(offset)
 
-        kata_model.setup()
-        CreateTestData.create()
+        assert "<rdf" in res
+        assert "</rdf" in res
 
-        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
-        cls.app = paste.fixture.TestApp(wsgiapp)
 
-    @classmethod
-    def teardown_class(cls):
-        '''Get away from testing environment.'''
-
-        kata_model.delete_tables()
-        CreateTestData.delete()
-
+class TestContactForm(KataWsgiTestCase):
+    '''
+    Test dataset contact form
+    '''
 
     def test_contact_controller_no_user(self):
         """
@@ -153,58 +128,11 @@ class TestContactController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
         assert all(piece in res.body for piece in ['<form', '/contact/send/', '</form>']), 'Contact form not rendered'
 
 
-class TestMetadataController(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
-    '''
-    Tests for Kata's MetadataController (and related routing).
-    '''
-
-    @classmethod
-    def setup_class(cls):
-        '''Set up testing environment.'''
-
-        kata_model.setup()
-        CreateTestData.create()
-
-        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
-        cls.app = paste.fixture.TestApp(wsgiapp)
-
-    @classmethod
-    def teardown_class(cls):
-        '''Get away from testing environment.'''
-
-        kata_model.delete_tables()
-        CreateTestData.delete()
-
-    def test_tordf(self):
-        '''Test RDF export.'''
-
-        offset = url_for(controller='package', action='read', id=u'warandpeace') + '.rdf'
-        res = self.app.get(offset)
-
-        assert "<rdf" in res
-        assert "</rdf" in res
-        
-class TestKataAuthorisation(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods):
+class TestAuthorisation(KataWsgiTestCase):
     '''
     Test Kata authorisation functions
     '''
-    @classmethod
-    def setup_class(cls):
-        '''Set up testing environment.'''
 
-        kata_model.setup()
-        CreateTestData.create()
-
-        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
-        cls.app = paste.fixture.TestApp(wsgiapp)
-        
-    @classmethod
-    def teardown_class(cls):
-        """Get away from testing environment."""
-
-        kata_model.delete_tables()
-        CreateTestData.delete()
-        
     def test_edit_not_available(self):
         '''
         Test that edit page is not available for random user
@@ -233,7 +161,7 @@ class TestKataAuthorisation(WsgiAppCase, HtmlCheckMethods, CommonFixtureMethods)
         user = model.User.get(user_id)
         pkg = model.Package.get(pkg_id)
         model.meta.Session.commit()
-        add_user_to_role(user, 'editor', pkg)
+        model.authz.add_user_to_role(user, 'editor', pkg)
 
         extra_environ = {'REMOTE_USER': 'tester'}
         res = self.app.get(offset, extra_environ=extra_environ)
