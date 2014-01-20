@@ -1,19 +1,13 @@
 case "$1" in
 	selenium )
-		echo "Running selenium tests";
+		echo "Running normal tests and selenium tests";
+		nosetests --ckan --with-pylons=ckanext-kata/test-core.ini ckanext-kata/ckanext/kata/tests --logging-filter=ckanext.kata --logging-level=CRITICAL;
 		xvfb-run nosetests ckanext-kata/ckanext/kata/testselenium;
-		;;
-	unit )
-		echo "Running unit tests";
-		nosetests --ckan --with-pylons=ckanext-kata/test-core.ini ckanext-kata/ckanext/kata/tests --logging-filter=kata;
 		;;
 	* )
-		echo "Accepted parameters are 'selenium' and 'unit' to run only Selenium or unit tests.";
-		echo "Running all tests";
+		echo "Accepted parameter is 'selenium' to run Selenium tests after normal tests.";
+		echo "Running normal tests";
 
-		nosetests --ckan --with-pylons=ckanext-kata/test-core.ini ckanext-kata/ckanext/kata/tests --logging-filter=kata;
-		xvfb-run nosetests ckanext-kata/ckanext/kata/testselenium;
-		
-		# xvfb-run nosetests --ckan --with-pylons=ckanext-kata/test-core.ini ckanext-kata/ckanext/kata/ --logging-filter=kata;
+		nosetests --ckan --with-pylons=ckanext-kata/test-core.ini ckanext-kata/ckanext/kata/tests --logging-filter=ckanext.kata --logging-level=CRITICAL;
 		;;
 esac
