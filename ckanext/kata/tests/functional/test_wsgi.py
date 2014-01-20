@@ -1,4 +1,4 @@
-#pylint: disable=R0201, R0904
+# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable
 
 '''
 Test Kata's web user interface with Pylons WSGI application.
@@ -78,7 +78,7 @@ class TestResources(KataWsgiTestCase):
 
         assert 'Full text.' in result.body
 
-        regex = re.compile('<a.*href.*>.*Edit\w*</a>')
+        regex = re.compile(r'<a.*href.*>.*Edit\w*</a>')
         assert not regex.search(result.body), "%r" % result.body
 
         assert 'Edit Profile' in result.body    # Sanity check

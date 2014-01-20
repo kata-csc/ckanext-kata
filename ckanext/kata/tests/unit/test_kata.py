@@ -1,6 +1,6 @@
 # coding: utf-8
 #
-# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name
+# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable
 
 """
 Test classes for Kata CKAN Extension.
@@ -10,14 +10,9 @@ import copy
 from unittest import TestCase
 
 from pylons.util import PylonsContext, pylons, AttribSafeContextObj
-from pylons import config
-import paste.fixture  # pylint: disable=import-error
 
 from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 from ckanext.kata.plugin import KataPlugin
-from ckan.tests import WsgiAppCase, CommonFixtureMethods
-from ckan.tests.html_check import HtmlCheckMethods
-from ckan.config.middleware import make_app
 from ckanext.kata import settings, utils, actions
 
 
@@ -121,7 +116,6 @@ class TestKataPlugin(TestCase):
         """Get away from testing environment."""
 
         pylons.tmpl_context._pop_object()
-        pass
 
     def test_extract_search_params(self):
         """Test extract_search_params() output parameters number."""

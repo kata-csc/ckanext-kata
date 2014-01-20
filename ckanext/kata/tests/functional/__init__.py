@@ -1,14 +1,16 @@
+'''Functional test package for Kata'''
+
 import paste.fixture
 from pylons import config
 
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
 
-from ckan.tests import WsgiAppCase, CommonFixtureMethods
+from ckan.tests import WsgiAppCase
 import ckanext.kata.model as kata_model
 
 
-class KataWsgiTestCase(WsgiAppCase, CommonFixtureMethods):
+class KataWsgiTestCase(WsgiAppCase):
     '''
     Class to inherit for Kata's WSGI tests.
     '''
