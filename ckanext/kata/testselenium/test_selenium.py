@@ -166,8 +166,8 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@name='orgauth__0__org']")
             field.send_keys('CSC Oy')
 
-            # Add keyword to onki collector via onki search
-            field = browser.find_element_by_xpath("//input[@id='field-tags']")
+            # Keywords -- the actual autocomplete field lacks the id attribute, so hopefully find it by index
+            field = browser.find_elements_by_class_name('select2-choice')[1]
             field.send_keys('Selenium')
             field.send_keys(Keys.RETURN)
 
