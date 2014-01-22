@@ -213,7 +213,7 @@ def event_from_extras(evkey, data, errors, context):
 
     #evvalues = []
 
-    log.debug("event_FROM_extras(key, ...): evkey: %s" % str(evkey))
+    #log.debug("event_FROM_extras(key, ...): evkey: %s" % str(evkey))
 
     # TODO: rewrite to extract each key:value with its key's validator
     #for k in data.keys():
