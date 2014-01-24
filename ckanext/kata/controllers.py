@@ -236,7 +236,7 @@ class KATAApiController(ApiController):
         return self._onki_autocomplete(query, "paikat")
 
     def _onki_autocomplete(self, query, vocab):
-        url_template = "http://finto.fi/rest/v1/search?query={q}*&vocab={v}"
+        url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
 
         labels = []
         if query:
