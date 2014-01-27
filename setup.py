@@ -26,9 +26,6 @@ setup(
         'Orange',
         'Orange-Text',
     ],
-    tests_require=[
-            'nose',
-    ],
     package_data={'ckan': [
         'i18n/*/LC_MESSAGES/*.mo',
         ]
