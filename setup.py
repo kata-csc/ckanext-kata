@@ -24,7 +24,7 @@ setup(
         'iso8601 >= 0.1.5',
         'pycountry',
         'Orange',
-        'Orange-Text',
+        'Orange-Text == 1.2a1',
     ],
     package_data={'ckan': [
         'i18n/*/LC_MESSAGES/*.mo',
