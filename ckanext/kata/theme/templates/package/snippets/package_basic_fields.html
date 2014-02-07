@@ -246,6 +246,12 @@
 				{# TODO: UNCOMMENT WHEN REMS FUNCTIONALITY IS IMPLEMENTED { form.checkbox('access_application_new_form', label=_('Create a new access request form'), id="access_application_new_form") }#}
 			</div>
 			<input type="radio" name="availability" id="contact_owner" onclick="KATA.toggleAccess(this)" style="top: 0px" value="contact_owner" {% if data.availability == 'contact_owner'%}checked{% endif %}>{{ _('only by contacting the distributor') }}</input><br />
+			{% if data.availability == 'through_provider' %}
+        <input type="radio" name="availability" id="through_provider" onclick="KATA.toggleAccess(this)" style="top: 0px" value="through_provider" checked>{{ _('through data provider') }}</input><br />
+         <div id="urlDiv_through_provider">
+          {{ form.input('through_provider_URL', label=_('Data provider\'s web address'), id="through_provider_URL", placeholder=_('http://mydata.com'), value=data.through_provider_URL, error=errors.through_provider_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+      {% endif%}
+			</div>
 		</div>
 	</div>
 	

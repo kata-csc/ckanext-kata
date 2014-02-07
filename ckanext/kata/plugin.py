@@ -56,7 +56,8 @@ from ckanext.kata.validators import (check_access_application_url,
                                      validate_mimetype,
                                      validate_phonenum,
                                      validate_spatial,
-                                     validate_title)
+                                     validate_title,
+                                     check_through_provider_url)
 from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
                                      convert_languages,
@@ -406,9 +407,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
                              'org': [not_missing, unicode, validate_general]}
         # TODO: Move these *_relaxed versions to DDI specific schema
-        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
-        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
-        schema['language'] = [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
+        schema['temporal_coverage_begin'] = \
+            [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
+        schema['temporal_coverage_end'] = \
+            [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
+        schema['language'] = \
+            [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
         schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
         schema['maintainer_email'] = [not_empty, unicode, validate_email]
 
@@ -431,14 +435,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                                        unicode, validate_general],
             'access_request_URL': [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
                                    unicode, validate_general],
-
+            'through_provider_URL': [ignore_missing, check_through_provider_url, url_validator, convert_to_extras_kata,
+                                     unicode],
             'project_name': [ignore_missing, check_project_dis, unicode, convert_to_extras_kata, validate_general],
             'project_funder': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
             'project_funding': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
             'project_homepage': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
-            'discipline': [validate_discipline, convert_to_extras_kata, unicode],
-            'geographic_coverage': [validate_spatial, convert_to_extras_kata, unicode],
-            'license_URL': [default(u''), convert_to_extras_kata, unicode, validate_general],
+            'discipline': [ignore_missing, validate_discipline, convert_to_extras_kata, unicode],
+            'geographic_coverage': [ignore_missing, validate_spatial, convert_to_extras_kata, unicode],
+            'license_URL': [ignore_missing, convert_to_extras_kata, unicode, validate_general],
         })
 
         schema.pop('author')
@@ -469,7 +474,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                                       validate_general]
         schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
         schema['resources']['hash'].append(validate_general)
-        schema['resources']['format'].append(validate_mimetype)
+        schema['resources']['mimetype'].append(validate_mimetype)
 
         return schema
     

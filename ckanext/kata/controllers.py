@@ -118,6 +118,9 @@ class MetadataController(BaseController):
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['license_URL'] + '</RightsDeclaration>'
         if extras["availability"] == 'access_application':
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['access_application_URL'] + '</RightsDeclaration>'
+
+        # TODO: availability == 'through_provider'
+
         return Literal(xmlstr, datatype=RDF.XMLLiteral)
 
     def _make_temporal(self, extras):

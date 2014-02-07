@@ -207,6 +207,14 @@ def check_access_request_url(key, data, errors, context):
         not_empty(key, data, errors, context)
 
 
+def check_through_provider_url(key, data, errors, context):
+    '''
+    Validate dataset's through_provider_URL.
+    '''
+    if ('availability',) in data and data[('availability',)] == 'through_provider':
+        not_empty(key, data, errors, context)
+
+
 def not_empty_kata(key, data, errors, context):
     if data[key] == []:
         errors[key].append(_('Missing value'))
@@ -223,7 +231,8 @@ def check_author_org(key, data, errors, context):
             errors[('orgauth', 0, 'value',)] = []
         # To 0, to orgauth would mess the unflatten function with multiple authors
         errors[('orgauth', 0, 'value')].append('Missing author and organisation pairs')
-        
+
+
 def validate_discipline(key, data, errors, context):
     '''
     Validate discipline
@@ -245,7 +254,8 @@ def validate_discipline(key, data, errors, context):
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
         data[key] = u''
-        
+
+
 def validate_spatial(key, data, errors, context):
     '''
     Validate spatial (aka geographical) coverage
@@ -269,6 +279,7 @@ def validate_spatial(key, data, errors, context):
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
         data[key] = u''
+
 
 def validate_mimetype(key, data, errors, context):
     '''
