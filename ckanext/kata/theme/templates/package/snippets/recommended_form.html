@@ -111,19 +111,18 @@
     <section class="module">
       <h2 class="module-heading-add-dataset">{{ _('File information') }}</h2>
       <div class="module-content">
-      {% if data.resources is defined and data.resources|length > 0 %}
-        {% call form.input('mimetype', label=_('File format'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.resources[0].format, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+        {% call form.input('mimetype', label=_('File format'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
     	    {{ kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.")) }}
             {% if errors.resources %}
-              {% if errors.resources[0].format %}
+              {% if errors.resources[0].mimetype %}
                 <span class="error-block">
-                    {{ errors.resources[0].format[0] }}
+                    {{ errors.resources[0].mimetype[0] }}
                 </span>
               {% endif %}
             {% endif %}
         {% endcall %}
         
-        {% call form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.resources[0].hash, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+        {% call form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
     	    {{ kata_form.tooltip(tooltip=_("The checksum of the data file can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Checksums are a good way to enable verification of the content to ensure the file is unchanged and genuine.")) }}
             {% if errors.resources %}
               {% if errors.resources[0].hash %}
@@ -134,7 +133,7 @@
             {% endif %}
         {% endcall %}
         
-        {% call form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_('eg. MD5'), value=data.resources[0].algorithm, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+        {% call form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_('eg. MD5'), value=data.algorithm, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
     	    {{ kata_form.tooltip(tooltip=_('If the checksum is provided above, the algorithm used for generating the hash should be provided here. There are many different hash algorithms with varying levels of security.')) }}
             {% if errors.resources %}
               {% if errors.resources[0].algorithm %}
@@ -144,18 +143,6 @@
               {% endif %}
           {% endif %}
         {% endcall %}
-        
-      {% else %}
-        {% call form.input('mimetype', label=_('File format'), id='mimetype', value=data.mimetype, placeholder=_('MIME. eg. application/pdf, application/txt'), classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-    	    {{ kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.")) }}
-        {% endcall %}
-        {% call form.input('checksum', label=_('Checksum'), id='checksum', value=data.checksum, placeholder=_('hex string from eg. MD5, SHA-1'), classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-    	    {{ kata_form.tooltip(tooltip=_("The checksum of the data file can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Checksums are a good way to enable verification of the content to ensure the file is unchanged and genuine.")) }}
-        {% endcall %}
-        {% call form.input('algorithm', label=_('Algorithm'), id='algorithm', value=data.algorithm, placeholder=_('eg. MD5'), classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-    	    {{ kata_form.tooltip(tooltip=_('If the checksum is provided above, the algorithm used for generating the hash should be provided here. There are many different hash algorithms with varying levels of security.')) }}
-        {% endcall %}
-      {% endif %}
       </div>
     </section>
 

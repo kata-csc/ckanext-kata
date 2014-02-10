@@ -10,34 +10,34 @@ DEFAULT_SORT_BY = u'metadata_modified desc'
 
 # Titles for all fields used in searches, should be used through get_field_titles() for translation
 _FIELD_TITLES = {'organizationstring': 'Organization',
-                'ext_organizationstring': 'Organization',
-                'ext_organization': 'Organization',
-                'tags': 'Keywords',
-                'ext_tags': 'Keywords',
-                'ext_pids': 'Permanent identifiers',
-                'extras_fformat': 'File formats',
-                'ext_extras_fformat': 'File formats',
-                'fformatstring': 'File formats',
-                'ext_fformatstring': 'File formats',
-                #'groups': 'Discipline',
-                #'ext_groups': 'Discipline',
-                'ext_discipline': 'Discipline',
-                'extras_discipline': 'Discipline',
-                'license': 'License',
-                'license_id': 'License',
-                'ext_license': 'License',
-                'ext_licensetext': 'License',
-                'authorstring': 'Author',
-                'ext_authorstring': 'Author',
-                'ext_author': 'Author',
-                'ext_actor': 'Actor',
-                'extras_language': 'Language',
-                'ext_extras_language': 'Language',
-                'ext_extras_funder': 'Funder',
-                'title': 'Title',
-                'ext_title': 'Title',
-                'ext_text': 'All fields',
-                }
+                 'ext_organizationstring': 'Organization',
+                 'ext_organization': 'Organization',
+                 'tags': 'Keywords',
+                 'ext_tags': 'Keywords',
+                 'ext_pids': 'Permanent identifiers',
+                 'extras_fformat': 'File formats',
+                 'ext_extras_fformat': 'File formats',
+                 'fformatstring': 'File formats',
+                 'ext_fformatstring': 'File formats',
+                 #'groups': 'Discipline',
+                 #'ext_groups': 'Discipline',
+                 'ext_discipline': 'Discipline',
+                 'extras_discipline': 'Discipline',
+                 'license': 'License',
+                 'license_id': 'License',
+                 'ext_license': 'License',
+                 'ext_licensetext': 'License',
+                 'authorstring': 'Author',
+                 'ext_authorstring': 'Author',
+                 'ext_author': 'Author',
+                 'ext_actor': 'Actor',
+                 'extras_language': 'Language',
+                 'ext_extras_language': 'Language',
+                 'ext_extras_funder': 'Funder',
+                 'title': 'Title',
+                 'ext_title': 'Title',
+                 'ext_text': 'All fields',
+                 }
 
 # Ordered list of fields for advanced search. First one will be used as the default search field.
 SEARCH_FIELDS = ['ext_text',
@@ -70,6 +70,14 @@ DATASET_URL_UNKNOWN = 'http://'
 
 # Text string for dataset's resource.resource_type
 RESOURCE_TYPE_DATASET = 'dataset'
+
+# All availability URL fields used with different availability options
+AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
+                        'access_request': 'access_request_URL',
+                        'contact_owner': None,
+                        'direct_download': None,
+                        'through_provider': 'through_provider_URL',
+                        }
 
 # Required extras fields
 KATA_FIELDS_REQUIRED = ['availability',

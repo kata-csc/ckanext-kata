@@ -18,6 +18,7 @@ from ckan.lib.create_test_data import CreateTestData
 from ckan.tests import call_action_api
 
 import ckanext.kata.model as kata_model
+import ckanext.kata.settings as settings
 
 TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                      'algorithm': u'SHA',
@@ -25,9 +26,7 @@ TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                      'mimetype': u'application/csv',
                      'resource_type': 'file'}
 
-TEST_DATADICT = {'access_application_URL': u'',
-                 'access_request_URL': u'',
-                 'algorithm': u'MD5',
+TEST_DATADICT = {'algorithm': u'MD5',
                  'availability': u'direct_download',
                  'checksum': u'f60e586509d99944e2d62f31979a802f',
                  'contact_URL': u'http://www.tdata.fi',
@@ -213,6 +212,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         if output is not None and '__type' in output:
             assert output['__type'] != 'Validation Error'
 
+
 class TestDataReading(unittest.TestCase):
 
     @classmethod
@@ -298,3 +298,57 @@ class TestDataReading(unittest.TestCase):
                                  status=200, id=output['id'])
 
         assert self._compare_datadicts(output)
+
+
+    def test_availability_changing(self):
+        '''
+        Test that changing availability removes unused availability URL's and dataset resource URL
+        '''
+
+        ACCESS_URL = 'http://www.csc.fi/english/'
+
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **TEST_DATADICT)
+        assert 'id' in output
+
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict['id'] = output['id']
+        data_dict['availability'] = 'access_application'
+        data_dict['access_application_URL'] = ACCESS_URL
+
+        # UPDATE AVAILABILITY
+
+        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+                                 status=200, **data_dict)
+        assert 'id' in output
+
+        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=output['id'])
+
+        # import pprint
+        # pprint.pprint(output)
+
+        assert output.get('access_application_URL') == ACCESS_URL
+        assert output.get('direct_download_URL') == settings.DATASET_URL_UNKNOWN, output['direct_download_URL']
+
+        assert 'algorithm' in output
+        assert 'checksum' in output
+        assert 'mimetype' in output
+
+        assert output.get('availability') == 'access_application'
+
+        output['availability'] = 'contact_owner'
+
+        # UPDATE AVAILABILITY AGAIN
+
+        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+                                 status=200, **output)
+        assert 'id' in output
+
+        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=output['id'])
+
+        assert 'access_application_URL' not in output
+        assert output.get('direct_download_URL') == settings.DATASET_URL_UNKNOWN, output['direct_download_URL']
+
+        assert output.get('availability') == 'contact_owner'
