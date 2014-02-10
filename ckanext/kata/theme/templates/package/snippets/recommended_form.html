@@ -280,7 +280,7 @@
           				{{ kata_form.plusbutton(onclick="$(\'#evbtn__" ~ index ~ "__value_id\').change();") }}
           			</li>
           			{{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.')) }}
-          			<input style="display: none;"type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
+          			<input style="display: none;" type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
           		</div>
           {% endfor %}
           </ul>
