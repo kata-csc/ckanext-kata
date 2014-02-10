@@ -13,7 +13,7 @@ from collections import defaultdict
 from ckanext.kata.validators import validate_kata_date, check_project, \
     check_project_dis, validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
-    validate_mimetype, validate_general
+    validate_mimetype, validate_general, validate_kata_date_relaxed
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages
 from ckanext.kata import settings
@@ -106,6 +106,31 @@ class TestValidators(TestCase):
     def test_validate_kata_date_invalid_2(self):
         errors = defaultdict(list)
         validate_kata_date('date', {'date': '2013-02-29T13:12:11'}, errors, None)
+        assert len(errors) > 0
+
+    def test_validate_kata_date_relaxed_valid(self):
+        errors = defaultdict(list)
+        validate_kata_date_relaxed('date', {'date': '2012-12-31T13:12:11'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_kata_date_relaxed_valid_2(self):
+        errors = defaultdict(list)
+        validate_kata_date_relaxed('date', {'date': '2012-12'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_kata_date_relaxed_valid_3(self):
+        errors = defaultdict(list)
+        validate_kata_date_relaxed('date', {'date': '2012-12-31'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_kata_date_relaxed_invalid(self):
+        errors = defaultdict(list)
+        validate_kata_date_relaxed('date', {'date': '2001-12-45'}, errors, None)
+        assert len(errors) > 0
+
+    def test_validate_kata_date_relaxed_invalid_2(self):
+        errors = defaultdict(list)
+        validate_kata_date_relaxed('date', {'date': '2013-02-99T13:12:11'}, errors, None)
         assert len(errors) > 0
 
 

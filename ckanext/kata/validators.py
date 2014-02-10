@@ -3,7 +3,6 @@
 """
 Validators for user inputs.
 """
-
 import logging
 from itertools import count
 
@@ -105,7 +104,6 @@ def validate_kata_date(key, data, errors, context):
 
 
 def validate_kata_date_relaxed(key, data, errors, context):
-    # TODO: validate_kata_date() should be replaced with this
     '''
     Validate a event date string. Empty strings also pass.
     '2001-01-01',
@@ -116,7 +114,7 @@ def validate_kata_date_relaxed(key, data, errors, context):
         try:
             iso8601.parse_date(data[key])
         except (iso8601.ParseError, TypeError):
-            if not EVWHEN_REGEX.match(data[key]):
+            if len(data[key]) > 6 or not EVWHEN_REGEX.match(data[key]):
                 errors[key].append(_('Invalid {key} date format: {val}, must be'
                                      ' ISO 8601 or truncated: 2001-01-01 or '
                                      '2001-01'.format(key=key[0],
@@ -187,8 +185,14 @@ def check_project_dis(key, data, errors, context):
 
 
 def check_access_application_url(key, data, errors, context):
+    '''
+    Validate dataset's access_application_URL.
+    '''
     if data[('availability',)] == 'access_application':
         not_empty(key, data, errors, context)
+    else:
+        data.pop(key, None)
+        raise StopOnError
 
 
 def check_direct_download_url(key, data, errors, context):
@@ -197,6 +201,9 @@ def check_direct_download_url(key, data, errors, context):
     '''
     if ('availability',) in data and data[('availability',)] == 'direct_download':
         not_empty(key, data, errors, context)
+    else:
+        data.pop(key, None)
+        raise StopOnError
 
 
 def check_access_request_url(key, data, errors, context):
@@ -205,6 +212,9 @@ def check_access_request_url(key, data, errors, context):
     '''
     if ('availability',) in data and data[('availability',)] == 'access_request':
         not_empty(key, data, errors, context)
+    else:
+        data.pop(key, None)
+        raise StopOnError
 
 
 def check_through_provider_url(key, data, errors, context):
@@ -213,6 +223,9 @@ def check_through_provider_url(key, data, errors, context):
     '''
     if ('availability',) in data and data[('availability',)] == 'through_provider':
         not_empty(key, data, errors, context)
+    else:
+        data.pop(key, None)
+        raise StopOnError
 
 
 def not_empty_kata(key, data, errors, context):
