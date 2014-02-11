@@ -601,11 +601,10 @@ class ContactController(BaseController):
     def _mark_owner_as_contacted(self, userobj, pkg_id):
         """Mark this user as having already contacted the package owner"""
 
-        if "contacted" in userobj.extras:
-            userobj.extras['contacted'].append(pkg_id)
-        else:
+        if "contacted" not in userobj.extras:
             userobj.extras['contacted'] = []
-            userobj.extras['contacted'].append(pkg_id)
+
+        userobj.extras['contacted'].append(pkg_id)
         userobj.save()
 
     def send_contact(self, pkg_id):
