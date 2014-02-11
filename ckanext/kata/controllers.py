@@ -641,12 +641,12 @@ käytä yllä olevaa sähköpostiosoitetta.'
 
     def send_request(self, pkg_id):
         
-        prologue_template = '{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
+        prologue_template = u'{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
 for which you are currently marked as distributor.\n\nThe message is below.\n\n\
 {a} ({b}) pyytää dataa, joka liittyy tietoaineistoon\n\n{c} (Tunniste: {d})\n\nja johon sinut on merkitty jakelijaksi. \
 Mukaan liitetty viesti on alla.\n\n    ---'
 
-        epilogue = '    ---\n\nPlease do not reply directly to this e-mail.\n\
+        epilogue = u'    ---\n\nPlease do not reply directly to this e-mail.\n\
 If you need to reply to the sender, use the direct e-mail address above.\n\n\
 Älä vastaa suoraan tähän viestiin. Jos haluat lähettää viestin \
 lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
