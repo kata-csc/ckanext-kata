@@ -221,7 +221,7 @@ class TestResouceConverters(TestCase):
                 'url': u'http://www.csc.fi',
                 'algorithm': u'MD5',
                 'hash': u'f60e586509d99944e2d62f31979a802f',
-                'format': u'application/pdf',
+                'mimetype': u'application/pdf',
                 'resource_type': settings.RESOURCE_TYPE_DATASET,
             }]}
 
@@ -231,16 +231,16 @@ class TestResouceConverters(TestCase):
                 'url': u'http://www.csc.fi',
                 'algorithm': u'MD5',
                 'hash': u'f60e586509d99944e2d62f31979a802f',
-                'format': u'application/pdf',
+                'mimetype': u'application/pdf',
                 'resource_type': settings.RESOURCE_TYPE_DATASET,
-            },
-            {
+            }, {
                 'url': u'http://www.helsinki.fi',
                 'algorithm': u'SHA',
                 'hash': u'somehash',
                 'format': u'application/csv',
                 'resource_type': 'file',
-            }]}
+            }]
+        }
 
     def test_dataset_to_resource(self):
         data_dict = copy.deepcopy(self.test_data)
@@ -273,6 +273,45 @@ class TestResouceConverters(TestCase):
         data_dict['resources'][0].pop('resource_type')
         utils.resource_to_dataset(data_dict)
         assert 'direct_download_URL' not in data_dict
+
+    def test_resource_handling(self):
+        data_dict = copy.deepcopy(self.test_data3)
+        utils.resource_to_dataset(data_dict)
+        assert 'direct_download_URL' in data_dict
+        assert 'resources' in data_dict
+
+        data_dict['availability'] = 'contact_owner'
+
+        utils.dataset_to_resource(data_dict)
+        assert 'resources' in data_dict
+
+        utils.resource_to_dataset(data_dict)
+        assert 'resources' in data_dict
+        assert data_dict['availability'] == 'contact_owner'
+
+        assert data_dict.get('algorithm') == self.test_data3['resources'][0]['algorithm']
+        assert data_dict.get('checksum') == self.test_data3['resources'][0]['hash']
+        assert data_dict.get('mimetype') == self.test_data3['resources'][0]['mimetype']
+        assert data_dict.get('direct_download_URL') == self.test_data3['resources'][0]['url']
+
+    def test_resource_handling_2(self):
+        data_dict = copy.deepcopy(self.test_data3)
+        utils.resource_to_dataset(data_dict)
+        assert 'direct_download_URL' in data_dict
+        assert 'resources' in data_dict
+
+        data_dict['availability'] = 'direct_download'
+
+        utils.dataset_to_resource(data_dict)
+        assert 'resources' in data_dict
+
+        utils.resource_to_dataset(data_dict)
+        assert 'resources' in data_dict
+
+        assert data_dict.get('algorithm') == self.test_data3['resources'][0]['algorithm']
+        assert data_dict.get('checksum') == self.test_data3['resources'][0]['hash']
+        assert data_dict.get('mimetype') == self.test_data3['resources'][0]['mimetype']
+        assert data_dict.get('direct_download_URL') == self.test_data3['resources'][0]['url']
 
 
 class TestUtils(TestCase):

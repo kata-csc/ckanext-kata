@@ -360,15 +360,11 @@ def convert_to_extras_kata(key, data, errors, context):
     fields from extras. Removal helps counter IndexError with unflatten after
     validation.
     '''
-    if data.get(('extras',)) is missing:
-        return
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    for k in data.keys():
-        if k[-1] in settings.KATA_FIELDS:
-            if not {'key': k[-1], 'value': data[k]} in extras:
-                extras.append({'key': k[-1], 'value': data[k]})
+    extras.append({'key': key[-1], 'value': data[key]})
+
 
 def xpath_to_extras(key, data, errors, context):
     '''
