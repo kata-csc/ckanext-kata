@@ -114,14 +114,14 @@ def package_create(context, data_dict):
 def package_update(context, data_dict):
     '''
     Updates the dataset.
-    
-    Extends ckan's similar method to instantly re-index the SOLR index. 
+
+    Extends ckan's similar method to instantly re-index the SOLR index.
     Otherwise the changes would only be added during a re-index (a rebuild of search index,
     to be specific).
-    
-    Arguments:
-    :param context:
-    :param data_dict: package data as dictionary
+
+    :type context: dict
+    :type data_dict: dict
+    :param data_dict: dataset as dictionary
     '''
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
