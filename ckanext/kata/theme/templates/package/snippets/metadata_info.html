@@ -66,7 +66,9 @@
 {% if pkg_dict.availability == 'access_application' %}{{ _(' available via an access form in ') }}<a href="{{ pkg_dict.access_application_URL }}" class="download">{{ _('this link') }}</a> {% endif%}
 {% if pkg_dict.availability == 'direct_download' %}{{ _(' available freely ') }}{% if pkg_dict.direct_download_URL %} <a href="{{pkg_dict.direct_download_URL}}" class="download">{{ _('from this address') }}</a> {% endif %} {% endif %}
 {% if pkg_dict.availability == 'access_request' %}{{ _(' available via login ') }}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}" class="download">{{ _('from this address') }}</a> {% endif %} {% endif %}
-{% if pkg_dict.availability == 'contact_owner' %}{{ _(' available by ') }}<a href="/request_dataset/{{pkg_dict.id}}" class="download">{{ _('contacting the distributor') }}</a> {% endif %}
+{% if pkg_dict.availability == 'contact_owner' %}
+    {{ _(' available by ') -}} {% link_for _('contacting the distributor'), controller='ckanext.kata.controllers:ContactController', action='render_request', pkg_id=pkg_dict.id, class_='download' %}
+{% endif %}
 {% if pkg_dict.availability == 'through_provider' %}{{ _(' available through ') }}<a href="{{pkg_dict.through_provider_URL}}" class="download">{{ _('data provider') }}</a> {% endif %}
 {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}{% endif %}
 
@@ -92,10 +94,13 @@
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Email') }}</th>
+		{# only show the maintainer email directly to users who have admin privileges to the metadata #}
 		{% if h.check_access('package_update', {'id':pkg_dict.id }) %}
 			<td class="dataset-details">mailto:{{ pkg_dict.maintainer_email}}</td>
 		{% else %}
-			<td class="dataset-details"><a href="/contact/{{pkg_dict.id}}">{{ _('Send a message') }}</a></td>
+			<td class="dataset-details">
+				{% link_for _('Send a message'), controller='ckanext.kata.controllers:ContactController', action='render_contact', pkg_id=pkg_dict.id %}
+			</td>
 		{% endif %}
 	</tr>
 	<tr>
