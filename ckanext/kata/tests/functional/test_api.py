@@ -352,3 +352,37 @@ class TestDataReading(unittest.TestCase):
         assert output.get('direct_download_URL') == settings.DATASET_URL_UNKNOWN, output['direct_download_URL']
 
         assert output.get('availability') == 'contact_owner'
+
+    def test_field_clearing(self):
+        '''
+        Test that value None will remove a field completely
+        '''
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict['discipline'] = None
+
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **data_dict)
+        assert 'id' in output
+
+        data_dict['id'] = output['id']
+        data_dict['discipline'] = 'Matematiikka'
+
+        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=data_dict['id'])
+        assert 'discipline' not in output
+
+        call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+                                 status=200, **data_dict)
+        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=data_dict['id'])
+        assert 'discipline' in output
+
+        data_dict['discipline'] = None
+
+        call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+                                 status=200, **data_dict)
+        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=data_dict['id'])
+        assert 'discipline' not in output
+
+
