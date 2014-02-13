@@ -90,7 +90,11 @@
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Phone') }}</th>
-		<td class="dataset-details">tel:{{ pkg_dict.contact_phone }}</td>
+		{% if pkg_dict.contact_phone|length > 0 %}
+		    <td class="dataset-details">tel:{{ pkg_dict.contact_phone }}</td>
+		{% else %}
+		    <td class="dataset-details"></td>
+		{% endif %}
 	</tr>
 	<tr>
 		<th class="dataset-label">{{ _('Email') }}</th>
