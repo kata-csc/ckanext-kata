@@ -544,7 +544,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         
         return schema
 
-    def show_package_schema(self):
+    @classmethod
+    def show_package_schema(cls):
         """
         The data fields that are returned from CKAN for each dataset can be changed with this method.
         This method is called when viewing or editing a dataset.
