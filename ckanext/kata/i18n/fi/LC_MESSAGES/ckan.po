@@ -11233,3 +11233,10 @@ msgstr "Tapahtuma (kenen toimesta)"
 
 msgid "Project funding"
 msgstr "Projektin rahoitustunniste"
+
+# Profile
+msgid "Telephone"
+msgstr "Puhelin"
+
+msgid "Mobile"
+msgstr "Matkapuhelin"
