@@ -11240,3 +11240,7 @@ msgstr "Puhelin"
 
 msgid "Mobile"
 msgstr "Matkapuhelin"
+
+# Harvest
+msgid "Unauthorized to add a harvest source"
+msgstr "Ei oikeuksia luoda uutta haravointikohdetta"

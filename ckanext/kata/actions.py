@@ -79,6 +79,9 @@ def package_create(context, data_dict):
     :param context    - ?
     :param data_dict  - ?
     """
+    user = model.User.get(context['user'])
+    if data_dict['type'] == 'harvest' and not user.sysadmin:
+        ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
     try:
