@@ -505,14 +505,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['discipline'].insert(0, ignore_missing)
+        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date_relaxed]}
         schema['geographic_coverage'].insert(0, ignore_missing)
-        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
-        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
-        schema['xpaths'] = [xpath_to_extras]
         schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_ddi, validate_general],
                              'org': [ignore_missing, unicode, validate_general]}
-
-        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date_relaxed]}
+        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
+        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
+        schema['version'] = [not_empty, unicode, validate_kata_date_relaxed, check_last_and_update_pid]
+        schema['xpaths'] = [xpath_to_extras]
 
         return schema
 
