@@ -38,9 +38,9 @@ HASH_REGEX = re.compile(r'^[\w\d\ \-(),]*$', re.U)
 MIME_REGEX = re.compile(r'^[\w\d\ \-.\/+]*$', re.U)
 EVWHEN_REGEX = re.compile(
     r"""
-    (?P<year>[0-9]{4})
-    (-{0,1}(?P<month>[0-9]{1,2})){0,1}
-    (-{0,1}(?P<day>[0-9]{1,2})){0,1}
+    ^([0-9]{4})
+    (-?(0[0-9]?|1[012]?))?
+    (-?(0[0-9]?|1[0-9]?|2[0-9]?|3[01]?))?$
     """,
     re.VERBOSE)
 
@@ -114,7 +114,7 @@ def validate_kata_date_relaxed(key, data, errors, context):
         try:
             iso8601.parse_date(data[key])
         except (iso8601.ParseError, TypeError):
-            if len(data[key]) > 10 or not EVWHEN_REGEX.match(data[key]):
+            if not EVWHEN_REGEX.match(data[key]):
                 errors[key].append(_('Invalid {key} date format: {val}, must be'
                                      ' ISO 8601 or truncated: 2001-03-01 or '
                                      '2001-03'.format(key=key[0],
