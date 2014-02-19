@@ -1,12 +1,13 @@
 # coding: utf-8
 #
-# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name
+# pylint: disable=no-self-use, missing-docstring, too-many-public-methods
 
 """
 Test classes for Kata's validators.
 """
 
 import copy
+import json
 from unittest import TestCase
 from collections import defaultdict
 
@@ -15,8 +16,9 @@ from ckanext.kata.validators import validate_kata_date, check_project, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
-from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages
+from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json
 from ckanext.kata import settings
+
 
 class TestValidators(TestCase):
     """Tests for Kata validators."""
@@ -28,70 +30,70 @@ class TestValidators(TestCase):
         # TODO: Get a new flattened data_dict
 
         cls.test_data = {('__extras',): {'_ckan_phase': u'',
-                'evdescr': [],
-                'evwhen': [],
-                'evwho': [],
-                'groups': [],
-                'pkg_name': u''},
-            ('availability',): u'contact',
-            ('access_application_URL',): u'',
-            ('access_request_URL',): u'',
-            ('algorithm',): u'',
-            ('author', 0, 'value'): u'dada',
-            ('checksum',): u'',
-            ('contact_URL',): u'http://google.com',
-            ('discipline',): u'',
-            ('evtype', 0, 'value'): u'collection',
-            ('extras',): [{'key': 'funder', 'value': u''},
-                {'key': 'discipline', 'value': u''},
-                {'key': 'maintainer', 'value': u'dada'},
-                {'key': 'mimetype', 'value': u''},
-                {'key': 'project_funding', 'value': u''},
-                {'key': 'project_homepage', 'value': u''},
-                {'key': 'owner', 'value': u'dada'},
-                {'key': 'temporal_coverage_begin', 'value': u''},
-                {'key': 'direct_download_URL', 'value': u''},
-                {'key': 'phone', 'value': u'+35805050505'},
-                {'key': 'license_URL', 'value': u'dada'},
-                {'key': 'geographic_coverage', 'value': u''},
-                {'key': 'access', 'value': u'contact'},
-                {'key': 'algorithm', 'value': u''},
-                {'key': 'langdis', 'value': u'True'},
-                {'key': 'access_application_URL', 'value': u''},
-                {'key': 'contact_URL', 'value': u'http://google.com'},
-                {'key': 'project_name', 'value': u''},
-                {'key': 'checksum', 'value': u''},
-                {'key': 'temporal_coverage_end', 'value': u''},
-                {'key': 'projdis', 'value': u'True'},
-                {'key': 'language', 'value': u''}],
-            ('mimetype',): u'',
-            ('project_funder',): u'',
-            ('geographic_coverage',): u'',
-            ('langdis',): u'False',
-            ('language',): u'swe',
-            ('license_URL',): u'dada',
-            ('license_id',): u'',
-            ('log_message',): u'',
-            ('name',): u'',
-            ('notes',): u'',
-            ('organization', 0, 'value'): u'dada',
-            ('owner',): u'dada',
-            ('phone',): u'+35805050505',
-            ('maintainer_email',): u'kata.selenium@gmail.com',
-            ('projdis',): u'True',
-            ('project_funding',): u'',
-            ('project_homepage',): u'',
-            ('project_name',): u'',
-            ('maintainer',): u'dada',
-            ('save',): u'finish',
-            ('tag_string',): u'dada',
-            ('temporal_coverage_begin',): u'',
-            ('temporal_coverage_end',): u'',
-            ('title', 0, 'lang'): u'sv',
-            ('title', 0, 'value'): u'dada',
-            ('type',): None,
-            ('version',): u'2013-08-14T10:37:09Z',
-            ('version_PID',): u''}
+                                         'evdescr': [],
+                                         'evwhen': [],
+                                         'evwho': [],
+                                         'groups': [],
+                                         'pkg_name': u''},
+                         ('availability',): u'contact',
+                         ('access_application_URL',): u'',
+                         ('access_request_URL',): u'',
+                         ('algorithm',): u'',
+                         ('author', 0, 'value'): u'dada',
+                         ('checksum',): u'',
+                         ('contact_URL',): u'http://google.com',
+                         ('discipline',): u'',
+                         ('evtype', 0, 'value'): u'collection',
+                         ('extras',): [{'key': 'funder', 'value': u''},
+                                       {'key': 'discipline', 'value': u''},
+                                       {'key': 'maintainer', 'value': u'dada'},
+                                       {'key': 'mimetype', 'value': u''},
+                                       {'key': 'project_funding', 'value': u''},
+                                       {'key': 'project_homepage', 'value': u''},
+                                       {'key': 'owner', 'value': u'dada'},
+                                       {'key': 'temporal_coverage_begin', 'value': u''},
+                                       {'key': 'direct_download_URL', 'value': u''},
+                                       {'key': 'phone', 'value': u'+35805050505'},
+                                       {'key': 'license_URL', 'value': u'dada'},
+                                       {'key': 'geographic_coverage', 'value': u''},
+                                       {'key': 'access', 'value': u'contact'},
+                                       {'key': 'algorithm', 'value': u''},
+                                       {'key': 'langdis', 'value': u'True'},
+                                       {'key': 'access_application_URL', 'value': u''},
+                                       {'key': 'contact_URL', 'value': u'http://google.com'},
+                                       {'key': 'project_name', 'value': u''},
+                                       {'key': 'checksum', 'value': u''},
+                                       {'key': 'temporal_coverage_end', 'value': u''},
+                                       {'key': 'projdis', 'value': u'True'},
+                                       {'key': 'language', 'value': u''}],
+                         ('mimetype',): u'',
+                         ('project_funder',): u'',
+                         ('geographic_coverage',): u'',
+                         ('langdis',): u'False',
+                         ('language',): u'swe',
+                         ('license_URL',): u'dada',
+                         ('license_id',): u'',
+                         ('log_message',): u'',
+                         ('name',): u'',
+                         ('notes',): u'',
+                         ('organization', 0, 'value'): u'dada',
+                         ('owner',): u'dada',
+                         ('phone',): u'+35805050505',
+                         ('maintainer_email',): u'kata.selenium@gmail.com',
+                         ('projdis',): u'True',
+                         ('project_funding',): u'',
+                         ('project_homepage',): u'',
+                         ('project_name',): u'',
+                         ('maintainer',): u'dada',
+                         ('save',): u'finish',
+                         ('tag_string',): u'dada',
+                         ('temporal_coverage_begin',): u'',
+                         ('temporal_coverage_end',): u'',
+                         ('title', 0, 'lang'): u'sv',
+                         ('title', 0, 'value'): u'dada',
+                         ('type',): None,
+                         ('version',): u'2013-08-14T10:37:09Z',
+                         ('version_PID',): u''}
 
     def test_validate_kata_date_valid(self):
         errors = defaultdict(list)
@@ -443,3 +445,47 @@ class TestResourceValidators(TestCase):
         self.assertRaises(Invalid, validate_algorithm, ('resources', 0, 'algorithm',), data, errors, None)
 
 
+class TestPIDValidators(TestCase):
+    '''
+    Test validators for 'pids' field
+    '''
+
+    PIDS = {
+        u'http://helda.helsinki.fi/oai/request': {
+            u'data': [u'some_data_pid', u'another_data_pid'],
+            u'metadata': [u'metadata_pid', u'another_metadata_pid', u'third_metadata_pid'],
+            u'version': [u'version_pid', u'another_version_pid'],
+        },
+        u'kata': {
+            u'version': [],
+        },
+    }
+
+    @classmethod
+    def setup_class(cls):
+        cls.test_data = {}
+        cls.serialized = json.dumps(cls.PIDS)
+
+        assert isinstance(cls.serialized, basestring)
+
+    def test_pids_from_extras(self):
+
+        data = copy.deepcopy(self.test_data)
+        data[('extras', '0', 'key')] = 'pids'
+        data[('extras', '0', 'value')] = self.serialized
+
+        from_extras_json(('pids',), data, {}, {})
+
+        assert ('pids',) in data
+        assert isinstance(data['pids',], dict)
+
+    def test_pids_to_extras(self):
+        data = copy.deepcopy(self.test_data)
+        data[('pids',)] = self.PIDS
+
+        to_extras_json(('pids',), data, {}, {})
+
+        assert ('extras',) in data
+        assert data[('extras',)]
+        assert data[('extras',)][0]['key'] == ('pids',)
+        assert data[('extras',)][0]['value'] == self.serialized, data[('extras',)][0]['value']

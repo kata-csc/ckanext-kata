@@ -58,6 +58,7 @@ from ckanext.kata.validators import (check_access_application_url,
                                      validate_spatial,
                                      validate_title,
                                      check_through_provider_url)
+from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
                                      convert_languages,
@@ -70,11 +71,11 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      org_auth_to_extras,
                                      org_auth_to_extras_oai,
                                      org_auth_to_extras_ddi,
-                                     pid_from_extras,
+                                     version_pid_from_extras,
                                      remove_disabled_languages,
                                      update_pid,
-                                     xpath_to_extras)
-from ckanext.kata import actions, auth_functions
+                                     to_extras_json,
+                                     from_extras_json)
 import ckanext.kata.settings as settings
 
 
@@ -343,39 +344,27 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
     def new_template(self):
-        """
-        Return location of the package add dataset page
-        """
+        """Return location of the add dataset page"""
         return 'package/new.html'
 
     def comments_template(self):
-        """
-        Return location of the package comments page
-        """
+        """Return location of the package comments page"""
         return 'package/comments.html'
 
     def search_template(self):
-        """
-        Return location of the package search page
-        """
+        """Return location of the package search page"""
         return 'package/search.html'
 
     def read_template(self):
-        """
-        Return location of the package read page
-        """
+        """Return location of the package read page"""
         return 'package/read.html'
 
     def history_template(self):
-        """
-        Return location of the package history page
-        """
+        """Return location of the package history page"""
         return 'package/history.html'
 
     def package_form(self):
-        """
-        Return location of the main package page
-        """
+        """Return location of the main package page"""
         return 'package/new_package_form.html'
 
     @classmethod
@@ -407,24 +396,24 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
 
+        schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
         schema['id'] = [default(u''), update_pid, unicode]
         schema['langtitle'] = {'value': [not_missing, unicode, validate_title, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
-
+        schema['language'] = \
+            [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
+        schema['maintainer_email'] = [not_empty, unicode, validate_email]
         schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
                              'org': [not_missing, unicode, validate_general]}
         schema['temporal_coverage_begin'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
-        schema['language'] = \
-            [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
-        schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
-        schema['maintainer_email'] = [not_empty, unicode, validate_email]
-
+        schema['pids'] = [ignore_missing, to_extras_json]
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
+        schema['xpaths'] = [ignore_missing, to_extras_json]
 
         schema.update({
             'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
@@ -519,7 +508,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['version'] = [not_empty, unicode, validate_kata_date_relaxed, check_last_and_update_pid]
-        schema['xpaths'] = [xpath_to_extras]
+        # schema['xpaths'] = [xpath_to_extras]
 
         return schema
 
@@ -563,17 +552,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS:
             schema[key] = [convert_from_extras_kata, ignore_missing, unicode]
 
-        schema['version_PID'] = [pid_from_extras, ignore_missing, unicode]
-
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['organization'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['title'] = [ltitle_from_extras, ignore_missing]
-        schema['langdis'] = [unicode]
-        schema['projdis'] = [unicode]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
         schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
         schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
+        schema['langdis'] = [unicode]
+        schema['organization'] = [ignore_missing, unicode]
+        schema['pids'] = [from_extras_json, ignore_missing, unicode]
+        schema['projdis'] = [unicode]
+        schema['title'] = [ltitle_from_extras, ignore_missing]
+        schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
+        schema['xpaths'] = [from_extras_json, ignore_missing, unicode]
 
         #schema['resources']['resource_type'] = [from_resource]
 

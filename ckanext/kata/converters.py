@@ -3,6 +3,7 @@
 """
 Functions to convert dataset form fields from or to db fields.
 """
+import json
 import pycountry
 
 from pylons import h
@@ -10,7 +11,6 @@ from pylons import h
 import re
 import logging
 from pylons.i18n import _
-from ckan.lib.navl.validators import missing
 
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
@@ -21,7 +21,7 @@ from ckanext.kata import settings, utils
 log = logging.getLogger('ckanext.kata.converters')
 
 
-def pid_from_extras(key, data, errors, context):
+def version_pid_from_extras(key, data, errors, context):
     '''
     Get version_PID from extras or generate a new one.
     '''
@@ -118,12 +118,20 @@ def org_auth_from_extras(key, data, errors, context):
                 author = {'key': data[k], 'value': val}
                 if author not in authors:
                     authors.append(author)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
+                data.pop(k, None)
+                continue
 
             if re.search('^(organization_)\d+$', data[k]):
                 val = data[(k[0], k[1], 'value')]
                 org = {'key': data[k], 'org': val}
                 if org not in orgs:
                     orgs.append(org)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
+                data.pop(k, None)
+
     orgs = sorted(orgs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     authors = sorted(authors, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     for org, author in zip(orgs, authors):
@@ -185,7 +193,6 @@ def ltitle_from_extras(key, data, errors, context):
             langtitles.append(langtitle)
 
 
-
 def event_to_extras(key, data, errors, context):
     '''
     Parses separate 'ev*' parameters from 'data' data_dict to 'extra' field
@@ -201,6 +208,7 @@ def event_to_extras(key, data, errors, context):
     if key[2] == 'value' and len(data[key]) > 0 and type(data[key]) == unicode:
         extras.append({'key': "%s_%d" % (key[0], key[1]),
                        'value': data[key]})
+
 
 def event_from_extras(evkey, data, errors, context):
     if not ('events',) in data:
@@ -356,7 +364,7 @@ def convert_from_extras_kata(key, data, errors, context):
 
 def convert_to_extras_kata(key, data, errors, context):
     '''
-    Convert all extras fields from extras to data dict and remove
+    Convert one extras fields from extras to data dict and remove
     fields from extras. Removal helps counter IndexError with unflatten after
     validation.
     '''
@@ -408,3 +416,28 @@ def convert_languages(key, data, errors, context):
 
     if new_langs:
         data[key] = ', '.join(new_langs)
+
+
+def from_extras_json(key, data, errors, context):
+    '''
+    Convert a field from JSON format in extras to data_dict.
+    The 'key' parameter is the field where to save values, so we need to search data_dict to find the correct
+    value which we are converting.
+
+    :param key: for example ('pids',)
+    :param data: Contains value somewhere like ('extras', 5, 'value')
+    '''
+    for k in data.keys():
+        if k[0] == 'extras' and k[-1] == 'key' and data[k] == key[0]:
+            data[key] = json.loads(data[(k[0], k[1], 'value')])
+
+
+def to_extras_json(key, data, errors, context):
+    '''
+    Convert a field to JSON format and store in extras.
+    '''
+    extras = data.get(('extras',), [])
+    if not extras:
+        data[('extras',)] = extras
+    extras.append({'key': key, 'value': json.dumps(data[key])})
+

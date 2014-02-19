@@ -228,12 +228,6 @@ def check_through_provider_url(key, data, errors, context):
         raise StopOnError
 
 
-def not_empty_kata(key, data, errors, context):
-    if data[key] == []:
-        errors[key].append(_('Missing value'))
-        raise StopOnError
-
-
 def check_author_org(key, data, errors, context):
     '''
     Validates author and organisation

@@ -184,6 +184,12 @@ class TestKataPlugin(TestCase):
         assert len(html_location) > 0
 
 
+class TestKataSchemas(TestCase):
+
+    @classmethod
+    def setup_class(cls):
+        cls.kata_plugin = KataPlugin()
+
     def test_create_package_schema(self):
         schema = self.kata_plugin.create_package_schema()
         assert isinstance(schema, dict)
@@ -196,6 +202,26 @@ class TestKataPlugin(TestCase):
 
     def test_show_package_schema(self):
         schema = self.kata_plugin.show_package_schema()
+        assert isinstance(schema, dict)
+        assert len(schema) > 0
+
+    def test_create_package_schema_oai_dc(self):
+        schema = self.kata_plugin.create_package_schema_oai_dc()
+        assert isinstance(schema, dict)
+        assert len(schema) > 0
+
+    def test_update_package_schema_oai_dc(self):
+        schema = self.kata_plugin.update_package_schema_oai_dc()
+        assert isinstance(schema, dict)
+        assert len(schema) > 0
+
+    def test_create_package_schema_ddi(self):
+        schema = self.kata_plugin.create_package_schema_ddi()
+        assert isinstance(schema, dict)
+        assert len(schema) > 0
+
+    def test_tags_schema(self):
+        schema = self.kata_plugin.tags_schema()
         assert isinstance(schema, dict)
         assert len(schema) > 0
 

@@ -1,6 +1,6 @@
 # coding: utf-8
 #
-# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, star-args
+# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, star-args
 
 """
 Functional tests for Kata that use CKAN API.
@@ -61,18 +61,30 @@ TEST_DATADICT = {'algorithm': u'MD5',
                              {u'org': u'Helsingin Yliopisto', u'value': u'T. Tutkija'},
                              {u'org': u'Org 3', u'value': u'K. Kolmas'}],
                  'owner': u'Ossi Omistaja',
+                 'pids': {
+                     u'http://helda.helsinki.fi/oai/request': {
+                         u'data': [u'some_data_pid', u'another_data_pid'],
+                         u'metadata': [u'metadata_pid', u'another_metadata_pid', u'third_metadata_pid'],
+                         u'version': [u'version_pid', u'another_version_pid'],
+                     }
+                 },
                  'projdis': 'False',
                  'project_funder': u'NSA',
                  'project_funding': u'1234-rahoituspäätösnumero',
-                 'project_homepage': u'http://www.nsa.gov',
-                 'project_name': u'Data Jakoon -projekti',
+                 'project_homepage': u'http://www.csc.fi',
+                 'project_name': u'Tutkimusprojekti',
                  'tag_string': u'Python,ohjelmoitunut solukuolema,programming',
                  'temporal_coverage_begin': u'2003-07-10T06:36:27Z',
                  'temporal_coverage_end': u'2010-04-15T03:24:47Z',
                  'title': u'',
                  'type': 'dataset',
                  'version': u'2013-11-18T12:25:53Z',
-                 'version_PID': u'aineiston-version-pid'}
+                 'version_PID': u'aineiston-version-pid',
+                 'xpaths': {
+                     u'xpath/path1': u'xpath_value',
+                     u'xpath/path2': u'xpath_value2',
+                     },
+                 }
 
 
 class TestCreateDatasetAndResources(unittest.TestCase):
@@ -247,9 +259,6 @@ class TestDataReading(unittest.TestCase):
         data_dict.pop('evtype', None)
         data_dict.pop('evwho', None)
         data_dict.pop('evwhen', None)
-
-        import pprint
-        pprint.pprint( output )
 
         for (key, value) in data_dict.items():
             assert key in output, "Key not found: %r" % key

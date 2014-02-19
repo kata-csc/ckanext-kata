@@ -42,7 +42,7 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      org_auth_from_extras,
                                      org_auth_to_extras,
                                      org_auth_to_extras_oai,
-                                     pid_from_extras,
+                                     version_pid_from_extras,
                                      remove_disabled_languages,
                                      update_pid,
                                      xpath_to_extras)
@@ -167,7 +167,7 @@ def create_package_schema_ddi():
     schema['geographic_coverage'].insert(0, ignore_missing)
     schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
     schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
-    schema['xpaths'] = [xpath_to_extras]
+    # schema['xpaths'] = [xpath_to_extras]
     # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
     #                      'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
 
