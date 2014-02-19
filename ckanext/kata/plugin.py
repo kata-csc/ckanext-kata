@@ -264,6 +264,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 key.startswith('organization_'):
                 continue
             
+            if  key.startswith('title_') or\
+                key.startswith('lang_title_') or\
+                key == 'harvest_object_id' or\
+                key == 'harvest_source_id' or\
+                key == 'harvest_source_title':
+                continue
+            
             found = False
             for _key in g.package_hide_extras:
                 if extra['key'].startswith(_key):
