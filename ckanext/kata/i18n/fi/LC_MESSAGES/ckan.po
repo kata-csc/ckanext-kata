@@ -6391,7 +6391,7 @@ msgid "Author is missing"
 msgstr "Laatija puuttuu"
 
 #: ckanext/kata/converters.py:262
-msgid "No language given."
+msgid "No language given"
 msgstr "Kieltä ei annettu"
 
 #: ckanext/kata/converters.py:268

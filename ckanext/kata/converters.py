@@ -304,7 +304,7 @@ def remove_disabled_languages(key, data, errors, context):
         # Language enabled
 
         if langs == [u'']:
-            errors[key].append(_('No language given.'))
+            errors[key].append(_('No language given'))
     else:
         # Language disabled
 
