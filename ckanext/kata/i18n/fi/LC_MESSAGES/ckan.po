@@ -11153,6 +11153,9 @@ msgstr "Käyttö- ja lisenssitietokentät ovat pakollisia.<br /><br />Valitse, m
 msgid "Note that the PID can NOT be edited after saving the dataset."
 msgstr "Huomaa, että tunnistetta EI voi muokata sen jälkeen kun tietoaineisto on tallennettu."
 
+msgid "Missing author and organisation pairs"
+msgstr "Yhtään tekijää ja organisaatiota ei ole annettu"
+
 
 # Resource, Additional Information (the key - value -variables)
 msgid "created"
@@ -11233,6 +11236,9 @@ msgstr "Tapahtuma (kenen toimesta)"
 
 msgid "Project funding"
 msgstr "Projektin rahoitustunniste"
+
+msgid "Langtitle"
+msgstr "Kieli ja otsikko"
 
 # Profile
 msgid "Telephone"

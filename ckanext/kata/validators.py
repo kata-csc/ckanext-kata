@@ -243,7 +243,7 @@ def check_author_org(key, data, errors, context):
         if not ('orgauth', 0, 'value') in errors:
             errors[('orgauth', 0, 'value',)] = []
         # To 0, to orgauth would mess the unflatten function with multiple authors
-        errors[('orgauth', 0, 'value')].append('Missing author and organisation pairs')
+        errors[('orgauth', 0, 'value')].append(_('Missing author and organisation pairs'))
 
 
 def validate_discipline(key, data, errors, context):
