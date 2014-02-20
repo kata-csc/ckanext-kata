@@ -404,7 +404,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
         schema['maintainer_email'] = [not_empty, unicode, validate_email]
         schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
-                             'org': [not_missing, unicode, validate_general]}
+                             'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
         schema['temporal_coverage_begin'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \

@@ -177,12 +177,20 @@ def ltitle_from_extras(key, data, errors, context):
                 title = {'key': data[k], 'value': val}
                 if title not in titles:
                     titles.append(title)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
+                data.pop(k, None)
+                continue
 
             if re.search('^(lsel|lang_title_)\d+$', data[k]):
                 val = data[(k[0], k[1], 'value')]
                 lang = {'key': data[k], 'lang': val}
                 if lang not in langs:
                     langs.append(lang)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
+                data.pop(k, None)
+                
     langs = sorted(langs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     titles = sorted(titles, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     for lang, title in zip(langs, titles):
@@ -242,24 +250,39 @@ def event_from_extras(evkey, data, errors, context):
                 type['value'] = val
                 if not {'key': data[k], 'value': val} in types:
                     types.append(type)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
+                data.pop(k, None)
+                continue
             if 'evwho' in data[k]:
                 val = data[(k[0], k[1], 'value')]
                 who = {'key': data[k]}
                 who['value'] = val
                 if not {'key': data[k], 'value': val} in whos:
                     whos.append(who)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
+                data.pop(k, None)
+                continue
             if 'evwhen' in data[k]:
                 val = data[(k[0], k[1], 'value')]
                 when = {'key': data[k]}
                 when['value'] = val
                 if not {'key': data[k], 'value': val} in whens:
                     whens.append(when)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
+                data.pop(k, None)
+                continue
             if 'evdescr' in data[k]:
                 val = data[(k[0], k[1], 'value')]
                 descr = {'key': data[k]}
                 descr['value'] = val
                 if not {'key': data[k], 'value': val} in descrs:
                     descrs.append(descr)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
+                data.pop(k, None)
 
     types = sorted(types, key=lambda ke: int(ke['key'].split('_')[-1]))
     whos = sorted(whos, key=lambda ke: int(ke['key'].split('_')[-1]))
