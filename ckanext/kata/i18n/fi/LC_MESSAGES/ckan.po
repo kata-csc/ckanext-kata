@@ -10107,8 +10107,8 @@ msgid "Search:"
 msgstr "Etsi:"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:131
-msgid "This dataset does not have a language"
-msgstr "Tällä tietoaineistolla ei ole kieltä."
+msgid "This dataset contains non-textual data"
+msgstr "Tietoaineisto ei sisällä tekstimuotoista dataa"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:133
 msgid "Languages"
