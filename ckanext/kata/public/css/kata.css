@@ -861,7 +861,15 @@ h3.question {
 	margin: 5px;
 }
 .help .module-heading a, .faq .module-heading a {
-	color: #53cc61 !important;
+	color: #6ccff6 !important;
+}
+.help .module-heading a:hover, .help .module-heading a:focus,
+.faq .module-heading a:hover, .faq .module-heading a:focus {
+	text-decoration: none !important;
+}
+.help-page a:hover, .help-page a:focus {
+    text-decoration: none !important;
+    color: #0C8BBE !important;
 }
 /* Fonts */
 .onkiAutocomplete .onkiFinder {
