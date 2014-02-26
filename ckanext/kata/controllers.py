@@ -1,82 +1,34 @@
 # coding=utf8
 """
-Controllers for Kata plus some additional functions.
+Controllers for Kata.
 """
 
-import calendar
-from datetime import datetime, timedelta
 import logging
-from operator import itemgetter
-import os
-from pairtree.storage_exceptions import FileNotFoundException
-import tempfile
-import urllib2
-import subprocess
 from rdflib.term import Identifier, URIRef, Literal
 from rdflib.namespace import XSD
 
-from _text import orngText
 from paste.deploy.converters import asbool
 from pylons import response, config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
-from sqlalchemy import null
 
-from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
-from ckan.controllers.storage import get_ofs
 from ckan.controllers.user import UserController
 import ckan.lib.i18n
-from ckan.lib.munge import substitute_ascii_equivalents
-from ckan.lib.base import BaseController, c, h, redirect, render, abort
-from ckan.lib.navl.dictization_functions import unflatten
-from ckan.lib.package_saver import PackageSaver
+from ckan.lib.base import BaseController, c, h, redirect, render
 from ckan.lib.email_notifications import send_notification
-from ckan.logic import get_action, clean_dict, tuplize_dict, parse_params, \
-    NotFound, NotAuthorized, ActionError, check_access
+from ckan.logic import get_action
 import ckan.model as model
-from ckan.model import Package, User, Related, Group, meta, Resource, PackageExtra, license
+from ckan.model import Package, User, Related, meta, license
 from ckan.model.authz import add_user_to_role
-import ckan.model.misc as misc
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
-from ckanext.kata.utils import convert_to_text
 from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, Graph
 
 log = logging.getLogger('ckanext.kata.controller')
 
-BUCKET = config.get('ckan.storage.bucket', 'default')
+# BUCKET = config.get('ckan.storage.bucket', 'default')
 
-
-def get_extra_contact(context, data_dict, key="contact_name"):
-    model = context['model']
-
-    terms = data_dict.get('query') or data_dict.get('q') or []
-    if isinstance(terms, basestring):
-        terms = [terms]
-    terms = [t.strip() for t in terms if t.strip()]
-
-    if 'fields' in data_dict:
-        log.warning('"fields" parameter is deprecated.  '
-                    'Use the "query" parameter instead')
-
-    offset = data_dict.get('offset')
-    limit = data_dict.get('limit')
-
-    # TODO: should we check for user authentication first?
-    q = model.Session.query(model.PackageExtra)
-
-    if not len(terms):
-        return [], 0
-
-    for term in terms:
-        escaped_term = misc.escape_sql_like_special_characters(term, escape='\\')
-        q = q.filter(model.PackageExtra.key.contains(key))
-        q = q.filter(model.PackageExtra.value.ilike("%" + escaped_term + "%"))
-
-    q = q.offset(offset)
-    q = q.limit(limit)
-    return q.all()
 
 def get_package_owner(package):
     """Returns the user id of the package admin for the specified package.
@@ -90,18 +42,13 @@ def get_package_owner(package):
             break
     return userid
 
-def utc_to_local(utc_dt):
-    '''
-    Change datetime in utc zone to datetime on local zone
-    '''
-    # Taken from: http://stackoverflow.com/questions/4563272/ \
-    # how-to-convert-a-python-utc-datetime-to-a-local-datetime-using-only-python-stand
-    timestamp = calendar.timegm(utc_dt.timetuple())
-    local_dt = datetime.fromtimestamp(timestamp)
-    assert utc_dt.resolution >= timedelta(microseconds=1)
-    return local_dt.replace(microsecond=utc_dt.microsecond)
 
 class MetadataController(BaseController):
+    '''
+    RDF export.
+
+    TODO: Would be simpler to just overwrite CKAN's read.rdf.
+    '''
 
     def _make_rights_element(self, extras):
         '''
@@ -113,11 +60,13 @@ class MetadataController(BaseController):
 
         xmlstr = ""
         if extras["availability"] == 'contact_owner':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras['access_request_URL'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras[
+                'access_request_URL'] + '</RightsDeclaration>'
         if extras["availability"] in ('direct_download', 'access_request'):
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['license_URL'] + '</RightsDeclaration>'
         if extras["availability"] == 'access_application':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras['access_application_URL'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras[
+                'access_application_URL'] + '</RightsDeclaration>'
 
         # TODO: availability == 'through_provider'
 
@@ -126,9 +75,9 @@ class MetadataController(BaseController):
     def _make_temporal(self, extras):
         dcmi_period = ""
         if all(k in extras for k in ("temporal_coverage_begin",
-                                    "temporal_coverage_end")):
+                                     "temporal_coverage_end")):
             dcmi_period = "start=%s; end=%s; scheme=ISO-8601;" % (extras["temporal_coverage_begin"],
-                                                            extras["temporal_coverage_end"])
+                                                                  extras["temporal_coverage_end"])
         return dcmi_period
 
     @beaker_cache(type="dbm", expire=604800)
@@ -156,11 +105,11 @@ class MetadataController(BaseController):
                     user = User.get(owner[0].user_id)
             profileurl = ""
             if user:
-                profileurl = URIRef(config.get('ckan.site_url', '') +\
-                    h.url_for(controller="user", action="read", id=user.name))
-            graph.add((metadoc, DC.identifier, Literal(data["id"])\
-                                if 'identifier' not in data["extras"]\
-                                else URIRef(data["extras"]["identifier"])))
+                profileurl = URIRef(config.get('ckan.site_url', '') + \
+                                    h.url_for(controller="user", action="read", id=user.name))
+            graph.add((metadoc, DC.identifier, Literal(data["id"]) \
+                if 'identifier' not in data["extras"] \
+                else URIRef(data["extras"]["identifier"])))
             if data["metadata_modified"]:
                 graph.add((metadoc, DC.modified, Literal(data["metadata_modified"], datatype=XSD.dateTime)))
             graph.add((metadoc, FOAF.primaryTopic, Identifier(data['name'])))
@@ -198,13 +147,13 @@ class MetadataController(BaseController):
                     graph.add((profileurl, FOAF.homepage, Identifier(data["extras"]["contact_URL"])))
                 if "owner" in data["extras"]:
                     graph.add((uri, DC.rightsHolder, URIRef(data["extras"]["owner"])
-                                                    if data["extras"]["owner"].startswith(('http','urn'))\
-                                                    else Literal(data["extras"]["owner"])))
+                    if data["extras"]["owner"].startswith(('http', 'urn')) \
+                        else Literal(data["extras"]["owner"])))
             log.debug(data["extras"])
-            if all((k in data["extras"] and data["extras"][k] != "") for k in ("project_name",\
-                                                 "project_homepage",\
-                                                 "project_funding",\
-                                                 "project_funder")):
+            if all((k in data["extras"] and data["extras"][k] != "") for k in ("project_name", \
+                                                                               "project_homepage", \
+                                                                               "project_funding", \
+                                                                               "project_funder")):
                 project = URIRef(FOAF.Project)
                 projecturl = URIRef(data["extras"]["project_homepage"])
                 graph.add((uri, DC.contributor, projecturl))
@@ -212,15 +161,15 @@ class MetadataController(BaseController):
                 graph.add((projecturl, FOAF.name, Literal(data["extras"]["project_name"])))
                 graph.add((projecturl, FOAF.homepage, Identifier(data["extras"]["project_homepage"])))
                 graph.add((projecturl, RDFS.comment,
-                            Literal(" ".join((data["extras"]["project_funder"],
-                                              data["extras"]["project_funding"])))))
+                           Literal(" ".join((data["extras"]["project_funder"],
+                                             data["extras"]["project_funding"])))))
             for key in data["extras"]:
                 log.debug(key)
                 # TODO: Fix authors to new format
                 if key.startswith('author'):
-                    graph.add((uri, DC.creator, URIRef(data["extras"][key])\
-                                                if data["extras"][key].startswith(('http','urn'))\
-                                                else Literal(data["extras"][key])))
+                    graph.add((uri, DC.creator, URIRef(data["extras"][key]) \
+                        if data["extras"][key].startswith(('http', 'urn')) \
+                        else Literal(data["extras"][key])))
 
                 # TODO: Fix titles to new format
                 if key.startswith("title"):
@@ -228,7 +177,7 @@ class MetadataController(BaseController):
                     log.debug(lastlangnum)
                     lastlang = data["extras"]["lang_title_%s" % lastlangnum]
                     graph.add((uri, DC.title, Literal(data["extras"][key],
-                                        lang=lastlang)))
+                                                      lang=lastlang)))
             for tag in data['tags']:
                 graph.add((uri, DC.subject, Literal(tag)))
             for lang in data["extras"].get("language", "").split(','):
@@ -238,8 +187,8 @@ class MetadataController(BaseController):
 
             # Extended metadatamodel
 
-            if all(k in data["extras"] for k in ("temporal_coverage_begin","temporal_coverage_end")) \
-                            and data["extras"]["temporal_coverage_begin"] and data["extras"]["temporal_coverage_end"]:
+            if all(k in data["extras"] for k in ("temporal_coverage_begin", "temporal_coverage_end")) \
+                and data["extras"]["temporal_coverage_begin"] and data["extras"]["temporal_coverage_end"]:
                 graph.add((uri, DC.temporal, Literal(self._make_temporal(data["extras"]))))
             if "geographical_coverage" in data["extras"]:
                 graph.add((uri, DC.spatial, Literal(data["extras"]["geographical_coverage"])))
@@ -256,58 +205,6 @@ class MetadataController(BaseController):
             return ""
 
 
-class KATAApiController(ApiController):
-    '''
-    Functions for autocomplete fields in add dataset form
-    '''
-
-    def author_autocomplete(self):
-        pass
-
-    def organization_autocomplete(self):
-        pass
-
-    def contact_autocomplete(self):
-        q = request.params.get('incomplete', '')
-        limit = request.params.get('limit', 10)
-        tag_names = []
-        if q:
-            context = {'model': model, 'session': model.Session,
-                       'user': c.user or c.author}
-
-            data_dict = {'q': q, 'limit': limit}
-
-            tag_names = get_extra_contact(context, data_dict)
-
-        tag_names = [k.value for k in tag_names]
-        resultSet = {
-            'ResultSet': {
-                'Result': [{'Name': tag} for tag in tag_names]
-            }
-        }
-        return self._finish_ok(resultSet)
-
-    def owner_autocomplete(self):
-        q = request.params.get('incomplete', '')
-        limit = request.params.get('limit', 10)
-        tag_names = []
-        if q:
-            context = {'model': model, 'session': model.Session,
-                       'user': c.user or c.author}
-
-            data_dict = {'q': q, 'limit': limit}
-
-            tag_names = get_extra_contact(context, data_dict, key="owner_name")
-
-        tag_names = [k.value for k in tag_names]
-        resultSet = {
-            'ResultSet': {
-                'Result': [{'Name': tag} for tag in tag_names]
-            }
-        }
-        return self._finish_ok(resultSet)
-
-
 class AccessRequestController(BaseController):
     '''
     AccessRequestController class provides a feature to ask
@@ -322,7 +219,7 @@ class AccessRequestController(BaseController):
         """
 
         pending_requests = model.Session.query(KataAccessRequest).filter(
-                KataAccessRequest.pkg_id == pkg_id, KataAccessRequest.user_id == user_id)
+            KataAccessRequest.pkg_id == pkg_id, KataAccessRequest.user_id == user_id)
         return pending_requests.count() > 0
 
     def create_request(self, pkg_id):
@@ -331,10 +228,10 @@ class AccessRequestController(BaseController):
         """
 
         url = h.url_for(controller='package', action='read', id=pkg_id)
-        
+
         pkg = Package.get(pkg_id)
         pkg_title = pkg.title if pkg.title else pkg.name
-        
+
         user = c.userobj if c.userobj else None
         if user:
             if not self._have_pending_requests(pkg_id, user.id):
@@ -389,158 +286,159 @@ class AccessRequestController(BaseController):
             redirect(url)
 
 
-class DataMiningController(BaseController):
-    '''
-    Controller for scraping metadata content from files.
-    '''
-
-    def read_data(self, id, resource_id):
-        """
-        Scrape all words from a file and save it to extras.
-        """
-        res = Resource.get(resource_id)
-        pkg = Package.get(id)
-        c.pkg_dict = pkg.as_dict()
-        c.package = pkg
-        c.resource = get_action('resource_show')({'model': model},
-                                                     {'id': resource_id})
-        label = res.url.split(config.get('ckan.site_url') + '/storage/f/')[-1]
-        label = urllib2.unquote(label)
-        ofs = get_ofs()
-
-        try:
-            # Get file location
-            furl = ofs.get_url(BUCKET, label).split('file://')[-1]
-        except FileNotFoundException:
-            h.flash_error(_('Cannot do data mining on remote resource!'))
-            url = h.url_for(controller='package', action='resource_read',
-                            id=id, resource_id=resource_id)
-            return redirect(url)
-
-        wordstats = {}
-        ret = {}
-
-        if res.format in ('TXT', 'txt'):
-            wdsf, wdspath = tempfile.mkstemp()
-            os.write(wdsf, "%s\nmetadata description title information" % furl)
-
-            with os.fdopen(wdsf, 'r') as wordfile:
-                preproc = orngText.Preprocess()
-                table = orngText.loadFromListWithCategories(wdspath)
-                data = orngText.bagOfWords(table, preprocessor=preproc)
-                words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
-
-            for i in range(len(words)):
-                d = words[i]
-                wordstats = d.get_metas(str)
-
-            for k, v in wordstats.items():
-                if v.value > 10.0:
-                    ret[unicode(k, 'utf8')] = v.value
-
-            c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
-            os.remove(wdspath)
-
-            for i in range(len(data)):
-                    d = words[i]
-                    wordstats = d.get_metas(str)
-
-            words = []
-            for k, v in wordstats.items():
-                words.append(k)
-
-            # Save scraped words to extras.
-
-            model.repo.new_revision()
-            if not 'autoextracted_description' in pkg.extras:
-                pkg.extras['autoextracted_description'] = ' '.join(words)
-
-            pkg.save()
-
-            return render('datamining/read.html')
-
-        elif res.format in ('odt', 'doc', 'xls', 'ods', 'odp', 'ppt', 'doc', 'html'):
-
-            textfd, textpath = convert_to_text(res, furl)
-
-            if not textpath:
-                h.flash_error(_('This file could not be mined for any data!'))
-                os.close(textfd)
-                return render('datamining/read.html')
-            else:
-                wdsf, wdspath = tempfile.mkstemp()
-                os.write(wdsf, "%s\nmetadata description title information" % textpath)
-                preproc = orngText.Preprocess()
-                table = orngText.loadFromListWithCategories(wdspath)
-                data = orngText.bagOfWords(table, preprocessor=preproc)
-                words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
-
-                for i in range(len(words)):
-                    d = words[i]
-                    wordstats = d.get_metas(str)
-
-                for k, v in wordstats.items():
-                    if v.value > 10.0:
-                        ret[unicode(k, 'utf8')] = v.value
-
-                c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
-                os.close(textfd)
-                os.close(wdsf)
-                os.remove(wdspath)
-                os.remove(textpath)
-
-                for i in range(len(data)):
-                    d = words[i]
-                    wordstats = d.get_metas(str)
-
-                words = []
-
-                for k, v in wordstats.items():
-                    log.debug(k)
-                    words.append(substitute_ascii_equivalents(k))
-
-                model.repo.new_revision()
-
-                if not 'autoextracted_description' in pkg.extras:
-                    pkg.extras['autoextracted_description'] = ' '.join(words)
-
-                pkg.save()
-
-                return render('datamining/read.html')
-        else:
-            h.flash_error(_('This metadata document is not in proper format for data mining!'))
-            url = h.url_for(controller='package', action='resource_read',
-                            id=id, resource_id=resource_id)
-            return redirect(url)
-
-    def save(self):
-        if not c.user:
-            return
-
-        model.repo.new_revision()
-        data = clean_dict(unflatten(tuplize_dict(parse_params(request.params))))
-        package = Package.get(data['pkgid'])
-        keywords = []
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user}
-
-        if check_access('package_update', context, data_dict={"id": data['pkgid']}):
-
-            for k, v in data.items():
-                if k.startswith('kw'):
-                    keywords.append(v)
-
-            tags = package.get_tags()
-
-            for kw in keywords:
-                if not kw in tags:
-                    package.add_tag_by_name(kw)
-
-            package.save()
-            url = h.url_for(controller='package', action='read', id=data['pkgid'])
-            redirect(url)
-        else:
-            redirect('/')
+'''DataMiningController is here for reference, some stuff like the file parsing might be useful'''
+# class DataMiningController(BaseController):
+#     '''
+#     Controller for scraping metadata content from files.
+#     '''
+#
+#     def read_data(self, id, resource_id):
+#         """
+#         Scrape all words from a file and save it to extras.
+#         """
+#         res = Resource.get(resource_id)
+#         pkg = Package.get(id)
+#         c.pkg_dict = pkg.as_dict()
+#         c.package = pkg
+#         c.resource = get_action('resource_show')({'model': model},
+#                                                      {'id': resource_id})
+#         label = res.url.split(config.get('ckan.site_url') + '/storage/f/')[-1]
+#         label = urllib2.unquote(label)
+#         ofs = get_ofs()
+#
+#         try:
+#             # Get file location
+#             furl = ofs.get_url(BUCKET, label).split('file://')[-1]
+#         except FileNotFoundException:
+#             h.flash_error(_('Cannot do data mining on remote resource!'))
+#             url = h.url_for(controller='package', action='resource_read',
+#                             id=id, resource_id=resource_id)
+#             return redirect(url)
+#
+#         wordstats = {}
+#         ret = {}
+#
+#         if res.format in ('TXT', 'txt'):
+#             wdsf, wdspath = tempfile.mkstemp()
+#             os.write(wdsf, "%s\nmetadata description title information" % furl)
+#
+#             with os.fdopen(wdsf, 'r') as wordfile:
+#                 preproc = orngText.Preprocess()
+#                 table = orngText.loadFromListWithCategories(wdspath)
+#                 data = orngText.bagOfWords(table, preprocessor=preproc)
+#                 words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
+#
+#             for i in range(len(words)):
+#                 d = words[i]
+#                 wordstats = d.get_metas(str)
+#
+#             for k, v in wordstats.items():
+#                 if v.value > 10.0:
+#                     ret[unicode(k, 'utf8')] = v.value
+#
+#             c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
+#             os.remove(wdspath)
+#
+#             for i in range(len(data)):
+#                     d = words[i]
+#                     wordstats = d.get_metas(str)
+#
+#             words = []
+#             for k, v in wordstats.items():
+#                 words.append(k)
+#
+#             # Save scraped words to extras.
+#
+#             model.repo.new_revision()
+#             if not 'autoextracted_description' in pkg.extras:
+#                 pkg.extras['autoextracted_description'] = ' '.join(words)
+#
+#             pkg.save()
+#
+#             return render('datamining/read.html')
+#
+#         elif res.format in ('odt', 'doc', 'xls', 'ods', 'odp', 'ppt', 'doc', 'html'):
+#
+#             textfd, textpath = convert_to_text(res, furl)
+#
+#             if not textpath:
+#                 h.flash_error(_('This file could not be mined for any data!'))
+#                 os.close(textfd)
+#                 return render('datamining/read.html')
+#             else:
+#                 wdsf, wdspath = tempfile.mkstemp()
+#                 os.write(wdsf, "%s\nmetadata description title information" % textpath)
+#                 preproc = orngText.Preprocess()
+#                 table = orngText.loadFromListWithCategories(wdspath)
+#                 data = orngText.bagOfWords(table, preprocessor=preproc)
+#                 words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
+#
+#                 for i in range(len(words)):
+#                     d = words[i]
+#                     wordstats = d.get_metas(str)
+#
+#                 for k, v in wordstats.items():
+#                     if v.value > 10.0:
+#                         ret[unicode(k, 'utf8')] = v.value
+#
+#                 c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
+#                 os.close(textfd)
+#                 os.close(wdsf)
+#                 os.remove(wdspath)
+#                 os.remove(textpath)
+#
+#                 for i in range(len(data)):
+#                     d = words[i]
+#                     wordstats = d.get_metas(str)
+#
+#                 words = []
+#
+#                 for k, v in wordstats.items():
+#                     log.debug(k)
+#                     words.append(substitute_ascii_equivalents(k))
+#
+#                 model.repo.new_revision()
+#
+#                 if not 'autoextracted_description' in pkg.extras:
+#                     pkg.extras['autoextracted_description'] = ' '.join(words)
+#
+#                 pkg.save()
+#
+#                 return render('datamining/read.html')
+#         else:
+#             h.flash_error(_('This metadata document is not in proper format for data mining!'))
+#             url = h.url_for(controller='package', action='resource_read',
+#                             id=id, resource_id=resource_id)
+#             return redirect(url)
+#
+#     def save(self):
+#         if not c.user:
+#             return
+#
+#         model.repo.new_revision()
+#         data = clean_dict(unflatten(tuplize_dict(parse_params(request.params))))
+#         package = Package.get(data['pkgid'])
+#         keywords = []
+#         context = {'model': model, 'session': model.Session,
+#                    'user': c.user}
+#
+#         if check_access('package_update', context, data_dict={"id": data['pkgid']}):
+#
+#             for k, v in data.items():
+#                 if k.startswith('kw'):
+#                     keywords.append(v)
+#
+#             tags = package.get_tags()
+#
+#             for kw in keywords:
+#                 if not kw in tags:
+#                     package.add_tag_by_name(kw)
+#
+#             package.save()
+#             url = h.url_for(controller='package', action='read', id=data['pkgid'])
+#             redirect(url)
+#         else:
+#             redirect('/')
 
 
 class ContactController(BaseController):
@@ -550,14 +448,14 @@ class ContactController(BaseController):
     From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author. 
     The feature provides a form for message sending, and the message is sent via e-mail. 
     """
-    
+
     def _send_message(self, recipient, email, email_dict):
         ''' Send message to given email '''
         import ckan.lib.mailer
 
         try:
             ckan.lib.mailer.mail_recipient(recipient, email,
-                    email_dict['subject'], email_dict['body'])
+                                           email_dict['subject'], email_dict['body'])
         except ckan.lib.mailer.MailerException:
             raise
 
@@ -608,7 +506,7 @@ class ContactController(BaseController):
         userobj.save()
 
     def send_contact(self, pkg_id):
-        
+
         prologue_template = u'{a} ({b}) has sent you a message regarding the following dataset:\
 \n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
 \n\n{c} (Tunniste: {d})\n\nViesti:\n\n    ---'
@@ -625,10 +523,10 @@ käytä yllä olevaa sähköpostiosoitetta.'
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
             email = package.maintainer_email
             recipient = package.maintainer
-    
+
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
-    
+
             subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
             self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
         else:
@@ -642,7 +540,7 @@ käytä yllä olevaa sähköpostiosoitetta.'
 
 
     def send_request(self, pkg_id):
-        
+
         prologue_template = u'{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
 for which you are currently marked as distributor.\n\nThe message is below.\n\n\
 {a} ({b}) pyytää dataa, joka liittyy tietoaineistoon\n\n{c} (Tunniste: {d})\n\nja johon sinut on merkitty jakelijaksi. \
@@ -659,10 +557,10 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
             email = package.maintainer_email
             recipient = package.maintainer
-    
+
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
-    
+
             subject = _("Data access request for dataset / Datapyynto tietoaineistolle %s" % package_title)
             self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
         else:
@@ -679,7 +577,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         """
         Render the contact form if allowed.
         """
-        
+
         c.package = Package.get(pkg_id)
         url = h.url_for(controller='package',
                         action="read",
@@ -698,7 +596,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         """
         Render the access request contact form if allowed.
         """
-        
+
         c.package = Package.get(pkg_id)
         url = h.url_for(controller='package',
                         action="read",
@@ -713,10 +611,12 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
             h.flash_error(_("Please login"))
             return redirect(url)
 
+
 class KataUserController(UserController):
     """
     Overwrite logged_in function in the super class.
     """
+
     def logged_in(self):
         """
         Minor rewrite to redirect the user to the own profile page instead of
@@ -734,34 +634,36 @@ class KataUserController(UserController):
 
         if c.user:
             context = {'model': model,
-                   'user': c.user}
+                       'user': c.user}
 
             data_dict = {'id': c.user}
 
             user_dict = get_action('user_show')(context, data_dict)
 
             h.flash_success(_("%s is now logged in") %
-                        user_dict['display_name'])
+                            user_dict['display_name'])
             if came_from:
                 return h.redirect_to(str(came_from))
-            # Rewritten in ckanext-kata
+                # Rewritten in ckanext-kata
             return h.redirect_to(controller='user', action='read', id=c.userobj.name)
         else:
             err = _('Login failed. Bad username or password.')
             if g.openid_enabled:
                 err += _(' (Or if using OpenID, it hasn\'t been associated '
-                     'with a user account.)')
+                         'with a user account.)')
             if asbool(config.get('ckan.legacy_templates', 'false')):
                 h.flash_error(err)
                 h.redirect_to(locale=lang, controller='user',
-                          action='login', came_from=came_from)
+                              action='login', came_from=came_from)
             else:
                 return self.login(error=err)
+
 
 class KataPackageController(PackageController):
     """
     Adds advanced search feature.
     """
+
     def advanced_search(self):
         """
         Parse query parameters from different search form inputs, modify into
@@ -775,18 +677,20 @@ class KataPackageController(PackageController):
 
         # unicode format (decoded from utf8)
         q_free = c.q_free = request.params.get('q_free', u'')
-        q = c.q = q_free + u' AND '+ u'author:' +  q_author
+        q = c.q = q_free + u' AND ' + u'author:' + q_author
 
         log.debug('advanced_search(): request.params.items(): %r' % request.params.items())
         #log.debug('advanced_search(): q: %r' % q)
         log.debug('advanced_search(): call to search()')
         return self.search()
 
+
 class KataInfoController(BaseController):
     '''
     KataInfoController provides info pages, which
     are non-dynamic and visible for all
     '''
+
     def render_help(self):
         '''
         Provides the help page

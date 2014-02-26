@@ -40,7 +40,6 @@ from ckan.plugins.core import unload
 from ckanext.kata.validators import (check_access_application_url,
                                      check_access_request_url,
                                      check_author_org,
-                                     check_direct_download_url,
                                      check_junk,
                                      check_last_and_update_pid,
                                      check_project,
@@ -83,13 +82,6 @@ log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
 t = toolkit                                 # pylint: disable=invalid-name
 
 
-def snippet(template_name, **kw):
-    """This function is used to load html snippets into pages. keywords
-    can be used to pass parameters into the snippet rendering."""
-    import ckan.lib.base as base
-    return base.render_snippet(template_name, **kw)
-
-
 class KataMetadata(SingletonPlugin):
     """
     Kata metadata plugin.
@@ -103,35 +95,13 @@ class KataMetadata(SingletonPlugin):
         """
         Override IRoutes.before_map()
         """
-        get = dict(method=['GET'])
         controller = "ckanext.kata.controllers:MetadataController"
-        api_controller = "ckanext.kata.controllers:KATAApiController"
         map.connect('/dataset/{id}.{format:rdf}',
                     controller=controller,
                     action='tordf')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
-        map.connect('/api/2/util/owner_autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action="owner_autocomplete")
-        map.connect('/api/2/util/author_autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action="author_autocomplete")
-        map.connect('/api/2/util/organization_autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action="organization_autocomplete")
-        map.connect('/api/2/util/contact_autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action="contact_autocomplete")
-        map.connect('/api/2/util/discipline_autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action="discipline_autocomplete")
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="unlock_access")
@@ -141,12 +111,6 @@ class KataMetadata(SingletonPlugin):
         map.connect('/render_edit_request/{pkg_id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="render_edit_request")
-        map.connect('/read_data/{id}/{resource_id}',
-                    controller="ckanext.kata.controllers:DataMiningController",
-                    action="read_data")
-        map.connect('/data_mining/save',
-                    controller="ckanext.kata.controllers:DataMiningController",
-                    action="save")
         map.connect('/request_dataset/send/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
                     action="send_request")
@@ -728,12 +692,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Uncomment below to show query with results and in the search field
         #c.q = data_dict['q']
         return data_dict
-
-    def after_search(self, search_results, data_dict):
-        '''
-        Things to do after querying Solr.
-        '''
-        return search_results
 
     def after_show(self, context, pkg_dict):
         '''
