@@ -452,8 +452,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #    'name': [ignore_missing, unicode, add_to_group]
         #})
 
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), check_direct_download_url, unicode,
-                                      validate_general]
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, validate_general]
+        # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
+
         schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
         schema['resources']['hash'].append(validate_general)
         schema['resources']['mimetype'].append(validate_mimetype)

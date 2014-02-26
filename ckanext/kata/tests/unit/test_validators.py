@@ -457,7 +457,7 @@ class TestPIDValidators(TestCase):
             u'version': [u'version_pid', u'another_version_pid'],
         },
         u'kata': {
-            u'version': [],
+            u'version': [u'kata_version_pid'],
         },
     }
 

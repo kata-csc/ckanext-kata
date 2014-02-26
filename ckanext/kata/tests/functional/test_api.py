@@ -21,10 +21,10 @@ import ckanext.kata.model as kata_model
 import ckanext.kata.settings as settings
 
 TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
-                     'algorithm': u'SHA',
-                     'hash': u'somehash',
-                     'mimetype': u'application/csv',
-                     'resource_type': 'file'}
+                 'algorithm': u'SHA',
+                 'hash': u'somehash',
+                 'mimetype': u'application/csv',
+                 'resource_type': 'file'}
 
 TEST_DATADICT = {'algorithm': u'MD5',
                  'availability': u'direct_download',
@@ -66,7 +66,10 @@ TEST_DATADICT = {'algorithm': u'MD5',
                          u'data': [u'some_data_pid', u'another_data_pid'],
                          u'metadata': [u'metadata_pid', u'another_metadata_pid', u'third_metadata_pid'],
                          u'version': [u'version_pid', u'another_version_pid'],
-                     }
+                     },
+                     u'kata': {
+                         u'version': [u'kata_version_pid'],
+                     },
                  },
                  'projdis': 'False',
                  'project_funder': u'NSA',
@@ -79,12 +82,12 @@ TEST_DATADICT = {'algorithm': u'MD5',
                  'title': u'',
                  'type': 'dataset',
                  'version': u'2013-11-18T12:25:53Z',
-                 'version_PID': u'aineiston-version-pid',
+                 #'version_PID': u'aineiston-version-pid',
                  'xpaths': {
                      u'xpath/path1': u'xpath_value',
                      u'xpath/path2': u'xpath_value2',
-                     },
-                 }
+                 },
+}
 
 
 class TestCreateDatasetAndResources(unittest.TestCase):
@@ -107,7 +110,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
 
     def test_create_dataset(self):
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
-                                status=200, **TEST_DATADICT)
+                                 status=200, **TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert output
@@ -188,7 +191,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         log.disabled = True
 
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
-                                status=409, **data)
+                                 status=409, **data)
         log.disabled = False
 
         assert '__type' in output
@@ -226,6 +229,9 @@ class TestCreateDatasetAndResources(unittest.TestCase):
 
 
 class TestDataReading(unittest.TestCase):
+    '''
+    Tests for checking that values match between original data_dict and package_show output.
+    '''
 
     @classmethod
     def setup_class(cls):
@@ -265,7 +271,8 @@ class TestDataReading(unittest.TestCase):
 
             output_value = output.get(key)
 
-            assert unicode(output_value) == unicode(value), "Values for key %r not matching: %r versus %r" % (key, value, output_value)
+            assert unicode(output_value) == unicode(value), "Values for key %r not matching: %r versus %r" % (
+                key, value, output_value)
 
         return True
 
@@ -307,7 +314,6 @@ class TestDataReading(unittest.TestCase):
                                  status=200, id=output['id'])
 
         assert self._compare_datadicts(output)
-
 
     def test_availability_changing(self):
         '''
@@ -381,7 +387,7 @@ class TestDataReading(unittest.TestCase):
         assert 'discipline' not in output
 
         call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
-                                 status=200, **data_dict)
+                        status=200, **data_dict)
         output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
                                  status=200, id=data_dict['id'])
         assert 'discipline' in output
@@ -389,9 +395,62 @@ class TestDataReading(unittest.TestCase):
         data_dict['discipline'] = None
 
         call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
-                                 status=200, **data_dict)
+                        status=200, **data_dict)
         output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
                                  status=200, id=data_dict['id'])
         assert 'discipline' not in output
 
+
+    def test_create_and_read_resource(self):
+        '''
+        Create and read resource data through API and test that 'url' matches. Availability 'through_provider'.
+        '''
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict['availability'] = 'through_provider'
+        data_dict['through_provider_URL'] = 'http://www.tdata.fi/'
+        data_dict.pop('direct_download_URL')
+
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **data_dict)
+        assert 'id' in output
+
+        new_res = copy.deepcopy(TEST_RESOURCE)
+        new_res['package_id'] = output['id']
+
+        output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **new_res)
+        assert output
+
+        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=new_res['package_id'])
+        assert 'id' in output
+
+        resources = output.get('resources')
+        assert len(resources) == 2
+        assert resources[0]['url'] == TEST_RESOURCE['url'] or \
+            resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
+
+    def test_create_and_read_resource2(self):
+        '''
+        Create and read resource data through API and test that 'url' matches. Availability 'direct_download'.
+        '''
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **TEST_DATADICT)
+        assert 'id' in output
+
+        new_res = copy.deepcopy(TEST_RESOURCE)
+        new_res['package_id'] = output['id']
+
+        output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **new_res)
+        assert output
+
+        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=new_res['package_id'])
+        assert 'id' in output
+
+        resources = output.get('resources')
+        assert len(resources) == 2
+        assert resources[0]['url'] == TEST_RESOURCE['url'] or \
+            resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
 

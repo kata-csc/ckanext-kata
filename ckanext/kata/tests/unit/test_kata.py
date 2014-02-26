@@ -318,7 +318,7 @@ class TestResouceConverters(TestCase):
         assert data_dict.get('algorithm') == self.test_data3['resources'][0]['algorithm']
         assert data_dict.get('checksum') == self.test_data3['resources'][0]['hash']
         assert data_dict.get('mimetype') == self.test_data3['resources'][0]['mimetype']
-        assert data_dict.get('direct_download_URL') == self.test_data3['resources'][0]['url']
+        assert not data_dict.get('direct_download_URL')
 
     def test_resource_handling_2(self):
         data_dict = copy.deepcopy(self.test_data3)

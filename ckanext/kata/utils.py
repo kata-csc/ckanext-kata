@@ -176,8 +176,10 @@ def dataset_to_resource(data_dict):
         resource_index = 0
 
     if data_dict.get('availability') != 'direct_download':
+        data_dict['direct_download_URL'] = None
         if resource_index is not None:
-            # Empty the found 'dataset' resource if availability is not 'direct_download' to get rid of it's URL.
+            # Empty the found 'dataset' resource if availability is not 'direct_download' to get rid of it's URL
+            # which is the used as the direct_download_URL.
             data_dict['resources'][resource_index] = {}
 
     if resource_index is None:
