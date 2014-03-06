@@ -11250,3 +11250,10 @@ msgstr "Matkapuhelin"
 # Harvest
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
+
+# Login page
+msgid "Authentication by using Haka login"
+msgstr "Sisäänkirjautuminen Haka-tunnuksilla"
+
+msgid "Authentication by using local account"
+msgstr "Sisäänkirjautuminen paikallisilla tunnuksella"
