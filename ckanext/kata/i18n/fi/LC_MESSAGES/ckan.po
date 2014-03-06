@@ -11256,4 +11256,4 @@ msgid "Authentication by using Haka login"
 msgstr "Sisäänkirjautuminen Haka-tunnuksilla"
 
 msgid "Authentication by using local account"
-msgstr "Sisäänkirjautuminen paikallisilla tunnuksella"
+msgstr "Sisäänkirjautuminen paikallisilla tunnuksilla"
