@@ -465,5 +465,5 @@ def to_extras_json(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    extras.append({'key': key, 'value': json.dumps(data[key][0])})
+    extras.append({'key': key, 'value': json.dumps(data[key])})
 
