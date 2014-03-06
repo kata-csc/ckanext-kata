@@ -149,11 +149,8 @@ def package_update(context, data_dict):
 
     old_resources = temp_pkg_dict.get('resources', [])
 
-    if 'resources' in data_dict:
-        # Creating a new resource
-        data_dict['resources'] = old_resources + data_dict['resources']
-    else:
-        # Updating a dataset
+    if not 'resources' in data_dict:
+        # Updating a dataset, not creating a new resource
         data_dict['resources'] = old_resources
         data_dict = utils.dataset_to_resource(data_dict)
 
