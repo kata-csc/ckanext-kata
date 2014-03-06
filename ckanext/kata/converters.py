@@ -453,6 +453,9 @@ def from_extras_json(key, data, errors, context):
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key' and data[k] == key[0]:
             data[key] = json.loads(data[(k[0], k[1], 'value')])
+            data.pop(('extras', k[1], 'key'), None)
+            data.pop(('extras', k[1], 'value'), None)
+            data.pop(('extras', k[1], '__extras'), None)
 
 
 def to_extras_json(key, data, errors, context):
@@ -462,5 +465,5 @@ def to_extras_json(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    extras.append({'key': key, 'value': json.dumps(data[key])})
+    extras.append({'key': key, 'value': json.dumps(data[key][0])})
 
