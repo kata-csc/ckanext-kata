@@ -6586,7 +6586,7 @@ msgstr "FAQ"
 #: ckanext/kata/theme/templates/header.html:106
 #: ckanext/kata/theme/templates/kata/help.html:277
 msgid "Stats"
-msgstr "Stats"
+msgstr "Tilastot"
 
 #: ckanext/kata/theme/templates/header.html:119
 #: ckanext/kata/theme/templates/contact/contact_form.html:3
@@ -6973,12 +6973,6 @@ msgstr "Termejä"
 #: ckanext/kata/theme/templates/kata/help.html:25
 msgid "Dataset: a single set of metadata (of data)"
 msgstr "Tietoaineisto: aineiston metatiedot"
-
-#: ckanext/kata/theme/templates/kata/help.html:26
-msgid ""
-"Shibboleth: a single-sign in or logging-in system, typically known as "
-"HAKA login"
-msgstr "Shibboleth: Kata-palvelussa shibbolethiä hyödynnetään HAKA-luottamusverkostossa, joka mahdollistaa kirjautumisen moneen palveluun yhdellä ja samalla tunnuksella."
 
 #: ckanext/kata/theme/templates/kata/help.html:31
 #: ckanext/kata/theme/templates/kata/help.html:303
