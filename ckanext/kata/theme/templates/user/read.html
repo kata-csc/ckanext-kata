@@ -4,12 +4,15 @@
 
 {% block subtitle %}{{ user.display_name }}{% endblock %}
 {% block add_action_content %}
-{% if h.check_access('user_update', user) %}
-  <li>{% link_for _('Edit'), controller='user', action='edit', id=user.name, class_='btn', icon='wrench' %}</li>
-{% endif %}
-{% if c.is_myself == false %}
-  <li>{{ h.follow_button('user', user.id) }}</li>
-{% endif %}
+  {% if h.check_access('user_update', user) %}
+    <li>{% link_for _('Edit'), controller='user', action='edit', id=user.name, class_='btn', icon='wrench' %}</li>
+  {% endif %}
+  {% if c.is_myself == false %}
+    <li>{{ h.follow_button('user', user.id) }}</li>
+  {% endif %}
+  {% if h.check_access('package_create') %}
+    {% link_for _('Add Dataset'), controller='package', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
+  {% endif %}
 {% endblock %}
 
 {% block breadcrumb_content %}
