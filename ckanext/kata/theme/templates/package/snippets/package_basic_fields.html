@@ -241,10 +241,6 @@
         {{ form.input('access_request_URL', label=_('Web address for downloading the dataset'), id="access_request_URL", placeholder=_('http://mydata.com'), value=data.access_request_URL, error=errors.access_request_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
       </div>
       <input type="radio" name="availability" id="access_application" value="access_application" style="top: 0px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'access_application'%}checked{% endif %} >{{ _('with data access application') }}<br />
-      <div id="urlDiv_access_application" {% if not data.access_application_URL and not errors.access_application_URL%}style="display:none"{% endif%}>
-        {{ form.input('access_application_URL', label=_('Web address of access application'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
-        {# TODO: UNCOMMENT WHEN REMS FUNCTIONALITY IS IMPLEMENTED { form.checkbox('access_application_new_form', label=_('Create a new access request form'), id="access_application_new_form") }#}
-      </div>
       <input type="radio" name="availability" id="contact_owner" onclick="KATA.toggleAccess(this)" style="top: 0px" value="contact_owner" {% if data.availability == 'contact_owner'%}checked{% endif %}>{{ _('only by contacting the distributor') }}<br />
       {% if data.availability == 'through_provider' %}
         <input type="radio" name="availability" id="through_provider" onclick="KATA.toggleAccess(this)" style="top: 0px" value="through_provider" checked>{{ _('through data provider') }}<br />
