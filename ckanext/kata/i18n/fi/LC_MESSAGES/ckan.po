@@ -7490,7 +7490,7 @@ msgstr ""
 msgid ""
 "The Stats link will take you to the statistics page. The page will show "
 "you some general information about Kata, its datasets and users."
-msgstr "Stats-linkki vie sinut statistiikkasivulle. Sivu näyttää perustietoa Katan sisältämistä tietoaineistoista ja käyttäjistä."
+msgstr "Tilastot-linkki vie sinut tilastosivulle. Sivu näyttää perustietoa Katan sisältämistä tietoaineistoista ja käyttäjistä."
 
 #: ckanext/kata/theme/templates/kata/help.html:284
 msgid ""
@@ -7514,7 +7514,7 @@ msgstr "- Käyttäjäprofiili"
 
 #: ckanext/kata/theme/templates/kata/help.html:318
 msgid "- Stats"
-msgstr "- Stats (statistiikat)"
+msgstr "- Tilastot"
 
 #: ckanext/kata/theme/templates/kata/help.html:321
 msgid "- Collections"
