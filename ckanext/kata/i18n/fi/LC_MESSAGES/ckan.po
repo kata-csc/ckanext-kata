@@ -11117,8 +11117,8 @@ msgstr "Uusimmat tietoaineistot"
 msgid "contacting the distributor"
 msgstr "ottamalla yhteyttä jakelijaan"
 
-msgid "Metadata information"
-msgstr "Metadatan tiedot"
+msgid "Metadata export"
+msgstr "Metadatan vienti"
 
 msgid "Related"
 msgstr "Liittyvä"
