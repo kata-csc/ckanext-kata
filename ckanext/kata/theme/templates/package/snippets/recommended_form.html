@@ -46,7 +46,7 @@
   		        <label class="control-label kata-input-comp" for="temporal_coverage_begin">{{ _('Begin') }}</label>
                 <div class="controls">
                     <input type="text" id="temporal_coverage_begin" name="temporal_coverage_begin" value="{{data.temporal_coverage_begin}}" />
-                    {{ kata_form.tooltip(tooltip=_('Temporal coverage - begin - can be filled to include the starting time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br /><br />Click the field to open a calendar tool to choose a modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires javascript to be enabled in the browser.')) }}
+                    {{ kata_form.tooltip(tooltip=_('Temporal coverage - begin - can be filled to include the starting time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br /><br />Click the field to open a calendar tool to choose a modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires JavaScript to be enabled in the browser.')) }}
                     {% if errors.temporal_coverage_begin %}
                       <span class="error-block">{{ errors.temporal_coverage_begin[0] }}</span>
                     {% endif %}
@@ -54,7 +54,7 @@
                 <label class="control-label kata-input-comp" for="temporal_coverage_end">{{ _('End') }}</label>
                 <div class="controls">
                     <input type="text" id="temporal_coverage_end" name="temporal_coverage_end" value="{{data.temporal_coverage_end}}" />
-                    {{ kata_form.tooltip(tooltip=_('Temporal coverage - end - can be filled to include the ending time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br /><br />Click the field to open a calendar tool to choose a modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires javascript to be enabled in the browser.')) }}
+                    {{ kata_form.tooltip(tooltip=_('Temporal coverage - end - can be filled to include the ending time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br /><br />Click the field to open a calendar tool to choose a modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires JavaScript to be enabled in the browser.')) }}
                     {% if errors.temporal_coverage_end %}
                       <span class="error-block">{{ errors.temporal_coverage_end[0] }}</span>
                     {% endif %}
