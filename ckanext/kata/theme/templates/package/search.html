@@ -131,7 +131,9 @@
                 <a id="del_search_element" href="#" onclick="remove_search_row({{ loop.index0 }})">DEL</a>
               {% else %}
                 <a id="new_search_element" href="#" onclick="add_search_row({{ loop.index0 }});">ADD</a>
+                <span data-module="custom-fields-kata">
                 {{ kata_form.tooltip(tooltip=_('Multiple search terms are bind together with ANDs and grouped with ORs. Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)')) }}
+                </span>
               {% endif %}
             </div>
             {% endfor %}
@@ -143,12 +145,12 @@
               <span class="form-select">
                 <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
                 <div class="controls" id="advanced-search-date">
-                  <input id="advanced-search-date-start" type="number"
+                  <input id="advanced-search-date-start" type="number" size="8"
                          pattern="[0-9]{1,4}" class="kata-search-relation" name="ext_date-metadata_modified-start"
                          value="{{ c.current_search_limiters['ext_date-metadata_modified-start'] }}"
                          autocomplete="off" placeholder="{{ _('Start year') }}"/>
                   -
-                  <input id="advanced-search-date-end" type="number"
+                  <input id="advanced-search-date-end" type="number" size="8"
                          pattern="[0-9]{1,4}" class="kata-search-relation" name="ext_date-metadata_modified-end"
                          value="{{ c.current_search_limiters['ext_date-metadata_modified-end'] }}"
                          autocomplete="off" placeholder="{{ _('End year') }}"/>
