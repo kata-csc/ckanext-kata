@@ -11251,3 +11251,7 @@ msgstr "Sisäänkirjautuminen Haka-tunnuksilla"
 
 msgid "Authentication by using local account"
 msgstr "Sisäänkirjautuminen paikallisilla tunnuksilla"
+
+# Edit dataset
+msgid "You have errors in your metadata. Please, make the requested corrections."
+msgstr "Syöttämissäsi tiedoissa on virheitä. Tee pyydetyt korjaukset, kiitos."
