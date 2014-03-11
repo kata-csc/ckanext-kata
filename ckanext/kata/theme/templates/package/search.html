@@ -145,12 +145,12 @@
               <span class="form-select">
                 <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
                 <div class="controls" id="advanced-search-date">
-                  <input id="advanced-search-date-start" type="number" size="8"
+                  <input id="advanced-search-date-start" type="number"
                          pattern="[0-9]{1,4}" class="kata-search-relation" name="ext_date-metadata_modified-start"
                          value="{{ c.current_search_limiters['ext_date-metadata_modified-start'] }}"
                          autocomplete="off" placeholder="{{ _('Start year') }}"/>
                   -
-                  <input id="advanced-search-date-end" type="number" size="8"
+                  <input id="advanced-search-date-end" type="number"
                          pattern="[0-9]{1,4}" class="kata-search-relation" name="ext_date-metadata_modified-end"
                          value="{{ c.current_search_limiters['ext_date-metadata_modified-end'] }}"
                          autocomplete="off" placeholder="{{ _('End year') }}"/>
