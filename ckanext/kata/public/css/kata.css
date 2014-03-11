@@ -278,16 +278,16 @@ header.masthead .not-authed a {
 	background: none !important;
 }
 [role="main"] .primary {
-	float: left;
+	/*float: left;
 	margin-right: 0px !important;
 	width: 700px;
-	margin-right: auto;
+	margin-right: auto;*/
 }
 [role="main"] .secondary {
-	float: right;
+	/*float: right;
 	margin-left: auto;
 	width: 220px;
-	margin-right: 0px;
+	margin-right: 0px;*/
 }
 .box {
 	border: 0px !important;
