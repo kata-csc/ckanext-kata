@@ -4,99 +4,31 @@
         {{ h.render_markdown(g.site_about) }}
       {% else %}
         <div id="about">
-          <div id="about_fi">Suomeksi</div>
-          <h2>Tietoa Kata-metatietokatalogista</h2>
-          <p>
-            Kata-metatietokatalogi on opetus- ja kulttuuriministeriön palvelu tutkimusaineistojen saatavuuden ja käytettävyyden parantamiseksi.
-          </p>
-          <p>
-            Metatietokatalogista voit etsiä aineistoja niiden kuvailutietojen perusteella. Voit kohdentaa hakujasi
-            useilla eri kriteereillä esimerkiksi tieteenaloittain tai avainsanojen perusteella.
-            Kata ei sisällä itse tutkimusaineistoja. Metatiedoista kuitenkin selviää, mistä Katasta löytämäsi kiinnostavat aineistot ovat saatavilla.
-          </p>
-          <h2>Katan tehtävät</h2>
-          <p>
-            Katan tehtäviä osana tutkimusta tukevaa infrastruktuuria ovat:
-          </p>
-          <ul>
-            <li>helpottaa tutkimuskäyttöön saatavilla olevien aineistojen löytämistä ja uudelleenkäyttöä eli toimia Tieto käyttöön -raportin 
-              toimenpide-ehdotuksen nro 11 
-              <i>yhteistyöfoorumin perustaminen tietoaineistojen löydettävyyden takaamiseksi ja yhteentoimivuuden tekniikoiden määrittämiseksi</i> 
-              yhteentoimivana katalogina muiden eri aihepiireihin ja eri toimittajien tarjoamien katalogien rinnalla edustaen 
-              tutkimuksen tietoaineistoja.
-            </li>
-            <li>
-              OKM:ään kohdistuvien tietohallintolain mukaisten inventointivaatimusten toteuttaminen: tuottaa tietoa aineistojen 
-              olemassaolosta rahoittajille.
-            </li>
-            <li>
-              yhtenäisen käyttöehto- ja käyttöoikeuskulttuurin luominen. Tämä tarkoittaa selkeiden omistajuus- ja hyödyntämisoikeustietojen 
-              kirjaamista aineistokatalogiin.
-            </li>
-            <li>
-              meriitin syntyminen tutkijalle.
-            </li>
-            <li>
-              pitkäaikaissäilytykseen soveltuvien tietoaineistojen löytäminen.
-            </li>
-          </ul>
-          <h2>Ominaisuudet</h2>
-          <p>
-            Kata-metatietokatalogista voit etsiä aineistojen metatietoja ja palvelu tarjoaa erinäisiä tapoja kohdistaa tulosjoukkoa. 
-            Tulosjoukon lajittelu on mahdollista esimerkiksi eri metatietokenttien, aihealueen tai tiedostotyypin mukaan. 
-            Myös Boolen operaattorit, kuten AND, ovat tuettuja.
-          </p>
-          <p> 
-            Kataa voi selailla kirjautumattomana. Sisäänkirjautuminen tapahtuu HAKA-tunnuksilla.
-             Kirjautuneena käyttäjänä voit lisätä ja muokata omia aineistojasi tai vaikka 
-            viitata metatiedoissasi muihin objekteihin Katassa.
-          </p>
-          <h2>Tietoturva</h2>
-          <p>
-            Sinä - ja mahdolliset muut omistajat - omistat omat datasi. Voit itse määritellä, mikä on metatiedon kohteena olevan 
-            aineistosi levittämistapa ja -kohde. Kata-metatietokatalogi tukee tätä tapaa informoiden siitä metadatasi selaajaa ja voi tarjota myös 
-            ohjeen aineistosi saavuttamiseksi.
-          </p>
-          <p>
-            Jos käytät Kata-palvelua julkisesta verkosta, kuten esimerkiksi yleisestä langattomasta verkosta, suosittelemme käytettäväksi 
-            SSL-salattua sivua, osoitteessa https://kata.csc.fi.
-          </p>
-          <h2>Yleistä</h2>
-          <p>
-            Kata-aineistokatalogi on yhteensopiva useimpien yleisessä käytössä olevien selainten kanssa. Lisäksi selaimeen tarvitaan JavaScript. Kata tukee 
-            suomen- ja englanninkielistä käyttöä.
-          </p>
-        <hr />
-          <div id="about_en">In English</div>
-          <h2>About Kata metadata catalogue</h2>
-          <p>
-            Kata is a service provided by the Ministry of Education and Culture to provide an easy, centralized access point to research data.
-          </p>
-          <h2>Features</h2>
-          <p>
-            You can search data from a variety of data present in the service and Kata provides several ways to limit the result set. You can search 
-            specifically according to the different fields of metadata, subject or file type to name but a few. Widely used Boolean 
-            operators are supported as well, for example the conjunctive AND operator.
-          </p>
-          <p>
-            You can browse Kata anonymously. You can also log in to Kata with Haka login. As a 
-            logged in user, you can add and modify your own data and objects as you like.
-          </p>
-          <h2>Security</h2>
-          <p>
-            Only you - or other persons specified - own your dataset. It is up to you which method to apply in your 
-            data's availability. For example, you can tell in Kata that your research is open for anyone or specify an independent 
-            location for an application form to gain a restricted access.
-          </p>
-          <p>
-            If you are using Kata from an open network, for example from a public wireless network, we highly recommend you to use the 
-            encrypted connection, at https://kata.csc.fi.
-          </p>
-          <h2>General information</h2>
-          <p>
-            Kata supports many commonly used modern web browsers. Additionally, we recommend that JavaScript should be enabled.
-          </p>
+          {% trans %}
+            <h2>About Kata metadata catalogue</h2>
+            <p>
+             Kata collects metadata of research data from various external sources
+             as well as provides a web interface to add metadata straight into Kata.
+             The data is never stored in Kata so it can be placed anywhere but with
+             the help of Kata it can be found by anyone.
+            </p>
+            <p>
+             Comprehensive depiction of data plays a very important role in visibility
+             of data. Kata encourages this by adapting the minimum metadata model and
+             its discipline independent metadata fields. With the help of Kata's various
+             tools adding the common metadata fields is made easier. The service also
+             promotes adding unified information about usability, ownership and licensing of data.
+             Important data to funders is also provided which promotes reporting.
+             Kata's powerful search tools will help to find the data which in its part
+             brings merit to the researchers.
+            </p>
+            <p>
+             Kata service is provided by the Ministry of Education and Culture of Finland.
+             Kata is maintained by CSC - IT Center for Science. The service is discipline
+             independent and free.
+            </p>
+          {% endtrans %}
         </div>
-        {% endif %}
+      {% endif %}
   {% endblock%}
  
