@@ -3,7 +3,7 @@
 
 # Facets used in Solr queries
 # Facets need also to be changed to search.html. This all should be fixed in newer CKAN versions with IFacets interface.
-FACETS = ['extras_discipline','tags','fformatstring','license_id','authorstring','organizationstring','extras_language']
+FACETS = ['extras_discipline','tags','mimetypestring','license_id','authorstring','organizationstring','extras_language']
 
 # Default sorting method. Pre-selects the corresponding option on search form.
 DEFAULT_SORT_BY = u'metadata_modified desc'
@@ -19,6 +19,7 @@ _FIELD_TITLES = {'organizationstring': 'Organization',
                  'ext_extras_fformat': 'File formats',
                  'fformatstring': 'File formats',
                  'ext_fformatstring': 'File formats',
+                 'mimetypestring': 'MIME type',
                  #'groups': 'Discipline',
                  #'ext_groups': 'Discipline',
                  'ext_discipline': 'Discipline',
@@ -50,7 +51,8 @@ SEARCH_FIELDS = ['ext_text',
                  #'ext_groups',
                  'ext_extras_funder',
                  'ext_licensetext',
-                 'ext_extras_fformat',
+                 #'ext_extras_fformat',
+                 'ext_fformatstring',
                  'ext_extras_language',
                  ]
 

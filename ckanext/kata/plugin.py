@@ -7,6 +7,7 @@ Main plugin file for Kata CKAN extension
 import datetime
 import logging
 import os
+import json
 
 from ckan.lib.base import g, c
 import ckan.lib.helpers as h
@@ -34,6 +35,7 @@ from ckan.plugins import (implements,
                           IMapper,
                           IPackageController,
                           IRoutes,
+                          IFacets,
                           ITemplateHelpers,
                           SingletonPlugin)
 from ckan.plugins.core import unload
@@ -156,6 +158,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(ITemplateHelpers, inherit=True)
     implements(IActions, inherit=True)
     implements(IAuthFunctions, inherit=True)
+    implements(IFacets, inherit=True)
 
     def get_auth_functions(self):
         """
@@ -547,6 +550,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         facet_titles.update(settings.get_field_titles(t._))
         return facet_titles
+    
+    def dataset_facets(self, facets_dict, package_type):
+        '''
+        Updating facets, before rendering search page.
+        This is CKAN 2.0.3 hook, 2.1 will use the function above
+        '''
+        facets_dict.update(settings.get_field_titles(t._))
+
+        return facets_dict
 
     def extract_search_params(self, data_dict):
         """
@@ -708,4 +720,27 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             log.debug('tags not found')
             
         return pkg_dict
-
+    
+    def before_index(self, pkg_dict):
+        '''
+        Modification to package dictionary before
+        indexing it to Solr index
+        
+        :param pkg_dict: pkg_dict to modify
+        '''
+        
+        # Addming res_mimetype to pkg_dict
+        # Can be removed after res_mimetype is added
+        # to CKAN's index function
+        data = json.loads(pkg_dict['data_dict'])
+        res_mimetype = []
+        
+        for resource in data['resources']:
+             if resource['mimetype'] == None:
+                res_mimetype.append(u'')
+             else:
+                res_mimetype.append(resource['mimetype'])
+        
+        pkg_dict['res_mimetype'] = res_mimetype
+        
+        return pkg_dict

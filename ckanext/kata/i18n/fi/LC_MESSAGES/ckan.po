@@ -11042,6 +11042,9 @@ msgstr "Ole hyvä ja yritä toista hakutermiä."
 msgid " found with query"
 msgstr " löydetty haulla"
 
+msgid "MIME type"
+msgstr "MIME-tyyppi"
+
 # Changes to group -> collection
 msgid "This collection (group) has no description"
 msgstr "Tällä kokoelmalla (ryhmällä) ei ole kuvausta"
