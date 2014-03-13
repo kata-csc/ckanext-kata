@@ -41,6 +41,7 @@ setup(
                         ('kata/theme/templates/revision/**.html', 'ckan', None),
                         ('kata/theme/templates/contact/**.html', 'ckan', None),
                         ('kata/theme/templates/snippets/**.html', 'ckan', None),
+                        ('kata/theme/templates/home/**.html', 'ckan', None),
                         
                         ],
     },

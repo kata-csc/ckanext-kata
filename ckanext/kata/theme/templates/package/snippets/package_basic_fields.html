@@ -1,5 +1,11 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
+{% if errors %}
+  <div data-module="kata-notification-tools" class="floating-error" id="kata-error-window">
+    <i class="icon-info-sign">&nbsp;</i>{{ _('You have errors in your metadata. Please, make the requested corrections.') }}
+  </div>
+  
+{% endif %}
 <section class="module no-padding">
 <h2 class="module-heading-add-dataset tta-orange">{{ _('Required information') }}</h2>
 <div class="padded-module">
