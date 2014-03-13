@@ -100,6 +100,16 @@ def package_create(context, data_dict):
         pass
 
     data_dict = utils.dataset_to_resource(data_dict)
+
+    # Get version PID (or generate a new one?)
+    new_version_pid = data_dict.get('new_version_pid')
+
+    # if not new_version_pid:
+    #     new_version_pid = utils.generate_pid()
+
+    if new_version_pid:
+        data_dict['pids'] = data_dict.get('pids', []) + [{'id': new_version_pid, 'type': 'version', 'provider': 'kata'}]
+
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 
     # Logging for production use
@@ -143,16 +153,36 @@ def package_update(context, data_dict):
         pass
 
     # Get all resources here since we get only 'dataset' resources from WUI.
-    temp_context = {'model': model, 'ignore_auth': True, 'validate': False,
+    temp_context = {'model': model, 'ignore_auth': True, 'validate': True,
                     'extras_as_string': True}
     temp_pkg_dict = ckan.logic.action.get.package_show(temp_context, data_dict)
 
     old_resources = temp_pkg_dict.get('resources', [])
 
     if not 'resources' in data_dict:
-        # Updating a dataset, not creating a new resource
+        # When this is reached, we are updating a dataset, not creating a new resource
         data_dict['resources'] = old_resources
         data_dict = utils.dataset_to_resource(data_dict)
+
+    # Get all PIDs (except for package.id) from database and add new relevant PIDS there
+    data_dict['pids'] = temp_pkg_dict.get('pids', [])
+    data_dict['name'] = temp_pkg_dict['name']
+
+    new_version_pid = data_dict.get('new_version_pid', None)
+    if new_version_pid:
+        data_dict['pids'] += [{'id': new_version_pid,
+                              'type': 'version',
+                              'provider': 'kata',
+                              }]
+
+    # # Check if data version has changed and if so, generate a new version_PID
+    # if not data_dict['version'] == temp_pkg_dict['version']:
+    #     data_dict['pids'].append(
+    #         {
+    #             u'provider': u'kata',
+    #             u'id': utils.generate_pid(),
+    #             u'type': u'version',
+    #         })
 
     # This is a consequence of removing the ckan_phase!
     # The solution might not be good, if further problems arise

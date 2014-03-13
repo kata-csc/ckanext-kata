@@ -163,18 +163,12 @@
 		<td class="dataset-details">{{pkg_dict.version}}</td>
 	</tr>
 	{% endif %}
-	{% if pkg_dict.name %}
+	{% for pid in pkg_dict.pids %}
 	<tr>
-		<th class="dataset-label">{{ _('Permanent identifier') }}</th>
-		<td class="dataset-details">{{pkg_dict.name}}</td>
+		<th class="dataset-label">{{ _('Permanent identifier for ' + pid.get('type')) }}</th>
+		<td class="dataset-details">{{pid.id}}</td>
 	</tr>
-	{% endif %}	
-	{% if pkg_dict.version_PID %}
-	<tr>
-		<th class="dataset-label">{{ _('Version identifier') }}</th>
-		<td class="dataset-details">{{pkg_dict.version_PID}}</td>
-	</tr>
-	{% endif %}	
+	{% endfor %}
 </table>
 </section>
 <section class="module-content additional-info">

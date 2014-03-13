@@ -3,7 +3,7 @@
 
 # Facets used in Solr queries
 # Facets need also to be changed to search.html. This all should be fixed in newer CKAN versions with IFacets interface.
-FACETS = ['extras_discipline','tags','mimetypestring','license_id','authorstring','organizationstring','extras_language']
+FACETS = ['extras_discipline', 'tags', 'mimetypestring', 'license_id', 'authorstring', 'organizationstring', 'extras_language']
 
 # Default sorting method. Pre-selects the corresponding option on search form.
 DEFAULT_SORT_BY = u'metadata_modified desc'
@@ -67,7 +67,7 @@ TEXTOUTPUTPROGS = {
     'odp': '/usr/bin/odp2txt',
     }
 
-# Text string to use for when dataset's URL is not known
+# Text string to use for when dataset's URL is not known. Changing might cause issues as this is also CKAN default.
 DATASET_URL_UNKNOWN = 'http://'
 
 # Text string for dataset's resource.resource_type
@@ -90,9 +90,11 @@ KATA_FIELDS_REQUIRED = ['availability',
                         'organization',
                         'owner',
                         'contact_phone',
+                        'pids',
                         'projdis',
                         #'maintainer_email',
-                        'version_PID']
+                        #'version_PID'
+                        ]
 
 # Recommended extras fields
 KATA_FIELDS_RECOMMENDED = ['access_application_URL',

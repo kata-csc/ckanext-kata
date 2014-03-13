@@ -61,16 +61,38 @@ TEST_DATADICT = {'algorithm': u'MD5',
                              {u'org': u'Helsingin Yliopisto', u'value': u'T. Tutkija'},
                              {u'org': u'Org 3', u'value': u'K. Kolmas'}],
                  'owner': u'Ossi Omistaja',
-                 'pids': {
-                     u'http://helda.helsinki.fi/oai/request': {
-                         u'data': [u'some_data_pid', u'another_data_pid'],
-                         u'metadata': [u'metadata_pid', u'another_metadata_pid', u'third_metadata_pid'],
-                         u'version': [u'version_pid', u'another_version_pid'],
+                 # 'pids': {
+                 #     u'http://helda.helsinki.fi/oai/request': {
+                 #         u'data': [u'some_data_pid', u'another_data_pid'],
+                 #         u'metadata': [u'metadata_pid', u'another_metadata_pid', u'third_metadata_pid'],
+                 #         u'version': [u'version_pid', u'another_version_pid'],
+                 #     },
+                 #     u'kata': {
+                 #         u'version': [u'kata_version_pid'],
+                 #     },
+                 # },
+                 'pids': [
+                     {
+                         u'provider': u'http://helda.helsinki.fi/oai/request',
+                         u'id': u'some_data_pid',
+                         u'type': u'data',
                      },
-                     u'kata': {
-                         u'version': [u'kata_version_pid'],
+                     {
+                         u'provider': u'kata',
+                         u'id': u'kata_data_pid',
+                         u'type': u'data',
                      },
-                 },
+                     {
+                         u'provider': u'kata',
+                         u'id': u'kata_metadata_PID',
+                         u'type': u'metadata',
+                     },
+                     {
+                         u'provider': u'kata',
+                         u'id': u'kata_version_PID',
+                         u'type': u'version',
+                     },
+                 ],
                  'projdis': 'False',
                  'project_funder': u'NSA',
                  'project_funding': u'1234-rahoituspäätösnumero',
@@ -454,3 +476,25 @@ class TestDataReading(unittest.TestCase):
         assert resources[0]['url'] == TEST_RESOURCE['url'] or \
             resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
 
+    def test_create_and_read_resource3(self):
+        '''
+        Create and delete a resource data through API and test that dataset still matches.
+        '''
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **TEST_DATADICT)
+        assert 'id' in output
+
+        new_res = copy.deepcopy(TEST_RESOURCE)
+        new_res['package_id'] = output['id']
+
+        output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **new_res)
+
+        call_action_api(self.app, 'resource_delete', apikey=self.sysadmin_user.apikey,
+                        status=200, id=output['id'])
+
+        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+                                 status=200, id=new_res['package_id'])
+        assert 'id' in output
+
+        assert self._compare_datadicts(output)
