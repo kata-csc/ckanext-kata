@@ -43,7 +43,6 @@ from ckanext.kata.validators import (check_access_application_url,
                                      check_access_request_url,
                                      check_author_org,
                                      check_junk,
-                                     check_last_and_update_pid,
                                      check_project,
                                      check_project_dis,
                                      kata_tag_name_validator,
@@ -72,11 +71,12 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      org_auth_to_extras,
                                      org_auth_to_extras_oai,
                                      org_auth_to_extras_ddi,
-                                     version_pid_from_extras,
                                      remove_disabled_languages,
                                      update_pid,
                                      to_extras_json,
-                                     from_extras_json)
+                                     from_extras_json,
+                                     flattened_to_extras,
+                                     flattened_from_extras)
 import ckanext.kata.settings as settings
 
 
@@ -376,15 +376,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
-        schema['pids'] = [ignore_missing, to_extras_json]
+        # schema['pids'] = [update_pids, ignore_missing, to_extras_json]
+        schema['pids'] = {'provider': [not_missing, unicode, flattened_to_extras],
+                          'id': [not_missing, unicode, flattened_to_extras],
+                          'type': [not_missing, unicode, flattened_to_extras]}
         schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, to_extras_json]
 
         schema.update({
-            'version': [not_empty, unicode, validate_kata_date, check_last_and_update_pid],
-            'version_PID': [default(u''), update_pid, unicode, convert_to_extras_kata],
+            'version': [not_empty, unicode, validate_kata_date],
+            #'version_PID': [default(u''), update_pid, unicode, convert_to_extras_kata],
             #'author': [],
             #'organization': [],
             'availability': [not_missing, convert_to_extras_kata],
@@ -475,7 +478,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                              'org': [ignore_missing, unicode, validate_general]}
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
-        schema['version'] = [not_empty, unicode, validate_kata_date_relaxed, check_last_and_update_pid]
+        schema['version'] = [not_empty, unicode, validate_kata_date_relaxed]
         # schema['xpaths'] = [xpath_to_extras]
 
         return schema
@@ -527,10 +530,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
         schema['langdis'] = [unicode]
         schema['organization'] = [ignore_missing, unicode]
-        schema['pids'] = [from_extras_json, ignore_missing, unicode]
+        schema['pids'] = [flattened_from_extras, ignore_missing]
         schema['projdis'] = [unicode]
         schema['title'] = [ltitle_from_extras, ignore_missing]
-        schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
+        #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
         schema['xpaths'] = [from_extras_json, ignore_missing, unicode]
 
         #schema['resources']['resource_type'] = [from_resource]
