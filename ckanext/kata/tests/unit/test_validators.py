@@ -16,7 +16,8 @@ from ckanext.kata.validators import validate_kata_date, check_project, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
-from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json
+from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
+    flattened_to_extras, flattened_from_extras
 from ckanext.kata import settings
 
 
@@ -445,9 +446,9 @@ class TestResourceValidators(TestCase):
         self.assertRaises(Invalid, validate_algorithm, ('resources', 0, 'algorithm',), data, errors, None)
 
 
-class TestPIDValidators(TestCase):
+class TestJSONConverters(TestCase):
     '''
-    Test validators for 'pids' field
+    Test JSON converters
     '''
 
     PIDS = {
@@ -468,7 +469,7 @@ class TestPIDValidators(TestCase):
 
         assert isinstance(cls.serialized, basestring)
 
-    def test_pids_from_extras(self):
+    def test_from_extras_json(self):
 
         data = copy.deepcopy(self.test_data)
         data[('extras', '0', 'key')] = 'pids'
@@ -479,7 +480,7 @@ class TestPIDValidators(TestCase):
         assert ('pids',) in data
         assert isinstance(data['pids',], dict)
 
-    def test_pids_to_extras(self):
+    def test_to_extras_json(self):
         data = copy.deepcopy(self.test_data)
         data[('pids',)] = self.PIDS
 
@@ -487,5 +488,56 @@ class TestPIDValidators(TestCase):
 
         assert ('extras',) in data
         assert data[('extras',)]
-        assert data[('extras',)][0]['key'] == ('pids',)
+        assert data[('extras',)][0]['key'] == 'pids'
         assert data[('extras',)][0]['value'] == self.serialized, data[('extras',)][0]['value']
+
+
+class TestExtrasFlatteners(TestCase):
+
+    @classmethod
+    def setup_class(cls):
+        pass
+
+    def test_flattened_from_extras(self):
+        dada = {
+            ('extras', 0, 'key'): u'pids_0_id',
+            ('extras', 0, 'value'): u'first_PID',
+            ('extras', 1, 'key'): u'pids_0_type',
+            ('extras', 1, 'value'): u'data',
+            ('extras', 2, 'key'): u'pids_0_provider',
+            ('extras', 2, 'value'): u'kata',
+
+            ('extras', 3, 'key'): u'pids_1_id',
+            ('extras', 3, 'value'): u'second_PID',
+            ('extras', 4, 'key'): u'pids_1_type',
+            ('extras', 4, 'value'): u'version',
+            ('extras', 5, 'key'): u'pids_1_provider',
+            ('extras', 5, 'value'): u'ida',
+            }
+
+        flattened_from_extras(('pids',), dada, None, None)
+
+        assert ('pids',) in dada
+        assert len(dada[('pids',)]) == 2
+
+    def test_flattened_to_extras(self):
+        dada = {
+            ('pids', 0, 'id'):  u'first_PID',
+            ('pids', 0, 'type'): u'data',
+            ('pids', 0, 'provider'): u'kata',
+            ('pids', 1, 'id'):  u'second',
+            ('pids', 1, 'type'): u'version',
+            ('pids', 1, 'provider'): u'ida',
+            }
+
+        flattened_to_extras(('pids', 1, 'id'), dada, None, None)
+        flattened_to_extras(('pids', 1, 'provider'), dada, None, None)
+        flattened_to_extras(('pids', 1, 'type'), dada, None, None)
+
+        import pprint
+        pprint.pprint(dada)
+
+        assert ('extras',) in dada
+        assert dada[('extras',)][0]['key'] in dada.keys()
+        assert dada[('extras',)][0]['value'] in dada.values()
+

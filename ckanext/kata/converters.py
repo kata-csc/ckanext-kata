@@ -11,6 +11,7 @@ from pylons import h
 import re
 import logging
 from pylons.i18n import _
+from ckan.lib.navl.dictization_functions import missing
 
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
@@ -19,18 +20,6 @@ from ckan.model.authz import setup_default_user_roles
 from ckanext.kata import settings, utils
 
 log = logging.getLogger('ckanext.kata.converters')
-
-
-def version_pid_from_extras(key, data, errors, context):
-    '''
-    Get version_PID from extras or generate a new one.
-    '''
-    for k in data.keys():
-        if k[0] == 'extras' and k[-1] == 'key' and data[k] == 'version_PID':
-            data[('version_PID',)] = data[(k[0], k[1], 'value')]
-
-    if not ('version_PID',) in data:
-        data[('version_PID',)] = utils.generate_pid()
 
 
 def org_auth_to_extras(key, data, errors, context):
@@ -465,5 +454,51 @@ def to_extras_json(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    extras.append({'key': key, 'value': json.dumps(data[key])})
+    extras.append({'key': key[0], 'value': json.dumps(data[key])})
 
+
+def flattened_to_extras(key, data, errors, context):
+    '''
+    Convert a flattened key-value pair from data_dict to extras.
+    For example (pids, 0, provider) -> extras['pids_0_provider']
+
+    :param key: For example (pids, 0, provider)
+    '''
+    extras = data.get(('extras',), [])
+    if not extras:
+        data[('extras',)] = extras
+
+    if data[key]:
+        extras.append({'key': "%s_%s_%s" % key, 'value': data[key]})
+
+
+def flattened_from_extras(key, data, errors, context):
+    '''
+    Convert a whole bunch of flattened key-value pairs from extras to a list of dicts in data_dict.
+    Format in extras must be like key[0]_index_innerkey. For example: pids_02_provider.
+
+    :param key: The key to convert as tuple, for example ('pids',)
+    '''
+    destination_key = key[0]    # For example 'pids'
+
+    # make destination a pointer to data-dict
+    destination = data.get((destination_key,), [])
+    if destination is missing:
+        destination = []
+    if not destination:
+        data[(destination_key,)] = destination
+
+    for k in data.keys():
+        if k[0] == 'extras' and k[2] == 'key':
+            extras_key = data[k].split('_')
+            extras_value = data[(k[0], k[1], 'value')]
+
+            if extras_key[0] == destination_key:
+                index = int(extras_key[1])
+                destination += [{} for i in range(index - len(destination) + 1)]    # pad destination list with {}'s
+
+                destination[index].update({extras_key[2]: extras_value})
+
+                data.pop((k[0], k[1], 'key'), None)
+                data.pop((k[0], k[1], 'value'), None)
+                data.pop((k[0], k[1], '__extras'), None)
