@@ -11062,7 +11062,7 @@ msgstr "Luo kokoelma"
 msgid "Search Data"
 msgstr "Hae Dataa"
 
-msgid "Tools and additional infromation"
+msgid "Tools and additional information"
 msgstr "Työkalut ja lisätietoa"
 
 msgid "The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:"
