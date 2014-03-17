@@ -499,7 +499,7 @@ class TestExtrasFlatteners(TestCase):
         pass
 
     def test_flattened_from_extras(self):
-        dada = {
+        data = {
             ('extras', 0, 'key'): u'pids_0_id',
             ('extras', 0, 'value'): u'first_PID',
             ('extras', 1, 'key'): u'pids_0_type',
@@ -515,13 +515,13 @@ class TestExtrasFlatteners(TestCase):
             ('extras', 5, 'value'): u'ida',
             }
 
-        flattened_from_extras(('pids',), dada, None, None)
+        flattened_from_extras(('pids',), data, None, None)
 
-        assert ('pids',) in dada
-        assert len(dada[('pids',)]) == 2
+        assert ('pids',) in data
+        assert len(data[('pids',)]) == 2
 
     def test_flattened_to_extras(self):
-        dada = {
+        data = {
             ('pids', 0, 'id'):  u'first_PID',
             ('pids', 0, 'type'): u'data',
             ('pids', 0, 'provider'): u'kata',
@@ -530,14 +530,15 @@ class TestExtrasFlatteners(TestCase):
             ('pids', 1, 'provider'): u'ida',
             }
 
-        flattened_to_extras(('pids', 1, 'id'), dada, None, None)
-        flattened_to_extras(('pids', 1, 'provider'), dada, None, None)
-        flattened_to_extras(('pids', 1, 'type'), dada, None, None)
+        flattened_to_extras(('pids', 1, 'id'), data, None, None)
+        flattened_to_extras(('pids', 1, 'provider'), data, None, None)
+        flattened_to_extras(('pids', 1, 'type'), data, None, None)
 
         import pprint
-        pprint.pprint(dada)
+        pprint.pprint(data)
 
-        assert ('extras',) in dada
-        assert dada[('extras',)][0]['key'] in dada.keys()
-        assert dada[('extras',)][0]['value'] in dada.values()
+        assert ('extras',) in data
+        for i in [0,1,2]:
+            assert data[('extras',)][i]['key'].startswith('pids_1_')
+            assert data[('extras',)][i]['value'] in data.values()
 
