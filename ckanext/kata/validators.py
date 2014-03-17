@@ -321,3 +321,15 @@ def validate_title(key, data, errors, context):
         val = data.get(key)
         if len(val) == 0:
             raise Invalid(_('First title can not be empty'))
+        
+def validate_title_duplicates(key, data, errors, context):
+    '''
+    Checks that there is only one title per language
+    '''
+    langs = []
+    for k in data.keys():
+        if k[0] == 'langtitle' and k[2] == 'lang':
+             langs.append(data[k])
+    if len(set(langs)) != len(langs):
+        raise Invalid(_('Duplicate titles for a language not permitted'))
+            

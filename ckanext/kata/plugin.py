@@ -57,6 +57,7 @@ from ckanext.kata.validators import (check_access_application_url,
                                      validate_phonenum,
                                      validate_spatial,
                                      validate_title,
+                                     validate_title_duplicates,
                                      check_through_provider_url)
 from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
@@ -365,7 +366,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
         schema['id'] = [default(u''), update_pid, unicode]
-        schema['langtitle'] = {'value': [not_missing, unicode, validate_title, ltitle_to_extras],
+        schema['langtitle'] = {'value': [not_missing, unicode, validate_title, validate_title_duplicates, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
         schema['language'] = \
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]

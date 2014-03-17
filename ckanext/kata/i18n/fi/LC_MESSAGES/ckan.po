@@ -11259,6 +11259,9 @@ msgstr "Sisäänkirjautuminen paikallisilla tunnuksilla"
 msgid "You have errors in your metadata. Please, make the requested corrections."
 msgstr "Syöttämissäsi tiedoissa on virheitä. Tee pyydetyt korjaukset, kiitos."
 
+msgid "Duplicate titles for a language not permitted"
+msgstr "Et voi syöttää useampia otsikoita samalla kielellä"
+
 # About
 msgid ""
 " <h2>About Kata metadata catalogue</h2> <p> Kata collects metadata of "
