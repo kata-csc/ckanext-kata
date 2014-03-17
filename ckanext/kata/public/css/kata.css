@@ -946,3 +946,6 @@ input, button, select, textarea {
 	opacity: 0.9;
 	z-index: 1;	
 }
+#field-license {
+	width: 300px !important;
+}
