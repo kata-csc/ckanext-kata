@@ -925,7 +925,7 @@ input, button, select, textarea {
 }
 .floating-error {
 	position: fixed;
-	width: 597px;
+	width: 614px;
 	top: 0em;
 	vertical-align: middle;
 	border: 1px solid;
@@ -944,7 +944,7 @@ input, button, select, textarea {
 	-moz-opacity: 0.9;
 	-khtml-opacity: 0.9;
 	opacity: 0.9;
-	z-index: 1;	
+	z-index: 10000;	
 }
 #field-license {
 	width: 300px !important;
