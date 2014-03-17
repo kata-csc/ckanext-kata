@@ -11153,6 +11153,9 @@ msgstr "Huomaa, että tunnistetta EI voi muokata sen jälkeen kun tietoaineisto 
 msgid "Missing author and organisation pairs"
 msgstr "Yhtään tekijää ja organisaatiota ei ole annettu"
 
+msgid "Find language codes from: "
+msgstr "Löydät kielikoodit osoitteesta: "
+
 
 # Resource, Additional Information (the key - value -variables)
 msgid "created"
