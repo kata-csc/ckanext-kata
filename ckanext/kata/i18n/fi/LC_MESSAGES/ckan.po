@@ -10213,7 +10213,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:176
 msgid ""
 "Field is compulsory if checkbox 'This dataset was not produced in a "
-"project.' is unchecked.<br /><br />Type the project's funding id."
+"project.' is unchecked.<br /><br />Type the project's funding id. The funding id is not shown publicly."
 msgstr "Kenttä on pakollinen, jos valintaruutua ei ole valittu.<br /><br />Anna projektin rahoitustunniste. Rahoitustunnistetta ei näytetä julkisesti."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:179

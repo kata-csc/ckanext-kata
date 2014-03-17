@@ -183,7 +183,7 @@
       {% endcall %}
 
       {% call form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s funding id.")) }}
+        {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s funding id. The funding id is not shown publicly.")) }}
       {% endcall %}
 
       {% call form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
