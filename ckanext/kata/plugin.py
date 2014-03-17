@@ -370,6 +370,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                                'lang': [not_missing, unicode, convert_languages]}
         schema['language'] = \
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
+        schema['maintainer'] = [not_empty, unicode, validate_general]
         schema['maintainer_email'] = [not_empty, unicode, validate_email]
         schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
                              'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
