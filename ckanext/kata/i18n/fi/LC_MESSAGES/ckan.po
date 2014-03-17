@@ -11045,6 +11045,9 @@ msgstr " löydetty haulla"
 msgid "MIME type"
 msgstr "MIME-tyyppi"
 
+msgid "Search results"
+msgstr "Hakutulokset"
+
 # Changes to group -> collection
 msgid "This collection (group) has no description"
 msgstr "Tällä kokoelmalla (ryhmällä) ei ole kuvausta"

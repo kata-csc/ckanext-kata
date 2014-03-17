@@ -65,10 +65,15 @@
 
       <div id="search-tab" class="tab-pane{% if not advanced_search %} active{% endif %}">
         <form id="dataset-search" class="dataset-search clearfix" method="get" data-module="select-switch">
+          <div class="search-terms">
           <span class="control-group search-giant">
             <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
                  placeholder="{{ _('Search...') }}"/>
             <button type="submit" value="{{ _('Search') }}">Submit</button>
+          </span>
+          <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+          <span class="search-infotext">
+          {{ _('Use wildcard to search with various spellings, for example: cat*') }}
           </span>
 
           {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
@@ -80,7 +85,7 @@
             {% endfor -%}
           </span>
           {%- endif %}
-
+          </div>
           <div id="dataset-search-ext"></div>
         </form>
 
@@ -90,6 +95,7 @@
 
       <div id="advanced-search-tab" class="tab-pane{% if advanced_search %} active{% endif %}">
         <form id="advanced-search" class="dataset-search clearfix form-horizontal" method="get" data-module="advanced-search-kata">
+          <div class="search-terms">
           <span id="advanced-search-group" class="control-group">
 
             {% for current_row_dict in current_search_rows %}
@@ -157,8 +163,13 @@
                 </div>
               </span>
             </div>
+            
 
             <div>
+              <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+            <span class="search-infotext">
+              {{ _('Use wildcard to search with various spellings, for example: cat*') }}
+            </span>
               <button id="advanced_search_submit" class="btn btn-primary kata-search-button" type="submit" value="{{ _('Search') }}">{{ _('Search') }}</button>
             </div>
           </span>
@@ -172,7 +183,7 @@
             {% endfor -%}
           </span>
           {%- endif %}
-
+          </div>
           <input type="hidden" id="default_search_field" value="{{ c.search_fields | first }}"/>
           <div id="advanced-search-ext"></div>
 
@@ -181,11 +192,19 @@
 
       <div class="results">
         <strong>
-          {%- if c.q -%}
+          {% if c.q %}
             {% snippet 'snippets/search_result_text.html', query=c.q, count=c.page.item_count, type='dataset' %}
-          {%- else -%}
-            {{ _('All datasets') }}
-          {%- endif -%}
+          {% else %}
+          {# Desperate attempt to make the header text more sane #}
+            {% if c.search_url_params|length > 1 and c.page.item_count == 0 %}
+              <p class="extra">{{ _('Please try another search term.') }}</p>
+            {% elif c.search_url_params|length > 1 and c.page.item_count != 0 %}
+              <p class="extra">{{ _('Search results') }}</p>
+            {# This will never trigger in the current setup #}
+            {% else %}
+              {{ _('All datasets') }}
+            {% endif %}
+          {% endif %}
         </strong>
 
         <div class="filter-list">

@@ -949,3 +949,17 @@ input, button, select, textarea {
 #field-license {
 	width: 300px !important;
 }
+.search-terms {
+	background-color: #ebebec;
+	border-radius: 4px;
+	border: 1px solid;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-color: #ababac;
+	padding: 4px;
+	padding-top: 30px !important;
+	padding-bottom: 10px !important;
+}
+.search-infotext {
+	font-size: 12px;
+}
