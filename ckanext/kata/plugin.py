@@ -389,6 +389,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['xpaths'] = [ignore_missing, to_extras_json]
 
         schema.update({
+            # TODO: version date validation should be tighter, see metadata schema
             'version': [not_empty, unicode, validate_kata_date],
             #'version_PID': [default(u''), update_pid, unicode, convert_to_extras_kata],
             #'author': [],
@@ -446,19 +447,22 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
         
-        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['__extras'] = [ignore]   # This removes orgauth checking
+        schema['availability'].insert(0, ignore_missing)
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         #schema['contact_URL'].insert(0, ignore_missing)
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
-        #schema['maintainer_email'].insert(0, ignore_missing)
-        schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
-        schema['maintainer'].insert(0, ignore_missing)
-        schema['availability'].insert(0, ignore_missing)
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
+        #schema['maintainer_email'].insert(0, ignore_missing)
+        schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
+        # schema['maintainer'].insert(0, ignore_missing)
+        schema['maintainer'] = [ignore_missing, unicode, validate_general]
         schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
                              'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
-        
+        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['version'] = [not_empty, unicode, validate_kata_date_relaxed]
+
         return schema
 
     @classmethod
