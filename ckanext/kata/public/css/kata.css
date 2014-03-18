@@ -963,3 +963,7 @@ input, button, select, textarea {
 .search-infotext {
 	font-size: 12px;
 }
+.edit-user-form-infotext {
+	padding: 20px;
+	font-size: 12px;
+}
