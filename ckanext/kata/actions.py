@@ -166,7 +166,6 @@ def package_update(context, data_dict):
 
     # Get all PIDs (except for package.id) from database and add new relevant PIDS there
     data_dict['pids'] = temp_pkg_dict.get('pids', [])
-    data_dict['name'] = temp_pkg_dict['name']
 
     new_version_pid = data_dict.get('new_version_pid', None)
     if new_version_pid:

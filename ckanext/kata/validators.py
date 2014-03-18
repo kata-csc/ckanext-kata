@@ -332,4 +332,16 @@ def validate_title_duplicates(key, data, errors, context):
              langs.append(data[k])
     if len(set(langs)) != len(langs):
         raise Invalid(_('Duplicate titles for a language not permitted'))
-            
+
+def package_name_not_changed(key, data, errors, context):
+    '''
+    Checks that package name doesn't change
+    '''
+    package = context.get('package')
+    if data[key] == u'':
+        data[key] = package.name
+    value = data[key]
+    if package and value != package.name:
+        raise Invalid('Cannot change value of key from %s to %s. '
+                      'This key is read-only' % (package.name, value))
+    

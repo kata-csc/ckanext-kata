@@ -58,7 +58,8 @@ from ckanext.kata.validators import (check_access_application_url,
                                      validate_spatial,
                                      validate_title,
                                      validate_title_duplicates,
-                                     check_through_provider_url)
+                                     check_through_provider_url,
+                                     package_name_not_changed)
 from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
@@ -494,6 +495,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # Taken from ckan.logic.schema.default_update_package_schema():
         schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['name'] = [ignore_missing, package_name_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
         return schema
     

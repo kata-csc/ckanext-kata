@@ -16,6 +16,7 @@ from ckan import model
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
 from ckan.tests import call_action_api
+from ckan.lib.navl.dictization_functions import Invalid
 
 import ckanext.kata.model as kata_model
 import ckanext.kata.settings as settings
@@ -248,7 +249,35 @@ class TestCreateDatasetAndResources(unittest.TestCase):
                                  status=200, id=res_id)
         if output is not None and '__type' in output:
             assert output['__type'] != 'Validation Error'
+            
+    def test_create_edit(self):
+        '''
+        Test and edit dataset via API. Check that immutables stay as they are.
+        '''
+        print 'Create dataset'
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **TEST_DATADICT)
+        
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        
+        id = output['id']
+        data_dict['id'] = id
+        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=200, **data_dict)        
+        assert output['id'] == id
+        
+        data_dict['name'] = 'new-name-123456'
 
+        print 'Update dataset'
+        
+        log = logging.getLogger('ckan.controllers.api')     # pylint: disable=invalid-name
+        log.disabled = True
+        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=409, **data_dict)
+        log.disabled = False
+        
+        assert output
+        assert '__type' in output
+        assert output['__type'] == 'Validation Error'
+        
 
 class TestDataReading(unittest.TestCase):
     '''
@@ -336,6 +365,22 @@ class TestDataReading(unittest.TestCase):
                                  status=200, id=output['id'])
 
         assert self._compare_datadicts(output)
+        
+    def test_secured_fields(self):
+        '''
+        Test that anonymous user can not read protected data
+        '''
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **TEST_DATADICT)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert 'id' in output
+        
+        output = call_action_api(self.app, 'package_show',
+                                 status=200, id=output['id'])
+        assert output
+        assert output['maintainer_email'] == u'Not authorized to see this information'
+        assert output['project_funding'] == u'Not authorized to see this information'
 
     def test_availability_changing(self):
         '''
