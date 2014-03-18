@@ -329,7 +329,7 @@ def validate_title_duplicates(key, data, errors, context):
     langs = []
     for k in data.keys():
         if k[0] == 'langtitle' and k[2] == 'lang':
-             langs.append(data[k])
+            langs.append(data[k])
     if len(set(langs)) != len(langs):
         raise Invalid(_('Duplicate titles for a language not permitted'))
 

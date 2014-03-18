@@ -747,9 +747,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         res_mimetype = []
         
         for resource in data['resources']:
-             if resource['mimetype'] == None:
+            if resource['mimetype'] == None:
                 res_mimetype.append(u'')
-             else:
+            else:
                 res_mimetype.append(resource['mimetype'])
         
         pkg_dict['res_mimetype'] = res_mimetype

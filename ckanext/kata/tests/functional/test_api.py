@@ -16,7 +16,6 @@ from ckan import model
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
 from ckan.tests import call_action_api
-from ckan.lib.navl.dictization_functions import Invalid
 
 import ckanext.kata.model as kata_model
 import ckanext.kata.settings as settings
@@ -260,10 +259,10 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         
         data_dict = copy.deepcopy(TEST_DATADICT)
         
-        id = output['id']
-        data_dict['id'] = id
+        orig_id = output['id']
+        data_dict['id'] = orig_id
         output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=200, **data_dict)        
-        assert output['id'] == id
+        assert output['id'] == orig_id
         
         data_dict['name'] = 'new-name-123456'
 
