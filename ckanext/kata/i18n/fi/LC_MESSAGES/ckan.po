@@ -11132,6 +11132,18 @@ msgstr "Liittyvä"
 msgid "Add publications or related datasets"
 msgstr "Lisää julkaisu tai liittyvä tietoaineisto"
 
+msgid "Identification information"
+msgstr "Tunnistetiedot"
+
+msgid "Last modification time of data"
+msgstr "Datan viimeisin muokkausaika"
+
+msgid "Primary metadata identifier"
+msgstr "Ensisijainen metadatan tunniste"
+
+msgid "Primary data identifier"
+msgstr "Ensisijainen datan tunniste"
+
 # Related
 msgid "Identifier"
 msgstr "Tunniste"
@@ -11267,6 +11279,12 @@ msgstr "Syöttämissäsi tiedoissa on virheitä. Tee pyydetyt korjaukset, kiitos
 
 msgid "Duplicate titles for a language not permitted"
 msgstr "Et voi syöttää useampia otsikoita samalla kielellä"
+
+msgid "Permanent Identifier for data version"
+msgstr "Pysyvä tunniste datan versiolle"
+
+msgid "Permanent Identifier for data"
+msgstr "Pysyvä tunniste datalle"
 
 # About
 msgid ""
