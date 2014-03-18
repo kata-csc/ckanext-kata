@@ -783,9 +783,14 @@ header.masthead {
 }
 /* FAQ and help */
 
+.faq-help-secondary {
+	padding: 0px !important;
+	margin-top: 0px !important;
+}
 .faq-helpdesk {
 	color: #555;
 	font-size: 13px;
+	padding: 15px;	
 }
 .faq-helpdesk p {
 	padding-top: 10px;
@@ -803,19 +808,22 @@ h3.question {
 	list-style: none;
 	padding: 0px;
 	margin: 0px;
-	text-align: left;
-	
+	text-align: left;	
 }
 .faq-toc li {
-	background-color: #fafafa;
-	padding: 2px;
-	margin: 2px;
 	width: auto;
-	border: 1px solid #6ccff6;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	border-bottom: 1px dotted #6ccff6;
+}
+.faq-toc li:hover {
+	background-color: #eeeeee;
 }
 .faq-toc li a {
 	display: inline-block;
-	color: #0c8bbe;
+	color: #5a5a5c;
 	display: block;
 	text-decoration: none;
 	padding: 2px;
@@ -832,15 +840,19 @@ h3.question {
 	text-align: left;
 }
 .help-toc li {
-	background-color: #fafafa;
-	padding: 2px;
-	margin: 2px;
 	width: auto;
-	border: 1px solid #6ccff6;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	border-bottom: 1px dotted #6ccff6;
+}
+.help-toc li:hover {
+	background-color: #eeeeee;
 }
 .help-toc li a {
 	display: inline-block;
-	color: #0c8bbe;
+	color: #5a5a5c;
 	display: block;
 	text-decoration: none;
 	padding: 2px;
@@ -849,7 +861,7 @@ h3.question {
 .help-toc li a.toc-sub {
 	display: inline-block;
     width: 100%;
-	color: #0c8bbe;
+	color: #5a5a5c;
 	display: block;
 	text-decoration: none;
 	padding: 4px;
