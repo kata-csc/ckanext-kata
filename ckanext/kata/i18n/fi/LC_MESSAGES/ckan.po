@@ -6924,8 +6924,8 @@ msgstr ""
 "vapaasti käyttää mitä hakukenttää haluat."
 
 #: ckanext/kata/theme/templates/kata/faq.html:38
-msgid "I can't make a search query I want from advanced search"
-msgstr "Tarkennettu haku ei mahdollista haluamani haun tekemistä"
+msgid "I can't make a search query I want from advanced search."
+msgstr "Tarkennettu haku ei mahdollista haluamani haun tekemistä."
 
 #: ckanext/kata/theme/templates/kata/faq.html:39
 msgid ""
