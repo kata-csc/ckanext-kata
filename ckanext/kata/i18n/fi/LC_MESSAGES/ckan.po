@@ -11289,6 +11289,12 @@ msgstr "Pysyvä tunniste datan versiolle"
 msgid "Permanent Identifier for data"
 msgstr "Pysyvä tunniste datalle"
 
+msgid "Access application URL"
+msgstr "Hakemuksen web-osoite"
+
+msgid "Access request URL"
+msgstr "Tietoaineiston web-osoite"
+
 # About
 msgid ""
 " <h2>About Kata metadata catalogue</h2> <p> Kata collects metadata of "
