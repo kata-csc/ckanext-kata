@@ -59,16 +59,26 @@ class MetadataController(BaseController):
         '''
 
         xmlstr = ""
+        
         if extras["availability"] == 'contact_owner':
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">' + extras[
-                'access_request_URL'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="COPYRIGHTED">'
+            if extras.get('license_URL'):
+                xmlstr += extras['license_URL']
+            xmlstr += '</RightsDeclaration>'
         if extras["availability"] in ('direct_download', 'access_request'):
-            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras['license_URL'] + '</RightsDeclaration>'
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">'
+            if extras.get('license_URL'):
+                xmlstr += extras['license_URL']
+            xmlstr += '</RightsDeclaration>'
         if extras["availability"] == 'access_application':
             xmlstr = '<RightsDeclaration RIGHTSCATEGORY="CONTRACTUAL">' + extras[
                 'access_application_URL'] + '</RightsDeclaration>'
-
-        # TODO: availability == 'through_provider'
+        if extras["availability"] == 'through_provider':
+            xmlstr = '<RightsDeclaration RIGHTSCATEGORY="LICENSED">' + extras[
+                'through_provider_URL'] + ' '
+            if extras.get('license_URL'):
+                xmlstr += extras['license_URL']
+            xmlstr += '</RightsDeclaration>'
 
         return Literal(xmlstr, datatype=RDF.XMLLiteral)
 
