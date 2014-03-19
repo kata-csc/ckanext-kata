@@ -248,8 +248,14 @@
         <input type="radio" name="availability" id="direct_download" value="direct_download" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'direct_download'%}checked{% endif %}>
         {{ _('directly downloadable') }}
       </label>
-      <div id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not errors.availability %}style="display:none"{% endif %}>
-        {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=errors.direct_download_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+      {# Somewhat dirty solution. The resource error is *somewhere* in array as some indices may be for metadata documents #}
+      <div id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not (errors.resources and data.availability == 'direct_download') %}style="display:none"{% endif %}>
+        {% if errors.resources and data.availability == 'direct_download' %}
+          {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=[_('Missing value')], classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+        {% else %}
+          {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+        {% endif %}
+      
       </div>
 
       <label class="radio" for="access_request">

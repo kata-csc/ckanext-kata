@@ -59,6 +59,7 @@ from ckanext.kata.validators import (check_access_application_url,
                                      validate_title,
                                      validate_title_duplicates,
                                      check_through_provider_url,
+                                     validate_direct_download_url,
                                      package_name_not_changed)
 from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
@@ -426,7 +427,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #    'name': [ignore_missing, unicode, add_to_group]
         #})
 
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, validate_general]
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, validate_general, validate_direct_download_url]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
 
         schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]

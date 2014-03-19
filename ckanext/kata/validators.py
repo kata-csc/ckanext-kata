@@ -344,4 +344,12 @@ def package_name_not_changed(key, data, errors, context):
     if package and value != package.name:
         raise Invalid('Cannot change value of key from %s to %s. '
                       'This key is read-only' % (package.name, value))
+        
+def validate_direct_download_url(key, data, errors, context):
+    '''
+    Validates that direct_download_URL (at this stage a resource.url) is present
+    '''
+    if data[('availability',)] == 'direct_download' and\
+      (data[key] == u'' or data[key] == u'http://'):
+        raise Invalid(_('Missing URL'))
     
