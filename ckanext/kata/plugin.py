@@ -365,8 +365,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema[key] = [not_empty, convert_to_extras_kata, unicode, validate_general]
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
-
-        schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
+        # phone number can be missing from the first users
+        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['id'] = [default(u''), update_pid, unicode]
         schema['langtitle'] = {'value': [not_missing, unicode, validate_title, validate_title_duplicates, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
@@ -388,6 +388,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, to_extras_json]
+        # these two can be missing from the first Kata end users
+        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
 
         schema.update({
             # TODO: version date validation should be tighter, see metadata schema
