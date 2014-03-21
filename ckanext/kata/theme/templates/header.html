@@ -108,8 +108,7 @@
     </div>
   </div>
   <div id="nav_wrapper"> 
-    <nav id="kata_navigation">
-      <ul>
+    <ul id="kata_navigation">
       <li>
       <a href={{ h.url('home') }}>
         <i class="icon-home"></i>
@@ -120,14 +119,13 @@
         ('add dataset', _('Add Dataset')),
         ('about', _('About')),
       )}}
-      </ul>
-    </nav>
-   <div id="language-wrapper">
-     <ul>
-       <li>
-         {% snippet "snippets/language_selector.html" %}
-       </li>
-     </ul>
-   </div> 
+      <div id="language-wrapper">
+        <ul>
+          <li>
+            {% snippet "snippets/language_selector.html" %}
+          </li>
+        </ul>
+      </div>
+    </ul>
   </div>
 </header>

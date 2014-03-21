@@ -14,7 +14,8 @@ from collections import defaultdict
 from ckanext.kata.validators import validate_kata_date, check_project, \
     check_project_dis, validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
-    validate_mimetype, validate_general, validate_kata_date_relaxed
+    validate_mimetype, validate_general, validate_kata_date_relaxed, \
+    validate_title_duplicates, validate_title, validate_direct_download_url
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
     flattened_to_extras, flattened_from_extras
@@ -90,8 +91,8 @@ class TestValidators(TestCase):
                          ('tag_string',): u'dada',
                          ('temporal_coverage_begin',): u'',
                          ('temporal_coverage_end',): u'',
-                         ('title', 0, 'lang'): u'sv',
-                         ('title', 0, 'value'): u'dada',
+                         ('langtitle', 0, 'lang'): u'sv',
+                         ('langtitle', 0, 'value'): u'dada',
                          ('type',): None,
                          ('version',): u'2013-08-14T10:37:09Z',
                          ('version_PID',): u''}
@@ -135,7 +136,6 @@ class TestValidators(TestCase):
         errors = defaultdict(list)
         validate_kata_date_relaxed('date', {'date': '2013-02-99T13:12:11'}, errors, None)
         assert len(errors) > 0
-
 
     def test_validate_language_valid(self):
         errors = defaultdict(list)
@@ -381,7 +381,30 @@ class TestValidators(TestCase):
         dada[('langdis',)] = u''
         checkbox_to_boolean(('langdis',), dada, errors, None)
         assert dada[('langdis',)] == u'False'
-
+        
+    def test_validate_duplicate_titles_valid(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(self.test_data)
+        dada[('langtitle', 1, 'lang')] = u'fi'
+        dada[('langtitle', 1, 'value')] = u'diedo'
+        try:
+            validate_title_duplicates(('langtitle', 0, 'value'), dada, errors, None)
+        except:
+            raise AssertionError('Duplicate titles check raised exception, it should not')
+        
+    def test_validate_duplicate_titles_invalid(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(self.test_data)
+        dada[('langtitle', 1, 'lang')] = u'sv'
+        dada[('langtitle', 1, 'value')] = u'diedo'
+        self.assertRaises(Invalid, validate_title_duplicates, ('langtitle', 0, 'value'), dada, errors, None)
+        
+    def test_validate_title_invalid(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(self.test_data)
+        dada[('langtitle', 0, 'lang')] = u''
+        dada[('langtitle', 0, 'value')] = u''
+        self.assertRaises(Invalid, validate_title, ('langtitle', 0, 'lang'), dada, errors, None)
 
 class TestResourceValidators(TestCase):
     '''
@@ -444,6 +467,14 @@ class TestResourceValidators(TestCase):
         data = flatten_dict(data_dict)
 
         self.assertRaises(Invalid, validate_algorithm, ('resources', 0, 'algorithm',), data, errors, None)
+        
+    def test_validate_direct_download_url_invalid(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(self.test_data)
+        dada['availability'] = u'direct_download'
+        dada['resources'][0]['url'] = u''
+        data = flatten_dict(dada)
+        self.assertRaises(Invalid, validate_direct_download_url, ('resources', 0, 'url'), data, errors, None)
 
 
 class TestJSONConverters(TestCase):
@@ -499,7 +530,7 @@ class TestExtrasFlatteners(TestCase):
         pass
 
     def test_flattened_from_extras(self):
-        dada = {
+        data = {
             ('extras', 0, 'key'): u'pids_0_id',
             ('extras', 0, 'value'): u'first_PID',
             ('extras', 1, 'key'): u'pids_0_type',
@@ -515,13 +546,13 @@ class TestExtrasFlatteners(TestCase):
             ('extras', 5, 'value'): u'ida',
             }
 
-        flattened_from_extras(('pids',), dada, None, None)
+        flattened_from_extras(('pids',), data, None, None)
 
-        assert ('pids',) in dada
-        assert len(dada[('pids',)]) == 2
+        assert ('pids',) in data
+        assert len(data[('pids',)]) == 2
 
     def test_flattened_to_extras(self):
-        dada = {
+        data = {
             ('pids', 0, 'id'):  u'first_PID',
             ('pids', 0, 'type'): u'data',
             ('pids', 0, 'provider'): u'kata',
@@ -530,14 +561,15 @@ class TestExtrasFlatteners(TestCase):
             ('pids', 1, 'provider'): u'ida',
             }
 
-        flattened_to_extras(('pids', 1, 'id'), dada, None, None)
-        flattened_to_extras(('pids', 1, 'provider'), dada, None, None)
-        flattened_to_extras(('pids', 1, 'type'), dada, None, None)
+        flattened_to_extras(('pids', 1, 'id'), data, None, None)
+        flattened_to_extras(('pids', 1, 'provider'), data, None, None)
+        flattened_to_extras(('pids', 1, 'type'), data, None, None)
 
         import pprint
-        pprint.pprint(dada)
+        pprint.pprint(data)
 
-        assert ('extras',) in dada
-        assert dada[('extras',)][0]['key'] in dada.keys()
-        assert dada[('extras',)][0]['value'] in dada.values()
+        assert ('extras',) in data
+        for i in [0,1,2]:
+            assert data[('extras',)][i]['key'].startswith('pids_1_')
+            assert data[('extras',)][i]['value'] in data.values()
 
