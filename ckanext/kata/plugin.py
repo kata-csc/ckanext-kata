@@ -57,7 +57,10 @@ from ckanext.kata.validators import (check_access_application_url,
                                      validate_phonenum,
                                      validate_spatial,
                                      validate_title,
-                                     check_through_provider_url)
+                                     validate_title_duplicates,
+                                     check_through_provider_url,
+                                     validate_direct_download_url,
+                                     package_name_not_changed)
 from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
@@ -364,13 +367,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema[key] = [not_empty, convert_to_extras_kata, unicode, validate_general]
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
-
-        schema['contact_phone'] = [not_missing, not_empty, validate_phonenum, convert_to_extras_kata, unicode]
+        # phone number can be missing from the first users
+        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['id'] = [default(u''), update_pid, unicode]
-        schema['langtitle'] = {'value': [not_missing, unicode, validate_title, ltitle_to_extras],
+        schema['langtitle'] = {'value': [not_missing, unicode, validate_title, validate_title_duplicates, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
         schema['language'] = \
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
+        schema['maintainer'] = [not_empty, unicode, validate_general]
         schema['maintainer_email'] = [not_empty, unicode, validate_email]
         schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
                              'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
@@ -386,8 +390,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, to_extras_json]
+        # these two can be missing from the first Kata end users
+        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
 
         schema.update({
+            # TODO: version date validation should be tighter, see metadata schema
             'version': [not_empty, unicode, validate_kata_date],
             #'version_PID': [default(u''), update_pid, unicode, convert_to_extras_kata],
             #'author': [],
@@ -426,7 +434,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #    'name': [ignore_missing, unicode, add_to_group]
         #})
 
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, validate_general]
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, validate_general, validate_direct_download_url]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
 
         schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
@@ -447,19 +455,22 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
         
-        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['__extras'] = [ignore]   # This removes orgauth checking
+        schema['availability'].insert(0, ignore_missing)
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         #schema['contact_URL'].insert(0, ignore_missing)
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
-        #schema['maintainer_email'].insert(0, ignore_missing)
-        schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
-        schema['maintainer'].insert(0, ignore_missing)
-        schema['availability'].insert(0, ignore_missing)
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
+        #schema['maintainer_email'].insert(0, ignore_missing)
+        schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
+        # schema['maintainer'].insert(0, ignore_missing)
+        schema['maintainer'] = [ignore_missing, unicode, validate_general]
         schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
                              'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
-        
+        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['version'] = [not_empty, unicode, validate_kata_date_relaxed]
+
         return schema
 
     @classmethod
@@ -496,6 +507,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # Taken from ckan.logic.schema.default_update_package_schema():
         schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['name'] = [ignore_missing, package_name_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
         return schema
     
@@ -744,9 +756,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         res_mimetype = []
         
         for resource in data['resources']:
-             if resource['mimetype'] == None:
+            if resource['mimetype'] == None:
                 res_mimetype.append(u'')
-             else:
+            else:
                 res_mimetype.append(resource['mimetype'])
         
         pkg_dict['res_mimetype'] = res_mimetype

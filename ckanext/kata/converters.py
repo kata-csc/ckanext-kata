@@ -514,7 +514,11 @@ def to_extras_json(key, data, errors, context):
 def flattened_to_extras(key, data, errors, context):
     '''
     Convert a flattened key-value pair from data_dict to extras.
-    For example (pids, 0, provider) -> extras['pids_0_provider']
+    For example (pids, 0, provider) -> extras['pids_0_provider'].
+
+    The key-value pairs to convert are before CKAN's flattening in format
+    pids: [{ id: 'some pid', type: 'data', ...},
+           { id: 'other pid', type: 'data', ...}]
 
     :param key: For example (pids, 0, provider)
     '''

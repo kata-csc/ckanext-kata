@@ -364,13 +364,13 @@ class TestKataWithUser(TestCase):
             browser.get_screenshot_as_file('test_3_advanced_search.png')
             assert 0, "Didn't get the expected search result"
 
-        result = browser.find_element_by_xpath("//div/strong[contains(text(),' datasets')]")
+        result = browser.find_element_by_xpath("//div/strong/p[contains(text(),' results')]")
 
         # As the Solr index seems to live it's own life and the database might not have been cleared,
         # we cannot be sure how many hits should be expected. So this works for 1 or more results.
 
         assert u'no datasets' not in result.text, result.text
-        assert u' datasets' in result.text, result.text
+        assert u' results' in result.text, result.text
 
         browser.quit()
 

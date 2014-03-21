@@ -322,3 +322,35 @@ def validate_title(key, data, errors, context):
         val = data.get(key)
         if len(val) == 0:
             raise Invalid(_('First title can not be empty'))
+        
+def validate_title_duplicates(key, data, errors, context):
+    '''
+    Checks that there is only one title per language
+    '''
+    langs = []
+    for k in data.keys():
+        if k[0] == 'langtitle' and k[2] == 'lang':
+            langs.append(data[k])
+    if len(set(langs)) != len(langs):
+        raise Invalid(_('Duplicate titles for a language not permitted'))
+
+def package_name_not_changed(key, data, errors, context):
+    '''
+    Checks that package name doesn't change
+    '''
+    package = context.get('package')
+    if data[key] == u'':
+        data[key] = package.name
+    value = data[key]
+    if package and value != package.name:
+        raise Invalid('Cannot change value of key from %s to %s. '
+                      'This key is read-only' % (package.name, value))
+        
+def validate_direct_download_url(key, data, errors, context):
+    '''
+    Validates that direct_download_URL (at this stage a resource.url) is present
+    '''
+    if data[('availability',)] == 'direct_download' and\
+      (data[key] == u'' or data[key] == u'http://'):
+        raise Invalid(_('Missing URL'))
+    

@@ -9,6 +9,10 @@ This template fixes input type='text' -> type='password' bug in core CKAN. Bug a
 
   <fieldset>
     <legend>{{ _('Change your details') }}</legend>
+    <div class="edit-user-form-infotext">
+      <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+      {{ _('Note that the changes in user information have no effect if you are using Haka login.') }}
+    </div>
 
     {{ form.input('name', label=_('Username'), id='field-username', value=data.name, error=errors.name, classes=['control-medium']) }}
 
@@ -29,7 +33,6 @@ This template fixes input type='text' -> type='password' bug in core CKAN. Bug a
       {{ form.info(_("You will receive notification emails from {site_title}, e.g. when you have new activities on your dashboard.".format(site_title=g.site_title)), classes=['info-help-tight']) }}
       {% endcall %}
     {% endif %}
-
   </fieldset>
 
   <fieldset>

@@ -6924,8 +6924,8 @@ msgstr ""
 "vapaasti käyttää mitä hakukenttää haluat."
 
 #: ckanext/kata/theme/templates/kata/faq.html:38
-msgid "I can't make a search query I want from advanced search"
-msgstr "Tarkennettu haku ei mahdollista haluamani haun tekemistä"
+msgid "I can't make a search query I want from advanced search."
+msgstr "Tarkennettu haku ei mahdollista haluamani haun tekemistä."
 
 #: ckanext/kata/theme/templates/kata/faq.html:39
 msgid ""
@@ -10213,7 +10213,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:176
 msgid ""
 "Field is compulsory if checkbox 'This dataset was not produced in a "
-"project.' is unchecked.<br /><br />Type the project's funding id."
+"project.' is unchecked.<br /><br />Type the project's funding id. The funding id is not shown publicly."
 msgstr "Kenttä on pakollinen, jos valintaruutua ei ole valittu.<br /><br />Anna projektin rahoitustunniste. Rahoitustunnistetta ei näytetä julkisesti."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:179
@@ -11045,6 +11045,12 @@ msgstr " löydetty haulla"
 msgid "MIME type"
 msgstr "MIME-tyyppi"
 
+msgid "Search results"
+msgstr "Hakutulokset"
+
+msgid "Use wildcard to search with various spellings, for example: cat*"
+msgstr "Käytä jokerimerkkiä hakeaksesi eri kirjoitusasuilla, esimerkiksi kissa*"
+
 # Changes to group -> collection
 msgid "This collection (group) has no description"
 msgstr "Tällä kokoelmalla (ryhmällä) ei ole kuvausta"
@@ -11062,7 +11068,7 @@ msgstr "Luo kokoelma"
 msgid "Search Data"
 msgstr "Hae Dataa"
 
-msgid "Tools and additional infromation"
+msgid "Tools and additional information"
 msgstr "Työkalut ja lisätietoa"
 
 msgid "The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:"
@@ -11129,6 +11135,18 @@ msgstr "Liittyvä"
 msgid "Add publications or related datasets"
 msgstr "Lisää julkaisu tai liittyvä tietoaineisto"
 
+msgid "Identification information"
+msgstr "Tunnistetiedot"
+
+msgid "Last modification time of data"
+msgstr "Datan viimeisin muokkausaika"
+
+msgid "Primary metadata identifier"
+msgstr "Ensisijainen metadatan tunniste"
+
+msgid "Primary data identifier"
+msgstr "Ensisijainen datan tunniste"
+
 # Related
 msgid "Identifier"
 msgstr "Tunniste"
@@ -11152,6 +11170,9 @@ msgstr "Huomaa, että tunnistetta EI voi muokata sen jälkeen kun tietoaineisto 
 
 msgid "Missing author and organisation pairs"
 msgstr "Yhtään tekijää ja organisaatiota ei ole annettu"
+
+msgid "Find language codes from: "
+msgstr "Löydät kielikoodit osoitteesta: "
 
 
 # Resource, Additional Information (the key - value -variables)
@@ -11259,6 +11280,21 @@ msgstr "Sisäänkirjautuminen paikallisilla tunnuksilla"
 msgid "You have errors in your metadata. Please, make the requested corrections."
 msgstr "Syöttämissäsi tiedoissa on virheitä. Tee pyydetyt korjaukset, kiitos."
 
+msgid "Duplicate titles for a language not permitted"
+msgstr "Et voi syöttää useampia otsikoita samalla kielellä"
+
+msgid "Permanent Identifier for data version"
+msgstr "Pysyvä tunniste datan versiolle"
+
+msgid "Permanent Identifier for data"
+msgstr "Pysyvä tunniste datalle"
+
+msgid "Access application URL"
+msgstr "Hakemuksen web-osoite"
+
+msgid "Access request URL"
+msgstr "Tietoaineiston web-osoite"
+
 # About
 msgid ""
 " <h2>About Kata metadata catalogue</h2> <p> Kata collects metadata of "
@@ -11277,3 +11313,7 @@ msgid ""
 "CSC - IT Center for Science. The service is discipline independent and free. "
 "</p> "
 msgstr "<h2>Tietoa Kata metadatakatalogista</h2> <p> Kata kerää tutkimusaineistojen metadataa useista ulkopuolisista lähteistä sekä tarjoaa käyttöliittymän metadatan lisäämiseen suoraan Kataan. Tutkimusdataa ei koskaan tallenneta Kataan, vaan se säilytetään missä tahansa tallennuspalvelussa. Katassa olevien metatietojen avulla data on kuitenkin helposti kenen tahansa löydettävissä. </p> <p> Datan kattava kuvailu lisää olennaisesti sen näkyvyyttä. Kata pyrkii edistämään kuvailujen tasoa soveltamalla minimimetatietomallia ja sen kaikille tieteenaloille yhteisiä metatietokenttiä. Katan sisältämillä aputyökaluilla yhteisten metatietokenttien täyttäminen on tehty mahdollisimman helpoksi. Osana yhteisiä metatietokenttiä on myös kentät, jotka kertovat datan käyttöoikeuksista, omistajuudesta ja lisenssistä. Tällä pyritään yhtenäistämään erityisesti käyttöoikeus- ja lisenssikäytäntöjä. Lisäksi on mahdollisuus syöttää rahoitukseen liittyvää tietoa, mikä edistää tiedon raportointia myös rahoittajille päin. Katan monipuolisten hakuominaisuuksien ansioista datan löytäminen on helpompaa. Tämä myös edistää meriitin syntymistä tutkijoille. </p> <p> Kata-palvelun omistaa opetus- ja kulttuuriministeriö. Palvelun tuottaa CSC - tieteen tietotekniikan keskus. Palvelu on tieteenalariippumaton ja käyttäjilleen maksuton.</p> "
+
+# Edit user form
+msgid "Note that the changes in user information have no effect if you are using Haka login."
+msgstr "Muutokset käyttäjäprofiiliin jätetään huomioimatta jos käytät Haka-kirjautumista."
