@@ -337,6 +337,60 @@ def remove_disabled_languages(key, data, errors, context):
         data[key] = u''
 
 
+def remove_access_application_URL(key, data, errors, context):
+    '''
+    If access_application_new_form == 'True' (ie. checkbox changes to checked),
+    remove access_application_URL.
+
+    Expecting URL in data['key'].
+    '''
+    access_application_new_form = data.get(('access_application_new_form',))
+
+    aa_URL = data.get(key)
+
+    if access_application_new_form == 'False':
+        # Pre-existing access application form URL should be given
+
+        if aa_URL == u'':
+            errors[key].append(_('No access application URL given'))
+    else:
+        # Access application form should be created or updated
+
+        # Display flash message if user is loading a page.
+        if 'session' in globals():
+            h.flash_notice(
+                _("Access application form will be created or updated, removing"
+                  " existing application URL: '%s'" % data[key]))
+
+        # Remove URL.
+        del data[key]
+        data[key] = u''
+
+
+def remove_access_application_new_form(key, data, errors, context):
+    '''
+    If availability changes remove access_application_new_form.
+
+    Expecting string: "True" or "False" in data['key'].
+    '''
+    availability = data.get(('availability',))
+
+    aa_new_form = data.get(key)
+
+    if availability != 'access_application':
+        # Some other availability chosen
+
+        # Display flash message if user is loading a page.
+        if 'session' in globals():
+            h.flash_notice(
+                _("Availability changed, removing access application URL: '%s'"
+                  % data[key]))
+
+        # Remove checkbox value.
+        del data[key]
+        data[key] = u''
+
+
 def checkbox_to_boolean(key, data, errors, context):
     '''
     Convert HTML checkbox's value ('on' / null) to boolean string

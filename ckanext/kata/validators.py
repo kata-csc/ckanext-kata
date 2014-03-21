@@ -189,7 +189,8 @@ def check_access_application_url(key, data, errors, context):
     Validate dataset's access_application_URL.
     '''
     if data[('availability',)] == 'access_application':
-        not_empty(key, data, errors, context)
+        if data[('access_application_new_form',)] not in [u'True', u'on']:
+            not_empty(key, data, errors, context)
     else:
         data.pop(key, None)
         raise StopOnError
