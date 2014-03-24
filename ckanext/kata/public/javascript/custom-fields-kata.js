@@ -118,24 +118,24 @@ KATA.toggleAccess = function(obj) {
 	/* Shows and hides data access inputs according to selection */
 	switch (obj.id) {
 		case 'access_application':
-			$('#urlDiv_access_application').show();
-			$('#urlDiv_access_request').hide();
-			$('#urlDiv_direct_download').hide();
+			$('#urlDiv_access_application').slideDown("fast");
+			$('#urlDiv_access_request').slideUp("fast");
+			$('#urlDiv_direct_download').slideUp("fast");
 			break;
 		case 'direct_download':
-			$('#urlDiv_access_application').hide();
-			$('#urlDiv_access_request').hide();
-			$('#urlDiv_direct_download').show();
+			$('#urlDiv_access_application').slideUp("fast");
+			$('#urlDiv_access_request').slideUp("fast");
+			$('#urlDiv_direct_download').slideDown("fast");
 			break;
 		case 'access_request':
-			$('#urlDiv_access_application').hide();
-			$('#urlDiv_access_request').show();
-			$('#urlDiv_direct_download').hide();
+			$('#urlDiv_access_application').slideUp("fast");
+			$('#urlDiv_access_request').slideDown("fast");
+			$('#urlDiv_direct_download').slideUp("fast");
 			break;
 		case 'contact_owner':
-			$('#urlDiv_access_application').hide();
-			$('#urlDiv_access_request').hide();
-			$('#urlDiv_direct_download').hide();
+			$('#urlDiv_access_application').slideUp("fast");
+			$('#urlDiv_access_request').slideUp("fast");
+			$('#urlDiv_direct_download').slideUp("fast");
 			break;
 		}
 	}
