@@ -137,6 +137,11 @@ KATA.toggleAccess = function(obj) {
 			$('#urlDiv_access_request').hide();
 			$('#urlDiv_direct_download').hide();
 			break;
+	    case 'through_provider':
+			$('#urlDiv_access_application').hide();
+			$('#urlDiv_access_request').hide();
+			$('#urlDiv_direct_download').hide();
+			break;
 		}
 	}
 KATA.checkLang = function(obj) {
