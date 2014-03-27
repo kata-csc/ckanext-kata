@@ -11,7 +11,7 @@
 #                                    tag_length_validator,
 #                                    url_validator,
 #                                    vocabulary_id_exists)
-# from ckanext.kata.validators import (check_access_application_url,
+# from ckanext.kata.validators import (validate_access_application_url,
 #                                      check_access_request_url,
 #                                      check_author_org,
 #                                      check_direct_download_url,
@@ -105,7 +105,7 @@
 #         'projdis': [checkbox_to_boolean, check_project, convert_to_extras_kata],
 #         '__junk': [check_junk],
 #         'name': [ignore_missing, unicode, update_pid, package_name_validator, validate_general],
-#         'access_application_URL': [ignore_missing, check_access_application_url, convert_to_extras_kata,
+#         'access_application_URL': [ignore_missing, validate_access_application_url, convert_to_extras_kata,
 #                                    unicode, validate_general],
 #         'access_request_URL': [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
 #                                unicode, validate_general],

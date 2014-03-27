@@ -337,6 +337,18 @@ def remove_disabled_languages(key, data, errors, context):
         data[key] = u''
 
 
+def remove_access_application_new_form(key, data, errors, context):
+    '''
+    If availability changes remove access_application_new_form.
+
+    Expecting string: "True" or "False" in data['key'].
+    '''
+    if data.get(('availability',)) != 'access_application':
+        # Remove checkbox value.
+        del data[key]
+        data[key] = u''
+
+
 def checkbox_to_boolean(key, data, errors, context):
     '''
     Convert HTML checkbox's value ('on' / null) to boolean string

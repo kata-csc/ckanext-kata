@@ -97,7 +97,8 @@ KATA_FIELDS_REQUIRED = ['availability',
                         ]
 
 # Recommended extras fields
-KATA_FIELDS_RECOMMENDED = ['access_application_URL',
+KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
+                           'access_application_URL',
                            'access_request_URL',
                            'through_provider_URL',
                            #'algorithm',

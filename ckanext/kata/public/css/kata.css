@@ -1,3 +1,36 @@
+/* Table of Contents
+ *
+ * Proposition to gradually organize this file for more maintainable code.
+ * Use alphabetical order for declarations.
+ *
+ *  general-styles
+ *  header
+ *  nav
+ *  content
+ *  footer
+ *  widgets
+ *  other-stuff
+ */
+
+/* general-styles */
+
+/* header */
+
+/* nav */
+
+/* content */
+/* Overwrite selector in main.css */
+.info-block [class^="icon-"], .info-block [class*=" icon-"] {
+    display: inline;
+    float: none;
+    font-size: 14px;
+}
+
+/* footer */
+
+/* widgets */
+
+/* other-stuff */
 .role-select {
 	margin: 0;
 	height: 36px;

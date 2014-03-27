@@ -39,14 +39,14 @@ from ckan.plugins import (implements,
                           ITemplateHelpers,
                           SingletonPlugin)
 from ckan.plugins.core import unload
-from ckanext.kata.validators import (check_access_application_url,
-                                     check_access_request_url,
+from ckanext.kata.validators import (check_access_request_url,
                                      check_author_org,
                                      check_junk,
                                      check_project,
                                      check_project_dis,
                                      kata_tag_name_validator,
                                      kata_tag_string_convert,
+                                     validate_access_application_url,
                                      validate_algorithm,
                                      validate_discipline,
                                      validate_email,
@@ -74,6 +74,7 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      org_auth_to_extras,
                                      org_auth_to_extras_oai,
                                      org_auth_to_extras_ddi,
+                                     remove_access_application_new_form,
                                      remove_disabled_languages,
                                      update_pid,
                                      to_extras_json,
@@ -404,7 +405,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'projdis': [checkbox_to_boolean, check_project, convert_to_extras_kata],
             '__junk': [check_junk],
             'name': [ignore_missing, unicode, update_pid, package_name_validator, validate_general],
-            'access_application_URL': [ignore_missing, check_access_application_url, convert_to_extras_kata,
+            'access_application_new_form': [checkbox_to_boolean, convert_to_extras_kata, remove_access_application_new_form],
+            'access_application_URL': [ignore_missing, validate_access_application_url,
                                        unicode, validate_general],
             'access_request_URL': [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
                                    unicode, validate_general],
@@ -535,6 +537,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS:
             schema[key] = [convert_from_extras_kata, ignore_missing, unicode]
 
+        schema['access_application_new_form'] = [unicode],
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
