@@ -270,13 +270,14 @@
         <input type="radio" name="availability" id="access_application" value="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application'}}>
         {{ _('with data access application') }}
       </label>
-      <div id="urlDiv_access_application" {% if not data.access_application_new_form and not data.access_application_URL and not errors.access_application_URL %}style="display:none"{% endif %}>
+      <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application' and not errors.access_application_URL %}style="display:none"{% endif %}>
         {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}
-          {% set new_form_val = True %}
           {% set new_form_chk = true %}
         {% endif %}
-        {# Not working, can't pass string "True" correctly for 'value'. { form.checkbox('access_application_new_form', id="access_application_new_form", label=_('Create a new access request form (beta)'), value=new_form_val, checked=new_form_chk, attrs={'onchange': "$('#access_application_URL_box').toggle()"}) }#}
-        <input type="checkbox" style="top: 0px;" id="access_application_new_form" name="access_application_new_form" onchange="$('#access_application_URL_box').toggle()" {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}checked value="True"{% endif %}>{{ _('Create a new access request form (beta)') }}
+        <label class="checkbox" for="access_application_new_form">
+          <input type="checkbox" style="top: 4px;" id="access_application_new_form" name="access_application_new_form" onchange="$('#access_application_URL_box').toggle('fast')" {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}checked value="True"{% endif %}>
+          {{ _('Create a new access request form') }}
+        </label>
         <div id="access_application_URL_box" {% if new_form_chk %} style="display: none" {%endif%}>
           {{ form.input('access_application_URL', label=_('Web address of access application'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
         </div>

@@ -10,11 +10,12 @@ import iso8601
 import re
 from pylons.i18n import _
 
-from ckan.model import Package
-import ckanext.kata.utils as utils
 from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid
 from ckan.logic.validators import tag_length_validator
+from ckan.model import Package
+import ckanext.kata.utils as utils
+import ckanext.kata.converters as converters
 
 
 log = logging.getLogger('ckanext.kata.validators')
@@ -184,16 +185,25 @@ def check_project_dis(key, data, errors, context):
                 errors[(key[0],)].append(_('Missing value'))
 
 
-def check_access_application_url(key, data, errors, context):
+def validate_access_application_url(key, data, errors, context):
     '''
     Validate dataset's access_application_URL.
+
+    Dummy value _must_ be added for a new form so that it can be overwritten
+    in the same session in iPackageController 'edit' hook. For REMS.
     '''
     if data[('availability',)] == 'access_application':
         if data[('access_application_new_form',)] not in [u'True', u'on']:
             not_empty(key, data, errors, context)
+        else:
+            data[key] = 'Dummy, overwritten in ckanext-rems'
+        converters.convert_to_extras_kata(key, data, errors, context)
     else:
-        data.pop(key, None)
-        raise StopOnError
+        if not data.get(key):  # Pop, if it's empty string and other availability
+            data.pop(key, None)
+            raise StopOnError
+        else:  # Keep url if later changed back to 'access_application'
+            converters.convert_to_extras_kata(key, data, errors, context)
 
 
 def check_direct_download_url(key, data, errors, context):
