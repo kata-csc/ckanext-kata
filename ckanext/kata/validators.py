@@ -199,11 +199,8 @@ def validate_access_application_url(key, data, errors, context):
             data[key] = 'Dummy, overwritten in ckanext-rems'
         converters.convert_to_extras_kata(key, data, errors, context)
     else:
-        if not data.get(key):  # Pop, if it's empty string and other availability
-            data.pop(key, None)
-            raise StopOnError
-        else:  # Keep url if later changed back to 'access_application'
-            converters.convert_to_extras_kata(key, data, errors, context)
+        data.pop(key, None)
+        raise StopOnError
 
 
 def check_direct_download_url(key, data, errors, context):
