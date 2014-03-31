@@ -3,11 +3,10 @@
 import paste.fixture
 from pylons import config
 
+import ckanext.kata.model as kata_model
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
-
-from ckan.tests import WsgiAppCase
-import ckanext.kata.model as kata_model
+from ckan.tests import WsgiAppCase      # Note: all ORM model changes must be imported before WsgiAppCase
 
 
 class KataWsgiTestCase(WsgiAppCase):
