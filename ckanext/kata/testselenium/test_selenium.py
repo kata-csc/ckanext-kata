@@ -195,7 +195,8 @@ class TestKataWithUser(TestCase):
 
             #field = browser.find_element_by_xpath("//input[@id='licenseURL']")
             #field.send_keys('Shareware')
-            field.send_keys(Keys.ENTER)
+            #field.send_keys(Keys.ENTER)
+            browser.find_element_by_xpath("//button[@name='save']").click()
 
         except NoSuchElementException:
             browser.get_screenshot_as_file('_add_dataset.png')
@@ -386,7 +387,7 @@ class TestKataWithUser(TestCase):
         browser.get("https://localhost/en/user/_logout")
 
         try:
-            search = browser.find_element_by_xpath("//h1[.='Logged Out']")
+            search = browser.find_element_by_xpath("//p[.='You are now logged out.']")
         except NoSuchElementException:
             browser.get_screenshot_as_file('test_9_test_logout.png')
             assert 0, "Error logging out"

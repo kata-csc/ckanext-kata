@@ -32,7 +32,6 @@ from ckan.plugins import (implements,
                           IConfigurable,
                           IConfigurer,
                           IDatasetForm,
-                          IMapper,
                           IPackageController,
                           IRoutes,
                           IFacets,
@@ -85,17 +84,24 @@ import ckanext.kata.settings as settings
 
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
-t = toolkit                                 # pylint: disable=invalid-name
 
 
-class KataMetadata(SingletonPlugin):
+class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
-    Kata metadata plugin.
+    Kata functionality and UI plugin.
     """
     # pylint: disable=no-init, no-self-use
 
+    implements(IDatasetForm, inherit=True)
+    implements(IConfigurer, inherit=True)
+    implements(IConfigurable, inherit=True)
+    implements(IPackageController, inherit=True)
+    implements(ITemplateHelpers, inherit=True)
+    implements(IActions, inherit=True)
+    implements(IAuthFunctions, inherit=True)
+    implements(IFacets, inherit=True)
+
     implements(IRoutes, inherit=True)
-    implements(IMapper, inherit=True)
 
     def before_map(self, map):
         """
@@ -148,22 +154,6 @@ class KataMetadata(SingletonPlugin):
                     action="render_faq")
         return map
 
-
-class KataPlugin(SingletonPlugin, DefaultDatasetForm):
-    """
-    Kata functionality and UI plugin.
-    """
-    # pylint: disable=no-init, no-self-use
-
-    implements(IDatasetForm, inherit=True)
-    implements(IConfigurer, inherit=True)
-    implements(IConfigurable, inherit=True)
-    implements(IPackageController, inherit=True)
-    implements(ITemplateHelpers, inherit=True)
-    implements(IActions, inherit=True)
-    implements(IAuthFunctions, inherit=True)
-    implements(IFacets, inherit=True)
-
     def get_auth_functions(self):
         """
         Returns a dict of all the authorization functions which the
@@ -181,44 +171,28 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'package_update': actions.package_update,
                 'package_delete': actions.package_delete,
                 'package_search': actions.package_search,
-                'resource_create': actions.resource_create,
-                'resource_update': actions.resource_update,
-                'resource_delete': actions.resource_delete,
-                'group_list': actions.group_list,
-                'group_create': actions.group_create,
-                'group_update': actions.group_update,
-                'group_delete': actions.group_delete,
+                # 'resource_create': actions.resource_create,
+                # 'resource_update': actions.resource_update,
+                # 'resource_delete': actions.resource_delete,
+                # 'group_list': actions.group_list,
+                # 'group_create': actions.group_create,
+                # 'group_update': actions.group_update,
+                # 'group_delete': actions.group_delete,
                 'related_create': actions.related_create,
                 'related_update': actions.related_update,
-                'related_delete': actions.related_delete,
-                'member_create': actions.member_create,
-                'member_delete': actions.member_delete,
-                'organization_create': actions.organization_create,
-                'organization_update': actions.organization_update,
-                'organization_delete': actions.organization_delete,
+                # 'related_delete': actions.related_delete,
+                # 'member_create': actions.member_create,
+                # 'member_delete': actions.member_delete,
+                # 'organization_create': actions.organization_create,
+                # 'organization_update': actions.organization_update,
+                # 'organization_delete': actions.organization_delete,
                 }
 
     def get_helpers(self):
         """ Register helpers """
-        return {'is_custom_form': self.is_custom_form,
+        return {
                 'kata_sorted_extras': self.kata_sorted_extras,
-                'reference_update': self.reference_update
                 }
-
-    def reference_update(self, ref):
-        #@beaker_cache(type="dbm", expire=2678400)
-        def cached_url(url):
-            return url
-        return cached_url(ref)
-
-    def is_custom_form(self, _dict):
-        """
-        Template helper, used to identify ckan custom form
-        """
-        for key in self.hide_extras_form:
-            if _dict.get('key', None) and _dict['key'].find(key) > -1:
-                return False
-        return True
 
     def kata_sorted_extras(self, list_):
         '''
@@ -228,28 +202,28 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for extra in sorted(list_, key=lambda x:x['key']):
             if extra.get('state') == 'deleted':
                 continue
-            
+
             key, val = extra['key'], extra['value']
             if key in g.package_hide_extras and\
                 key in settings.KATA_FIELDS and\
                 key.startswith('author_') and\
                 key.startswith('organization_'):
                 continue
-            
+
             if  key.startswith('title_') or\
                 key.startswith('lang_title_') or\
                 key == 'harvest_object_id' or\
                 key == 'harvest_source_id' or\
                 key == 'harvest_source_title':
                 continue
-            
+
             found = False
             for _key in g.package_hide_extras:
                 if extra['key'].startswith(_key):
                     found = True
             if found:
                 continue
-            
+
             if isinstance(val, (list, tuple)):
                 val = ", ".join(map(unicode, val))
             output.append((key, val))
@@ -260,14 +234,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         This IConfigurer implementation causes CKAN to look in the
         ```templates``` directory when looking for the package_form()
         """
+        toolkit.add_template_directory(config, 'theme/templates')
+        toolkit.add_public_directory(config, 'theme/public')
+        toolkit.add_resource('theme/public', 'kata-resources')      # Fanstatic resource library
+
         here = os.path.dirname(__file__)
         rootdir = os.path.dirname(os.path.dirname(here))
-        template_dir = os.path.join(rootdir, 'ckanext', 'kata', 'theme', 'templates')
-        config['extra_template_paths'] = ','.join([template_dir, config.get('extra_template_paths', '')])
-        
-        public_dir = os.path.join(rootdir, 'ckanext', 'kata', 'public')
-        config['extra_public_paths'] = ','.join([public_dir, config.get('extra_public_paths', '')])
-        toolkit.add_resource(public_dir, 'kata-resources')
+
         roles = config.get('kata.contact_roles', 'Please, Configure')
         config['package_hide_extras'] = ' '.join(settings.KATA_FIELDS)
         config['ckan.i18n_directory'] = os.path.join(rootdir, 'ckanext', 'kata')
@@ -275,14 +248,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
 
-        log.debug("disable synchronous search")
         try:
             # This controls the operation of the CKAN search indexing. If you don't define this option
             # then indexing is on. You will want to turn this off if you have a non-synchronous search
             # index extension installed.
             unload('synchronous_search')
+            log.debug("Disabled synchronous search")
+            # Note: in CKAN 2.2, disabling this plugin causes other plugins to be reloaded
         except:
-            pass
+            log.error("Failed to disable synchronous search!")
 
     def package_types(self):
         '''
@@ -566,7 +540,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         The titles show up on the search page.
         """
 
-        facet_titles.update(settings.get_field_titles(t._))
+        facet_titles.update(settings.get_field_titles(toolkit._))
         return facet_titles
     
     def dataset_facets(self, facets_dict, package_type):
@@ -574,7 +548,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         Updating facets, before rendering search page.
         This is CKAN 2.0.3 hook, 2.1 will use the function above
         '''
-        facets_dict.update(settings.get_field_titles(t._))
+        facets_dict.update(settings.get_field_titles(toolkit._))
 
         return facets_dict
 
@@ -695,7 +669,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             c.sort_by_selected = settings.DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
 
         c.search_fields = settings.SEARCH_FIELDS
-        c.translated_field_titles = settings.get_field_titles(t._)
+        c.translated_field_titles = settings.get_field_titles(toolkit._)
 
         # Start advanced search parameter parsing
         if data_dict.has_key('extras') and len(data_dict['extras']) > 0:

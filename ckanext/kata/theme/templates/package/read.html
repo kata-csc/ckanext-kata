@@ -3,21 +3,6 @@
 {% set pkg = c.pkg_dict %}
 
 {% block subtitle %}{{ pkg.title or pkg.name }}{% endblock %}
-{% block add_action_content %}
-  {% if h.check_access('package_update', {'id':pkg.id }) %}
-    <li>{% link_for _('Edit'), controller='package', action='edit', id=pkg.name, class_='btn btn-primary', icon='wrench' %}</li>
-    <li>{% link_for _('History'), controller='package', action='history', id=pkg.name, class_='btn', icon='sitemap' %}</li>
-  {% else %}
-    <a href="{{ h.url_for(controller='ckanext.kata.controllers:AccessRequestController', action='render_edit_request', pkg_id=pkg.id) }}" class="btn btn-primary">
-    <i class="icon-plus-sign"></i>
-    {{ _('Request metadata editing rights') }}
-  </a>
-
-  {% endif %}
-  <li>{{ h.follow_button('dataset', pkg.id) }}</li>
-  
-{% endblock %}
-
 {% block breadcrumb_content %}
   {% set dataset = pkg.title or pkg.name %}
   <li>{% link_for _('Datasets'), controller='package', action='search', highlight_actions = 'new index' %}</li>
@@ -41,6 +26,21 @@
       </div>
     {% endif %}
   {% endblock %}
+
+  {% block content_action %}
+    {% if h.check_access('package_update', {'id':pkg.id }) %}
+      {% link_for _('Manage'), controller='package', action='edit', id=pkg.name, class_='btn btn-primary', icon='wrench' %}
+      {% link_for _('History'), controller='package', action='history', id=pkg.name, class_='btn', icon='sitemap' %}
+    {% else %}
+      <a href="{{ h.url_for(controller='ckanext.kata.controllers:AccessRequestController', action='render_edit_request', pkg_id=pkg.id) }}" class="btn btn-primary">
+      <i class="icon-plus-sign"></i>
+      {{ _('Request metadata editing rights') }}
+    </a>
+
+    {% endif %}
+    {{ h.follow_button('dataset', pkg.id) }}
+  {% endblock %}
+
 
   <article class="module prose">
 

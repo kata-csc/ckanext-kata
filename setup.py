@@ -50,7 +50,6 @@ setup(
     [ckan.plugins]
     # Add plugins here, eg
     kata=ckanext.kata.plugin:KataPlugin
-    kata_metadata=ckanext.kata.plugin:KataMetadata
     [paste.paster_command]
     katacmd = ckanext.kata.commands.kata:Kata
     """,
