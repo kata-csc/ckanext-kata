@@ -18,7 +18,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      * Returns nothing.
      */
     initialize: function () {
-      if (!jQuery.browser.msie || !jQuery.browser.version == '7.0') {
+      //if (!jQuery.browser.msie || !jQuery.browser.version == '7.0') {
         jQuery.proxyAll(this, /_on/);
 
         var delegated = '#' + this.el[0].id + ' input:first';
@@ -30,7 +30,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         
         // Create tooltips with no fade-in (change false to number for a fade-in)
         jQuery( ".kata-plus-btn" ).tooltip({ show: false });
-      }
+      //}
     },
 
     /* Creates a new field and appends it to the list. This currently works by
@@ -118,26 +118,21 @@ KATA.toggleAccess = function(obj) {
 	/* Shows and hides data access inputs according to selection */
 	switch (obj.id) {
 		case 'access_application':
-			$('#urlDiv_access_application').slideDown("fast");
-			$('#urlDiv_access_request').slideUp("fast");
-			$('#urlDiv_direct_download').slideUp("fast");
+			$('#urlDiv_access_application').show();
+			$('#urlDiv_access_request').hide();
+			$('#urlDiv_direct_download').hide();
 			break;
 		case 'direct_download':
-			$('#urlDiv_access_application').slideUp("fast");
-			$('#urlDiv_access_request').slideUp("fast");
-			$('#urlDiv_direct_download').slideDown("fast");
+			$('#urlDiv_access_application').hide();
+			$('#urlDiv_access_request').hide();
+			$('#urlDiv_direct_download').show();
 			break;
 		case 'access_request':
-			$('#urlDiv_access_application').slideUp("fast");
-			$('#urlDiv_access_request').slideDown("fast");
-			$('#urlDiv_direct_download').slideUp("fast");
+			$('#urlDiv_access_application').hide();
+			$('#urlDiv_access_request').show();
+			$('#urlDiv_direct_download').hide();
 			break;
 		case 'contact_owner':
-			$('#urlDiv_access_application').slideUp("fast");
-			$('#urlDiv_access_request').slideUp("fast");
-			$('#urlDiv_direct_download').slideUp("fast");
-			break;
-	    case 'through_provider':
 			$('#urlDiv_access_application').hide();
 			$('#urlDiv_access_request').hide();
 			$('#urlDiv_direct_download').hide();
