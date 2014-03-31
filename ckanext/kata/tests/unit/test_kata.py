@@ -345,7 +345,7 @@ class TestUtils(TestCase):
 
     def test_generate_pid(self):
         pid = utils.generate_pid()
-        assert 'urn' in pid
+        assert pid.startswith('urn')
         assert len(pid) >= 10
 
     def test_generate_pid2(self):
@@ -359,6 +359,6 @@ class TestActions(TestCase):
 
     def test_group_list(self):
         group_list = actions.group_list({}, {})
-        assert isinstance(group_list, dict)
+        assert isinstance(group_list, list)
 
 

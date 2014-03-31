@@ -164,7 +164,7 @@ def package_update(context, data_dict):
         data_dict['resources'] = old_resources
         data_dict = utils.dataset_to_resource(data_dict)
 
-    # Get all PIDs (except for package.id) from database and add new relevant PIDS there
+    # Get all PIDs (except for package.id and package.name) from database and add new relevant PIDS there
     data_dict['pids'] = temp_pkg_dict.get('pids', [])
 
     new_version_pid = data_dict.get('new_version_pid', None)
@@ -311,7 +311,7 @@ def group_list(context, data_dict):
     Return a list of the names of the site's groups.
     '''
     if not "for_view" in context:
-        return {}
+        return []
     else:
         return ckan.logic.action.get.group_list(context, data_dict)
 
