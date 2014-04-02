@@ -361,13 +361,30 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """
 
         schema = default_create_package_schema()
+        schema.pop('author')
+        # schema.pop('organization')
 
         for key in settings.KATA_FIELDS_REQUIRED:
             schema[key] = [not_empty, convert_to_extras_kata, unicode, validate_general]
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+
+        schema['agent'] = {'role': [not_missing, unicode, flattened_to_extras],
+                           'name': [ignore_missing, unicode, flattened_to_extras],
+                           'id': [ignore_missing, unicode, flattened_to_extras],
+                           'organisation': [ignore_missing, unicode, flattened_to_extras],
+                           'URL': [ignore_missing, unicode, flattened_to_extras],
+                           # Note: Changed to 'funding-id' for now because 'funding_id'
+                           # was returned as 'funding' from db. Somewhere '_id' was
+                           # splitted off.
+                           'funding-id': [ignore_missing, unicode, flattened_to_extras]}
         # phone number can be missing from the first users
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
+        schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
+        schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
+        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date]}
+        schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
+
         schema['id'] = [default(u''), update_pid, unicode]
         schema['langtitle'] = {'value': [not_missing, unicode, validate_title, validate_title_duplicates, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
@@ -375,8 +392,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
         schema['maintainer'] = [not_empty, unicode, validate_general]
         schema['maintainer_email'] = [not_empty, unicode, validate_email]
-        schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
-                             'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
+        # schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
+        #                      'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
         schema['temporal_coverage_begin'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
@@ -390,51 +407,36 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, to_extras_json]
         # these two can be missing from the first Kata end users
-        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        # schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
+        # TODO: version date validation should be tighter, see metadata schema
+        schema['version'] = [not_empty, unicode, validate_kata_date]
+        schema['availability'] = [not_missing, convert_to_extras_kata]
+        schema['langdis'] = [checkbox_to_boolean, convert_to_extras_kata]
+        # schema['__extras'] = [check_author_org]
+        schema['__junk'] = [check_junk]
+        schema['name'] = [ignore_missing, unicode, update_pid, package_name_validator, validate_general]
+        schema['access_application_new_form'] = [checkbox_to_boolean, convert_to_extras_kata, remove_access_application_new_form]
+        schema['access_application_URL'] = [ignore_missing, validate_access_application_url,
+                                            unicode, validate_general]
+        schema['access_request_URL'] = [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
+                                   unicode, validate_general]
+        schema['through_provider_URL'] = [ignore_missing, check_through_provider_url, url_validator, convert_to_extras_kata,
+                                     unicode]
+        # schema['project_name'] = [ignore_missing, check_project_dis, unicode, convert_to_extras_kata, validate_general]
+        # schema['project_funder'] = [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general]
+        # schema['project_funding'] = [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general]
+        # schema['project_homepage'] = [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general]
+        schema['discipline'] = [ignore_missing, validate_discipline, convert_to_extras_kata, unicode]
+        schema['geographic_coverage'] = [ignore_missing, validate_spatial, convert_to_extras_kata, unicode]
+        schema['license_URL'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
 
-        schema.update({
-            # TODO: version date validation should be tighter, see metadata schema
-            'version': [not_empty, unicode, validate_kata_date],
-            #'version_PID': [default(u''), update_pid, unicode, convert_to_extras_kata],
-            #'author': [],
-            #'organization': [],
-            'availability': [not_missing, convert_to_extras_kata],
-            'langdis': [checkbox_to_boolean, convert_to_extras_kata],
-            '__extras': [check_author_org],
-            'projdis': [checkbox_to_boolean, check_project, convert_to_extras_kata],
-            '__junk': [check_junk],
-            'name': [ignore_missing, unicode, update_pid, package_name_validator, validate_general],
-            'access_application_new_form': [checkbox_to_boolean, convert_to_extras_kata, remove_access_application_new_form],
-            'access_application_URL': [ignore_missing, validate_access_application_url,
-                                       unicode, validate_general],
-            'access_request_URL': [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
-                                   unicode, validate_general],
-            'through_provider_URL': [ignore_missing, check_through_provider_url, url_validator, convert_to_extras_kata,
-                                     unicode],
-            'project_name': [ignore_missing, check_project_dis, unicode, convert_to_extras_kata, validate_general],
-            'project_funder': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
-            'project_funding': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
-            'project_homepage': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
-            'discipline': [ignore_missing, validate_discipline, convert_to_extras_kata, unicode],
-            'geographic_coverage': [ignore_missing, validate_spatial, convert_to_extras_kata, unicode],
-            'license_URL': [ignore_missing, convert_to_extras_kata, unicode, validate_general],
-        })
-
-        schema.pop('author')
-        schema.pop('organization')
-
-        schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
-        schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
-        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date]}
-        schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
         #schema['groups'].update({
         #    'name': [ignore_missing, unicode, add_to_group]
         #})
 
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, validate_general, validate_direct_download_url]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
-
         schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
         schema['resources']['hash'].append(validate_general)
         schema['resources']['mimetype'].append(validate_mimetype)
@@ -456,7 +458,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['__extras'] = [ignore]   # This removes orgauth checking
         schema['availability'].insert(0, ignore_missing)
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
-        #schema['contact_URL'].insert(0, ignore_missing)
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
@@ -464,9 +465,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
         # schema['maintainer'].insert(0, ignore_missing)
         schema['maintainer'] = [ignore_missing, unicode, validate_general]
-        schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
-                             'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
-        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
+        #                      'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
+        # schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
         schema['version'] = [not_empty, unicode, validate_kata_date_relaxed]
 
         return schema
@@ -487,8 +488,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['discipline'].insert(0, ignore_missing)
         schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date_relaxed]}
         schema['geographic_coverage'].insert(0, ignore_missing)
-        schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_ddi, validate_general],
-                             'org': [ignore_missing, unicode, validate_general]}
+        # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_ddi, validate_general],
+        #                      'org': [ignore_missing, unicode, validate_general]}
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['version'] = [not_empty, unicode, validate_kata_date_relaxed]
@@ -534,19 +535,29 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema = default_show_package_schema()
 
+        # Put back validators for several keys into the schema so validation
+        # doesn't bring back the keys from the package dicts if the values are
+        # 'missing' (i.e. None).
+        # See few lines into 'default_show_package_schema()'
+        # TODO: Should this be done here or in test_api.py:_compare_datadicts()?
+        schema['author'] = [ignore_missing]
+        schema['author_email'] = [ignore_missing]
+        schema['organization'] = [ignore_missing]
+
         for key in settings.KATA_FIELDS:
             schema[key] = [convert_from_extras_kata, ignore_missing, unicode]
 
+        schema['agent'] = [flattened_from_extras, ignore_missing]
         schema['access_application_new_form'] = [unicode],
-        schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
+        # schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['evtype'] = [event_from_extras, ignore_missing, unicode]
         schema['evwho'] = [event_from_extras, ignore_missing, unicode]
         schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
         schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
         schema['langdis'] = [unicode]
-        schema['organization'] = [ignore_missing, unicode]
+        # schema['organization'] = [ignore_missing, unicode]
         schema['pids'] = [flattened_from_extras, ignore_missing]
-        schema['projdis'] = [unicode]
+        # schema['projdis'] = [unicode]
         schema['title'] = [ltitle_from_extras, ignore_missing]
         #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
         schema['xpaths'] = [from_extras_json, ignore_missing, unicode]
