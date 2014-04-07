@@ -1,5 +1,13 @@
 '''Settings and constants for Kata CKAN extension'''
 
+AGENT_ROLES = {
+    'author': 'Author',
+    'contributor': 'Contributor',
+    'distributor': 'Distributor/Publisher',
+    'funder': 'Funder',
+    'owner': 'Owner',
+    'producer': 'Producer',
+}
 
 # Facets used in Solr queries
 # Facets need also to be changed to search.html. This all should be fixed in newer CKAN versions with IFacets interface.
@@ -85,12 +93,13 @@ AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
 KATA_FIELDS_REQUIRED = ['agent',
                         'availability',
                         # 'author',
-                        'contact_URL',
                         'langdis',
                         'language',
+                        'langtitle',
+                        'contact_phone',
+                        'contact_URL',
                         # 'organization',
                         # 'owner',
-                        'contact_phone',
                         'pids',
                         # 'projdis',
                         #'maintainer_email',
