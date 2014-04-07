@@ -144,6 +144,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         kata_model.setup()
         CreateTestData.create()
         cls.sysadmin_user = model.User.get('testsysadmin')
+        cls.normal_user = model.User.get('tester')
 
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
@@ -153,6 +154,14 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         model.repo.rebuild_db()
 
     def test_create_dataset(self):
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
+                                 status=200, **TEST_DATADICT)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+        assert output['id'].startswith('urn:nbn:fi:csc-kata')
+
+    def test_create_dataset_sysadmin(self):
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **TEST_DATADICT)
         if '__type' in output:
@@ -165,7 +174,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         Add a dataset and 20 resources and read dataset through API
         '''
         print 'Create dataset'
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -177,14 +186,14 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         for res_num in range(20):
             print 'Adding resource %r' % (res_num + 1)
 
-            output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+            output = call_action_api(self.app, 'resource_create', apikey=self.normal_user.apikey,
                                      status=200, **new_res)
             if '__type' in output:
                 assert output['__type'] != 'Validation Error'
             assert output
 
         print 'Read dataset'
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=new_res['package_id'])
         assert 'id' in output
 
@@ -196,7 +205,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         Add, modify and delete a dataset through API
         '''
         print 'Create dataset'
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -206,19 +215,19 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         data_dict['id'] = output['id']
 
         print 'Update dataset'
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=200, **data_dict)
+        output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey, status=200, **data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert output
 
         print 'Update dataset'
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=200, **data_dict)
+        output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey, status=200, **data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert output
 
         print 'Delete dataset'
-        output = call_action_api(self.app, 'package_delete', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_delete', apikey=self.normal_user.apikey,
                                  status=200, id=data_dict['id'])
 
     def test_create_dataset_fails(self):
@@ -233,7 +242,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         logg = logging.getLogger('ckan.controllers.api')
         logg.disabled = True
 
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=409, **data)
 
         logg.disabled = False
@@ -246,7 +255,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         Add a dataset and add and delete a resource through API
         '''
         print 'Create dataset'
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -256,7 +265,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         new_res = copy.deepcopy(TEST_RESOURCE)
         new_res['package_id'] = output['id']
 
-        output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'resource_create', apikey=self.normal_user.apikey,
                                  status=200, **new_res)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -265,6 +274,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         res_id = output['id']
 
         print 'Delete resource #1'
+        # For some reason this is forbidden for the user that created the resource
         output = call_action_api(self.app, 'resource_delete', apikey=self.sysadmin_user.apikey,
                                  status=200, id=res_id)
         if output is not None and '__type' in output:
@@ -275,14 +285,14 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         Test and edit dataset via API. Check that immutables stay as they are.
         '''
         print 'Create dataset'
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
         
         data_dict = copy.deepcopy(TEST_DATADICT)
         
         orig_id = output['id']
         data_dict['id'] = orig_id
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=200, **data_dict)        
+        output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey, status=200, **data_dict)
         assert output['id'] == orig_id
         
         data_dict['name'] = 'new-name-123456'
@@ -291,7 +301,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         
         log = logging.getLogger('ckan.controllers.api')     # pylint: disable=invalid-name
         log.disabled = True
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey, status=409, **data_dict)
+        output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey, status=409, **data_dict)
         log.disabled = False
         
         assert output
@@ -311,6 +321,7 @@ class TestDataReading(unittest.TestCase):
         kata_model.setup()
         CreateTestData.create()
         cls.sysadmin_user = model.User.get('testsysadmin')
+        cls.normal_user = model.User.get('tester')
 
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
@@ -377,14 +388,34 @@ class TestDataReading(unittest.TestCase):
         '''
         Create and read a dataset through API and check that values are correct
         '''
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
+                                 status=200, **TEST_DATADICT)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert 'id' in output
+
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
+                                 status=200, id=output['id'])
+
+        assert self._compare_datadicts(output)
+
+    def test_create_and_read_dataset_2(self):
+        '''
+        Create and read a dataset through API and check that values are correct.
+        Read as a different user than dataset creator.
+        '''
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
 
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
+
+        # Handle hidden fields
+        output.pop('project_funding', None)
+        output['maintainer_email'] = TEST_DATADICT['maintainer_email']
 
         assert self._compare_datadicts(output)
 
@@ -392,7 +423,7 @@ class TestDataReading(unittest.TestCase):
         '''
         Create, update and read a dataset through API and check that values are correct
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -401,13 +432,13 @@ class TestDataReading(unittest.TestCase):
         data_dict = copy.deepcopy(TEST_DATADICT)
         data_dict['id'] = output['id']
 
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey,
                                  status=200, **data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
 
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
 
         assert self._compare_datadicts(output)
@@ -416,7 +447,7 @@ class TestDataReading(unittest.TestCase):
         '''
         Test that anonymous user can not read protected data
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -435,7 +466,7 @@ class TestDataReading(unittest.TestCase):
 
         ACCESS_URL = 'http://www.csc.fi/english/'
 
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
         assert 'id' in output
 
@@ -446,11 +477,11 @@ class TestDataReading(unittest.TestCase):
 
         # UPDATE AVAILABILITY
 
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey,
                                  status=200, **data_dict)
         assert 'id' in output
 
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
 
         # import pprint
@@ -469,11 +500,11 @@ class TestDataReading(unittest.TestCase):
 
         # UPDATE AVAILABILITY AGAIN
 
-        output = call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey,
                                  status=200, **output)
         assert 'id' in output
 
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
 
         assert 'access_application_URL' not in output
@@ -488,28 +519,28 @@ class TestDataReading(unittest.TestCase):
         data_dict = copy.deepcopy(TEST_DATADICT)
         data_dict['discipline'] = None
 
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **data_dict)
         assert 'id' in output
 
         data_dict['id'] = output['id']
         data_dict['discipline'] = 'Matematiikka'
 
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=data_dict['id'])
         assert 'discipline' not in output
 
-        call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey,
                         status=200, **data_dict)
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=data_dict['id'])
         assert 'discipline' in output
 
         data_dict['discipline'] = None
 
-        call_action_api(self.app, 'package_update', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey,
                         status=200, **data_dict)
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=data_dict['id'])
         assert 'discipline' not in output
 
@@ -523,18 +554,18 @@ class TestDataReading(unittest.TestCase):
         data_dict['through_provider_URL'] = 'http://www.tdata.fi/'
         data_dict.pop('direct_download_URL')
 
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **data_dict)
         assert 'id' in output
 
         new_res = copy.deepcopy(TEST_RESOURCE)
         new_res['package_id'] = output['id']
 
-        output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'resource_create', apikey=self.normal_user.apikey,
                                  status=200, **new_res)
         assert output
 
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=new_res['package_id'])
         assert 'id' in output
 
@@ -546,19 +577,20 @@ class TestDataReading(unittest.TestCase):
     def test_create_and_read_resource2(self):
         '''
         Create and read resource data through API and test that 'url' matches. Availability 'direct_download'.
+        Test with sysadmin user.
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
         assert 'id' in output
 
         new_res = copy.deepcopy(TEST_RESOURCE)
         new_res['package_id'] = output['id']
 
-        output = call_action_api(self.app, 'resource_create', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'resource_create', apikey=self.normal_user.apikey,
                                  status=200, **new_res)
         assert output
 
-        output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=new_res['package_id'])
         assert 'id' in output
 
@@ -589,3 +621,4 @@ class TestDataReading(unittest.TestCase):
         assert 'id' in output
 
         assert self._compare_datadicts(output)
+
