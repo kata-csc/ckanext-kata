@@ -286,6 +286,7 @@ member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'cre
 member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
 group_create = _decorate(ckan.logic.action.create.group_create, 'group', 'create')
 group_update = _decorate(ckan.logic.action.update.group_update, 'group', 'update')
+# group_list = _decorate(ckan.logic.action.get.group_list, 'group', 'list')
 group_delete = _decorate(ckan.logic.action.delete.group_delete, 'group', 'delete')
 organization_create = _decorate(ckan.logic.action.create.organization_create, 'organization', 'create')
 organization_update = _decorate(ckan.logic.action.update.organization_update, 'organization', 'update')
@@ -306,16 +307,16 @@ def package_search(context, data_dict):
     return ckan.logic.action.get.package_search(context, data_dict)
 
 
-def group_list(context, data_dict):
-    '''
-    Return a list of the names of the site's groups.
-    '''
-    if not "for_view" in context:
-        return []
-    else:
-        return ckan.logic.action.get.group_list(context, data_dict)
-
-
+# def group_list(context, data_dict):
+#     '''
+#     Return a list of the names of the site's groups.
+#     '''
+#     if not "for_view" in context:
+#         return []
+#     else:
+#         return ckan.logic.action.get.group_list(context, data_dict)
+#
+#
 def related_create(context, data_dict):
     schema = {
         'id': [ignore_missing, unicode],

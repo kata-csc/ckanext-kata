@@ -256,7 +256,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             log.debug("Disabled synchronous search")
             # Note: in CKAN 2.2, disabling this plugin causes other plugins to be reloaded
         except:
-            log.error("Failed to disable synchronous search!")
+            log.debug("Failed to disable synchronous search!")
 
     def package_types(self):
         '''
