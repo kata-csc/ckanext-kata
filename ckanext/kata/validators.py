@@ -27,9 +27,9 @@ EMAIL_REGEX = re.compile(
     ^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~]
     [\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~.]+
     @
-    [a-z.]+
+    [a-z.A-Z0-9-]+
     \.
-    [a-z]{2,6}$
+    [a-zA-Z]{2,6}$
     """,
     re.VERBOSE)
 TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
