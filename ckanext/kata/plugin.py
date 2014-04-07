@@ -10,7 +10,6 @@ import os
 import json
 
 from ckan.lib.base import g, c
-import ckan.lib.helpers as h
 from ckan.lib.navl.validators import (default,
                                       ignore,
                                       ignore_missing,
@@ -101,13 +100,31 @@ class KataMetadata(SingletonPlugin):
         """
         Override IRoutes.before_map()
         """
+        get = dict(method=['GET'])
         controller = "ckanext.kata.controllers:MetadataController"
+        api_controller = "ckanext.kata.controllers:KATAApiController"
         map.connect('/dataset/{id}.{format:rdf}',
                     controller=controller,
                     action='tordf')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
+        map.connect('/api/2/util/organization_autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="organization_autocomplete")
+        map.connect('/api/2/util/discipline_autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="discipline_autocomplete")
+        map.connect('/api/2/util/location_autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="location_autocomplete")
+        map.connect('/api/2/util/tag/autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="tag_autocomplete")
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="unlock_access")
@@ -746,22 +763,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #c.q = data_dict['q']
         return data_dict
 
-    def after_show(self, context, pkg_dict):
-        '''
-        Modifications of package dictionary before viewing it
-        
-        :param pkg_dict: pkg_dict to modify
-        '''
-        # ONKI selector is used without the space after comma
-        try:
-            if pkg_dict.get('tags') and not pkg_dict.get('tag_string'):
-                pkg_dict['tag_string'] = ','.join(h.dict_list_reduce(
-                    pkg_dict.get('tags', {}), 'name'))  
-        except:
-            log.debug('tags not found')
-            
-        return pkg_dict
-    
     def before_index(self, pkg_dict):
         '''
         Modification to package dictionary before
