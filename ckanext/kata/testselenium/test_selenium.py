@@ -160,10 +160,10 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@id='langtitle__0__value_id']")
             field.send_keys('Selenium Dataset')
 
-            field = browser.find_element_by_xpath("//input[@id='orgauth__0__value_id']")
+            field = browser.find_element_by_xpath("//input[@id='agent__2__name']")
             field.send_keys('Selenium')
 
-            field = browser.find_element_by_xpath("//input[@name='orgauth__0__org']")
+            field = browser.find_element_by_xpath("//input[@name='agent__2__organisation']")
             field.send_keys('CSC Oy')
 
             # Add keyword to onki collector via onki search
@@ -190,7 +190,7 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@id='contact_owner']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@id='owner']")
+            field = browser.find_element_by_xpath("//input[@id='agent__1__name']")
             field.send_keys('Selenium')
 
             #field = browser.find_element_by_xpath("//input[@id='licenseURL']")
@@ -486,8 +486,8 @@ class TestKataWithUser(TestCase):
             #(find_plus_buttons, 3, [WebElement.click], None),
             #(find_plus_buttons, 3, [WebElement.click], None),
 
-            (browser.find_element_by_id, 'orgauth__0__value_id', [u'Ascii Author'], None),
-            (browser.find_element_by_name, 'orgauth__0__org', [u'CSC Oy'], None),
+            (browser.find_element_by_id, 'agent__2__name', [u'Ascii Author'], None),
+            (browser.find_element_by_name, 'agent__2__organisation', [u'CSC Oy'], None),
             #(browser.find_element_by_id, 'author__1__value_id', [u'Åke Author'], None),
             #(browser.find_element_by_id, 'organization__1__value_id', [u'Organization 2'], None),
             #(browser.find_element_by_id, 'author__2__value_id', [u'прстуфхцчшчьыъэюя Author'], None),
@@ -501,12 +501,17 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_id, 'contact_phone', [u'+35891234567'], None),
             (browser.find_element_by_id, 'contact_URL', [u'https://localhost/'], None),
 
-            (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
-            (browser.find_element_by_id, 'project_funder', [u'Selenium Funder'], None),
-            (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
-            (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
+            (browser.find_element_by_id, 'agent__0__organisation', [u'Selenium Project'], None),
+            (browser.find_element_by_id, 'agent__0__name', [u'Selenium Funder'], None),
+            (browser.find_element_by_id, 'agent__0__funding-id', [u'Selenium Funding'], None),
+            (browser.find_element_by_id, 'agent__0__URL', [u'https://localhost/'], None),
 
-            (browser.find_element_by_id, 'owner', [u'прстуфхцчшчьыъэюя'], None),
+            # (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
+            # (browser.find_element_by_id, 'project_funder', [u'Selenium Funder'], None),
+            # (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
+            # (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
+            #
+            (browser.find_element_by_id, 'agent__1__name', [u'прстуфхцчшчьыъэюя'], None),
 
             (browser.find_element_by_id, 'field-pid', [u'pid' + str(int(time.time() * 100))], None),
 

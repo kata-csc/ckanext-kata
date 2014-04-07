@@ -110,6 +110,11 @@ def package_create(context, data_dict):
     if new_version_pid:
         data_dict['pids'] = data_dict.get('pids', []) + [{'id': new_version_pid, 'type': 'version', 'provider': 'kata'}]
 
+    # Add current user as a distributor.
+    # TODO: Get user's full name from db instead of user name? Or what does HAKA provide as user name?
+    if 'agent' in data_dict and context.get('user', None):
+        data_dict['agent'].append({'name': context['user'], 'role': 'distributor'})
+
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 
     # Logging for production use

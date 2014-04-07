@@ -8,6 +8,7 @@ import datetime
 import logging
 import os
 import json
+import functionally as fn
 
 from ckan.lib.base import g, c
 import ckan.lib.helpers as h
@@ -202,8 +203,24 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """ Register helpers """
         return {'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': self.kata_sorted_extras,
-                'reference_update': self.reference_update
+                'reference_update': self.reference_update,
+                'get_funder': self.get_funder,
+                'get_authors': self.get_authors,
+                'get_owner': self.get_owner,
+                'resolve_agent_role': settings.resolve_agent_role,
                 }
+
+    def get_funder(self, data_dict):
+        '''Get a single funder from agent field in data_dict'''
+        return fn.first(filter(lambda x: x['role'] == u'funder', data_dict.get('agent')))
+
+    def get_owner(self, data_dict):
+        '''Get a single owner from agent field in data_dict'''
+        return fn.first(filter(lambda x: x['role'] == u'owner', data_dict.get('agent')))
+
+    def get_authors(self, data_dict):
+        '''Get all authors from agent field in data_dict'''
+        return filter(lambda x: x['role'] == u'author', data_dict.get('agent'))
 
     def reference_update(self, ref):
         #@beaker_cache(type="dbm", expire=2678400)
@@ -415,7 +432,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['version'] = [not_empty, unicode, validate_kata_date]
         schema['availability'] = [not_missing, convert_to_extras_kata]
         schema['langdis'] = [checkbox_to_boolean, convert_to_extras_kata]
-        schema['__extras'] = [check_agent, check_pids, check_langtitle]
+        schema['__extras'] = [check_agent, check_langtitle]
         schema['__junk'] = [check_junk]
         schema['name'] = [ignore_missing, unicode, update_pid, package_name_validator, validate_general]
         schema['access_application_new_form'] = [checkbox_to_boolean, convert_to_extras_kata, remove_access_application_new_form]

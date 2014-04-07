@@ -354,7 +354,7 @@ def validate_direct_download_url(key, data, errors, context):
 
 def check_agent(key, data, errors, context):
     '''
-    Check that compulsory agents exists
+    Check that compulsory agents exists.
     '''
     author_found = False
     distributor_found = False

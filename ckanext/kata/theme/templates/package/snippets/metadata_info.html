@@ -27,18 +27,24 @@
 	</tbody>
 </table>
 {% endif %}
-{% if pkg_dict.orgauth %}
-<h4>{{ _('Authors')}}</h4>
+{% if pkg_dict.agent %}
+<h4>{{ _('Agents')}}</h4>
 <table class="table table-striped table-bordered table-condensed">
 	<tbody>
 	<tr>
+		<th>{{ _('Role') }}</th>
 		<th>{{ _('Name') }}</th>
 		<th>{{ _('Organisation') }}</th>
+		<th>{{ _('URL') }}</th>
+		<th>{{ _('Funding id') }}</th>
 	</tr>
-	{% for orgauth in pkg_dict.orgauth %}
+	{% for agent in pkg_dict.agent %}
 	<tr>
-		<td>{{ orgauth.value }}</td>
-		<td>{{ orgauth.org }}</td>
+		<td>{{ agent.role }}</td>
+		<td>{{ agent.name }}</td>
+		<td>{{ agent.organisation }}</td>
+		<td>{{ agent.URL }}</td>
+		<td>{{ agent['funding-id'] }}</td>
 	</tr>
 	{% endfor %}
 	</tbody>
@@ -114,45 +120,6 @@
 	</tbody>
 </table>
 {% endif%}
-{% if pkg_dict.project_name %}
-<h4>{{ _('Project information') }}</h4>
-<table class="table table-striped table-bordered table-condensed">
-	<tbody>
-	<tr>
-		<th class="dataset-label">{{ _('Name') }}</th><td class="dataset-details">{{ pkg_dict.project_name }}</td>
-	</tr>
-	<tr>
-		<th class="dataset-label">{{ _('Funding contact') }}</th><td class="dataset-details">{{ pkg_dict.project_funder }}</td>
-	</tr>
-	<tr>
-		<th class="dataset-label">{{ _('Homepage') }}</th><td class="dataset-details"><a href="{{ pkg_dict.project_homepage }}">{{ pkg_dict.project_homepage }}</a></td>
-	</tr>
-	</tbody>
-</table>
-{% endif%}
-<h4>{{ _('Other stakeholders') }}</h4>
-<table class="table table-striped table-bordered table-condensed">
-	<tbody>
-    {% if pkg_dict.contributor %}
-	<tr>
-		<th class="dataset-label">{{ _('Contributor') }}</th>
-		<td class="dataset-details">{{ pkg_dict.contributor }}</td>
-	</tr>
-    {% endif %}
-    {% if pkg_dict.producer %}
-	<tr>
-		<th class="dataset-label">{{ _('Producer') }}</th>
-		<td class="dataset-details">{{ pkg_dict.producer }}</td>
-	</tr>
-    {% endif %}
-    {% if pkg_dict.owner %}
-    <tr>
-		<th class="dataset-label">{{ _('Owner') }}</th>
-		<td class="dataset-details">{{ pkg_dict.owner }}</td>
-	</tr>
-    {% endif %}
-	</tbody>
-</table>
 </section>
 <section class="module-content additional-info">
   <h3>{{ _('Identification information') }}</h3>

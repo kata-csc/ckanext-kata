@@ -98,7 +98,6 @@ KATA_FIELDS_REQUIRED = ['agent',
                         'contact_URL',
                         # 'organization',
                         # 'owner',
-                        'pids',
                         # 'projdis',
                         #'maintainer_email',
                         #'version_PID'
@@ -125,6 +124,7 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            # 'project_funding',
                            # 'project_homepage',
                            # 'project_name',
+                           'pids',
                            'temporal_coverage_begin',
                            'temporal_coverage_end']
 
@@ -156,3 +156,7 @@ def get_field_title(key, _):
     '''
 
     return _(_FIELD_TITLES[key])
+
+def resolve_agent_role(role):
+    return AGENT_ROLES.get(role, None)
+

@@ -51,7 +51,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                             'organisation': u'CSC Oy',
                             'URL': u'www.csc.fi',},
                            {'role': u'contributor',
-                            'name': u'V. Ajavainen',
+                            'name': u'A. Puri',
                             'organisation': u'CSC Oy',
                             }],
 
@@ -324,35 +324,12 @@ class TestDataReading(KataApiTestCase):
 
         # TODO: Removed because: xpath-json converter not working
         data_dict.pop('xpaths', None)
-        output.pop('xpaths', None)
 
-        # Removed because more values returned from db than needed, for now.
-        # Tässä joudutaan poistelemaan paljon sillä titlen, resourcen ym.
-        # käsittelyssä kannasta palautuvat arvot (dictit) ovat erilaisia kuin
-        # sinne tallennettavat arvot. Lisäksi action palauttaa paljon automaat-
-        # sesti muodostettuja arvoja kuten 'relationships_as_object'.
-        output.pop('events', None)
-        output.pop('groups', None)
-        output.pop('id', None)
-        output.pop('isopen', None)
-        output.pop('license_title', None)
-        output.pop('metadata_created', None)
-        output.pop('metadata_modified', None)
-        output.pop('name', None)
-        output.pop('num_resources', None)
-        output.pop('num_tags', None)
-        output.pop('owner_org', None)
-        output.pop('private', None)
-        output.pop('relationships_as_object', None)
-        output.pop('relationships_as_subject', None)
-        output.pop('resources', None)
-        output.pop('revision_id', None)
-        output.pop('revision_timestamp', None)
-        output.pop('state', None)
-        output.pop('tags', None)
-        output.pop('title', None)
-        output.pop('tracking_summary', None)
-        output.pop('url', None)
+        # Remove all values that are not present in the original data_dict
+        output = dict((k, v) for k, v in output.items() if k in data_dict.keys())
+
+        # Take out automatically added distributor (CKAN user)
+        output['agent'] = filter(lambda x: x.get('name') not in ['testsysadmin', 'tester'], output['agent'])
 
         testfixtures.compare(output, data_dict)
 
@@ -595,6 +572,21 @@ class TestDataReading(KataApiTestCase):
         assert 'id' in output
 
         assert self._compare_datadicts(output)
+
+    # def test_create_and_read_rdf(self):
+    #     '''
+    #     Create and read a dataset through API and check that RDF generation doesn't break.
+    #     '''
+    #     output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+    #                              status=200, **TEST_DATADICT)
+    #     assert 'id' in output
+    #
+    #     output = call_action_api(self.app, 'tordf', apikey=self.sysadmin_user.apikey,
+    #                              status=200, id=output['id'])
+    #
+    #     import pprint
+    #     pprint.pprint(output)
+    #     assert 0
 
 
 class TestSchema(KataApiTestCase):
