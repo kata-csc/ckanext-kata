@@ -44,7 +44,7 @@ EVWHEN_REGEX = re.compile(
     (-?(0[0-9]?|1[0-9]?|2[0-9]?|3[01]?))?$
     """,
     re.VERBOSE)
-
+ALPHANUM_REGEX = re.compile(r'(?=(.*[a-zA-Z0-9]){2,})', re.U)
 
 def kata_tag_name_validator(value, context):
     '''
@@ -161,6 +161,14 @@ def validate_general(key, data, errors, context):
         if not GEN_REGEX.match(data[key]):
             errors[key].append(_('Invalid characters: <> not allowed'))
 
+def contains_alphanumeric(key, data, errors, context):
+    '''
+    Checks that the field contains some characters, so that eg.
+    empty space isn't a valid input
+    '''
+    if isinstance(data[key], basestring) and data[key]:
+        if not ALPHANUM_REGEX.match(data[key]):
+            errors[key].append(_('Value must contain alphanumeric characters'))
 
 def validate_phonenum(key, data, errors, context):
     '''
@@ -169,7 +177,6 @@ def validate_phonenum(key, data, errors, context):
     if isinstance(data[key], basestring) and data[key]:
         if not TEL_REGEX.match(data[key]):
             errors[key].append(_('Invalid telephone number, must be like +13221221'))
-
 
 def check_project_dis(key, data, errors, context):
     '''

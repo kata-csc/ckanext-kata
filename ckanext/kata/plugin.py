@@ -58,6 +58,7 @@ from ckanext.kata.validators import (check_access_request_url,
                                      validate_title,
                                      validate_title_duplicates,
                                      check_through_provider_url,
+                                     contains_alphanumeric,
                                      validate_direct_download_url,
                                      package_name_not_changed)
 from ckanext.kata import actions, auth_functions
@@ -413,10 +414,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                                'lang': [not_missing, unicode, convert_languages]}
         schema['language'] = \
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
-        schema['maintainer'] = [not_empty, unicode, validate_general]
+        schema['maintainer'] = [not_empty, unicode, validate_general, contains_alphanumeric]
         schema['maintainer_email'] = [not_empty, unicode, validate_email]
-        schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general],
-                             'org': [not_missing, unicode, org_auth_to_extras, validate_general]}
+        schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general, contains_alphanumeric],
+                             'org': [not_missing, unicode, org_auth_to_extras, validate_general, contains_alphanumeric]}
         schema['temporal_coverage_begin'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
@@ -430,7 +431,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, to_extras_json]
         # these two can be missing from the first Kata end users
-        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
+        schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general, contains_alphanumeric]
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
 
         schema.update({
@@ -452,8 +453,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                                    unicode, validate_general],
             'through_provider_URL': [ignore_missing, check_through_provider_url, url_validator, convert_to_extras_kata,
                                      unicode],
-            'project_name': [ignore_missing, check_project_dis, unicode, convert_to_extras_kata, validate_general],
-            'project_funder': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
+            'project_name': [ignore_missing, check_project_dis, unicode, convert_to_extras_kata, validate_general, contains_alphanumeric],
+            'project_funder': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general, contains_alphanumeric],
             'project_funding': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
             'project_homepage': [ignore_missing, check_project_dis, convert_to_extras_kata, unicode, validate_general],
             'discipline': [ignore_missing, validate_discipline, convert_to_extras_kata, unicode],
@@ -465,9 +466,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema.pop('organization')
 
         schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
-        schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
+        schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general, contains_alphanumeric]}
         schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date]}
-        schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
+        schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general, contains_alphanumeric]}
         #schema['groups'].update({
         #    'name': [ignore_missing, unicode, add_to_group]
         #})

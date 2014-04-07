@@ -11174,6 +11174,8 @@ msgstr "Yhtään tekijää ja organisaatiota ei ole annettu"
 msgid "Find language codes from: "
 msgstr "Löydät kielikoodit osoitteesta: "
 
+msgid "Value must contain alphanumeric characters"
+msgstr "Arvon täytyy sisältää aakkosnumeerisia merkkejä"
 
 # Resource, Additional Information (the key - value -variables)
 msgid "created"
