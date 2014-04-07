@@ -162,6 +162,15 @@ body {
 	background: none !important;
 	font-family: Arial, Tahoma, sans-serif;
 }
+.error-block-kata {
+	background: none repeat scroll 0 0 #C6898B;
+    border-radius: 0 0 0px 0px;
+    color: #FFFFFF;
+    display: block;
+    margin: -3px 0 20px;
+    padding: 6px 8px 3px;
+    width: 85%;
+}
 header.masthead a.logo img {
 	height: 87px !important;
 }

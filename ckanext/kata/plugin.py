@@ -202,7 +202,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """ Register helpers """
         return {'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': self.kata_sorted_extras,
-                'reference_update': self.reference_update
+                'reference_update': self.reference_update,
+                'get_kata_errors': self.get_kata_errors
                 }
 
     def reference_update(self, ref):
@@ -219,6 +220,28 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if _dict.get('key', None) and _dict['key'].find(key) > -1:
                 return False
         return True
+
+    def get_kata_errors(self, errors):
+        '''
+        Helper for Kata errors, specifically the repeatable fields
+        Constructs an array out of dict items. Tailored for
+        events and orgauth (for now).
+        
+        :return {'orgauth': [u'error1. error2', u'error3']}
+        '''
+        output = {}
+        for key in errors.keys():
+            val = []
+            for item in errors[key]:
+                if not item:
+                    val.append('')
+                else:
+                    if type(item) is dict:
+                        # For orgauth, the key name is value OR org
+                        for valuekey in item.keys():
+                            val.append('. '.join(map(unicode, item[valuekey])))
+            output[key] = val
+        return output
 
     def kata_sorted_extras(self, list_):
         '''

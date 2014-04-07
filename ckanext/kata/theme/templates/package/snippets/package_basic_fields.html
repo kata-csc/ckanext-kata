@@ -53,7 +53,7 @@
     {% endcall %}
   {% endfor %}
   {% if errors.langtitle %}
-        <span class="error-block">{{ errors.langtitle[0].value[0]}}</span>
+        <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
     {% endif %}
 
   </div>
@@ -77,6 +77,9 @@
   <div data-module="custom-fields-kata" data-module-id="orgauths" data-module-numfields={{ authors|length }} id="orgauths">
   {# Render author and organisation fields #}
   {% for orgauth in authors %}
+        {% if errors %}
+           {% set eerrors = h.get_kata_errors(errors) %}
+        {% endif %}
 
     {% set index = loop.index0 %}
         <div class="control-group control-custom">
@@ -94,25 +97,16 @@
               {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
             {% endif %}
             <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-                </div>
+          </div>
+
         </div>
+        {% if errors and eerrors.orgauth and eerrors.orgauth[index] %}
+            <span class="error-block-kata">
+          	    {{ eerrors.orgauth[index] }}
+          	</span>
+        {% endif %}
     {% endfor %}
   </div>
-  {# Clumsy generation of error messages, but it does the trick and won't display python types #}
-  {% if errors.orgauth %}
-        <span class="error-block">
-        {% if errors.orgauth %}
-          {% for item in errors.orgauth %}
-            {% if item.value and item.value[0]|length > 2 %}             
-              {{ item.value[0] }}<br />
-            {% endif %}
-            {% if item.org and item.org[0]|length > 2 %}
-              {{ item.org[0] }}<br />
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-        </span>
-    {% endif %}
 </div>
 
 {# ONKI selector for keywords #}

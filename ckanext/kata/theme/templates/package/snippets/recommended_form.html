@@ -162,6 +162,9 @@
           <label class="control-label katalabel"><span>{{ _('description') }}</span></label>
 
         {% if data.events%}
+          {% if errors %}
+             {% set eerrors = h.get_kata_errors(errors) %}
+          {% endif %}
           <ul class="kata">
           {% for type, who, when, descr in data.events %}
     	      {% set index = loop.index %}
@@ -200,10 +203,30 @@
           			</div>
           		</li>
           	</div>
+          	<li colspan="4">
+          		{% if eerrors.evwho and eerrors.evwho[index-1] %}
+          		    <span class="error-block-kata">
+          		        {{ eerrors.evwho[index-1] }}
+          			</span>
+          		{% endif %}
+          		{% if eerrors.evwhen and eerrors.evwhen[index-1] %}
+          		    <span class="error-block-kata">
+          		        {{ eerrors.evwhen[index-1] }}
+          			</span>
+          		{% endif %}
+          		{% if eerrors.evdescr and eerrors.evdescr[index-1] %}
+          		    <span class="error-block-kata">
+          		        {{ eerrors.evdescr[index-1] }}
+          			</span>
+          		{% endif %}
+          	</li>
           {% endfor %}
           </ul>
 
         {% elif data.evtype and data.evwho and data.evwhen and data.evdescr %}
+        {% if errors %}
+           {% set eerrors = h.get_kata_errors(errors) %}
+        {% endif %}
           <ul class="kata">
           {% for type, who, when, descr in zip(data.evtype, data.evwho, data.evwhen, data.evdescr) %}
           	{% set index = loop.index %}
@@ -242,6 +265,23 @@
           			</div>
           		</li>
           	</div>
+          	<li colspan="4">
+          		{% if eerrors.evwho and eerrors.evwho[index-1] %}
+          		    <span class="error-block-kata">
+          		        {{ eerrors.evwho[index-1] }}
+          			</span>
+          	    {% endif %}
+          		{% if eerrors.evwhen and eerrors.evwhen[index-1] %}
+          		    <span class="error-block-kata">
+          		        {{ eerrors.evwhen[index-1] }}
+          			</span>
+          		{% endif %}
+          		{% if eerrors.evdescr and eerrors.evdescr[index-1] %}
+          		    <span class="error-block-kata">
+          		        {{ eerrors.evdescr[index-1] }}
+          			</span>
+          		{% endif %}
+          	</li>
           {% endfor %}
           </ul>
         {% endif %}
@@ -291,33 +331,6 @@
           {% endfor %}
           </ul>
         </div>
-        {% if errors.evwho %}
-        {% for who in errors.evwho %}
-        {% set index = loop.index %}
-            <span class="error-block">
-                {{ _('By whom ') }} {{ index }}: {{ who.value[0] }}
-            </span>
-        {% endfor %}
-        {% endif %}
-        
-        {% if errors.evwhen %}
-        {% for when in errors.evwhen %}
-        {% set index = loop.index %}
-            <span class="error-block">
-                {{ _('When ') }} {{ index }}: {{ when.value[0] }}
-            </span>
-          
-        {% endfor %}
-        {% endif %}
-        
-        {% if errors.evdescr %}
-        {% for descr in errors.descr %}
-        {% set index = loop.index %}
-            <span class="error-block">
-                {{ _('Description ') }} {{ index }}: {{ descr.value[0] }}
-            </span>
-        {% endfor %}
-        {% endif %}
       </div>
     </section>
 
