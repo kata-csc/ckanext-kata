@@ -26,6 +26,14 @@ class TestPages(KataWsgiTestCase):
         res = self.app.get(offset)
         assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
 
+    def test_group_page(self):
+        """
+        Test that help page is found and rendered.
+        """
+        offset = url_for('/help')
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+
     def test_faq_page(self):
         """
         Test that faq page is found and rendered.

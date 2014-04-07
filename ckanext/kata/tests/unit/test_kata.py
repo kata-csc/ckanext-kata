@@ -354,11 +354,7 @@ class TestUtils(TestCase):
         assert pid != pid2
 
 
-class TestActions(TestCase):
-    """Unit tests for action functions."""
-
-    def test_group_list(self):
-        group_list = actions.group_list({}, {})
-        assert isinstance(group_list, list)
-
-
+# class TestActions(TestCase):
+#     """Unit tests for action functions."""
+#
+#
