@@ -14,9 +14,7 @@ from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid
 from ckan.logic.validators import tag_length_validator
 from ckan.model import Package
-import ckanext.kata.utils as utils
-import ckanext.kata.converters as converters
-
+from ckanext.kata import utils, converters, settings
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -236,18 +234,6 @@ def check_through_provider_url(key, data, errors, context):
         raise StopOnError
 
 
-def check_author_org(key, data, errors, context):
-    '''
-    Validates author and organisation
-    '''
-    # index 0 must exist, for plain orgauth is false positive
-    if not (('orgauth', 0, 'org') in data):
-        if not ('orgauth', 0, 'value') in errors:
-            errors[('orgauth', 0, 'value',)] = []
-        # To 0, to orgauth would mess the unflatten function with multiple authors
-        errors[('orgauth', 0, 'value')].append(_('Missing author and organisation pairs'))
-
-
 def validate_discipline(key, data, errors, context):
     '''
     Validate discipline
@@ -320,7 +306,8 @@ def validate_algorithm(key, data, errors, context):
         if not HASH_REGEX.match(val):
             raise Invalid(_('Algorithm "%s" must be alphanumeric characters '
                             'or symbols _-()') % (val))
-        
+
+
 def validate_title(key, data, errors, context):
     '''
     Check the existence of first title
@@ -329,7 +316,8 @@ def validate_title(key, data, errors, context):
         val = data.get(key)
         if len(val) == 0:
             raise Invalid(_('First title can not be empty'))
-        
+
+
 def validate_title_duplicates(key, data, errors, context):
     '''
     Checks that there is only one title per language
@@ -340,6 +328,7 @@ def validate_title_duplicates(key, data, errors, context):
             langs.append(data[k])
     if len(set(langs)) != len(langs):
         raise Invalid(_('Duplicate titles for a language not permitted'))
+
 
 def package_name_not_changed(key, data, errors, context):
     '''
@@ -352,7 +341,8 @@ def package_name_not_changed(key, data, errors, context):
     if package and value != package.name:
         raise Invalid('Cannot change value of key from %s to %s. '
                       'This key is read-only' % (package.name, value))
-        
+
+
 def validate_direct_download_url(key, data, errors, context):
     '''
     Validates that direct_download_URL (at this stage a resource.url) is present
@@ -360,4 +350,56 @@ def validate_direct_download_url(key, data, errors, context):
     if data[('availability',)] == 'direct_download' and\
       (data[key] == u'' or data[key] == u'http://'):
         raise Invalid(_('Missing URL'))
-    
+
+
+def check_agent(key, data, errors, context):
+    '''
+    Check that compulsory agents exists
+    '''
+    author_found = False
+    distributor_found = False
+    role = ''
+    index = 0
+
+    while role is not None:
+        role = data.get(('agent', index, 'role'), None)
+        if role == 'author':
+            author_found = True
+        if role == 'distributor':
+            distributor_found = True
+        index += 1
+
+    if not (author_found and distributor_found):
+        error = 'Missing compulsory agents ({0}, {1}'.format(
+            settings.AGENT_ROLES['author'], settings.AGENT_ROLES['distributor'])
+        raise Invalid(_(error))
+        # if ('agent',) in errors:
+        #     errors[('agent',)].append(_(error))
+        # else:
+        #     errors[('agent',)] = [_(error)]
+
+
+def check_langtitle(key, data, errors, context):
+    '''
+    Check that langtitle field exists
+    '''
+    # import pprint
+    # pprint.pprint(data)
+    if data.get(('langtitle', 0, 'value'), None) is None:
+        error = 'Missing dataset title'
+        raise Invalid(_(error))
+        # if ('langtitle',) in errors:
+        #     errors[('langtitle',)].append(_(error))
+        # else:
+        #     errors[('langtitle',)] = [_(error)]
+
+
+def check_pids(key, data, errors, context):
+    '''
+    Check that pids field exists
+    '''
+    if data.get((u'pids', 0, u'id'), None) is None:
+        error = 'Missing dataset PIDs'
+        raise Invalid(_(error))
+
+

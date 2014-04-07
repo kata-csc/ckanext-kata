@@ -40,7 +40,7 @@ from ckan.plugins import (implements,
                           SingletonPlugin)
 from ckan.plugins.core import unload
 from ckanext.kata.validators import (check_access_request_url,
-                                     check_author_org,
+                                     check_agent,
                                      check_junk,
                                      check_project,
                                      check_project_dis,
@@ -60,7 +60,7 @@ from ckanext.kata.validators import (check_access_request_url,
                                      validate_title_duplicates,
                                      check_through_provider_url,
                                      validate_direct_download_url,
-                                     package_name_not_changed)
+                                     package_name_not_changed, check_langtitle, check_pids)
 from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
@@ -360,6 +360,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         Return the schema for validating new dataset dicts.
         """
 
+        # TODO: Use the general converter for lang_title and check that lang_title exists!
+
         schema = default_create_package_schema()
         schema.pop('author')
         # schema.pop('organization')
@@ -413,7 +415,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['version'] = [not_empty, unicode, validate_kata_date]
         schema['availability'] = [not_missing, convert_to_extras_kata]
         schema['langdis'] = [checkbox_to_boolean, convert_to_extras_kata]
-        # schema['__extras'] = [check_author_org]
+        schema['__extras'] = [check_agent, check_pids, check_langtitle]
         schema['__junk'] = [check_junk]
         schema['name'] = [ignore_missing, unicode, update_pid, package_name_validator, validate_general]
         schema['access_application_new_form'] = [checkbox_to_boolean, convert_to_extras_kata, remove_access_application_new_form]

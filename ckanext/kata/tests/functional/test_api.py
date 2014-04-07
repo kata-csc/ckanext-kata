@@ -18,8 +18,11 @@ from ckan import model
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
 from ckan.tests import call_action_api
+
 import ckanext.kata.model as kata_model
 import ckanext.kata.settings as settings
+from ckanext.kata.tests.functional import KataApiTestCase
+
 
 TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'algorithm': u'SHA',
@@ -42,6 +45,9 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                             'URL': u'www.csc.fi',
                             'funding-id': u'12345-ABCDE-$$$',},
                            {'role': u'owner',
+                            'organisation': u'CSC Oy',
+                            'URL': u'www.csc.fi',},
+                           {'role': u'distributor',
                             'organisation': u'CSC Oy',
                             'URL': u'www.csc.fi',},
                            {'role': u'contributor',
@@ -134,24 +140,8 @@ TEST_DATADICT = {'access_application_new_form': u'False',
 }
 
 
-class TestCreateDatasetAndResources(unittest.TestCase):
+class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
-
-    @classmethod
-    def setup_class(cls):
-        """Setup for all tests."""
-
-        kata_model.setup()
-        CreateTestData.create()
-        cls.sysadmin_user = model.User.get('testsysadmin')
-        cls.normal_user = model.User.get('tester')
-
-        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
-        cls.app = paste.fixture.TestApp(wsgiapp)
-
-    @classmethod
-    def teardown_class(cls):
-        model.repo.rebuild_db()
 
     def test_create_dataset(self):
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
@@ -309,26 +299,10 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         assert output['__type'] == 'Validation Error'
         
 
-class TestDataReading(unittest.TestCase):
+class TestDataReading(KataApiTestCase):
     '''
     Tests for checking that values match between original data_dict and package_show output.
     '''
-
-    @classmethod
-    def setup_class(cls):
-        """Set up tests."""
-
-        kata_model.setup()
-        CreateTestData.create()
-        cls.sysadmin_user = model.User.get('testsysadmin')
-        cls.normal_user = model.User.get('tester')
-
-        wsgiapp = make_app(config['global_conf'], **config['app_conf'])
-        cls.app = paste.fixture.TestApp(wsgiapp)
-
-    @classmethod
-    def teardown_class(cls):
-        model.repo.rebuild_db()
 
     def _compare_datadicts(self, output):
         '''
@@ -621,4 +595,34 @@ class TestDataReading(unittest.TestCase):
         assert 'id' in output
 
         assert self._compare_datadicts(output)
+
+
+class TestSchema(KataApiTestCase):
+    '''
+    Test that schema works like it's supposed to.
+    '''
+
+    def test_all_required_fields(self):
+        '''
+        Remove each of Kata's required fields from a complete data_dict and make sure we get a validation error.
+        '''
+        # Hide validation error message which cannot be silenced with nosetest parameters. Has to be done here.
+        logg = logging.getLogger('ckan.controllers.api')
+        logg.disabled = True
+
+        fields = settings.KATA_FIELDS_REQUIRED
+        fields.pop(fields.index('contact_phone'))   # TODO: This will be removed
+        fields.pop(fields.index('contact_URL'))     # TODO: This will be removed
+
+        for requirement in fields:
+            print requirement
+            data = TEST_DATADICT.copy()
+            data.pop(requirement)
+
+            output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
+                                     status=409, **data)
+            assert '__type' in output
+            assert output['__type'] == 'Validation Error'
+
+        logg.disabled = False
 
