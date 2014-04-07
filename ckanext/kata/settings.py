@@ -82,7 +82,8 @@ AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
                         }
 
 # Required extras fields
-KATA_FIELDS_REQUIRED = ['availability',
+KATA_FIELDS_REQUIRED = ['agent',
+                        'availability',
                         # 'author',
                         'contact_URL',
                         'langdis',

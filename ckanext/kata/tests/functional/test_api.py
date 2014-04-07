@@ -127,7 +127,6 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'title': u'',
                  'type': u'dataset',
                  'version': u'2013-11-18T12:25:53Z',
-                 #'version_PID': u'aineiston-version-pid',
                  'xpaths': {
                      'xpath/path1': u'xpath_value',
                      'xpath/path2': u'xpath_value2',
@@ -140,7 +139,7 @@ class TestCreateDatasetAndResources(unittest.TestCase):
 
     @classmethod
     def setup_class(cls):
-        """Set up tests."""
+        """Setup for all tests."""
 
         kata_model.setup()
         CreateTestData.create()
@@ -188,10 +187,9 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         output = call_action_api(self.app, 'package_show', apikey=self.sysadmin_user.apikey,
                                  status=200, id=new_res['package_id'])
         assert 'id' in output
-        assert 'project_name' in output
 
-        # Check that some metadata value is correct. TODO: Check that all fields match when events format is fixed.
-        assert output['project_name'] == TEST_DATADICT['project_name']
+        # Check that some metadata value is correct.
+        assert output['checksum'] == TEST_DATADICT['checksum']
 
     def test_create_update_delete_dataset(self):
         '''
@@ -229,14 +227,16 @@ class TestCreateDatasetAndResources(unittest.TestCase):
         # Make sure we will get a validation error
         data.pop('langtitle')
         data.pop('language')
+        data.pop('availability')
 
-        # Hide validation error message which cannot be silenced with nosetest parameters.
-        log = logging.getLogger('ckan.controllers.api')     # pylint: disable=invalid-name
-        log.disabled = True
+        # Hide validation error message which cannot be silenced with nosetest parameters. Has to be done here.
+        logg = logging.getLogger('ckan.controllers.api')
+        logg.disabled = True
 
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
                                  status=409, **data)
-        log.disabled = False
+
+        logg.disabled = False
 
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
