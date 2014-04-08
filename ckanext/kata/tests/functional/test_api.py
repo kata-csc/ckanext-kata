@@ -299,6 +299,30 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
         
+    def test_create_dataset_invalid_agents(self):
+        '''Test required fields for agents (role, name/organisation/URL)'''
+
+        log = logging.getLogger('ckan.controllers.api')     # pylint: disable=invalid-name
+        log.disabled = True
+
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict['agent'][2].pop('role')
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey, status=409, **data_dict)
+        assert output
+        assert '__type' in output
+        assert output['__type'] == 'Validation Error'
+
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict['agent'][2].pop('name', None)
+        data_dict['agent'][2].pop('organisation', None)
+        data_dict['agent'][2].pop('URL', None)
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey, status=409, **data_dict)
+        assert output
+        assert '__type' in output
+        assert output['__type'] == 'Validation Error'
+
+        log.disabled = False
+
 
 class TestDataReading(KataApiTestCase):
     '''

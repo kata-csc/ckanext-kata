@@ -59,7 +59,7 @@ from ckanext.kata.validators import (check_access_request_url,
                                      validate_title_duplicates,
                                      check_through_provider_url,
                                      validate_direct_download_url,
-                                     package_name_not_changed, check_langtitle, check_pids)
+                                     package_name_not_changed, check_langtitle, check_pids, check_agent_fields)
 from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
@@ -69,10 +69,6 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      event_to_extras,
                                      ltitle_from_extras,
                                      ltitle_to_extras,
-                                     org_auth_from_extras,
-                                     org_auth_to_extras,
-                                     org_auth_to_extras_oai,
-                                     org_auth_to_extras_ddi,
                                      remove_access_application_new_form,
                                      remove_disabled_languages,
                                      update_pid,
@@ -391,15 +387,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
 
-        schema['agent'] = {'role': [not_missing, unicode, flattened_to_extras],
-                           'name': [ignore_missing, unicode, flattened_to_extras],
-                           'id': [ignore_missing, unicode, flattened_to_extras],
-                           'organisation': [ignore_missing, unicode, flattened_to_extras],
-                           'URL': [ignore_missing, unicode, flattened_to_extras],
+        schema['agent'] = {'role': [not_empty, check_agent_fields, validate_general, unicode, flattened_to_extras],
+                           'name': [ignore_missing, validate_general, unicode, flattened_to_extras],
+                           'id': [ignore_missing, validate_general, unicode, flattened_to_extras],
+                           'organisation': [ignore_missing, validate_general, unicode, flattened_to_extras],
+                           'URL': [ignore_missing, validate_general, unicode, flattened_to_extras],
                            # Note: Changed to 'funding-id' for now because 'funding_id'
                            # was returned as 'funding' from db. Somewhere '_id' was
                            # splitted off.
-                           'funding-id': [ignore_missing, unicode, flattened_to_extras]}
+                           'funding-id': [ignore_missing, validate_general, unicode, flattened_to_extras]}
         # phone number can be missing from the first users
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
