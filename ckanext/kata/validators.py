@@ -78,15 +78,15 @@ def kata_tag_string_convert(key, data, errors, context):
         kata_tag_name_validator(tag, context)
 
 
-def check_project(key, data, errors, context):
-    '''
-    Check if user is trying to send project data when project is disabled.
-    '''
-    if data[('project_name',)] or data[('project_funder',)] or\
-        data[('project_funding',)] or data[('project_homepage',)]:
-        if data[('projdis',)] != 'False':
-            errors[key].append(_('Project data received even if no project is associated.'))
-
+# def check_project(key, data, errors, context):
+#     '''
+#     Check if user is trying to send project data when project is disabled.
+#     '''
+#     if data[('project_name',)] or data[('project_funder',)] or\
+#         data[('project_funding',)] or data[('project_homepage',)]:
+#         if data[('projdis',)] != 'False':
+#             errors[key].append(_('Project data received even if no project is associated.'))
+#
 
 def validate_kata_date(key, data, errors, context):
     '''
@@ -169,19 +169,19 @@ def validate_phonenum(key, data, errors, context):
             errors[key].append(_('Invalid telephone number, must be like +13221221'))
 
 
-def check_project_dis(key, data, errors, context):
-    '''
-    If projdis checkbox is checked, check that the project fields have data.
-    '''
-    if not ('projdis',) in data:
-        not_empty(key, data, errors, context)
-    else:
-        projdis = data.get(('projdis',), False)
-        value = data.get(key)
-        if not projdis or projdis == 'False':
-            if value == "":
-                errors[(key[0],)].append(_('Missing value'))
-
+# def check_project_dis(key, data, errors, context):
+#     '''
+#     If projdis checkbox is checked, check that the project fields have data.
+#     '''
+#     if not ('projdis',) in data:
+#         not_empty(key, data, errors, context)
+#     else:
+#         projdis = data.get(('projdis',), False)
+#         value = data.get(key)
+#         if not projdis or projdis == 'False':
+#             if value == "":
+#                 errors[(key[0],)].append(_('Missing value'))
+#
 
 def validate_access_application_url(key, data, errors, context):
     '''

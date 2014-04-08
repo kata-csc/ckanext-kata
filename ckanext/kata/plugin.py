@@ -43,8 +43,6 @@ from ckan.plugins.core import unload
 from ckanext.kata.validators import (check_access_request_url,
                                      check_agent,
                                      check_junk,
-                                     check_project,
-                                     check_project_dis,
                                      kata_tag_name_validator,
                                      kata_tag_string_convert,
                                      validate_access_application_url,
