@@ -86,13 +86,13 @@
             <label class="control-label kata-input-comp" for="agent__{{index}}__organisation">{{ _('Organisation') }}</label>
           <div class="controls editor" style="margin-top: 5px;">
             <input type="text" name="agent__{{ index }}__organisation" class="kata-medium-input" value="{{ agent.organisation }}">
+            <input type="hidden" name="agent__{{ index }}__role" value="author" />
             {% if loop.index0 == 0 %}
               {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
             {% endif %}
             <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
                 </div>
         </div>
-      <input type="hidden" name="agent__{{ index }}__role" value="author" />
     {% endfor %}
   </div>
   {# Clumsy generation of error messages, but it does the trick and won't display python types #}
@@ -169,7 +169,7 @@
     <h3 class="module-heading-add-dataset">{{ _('Project that produced this dataset') }}</h3>
     <!--<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked {% endif %}value="True">{{ _('This dataset was not produced in a project.') }}-->
     <div class="module-content" id="projdiv">
-      {% set funder = h.get_funder %}
+      {% set funder = h.get_funder(data) %}
       {% call form.input('agent__0__organisation', label=_('Name'), id='agent__0__organisation', placeholder=_('my project'), value=funder.organisation, error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s name.")) }}
       {% endcall %}
@@ -189,7 +189,7 @@
     </div>
     <h3 class="module-heading-add-dataset">{{ _('Owner information')}}</h3>
     <div class="module-content">
-      {% set owner = h.get_owner %}
+      {% set owner = h.get_owner(data) %}
       {% call form.input('agent__1__name', label=_('Owner identity'), id="agent__1__name", placeholder=_('identification URL or name'), value=owner.name, error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example an ORCID identifier.")) }}
       {% endcall %}
