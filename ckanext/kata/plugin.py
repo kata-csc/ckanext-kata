@@ -207,8 +207,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'get_funder': self.get_funder,
                 'get_authors': self.get_authors,
                 'get_owner': self.get_owner,
+                'get_distributor': self.get_distributor,
                 'resolve_agent_role': settings.resolve_agent_role,
                 }
+
+    def get_distributor(self, data_dict):
+        '''Get a single distributor from agent field in data_dict'''
+        return fn.first(filter(lambda x: x.get('role') == u'distributor', data_dict.get('agent', [])))
 
     def get_funder(self, data_dict):
         '''Get a single funder from agent field in data_dict'''

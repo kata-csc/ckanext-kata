@@ -145,6 +145,12 @@
 <section class="module">
 <h2 class="module-heading-add-dataset">{{ _('Actors and roles') }}</h2>
   <div class="module-content">
+    {% set distributor = h.get_distributor(data) %}
+    {% if distributor %}
+      <input type="hidden" name="agent__999__role" value="distributor" />
+      <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
+      <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation }}" />
+    {% endif %}
     <h3 class="module-heading-add-dataset">{{ _('Distributor / publisher contact information') }}</h3>
     <div class="module-content">
       {% set contact_name = data.maintainer if data.maintainer else user.fullname %}

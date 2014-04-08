@@ -40,7 +40,7 @@
 	</tr>
 	{% for agent in pkg_dict.agent %}
 	<tr>
-		<td>{{ agent.role }}</td>
+		<td>{{ h.resolve_agent_role(agent.role) }}</td>
 		<td>{{ agent.name }}</td>
 		<td>{{ agent.organisation }}</td>
 		<td>{{ agent.URL }}</td>
