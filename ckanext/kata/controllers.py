@@ -4,7 +4,7 @@ Controllers for Kata.
 """
 
 import logging
-from rdflib.term import Identifier, URIRef, Literal
+from rdflib.term import Identifier, URIRef, Literal, bnode_uuid, BNode
 from rdflib.namespace import XSD
 
 from paste.deploy.converters import asbool
@@ -206,6 +206,22 @@ class MetadataController(BaseController):
                 graph.add((uri, DC.isReferencedBy, Literal(rel.related.title)))
             if "notes" in data:
                 graph.add((uri, DC.description, Literal(data["notes"])))
+
+            # TODO: Add agents
+
+            # for agent in data.get('agent', []):
+            #
+            #     # agent_ref = URIRef(agent['URL']) \
+            #     #     if agent.get('URL') \
+            #     #     else BNode()
+            #     agent_ref = BNode()
+            #
+            #     if agent.get('name'):
+            #         graph.add((agent_ref, FOAF.name, agent.get('name')))
+            #     if agent.get('URL'):
+            #         graph.add((agent_ref, FOAF.homepage, agent.get('URL')))
+            #
+            #     graph.add((uri, DC.creator, agent_ref))
 
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':

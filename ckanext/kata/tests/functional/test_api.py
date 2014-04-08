@@ -17,6 +17,7 @@ import testfixtures
 from ckan import model
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
+from ckan.lib.helpers import url_for
 from ckan.tests import call_action_api
 
 import ckanext.kata.model as kata_model
@@ -573,20 +574,23 @@ class TestDataReading(KataApiTestCase):
 
         assert self._compare_datadicts(output)
 
-    # def test_create_and_read_rdf(self):
-    #     '''
-    #     Create and read a dataset through API and check that RDF generation doesn't break.
-    #     '''
-    #     output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
-    #                              status=200, **TEST_DATADICT)
-    #     assert 'id' in output
-    #
-    #     output = call_action_api(self.app, 'tordf', apikey=self.sysadmin_user.apikey,
-    #                              status=200, id=output['id'])
-    #
-    #     import pprint
-    #     pprint.pprint(output)
-    #     assert 0
+    def test_create_and_read_rdf(self):
+        '''
+        Create and read a dataset through API and check that RDF generation doesn't break.
+        '''
+        output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **TEST_DATADICT)
+        assert 'id' in output
+
+        offset = url_for("/dataset/{0}.rdf".format(output['id']))
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code: {0}'.format(res.status)
+
+        # TODO: Check some fields in result rdf, like agent and pids
+
+        # print res
+        # for agent in TEST_DATADICT['agent']:
+        #     assert agent.get('name') in res.body
 
 
 class TestSchema(KataApiTestCase):
