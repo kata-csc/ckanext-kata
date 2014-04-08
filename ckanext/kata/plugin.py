@@ -212,15 +212,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def get_funder(self, data_dict):
         '''Get a single funder from agent field in data_dict'''
-        return fn.first(filter(lambda x: x['role'] == u'funder', data_dict.get('agent')))
+        return fn.first(filter(lambda x: x['role'] == u'funder', data_dict.get('agent', [])))
 
     def get_owner(self, data_dict):
         '''Get a single owner from agent field in data_dict'''
-        return fn.first(filter(lambda x: x['role'] == u'owner', data_dict.get('agent')))
+        return fn.first(filter(lambda x: x['role'] == u'owner', data_dict.get('agent', [])))
 
     def get_authors(self, data_dict):
         '''Get all authors from agent field in data_dict'''
-        return filter(lambda x: x['role'] == u'author', data_dict.get('agent'))
+        return filter(lambda x: x['role'] == u'author', data_dict.get('agent', []))
 
     def reference_update(self, ref):
         #@beaker_cache(type="dbm", expire=2678400)
