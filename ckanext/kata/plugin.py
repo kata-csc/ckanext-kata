@@ -426,7 +426,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['pids'] = {'provider': [not_missing, unicode, flattened_to_extras],
                           'id': [not_missing, unicode, flattened_to_extras],
                           'type': [not_missing, unicode, flattened_to_extras]}
-        schema['tag_string'] = [not_missing, not_empty, kata_tag_string_convert]
+        schema['tag_string'] = [ignore_missing, not_empty, kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, to_extras_json]
