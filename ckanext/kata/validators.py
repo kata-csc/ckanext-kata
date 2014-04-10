@@ -374,7 +374,16 @@ def check_events(key, data, errors, context):
     If there is only type, removes it
     '''
     (k0, k1, k2) = key
-    
-    if not (data[(k0, k1, 'when')] and data[(k0, k1, 'who')] and data[(k0, k1, 'descr')]):
-        raise Invalid(_('Missing value'))
+    found = False
+    for k in data.keys():
+        if k[0] == k0 and k[1] == k1 and k[2] != k2:
+            if data[(k0, k1, k[2])]:
+                found = True
+    if found == False:
+        data.pop(key, None)
+        raise StopOnError
+        
+    else:
+        if not (data[(k0, k1, 'when')] and data[(k0, k1, 'who')] and data[(k0, k1, 'descr')]):
+            raise Invalid(_('Missing value'))
     
