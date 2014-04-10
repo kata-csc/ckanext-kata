@@ -583,10 +583,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['access_application_new_form'] = [unicode],
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['event'] = [flattened_from_extras, ignore_missing]
-        #schema['evtype'] = [event_from_extras, ignore_missing, unicode]
-        #schema['evwho'] = [event_from_extras, ignore_missing, unicode]
-        #schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
-        #schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
         schema['langdis'] = [unicode]
         schema['organization'] = [ignore_missing, unicode]
         schema['pids'] = [flattened_from_extras, ignore_missing]
