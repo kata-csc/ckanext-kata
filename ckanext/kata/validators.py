@@ -368,3 +368,13 @@ def validate_direct_download_url(key, data, errors, context):
       (data[key] == u'' or data[key] == u'http://'):
         raise Invalid(_('Missing URL'))
     
+def check_events(key, data, errors, context):
+    '''
+    Validates that none of the event's data is empty
+    If there is only type, removes it
+    '''
+    (k0, k1, k2) = key
+    
+    if not (data[(k0, k1, 'when')] and data[(k0, k1, 'who')] and data[(k0, k1, 'descr')]):
+        raise Invalid(_('Missing value'))
+    

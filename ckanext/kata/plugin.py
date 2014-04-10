@@ -59,6 +59,7 @@ from ckanext.kata.validators import (check_access_request_url,
                                      validate_title_duplicates,
                                      check_through_provider_url,
                                      contains_alphanumeric,
+                                     check_events,
                                      validate_direct_download_url,
                                      package_name_not_changed)
 from ckanext.kata import actions, auth_functions
@@ -66,8 +67,6 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
                                      convert_languages,
                                      convert_to_extras_kata,
-                                     event_from_extras,
-                                     event_to_extras,
                                      ltitle_from_extras,
                                      ltitle_to_extras,
                                      org_auth_from_extras,
@@ -409,6 +408,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
         # phone number can be missing from the first users
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
+        schema['event'] = {'type': [ignore_missing, check_events, unicode, flattened_to_extras, validate_general],
+                           'who': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric],
+                           'when': [ignore_missing, unicode, flattened_to_extras, validate_kata_date],
+                           'descr': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric]}
         schema['id'] = [default(u''), update_pid, unicode]
         schema['langtitle'] = {'value': [not_missing, unicode, validate_title, validate_title_duplicates, ltitle_to_extras],
                                'lang': [not_missing, unicode, convert_languages]}
@@ -464,11 +467,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema.pop('author')
         schema.pop('organization')
-
-        schema['evtype'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
-        schema['evwho'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general, contains_alphanumeric]}
-        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date]}
-        schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general, contains_alphanumeric]}
+        
         #schema['groups'].update({
         #    'name': [ignore_missing, unicode, add_to_group]
         #})
@@ -526,7 +525,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['discipline'].insert(0, ignore_missing)
-        schema['evwhen'] = {'value': [ignore_missing, unicode, event_to_extras, validate_kata_date_relaxed]}
+        schema['event'] = {'type': [ignore_missing, check_events, unicode, flattened_to_extras, validate_general],
+                           'who': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric],
+                           'when': [ignore_missing, unicode, flattened_to_extras, validate_kata_date_relaxed],
+                           'descr': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric]}
         schema['geographic_coverage'].insert(0, ignore_missing)
         schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_ddi, validate_general],
                              'org': [ignore_missing, unicode, validate_general]}
@@ -580,10 +582,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         schema['access_application_new_form'] = [unicode],
         schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['evtype'] = [event_from_extras, ignore_missing, unicode]
-        schema['evwho'] = [event_from_extras, ignore_missing, unicode]
-        schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
-        schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
+        schema['event'] = [flattened_from_extras, ignore_missing]
+        #schema['evtype'] = [event_from_extras, ignore_missing, unicode]
+        #schema['evwho'] = [event_from_extras, ignore_missing, unicode]
+        #schema['evwhen'] = [event_from_extras, ignore_missing, unicode]
+        #schema['evdescr'] = [event_from_extras, ignore_missing, unicode]
         schema['langdis'] = [unicode]
         schema['organization'] = [ignore_missing, unicode]
         schema['pids'] = [flattened_from_extras, ignore_missing]

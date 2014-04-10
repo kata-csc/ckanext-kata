@@ -152,183 +152,180 @@
       <h2 class="module-heading-add-dataset">{{ _('Dataset lifecycle events') }}</h2>
       <div class="module-content">
         <div data-module="custom-fields-kata" data-module-id="lifecycle" id="lifecycle">
-          <label class="control-label katalabel1"><span>{{ _('event') }}</span></label>
-          <label class="control-label katalabel"><span>{{ _('by whom') }}</span></label>
-          <label class="control-label katalabel"><span>{{ _('when') }}</span></label>
-          <label class="control-label katalabel"><span>{{ _('description') }}</span></label>
+            <label class="control-label katalabel1"><span>{{ _('event') }}</span></label>
+            <label class="control-label katalabel"><span>{{ _('by whom') }}</span></label>
+            <label class="control-label katalabel"><span>{{ _('when') }}</span></label>
+            <label class="control-label katalabel"><span>{{ _('description') }}</span></label>
 
-        {% if data.events%}
-          {% if errors %}
-             {% set eerrors = h.get_kata_errors(errors) %}
-          {% endif %}
-          <ul class="kata">
-          {% for type, who, when, descr in data.events %}
-    	      {% set index = loop.index %}
-    	      {% set lastevent = loop.index %}
-    	      <div class="control-group control-custom">
-          	  <li class="kata">
-          			<div class="input-prepend">
-          				<select name="evtype__{{index}}__value" style="width: 95px;">
-                    <option value="collection" {% if type.value=='collection'%}selected{% endif %}>{{ _('collection') }}</option>
-                    <option value="creation" {% if type.value=='creation'%}selected{% endif %}>{{ _('creation') }}</option>
-                    <option value="checked" {% if type.value=='checked'%}selected{% endif %}>{{ _('checked') }}</option>
-                    <option value="extended" {% if type.value=='extended'%}selected{% endif %}>{{ _('extended') }}</option>
-                    <option value="changed" {% if type.value=='changed'%}selected{% endif %}>{{ _('changed') }}</option>
-                    <option value="removed" {% if type.value=='removed'%}selected{% endif %}>{{ _('removed') }}</option>
-                    <option value="published" {% if type.value=='published'%}selected{% endif %}>{{ _('published') }}</option>
-                    <option value="sent" {% if type.value=='sent'%}selected{% endif %}>{{ _('sent') }}</option>
-                    <option value="received" {% if type.value=='received'%}selected{% endif %}>{{ _('received') }}</option>
-                    <option value="modified" {% if type.value=='modified'%}selected{% endif %}>{{ _('modified') }}</option>
-                    <option value="used" {% if type.value=='used'%}selected{% endif %}>{{ _('used') }}</option>
-          				</select>
-          			</div>
-          		</li>
-          		<li class="kata">
-          			<div class="input-prepend">
-          				<input class="kata-lifecycle-input" type="text" id="evwho_{{ index }}__value_id" name="evwho__{{ index }}__value" value="{{who.value}}" />
-          			</div>
-          		</li>
-          		<li class="kata">
-          			<div class="input-prepend">
-          				<input class="kata-lifecycle-input" type="text" id="evwhen__{{ index }}__value_id" name="evwhen__{{ index }}__value" value="{{when.value}}" />
-          			</div>
-          		</li>
-          		<li class="kata">
-          			<div class="input-prepend">
-          				<input class="kata-lifecycle-input" type="text" id="evdescr__{{ index }}__value_id" name="evdescr__{{ index }}__value" value="{{descr.value}}" />
-          			</div>
-          		</li>
-          	</div>
-          	<li colspan="4">
-          		{% if eerrors and eerrors.evwho and eerrors.evwho[index-1] %}
-          		    <span class="error-block-kata">
-          		        {{ eerrors.evwho[index-1] }}
-          			</span>
-          		{% endif %}
-          		{% if eerrors and eerrors.evwhen and eerrors.evwhen[index-1] %}
-          		    <span class="error-block-kata">
-          		        {{ eerrors.evwhen[index-1] }}
-          			</span>
-          		{% endif %}
-          		{% if eerrors and eerrors.evdescr and eerrors.evdescr[index-1] %}
-          		    <span class="error-block-kata">
-          		        {{ eerrors.evdescr[index-1] }}
-          			</span>
-          		{% endif %}
-          	</li>
-          {% endfor %}
-          </ul>
 
-        {% elif data.evtype and data.evwho and data.evwhen and data.evdescr %}
-        {% if errors %}
-           {% set eerrors = h.get_kata_errors(errors) %}
-        {% endif %}
-          <ul class="kata">
-          {% for type, who, when, descr in zip(data.evtype, data.evwho, data.evwhen, data.evdescr) %}
-          	{% set index = loop.index %}
-          	{% set lastevent = loop.index %}
-          	<div class="control-group control-custom">
-          		<li class="kata">
-          			<div class="input-prepend">
-          				<select name="evtype__{{index}}__value" style="width: 95px;">
-          					<option value="collection" {% if type.value=='collection'%}selected{% endif %}>{{ _('collection') }}</option>
-          					<option value="creation" {% if type.value=='creation'%}selected{% endif %}>{{ _('creation') }}</option>
-          					<option value="checked" {% if type.value=='checked'%}selected{% endif %}>{{ _('checked') }}</option>
-          					<option value="extended" {% if type.value=='extended'%}selected{% endif %}>{{ _('extended') }}</option>
-          					<option value="changed" {% if type.value=='changed'%}selected{% endif %}>{{ _('changed') }}</option>
-          					<option value="removed" {% if type.value=='removed'%}selected{% endif %}>{{ _('removed') }}</option>
-          					<option value="published" {% if type.value=='published'%}selected{% endif %}>{{ _('published') }}</option>
-          					<option value="sent" {% if type.value=='sent'%}selected{% endif %}>{{ _('sent') }}</option>
-          					<option value="received" {% if type.value=='received'%}selected{% endif %}>{{ _('received') }}</option>
-          					<option value="modified" {% if type.value=='modified'%}selected{% endif %}>{{ _('modified') }}</option>
-          					<option value="used" {% if type.value=='used'%}selected{% endif %}>{{ _('used') }}</option>
-          				</select>
-          			</div>
-          		</li>
-          		<li class="kata">
-          			<div class="input-prepend">
-          				<input class="kata-lifecycle-input" type="text" id="evwho_{{ index }}__value_id" name="evwho__{{ index }}__value" value="{{who.value}}" />
-          			</div>
-          		</li>
-          		<li class="kata">
-          			<div class="input-prepend">
-          				<input class="kata-lifecycle-input" type="text" id="evwhen__{{ index }}__value_id" name="evwhen__{{ index }}__value" value="{{when.value}}" />
-          			</div>
-          		</li>
-          		<li class="kata">
-          			<div class="input-prepend">
-          				<input class="kata-lifecycle-input" type="text" id="evdescr__{{ index }}__value_id" name="evdescr__{{ index }}__value" value="{{descr.value}}" />
-          			</div>
-          		</li>
-          	</div>
-          	<li colspan="4">
-          		{% if eerrors and eerrors.evwho and eerrors.evwho[index-1] %}
-          		    <span class="error-block-kata">
-          		        {{ eerrors.evwho[index-1] }}
-          			</span>
-          	    {% endif %}
-          		{% if eerrors and eerrors.evwhen and eerrors.evwhen[index-1] %}
-          		    <span class="error-block-kata">
-          		        {{ eerrors.evwhen[index-1] }}
-          			</span>
-          		{% endif %}
-          		{% if eerrors and eerrors.evdescr and eerrors.evdescr[index-1] %}
-          		    <span class="error-block-kata">
-          		        {{ eerrors.evdescr[index-1] }}
-          			</span>
-          		{% endif %}
-          	</li>
-          {% endfor %}
-          </ul>
-        {% endif %}
-
-          <ul class="kata">
-          {% for extra in range(1,2) %}
-          	{% set index = lastevent + extra + 10 %}
-          		<div class="control-group control-custom">
-          			<li class="kata">
-          				<div class="input-prepend">
-          					<select name="evtype__{{index}}__value" style="width: 95px;">
-          						<option value="collection" selected>{{ _('collection') }}</option>
-          						<option value="creation">{{ _('creation') }}</option>
-          						<option value="checked">{{ _('checked') }}</option>
-          						<option value="extended">{{ _('extended') }}</option>
-          						<option value="changed">{{ _('changed') }}</option>
-          						<option value="removed">{{ _('removed') }}</option>
-          						<option value="published">{{ _('published') }}</option>
-          						<option value="sent">{{ _('sent') }}</option>
-          						<option value="received">{{ _('received') }}</option>
-          						<option value="modified">{{ _('modified') }}</option>
-          						<option value="used">{{ _('used') }}</option>
-          					</select>
-          				</div>
-          			</li>
-          			<li class="kata">
-          				<div class="input-prepend">
-          					<input class="kata-lifecycle-input" type="text" id="evwho_{{ index }}__value_id" name="evwho__{{ index }}__value" value="" />
-          				</div>
-          			</li>
-          			<li class="kata">
-          				<div class="input-prepend">
-          					<input class="kata-lifecycle-input" type="text" id="evwhen__{{ index }}__value_id" name="evwhen__{{ index }}__value" value="" />
-          				</div>
-          			</li>
-          			<li class="kata">
-          				<div class="input-prepend">
-          					<input class="kata-lifecycle-input" type="text" id="evdescr__{{ index }}__value_id" name="evdescr__{{ index }}__value" value="" />
-          				</div>
-          			</li>
-          			<li class="kata">
-          				{{ kata_form.plusbutton(onclick="$(\'#evbtn__" ~ index ~ "__value_id\').change();") }}
-          			</li>
-          			{{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.')) }}
-          			<input style="display: none;" type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
-          		</div>
-          {% endfor %}
-          </ul>
-        </div>
+            {% set lastevent = 0 %}
+            {% if data.event %}
+            {# Case we have events. Display them + an empty field with '+' button #}
+              {% for ev in data.event %}
+                <ul class="kata">
+                  {% set index = loop.index %}
+                  {% if ev['type'] and (ev['who']|length>0 or ev['when']|length>0 or ev['descr']|length>0) %}
+                    {% set lastevent = loop.index %}
+    	        
+                    <div class="control-group control-custom">
+                      <li class="kata">
+                        <div class="input-prepend">
+                          <select name="event__{{index}}__type" style="width: 95px;">
+                            <option value="collection" {% if ev['type']=='collection'%}selected{% endif %}>{{ _('collection') }}</option>
+                            <option value="creation" {% if ev['type']=='creation'%}selected{% endif %}>{{ _('creation') }}</option>
+                            <option value="checked" {% if ev['type']=='checked'%}selected{% endif %}>{{ _('checked') }}</option>
+                            <option value="extended" {% if ev['type']=='extended'%}selected{% endif %}>{{ _('extended') }}</option>
+                            <option value="changed" {% if ev['type']=='changed'%}selected{% endif %}>{{ _('changed') }}</option>
+                            <option value="removed" {% if ev['type']=='removed'%}selected{% endif %}>{{ _('removed') }}</option>
+                            <option value="published" {% if ev['type']=='published'%}selected{% endif %}>{{ _('published') }}</option>
+                            <option value="sent" {% if ev['type']=='sent'%}selected{% endif %}>{{ _('sent') }}</option>
+                            <option value="received" {% if ev['type']=='received'%}selected{% endif %}>{{ _('received') }}</option>
+                            <option value="modified" {% if ev['type']=='modified'%}selected{% endif %}>{{ _('modified') }}</option>
+                            <option value="used" {% if ev['type']=='used'%}selected{% endif %}>{{ _('used') }}</option>
+                          </select>
+                        </div>
+		              </li>
+                      <li class="kata">
+                        <div class="input-prepend">
+                          <input class="kata-lifecycle-input" type="text" id="event_{{ index }}__who_id" name="event__{{ index }}__who" value="{{ev['who']}}" />
+                        </div>
+                      </li>
+                      <li class="kata">
+                        <div class="input-prepend">
+                          <input class="kata-lifecycle-input" type="text" id="event__{{ index }}__when_id" name="event__{{ index }}__when" value="{{ev['when']}}" />
+                        </div>
+                      </li>
+                      <li class="kata">
+                        <div class="input-prepend">
+                          <input class="kata-lifecycle-input" type="text" id="event__{{ index }}__descr_id" name="event__{{ index }}__descr" value="{{ev['descr']}}" />
+                        </div>
+                      </li>
+                    </div>
+                    <li colspan="4">
+                      {% if errors and errors.event and errors.event[index-1] %}
+                          {% if errors.event[index-1]['type'] %}
+                            <span class="error-block-kata">
+                              {{ errors.event[index-1]['type']|join('. ') }}
+                            </span>
+                          {% endif %}
+                          {% if errors.event[index-1]['who'] %}
+                            <span class="error-block-kata">
+                              {{ errors.event[index-1]['who']|join('. ') }}
+                            </span>
+                          {% endif %}
+                          {% if errors.event[index-1]['when'] %}
+                            <span class="error-block-kata">
+                              {{ errors.event[index-1]['when']|join('. ') }}
+                            </span>
+                          {% endif %}
+                          {% if errors.event[index-1]['descr'] %}
+                            <span class="error-block-kata">
+                              {{ errors.event[index-1]['descr']|join('. ') }}
+                            </span>
+                          {% endif %}
+                        
+                      {% endif %}
+                    </li>
+                  {% endif %}
+                </ul>
+              {% endfor %}
+              {% set lastevent = data.event|length + 1 %}
+              {% set index = lastevent %}
+              <ul class="kata">
+                <div class="control-group control-custom">
+                  <li class="kata">
+                    <div class="input-prepend">
+                      <select name="event__{{index}}__type" style="width: 95px;">
+                        <option value="collection" selected>{{ _('collection') }}</option>
+                        <option value="creation">{{ _('creation') }}</option>
+                        <option value="checked">{{ _('checked') }}</option>
+                        <option value="extended">{{ _('extended') }}</option>
+                        <option value="changed">{{ _('changed') }}</option>
+                        <option value="removed">{{ _('removed') }}</option>
+                        <option value="published">{{ _('published') }}</option>
+                        <option value="sent">{{ _('sent') }}</option>
+                        <option value="received">{{ _('received') }}</option>
+                        <option value="modified">{{ _('modified') }}</option>
+                        <option value="used">{{ _('used') }}</option>
+                      </select>
+                    </div>
+                  </li>
+                  <li class="kata">
+                    <div class="input-prepend">
+                  	  <input class="kata-lifecycle-input" type="text" id="event_{{ index }}__who_id" name="event__{{ index }}__who" value="" />
+                    </div>
+                  </li>
+                  <li class="kata">
+                    <div class="input-prepend">
+                      <input class="kata-lifecycle-input" type="text" id="event__{{ index }}__when_id" name="event__{{ index }}__when" value="" />
+                    </div>
+                  </li>
+                  <li class="kata">
+                    <div class="input-prepend">
+                      <input class="kata-lifecycle-input" type="text" id="event__{{ index }}__descr_id" name="event__{{ index }}__descr" value="" />
+                    </div>
+                  </li>
+                  <li class="kata">
+                    {{ kata_form.plusbutton(onclick="$(\'#evbtn__" ~ index ~ "__value_id\').change();") }}
+                  </li>
+                  <li class="kata">
+                    {{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.')) }}
+                    <input style="display: none;" type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
+                  </li>
+                </div>
+              </ul>
+            {% else %}
+              {# Case no events, that is a new blank form #}
+              
+              {% set index = 1 %}
+              <ul class="kata">
+                <div class="control-group control-custom">
+                  <li class="kata">
+                    <div class="input-prepend">
+                      <select name="event__{{index}}__type" style="width: 95px;">
+                        <option value="collection" selected>{{ _('collection') }}</option>
+                        <option value="creation">{{ _('creation') }}</option>
+                        <option value="checked">{{ _('checked') }}</option>
+                        <option value="extended">{{ _('extended') }}</option>
+                        <option value="changed">{{ _('changed') }}</option>
+                        <option value="removed">{{ _('removed') }}</option>
+                        <option value="published">{{ _('published') }}</option>
+                        <option value="sent">{{ _('sent') }}</option>
+                        <option value="received">{{ _('received') }}</option>
+                        <option value="modified">{{ _('modified') }}</option>
+                        <option value="used">{{ _('used') }}</option>
+                      </select>
+                    </div>
+                  </li>
+                  <li class="kata">
+                    <div class="input-prepend">
+                      <input class="kata-lifecycle-input" type="text" id="event_{{ index }}__who_id" name="event__{{ index }}__who" value="" />
+                    </div>
+                  </li>
+                  <li class="kata">
+                    <div class="input-prepend">
+                      <input class="kata-lifecycle-input" type="text" id="event__{{ index }}__when_id" name="event__{{ index }}__when" value="" />
+                    </div>
+                  </li>
+                  <li class="kata">
+                    <div class="input-prepend">
+                      <input class="kata-lifecycle-input" type="text" id="event__{{ index }}__descr_id" name="event__{{ index }}__descr" value="" />
+                    </div>
+                  </li>
+                  <li class="kata">
+                    {{ kata_form.plusbutton(onclick="$(\'#evbtn__" ~ index ~ "__value_id\').change();") }}
+                  </li>
+                  <li class="kata">
+                    {{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.')) }}
+                    <input style="display: none;" type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
+                  </li>
+                </div>
+              </ul>
+            {% endif %}
+          </div>
       </div>
     </section>
+
 
     <section class="module">
       <h2 class="module-heading-add-dataset">{{ _('Free description') }}</h2>
