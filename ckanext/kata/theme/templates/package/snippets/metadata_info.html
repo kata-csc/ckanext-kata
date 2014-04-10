@@ -241,30 +241,24 @@
 
 </table>
 </section>
-{% if pkg_dict.events %}
-<section class="module-content additional-info">
-<h3>{{ _('Dataset lifecycle events') }}</h3>
-<table class="table table-striped table-bordered table-condensed">
-    <colgroup>
-        <col width="25%">
-        <col width="25%">
-        <col width="25%">
-        <col width="25%">
-    </colgroup>
-	<tr>
-		<th>{{ _('Type') }}</th>
-		<th>{{ _('Who') }}</th>
-		<th>{{ _('Date') }}</th>
-		<th>{{ _('Description') }}</th>
-	</tr>
-	{% for type, who, when, descr in pkg_dict.events %}
-	<tr>
-		<td class="dataset-details">{{ _(type.value) }}</td>
-		<td class="dataset-details">{{who.value}}</td>
-		<td class="dataset-details">{{when.value}}</td>
-		<td class="dataset-details">{{descr.value}}</td>
-	</tr>
-    {% endfor %}
-</table>
-</section>
+{% if pkg_dict.event %}
+    <section class="module-content additional-info">
+      <h3>{{ _('Dataset lifecycle events') }}</h3>
+      <table class="table table-striped table-bordered table-condensed">
+        <colgroup>
+          <col width="25%">
+          <col width="25%">
+          <col width="25%">
+          <col width="25%">
+        </colgroup>
+      {% for ev in pkg_dict.event %}
+        <tr>
+          <td class="dataset-details">{{ _(ev.get('type')) }}</td>
+          <td class="dataset-details">{{ ev.get('who') }}</td>
+		  <td class="dataset-details">{{ ev.get('when') }}</td>
+		  <td class="dataset-details">{{ ev.get('descr') }}</td>
+        </tr>
+      {% endfor %}
+      </table>
+    </section>
 {% endif %}
