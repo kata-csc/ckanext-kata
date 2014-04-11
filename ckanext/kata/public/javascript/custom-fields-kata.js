@@ -45,33 +45,36 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       this.el.append(this.cloneField(element));
     },
 
-    /* Clones the provided element, wipes it's content and increments it's
-     * for, id and name fields (if possible).
+    /* Clone the provided element and use resetField() on it.
      *
-     * current - A custom field to clone.
+     * current - An element containing input fields, usually 'div'
      *
-     * Returns a newly created custom field element.
+     * Return a newly created element.
      */
     cloneField: function (current) {
-      return this.resetField(jQuery(current).clone());
+      return this.resetFields(jQuery(current).clone());
     },
 
-    /* Wipes the contents of the field provided and increments it's name, id
-     * and for attributes.
+    /* Wipe the contents and increment 'for', 'id' and 'name' attributes of the
+     * input fields of the element 'field' provided (if possible).
+     * Input field with attribute like name="smthng__hnghng__role" is not wiped.
      *
-     * field - A custom field to wipe.
+     * field - A element (like div) containing multiple input fields.
      *
-     * Returns the wiped element.
+     * Return the wiped element.
      */
-    resetField: function (field) {
+    resetFields: function (field) {
       var numfields = this.options.numfields;
       function increment(index, string) {
         var str = (string || '').replace(/\d+/, function (int) { return parseInt(int, 10) + numfields; })
         return str;
       }
 
-      var input = field.find(':input');
+      var input = field.find(":input").not("[name*='role']");
       input.val('').attr('id', increment).attr('name', increment);
+      
+      var roleField = field.find(":input[name*='role']")
+      roleField.attr('id', increment).attr('name', increment);
 
       var label = field.find('label');
       label.text(increment).attr('for', increment);

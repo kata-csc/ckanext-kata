@@ -383,10 +383,11 @@ def check_agent_fields(key, data, errors, context):
     Check that compulsory fields for this agent exists.
     '''
 
-    if not (data.get((key[0], key[1], 'name')) or \
-            data.get((key[0], key[1], 'organisation')) or \
-            data.get((key[0], key[1], 'URL'))):
-        raise Invalid(_('Give more information about this agent'))
+    if data.get((key[0], key[1], 'role')) not in ('funder', 'owner'):
+        if not (data.get((key[0], key[1], 'name')) or \
+                data.get((key[0], key[1], 'organisation')) or \
+                data.get((key[0], key[1], 'URL'))):
+            raise Invalid(_('Give more information about this agent'))
 
 def check_langtitle(key, data, errors, context):
     '''

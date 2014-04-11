@@ -60,7 +60,7 @@
 </div>
 
 <div class="kata-multi-input">
- <span class="kata-multi-heading">
+  <span class="kata-multi-heading">
     {{ _('Authors and organizations') }}
   </span><br />
   {% set authors = h.get_authors(data) %}
@@ -71,28 +71,28 @@
     {% endfor %}
   {% endif %}
   <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields={{ authors|length }} id="agent">
-  {# Render author and organisation fields #}
-  {% for agent in authors %}
-
-    {% set index = 2 + loop.index0 %}
-        <div class="control-group control-custom">
+    {# Render author and organisation fields #}
+    {% for agent in authors %}
+      {% set index = 2 + loop.index0 %}
+      <div class="control-group control-custom">
+        <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
         <label class="control-label kata-input-comp" for="agent__{{ index }}__name_id">{{ _('Author') }}</label>
-            <div class="controls editor">
-                <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname, firstname') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
-    {% if loop.index0 == 0 %}
-      {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
-    {% endif %}
-            </div>
-            <label class="control-label kata-input-comp" for="agent__{{index}}__organisation">{{ _('Organisation') }}</label>
-          <div class="controls editor" style="margin-top: 5px;">
-            <input type="text" name="agent__{{ index }}__organisation" class="kata-medium-input" value="{{ agent.organisation }}">
-            <input type="hidden" name="agent__{{ index }}__role" value="author" />
-            {% if loop.index0 == 0 %}
-              {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
-            {% endif %}
-            <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-                </div>
+        <div class="controls editor">
+          <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname, firstname') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
+        {% if loop.index0 == 0 %}
+          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
+        {% endif %}
         </div>
+
+        <label class="control-label kata-input-comp" for="agent__{{index}}__organisation">{{ _('Organisation') }}</label>
+        <div class="controls editor" style="margin-top: 5px;">
+          <input type="text" name="agent__{{ index }}__organisation" class="kata-medium-input" value="{{ agent.organisation }}">
+          {% if loop.index0 == 0 %}
+            {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+          {% endif %}
+          <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+        </div>
+      </div>
     {% endfor %}
   </div>
   {# Clumsy generation of error messages, but it does the trick and won't display python types #}
@@ -191,7 +191,7 @@
       {% call form.input('agent__0__URL', label=_('Homepage'), id='agent__0__URL', placeholder=_('http://myproject'), value=funder.URL, error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s homepage")) }}
       {% endcall %}
-      <input type="hidden" name="agent__0__role" value="funder" />
+      <input type="hidden" id="agent__0__role" name="agent__0__role" value="funder" />
     </div>
     <h3 class="module-heading-add-dataset">{{ _('Owner information')}}</h3>
     <div class="module-content">
@@ -199,7 +199,7 @@
       {% call form.input('agent__1__name', label=_('Owner identity'), id="agent__1__name", placeholder=_('identification URL or name'), value=owner.name, error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example an ORCID identifier.")) }}
       {% endcall %}
-      <input type="hidden" name="agent__1__role" value="owner" />
+      <input type="hidden" id="agent__1__role" name="agent__1__role" value="owner" />
     </div>
   </div>
 </section>
