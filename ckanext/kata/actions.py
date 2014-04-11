@@ -86,6 +86,7 @@ def package_create(context, data_dict):
             
     except KeyError:
         log.debug("Tried to check the package type, but it wasn't present!")
+        # TODO: Dubious to let pass without checking user.sysadmin
         pass
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
