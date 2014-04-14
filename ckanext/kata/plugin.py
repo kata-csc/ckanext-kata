@@ -761,6 +761,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         #log.debug("before_search(): data_dict: %r" % data_dict)
         # Uncomment below to show query with results and in the search field
         #c.q = data_dict['q']
+
+        # Log non-empty search queries and constraints (facets)
+        if data_dict['q'] or (data_dict['fq'] and data_dict['fq'] != '+dataset_type:dataset'):
+            log.info("[{t}] Search query: {q};  constraints: {c}".format(t=datetime.datetime.now(), q=data_dict['q'], c=data_dict['fq']))
+
         return data_dict
 
     def before_index(self, pkg_dict):
