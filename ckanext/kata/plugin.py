@@ -14,6 +14,7 @@ from ckan.lib.base import g, c
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import (default,
                                       ignore,
+                                      ignore_empty,
                                       ignore_missing,
                                       not_empty,
                                       not_missing)
@@ -195,13 +196,17 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def get_helpers(self):
         """ Register helpers """
-        return {'is_custom_form': self.is_custom_form,
+        return {'get_authors': self.get_authors,
+                'get_distributor': self.get_distributor,
+                'get_funder': self.get_funder,
+                'get_owner': self.get_owner,
+                'has_agents_funding_id': self.has_agents_funding_id,
+                'has_agents_name': self.has_agents_name,
+                'has_agents_organisation': self.has_agents_organisation,
+                'has_agents_url': self.has_agents_url,
+                'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': self.kata_sorted_extras,
                 'reference_update': self.reference_update,
-                'get_funder': self.get_funder,
-                'get_authors': self.get_authors,
-                'get_owner': self.get_owner,
-                'get_distributor': self.get_distributor,
                 'resolve_agent_role': settings.resolve_agent_role,
                 }
 
@@ -220,6 +225,22 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_authors(self, data_dict):
         '''Get all authors from agent field in data_dict'''
         return filter(lambda x: x.get('role') == u'author', data_dict.get('agent', []))
+
+    def has_agents_name(self, data_dict):
+        '''Return true if some of the data dict's agents has attribute 'name'.'''
+        return [] != filter(lambda x : x.get('name'), data_dict.get('agent', []))
+
+    def has_agents_organisation(self, data_dict):
+        '''Return true if some of the data dict's agents has attribute 'name'.'''
+        return [] != filter(lambda x : x.get('organisation'), data_dict.get('agent', []))
+
+    def has_agents_url(self, data_dict):
+        '''Return true if some of the data dict's agents has attribute 'name'.'''
+        return [] != filter(lambda x : x.get('URL'), data_dict.get('agent', []))
+
+    def has_agents_funding_id(self, data_dict):
+        '''Return true if some of the data dict's agents has attribute 'name'.'''
+        return [] != filter(lambda x : x.get('funding-id'), data_dict.get('agent', []))
 
     def reference_update(self, ref):
         #@beaker_cache(type="dbm", expire=2678400)
@@ -388,14 +409,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
 
         schema['agent'] = {'role': [not_empty, check_agent_fields, validate_general, unicode, flattened_to_extras],
-                           'name': [ignore_missing, validate_general, unicode, flattened_to_extras],
-                           'id': [ignore_missing, validate_general, unicode, flattened_to_extras],
-                           'organisation': [ignore_missing, validate_general, unicode, flattened_to_extras],
-                           'URL': [ignore_missing, validate_general, unicode, flattened_to_extras],
+                           'name': [ignore_empty, validate_general, unicode, flattened_to_extras],
+                           'id': [ignore_empty, validate_general, unicode, flattened_to_extras],
+                           'organisation': [ignore_empty, validate_general, unicode, flattened_to_extras],
+                           'URL': [ignore_empty, validate_general, unicode, flattened_to_extras],
                            # Note: Changed to 'funding-id' for now because 'funding_id'
                            # was returned as 'funding' from db. Somewhere '_id' was
                            # splitted off.
-                           'funding-id': [ignore_missing, validate_general, unicode, flattened_to_extras]}
+                           'funding-id': [ignore_empty, validate_general, unicode, flattened_to_extras]}
         # phone number can be missing from the first users
         schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['evdescr'] = {'value': [ignore_missing, unicode, event_to_extras, validate_general]}
@@ -557,7 +578,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # doesn't bring back the keys from the package dicts if the values are
         # 'missing' (i.e. None).
         # See few lines into 'default_show_package_schema()'
-        # TODO: Should this be done here or in test_api.py:_compare_datadicts()?
         schema['author'] = [ignore_missing]
         schema['author_email'] = [ignore_missing]
         schema['organization'] = [ignore_missing]

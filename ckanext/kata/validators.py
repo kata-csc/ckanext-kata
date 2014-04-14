@@ -358,16 +358,13 @@ def check_agent(key, data, errors, context):
     '''
     author_found = False
     distributor_found = False
-    role = ''
-    index = 0
+    roles = [data[k] for k in data.keys() if k[0] == 'agent' and k[2] == 'role']
 
-    while role is not None:
-        role = data.get(('agent', index, 'role'), None)
+    for role in roles:
         if role == 'author':
             author_found = True
         if role == 'distributor':
             distributor_found = True
-        index += 1
 
     if not (author_found and distributor_found):
         error = 'Missing compulsory agents ({0}, {1}'.format(
@@ -383,11 +380,11 @@ def check_agent_fields(key, data, errors, context):
     Check that compulsory fields for this agent exists.
     '''
 
-    if data.get((key[0], key[1], 'role')) not in ('funder', 'owner'):
-        if not (data.get((key[0], key[1], 'name')) or \
-                data.get((key[0], key[1], 'organisation')) or \
+    if not (data.get((key[0], key[1], 'name')) or
+                data.get((key[0], key[1], 'organisation')) or
                 data.get((key[0], key[1], 'URL'))):
-            raise Invalid(_('Give more information about this agent'))
+        data.pop(key, None)
+        raise StopOnError
 
 def check_langtitle(key, data, errors, context):
     '''

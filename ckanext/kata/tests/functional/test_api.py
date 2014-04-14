@@ -313,9 +313,8 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert output['__type'] == 'Validation Error'
 
         data_dict = copy.deepcopy(TEST_DATADICT)
-        data_dict['agent'][2].pop('name', None)
-        data_dict['agent'][2].pop('organisation', None)
-        data_dict['agent'][2].pop('URL', None)
+        data_dict.pop('agent', None)
+        data_dict['agent'] = [{'role': u'author'}]
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey, status=409, **data_dict)
         assert output
         assert '__type' in output

@@ -29,22 +29,26 @@
 {% endif %}
 {% if pkg_dict.agent %}
 <h4>{{ _('Agents')}}</h4>
+{% set nme = true if h.has_agents_name(pkg_dict) %}
+{% set org = true if h.has_agents_organisation(pkg_dict) %}
+{% set url = true if h.has_agents_url(pkg_dict) %}
+{% set fid = true if h.has_agents_funding_id(pkg_dict) %}
 <table class="table table-striped table-bordered table-condensed">
 	<tbody>
 	<tr>
 		<th>{{ _('Role') }}</th>
-		<th>{{ _('Name') }}</th>
-		<th>{{ _('Organisation') }}</th>
-		<th>{{ _('URL') }}</th>
-		<th>{{ _('Funding id') }}</th>
+		{% if nme %}<th>{{ _('Name') }}</th>{% endif%}
+		{% if org %}<th>{{ _('Organisation') }}</th>{% endif%}
+		{% if url %}<th>{{ _('URL') }}</th>{% endif%}
+		{% if fid %}<th>{{ _('Funding id') }}</th>{% endif%}
 	</tr>
 	{% for agent in pkg_dict.agent %}
 	<tr>
 		<td>{{ h.resolve_agent_role(agent.role) }}</td>
-		<td>{{ agent.name }}</td>
-		<td>{{ agent.organisation }}</td>
-		<td>{{ agent.URL }}</td>
-		<td>{{ agent['funding-id'] }}</td>
+		{% if nme %}<td>{{ agent.name }}</td>{% endif%}
+		{% if org %}<td>{{ agent.organisation }}</td>{% endif%}
+		{% if url %}<td>{{ agent.URL }}</td>{% endif%}
+		{% if fid %}<td>{{ agent['funding-id'] }}</td>{% endif%}
 	</tr>
 	{% endfor %}
 	</tbody>
