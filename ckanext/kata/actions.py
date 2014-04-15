@@ -36,6 +36,10 @@ def package_show(context, data_dict):
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
 
+    # Remove empty agents that come from padding the agent list in converters
+    agents = filter(None, pkg_dict1.get('agent', []))
+    pkg_dict1['agent'] = agents or []
+
     # Normally logic function should not catch the raised errors
     # but here it is needed so action package_show won't catch it instead
     # Hiding information from API calls
@@ -86,6 +90,7 @@ def package_create(context, data_dict):
             
     except KeyError:
         log.debug("Tried to check the package type, but it wasn't present!")
+        # TODO: Dubious to let pass without checking user.sysadmin
         pass
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
@@ -109,6 +114,11 @@ def package_create(context, data_dict):
 
     if new_version_pid:
         data_dict['pids'] = data_dict.get('pids', []) + [{'id': new_version_pid, 'type': 'version', 'provider': 'kata'}]
+
+    # Add current user as a distributor.
+    # TODO: Get user's full name from db instead of user name? Or what does HAKA provide as user name?
+    if 'agent' in data_dict and context.get('user', None):
+        data_dict['agent'].append({'name': context['user'], 'role': 'distributor'})
 
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 

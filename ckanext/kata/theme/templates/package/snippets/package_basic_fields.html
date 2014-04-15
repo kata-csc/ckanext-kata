@@ -4,7 +4,7 @@
   <div data-module="kata-notification-tools" class="floating-error" id="kata-error-window">
     <i class="icon-info-sign">&nbsp;</i>{{ _('You have errors in your metadata. Please, make the requested corrections.') }}
   </div>
-  
+
 {% endif %}
 <section class="module no-padding">
 <h2 class="module-heading-add-dataset tta-orange">{{ _('Required information') }}</h2>
@@ -60,53 +60,63 @@
 </div>
 
 <div class="kata-multi-input">
- <span class="kata-multi-heading">
+  <span class="kata-multi-heading">
     {{ _('Authors and organizations') }}
   </span><br />
-  {% set authors = [] %}
-
-    {% if data.orgauth %}
-        {% set authors = data.orgauth %}
-  {% endif %}
+  {% set authors = h.get_authors(data) %}
 
   {% if authors|length == 0 %}
     {% for extra in range(1, 2) %}
-      {% do authors.append(('', '')) %}
+      {% do authors.append(dict(role='author',)) %}
     {% endfor %}
   {% endif %}
-  <div data-module="custom-fields-kata" data-module-id="orgauths" data-module-numfields={{ authors|length }} id="orgauths">
-  {# Render author and organisation fields #}
-  {% for orgauth in authors %}
-        {% if errors %}
-           {% set eerrors = h.get_kata_errors(errors) %}
+  <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields={{ authors|length }} id="agent">
+    {# Render author and organisation fields #}
+    {% for agent in authors %}
+      {% if errors %}
+        {% set eerrors = h.get_kata_errors(errors) %}
+      {% endif %}
+
+      {% set index = 2 + loop.index0 %}
+      <div class="control-group control-custom">
+        <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
+        <label class="control-label kata-input-comp" for="agent__{{ index }}__name_id">{{ _('Author') }}</label>
+        <div class="controls editor">
+          <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname, firstname') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
+        {% if loop.index0 == 0 %}
+          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
         {% endif %}
+        </div>
 
-    {% set index = loop.index0 %}
-        <div class="control-group control-custom">
-        <label class="control-label kata-input-comp" for="orgauth__{{ index }}__value_id">{{ _('Author') }}</label>
-            <div class="controls editor">
-                <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname, firstname') }}" id="orgauth__{{ index }}__value_id" name="orgauth__{{ index }}__value" value="{{ orgauth.value }}" />
-                {% if index == 0 %}
-              {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
-            {% endif %}
-            </div>
-            <label class="control-label kata-input-comp" for="orgauth__{{index}}__org">{{ _('Organization') }}</label>
-          <div class="controls editor" style="margin-top: 5px;">
-            <input type="text" name="orgauth__{{ index }}__org" class="kata-medium-input" value="{{ orgauth.org }}">
-            {% if index == 0 %}
-              {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
-            {% endif %}
-            <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-          </div>
-
+        <label class="control-label kata-input-comp" for="agent__{{index}}__organisation">{{ _('Organisation') }}</label>
+        <div class="controls editor" style="margin-top: 5px;">
+          <input type="text" name="agent__{{ index }}__organisation" class="kata-medium-input" value="{{ agent.organisation }}">
+          {% if loop.index0 == 0 %}
+            {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+          {% endif %}
+          <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
         </div>
         {% if eerrors and eerrors.orgauth and eerrors.orgauth[index] %}
             <span class="error-block-kata">
           	    {{ eerrors.orgauth[index] }}
           	</span>
         {% endif %}
+      </div>
     {% endfor %}
   </div>
+  {# Clumsy generation of error messages, but it does the trick and won't display python types #}
+  {#% if errors.agent %#}
+        {# <span class="error-block"> #}
+          {#% for item in errors.agent %#}
+            {#% if item.name and item.name[0]|length > 2 %#}
+              {#{ item.name[0] }#}{#<br />#}
+            {#% endif %#}
+            {#% if item.organisation and item.organisation[0]|length > 2 %#}
+              {#{ item.organisation[0] }#}{#<br />#}
+            {#% endif %#}
+          {#% endfor %#}
+        {# </span> #}
+  {#% endif %#}
 </div>
 
 {# ONKI selector for keywords #}
@@ -142,6 +152,12 @@
 <section class="module">
 <h2 class="module-heading-add-dataset">{{ _('Actors and roles') }}</h2>
   <div class="module-content">
+    {% set distributor = h.get_distributor(data) %}
+    {% if distributor %}
+      <input type="hidden" name="agent__999__role" value="distributor" />
+      <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
+      <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation }}" />
+    {% endif %}
     <h3 class="module-heading-add-dataset">{{ _('Distributor / publisher contact information') }}</h3>
     <div class="module-content">
       {% set contact_name = data.maintainer if data.maintainer else user.fullname %}
@@ -164,29 +180,33 @@
       {% endcall %}
     </div>
     <h3 class="module-heading-add-dataset">{{ _('Project that produced this dataset') }}</h3>
-    <input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked {% endif %}value="True">{{ _('This dataset was not produced in a project.') }}
-    <div class="module-content" id="projdiv" {% if data.projdis != 'False' and data.projdis %}style="display: none;"{% endif %}>
-      {% call form.input('project_name', label=_('Name'), id='project_name', placeholder=_('my project'), value=data.project_name, error=errors.project_name, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+    <!--<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked {% endif %}value="True">{{ _('This dataset was not produced in a project.') }}-->
+    <div class="module-content" id="projdiv">
+      {% set funder = h.get_funder(data) %}
+      {% call form.input('agent__0__organisation', label=_('Name'), id='agent__0__organisation', placeholder=_('my project'), value=funder.organisation, error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s name.")) }}
       {% endcall %}
 
-      {% call form.input('project_funder', label=_('Funder'), id='project_funder', placeholder=_('my funder'), value=data.project_funder, error=errors.project_funder, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+      {% call form.input('agent__0__name', label=_('Funder'), id='agent__0__name', placeholder=_('my funder'), value=funder.name, error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project funder\'s name.")) }}
       {% endcall %}
 
-      {% call form.input('project_funding', label=_('Funding id'), id='project_funding', placeholder=_('1234'), value=data.project_funding, error=errors.project_funding, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+      {% call form.input('agent__0__funding-id', label=_('Funding id'), id='agent__0__funding-id', placeholder=_('1234'), value=funder['funding-id'], error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s funding id. The funding id is not shown publicly.")) }}
       {% endcall %}
 
-      {% call form.input('project_homepage', label=_('Homepage'), id='project_homepage', placeholder=_('http://myproject'), value=data.project_homepage, error=errors.project_homepage, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+      {% call form.input('agent__0__URL', label=_('Homepage'), id='agent__0__URL', placeholder=_('http://myproject'), value=funder.URL, error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s homepage")) }}
       {% endcall %}
+      <input type="hidden" id="agent__0__role" name="agent__0__role" value="funder" />
     </div>
     <h3 class="module-heading-add-dataset">{{ _('Owner information')}}</h3>
     <div class="module-content">
-      {% call form.input('owner', label=_('Owner identity'), id="owner", placeholder=_('identification URL or name'), value=data.owner, error=errors.owner, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+      {% set owner = h.get_owner(data) %}
+      {% call form.input('agent__1__name', label=_('Owner identity'), id="agent__1__name", placeholder=_('identification URL or name'), value=owner.name, error=errors.agent, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example an ORCID identifier.")) }}
       {% endcall %}
+      <input type="hidden" id="agent__1__role" name="agent__1__role" value="owner" />
     </div>
   </div>
 </section>
@@ -247,7 +267,7 @@
         {% else %}
           {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
         {% endif %}
-      
+
       </div>
 
       <label class="radio" for="access_request">

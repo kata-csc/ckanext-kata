@@ -14,9 +14,7 @@ from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid
 from ckan.logic.validators import tag_length_validator
 from ckan.model import Package
-import ckanext.kata.utils as utils
-import ckanext.kata.converters as converters
-
+from ckanext.kata import utils, converters, settings
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -45,6 +43,7 @@ EVWHEN_REGEX = re.compile(
     """,
     re.VERBOSE)
 ALPHANUM_REGEX = re.compile(r'(?=(.*[a-zA-Z0-9]){2,})', re.U)
+
 
 def kata_tag_name_validator(value, context):
     '''
@@ -80,15 +79,15 @@ def kata_tag_string_convert(key, data, errors, context):
         kata_tag_name_validator(tag, context)
 
 
-def check_project(key, data, errors, context):
-    '''
-    Check if user is trying to send project data when project is disabled.
-    '''
-    if data[('project_name',)] or data[('project_funder',)] or\
-        data[('project_funding',)] or data[('project_homepage',)]:
-        if data[('projdis',)] != 'False':
-            errors[key].append(_('Project data received even if no project is associated.'))
-
+# def check_project(key, data, errors, context):
+#     '''
+#     Check if user is trying to send project data when project is disabled.
+#     '''
+#     if data[('project_name',)] or data[('project_funder',)] or\
+#         data[('project_funding',)] or data[('project_homepage',)]:
+#         if data[('projdis',)] != 'False':
+#             errors[key].append(_('Project data received even if no project is associated.'))
+#
 
 def validate_kata_date(key, data, errors, context):
     '''
@@ -178,19 +177,20 @@ def validate_phonenum(key, data, errors, context):
         if not TEL_REGEX.match(data[key]):
             errors[key].append(_('Invalid telephone number, must be like +13221221'))
 
-def check_project_dis(key, data, errors, context):
-    '''
-    If projdis checkbox is checked, check that the project fields have data.
-    '''
-    if not ('projdis',) in data:
-        not_empty(key, data, errors, context)
-    else:
-        projdis = data.get(('projdis',), False)
-        value = data.get(key)
-        if not projdis or projdis == 'False':
-            if value == "":
-                errors[(key[0],)].append(_('Missing value'))
 
+# def check_project_dis(key, data, errors, context):
+#     '''
+#     If projdis checkbox is checked, check that the project fields have data.
+#     '''
+#     if not ('projdis',) in data:
+#         not_empty(key, data, errors, context)
+#     else:
+#         projdis = data.get(('projdis',), False)
+#         value = data.get(key)
+#         if not projdis or projdis == 'False':
+#             if value == "":
+#                 errors[(key[0],)].append(_('Missing value'))
+#
 
 def validate_access_application_url(key, data, errors, context):
     '''
@@ -241,18 +241,6 @@ def check_through_provider_url(key, data, errors, context):
     else:
         data.pop(key, None)
         raise StopOnError
-
-
-def check_author_org(key, data, errors, context):
-    '''
-    Validates author and organisation
-    '''
-    # index 0 must exist, for plain orgauth is false positive
-    if not (('orgauth', 0, 'org') in data):
-        if not ('orgauth', 0, 'value') in errors:
-            errors[('orgauth', 0, 'value',)] = []
-        # To 0, to orgauth would mess the unflatten function with multiple authors
-        errors[('orgauth', 0, 'value')].append(_('Missing author and organisation pairs'))
 
 
 def validate_discipline(key, data, errors, context):
@@ -327,7 +315,8 @@ def validate_algorithm(key, data, errors, context):
         if not HASH_REGEX.match(val):
             raise Invalid(_('Algorithm "%s" must be alphanumeric characters '
                             'or symbols _-()') % (val))
-        
+
+
 def validate_title(key, data, errors, context):
     '''
     Check the existence of first title
@@ -336,7 +325,8 @@ def validate_title(key, data, errors, context):
         val = data.get(key)
         if len(val) == 0:
             raise Invalid(_('First title can not be empty'))
-        
+
+
 def validate_title_duplicates(key, data, errors, context):
     '''
     Checks that there is only one title per language
@@ -347,6 +337,7 @@ def validate_title_duplicates(key, data, errors, context):
             langs.append(data[k])
     if len(set(langs)) != len(langs):
         raise Invalid(_('Duplicate titles for a language not permitted'))
+
 
 def package_name_not_changed(key, data, errors, context):
     '''
@@ -359,7 +350,8 @@ def package_name_not_changed(key, data, errors, context):
     if package and value != package.name:
         raise Invalid('Cannot change value of key from %s to %s. '
                       'This key is read-only' % (package.name, value))
-        
+
+
 def validate_direct_download_url(key, data, errors, context):
     '''
     Validates that direct_download_URL (at this stage a resource.url) is present
@@ -367,6 +359,66 @@ def validate_direct_download_url(key, data, errors, context):
     if data[('availability',)] == 'direct_download' and\
       (data[key] == u'' or data[key] == u'http://'):
         raise Invalid(_('Missing URL'))
+
+
+def check_agent(key, data, errors, context):
+    '''
+    Check that compulsory agents exists.
+    '''
+    author_found = False
+    distributor_found = False
+    roles = [data[k] for k in data.keys() if k[0] == 'agent' and k[2] == 'role']
+
+    for role in roles:
+        if role == 'author':
+            author_found = True
+        if role == 'distributor':
+            distributor_found = True
+
+    if not (author_found and distributor_found):
+        error = 'Missing compulsory agents ({0}, {1}'.format(
+            settings.AGENT_ROLES['author'], settings.AGENT_ROLES['distributor'])
+        raise Invalid(_(error))
+        # if ('agent',) in errors:
+        #     errors[('agent',)].append(_(error))
+        # else:
+        #     errors[('agent',)] = [_(error)]
+
+def check_agent_fields(key, data, errors, context):
+    '''
+    Check that compulsory fields for this agent exists.
+    '''
+
+    if not (data.get((key[0], key[1], 'name')) or
+                data.get((key[0], key[1], 'organisation')) or
+                data.get((key[0], key[1], 'URL'))):
+        data.pop(key, None)
+        raise StopOnError
+
+def check_langtitle(key, data, errors, context):
+    '''
+    Check that langtitle field exists
+    '''
+    # import pprint
+    # pprint.pprint(data)
+    if data.get(('langtitle', 0, 'value'), None) is None:
+        error = 'Missing dataset title'
+        raise Invalid(_(error))
+        # if ('langtitle',) in errors:
+        #     errors[('langtitle',)].append(_(error))
+        # else:
+        #     errors[('langtitle',)] = [_(error)]
+
+
+def check_pids(key, data, errors, context):
+    '''
+    Check that pids field exists
+    '''
+    if data.get((u'pids', 0, u'id'), None) is None:
+        error = 'Missing dataset PIDs'
+        raise Invalid(_(error))
+
+
     
 def check_events(key, data, errors, context):
     '''

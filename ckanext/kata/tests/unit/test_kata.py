@@ -59,6 +59,13 @@ class TestKataPlugin(TestCase):
     def setup_class(cls):
         """Set up tests."""
 
+        cls.agents = {
+            'agent': [{'URL': u'http://google.com/', 'funding-id': u'lis\xe4\xe4-rahaa-nyt-1234',
+                       'name': u'Roope Rahoittaja', 'organisation': u'Roopen Rahas\xe4ili\xf6', 'role': u'funder'},
+                      {'name': u'Ossi Omistaja', 'role': u'owner'},
+                      {'name': u'Dada', 'organisation': u'Dada', 'role': u'author'}],
+            }
+
         cls.some_data_dict = {'sort': u'metadata_modified desc',
                               'fq': '',
                               'rows': 20,
@@ -183,6 +190,14 @@ class TestKataPlugin(TestCase):
         html_location = self.kata_plugin.package_form()
         assert len(html_location) > 0
 
+    def test_get_funder(self):
+        assert self.kata_plugin.get_funder(self.agents)['name'] == u'Roope Rahoittaja'
+
+    def test_get_owner(self):
+        assert self.kata_plugin.get_owner(self.agents)['name'] == u'Ossi Omistaja'
+
+    def test_get_authors(self):
+        assert self.kata_plugin.get_authors(self.agents)[0]['name'] == u'Dada'
 
 class TestKataSchemas(TestCase):
 

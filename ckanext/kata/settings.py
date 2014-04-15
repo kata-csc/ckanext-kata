@@ -1,5 +1,13 @@
 '''Settings and constants for Kata CKAN extension'''
 
+AGENT_ROLES = {
+    'author': 'Author',
+    'contributor': 'Contributor',
+    'distributor': 'Distributor/Publisher',
+    'funder': 'Funder',
+    'owner': 'Owner',
+    'producer': 'Producer',
+}
 
 # Facets used in Solr queries
 # Facets need also to be changed to search.html. This all should be fixed in newer CKAN versions with IFacets interface.
@@ -82,16 +90,15 @@ AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
                         }
 
 # Required extras fields
-KATA_FIELDS_REQUIRED = ['availability',
-                        'author',
-                        'contact_URL',
-                        'langdis',
-                        'language',
-                        'organization',
-                        'owner',
+KATA_FIELDS_REQUIRED = ['agent',
+                        'availability',
+                        # 'author',
+                        'langtitle',
                         'contact_phone',
-                        'pids',
-                        'projdis',
+                        'contact_URL',
+                        # 'organization',
+                        # 'owner',
+                        # 'projdis',
                         #'maintainer_email',
                         #'version_PID'
                         ]
@@ -109,12 +116,15 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            'evwhen',
                            'evwho',
                            'geographic_coverage',
+                           'langdis',
+                           'language',
                            'license_URL',
                            #'mimetype',
-                           'project_funder',
-                           'project_funding',
-                           'project_homepage',
-                           'project_name',
+                           # 'project_funder',
+                           # 'project_funding',
+                           # 'project_homepage',
+                           # 'project_name',
+                           'pids',
                            'temporal_coverage_begin',
                            'temporal_coverage_end']
 
@@ -146,3 +156,7 @@ def get_field_title(key, _):
     '''
 
     return _(_FIELD_TITLES[key])
+
+def resolve_agent_role(role):
+    return AGENT_ROLES.get(role, None)
+
