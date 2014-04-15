@@ -808,7 +808,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # Log non-empty search queries and constraints (facets)
         if data_dict['q'] or (data_dict['fq'] and data_dict['fq'] != '+dataset_type:dataset'):
-            log.info("[{t}] Search query: {q};  constraints: {c}".format(t=datetime.datetime.now(), q=data_dict['q'], c=data_dict['fq']))
+            log.info(u"[{t}] Search query: {q};  constraints: {c}".format(t=datetime.datetime.now(), q=data_dict['q'], c=data_dict['fq']))
 
         return data_dict
 
