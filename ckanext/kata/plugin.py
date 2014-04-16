@@ -820,9 +820,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param pkg_dict: pkg_dict to modify
         '''
         
-        # Addming res_mimetype to pkg_dict
-        # Can be removed after res_mimetype is added
-        # to CKAN's index function
+        # Add res_mimetype to pkg_dict. Can be removed after res_mimetype is
+        # added to CKAN's index function.
         data = json.loads(pkg_dict['data_dict'])
         res_mimetype = []
         
