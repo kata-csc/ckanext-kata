@@ -832,29 +832,31 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         pkg_dict['res_mimetype'] = res_mimetype
 
         # Separate agent roles for Solr indexing
-        pkg_dict2 = {'access_application_new_form': u'False',
-                     'agent': [],
-                     'agent_0_URL': u'www.csc.fi',
-                     'agent_0_funding-id': u'43096ertjgad\xf6sjgn89q3q4',
-                     'agent_0_name': u'F. Under',
-                     'agent_0_organisation': u'Agentti-Project',
-                     'agent_0_role': u'funder',
-                     'agent_1_name': u'o. oWNER',
-                     'agent_1_role': u'owner',
-                     'agent_2_name': u'M. Merger',
-                     'agent_2_role': u'author',
-                     'agent_3_name': u'juho',
-                     'agent_3_role': u'distributor',}
+
+        # pkg_dict2 = {'access_application_new_form': u'False',
+        #              'agent': [],
+        #              'agent_0_URL': u'www.csc.fi',
+        #              'agent_0_funding-id': u'43096ertjgad\xf6sjgn89q3q4',
+        #              'agent_0_name': u'F. Under',
+        #              'agent_0_organisation': u'Agentti-Project',
+        #              'agent_0_role': u'funder',
+        #              'agent_1_name': u'o. oWNER',
+        #              'agent_1_role': u'owner',
+        #              'agent_2_name': u'M. Merger',
+        #              'agent_2_role': u'author',
+        #              'agent_3_name': u'juho',
+        #              'agent_3_role': u'distributor',}
+        new_items = {}
+
         for key, value in pkg_dict.iteritems():
             tokens = key.split('_')
             if tokens[0] == 'agent' and tokens[2] == 'role':
                 role = value
                 role_idx = role + '_' + tokens[1]
-                pkg_dict[role_idx] = pkg_dict.get('_'.join(tokens[0], tokens[1], 'name'), '')
+                new_items[role_idx] = pkg_dict.get('_'.join((tokens[0], tokens[1], 'name')), '')
                 org_idx = 'organization_' + tokens[1]
-                pkg_dict[org_idx] = pkg_dict.get('_'.join(tokens[0], tokens[1], 'organisation'), '')
+                new_items[org_idx] = pkg_dict.get('_'.join((tokens[0], tokens[1], 'organisation')), '')
 
-        pkg_dict['author'] = u''
-        raise Exception
-        
+        pkg_dict.update(new_items)
+
         return pkg_dict
