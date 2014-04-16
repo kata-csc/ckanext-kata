@@ -31,14 +31,16 @@ TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
 def package_show(context, data_dict):
     '''
-    Called before showing the dataset in some interface (browser, API).
+    Called before showing the dataset in some interface (browser, API),
+    or when adding package to Solr index (no validation / conversions then).
     '''
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
 
     # Remove empty agents that come from padding the agent list in converters
-    agents = filter(None, pkg_dict1.get('agent', []))
-    pkg_dict1['agent'] = agents or []
+    if 'agent' in pkg_dict1:
+        agents = filter(None, pkg_dict1.get('agent', []))
+        pkg_dict1['agent'] = agents or []
 
     # Normally logic function should not catch the raised errors
     # but here it is needed so action package_show won't catch it instead
