@@ -31,6 +31,8 @@ TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'mimetype': u'application/csv',
                  'resource_type': 'file'}
 
+TEST_SEARCH_QUERY = {'q': 'Runoilija'}
+
 TEST_DATADICT = {'access_application_new_form': u'False',
                  'agent': [{'role': u'author',
                             'name': u'T. Tekijä',
@@ -63,18 +65,6 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'contact_phone': u'05549583',
                  'direct_download_URL': u'http://www.tdata.fi/kata',
                  'discipline': u'Tietojenkäsittely ja informaatiotieteet',
-#                 'evdescr': [{'value': u'Kerätty dataa'},
-#                             {'value': u'Alustava julkaistu'},
-#                             {'value': u'Lisätty dataa'}],
-#                 'evtype': [{'value': u'creation'},
-#                            {'value': u'published'},
-#                            {'value': u'modified'}],
-#                 'evwhen': [{'value': u'2000-01-01'},
-#                            {'value': u'2010-04-15'},
-#                            {'value': u'2013-11-18'}],
-#                 'evwho': [{'value': u'T. Tekijä'},
-#                           {'value': u'J. Julkaisija'},
-#                           {'value': u'M. Muokkaaja'}],
                  'geographic_coverage': u'Keilaniemi (populated place),Espoo (city)',
                  'langdis': 'False',
                  'langtitle': [{'lang': u'fin', 'value': u'Test Data'},
@@ -87,20 +77,6 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'mimetype': u'application/csv',
                  'name': u'',
                  'notes': u'Vapaamuotoinen kuvaus aineistosta.',
-                 # 'orgauth': [{'org': u'CSC Oy', 'value': u'T. Tekijä'},
-                 #             {'org': u'Helsingin Yliopisto', 'value': u'T. Tutkija'},
-                 #             {'org': u'Org 3', 'value': u'K. Kolmas'}],
-                 # 'owner': u'Ossi Omistaja',
-                 # 'pids': {
-                 #     u'http://helda.helsinki.fi/oai/request': {
-                 #         'data': [u'some_data_pid', u'another_data_pid'],
-                 #         'metadata': [u'metadata_pid', u'another_metadata_pid', u'third_metadata_pid'],
-                 #         'version': [u'version_pid', u'another_version_pid'],
-                 #     },
-                 #     'kata': {
-                 #         'version': [u'kata_version_pid'],
-                 #     },
-                 # },
                  'event': [
                         {
                             u'when': u'2000-01-01',
@@ -143,11 +119,6 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                          'type': u'version',
                      },
                  ],
-                 # 'projdis': 'False',
-                 # 'project_funder': u'NSA',
-                 # 'project_funding': u'1234-rahoituspäätösnumero',
-                 # 'project_homepage': u'http://www.csc.fi',
-                 # 'project_name': u'Tutkimusprojekti',
                  'tag_string': u'Python,ohjelmoitunut solukuolema,programming',
                  'temporal_coverage_begin': u'2003-07-10T06:36:27Z',
                  'temporal_coverage_end': u'2010-04-15T03:24:47Z',
@@ -341,6 +312,25 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert output['__type'] == 'Validation Error'
 
         log.disabled = False
+
+
+class TestSearchDataset(KataApiTestCase):
+    '''
+    Tests for checking that indexing and searching datasets work.
+    '''
+    def test_search_dataset(self):
+        '''
+        Test that terms in TEST_SEARCH_QUERY were indexed correctly by Solr and
+        that dataset is found by the terms.
+        '''
+        # Create datasest just for this test
+        created = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
+                                 status=200, **TEST_DATADICT)
+
+        output = call_action_api(self.app, 'package_search', status=200,
+                                 **TEST_SEARCH_QUERY)
+        print(output)
+        assert output['count'] == 1
 
 
 class TestDataReading(KataApiTestCase):
