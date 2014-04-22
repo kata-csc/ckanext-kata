@@ -6434,9 +6434,9 @@ msgstr "Avainsanan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja 
 msgid "Project data received even if no project is associated."
 msgstr "Projektin tietoja vastaanotettu vaikka ei määritelty kuuluvaksi projektiin."
 
-#: ckanext/kata/validators.py:86
+#: ckanext/kata/validators.py:101
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
-msgstr "Päivämäärän muoto väärä, oikea muoto ISO 8601: 2012-12-31T13:12:11."
+msgstr "Päivämäärän muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
 
 #: ckanext/kata/validators.py:88
 msgid "Invalid date"
@@ -10643,18 +10643,8 @@ msgid "used"
 msgstr "käyttö"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:295
-msgid ""
-"Describe the lifecycle of your data by adding important events related to "
-"the data. A single event consists of four fields: event, by whom, when "
-"and description. Fill all four fields when adding an event.<br /><br />"
-"You can add more events by first adding a new set of fields by clicking "
-"the '+' button."
-msgstr ""
-"Voit kuvailla datasi elinkaarta lisäämällä tähän datan syntyyn ja "
-"käyttöön liittyviä tapahtumia. Yksittäinen tapahtuma koostuu neljästä "
-"kentästä: tapahtuma, kenen toimesta, milloin ja kuvaus. Täytä kaikki kentät, "
-"kun lisäät tapahtuman.<br /><br />Voit lisätä kenttiä uusille tapahtumille "
-"'+'-nappulasta."
+msgid "Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the '+' button.<br /><br />To remove an event, delete its contents from the three text fields."
+msgstr "Voit kuvailla datasi elinkaarta lisäämällä tähän datan syntyyn ja käyttöön liittyviä tapahtumia. Yksittäinen tapahtuma koostuu neljästä kentästä: tapahtuma, kenen toimesta, milloin ja kuvaus. Täytä kaikki kentät, kun lisäät tapahtuman.<br /><br />Voit lisätä kenttiä uusille tapahtumille '+'-nappulasta.<br /><br />Poistaaksesi tapahtuman tyhjennä kyseisen tapahtuman sisältö sen kolmesta tekstikentästä."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:305
 msgid "By whom "
@@ -11213,6 +11203,24 @@ msgstr "tietoaineisto"
 
 msgid "on same domain"
 msgstr "samassa domainissa"
+
+msgid "Subject"
+msgstr "Aihe"
+
+msgid "Locations"
+msgstr "Paikat"
+
+msgid "Disciplines"
+msgstr "Tieteenalat"
+
+msgid "Event"
+msgstr "Tapahtuma"
+
+msgid "Temporal coverage begin"
+msgstr "Ajallinen kattavuus, alku"
+
+msgid "Temporal coverage end"
+msgstr "Ajallinen kattavuus, loppu"
 
 # Kata macro
 msgid "See further information about the error(s) from the field in question. Note, that errors in resource url may be in resource related data, like file type and algorithm."

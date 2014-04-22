@@ -838,7 +838,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # added to CKAN's index function.
         data = json.loads(pkg_dict['data_dict'])
         res_mimetype = []
-        for resource in data['resources']:
+        for resource in data.get('resources', []):
             if resource['mimetype'] == None:
                 res_mimetype.append(u'')
             else:
@@ -847,19 +847,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # Separate agent roles for Solr indexing
 
-        # pkg_dict2 = {'access_application_new_form': u'False',
-        #              'agent': [],
-        #              'agent_0_URL': u'www.csc.fi',
-        #              'agent_0_funding-id': u'43096ertjgad\xf6sjgn89q3q4',
-        #              'agent_0_name': u'F. Under',
-        #              'agent_0_organisation': u'Agentti-Project',
-        #              'agent_0_role': u'funder',
-        #              'agent_1_name': u'o. oWNER',
-        #              'agent_1_role': u'owner',
-        #              'agent_2_name': u'M. Merger',
-        #              'agent_2_role': u'author',
-        #              'agent_3_name': u'juho',
-        #              'agent_3_role': u'distributor',}
         new_items = {}
 
         for key, value in pkg_dict.iteritems():
@@ -867,9 +854,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if tokens[0] == 'agent' and tokens[2] == 'role':
                 role = value
                 role_idx = role + '_' + tokens[1]
-                new_items[role_idx] = pkg_dict.get('_'.join((tokens[0], tokens[1], 'name')), '')
+                role_idx = str(role_idx)        # Must not be unicode
                 org_idx = 'organization_' + tokens[1]
+
+                agent_name = pkg_dict.get('_'.join((tokens[0], tokens[1], 'name')), '')
+
+                new_items[role_idx] = agent_name
                 new_items[org_idx] = pkg_dict.get('_'.join((tokens[0], tokens[1], 'organisation')), '')
+                new_items['agent_name_' + tokens[1]] = agent_name
 
         pkg_dict.update(new_items)
 

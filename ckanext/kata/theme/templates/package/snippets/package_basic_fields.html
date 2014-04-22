@@ -119,17 +119,17 @@
   {#% endif %#}
 </div>
 
-{# ONKI selector for keywords #}
+{# Autocomplete for keywords #}
 
 <div class="kata-multi-input">
   <span class="kata-multi-heading">
-    {{ _('Keywords') }}
+    {{ _('Subject') }}
   </span><br />
   {{ _('Search keywords from YSO ontology, select keywords with enter or mouse click.') }}
   <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords (tags) that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />You can change the language of suggested words from the language menu.<br /><br />The suggestions are retrieved from the ONKI vocabulary service (see http://onki.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
   <span class="kata-btn-span tta-orange">?</span></button><br /><br />
   {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-  {{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-medium'], attrs=tag_attrs) }}
+  {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-medium'], attrs=tag_attrs) }}
   {% if errors.tag_string %}
     <span class="error-block">{{ errors.tag_string[0] }}</span>
   {% endif %}
