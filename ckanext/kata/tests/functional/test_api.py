@@ -8,19 +8,15 @@ Functional tests for Kata that use CKAN API.
 
 import copy
 import logging
-import unittest
+from nose import with_setup
 
-import paste.fixture
-from pylons import config
 import testfixtures
 
-from ckan import model
-from ckan.config.middleware import make_app
-from ckan.lib.create_test_data import CreateTestData
 from ckan.lib.helpers import url_for
+import ckan.lib.search as search
 from ckan.tests import call_action_api
+from ckan import model
 
-import ckanext.kata.model as kata_model
 import ckanext.kata.settings as settings
 from ckanext.kata.tests.functional import KataApiTestCase
 
@@ -30,8 +26,6 @@ TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'hash': u'somehash',
                  'mimetype': u'application/csv',
                  'resource_type': 'file'}
-
-TEST_SEARCH_QUERY = {'q': 'Runoilija'}
 
 TEST_DATADICT = {'access_application_new_form': u'False',
                  'agent': [{'role': u'author',
@@ -316,19 +310,52 @@ class TestCreateDatasetAndResources(KataApiTestCase):
 
 class TestSearchDataset(KataApiTestCase):
     '''
-    Tests for checking that indexing and searching datasets work.
+    Tests for checking that indexing and searching the default dataset works.
     '''
+
+    @classmethod
+    def setup_class(cls):
+        '''
+        Set up each test
+        '''
+        super(TestSearchDataset, cls).setup_class()
+        search.clear()
+
+        # Create a dataset for this test class
+        created = call_action_api(cls.app, 'package_create', apikey=cls.normal_user.apikey,
+                                 status=200, **TEST_DATADICT)
+
     def test_search_dataset(self):
         '''
         Test that terms in TEST_SEARCH_QUERY were indexed correctly by Solr and
         that dataset is found by the terms.
         '''
-        # Create datasest just for this test
-        created = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
-
         output = call_action_api(self.app, 'package_search', status=200,
-                                 **TEST_SEARCH_QUERY)
+                                 **{'q': 'Runoilija'})
+        print(output)
+        assert output['count'] == 1
+
+    def test_search_dataset_agent_id(self):
+        output = call_action_api(self.app, 'package_search', status=200,
+                                 **{'q': 'agent:lhywrt8y08536tq3yq'})
+        print(output)
+        assert output['count'] == 1
+
+    def test_search_dataset_agent_org(self):
+        output = call_action_api(self.app, 'package_search', status=200,
+                                 **{'q': 'agent:CSC'})
+        print(output)
+        assert output['count'] == 1
+
+    def test_search_dataset_agent_not_found(self):
+        output = call_action_api(self.app, 'package_search', status=200,
+                                 **{'q': 'agent:NSA'})
+        print(output)
+        assert output['count'] == 0
+
+    def test_search_dataset_funder(self):
+        output = call_action_api(self.app, 'package_search', status=200,
+                                 **{'q': 'funder:Ahanen'})
         print(output)
         assert output['count'] == 1
 
