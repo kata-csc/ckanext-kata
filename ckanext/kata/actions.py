@@ -19,7 +19,7 @@ import ckan.model as model
 from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
-from ckan.logic import check_access, NotAuthorized
+from ckan.logic import check_access, NotAuthorized, side_effect_free
 from ckanext.kata import utils
 import ckanext.kata.schemas as schemas
 
@@ -28,12 +28,19 @@ log = logging.getLogger(__name__)     # pylint: disable=invalid-name
 
 TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
-
+@side_effect_free
 def package_show(context, data_dict):
+    '''Return the metadata of a dataset (package) and its resources.
+
+    :param id: the id or name of the dataset
+    :type id: string
+
+    :rtype: dictionary
     '''
-    Called before showing the dataset in some interface (browser, API),
-    or when adding package to Solr index (no validation / conversions then).
-    '''
+
+    # Called before showing the dataset in some interface (browser, API),
+    # or when adding package to Solr index (no validation / conversions then).
+
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
 
