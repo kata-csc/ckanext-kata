@@ -42,7 +42,7 @@ EVWHEN_REGEX = re.compile(
     (-?(0[0-9]?|1[0-9]?|2[0-9]?|3[01]?))?$
     """,
     re.VERBOSE)
-ALPHANUM_REGEX = re.compile(r'(?=(.*[a-zA-Z0-9]){2,})', re.U)
+ALPHANUM_REGEX = re.compile(r'(?=(.*[\w]){2,})', re.U)
 
 
 def kata_tag_name_validator(value, context):
