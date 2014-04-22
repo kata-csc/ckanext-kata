@@ -858,10 +858,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 org_idx = 'organization_' + tokens[1]
 
                 agent_name = pkg_dict.get('_'.join((tokens[0], tokens[1], 'name')), '')
+                agent_org = pkg_dict.get('_'.join((tokens[0], tokens[1], 'organisation')), '')
+                agent_id = pkg_dict.get('_'.join((tokens[0], tokens[1], 'id')), '')
 
                 new_items[role_idx] = agent_name
-                new_items[org_idx] = pkg_dict.get('_'.join((tokens[0], tokens[1], 'organisation')), '')
+                new_items[org_idx] = agent_org
                 new_items['agent_name_' + tokens[1]] = agent_name
+                new_items['agent_name_' + tokens[1] + '_org'] = agent_org
+                new_items['agent_name_' + tokens[1] + '_id'] = agent_id
 
         pkg_dict.update(new_items)
 

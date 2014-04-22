@@ -7,7 +7,6 @@ from ckan import model, tests
 
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
-import ckan.lib.search as search
 
 import ckanext.kata.model as kata_model
 
@@ -48,7 +47,6 @@ class KataApiTestCase(unittest.TestCase):
         CreateTestData.create()
         cls.sysadmin_user = model.User.get('testsysadmin')
         cls.normal_user = model.User.get('tester')
-        search.clear()
 
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
@@ -57,6 +55,5 @@ class KataApiTestCase(unittest.TestCase):
     def teardown_class(cls):
         """Get away from testing environment."""
         model.repo.rebuild_db()
-        search.clear()
 
 
