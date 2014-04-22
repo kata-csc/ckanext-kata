@@ -306,6 +306,7 @@ organization_update = _decorate(ckan.logic.action.update.organization_update, 'o
 organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'organization', 'delete')
 
 
+@side_effect_free
 def package_search(context, data_dict):
     """
     Wraps around the CKAN package_search action to add customizations
