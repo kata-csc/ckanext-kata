@@ -7,6 +7,7 @@ Test classes for Kata CKAN Extension.
 """
 
 import copy
+import json
 from unittest import TestCase
 
 from pylons.util import PylonsContext, pylons, AttribSafeContextObj
@@ -198,6 +199,30 @@ class TestKataPlugin(TestCase):
 
     def test_get_authors(self):
         assert self.kata_plugin.get_authors(self.agents)[0]['name'] == u'Dada'
+
+    def test_before_index(self):
+        pkg_dict = {'access_application_new_form': u'False',
+                     'agent_0_URL': u'www.csc.fi',
+                     'agent_0_funding-id': u'43096ertjgad\xf6sjgn89q3q4',
+                     'agent_0_name': u'F. Under',
+                     'agent_0_organisation': u'Agentti-Project',
+                     'agent_0_role': u'funder',
+                     'agent_1_name': u'o. oWNER',
+                     'agent_1_role': u'owner',
+                     'agent_2_name': u'M. Merger',
+                     'agent_2_role': u'author',
+                     'agent_3_name': u'juho',
+                     'agent_3_role': u'distributor',
+                     'data_dict': '{"dada": "dudu"}'}
+
+        #output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))
+        output = self.kata_plugin.before_index(pkg_dict)
+
+        assert 'funder_0' in output
+        assert 'owner_1' in output
+        assert 'author_2' in output
+        assert 'distributor_3' in output
+
 
 class TestKataSchemas(TestCase):
 
