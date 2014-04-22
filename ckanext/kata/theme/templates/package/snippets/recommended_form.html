@@ -18,9 +18,9 @@
       <h2 class="module-heading-add-dataset">{{ _('Coverage') }}</h2>
       <div class="module-content">
         
-        {# ONKI selector for spatial data #}
+        {# Autocomplete for spatial data #}
 
-        <div class="kata-multi-input">
+        <div class="kata-multi-input kata-autocomplete">
           <span class="kata-multi-heading">
           {{ _('Spatial coverage') }}
           </span><br />
@@ -90,9 +90,9 @@
         {% endcall %}
 #}
         
-        {# ONKI selector for discipline/branch of science #}
+        {# Autocomplete for discipline/branch of science #}
 
-        <div class="kata-multi-input">
+        <div class="kata-multi-input kata-autocomplete">
           <span class="kata-multi-heading">
           {{ _('Discipline/branch of science') }}
           </span><br />
@@ -269,7 +269,7 @@
                     {{ kata_form.plusbutton(onclick="$(\'#evbtn__" ~ index ~ "__value_id\').change();") }}
                   </li>
                   <li class="kata">
-                    {{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.')) }}
+                    {{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.<br /><br />To remove an event, delete its contents from the three text fields.')) }}
                     <input style="display: none;" type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
                   </li>
                 </div>
@@ -316,7 +316,7 @@
                     {{ kata_form.plusbutton(onclick="$(\'#evbtn__" ~ index ~ "__value_id\').change();") }}
                   </li>
                   <li class="kata">
-                    {{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.')) }}
+                    {{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.<br /><br />To remove an event, delete its contents from the three text fields.')) }}
                     <input style="display: none;" type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
                   </li>
                 </div>

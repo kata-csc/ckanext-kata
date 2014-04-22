@@ -358,6 +358,9 @@ header.masthead .not-authed a {
 	background-image: none !important;
 	border: 0;
 }
+.kata-autocomplete .select2-input {
+	width: 316px !important;
+}
 .module {
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;

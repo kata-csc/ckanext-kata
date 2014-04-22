@@ -58,10 +58,10 @@ SEARCH_FIELDS = ['ext_text',
                  'ext_organization',
                  #'ext_groups',
                  'ext_funder',
-                 'ext_licensetext',
+                 #'ext_licensetext',
                  #'ext_extras_fformat',
-                 'ext_fformatstring',
-                 'ext_extras_language',
+                 #'ext_fformatstring',
+                 #'ext_extras_language',
                  ]
 
 # File types and converters used by DataMiningController.
