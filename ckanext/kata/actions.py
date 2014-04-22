@@ -308,10 +308,16 @@ organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'o
 
 @side_effect_free
 def package_search(context, data_dict):
-    """
-    Wraps around the CKAN package_search action to add customizations
-    in some special cases.
-    """
+    '''Return the metadata of a dataset (package) and its resources.
+
+    :param id: the id or name of the dataset
+    :type id: string
+
+    :rtype: dictionary
+    '''
+    #Wraps around the CKAN package_search action to add customizations
+    #in some special cases.
+
     if c.controller == "home" and c.action == "index":
         data_dict['sort'] = "metadata_modified desc"
         data_dict['rows'] = 5
