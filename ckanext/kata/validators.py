@@ -97,8 +97,8 @@ def validate_kata_date(key, data, errors, context):
         try:
             iso8601.parse_date(data[key])
         except (iso8601.ParseError, TypeError):
-            errors[key].append(_('Invalid date format: {val}, must be ISO 8601.'
-                                 ' Example: 2001-01-01'.format(val=data[key])))
+            errors[key].append(_('Invalid date format, must be ISO 8601.'
+                                 ' Example: 2001-01-01'))
         except ValueError:
             errors[key].append(_('Invalid date'))
 

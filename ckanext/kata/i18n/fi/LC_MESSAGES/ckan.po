@@ -6435,8 +6435,8 @@ msgid "Project data received even if no project is associated."
 msgstr "Projektin tietoja vastaanotettu vaikka ei määritelty kuuluvaksi projektiin."
 
 #: ckanext/kata/validators.py:101
-msgid "Invalid date format: {val}, must be ISO 8601. Example: 2001-01-01"
-msgstr "Päivämäärän {val} muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
+msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
+msgstr "Päivämäärän muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
 
 #: ckanext/kata/validators.py:88
 msgid "Invalid date"
