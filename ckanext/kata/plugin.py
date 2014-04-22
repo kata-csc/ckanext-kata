@@ -217,6 +217,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'get_distributor': self.get_distributor,
                 'get_funder': self.get_funder,
                 'get_kata_errors': self.get_kata_errors,
+                'get_agent_errors': self.get_agent_errors,
                 'get_owner': self.get_owner,
                 'has_agents_funding_id': self.has_agents_funding_id,
                 'has_agents_name': self.has_agents_name,
@@ -243,6 +244,17 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_authors(self, data_dict):
         '''Get all authors from agent field in data_dict'''
         return filter(lambda x: x.get('role') == u'author', data_dict.get('agent', []))
+
+    def get_agent_errors(self, errors, index, name):
+        '''Get errors correctly for agents.
+
+        :return: [u'error1', u'error2']
+        '''
+        error = []
+        agent = errors.get('agent')
+        if agent:
+            error = agent[index].get(name) if agent[index] else []
+        return error
 
     def has_agents_name(self, data_dict):
         '''Return true if some of the data dict's agents has attribute 'name'.'''

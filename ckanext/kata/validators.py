@@ -376,8 +376,9 @@ def check_agent(key, data, errors, context):
             distributor_found = True
 
     if not (author_found and distributor_found):
-        error = 'Missing compulsory agents ({0}, {1}'.format(
-            settings.AGENT_ROLES['author'], settings.AGENT_ROLES['distributor'])
+        error = 'Missing compulsory agent: {0}'.format(
+            settings.AGENT_ROLES['author'] if distributor_found else
+            settings.AGENT_ROLES['distributor'])
         raise Invalid(_(error))
         # if ('agent',) in errors:
         #     errors[('agent',)].append(_(error))
