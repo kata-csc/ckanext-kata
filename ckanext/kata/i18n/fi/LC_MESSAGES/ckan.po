@@ -10643,18 +10643,8 @@ msgid "used"
 msgstr "käyttö"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:295
-msgid ""
-"Describe the lifecycle of your data by adding important events related to "
-"the data. A single event consists of four fields: event, by whom, when "
-"and description. Fill all four fields when adding an event.<br /><br />"
-"You can add more events by first adding a new set of fields by clicking "
-"the '+' button."
-msgstr ""
-"Voit kuvailla datasi elinkaarta lisäämällä tähän datan syntyyn ja "
-"käyttöön liittyviä tapahtumia. Yksittäinen tapahtuma koostuu neljästä "
-"kentästä: tapahtuma, kenen toimesta, milloin ja kuvaus. Täytä kaikki kentät, "
-"kun lisäät tapahtuman.<br /><br />Voit lisätä kenttiä uusille tapahtumille "
-"'+'-nappulasta."
+msgid "Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the '+' button.<br /><br />To remove an event, delete its contents from the three text fields."
+msgstr "Voit kuvailla datasi elinkaarta lisäämällä tähän datan syntyyn ja käyttöön liittyviä tapahtumia. Yksittäinen tapahtuma koostuu neljästä kentästä: tapahtuma, kenen toimesta, milloin ja kuvaus. Täytä kaikki kentät, kun lisäät tapahtuman.<br /><br />Voit lisätä kenttiä uusille tapahtumille '+'-nappulasta.<br /><br />Poistaaksesi tapahtuman tyhjennä kyseisen tapahtuman sisältö sen kolmesta tekstikentästä."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:305
 msgid "By whom "
