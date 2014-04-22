@@ -4,341 +4,336 @@
   <div data-module="kata-notification-tools" class="floating-error" id="kata-error-window">
     <i class="icon-info-sign">&nbsp;</i>{{ _('You have errors in your metadata. Please, make the requested corrections.') }}
   </div>
-
 {% endif %}
+
 <section class="module no-padding">
-<h2 class="module-heading-add-dataset tta-orange">{{ _('Required information') }}</h2>
-<div class="padded-module">
-<section class="module">
-<h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
-<div class="module-content">
-<div class="kata-multi-input">
- <span class="kata-multi-heading">
-    {{ _('Titles') }}
-  </span><br />
-  {% set titles = [] %}
+  <h2 class="module-heading-add-dataset tta-orange">{{ _('Required information') }}</h2>
+  <div class="padded-module">
 
-  {% if data.langtitle %}
-    {% set titles = data.langtitle %}
-  {% endif %}
+    <section class="module">
+      <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
+      <div class="module-content">
 
-  {% if (titles|length) == 0 %}
-    {% for extra in range(1,2) %}
-      {% do titles.append({'value': '', 'lang': ''}) %}
-    {% endfor %}
-  {% endif %}
 
-  <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numfields={{ (titles|length) }} id="lastlang">
-  {# Render title fields #}
-  {% for langtitle in titles %}
-    {% set index = loop.index0 %}
-    {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
-      {% if index == 0 %}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
-      {% endif %}
-
-      <label class="control-label kata-input-comp" for="langtitle__{{index}}__lang">{{ _('Language') }}</label>
-      <div class="controls kata-input-comp">
-        <select name="langtitle__{{ index }}__lang">
-          {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
-        </select>
-        {% if index == 0 %}
-          {{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();") }}
-        {% endif %}
-
-        {#% if title.value %#}
-          <input style="display: none;" type="checkbox" id="lbtn__{{ index }}__value_id" name="lbtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-        {#% endif %#}
-      </div>
-    {% endcall %}
-  {% endfor %}
-  {% if errors.langtitle %}
-        <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
-    {% endif %}
-
-  </div>
-</div>
-
-<div class="kata-multi-input">
-  <span class="kata-multi-heading">
-    {{ _('Authors and organizations') }}
-  </span><br />
-  {% set authors = h.get_authors(data) %}
-
-  {% if authors|length == 0 %}
-    {% for extra in range(1, 2) %}
-      {% do authors.append(dict(role='author',)) %}
-    {% endfor %}
-  {% endif %}
-  <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields={{ authors|length }} id="agent">
-    {# Render author and organisation fields #}
-    {% for agent in authors %}
-      {% if errors %}
-        {% set eerrors = h.get_kata_errors(errors) %}
-      {% endif %}
-
-      {% set index = 2 + loop.index0 %}
-      <div class="control-group control-custom">
-        <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
-        <label class="control-label kata-input-comp" for="agent__{{ index }}__name_id">{{ _('Author') }}</label>
-        <div class="controls editor">
-          <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname, firstname') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
-        {% if loop.index0 == 0 %}
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
-        {% endif %}
-        </div>
-
-        <label class="control-label kata-input-comp" for="agent__{{index}}__organisation">{{ _('Organisation') }}</label>
-        <div class="controls editor" style="margin-top: 5px;">
-          <input type="text" name="agent__{{ index }}__organisation" class="kata-medium-input" value="{{ agent.organisation }}">
-          {% if loop.index0 == 0 %}
-            {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+        <div class="kata-multi-input">
+          <span class="kata-multi-heading">{{ _('Titles') }}</span><br />
+          {% set titles = [] %}
+          {% if data.langtitle %}
+            {% set titles = data.langtitle %}
           {% endif %}
-          <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-        </div>
-        {% if eerrors and eerrors.orgauth and eerrors.orgauth[index] %}
-            <span class="error-block-kata">
-          	    {{ eerrors.orgauth[index] }}
-          	</span>
-        {% endif %}
-      </div>
-    {% endfor %}
-  </div>
-  {# Clumsy generation of error messages, but it does the trick and won't display python types #}
-  {#% if errors.agent %#}
-        {# <span class="error-block"> #}
-          {#% for item in errors.agent %#}
-            {#% if item.name and item.name[0]|length > 2 %#}
-              {#{ item.name[0] }#}{#<br />#}
-            {#% endif %#}
-            {#% if item.organisation and item.organisation[0]|length > 2 %#}
-              {#{ item.organisation[0] }#}{#<br />#}
-            {#% endif %#}
-          {#% endfor %#}
-        {# </span> #}
-  {#% endif %#}
-</div>
+          {% if (titles|length) == 0 %}
+            {% for extra in range(1,2) %}
+              {% do titles.append({'value': '', 'lang': ''}) %}
+            {% endfor %}
+          {% endif %}
+          <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numfields={{ (titles|length) }} id="lastlang">
+            {# Render title fields #}
+            {% for langtitle in titles %}
+              {% set index = loop.index0 %}
+              {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+                {% if index == 0 %}
+                  {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
+                {% endif %}
 
-{# Autocomplete for keywords #}
+                <label class="control-label kata-input-comp" for="langtitle__{{index}}__lang">{{ _('Language') }}</label>
+                <div class="controls kata-input-comp">
+                  <select name="langtitle__{{ index }}__lang">
+                    {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
+                  </select>
+                  {% if index == 0 %}
+                    {{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();") }}
+                  {% endif %}
 
-<div class="kata-multi-input">
-  <span class="kata-multi-heading">
-    {{ _('Subject') }}
-  </span><br />
-  {{ _('Search keywords from YSO ontology, select keywords with enter or mouse click.') }}
-  <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords (tags) that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />You can change the language of suggested words from the language menu.<br /><br />The suggestions are retrieved from the ONKI vocabulary service (see http://onki.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
-  <span class="kata-btn-span tta-orange">?</span></button><br /><br />
-  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-  {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-medium'], attrs=tag_attrs) }}
-  {% if errors.tag_string %}
-    <span class="error-block">{{ errors.tag_string[0] }}</span>
-  {% endif %}
-</div>
-<br />
+                  {#% if title.value %#}
+                    <input style="display: none;" type="checkbox" id="lbtn__{{ index }}__value_id" name="lbtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+                  {#% endif %#}
+                </div>
+              {% endcall %}
+            {% endfor %}
 
-<input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset contains non-textual data') }}
-<div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
- {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
-  {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
-{% endcall %}
-<span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
-<span class="add-dataset-infotext">
-{{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
-</span>
-</div>
-</div>
-</section>
-
-<section class="module">
-<h2 class="module-heading-add-dataset">{{ _('Actors and roles') }}</h2>
-  <div class="module-content">
-    {% set distributor = h.get_distributor(data) %}
-    {% if distributor %}
-      <input type="hidden" name="agent__999__role" value="distributor" />
-      <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
-      <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation }}" />
-    {% endif %}
-    <h3 class="module-heading-add-dataset">{{ _('Distributor / publisher contact information') }}</h3>
-    <div class="module-content">
-      {% set contact_name = data.maintainer if data.maintainer else user.fullname %}
-      {% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
-
-      {% call form.input('maintainer', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.maintainer, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone or something that can be contacted if more information about the data is required or the person or organisation responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }}
-      {% endcall %}
-
-      {% call form.input('contact_phone', label=_('Phone'), id='contact_phone', placeholder=_('+35844122123'), value=data.contact_phone, error=errors.contact_phone, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact phone number. The phone number must be in form \"+35812341234\".')) }}
-      {% endcall %}
-
-      {% call form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, type='email', classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly.')) }}
-      {% endcall %}
-
-      {% call form.input('contact_URL', label=_('Homepage'), id='contact_URL', placeholder=_('http://johndoe.com/contact'), value=data.contact_URL, error=errors.contact_URL, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a valid web address to your web page. In case you don\'t have one, you could for example give an address to your research group\'s site or any site that could make it possible to contact the origin of the dataset in case of need.')) }}
-      {% endcall %}
-    </div>
-    <h3 class="module-heading-add-dataset">{{ _('Project that produced this dataset') }}</h3>
-    <!--<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked {% endif %}value="True">{{ _('This dataset was not produced in a project.') }}-->
-    <div class="module-content" id="projdiv">
-      {% set funder = h.get_funder(data) %}
-      {% call form.input('agent__0__organisation', label=_('Name'), id='agent__0__organisation', placeholder=_('my project'), value=funder.organisation, error=h.get_agent_errors(errors, 0, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s name.")) }}
-      {% endcall %}
-
-      {% call form.input('agent__0__name', label=_('Funder'), id='agent__0__name', placeholder=_('my funder'), value=funder.name, error=h.get_agent_errors(errors, 0, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project funder\'s name.")) }}
-      {% endcall %}
-
-      {% call form.input('agent__0__funding-id', label=_('Funding id'), id='agent__0__funding-id', placeholder=_('1234'), value=funder['funding-id'], error=h.get_agent_errors(errors, 0, 'funding-id'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s funding id. The funding id is not shown publicly.")) }}
-      {% endcall %}
-
-      {% call form.input('agent__0__URL', label=_('Homepage'), id='agent__0__URL', placeholder=_('http://myproject'), value=funder.URL, error=h.get_agent_errors(errors, 0, 'URL'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s homepage")) }}
-      {% endcall %}
-      <input type="hidden" id="agent__0__role" name="agent__0__role" value="funder" />
-    </div>
-    <h3 class="module-heading-add-dataset">{{ _('Owner information')}}</h3>
-    <div class="module-content">
-      {% set owner = h.get_owner(data) %}
-      {% call form.input('agent__1__name', label=_('Owner identity'), id="agent__1__name", placeholder=_('identification URL or name'), value=owner.name, error=h.get_agent_errors(errors, 1, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example an ORCID identifier.")) }}
-      {% endcall %}
-      <input type="hidden" id="agent__1__role" name="agent__1__role" value="owner" />
-    </div>
-  </div>
-</section>
-{# if we have a default group then this wants remembering #}
-{% if data.group_id %}
-  <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
-{% endif %}
-
-<section class="module">
-<h2 class="module-heading-add-dataset">{{ _('Identification information of data') }}</h2>
-<div class="module-content">
-  {% if data.name and data.name|length > 0 and errors.name|length == 0 %}
-  <div class="control-group control-custom">
-    <label class="control-label kata-input-comp" for="name-pid">{{ _('Permanent Identifier') }}</label>
-    <div class="controls">
-      <input id="name-pid" type="text" name="name" value="{{ data.name }}" class="kata-medium-input" readonly>
-      {{ kata_form.tooltip(tooltip=_('Permanent identifier was already given. It can\'t be changed.')) }}
-    </div>
-  </div>
-  {% else %}
-    {% call form.input('name', id='name-pid', label=_('Permanent Identifier for data'), placeholder=_('will be automatically generated if empty'), value=data.name, error=errors.name, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-      {{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier, preferably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/ for more information.')) }}
-      {{ kata_form.warning_tooltip(tooltip=_('Note that the PID can NOT be edited after saving the dataset.')) }}
-    {% endcall %}
-  {% endif %}
-
-  {% call form.input('new_version_pid', id='field-pid', label=_('Permanent Identifier for data version'), placeholder=_('will be automatically generated if empty'), value=new_version_pid, error=errors.new_version_pid, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-    {{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/index.html for more information.')) }}
-  {% endcall %}
-
-  {% call form.input_block("last_modified", _('Modification date'), error=errors.version, control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) %}
-  <div class="control-group control-custom">
-    <div data-module="dateselect-simple-kata">
-      <input type="text" readonly id="last_modified" name="version" value="{{data.version}}" />
-      {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br /><br />The modification date tells when the data has last been modified. Click the field to open a calendar tool to choose the modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds to the UTC time zone.<br /><br />Note that this tool requires JavaScript to be enabled in the browser.')) }}
-    </div>
-  </div>
-{% endcall %}
-</div>
-</section>
-
-<section class="module">
-<h2 class="module-heading-add-dataset">{{ _('Usage information') }}</h2>
-<div class="module-content">
-  <p>
-    {{ _('Dataset is available for use:') }}{{ kata_form.tooltip(tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family.")) }}
-  </p>
-  <div class="control-group ">
-    <div class="controls ">
-      <label class="radio" for="direct_download">
-        <input type="radio" name="availability" id="direct_download" value="direct_download" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'direct_download'%}checked{% endif %}>
-        {{ _('directly downloadable') }}
-      </label>
-      {# Somewhat dirty solution. The resource error is *somewhere* in array as some indices may be for metadata documents #}
-      <div id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not (errors.resources and data.availability == 'direct_download') %}style="display:none"{% endif %}>
-        {% if errors.resources and data.availability == 'direct_download' %}
-          {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=[_('Missing value')], classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
-        {% else %}
-          {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
-        {% endif %}
-
-      </div>
-
-      <label class="radio" for="access_request">
-        <input type="radio" name="availability" id="access_request" value="access_request" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'access_request'%}checked{% endif %}>
-        {{ _('downloadable after registration / identification') }}
-      </label>
-      <div id="urlDiv_access_request" {% if not data.access_request_URL and not errors.access_request_URL %}style="display:none"{% endif %}>
-        {{ form.input('access_request_URL', label=_('Web address for downloading the dataset'), id="access_request_URL", placeholder=_('http://mydata.com'), value=data.access_request_URL, error=errors.access_request_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
-      </div>
-
-      <label class="radio" for="access_application">
-        <input type="radio" name="availability" id="access_application" value="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application'}}>
-        {{ _('with data access application') }}
-      </label>
-      <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application' and not errors.access_application_URL %}style="display:none"{% endif %}>
-        {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}
-          {% set new_form_chk = true %}
-        {% endif %}
-        <label class="checkbox" for="access_application_new_form">
-          <input type="checkbox" style="top: 4px;" id="access_application_new_form" name="access_application_new_form" onchange="$('#access_application_URL_box').toggle('fast')" {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}checked value="True"{% endif %}>
-          {{ _('Create a new access request form') }}
-        </label>
-        <div id="access_application_URL_box" {% if new_form_chk %} style="display: none" {%endif%}>
-          {{ form.input('access_application_URL', label=_('Web address of access application'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
-        </div>
-      </div>
-
-      <label class="radio" for="contact_owner">
-        <input type="radio" name="availability" id="contact_owner" value="contact_owner" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'contact_owner'%}checked{% endif %}>
-        {{ _('only by contacting the distributor') }}
-      </label>
-      {% if data.availability == 'through_provider' %}
-        <label class="radio" for="through_provider">
-        <input type="radio" name="availability" id="through_provider" value="through_provider" style="top: 4px" onclick="KATA.toggleAccess(this)" checked>
-          {{ _('through data provider') }}
-        </label>
-          <div id="urlDiv_through_provider">
-            {{ form.input('through_provider_URL', label=_('Data provider\'s web address'), id="through_provider_URL", placeholder=_('http://mydata.com'), value=data.through_provider_URL, error=errors.through_provider_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+            {% if errors.langtitle %}
+              <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
+            {% endif %}
           </div>
-      {% endif%}
-      {% if errors.availability %}
-        <span class="error-block">{{ errors.availability[0] }}</span>
-      {% endif %}
-    </div>
-  </div>
+        </div>
 
-    <div class="control-group">
-      {% set error = errors.license_id %}
-      <label class="control-label" for="field-license">{{ _("License") }}</label>
-      <div class="controls">
-        <select id="field-license" name="license_id" data-module="autocomplete">
-          {% for licence_desc, licence_id in licences|sort if licence_desc  %}
-            <option value="{{ licence_id }}" {% if data.get('license_id', 'notspecified') == licence_id %}selected="selected"{% endif %}>{{ licence_desc }}</option>
-          {% endfor %}
-        </select>
-        {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
+
+
+        <div class="kata-multi-input">
+          <span class="kata-multi-heading">{{ _('Authors and organizations') }}</span><br />
+          {% set authors = h.get_authors(data) %}
+          {% if authors|length == 0 %}
+            {% for extra in range(1, 2) %}
+              {% do authors.append(dict(role='author',)) %}
+            {% endfor %}
+          {% endif %}
+          <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields={{ authors|length }} id="agent">
+            {# Render author and organisation fields #}
+            {# If something added to __extras it may break current error rendering for authors. #}
+            {% if errors and errors.get('__extras') %}
+              {% set autherrors = errors.get('__extras') %}
+            {% endif %}
+
+            {% for agent in authors %}
+              {% set index = 2 + loop.index0 %}
+              <div class="control-group control-custom{{ " error" if autherrors }}">
+                <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
+                <label class="control-label kata-input-comp" for="agent__{{ index }}__name_id">{{ _('Author') }}</label>
+                <div class="controls editor">
+                  <input class="kata-medium-input" type="text" placeholder="{{ _('http://orcid.org/ or familyname, firstname') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
+                {% if loop.index0 == 0 %}
+                  {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
+                {% endif %}
+                </div>
+
+                <label class="control-label kata-input-comp" for="agent__{{index}}__organisation">{{ _('Organisation') }}</label>
+                <div class="controls editor" style="margin-top: 5px;">
+                  <input type="text" name="agent__{{ index }}__organisation" class="kata-medium-input" value="{{ agent.organisation }}">
+                  {% if loop.index0 == 0 %}
+                    {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+                  {% endif %}
+                  <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+                </div>
+              </div>
+            {% endfor %}
+            {% if autherrors and autherrors is iterable %}<span class="error-block-kata">{{ autherrors|join(', ') }}</span>{% endif %}
+          </div>
+        </div>
+
+
+        {# Autocomplete for keywords #}
+
+        <div class="kata-multi-input">
+          <span class="kata-multi-heading">{{ _('Subject') }}</span><br />
+
+          {{ _('Search keywords from YSO ontology, select keywords with enter or mouse click.') }}
+          <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords (tags) that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />You can change the language of suggested words from the language menu.<br /><br />The suggestions are retrieved from the ONKI vocabulary service (see http://onki.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
+          <span class="kata-btn-span tta-orange">?</span></button><br /><br />
+          {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+          {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-medium'], attrs=tag_attrs) }}
+          {% if errors.tag_string %}
+            <span class="error-block">{{ errors.tag_string[0] }}</span>
+          {% endif %}
+        </div>
         <br />
-        <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
-        <span class="add-dataset-infotext">
-        {{ _('License information can be found at') }}
-        <a target="_blank" href="http://opendefinition.org/licenses/">opendefinition.org/licenses/</a>
-        </span>
-      </div>
-      {% if data.license_URL %}
-        {{ form.input('license_URL', id='license_URL', label=_('License URL'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.license_URL, error=errors.license_URL, classes=['control-medium']) }}
-      {% endif %}
-    </div>
-</div>
 
-</section>
-</div>
+
+        {# Languages #}
+
+        <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset contains non-textual data') }}
+        <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
+          {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
+          {% endcall %}
+          <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+          <span class="add-dataset-infotext">
+            {{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+
+
+
+    <section class="module">
+      <h2 class="module-heading-add-dataset">{{ _('Actors and roles') }}</h2>
+      <div class="module-content">
+        {% set distributor = h.get_distributor(data) %}
+        {% if distributor %}
+          <input type="hidden" name="agent__999__role" value="distributor" />
+          <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
+          <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation }}" />
+        {% endif %}
+        <h3 class="module-heading-add-dataset">{{ _('Distributor / publisher contact information') }}</h3>
+        <div class="module-content">
+          {% set contact_name = data.maintainer if data.maintainer else user.fullname %}
+          {% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
+
+          {% call form.input('maintainer', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.maintainer, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone or something that can be contacted if more information about the data is required or the person or organisation responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }}
+          {% endcall %}
+
+          {% call form.input('contact_phone', label=_('Phone'), id='contact_phone', placeholder=_('+35844122123'), value=data.contact_phone, error=errors.contact_phone, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact phone number. The phone number must be in form \"+35812341234\".')) }}
+          {% endcall %}
+
+          {% call form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, type='email', classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly.')) }}
+          {% endcall %}
+
+          {% call form.input('contact_URL', label=_('Homepage'), id='contact_URL', placeholder=_('http://johndoe.com/contact'), value=data.contact_URL, error=errors.contact_URL, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a valid web address to your web page. In case you don\'t have one, you could for example give an address to your research group\'s site or any site that could make it possible to contact the origin of the dataset in case of need.')) }}
+          {% endcall %}
+        </div>
+        <h3 class="module-heading-add-dataset">{{ _('Project that produced this dataset') }}</h3>
+        <!--<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked {% endif %}value="True">{{ _('This dataset was not produced in a project.') }}-->
+        <div class="module-content" id="projdiv">
+          {% set funder = h.get_funder(data) %}
+          {% call form.input('agent__0__organisation', label=_('Name'), id='agent__0__organisation', placeholder=_('my project'), value=funder.organisation, error=h.get_agent_errors(errors, 0, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s name.")) }}
+          {% endcall %}
+
+          {% call form.input('agent__0__name', label=_('Funder'), id='agent__0__name', placeholder=_('my funder'), value=funder.name, error=h.get_agent_errors(errors, 0, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project funder\'s name.")) }}
+          {% endcall %}
+
+          {% call form.input('agent__0__funding-id', label=_('Funding id'), id='agent__0__funding-id', placeholder=_('1234'), value=funder['funding-id'], error=h.get_agent_errors(errors, 0, 'funding-id'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s funding id. The funding id is not shown publicly.")) }}
+          {% endcall %}
+
+          {% call form.input('agent__0__URL', label=_('Homepage'), id='agent__0__URL', placeholder=_('http://myproject'), value=funder.URL, error=h.get_agent_errors(errors, 0, 'URL'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s homepage")) }}
+          {% endcall %}
+          <input type="hidden" id="agent__0__role" name="agent__0__role" value="funder" />
+        </div>
+        <h3 class="module-heading-add-dataset">{{ _('Owner information')}}</h3>
+        <div class="module-content">
+          {% set owner = h.get_owner(data) %}
+          {% call form.input('agent__1__name', label=_('Owner identity'), id="agent__1__name", placeholder=_('identification URL or name'), value=owner.name, error=h.get_agent_errors(errors, 1, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example an ORCID identifier.")) }}
+          {% endcall %}
+          <input type="hidden" id="agent__1__role" name="agent__1__role" value="owner" />
+        </div>
+      </div>
+    </section>
+
+    {# If we have a default group then this wants remembering #}
+    {% if data.group_id %}
+      <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
+    {% endif %}
+
+
+
+
+    <section class="module">
+      <h2 class="module-heading-add-dataset">{{ _('Identification information of data') }}</h2>
+      <div class="module-content">
+        {% if data.name and data.name|length > 0 and errors.name|length == 0 %}
+        <div class="control-group control-custom">
+          <label class="control-label kata-input-comp" for="name-pid">{{ _('Permanent Identifier') }}</label>
+          <div class="controls">
+            <input id="name-pid" type="text" name="name" value="{{ data.name }}" class="kata-medium-input" readonly>
+            {{ kata_form.tooltip(tooltip=_('Permanent identifier was already given. It can\'t be changed.')) }}
+          </div>
+        </div>
+        {% else %}
+          {% call form.input('name', id='name-pid', label=_('Permanent Identifier for data'), placeholder=_('will be automatically generated if empty'), value=data.name, error=errors.name, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier, preferably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/ for more information.')) }}
+            {{ kata_form.warning_tooltip(tooltip=_('Note that the PID can NOT be edited after saving the dataset.')) }}
+          {% endcall %}
+        {% endif %}
+
+        {% call form.input('new_version_pid', id='field-pid', label=_('Permanent Identifier for data version'), placeholder=_('will be automatically generated if empty'), value=new_version_pid, error=errors.new_version_pid, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {{ kata_form.tooltip(tooltip=_('Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/index.html for more information.')) }}
+        {% endcall %}
+
+        {% call form.input_block("last_modified", _('Modification date'), error=errors.version, control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) %}
+        <div class="control-group control-custom">
+          <div data-module="dateselect-simple-kata">
+            <input type="text" readonly id="last_modified" name="version" value="{{data.version}}" />
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br /><br />The modification date tells when the data has last been modified. Click the field to open a calendar tool to choose the modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds to the UTC time zone.<br /><br />Note that this tool requires JavaScript to be enabled in the browser.')) }}
+          </div>
+        </div>
+      {% endcall %}
+      </div>
+    </section>
+
+
+
+
+
+    <section class="module">
+      <h2 class="module-heading-add-dataset">{{ _('Usage information') }}</h2>
+      <div class="module-content">
+        <p>
+          {{ _('Dataset is available for use:') }}{{ kata_form.tooltip(tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family.")) }}
+        </p>
+        <div class="control-group ">
+          <div class="controls ">
+            <label class="radio" for="direct_download">
+              <input type="radio" name="availability" id="direct_download" value="direct_download" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'direct_download'%}checked{% endif %}>
+              {{ _('directly downloadable') }}
+            </label>
+            {# Somewhat dirty solution. The resource error is *somewhere* in array as some indices may be for metadata documents #}
+            <div id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not (errors.resources and data.availability == 'direct_download') %}style="display:none"{% endif %}>
+              {% if errors.resources and data.availability == 'direct_download' %}
+                {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=[_('Missing value')], classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+              {% else %}
+                {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+              {% endif %}
+            </div>
+
+            <label class="radio" for="access_request">
+              <input type="radio" name="availability" id="access_request" value="access_request" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'access_request'%}checked{% endif %}>
+              {{ _('downloadable after registration / identification') }}
+            </label>
+            <div id="urlDiv_access_request" {% if not data.access_request_URL and not errors.access_request_URL %}style="display:none"{% endif %}>
+              {{ form.input('access_request_URL', label=_('Web address for downloading the dataset'), id="access_request_URL", placeholder=_('http://mydata.com'), value=data.access_request_URL, error=errors.access_request_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+            </div>
+
+            <label class="radio" for="access_application">
+              <input type="radio" name="availability" id="access_application" value="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application'}}>
+              {{ _('with data access application') }}
+            </label>
+            <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application' and not errors.access_application_URL %}style="display:none"{% endif %}>
+              {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}
+                {% set new_form_chk = true %}
+              {% endif %}
+              <label class="checkbox" for="access_application_new_form">
+                <input type="checkbox" style="top: 4px;" id="access_application_new_form" name="access_application_new_form" onchange="$('#access_application_URL_box').toggle('fast')" {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}checked value="True"{% endif %}>
+                {{ _('Create a new access request form') }}
+              </label>
+              <div id="access_application_URL_box" {% if new_form_chk %} style="display: none" {%endif%}>
+                {{ form.input('access_application_URL', label=_('Web address of access application'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+              </div>
+            </div>
+
+            <label class="radio" for="contact_owner">
+              <input type="radio" name="availability" id="contact_owner" value="contact_owner" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'contact_owner'%}checked{% endif %}>
+              {{ _('only by contacting the distributor') }}
+            </label>
+            {% if data.availability == 'through_provider' %}
+              <label class="radio" for="through_provider">
+              <input type="radio" name="availability" id="through_provider" value="through_provider" style="top: 4px" onclick="KATA.toggleAccess(this)" checked>
+                {{ _('through data provider') }}
+              </label>
+                <div id="urlDiv_through_provider">
+                  {{ form.input('through_provider_URL', label=_('Data provider\'s web address'), id="through_provider_URL", placeholder=_('http://mydata.com'), value=data.through_provider_URL, error=errors.through_provider_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+                </div>
+            {% endif%}
+            {% if errors.availability %}
+              <span class="error-block">{{ errors.availability[0] }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="control-group">
+          {% set error = errors.license_id %}
+          <label class="control-label" for="field-license">{{ _("License") }}</label>
+          <div class="controls">
+            <select id="field-license" name="license_id" data-module="autocomplete">
+              {% for licence_desc, licence_id in licences|sort if licence_desc  %}
+                <option value="{{ licence_id }}" {% if data.get('license_id', 'notspecified') == licence_id %}selected="selected"{% endif %}>{{ licence_desc }}</option>
+              {% endfor %}
+            </select>
+            {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
+            <br />
+            <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+            <span class="add-dataset-infotext">
+            {{ _('License information can be found at') }}
+            <a target="_blank" href="http://opendefinition.org/licenses/">opendefinition.org/licenses/</a>
+            </span>
+          </div>
+          {% if data.license_URL %}
+            {{ form.input('license_URL', id='license_URL', label=_('License URL'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.license_URL, error=errors.license_URL, classes=['control-medium']) }}
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+  </div>
 </section>
 
 {% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}

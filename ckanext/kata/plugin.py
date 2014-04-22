@@ -216,7 +216,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {'get_authors': self.get_authors,
                 'get_distributor': self.get_distributor,
                 'get_funder': self.get_funder,
-                'get_kata_errors': self.get_kata_errors,
                 'get_agent_errors': self.get_agent_errors,
                 'get_owner': self.get_owner,
                 'has_agents_funding_id': self.has_agents_funding_id,
@@ -252,8 +251,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         '''
         error = []
         agent = errors.get('agent')
-        if agent:
-            error = agent[index].get(name) if agent[index] else []
+        if agent and agent[index]:
+            error = agent[index].get(name)
         return error
 
     def has_agents_name(self, data_dict):
@@ -286,28 +285,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if _dict.get('key', None) and _dict['key'].find(key) > -1:
                 return False
         return True
-
-    def get_kata_errors(self, errors):
-        '''
-        Helper for Kata errors, specifically the repeatable fields
-        Constructs an array out of dict items. Tailored for
-        events and orgauth (for now).
-        
-        :return {'orgauth': [u'error1. error2', u'error3']}
-        '''
-        output = {}
-        for key in errors.keys():
-            val = []
-            for item in errors[key]:
-                if not item:
-                    val.append('')
-                else:
-                    if type(item) is dict:
-                        # For orgauth, the key name is value OR org
-                        for valuekey in item.keys():
-                            val.append('. '.join(map(unicode, item[valuekey])))
-            output[key] = val
-        return output
 
     def kata_sorted_extras(self, list_):
         '''
@@ -503,6 +480,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['version'] = [not_empty, unicode, validate_kata_date]
         schema['availability'] = [not_missing, convert_to_extras_kata]
         schema['langdis'] = [checkbox_to_boolean, convert_to_extras_kata]
+        # TODO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
+        # If something added to __extras it may break current error rendering for authors.
         schema['__extras'] = [check_agent, check_langtitle]
         schema['__junk'] = [check_junk]
         schema['name'] = [ignore_missing, unicode, update_pid, package_name_validator, validate_general]
