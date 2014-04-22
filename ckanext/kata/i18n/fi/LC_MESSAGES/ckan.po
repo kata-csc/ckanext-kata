@@ -11214,6 +11214,9 @@ msgstr "tietoaineisto"
 msgid "on same domain"
 msgstr "samassa domainissa"
 
+msgid "Subject"
+msgstr "Aihe"
+
 # Kata macro
 msgid "See further information about the error(s) from the field in question. Note, that errors in resource url may be in resource related data, like file type and algorithm."
 msgstr "Virheen tarkemmat tiedot löydät kyseisen kentän kohdalta. Huomaa, että resurssiin liittyvät virheet saattavat olla käyttötietojen lisäksi suositeltavissa tiedoissa, esimerkiksi tiedostotyypissä ja algoritmissa."
