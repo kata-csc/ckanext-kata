@@ -10467,12 +10467,8 @@ msgid "Relations"
 msgstr "Relaatiot"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:95
-msgid ""
-"Search keywords from OKM-TIETEENALA ontology, select keywords with enter "
-"or mouse click."
-msgstr ""
-"Etsi tieteenala okm-tieteenala-ontologiasta. Valitse oikea sana enter-painikkeella "
-"tai hiirenklikkauksella."
+msgid "Search keywords from okm-tieteenala ontology, select keywords with enter or mouse click. Note that the disciplines are provided in Finnish only."
+msgstr "Etsi tieteenala okm-tieteenala-ontologiasta. Valitse oikea sana enter-painikkeella tai hiirenklikkauksella. Huomaa, että tieteenalat ovat vain suomeksi."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:96
 msgid ""
