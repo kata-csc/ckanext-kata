@@ -6,7 +6,7 @@ Controllers for Kata.
 import json
 import logging
 from rdflib.namespace import XSD
-from rdflib.term import Identifier, URIRef, Literal, bnode_uuid, BNode
+from rdflib.term import Identifier, URIRef, Literal, BNode
 import urllib2
 
 from paste.deploy.converters import asbool
