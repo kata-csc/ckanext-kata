@@ -10043,8 +10043,8 @@ msgid "Authors and organizations"
 msgstr "Laatijat ja organisaatiot"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:79
-msgid "http://orcid.org/ or familyname, firstname"
-msgstr "http://orcid.org/ tai sukunimi, etunimi"
+msgid "Familyname, Firstname and/or http://orcid.org/"
+msgstr "Sukunimi, Etunimi ja/tai http://orcid.org/"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:81
 msgid ""
@@ -11155,6 +11155,9 @@ msgstr "Löydät kielikoodit osoitteesta: "
 
 msgid "Value must contain alphanumeric characters"
 msgstr "Arvon täytyy sisältää aakkosnumeerisia merkkejä"
+
+msgid "University. Faculty. Department."
+msgstr "Yliopisto. Tiedekunta. Laitos."
 
 # Resource, Additional Information (the key - value -variables)
 msgid "created"
