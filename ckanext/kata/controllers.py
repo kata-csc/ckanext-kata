@@ -93,7 +93,7 @@ class MetadataController(BaseController):
                                                                   extras["temporal_coverage_end"])
         return dcmi_period
 
-    @beaker_cache(type="dbm", expire=604800)
+    @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
         response.headers['Content-type'] = 'text/xml'
         return URNHelper.list_packages()
