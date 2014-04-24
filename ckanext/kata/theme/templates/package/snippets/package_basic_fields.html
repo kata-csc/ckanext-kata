@@ -275,7 +275,7 @@
 
             <label class="radio" for="access_application">
               <input type="radio" name="availability" id="access_application" value="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application'}}>
-              {{ _('with data access application') }}
+              {{ _('with data access application form') }}
             </label>
             <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application' and not errors.access_application_URL %}style="display:none"{% endif %}>
               {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}
@@ -283,10 +283,10 @@
               {% endif %}
               <label class="checkbox" for="access_application_new_form">
                 <input type="checkbox" style="top: 4px;" id="access_application_new_form" name="access_application_new_form" onchange="$('#access_application_URL_box').toggle('fast')" {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}checked value="True"{% endif %}>
-                {{ _('Create a new access request form') }}
+                {{ _('Create a new access request form automatically') }}
               </label>
               <div id="access_application_URL_box" {% if new_form_chk %} style="display: none" {%endif%}>
-                {{ form.input('access_application_URL', label=_('Web address of access application'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+                {{ form.input('access_application_URL', label=_('Web address of access application form'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
               </div>
             </div>
 

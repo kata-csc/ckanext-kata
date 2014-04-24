@@ -10322,11 +10322,11 @@ msgid "downloadable after registration / identification"
 msgstr "avoimesti rekisteröitymällä tai tunnistautumalla"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:242
-msgid "with data access application"
+msgid "with data access application form"
 msgstr "lupahakemuksella"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:244
-msgid "Web address of access application"
+msgid "Web address of access application form"
 msgstr "hakemuksen osoite"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:244
@@ -11210,6 +11210,9 @@ msgstr "Ajallinen kattavuus, alku"
 msgid "Temporal coverage end"
 msgstr "Ajallinen kattavuus, loppu"
 
+msgid "Create a new access request form automatically"
+msgstr "Luo uusi lupahakemus automaattisesti"
+
 # Kata macro
 msgid "See further information about the error(s) from the field in question. Note, that errors in resource url may be in resource related data, like file type and algorithm."
 msgstr "Virheen tarkemmat tiedot löydät kyseisen kentän kohdalta. Huomaa, että resurssiin liittyvät virheet saattavat olla käyttötietojen lisäksi suositeltavissa tiedoissa, esimerkiksi tiedostotyypissä ja algoritmissa."
@@ -11315,3 +11318,10 @@ msgstr "<h2>Tietoa Kata metadatakatalogista</h2> <p> Kata kerää tutkimusaineis
 # Edit user form
 msgid "Note that the changes in user information have no effect if you are using Haka login."
 msgstr "Muutokset käyttäjäprofiiliin jätetään huomioimatta jos käytät Haka-kirjautumista."
+
+# Help and FAQ
+msgid "What means creating a new access request form?"
+msgstr "Mitä tarkoittaa uuden lupahakemuksen luonti?"
+
+msgid "It means that Kata creates automatically a default workflow to REMS. REMS is software for managing access rights to research data. With it you can specify that a user must send an application in REMS service to you to gain access to your data. Find out more from: "
+msgstr "Se tarkoittaa Katan automaattisesti luomaa oletustyövuota REMS:iin. REMS on sovellus, jolla hallinnoidaan pääsyoikeuksia tutkimusdataan. Sen avulla voit määritellä, että käyttäjän pitää lähettää sinulle hakemus REMS-palvelussa, jonka perusteella voit myöntää oikeuden ja toimittaa datasi hakijalle. Lue lisää aiheesta: "
