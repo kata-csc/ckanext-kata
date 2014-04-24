@@ -11325,3 +11325,10 @@ msgstr "Mitä tarkoittaa uuden lupahakemuksen luonti?"
 
 msgid "It means that Kata creates automatically a default workflow to REMS. REMS is software for managing access rights to research data. With it you can specify that a user must send an application in REMS service to you to gain access to your data. Find out more from: "
 msgstr "Se tarkoittaa Katan automaattisesti luomaa oletustyövuota REMS:iin. REMS on sovellus, jolla hallinnoidaan pääsyoikeuksia tutkimusdataan. Sen avulla voit määritellä, että käyttäjän pitää lähettää sinulle hakemus REMS-palvelussa, jonka perusteella voit myöntää oikeuden ja toimittaa datasi hakijalle. Lue lisää aiheesta: "
+
+msgid "Kata is integrated to TTA's REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: "
+msgstr "Kata on integroitu TTA:n REMS-palveluun, Reettaan. Tämä tarkoittaa sitä että voit määritellä datasi olevan saatavilla lupahakemuksen täyttämisen ja lähettämisen myötä. Datan omistajan roolissa hyväksyt tai hylkäät hakemuksen REMS-palvelussa ja toimitat datasi hakijalle. Voit luoda lupahakemuksen työvuon itse REMS-palvelussa, tai käyttää minimalistista automaattisesti luotavaa hakemusta. Kun datalla on olemassa lupahakemus, tietoaineiston sivulla oleva linkki vie suoraan lupahakemukseen. Lue lisää "
+
+msgid "REMS manual"
+msgstr "REMS:n käyttöohjeista"
+
