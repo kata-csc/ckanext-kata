@@ -61,7 +61,8 @@ from ckanext.kata.validators import (check_access_request_url,
                                      contains_alphanumeric,
                                      check_events,
                                      validate_direct_download_url,
-                                     package_name_not_changed, check_langtitle, check_pids, check_agent_fields)
+                                     package_name_not_changed, check_langtitle, check_pids, check_agent_fields,
+                                     check_contact)
 from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
@@ -441,14 +442,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                            'name': [ignore_empty, validate_general, unicode, contains_alphanumeric, flattened_to_extras],
                            'id': [ignore_empty, validate_general, unicode, flattened_to_extras],
                            'organisation': [ignore_empty, validate_general, unicode, contains_alphanumeric, flattened_to_extras],
-                           'URL': [ignore_empty, validate_general, unicode, flattened_to_extras],
+                           'URL': [ignore_empty, url_validator, validate_general, unicode, flattened_to_extras],
                            # Note: Changed to 'funding-id' for now because 'funding_id'
                            # was returned as 'funding' from db. Somewhere '_id' was
                            # splitted off.
                            'funding-id': [ignore_empty, validate_general, unicode, flattened_to_extras]}
         schema['contact'] = {'name': [not_empty, validate_general, unicode, contains_alphanumeric, flattened_to_extras],
                              'email': [not_empty, unicode, validate_email, flattened_to_extras],
-                             'URL': [ignore_empty, validate_general, unicode, flattened_to_extras],
+                             'URL': [ignore_empty, url_validator, validate_general, unicode, flattened_to_extras],
                              # phone number can be missing from the first users
                              'phone': [ignore_missing, unicode, validate_phonenum, flattened_to_extras]}
         # phone number can be missing from the first users
@@ -465,13 +466,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
         # schema['maintainer'] = [not_empty, unicode, validate_general, contains_alphanumeric]
         schema['maintainer_email'] = [not_empty, unicode, validate_email]
-        # schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general, contains_alphanumeric],
-        #                      'org': [not_missing, unicode, org_auth_to_extras, validate_general, contains_alphanumeric]}
         schema['temporal_coverage_begin'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
-        # schema['pids'] = [update_pids, ignore_missing, to_extras_json]
         schema['pids'] = {'provider': [not_missing, unicode, flattened_to_extras],
                           'id': [not_missing, unicode, flattened_to_extras],
                           'type': [not_missing, unicode, flattened_to_extras]}
@@ -480,14 +478,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, to_extras_json]
         # these two can be missing from the first Kata end users
-        # schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general, contains_alphanumeric]
         # TODO: version date validation should be tighter, see metadata schema
         schema['version'] = [not_empty, unicode, validate_kata_date]
         schema['availability'] = [not_missing, convert_to_extras_kata]
         schema['langdis'] = [checkbox_to_boolean, convert_to_extras_kata]
         # TODO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
         # If something added to __extras it may break current error rendering for authors.
-        schema['__extras'] = [check_agent, check_langtitle]
+        schema['__extras'] = [check_agent, check_langtitle, check_contact]
         schema['__junk'] = [check_junk]
         schema['name'] = [ignore_missing, unicode, update_pid, package_name_validator, validate_general]
         schema['access_application_new_form'] = [checkbox_to_boolean, convert_to_extras_kata, remove_access_application_new_form]
@@ -500,10 +497,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['discipline'] = [ignore_missing, validate_discipline, convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, validate_spatial, convert_to_extras_kata, unicode]
         schema['license_URL'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
-
-        #schema['groups'].update({
-        #    'name': [ignore_missing, unicode, add_to_group]
-        #})
 
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, validate_general, validate_direct_download_url]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
