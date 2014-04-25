@@ -316,14 +316,14 @@ class TestSearchDataset(KataApiTestCase):
     @classmethod
     def setup_class(cls):
         '''
-        Set up each test
+        Set up test class
         '''
         super(TestSearchDataset, cls).setup_class()
         search.clear()
 
         # Create a dataset for this test class
-        created = call_action_api(cls.app, 'package_create', apikey=cls.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+        call_action_api(cls.app, 'package_create', apikey=cls.normal_user.apikey,
+                        status=200, **TEST_DATADICT)
 
     def test_search_dataset(self):
         '''
@@ -376,13 +376,6 @@ class TestDataReading(KataApiTestCase):
         data_dict.pop('name', None)
         data_dict.pop('title', None)
 
-        # Events come back in different format, so skip checking them for now
-        # TODO: check events when event format is fixed
-        data_dict.pop('evdescr', None)
-        data_dict.pop('evtype', None)
-        data_dict.pop('evwho', None)
-        data_dict.pop('evwhen', None)
-
         # tag_string is converted into a list of tags, so the result won't match
         # TODO: convert both to the same format and then compare?
         data_dict.pop('tag_string', None)
@@ -412,6 +405,9 @@ class TestDataReading(KataApiTestCase):
 
         output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
+
+        # Make sure user is added as distributor
+        assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
         assert self._compare_datadicts(output)
 
@@ -456,6 +452,9 @@ class TestDataReading(KataApiTestCase):
 
         output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
+
+        # Make sure user is still present as distributor
+        assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
         assert self._compare_datadicts(output)
         
