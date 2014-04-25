@@ -450,7 +450,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                              'email': [not_empty, unicode, validate_email, flattened_to_extras],
                              'URL': [ignore_empty, validate_general, unicode, flattened_to_extras],
                              # phone number can be missing from the first users
-                             'phone': [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]}
+                             'phone': [ignore_missing, unicode, validate_phonenum, flattened_to_extras]}
         # phone number can be missing from the first users
         # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         # schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
@@ -620,6 +620,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             schema[key] = [convert_from_extras_kata, ignore_missing, unicode]
 
         schema['agent'] = [flattened_from_extras, ignore_missing]
+        schema['contact'] = [flattened_from_extras, ignore_missing]
         schema['access_application_new_form'] = [unicode],
         # schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
         schema['event'] = [flattened_from_extras, ignore_missing]
