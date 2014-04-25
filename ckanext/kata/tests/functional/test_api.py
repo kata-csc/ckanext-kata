@@ -442,15 +442,11 @@ class TestDataReading(KataApiTestCase):
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=200, **TEST_DATADICT)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
         assert 'id' in output
-
-        data_dict = copy.deepcopy(TEST_DATADICT)
-        data_dict['id'] = output['id']
-
+        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
+                                 status=200, id=output['id'])
         output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey,
-                                 status=200, **data_dict)
+                                 status=200, **output)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
@@ -458,7 +454,7 @@ class TestDataReading(KataApiTestCase):
         output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
 
-        # Make sure user is still present as distributor
+        # Make sure CKAN user is still present as distributor
         assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
         assert self._compare_datadicts(output)
