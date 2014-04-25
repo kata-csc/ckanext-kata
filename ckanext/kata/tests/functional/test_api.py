@@ -55,8 +55,13 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'algorithm': u'MD5',
                  'availability': u'direct_download',
                  'checksum': u'f60e586509d99944e2d62f31979a802f',
-                 'contact_URL': u'http://www.tdata.fi',
-                 'contact_phone': u'05549583',
+                 'contact': [{'name': u'Jali Jakelija',
+                              'email': u'jali.jakelija@csc.fi',
+                              'URL': u'http://www.tdata.fi',
+                              'phone': u'05549583'}
+                            ],
+                 # 'contact_URL': u'http://www.tdata.fi',
+                 # 'contact_phone': u'05549583',
                  'direct_download_URL': u'http://www.tdata.fi/kata',
                  'discipline': u'Tietojenkäsittely ja informaatiotieteet',
                  'geographic_coverage': u'Keilaniemi (populated place),Espoo (city)',
@@ -66,7 +71,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                                {'lang': u'swe', 'value': u'Title 3'}],
                  'language': u'eng, fin, swe',
                  'license_id': u'notspecified',
-                 'maintainer': u'J. Jakelija',
+                 # 'maintainer': u'J. Jakelija',
                  'maintainer_email': u'j.jakelija@csc.fi',
                  'mimetype': u'application/csv',
                  'name': u'',
@@ -671,8 +676,8 @@ class TestSchema(KataApiTestCase):
         logg.disabled = True
 
         fields = settings.KATA_FIELDS_REQUIRED
-        fields.pop(fields.index('contact_phone'))   # TODO: This will be removed
-        fields.pop(fields.index('contact_URL'))     # TODO: This will be removed
+        # fields.pop(fields.index('contact_phone'))   # TODO: This will be removed
+        # fields.pop(fields.index('contact_URL'))     # TODO: This will be removed
 
         for requirement in fields:
             print requirement

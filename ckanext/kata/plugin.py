@@ -446,8 +446,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                            # was returned as 'funding' from db. Somewhere '_id' was
                            # splitted off.
                            'funding-id': [ignore_empty, validate_general, unicode, flattened_to_extras]}
+        schema['contact'] = {'name': [not_empty, validate_general, unicode, contains_alphanumeric, flattened_to_extras],
+                             'email': [not_empty, unicode, validate_email, flattened_to_extras],
+                             'URL': [ignore_empty, validate_general, unicode, flattened_to_extras],
+                             # phone number can be missing from the first users
+                             'phone': [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]}
         # phone number can be missing from the first users
-        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
+        # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
+        # schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['event'] = {'type': [ignore_missing, check_events, unicode, flattened_to_extras, validate_general],
                            'who': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric],
                            'when': [ignore_missing, unicode, flattened_to_extras, validate_kata_date],
@@ -457,7 +463,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                                'lang': [not_missing, unicode, convert_languages]}
         schema['language'] = \
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
-        schema['maintainer'] = [not_empty, unicode, validate_general, contains_alphanumeric]
+        # schema['maintainer'] = [not_empty, unicode, validate_general, contains_alphanumeric]
         schema['maintainer_email'] = [not_empty, unicode, validate_email]
         # schema['orgauth'] = {'value': [not_missing, unicode, org_auth_to_extras, validate_general, contains_alphanumeric],
         #                      'org': [not_missing, unicode, org_auth_to_extras, validate_general, contains_alphanumeric]}
@@ -475,7 +481,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['xpaths'] = [ignore_missing, to_extras_json]
         # these two can be missing from the first Kata end users
         # schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general, contains_alphanumeric]
-        schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         # TODO: version date validation should be tighter, see metadata schema
         schema['version'] = [not_empty, unicode, validate_kata_date]
         schema['availability'] = [not_missing, convert_to_extras_kata]
@@ -522,7 +527,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         
         schema['__extras'] = [ignore]   # This removes orgauth checking
         schema['availability'].insert(0, ignore_missing)
-        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
+        # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
@@ -548,7 +553,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
 
-        schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
+        # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
         schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['discipline'].insert(0, ignore_missing)
         schema['event'] = {'type': [ignore_missing, check_events, unicode, flattened_to_extras, validate_general],
