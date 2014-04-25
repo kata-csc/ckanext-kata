@@ -17,7 +17,7 @@ import ckan.lib.search as search
 from ckan.tests import call_action_api
 from ckan import model
 
-import ckanext.kata.settings as settings
+from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 
 
@@ -370,12 +370,12 @@ class TestDataReading(KataApiTestCase):
     Tests for checking that values match between original data_dict and package_show output.
     '''
 
-    def _compare_datadicts(self, output):
+    def _compare_datadicts(self, input, output):
         '''
         Compare a CKAN generated datadict to TEST_DATADICT
         '''
 
-        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict = copy.deepcopy(input)
 
         # name (data pid) and title are generated so they shouldn't match
         data_dict.pop('name', None)
@@ -414,7 +414,7 @@ class TestDataReading(KataApiTestCase):
         # Make sure user is added as distributor
         assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
-        assert self._compare_datadicts(output)
+        assert self._compare_datadicts(TEST_DATADICT, output)
 
     def test_create_and_read_dataset_2(self):
         '''
@@ -430,11 +430,9 @@ class TestDataReading(KataApiTestCase):
         output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
 
-        # Handle hidden fields
-        output.pop('project_funding', None)
-        output['maintainer_email'] = TEST_DATADICT['maintainer_email']
-
-        assert self._compare_datadicts(output)
+        # Use hide_sensitive_fields() because user is not the creater of the dataset
+        input = copy.deepcopy(TEST_DATADICT)
+        assert self._compare_datadicts(utils.hide_sensitive_fields(input), output)
 
     def test_create_update_and_read_dataset(self):
         '''
@@ -457,7 +455,7 @@ class TestDataReading(KataApiTestCase):
         # Make sure CKAN user is still present as distributor
         assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
-        assert self._compare_datadicts(output)
+        assert self._compare_datadicts(TEST_DATADICT, output)
         
     def test_secured_fields(self):
         '''
@@ -469,11 +467,16 @@ class TestDataReading(KataApiTestCase):
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
         
-        output = call_action_api(self.app, 'package_show',
-                                 status=200, id=output['id'])
+        output = call_action_api(self.app, 'package_show', status=200, id=output['id'])
         assert output
-        assert output['maintainer_email'] == u'Not authorized to see this information'
-        assert output['project_funding'] == u'Not authorized to see this information'
+
+        for contact in output.get('contact', []):
+            assert 'email' not in contact or \
+                   contact['email'] == u'Not authorized to see this information'
+
+        for funder in utils.get_funders(output):
+            assert 'funding-id' not in funder or \
+                   funder['funding-id'] == u'Not authorized to see this information'
 
     def test_availability_changing(self):
         '''
@@ -636,7 +639,7 @@ class TestDataReading(KataApiTestCase):
                                  status=200, id=new_res['package_id'])
         assert 'id' in output
 
-        assert self._compare_datadicts(output)
+        assert self._compare_datadicts(TEST_DATADICT, output)
 
     def test_create_and_read_rdf(self):
         '''

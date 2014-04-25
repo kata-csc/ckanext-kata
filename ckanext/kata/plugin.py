@@ -63,7 +63,6 @@ from ckanext.kata.validators import (check_access_request_url,
                                      validate_direct_download_url,
                                      package_name_not_changed, check_langtitle, check_pids, check_agent_fields,
                                      check_contact)
-from ckanext.kata import actions, auth_functions
 from ckanext.kata.converters import (checkbox_to_boolean,
                                      convert_from_extras_kata,
                                      convert_languages,
@@ -77,7 +76,7 @@ from ckanext.kata.converters import (checkbox_to_boolean,
                                      from_extras_json,
                                      flattened_to_extras,
                                      flattened_from_extras)
-import ckanext.kata.settings as settings
+from ckanext.kata import actions, auth_functions, settings, utils
 
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
@@ -214,11 +213,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def get_helpers(self):
         """ Register helpers """
-        return {'get_authors': self.get_authors,
-                'get_distributor': self.get_distributor,
-                'get_funder': self.get_funder,
-                'get_agent_errors': self.get_agent_errors,
-                'get_owner': self.get_owner,
+        return {'get_agent_errors': self.get_agent_errors,
+                'get_authors': utils.get_authors,
+                'get_distributor': utils.get_distributor,
+                'get_funder': utils.get_funder,
+                'get_funders': utils.get_funders,
+                'get_owner': utils.get_owner,
                 'has_agents_funding_id': self.has_agents_funding_id,
                 'has_agents_name': self.has_agents_name,
                 'has_agents_organisation': self.has_agents_organisation,
@@ -228,22 +228,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'reference_update': self.reference_update,
                 'resolve_agent_role': settings.resolve_agent_role,
                 }
-
-    def get_distributor(self, data_dict):
-        '''Get a single distributor from agent field in data_dict'''
-        return fn.first(filter(lambda x: x.get('role') == u'distributor', data_dict.get('agent', [])))
-
-    def get_funder(self, data_dict):
-        '''Get a single funder from agent field in data_dict'''
-        return fn.first(filter(lambda x: x.get('role') == u'funder', data_dict.get('agent', [])))
-
-    def get_owner(self, data_dict):
-        '''Get a single owner from agent field in data_dict'''
-        return fn.first(filter(lambda x: x.get('role') == u'owner', data_dict.get('agent', [])))
-
-    def get_authors(self, data_dict):
-        '''Get all authors from agent field in data_dict'''
-        return filter(lambda x: x.get('role') == u'author', data_dict.get('agent', []))
 
     def get_agent_errors(self, errors, index, name):
         '''Get errors correctly for agents.
@@ -261,15 +245,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return [] != filter(lambda x : x.get('name'), data_dict.get('agent', []))
 
     def has_agents_organisation(self, data_dict):
-        '''Return true if some of the data dict's agents has attribute 'name'.'''
+        '''Return true if some of the data dict's agents has attribute 'organisation'.'''
         return [] != filter(lambda x : x.get('organisation'), data_dict.get('agent', []))
 
     def has_agents_url(self, data_dict):
-        '''Return true if some of the data dict's agents has attribute 'name'.'''
+        '''Return true if some of the data dict's agents has attribute 'URL'.'''
         return [] != filter(lambda x : x.get('URL'), data_dict.get('agent', []))
 
     def has_agents_funding_id(self, data_dict):
-        '''Return true if some of the data dict's agents has attribute 'name'.'''
+        '''Return true if some of the data dict's agents has attribute 'funding-id'.'''
         return [] != filter(lambda x : x.get('funding-id'), data_dict.get('agent', []))
 
     def reference_update(self, ref):
@@ -465,7 +449,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['language'] = \
             [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
         # schema['maintainer'] = [not_empty, unicode, validate_general, contains_alphanumeric]
-        schema['maintainer_email'] = [not_empty, unicode, validate_email]
+        # schema['maintainer_email'] = [not_empty, unicode, validate_email]
         schema['temporal_coverage_begin'] = \
             [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
@@ -525,7 +509,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
         #schema['maintainer_email'].insert(0, ignore_missing)
-        schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
+        # schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
         # schema['maintainer'].insert(0, ignore_missing)
         schema['maintainer'] = [ignore_missing, unicode, validate_general]
         # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],

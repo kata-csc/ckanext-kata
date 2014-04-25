@@ -3,17 +3,21 @@
 Utility functions for Kata.
 """
 
-from ckan.lib.email_notifications import send_notification
-from pylons import config
-from ckan.model import User, Package
-from ckan.lib import helpers as h
 import logging
 import tempfile
 import subprocess
 import urllib2
-from lxml import etree
 import socket
+
+from pylons import config
+import functionally as fn
+from lxml import etree
+
+from ckan.lib.email_notifications import send_notification
+from ckan.model import User, Package
+from ckan.lib import helpers as h
 from ckanext.kata import settings
+
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
 
@@ -196,3 +200,48 @@ def dataset_to_resource(data_dict):
     }
 
     return data_dict
+
+
+def get_distributor(data_dict):
+    '''Get a single distributor from agent field in data_dict'''
+    return fn.first(filter(lambda x: x.get('role') == u'distributor', data_dict.get('agent', [])))
+
+
+def get_funder(data_dict):
+    '''Get a single funder from agent field in data_dict'''
+    return fn.first(get_funders(data_dict))
+
+
+def get_funders(data_dict):
+    '''Get all funders from agent field in data_dict'''
+    return filter(lambda x: x.get('role') == u'funder', data_dict.get('agent', []))
+
+
+def get_owner(data_dict):
+    '''Get a single owner from agent field in data_dict'''
+    return fn.first(filter(lambda x: x.get('role') == u'owner', data_dict.get('agent', [])))
+
+
+def get_authors(data_dict):
+    '''Get all authors from agent field in data_dict'''
+    return filter(lambda x: x.get('role') == u'author', data_dict.get('agent', []))
+
+
+def hide_sensitive_fields(pkg_dict1):
+    '''
+    Hide fields that contain sensitive data. Modifies input dict directly.
+
+    :param pkg_dict1: data dictionary from package_show
+    '''
+
+    # pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
+    # pkg_dict1['project_funding'] = _('Not authorized to see this information')
+    funders = get_funders(pkg_dict1)
+    for fun in funders:
+        fun.pop('funding-id', None)
+
+    for con in pkg_dict1.get('contact', []):
+        con.pop('email', None)
+
+    return pkg_dict1
+
