@@ -3,15 +3,18 @@
 Controllers for Kata.
 """
 
+import json
 import logging
-from rdflib.term import Identifier, URIRef, Literal
 from rdflib.namespace import XSD
+from rdflib.term import Identifier, URIRef, Literal, BNode
+import urllib2
 
 from paste.deploy.converters import asbool
 from pylons import response, config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
 
+from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.user import UserController
 import ckan.lib.i18n
@@ -90,7 +93,7 @@ class MetadataController(BaseController):
                                                                   extras["temporal_coverage_end"])
         return dcmi_period
 
-    @beaker_cache(type="dbm", expire=604800)
+    @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
         response.headers['Content-type'] = 'text/xml'
         return URNHelper.list_packages()
@@ -207,12 +210,65 @@ class MetadataController(BaseController):
             if "notes" in data:
                 graph.add((uri, DC.description, Literal(data["notes"])))
 
+            # TODO: Add agents
+
+            # for agent in data.get('agent', []):
+            #
+            #     # agent_ref = URIRef(agent['URL']) \
+            #     #     if agent.get('URL') \
+            #     #     else BNode()
+            #     agent_ref = BNode()
+            #
+            #     if agent.get('name'):
+            #         graph.add((agent_ref, FOAF.name, agent.get('name')))
+            #     if agent.get('URL'):
+            #         graph.add((agent_ref, FOAF.homepage, agent.get('URL')))
+            #
+            #     graph.add((uri, DC.creator, agent_ref))
+
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
                 format = 'pretty-xml'
             return graph.serialize(format=format)
         else:
             return ""
+
+
+class KATAApiController(ApiController):
+    '''
+    Functions for autocomplete fields in add dataset form
+    '''
+
+    def tag_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "yso")
+
+    def discipline_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "okm-tieteenala")
+
+    def location_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "paikat")
+
+    def _onki_autocomplete(self, query, vocab):
+        url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
+
+        labels = []
+        if query:
+            url = url_template.format(q=query, v=vocab)
+            data = urllib2.urlopen(url).read()
+            jsondata = json.loads(data)
+            if u'results' in jsondata:
+                results = jsondata['results']
+                labels = [concept['prefLabel'].encode('utf-8') for concept in results]
+
+        result_set = {
+            'ResultSet': {
+                'Result': [{'Name': label} for label in labels]
+            }
+        }
+        return self._finish_ok(result_set)
 
 
 class AccessRequestController(BaseController):

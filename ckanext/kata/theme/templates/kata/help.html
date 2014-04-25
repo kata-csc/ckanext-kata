@@ -184,7 +184,7 @@
       {{ _('Coverage provides fields for spatial and temporal coverage:') }}
       </p>
       <div class="example">
-        {{ _('Spatial coverage: Places are provided from SUO ontology from http://onki.fi/. Choose the locations covered in your data from the suggestions. You can also add your own location by typing and accepting it.') }}
+        {{ _('Spatial coverage: Location names are retrieved the location name database at http://onki.fi/. Choose the locations covered in your data from the suggestions. You can also add your own location by typing and accepting it.') }}
       </div>
       <div class="example">
         {{ _('Temporal coverage: Choose a time period covered in your data using the date selector.') }}
@@ -232,6 +232,11 @@
         <p>
         {{ _('The Stats link will take you to the statistics page. The page will show you some general information about Kata, its datasets and users.') }}
         </p>
+        <h3 class="help-page"><a id="rems" class="help-h4">{{ _('REMS') }}</a></h3>
+        <p>
+        {{ _('Kata is integrated to TTA\'s REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: ') }}
+        <a href="https://confluence.csc.fi/display/REMS/REMS+Manual">{{ _('REMS manual') }}</a>
+        </p>
         {#<h3 class="help-page"><a id="collections" class="help-h4">{{ _('Collections') }}</a></h3>
         <p>
         {{ _('The Collections page shows categories which may have datasets under them, grouped together under one set. You can also add a new collection and from the collection page also add a dataset under this collection. Note, that for now only collections\' administrators can add datasets under it.') }}
@@ -267,6 +272,9 @@
           </li>
           <li>
             <a href="#stats" class="toc-sub">{{ _('- Stats') }}</a>
+          </li>
+          <li>
+            <a href="#rems" class="toc-sub">{{ _('- REMS') }}</a>
           </li>
           {#<li>
             <a href="#collections" class="toc-sub">{{ _('- Collections') }}</a>

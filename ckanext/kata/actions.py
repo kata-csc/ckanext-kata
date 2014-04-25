@@ -19,7 +19,7 @@ import ckan.model as model
 from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
-from ckan.logic import check_access, NotAuthorized
+from ckan.logic import check_access, NotAuthorized, side_effect_free
 from ckanext.kata import utils
 import ckanext.kata.schemas as schemas
 
@@ -28,13 +28,26 @@ log = logging.getLogger(__name__)     # pylint: disable=invalid-name
 
 TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
-
+@side_effect_free
 def package_show(context, data_dict):
+    '''Return the metadata of a dataset (package) and its resources.
+
+    :param id: the id or name of the dataset
+    :type id: string
+
+    :rtype: dictionary
     '''
-    Called before showing the dataset in some interface (browser, API).
-    '''
+
+    # Called before showing the dataset in some interface (browser, API),
+    # or when adding package to Solr index (no validation / conversions then).
+
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
+
+    # Remove empty agents that come from padding the agent list in converters
+    if 'agent' in pkg_dict1:
+        agents = filter(None, pkg_dict1.get('agent', []))
+        pkg_dict1['agent'] = agents or []
 
     # Normally logic function should not catch the raised errors
     # but here it is needed so action package_show won't catch it instead
@@ -86,6 +99,7 @@ def package_create(context, data_dict):
             
     except KeyError:
         log.debug("Tried to check the package type, but it wasn't present!")
+        # TODO: Dubious to let pass without checking user.sysadmin
         pass
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
@@ -109,6 +123,11 @@ def package_create(context, data_dict):
 
     if new_version_pid:
         data_dict['pids'] = data_dict.get('pids', []) + [{'id': new_version_pid, 'type': 'version', 'provider': 'kata'}]
+
+    # Add current user as a distributor.
+    # TODO: Get user's full name from db instead of user name? Or what does HAKA provide as user name?
+    if 'agent' in data_dict and context.get('user', None):
+        data_dict['agent'].append({'name': context['user'], 'role': 'distributor'})
 
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 
@@ -182,11 +201,6 @@ def package_update(context, data_dict):
     #             u'id': utils.generate_pid(),
     #             u'type': u'version',
     #         })
-
-    # This is a consequence of removing the ckan_phase!
-    # The solution might not be good, if further problems arise
-    # a better fix will be made
-    context['allow_partial_update'] = True
 
     # This fixes extras fields being cleared when adding a resource. This is be because the extras are not properly
     # cleared in show_package_schema conversions. Some fields stay in extras and they cause all other fields to be
@@ -292,11 +306,18 @@ organization_update = _decorate(ckan.logic.action.update.organization_update, 'o
 organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'organization', 'delete')
 
 
+@side_effect_free
 def package_search(context, data_dict):
-    """
-    Wraps around the CKAN package_search action to add customizations
-    in some special cases.
-    """
+    '''Return the metadata of a dataset (package) and its resources.
+
+    :param id: the id or name of the dataset
+    :type id: string
+
+    :rtype: dictionary
+    '''
+    #Wraps around the CKAN package_search action to add customizations
+    #in some special cases.
+
     if c.controller == "home" and c.action == "index":
         data_dict['sort'] = "metadata_modified desc"
         data_dict['rows'] = 5
