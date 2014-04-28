@@ -104,7 +104,7 @@
       <tr>
         <td>{{ contact.name }}</td>
         {% if email %}<td>{{ contact.email }}</td>{% endif %}
-        <td>{{ contact.URL }}</td>
+        <td><a href="{{ contact.URL }}">{{ contact.URL }}</a></td>
         <td>{{ contact.phone }}</td>
       </tr>
     {% endfor %}

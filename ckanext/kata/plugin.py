@@ -521,16 +521,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
 
-        # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
-        schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['discipline'].insert(0, ignore_missing)
         schema['event'] = {'type': [ignore_missing, check_events, unicode, flattened_to_extras, validate_general],
                            'who': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric],
                            'when': [ignore_missing, unicode, flattened_to_extras, validate_kata_date_relaxed],
                            'descr': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric]}
         schema['geographic_coverage'].insert(0, ignore_missing)
-        # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_ddi, validate_general],
-        #                      'org': [ignore_missing, unicode, validate_general]}
         schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
         schema['version'] = [not_empty, unicode, validate_kata_date_relaxed]

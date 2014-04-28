@@ -391,9 +391,9 @@ def check_contact(key, data, errors, context):
     Check that compulsory contacts exist.
     '''
 
-    # Simplified check to see that we get atleast one contact (4 compulsory fields).
+    # Simplified check to see that we get at least one contact (4 compulsory fields).
     # Further validation done in contact validators.
-    if not [k[0] for k in data.keys()].count('contact') >= 4:
+    if not [k[0] for k in data.keys()].count('contact') >= 1:
         raise Invalid(_('Missing compulsory distributor contact'))
 
 
