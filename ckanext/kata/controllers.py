@@ -573,6 +573,9 @@ class ContactController(BaseController):
         userobj.save()
 
     def send_contact(self, pkg_id):
+        '''
+        Send a user message from CKAN to dataset distributor contact. Not used.
+        '''
 
         prologue_template = u'{a} ({b}) has sent you a message regarding the following dataset:\
 \n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
@@ -608,8 +611,10 @@ käytä yllä olevaa sähköpostiosoitetta.'
 
         return redirect(url)
 
-
     def send_request(self, pkg_id):
+        '''
+        Send a request to access data to CKAN dataset owner.
+        '''
 
         prologue_template = u'{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
 for which you are currently marked as distributor.\n\nThe message is below.\n\n\
@@ -625,17 +630,12 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         package_title = package.title if package.title else package.name
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-            # email = package.maintainer_email
-            email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
-            emails = [con[1] for con in email_tuples]
-            email = fn.first(emails)
-            recipient = package.maintainer
 
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
             subject = _("Data access request for dataset / Datapyynto tietoaineistolle %s" % package_title)
-            self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
+            self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
         else:
             h.flash_error(_("Please login"))
 
