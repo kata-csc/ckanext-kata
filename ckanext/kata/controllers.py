@@ -5,6 +5,7 @@ Controllers for Kata.
 
 import json
 import logging
+import functionally as fn
 from rdflib.namespace import XSD
 from rdflib.term import Identifier, URIRef, Literal, BNode
 import urllib2
@@ -587,7 +588,10 @@ käytä yllä olevaa sähköpostiosoitetta.'
         package_title = package.title if package.title else package.name
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-            email = package.maintainer_email
+            # email = package.maintainer_email
+            email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
+            emails = [con[1] for con in email_tuples]
+            email = fn.first(emails)
             recipient = package.maintainer
 
             user_msg = request.params.get('msg', '')
@@ -621,7 +625,10 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         package_title = package.title if package.title else package.name
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-            email = package.maintainer_email
+            # email = package.maintainer_email
+            email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
+            emails = [con[1] for con in email_tuples]
+            email = fn.first(emails)
             recipient = package.maintainer
 
             user_msg = request.params.get('msg', '')
