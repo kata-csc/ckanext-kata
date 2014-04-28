@@ -21,7 +21,6 @@ from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free
 from ckanext.kata import utils
-import ckanext.kata.schemas as schemas
 
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
@@ -55,8 +54,7 @@ def package_show(context, data_dict):
     try:
         check_access('package_update', context)
     except NotAuthorized:
-        pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
-        pkg_dict1['project_funding'] = _('Not authorized to see this information')
+        pkg_dict1 = utils.hide_sensitive_fields(pkg_dict1)
 
     pkg = Package.get(pkg_dict1['id'])
     if 'erelated' in pkg.extras:

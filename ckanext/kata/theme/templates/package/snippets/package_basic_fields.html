@@ -148,22 +148,23 @@
         {% endif %}
         <h3 class="module-heading-add-dataset">{{ _('Distributor / publisher contact information') }}</h3>
         <div class="module-content">
-          {% set contact_name = data.maintainer if data.maintainer else user.fullname %}
-          {% set contact_email = data.maintainer_email if data.maintainer_email else user.email %}
+          {#% set contact_name = data.maintainer if data.maintainer else user.fullname %#}
+          {#% set contact_email = data.maintainer_email if data.maintainer_email else user.email %#}
+          {% set contact = h.get_contact(data) %}
 
-          {% call form.input('maintainer', label=_('Name'), id='contact_name', placeholder=_('John Doe'), value=contact_name, error=errors.maintainer, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('contact__0__name', label=_('Name'), id='contact__0__name', placeholder=_('John Doe'), value=contact.name, error=h.get_dict_field_errors(errors, 'contact', 0, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone or something that can be contacted if more information about the data is required or the person or organisation responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }}
           {% endcall %}
 
-          {% call form.input('contact_phone', label=_('Phone'), id='contact_phone', placeholder=_('+35844122123'), value=data.contact_phone, error=errors.contact_phone, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('contact__0__phone', label=_('Phone'), id='contact__0__phone', placeholder=_('+35844122123'), value=contact.phone, error=h.get_dict_field_errors(errors, 'contact', 0, 'phone'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact phone number. The phone number must be in form \"+35812341234\".')) }}
           {% endcall %}
 
-          {% call form.input('maintainer_email', label=_('Email'), id='maintainer_email', placeholder=_('john.doe@example.com'), value=contact_email, error=errors.maintainer_email, type='email', classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('contact__0__email', label=_('Email'), id='contact__0__email', placeholder=_('john.doe@example.com'), value=contact.email, error=h.get_dict_field_errors(errors, 'contact', 0, 'email'), type='email', classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly.')) }}
           {% endcall %}
 
-          {% call form.input('contact_URL', label=_('Homepage'), id='contact_URL', placeholder=_('http://johndoe.com/contact'), value=data.contact_URL, error=errors.contact_URL, classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('contact__0__URL', label=_('Homepage'), id='contact__0__URL', placeholder=_('http://johndoe.com/contact'), value=contact.URL, error=h.get_dict_field_errors(errors, 'contact', 0, 'URL'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a valid web address to your web page. In case you don\'t have one, you could for example give an address to your research group\'s site or any site that could make it possible to contact the origin of the dataset in case of need.')) }}
           {% endcall %}
         </div>
@@ -172,19 +173,19 @@
         <!--<input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if data.projdis != 'False' and data.projdis %}checked {% endif %}value="True">{{ _('This dataset was not produced in a project.') }}-->
         <div class="module-content" id="projdiv" {% if not h.get_funder(data) %}style="display: none;"{% endif %}>
           {% set funder = h.get_funder(data) %}
-          {% call form.input('agent__0__organisation', label=_('Name'), id='agent__0__organisation', placeholder=_('my project'), value=funder.organisation, error=h.get_agent_errors(errors, 0, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('agent__0__organisation', label=_('Name'), id='agent__0__organisation', placeholder=_('my project'), value=funder.organisation, error=h.get_dict_field_errors(errors, 'agent', 0, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s name.")) }}
           {% endcall %}
 
-          {% call form.input('agent__0__name', label=_('Funder'), id='agent__0__name', placeholder=_('my funder'), value=funder.name, error=h.get_agent_errors(errors, 0, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('agent__0__name', label=_('Funder'), id='agent__0__name', placeholder=_('my funder'), value=funder.name, error=h.get_dict_field_errors(errors, 'agent', 0, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project funder\'s name.")) }}
           {% endcall %}
 
-          {% call form.input('agent__0__funding-id', label=_('Funding id'), id='agent__0__funding-id', placeholder=_('1234'), value=funder['funding-id'], error=h.get_agent_errors(errors, 0, 'funding-id'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('agent__0__funding-id', label=_('Funding id'), id='agent__0__funding-id', placeholder=_('1234'), value=funder['funding-id'], error=h.get_dict_field_errors(errors, 'agent', 0, 'funding-id'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s funding id. The funding id is not shown publicly.")) }}
           {% endcall %}
 
-          {% call form.input('agent__0__URL', label=_('Homepage'), id='agent__0__URL', placeholder=_('http://myproject'), value=funder.URL, error=h.get_agent_errors(errors, 0, 'URL'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('agent__0__URL', label=_('Homepage'), id='agent__0__URL', placeholder=_('http://myproject'), value=funder.URL, error=h.get_dict_field_errors(errors, 'agent', 0, 'URL'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s homepage")) }}
           {% endcall %}
           <input type="hidden" id="agent__0__role" name="agent__0__role" value="funder" />
@@ -192,7 +193,7 @@
         <h3 class="module-heading-add-dataset">{{ _('Owner information')}}</h3>
         <div class="module-content">
           {% set owner = h.get_owner(data) %}
-          {% call form.input('agent__1__name', label=_('Owner identity'), id="agent__1__name", placeholder=_('identification URL or name'), value=owner.name, error=h.get_agent_errors(errors, 1, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('agent__1__name', label=_('Owner identity'), id="agent__1__name", placeholder=_('identification URL or name'), value=owner.name, error=h.get_dict_field_errors(errors, 'agent', 1, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
             {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type the dataset owner\'s name or an identifier, for example an ORCID identifier.")) }}
           {% endcall %}
           <input type="hidden" id="agent__1__role" name="agent__1__role" value="owner" />

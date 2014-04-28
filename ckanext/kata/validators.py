@@ -363,7 +363,7 @@ def validate_direct_download_url(key, data, errors, context):
 
 def check_agent(key, data, errors, context):
     '''
-    Check that compulsory agents exists.
+    Check that compulsory agents exist.
     '''
     author_found = False
     distributor_found = False
@@ -384,6 +384,18 @@ def check_agent(key, data, errors, context):
         #     errors[('agent',)].append(_(error))
         # else:
         #     errors[('agent',)] = [_(error)]
+
+
+def check_contact(key, data, errors, context):
+    '''
+    Check that compulsory contacts exist.
+    '''
+
+    # Simplified check to see that we get atleast one contact (4 compulsory fields).
+    # Further validation done in contact validators.
+    if not [k[0] for k in data.keys()].count('contact') >= 4:
+        raise Invalid(_('Missing compulsory distributor contact'))
+
 
 def check_agent_fields(key, data, errors, context):
     '''

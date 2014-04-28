@@ -29,7 +29,7 @@ class TestValidators(TestCase):
     def setup_class(cls):
         """Set up tests."""
 
-        # TODO: Get a new flattened data_dict
+        # TODO: Update the data_dict below. Also flatten it to provide data for validation/converters in show_package_schema.
 
         cls.test_data = {('__extras',): {'_ckan_phase': u'',
                                          'evdescr': [],
