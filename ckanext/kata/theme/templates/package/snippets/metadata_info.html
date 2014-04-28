@@ -29,10 +29,10 @@
 {% endif %}
 {% if pkg_dict.agent %}
 <h4>{{ _('Agents')}}</h4>
-{% set nme = true if h.has_agents_name(pkg_dict) %}
-{% set org = true if h.has_agents_organisation(pkg_dict) %}
-{% set url = true if h.has_agents_url(pkg_dict) %}
-{% set fid = true if h.has_agents_funding_id(pkg_dict) %}
+{% set nme = true if h.has_agents_field(pkg_dict, 'name') %}
+{% set org = true if h.has_agents_field(pkg_dict, 'organisation') %}
+{% set url = true if h.has_agents_field(pkg_dict, 'URL') %}
+{% set fid = true if h.has_agents_field(pkg_dict, 'funding-id') %}
 <table class="table table-striped table-bordered table-condensed">
 	<tbody>
 	<tr>
@@ -89,41 +89,28 @@
 </div>
 </section>
 <section class="module-content additional-info">
-<h3>{{ _('Contact information') }}</h3>
-{% if pkg_dict.maintainer %}
-<h4>{{ _('Primary contact') }}</h4>
-<table class="table table-striped table-bordered table-condensed">
-	<tbody>
-	<tr>
-		<th class="dataset-label">{{ _('Name') }}</th>
-		<td class="dataset-details">{{ pkg_dict.maintainer }}</td>
-	</tr>
-	<tr>
-		<th class="dataset-label">{{ _('Phone') }}</th>
-		{% if pkg_dict.contact_phone|length > 0 %}
-		    <td class="dataset-details">tel:{{ pkg_dict.contact_phone }}</td>
-		{% else %}
-		    <td class="dataset-details"></td>
-		{% endif %}
-	</tr>
-	<tr>
-		<th class="dataset-label">{{ _('Email') }}</th>
-		{# only show the maintainer email directly to users who have admin privileges to the metadata #}
-		{% if h.check_access('package_update', {'id':pkg_dict.id }) %}
-			<td class="dataset-details">mailto:{{ pkg_dict.maintainer_email}}</td>
-		{% else %}
-			<td class="dataset-details">
-				{% link_for _('Send a message'), controller='ckanext.kata.controllers:ContactController', action='render_contact', pkg_id=pkg_dict.id %}
-			</td>
-		{% endif %}
-	</tr>
-	<tr>
-		<th class="dataset-label">{{ _('Homepage') }}</th>
-		<td class="dataset-details"><a href="{{ pkg_dict.contact_URL }}">{{ pkg_dict.contact_URL }}</a></td>
-	</tr>
-	</tbody>
-</table>
-{% endif%}
+{% if pkg_dict.contact %}
+{% set email = true if h.has_contacts_field(pkg_dict, 'email') %}
+  <h3>{{ _('Contact information') }}</h3>
+  <table class="table table-striped table-bordered table-condensed">
+    <tbody>
+    <tr>
+      <th>{{ _('Name') }}</th>
+      {% if email %}<th>{{ _('E-Mail') }}</th>{% endif %}
+      <th>{{ _('URL') }}</th>
+      <th>{{ _('Phone') }}</th>
+    </tr>
+    {% for contact in pkg_dict.contact %}
+      <tr>
+        <td>{{ contact.name }}</td>
+        {% if email %}<td>{{ contact.email }}</td>{% endif %}
+        <td>{{ contact.URL }}</td>
+        <td>{{ contact.phone }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
 </section>
 <section class="module-content additional-info">
   <h3>{{ _('Identification information') }}</h3>

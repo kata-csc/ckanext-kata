@@ -213,48 +213,39 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def get_helpers(self):
         """ Register helpers """
-        return {'get_agent_errors': self.get_agent_errors,
-                'get_authors': utils.get_authors,
+        return {'get_authors': utils.get_authors,
+                'get_contact': utils.get_contact,
+                'get_dict_field_errors': self.get_dict_field_errors,
                 'get_distributor': utils.get_distributor,
                 'get_funder': utils.get_funder,
                 'get_funders': utils.get_funders,
                 'get_owner': utils.get_owner,
-                'has_agents_funding_id': self.has_agents_funding_id,
-                'has_agents_name': self.has_agents_name,
-                'has_agents_organisation': self.has_agents_organisation,
-                'has_agents_url': self.has_agents_url,
+                'has_agents_field': self.has_agents_field,
+                'has_contacts_field': self.has_contacts_field,
                 'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': self.kata_sorted_extras,
                 'reference_update': self.reference_update,
                 'resolve_agent_role': settings.resolve_agent_role,
                 }
 
-    def get_agent_errors(self, errors, index, name):
-        '''Get errors correctly for agents.
+    def get_dict_field_errors(self, errors, field, index, name):
+        '''Get errors correctly for fields that are represented as nested dict fields in data_dict.
 
         :return: [u'error1', u'error2']
         '''
         error = []
-        agent = errors.get('agent')
-        if agent and agent[index]:
-            error = agent[index].get(name)
+        error_dict = errors.get(field)
+        if error_dict and error_dict[index]:
+            error = error_dict[index].get(name)
         return error
 
-    def has_agents_name(self, data_dict):
-        '''Return true if some of the data dict's agents has attribute 'name'.'''
-        return [] != filter(lambda x : x.get('name'), data_dict.get('agent', []))
+    def has_agents_field(self, data_dict, field):
+        '''Return true if some of the data dict's agents has attribute given in field.'''
+        return [] != filter(lambda x : x.get(field), data_dict.get('agent', []))
 
-    def has_agents_organisation(self, data_dict):
-        '''Return true if some of the data dict's agents has attribute 'organisation'.'''
-        return [] != filter(lambda x : x.get('organisation'), data_dict.get('agent', []))
-
-    def has_agents_url(self, data_dict):
-        '''Return true if some of the data dict's agents has attribute 'URL'.'''
-        return [] != filter(lambda x : x.get('URL'), data_dict.get('agent', []))
-
-    def has_agents_funding_id(self, data_dict):
-        '''Return true if some of the data dict's agents has attribute 'funding-id'.'''
-        return [] != filter(lambda x : x.get('funding-id'), data_dict.get('agent', []))
+    def has_contacts_field(self, data_dict, field):
+        '''Return true if some of the data dict's contacts has attribute given in field'.'''
+        return [] != filter(lambda x : x.get(field), data_dict.get('contact', []))
 
     def reference_update(self, ref):
         #@beaker_cache(type="dbm", expire=2678400)

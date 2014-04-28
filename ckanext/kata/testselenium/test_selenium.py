@@ -178,11 +178,14 @@ class TestKataWithUser(TestCase):
             #field.send_keys('Selenium')
             #field.send_keys(Keys.RETURN)
 
-            field = browser.find_element_by_xpath("//input[@id='contact_phone']")
-            field.send_keys('+35891234567')
-
-            field = browser.find_element_by_xpath("//input[@id='contact_URL']")
+            field = browser.find_element_by_xpath("//input[@id='contact__0__name']")
+            field.send_keys('Selenium contact')
+            field = browser.find_element_by_xpath("//input[@id='contact__0__email']")
+            field.send_keys('kata.selenium@gmail.com')
+            field = browser.find_element_by_xpath("//input[@id='contact__0__URL']")
             field.send_keys('https://localhost/')
+            field = browser.find_element_by_xpath("//input[@id='contact__0__phone']")
+            field.send_keys('+35891234567')
 
             # field = browser.find_element_by_xpath("//input[@name='projdis']")
             # field.click()

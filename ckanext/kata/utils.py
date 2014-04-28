@@ -202,6 +202,16 @@ def dataset_to_resource(data_dict):
     return data_dict
 
 
+def get_authors(data_dict):
+    '''Get all authors from agent field in data_dict'''
+    return filter(lambda x: x.get('role') == u'author', data_dict.get('agent', []))
+
+
+def get_contact(data_dict):
+    '''Get one contact from data_dict'''
+    return fn.first(data_dict.get('contact', []))
+
+
 def get_distributor(data_dict):
     '''Get a single distributor from agent field in data_dict'''
     return fn.first(filter(lambda x: x.get('role') == u'distributor', data_dict.get('agent', [])))
@@ -220,11 +230,6 @@ def get_funders(data_dict):
 def get_owner(data_dict):
     '''Get a single owner from agent field in data_dict'''
     return fn.first(filter(lambda x: x.get('role') == u'owner', data_dict.get('agent', [])))
-
-
-def get_authors(data_dict):
-    '''Get all authors from agent field in data_dict'''
-    return filter(lambda x: x.get('role') == u'author', data_dict.get('agent', []))
 
 
 def hide_sensitive_fields(pkg_dict1):
