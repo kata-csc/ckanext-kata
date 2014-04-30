@@ -9,6 +9,7 @@ import logging
 import os
 import json
 import functionally as fn
+import re
 
 from ckan.lib.base import g, c
 from ckan.lib.navl.validators import (default,
@@ -81,6 +82,8 @@ from ckanext.kata import actions, auth_functions, settings, utils
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
 t = toolkit                                 # pylint: disable=invalid-name
+
+EMAIL = re.compile(r'.*contact_\d*_email')
 
 
 class KataMetadata(SingletonPlugin):
@@ -815,7 +818,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 new_items['agent_name_' + tokens[1]] = agent_name
                 new_items['agent_name_' + tokens[1] + '_org'] = agent_org
                 new_items['agent_name_' + tokens[1] + '_id'] = agent_id
+            
+            # hide sensitive data
+            if EMAIL.match(key):
+                pkg_dict[key] = u''
 
         pkg_dict.update(new_items)
+        
+        # hide sensitive data
+        for item in data['extras']:
+            if EMAIL.match(item['key']):
+                item['value'] = u''
+                
+        pkg_dict['data_dict'] = json.dumps(data)
 
         return pkg_dict
