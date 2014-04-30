@@ -122,12 +122,15 @@ def package_create(context, data_dict):
     if new_version_pid:
         data_dict['pids'] = data_dict.get('pids', []) + [{'id': new_version_pid, 'type': 'version', 'provider': 'kata'}]
 
-    # Add current user as a distributor.
+    # Add current user as a distributor if not already present.
     if user:
         if not 'agent' in data_dict:
             data_dict['agent'] = []
+
         user_name = user.display_name
-        if not user_name in [agent.get('name') for agent in data_dict['agent']]:
+        distributor_names = [agent.get('name') for agent in data_dict['agent'] if agent.get('role') == 'distributor']
+
+        if not user_name in distributor_names:
             data_dict['agent'].append(
                 {'name': user_name, 'role': 'distributor', 'id': user.id}
             )
