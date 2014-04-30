@@ -83,8 +83,6 @@ from ckanext.kata import actions, auth_functions, settings, utils
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
 t = toolkit                                 # pylint: disable=invalid-name
 
-EMAIL = re.compile(r'.*contact_\d*_email')
-
 
 class KataMetadata(SingletonPlugin):
     """
@@ -785,7 +783,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         
         :param pkg_dict: pkg_dict to modify
         '''
-        
+        EMAIL = re.compile(r'.*contact_\d*_email')
+
         # Add res_mimetype to pkg_dict. Can be removed after res_mimetype is
         # added to CKAN's index function.
         data = json.loads(pkg_dict['data_dict'])
@@ -826,7 +825,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         pkg_dict.update(new_items)
         
         # hide sensitive data
-        for item in data['extras']:
+        for item in data.get('extras', []):
             if EMAIL.match(item['key']):
                 item['value'] = u''
                 
