@@ -278,7 +278,7 @@ def get_package_ratings(data):
     if all(pid_type in pid_types for pid_type in pid_types_expected):
         score += 2 * len(pid_types) if len(pid_types) < 3 else 6
 
-    if len(data.get('version', '')) > 15:   # ISO8601 datetime
+    if len(unicode(data.get('version', ''))) > 15:   # ISO8601 datetime
         score += 1
 
     # MAX 9
@@ -300,7 +300,7 @@ def get_package_ratings(data):
 
     # MAX 28
 
-    if len(data.get('notes', '')) >= 10:
+    if len(unicode(data.get('notes', ''))) >= 10:
         score += (len(data['notes']) / 10) if len(data['notes']) < 60 else 6
 
     required_fields = ['geographic_coverage', 'event', 'checksum', 'algorithm', 'mimetype', 'langtitle']
