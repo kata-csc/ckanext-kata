@@ -34,13 +34,20 @@
 {% set url = true if h.has_agents_field(pkg_dict, 'URL') %}
 {% set fid = true if h.has_agents_field(pkg_dict, 'funding-id') %}
 <table class="table table-striped table-bordered table-condensed">
+  {# IE9 needs colgroup #}
+  <colgroup>
+    {% if nme %}<col width="25%">{% endif %}
+    {% if org %}<col width="25%">{% endif %}
+    {% if url %}<col width="25%">{% endif %}
+    {% if fid %}<col width="25%">{% endif %}
+  </colgroup>
 	<tbody>
 	<tr>
 		<th>{{ _('Role') }}</th>
-		{% if nme %}<th>{{ _('Name') }}</th>{% endif%}
-		{% if org %}<th>{{ _('Organisation') }}</th>{% endif%}
-		{% if url %}<th>{{ _('URL') }}</th>{% endif%}
-		{% if fid %}<th>{{ _('Funding id') }}</th>{% endif%}
+		{% if nme %}<th>{{ _('Name') }}</th>{% endif %}
+		{% if org %}<th>{{ _('Organisation') }}</th>{% endif %}
+		{% if url %}<th>{{ _('URL') }}</th>{% endif %}
+		{% if fid %}<th>{{ _('Funding id') }}</th>{% endif %}
 	</tr>
 	{% for agent in pkg_dict.agent %}
 	<tr>
@@ -93,6 +100,13 @@
 {% set email = true if h.has_contacts_field(pkg_dict, 'email') %}
   <h3>{{ _('Contact information') }}</h3>
   <table class="table table-striped table-bordered table-condensed">
+    {# IE9 needs colgroup #}
+    <colgroup>
+      <col width="25%">
+      <col width="25%">
+      <col width="25%">
+      {% if email %}<col width="25%">{% endif %}
+    </colgroup>
     <tbody>
     <tr>
       <th>{{ _('Name') }}</th>
