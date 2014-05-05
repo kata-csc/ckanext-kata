@@ -205,7 +205,7 @@ class TestKataWithUser(TestCase):
             assert 0, "Error processing the create dataset page"
 
         try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ul/li/a[.='RDF']")))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/a[.='Hide/show']")))
         except TimeoutException:
             browser.get_screenshot_as_file('_add_dataset.png')
             browser.quit()
