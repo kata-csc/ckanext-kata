@@ -10338,8 +10338,8 @@ msgid "only by contacting the distributor"
 msgstr "ottamalla yhteyttä yhteyshenkilöön"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:264
-msgid "License information can be found at"
-msgstr "Lisenssitieto löytyy osoitteesta"
+msgid "Information about licenses"
+msgstr "Tietoa lisensseistä"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:270
 msgid "License URL"
