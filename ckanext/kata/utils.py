@@ -254,3 +254,66 @@ def hide_sensitive_fields(pkg_dict1):
 
     return pkg_dict1
 
+
+def get_package_ratings(data):
+    '''
+    Create a metadata rating (1-5) for given dataset
+
+    :param data: A CKAN data_dict
+    '''
+    rating = 1
+    looking_good = True
+
+    required_fields =['pids', 'version', 'contact', 'license_id', 'agent', 'language', 'availability']
+    if not all(field in data for field in required_fields):
+        looking_good = False
+
+    if not any(field in data for field in ['tags', 'tag_string']):  # Could be either of these?
+        looking_good = False
+
+    if not get_funder(data):
+        looking_good = False
+
+    if looking_good:
+        rating = 2  # IMPROVE RATING
+
+        pid_types = [pid.get('type') for pid in data.get('pids', [])]
+        pid_types_expected = ['data', 'metadata', 'version']
+        if len(pid_types) < 3:
+            # The minimum metadata model is a bit vague in this part, this is one iterpretation
+            pid_types_expected.pop(2)
+        if not all(pid_type in pid_types for pid_type in pid_types_expected):
+            looking_good = False
+
+        if len(data.get('version', '')) < 15:   # ISO8601 datetime
+            looking_good = False
+
+        if data.get('license_id', '') in ['notspecified', '']:
+            looking_good = False
+
+        if not (data.get('tags') or data.get('tag_string')):
+            looking_good = False
+
+        if len(data.get('agent', [])) < 2:
+            looking_good = False
+
+        if looking_good:
+            rating = 3  # IMPROVE RATING
+
+            if not data.get('notes'):
+                looking_good = False
+
+            if looking_good:
+                rating = 4  # IMPROVE RATING
+
+                required_fields = ['discipline', 'geographic_coverage', 'event', 'checksum', 'algorithm', 'mimetype']
+                if not all(field in data for field in required_fields):
+                    looking_good = False
+
+                all(con.get('URL') and con.get('phone') for con in data.get('contact'))
+
+                if looking_good:
+                    rating = 5  # IMPROVE RATING
+
+    stars = u'★★★★★'[:rating] + u'☆☆☆☆☆'[rating:]   # Star rating as string
+    return (rating, stars)
