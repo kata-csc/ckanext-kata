@@ -11347,3 +11347,10 @@ msgstr "REMS:n käyttöohjeista"
 # REMS (these should be in ckanext-rems?)
 msgid "Dataset saved but REMS application creation failed. To retry, save dataset later without changes."
 msgstr "Tietoaineisto tallennettu, mutta REMS-hakemuksen luonti epäonnistui. Yritä uudelleen myöhemmin tallentamalla muutoksitta."
+
+# Login
+msgid "About login"
+msgstr "Tietoa sisäänkirjautumisesta"
+
+msgid "Currently Kata only provides login using Haka."
+msgstr "Tällä hetkellä Katassa tarjotaan sisäänkirjautuminen vain käyttäen Hakaa."

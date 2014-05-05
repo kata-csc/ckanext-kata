@@ -7,7 +7,6 @@ Test classes for Kata CKAN Extension.
 """
 
 import copy
-import json
 from unittest import TestCase
 
 from pylons.util import PylonsContext, pylons, AttribSafeContextObj
@@ -15,6 +14,7 @@ from pylons.util import PylonsContext, pylons, AttribSafeContextObj
 from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 from ckanext.kata.plugin import KataPlugin
 from ckanext.kata import settings, utils, actions
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 
 
 class TestKataExtension(TestCase):
@@ -367,16 +367,6 @@ class TestResouceConverters(TestCase):
 class TestUtils(TestCase):
     """Unit tests for functions in utils.py."""
 
-    @classmethod
-    def setup_class(cls):
-        """Set up tests."""
-        cls.agents = {
-            'agent': [{'URL': u'http://google.com/', 'funding-id': u'lis\xe4\xe4-rahaa-nyt-1234',
-                       'name': u'Roope Rahoittaja', 'organisation': u'Roopen Rahas\xe4ili\xf6', 'role': u'funder'},
-                      {'name': u'Ossi Omistaja', 'role': u'owner'},
-                      {'name': u'Dada', 'organisation': u'Dada', 'role': u'author'}],
-        }
-
     def test_generate_pid(self):
         pid = utils.generate_pid()
         assert 'urn' in pid
@@ -388,13 +378,33 @@ class TestUtils(TestCase):
         assert pid != pid2
 
     def test_get_funder(self):
-        assert utils.get_funder(self.agents)['name'] == u'Roope Rahoittaja'
+        assert utils.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
 
     def test_get_owner(self):
-        assert utils.get_owner(self.agents)['name'] == u'Ossi Omistaja'
+        assert utils.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
 
     def test_get_authors(self):
-        assert utils.get_authors(self.agents)[0]['name'] == u'Dada'
+        assert utils.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
+
+    def test_get_package_ratings(self):
+        (rating, stars) = utils.get_package_ratings(TEST_DATADICT)
+        assert rating == 5, rating
+        assert stars == u'★★★★★'
+
+    def test_get_package_ratings_2(self):
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict.pop('notes')
+        data_dict.pop('temporal_coverage_begin')
+        data_dict.pop('discipline')
+        data_dict.pop('algorithm')
+        data_dict.pop('checksum')
+        data_dict.pop('geographic_coverage')
+        data_dict.pop('mimetype')
+        data_dict['license_id'] = u''
+
+        (rating, stars) = utils.get_package_ratings(data_dict)
+        assert rating == 3, rating
+        assert stars == u'★★★☆☆'
 
 
 class TestActions(TestCase):
