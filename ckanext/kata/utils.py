@@ -261,59 +261,66 @@ def get_package_ratings(data):
 
     :param data: A CKAN data_dict
     '''
-    rating = 1
-    looking_good = True
+    score = 0   # Scale 0-49
 
     required_fields =['pids', 'version', 'contact', 'license_id', 'agent', 'language', 'availability']
-    if not all(field in data for field in required_fields):
-        looking_good = False
+    if all(data.get(field) for field in required_fields):
+        score += 2
 
-    if not any(field in data for field in ['tags', 'tag_string']):  # Could be either of these?
-        looking_good = False
+    # MAX 2
 
-    if not get_funder(data):
-        looking_good = False
+    pid_types = [pid.get('type') for pid in data.get('pids', [])]
+    pid_types_expected = ['data', 'metadata', 'version']
+    if len(pid_types) < 3:
+        # The minimum metadata model is a bit vague in this part, this is one iterpretation
+        pid_types_expected.pop(2)
 
-    if looking_good:
-        rating = 2  # IMPROVE RATING
+    if all(pid_type in pid_types for pid_type in pid_types_expected):
+        score += 2 * len(pid_types) if len(pid_types) < 3 else 6
 
-        pid_types = [pid.get('type') for pid in data.get('pids', [])]
-        pid_types_expected = ['data', 'metadata', 'version']
-        if len(pid_types) < 3:
-            # The minimum metadata model is a bit vague in this part, this is one iterpretation
-            pid_types_expected.pop(2)
-        if not all(pid_type in pid_types for pid_type in pid_types_expected):
-            looking_good = False
+    if len(data.get('version', '')) > 15:   # ISO8601 datetime
+        score += 1
 
-        if len(data.get('version', '')) < 15:   # ISO8601 datetime
-            looking_good = False
+    # MAX 9
 
-        if data.get('license_id', '') in ['notspecified', '']:
-            looking_good = False
+    if data.get('license_id', '') not in ['notspecified', '']:
+        score += 6
 
-        if not (data.get('tags') or data.get('tag_string')):
-            looking_good = False
+    if not (data.get('tags') or data.get('tag_string')):    # Either of these should be present
+        score -= 5  # MINUS
 
-        if len(data.get('agent', [])) < 2:
-            looking_good = False
+    if len(data.get('agent', [])) >= 2:
+        score += 2 * len(data['agent']) if len(data['agent']) < 6 else 6
 
-        if looking_good:
-            rating = 3  # IMPROVE RATING
+    if len(data.get('event', [])) >= 1:
+        score += 1
 
-            if not data.get('notes'):
-                looking_good = False
+    if get_funder(data):
+        score += 6
 
-            if looking_good:
-                rating = 4  # IMPROVE RATING
+    # MAX 28
 
-                required_fields = ['discipline', 'geographic_coverage', 'event', 'checksum', 'algorithm', 'mimetype']
-                if not all(field in data for field in required_fields):
-                    looking_good = False
+    if len(data.get('notes', '')) >= 10:
+        score += (len(data['notes']) / 10) if len(data['notes']) < 60 else 6
 
-                all(con.get('URL') and con.get('phone') for con in data.get('contact'))
+    required_fields = ['geographic_coverage', 'event', 'checksum', 'algorithm', 'mimetype', 'langtitle']
+    score += len(filter(lambda field: data.get(field), required_fields))
 
-                if looking_good:
-                    rating = 5  # IMPROVE RATING
+    # MAX 40
 
+    if filter(lambda con: con.get('name') and con.get('email') and con.get('URL') and con.get('phone'), data.get('contact')):
+        score += 4
+
+    # MAX 44
+
+    if data.get('temporal_coverage_begin') and data.get('temporal_coverage_end'):
+        score += 1
+
+    if data.get('discipline'):
+        score += 4
+
+    # MAX 49
+
+    rating = 1 + int(score / 10)
     stars = u'★★★★★'[:rating] + u'☆☆☆☆☆'[rating:]   # Star rating as string
     return (rating, stars)

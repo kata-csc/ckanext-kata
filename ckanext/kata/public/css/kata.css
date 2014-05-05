@@ -961,5 +961,5 @@ input, button, select, textarea {
     font-size: 20px;
 	margin-left: 10px;
 	color: #e0cb55;
-	text-shadow: 1px 1px #888888;
+	//text-shadow: 1px 1px #AAAAAA;
 }

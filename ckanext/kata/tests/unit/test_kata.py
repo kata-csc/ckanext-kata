@@ -388,15 +388,22 @@ class TestUtils(TestCase):
 
     def test_get_package_ratings(self):
         (rating, stars) = utils.get_package_ratings(TEST_DATADICT)
-        assert rating == 5
+        assert rating == 5, rating
         assert stars == u'★★★★★'
 
     def test_get_package_ratings_2(self):
         data_dict = copy.deepcopy(TEST_DATADICT)
         data_dict.pop('notes')
+        data_dict.pop('temporal_coverage_begin')
+        data_dict.pop('discipline')
+        data_dict.pop('algorithm')
+        data_dict.pop('checksum')
+        data_dict.pop('geographic_coverage')
+        data_dict.pop('mimetype')
+        data_dict['license_id'] = u''
 
         (rating, stars) = utils.get_package_ratings(data_dict)
-        assert rating == 3
+        assert rating == 3, rating
         assert stars == u'★★★☆☆'
 
 
