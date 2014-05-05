@@ -704,6 +704,9 @@ class KataUserController(UserController):
         # we need to set the language explicitly here or the flash
         # messages will not be translated.
         ckan.lib.i18n.set_lang(lang)
+        
+        if h.url_is_local(came_from):
+            return h.redirect_to(str(came_from))
 
         if c.user:
             context = {'model': model,
@@ -713,11 +716,8 @@ class KataUserController(UserController):
 
             user_dict = get_action('user_show')(context, data_dict)
 
-            h.flash_success(_("%s is now logged in") %
-                            user_dict['display_name'])
-            if came_from:
-                return h.redirect_to(str(came_from))
-                # Rewritten in ckanext-kata
+            #h.flash_success(_("%s is now logged in") %
+            #                user_dict['display_name'])
             return h.redirect_to(controller='user', action='read', id=c.userobj.name)
         else:
             err = _('Login failed. Bad username or password.')
@@ -726,7 +726,7 @@ class KataUserController(UserController):
                          'with a user account.)')
             if asbool(config.get('ckan.legacy_templates', 'false')):
                 h.flash_error(err)
-                h.redirect_to(locale=lang, controller='user',
+                h.redirect_to(controller='user',
                               action='login', came_from=came_from)
             else:
                 return self.login(error=err)
