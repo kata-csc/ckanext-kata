@@ -468,7 +468,8 @@ class TestDataReading(KataApiTestCase):
 
         for contact in output.get('contact', []):
             assert 'email' not in contact or \
-                   contact['email'] == u'Not authorized to see this information'
+                   contact['email'] == u'Not authorized to see this information' or \
+                   contact['email'] == u'hidden'
 
         for funder in utils.get_funders(output):
             assert 'funding-id' not in funder or \
