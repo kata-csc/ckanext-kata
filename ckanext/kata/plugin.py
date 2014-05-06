@@ -8,7 +8,6 @@ import datetime
 import logging
 import os
 import json
-import functionally as fn
 import re
 
 from ckan.lib.base import g, c
@@ -221,6 +220,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'get_funder': utils.get_funder,
                 'get_funders': utils.get_funders,
                 'get_owner': utils.get_owner,
+                'get_package_ratings': utils.get_package_ratings,
                 'has_agents_field': self.has_agents_field,
                 'has_contacts_field': self.has_contacts_field,
                 'is_custom_form': self.is_custom_form,
@@ -828,7 +828,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for item in data.get('extras', []):
             if EMAIL.match(item['key']):
                 item['value'] = u''
-                
+
         pkg_dict['data_dict'] = json.dumps(data)
 
         return pkg_dict
