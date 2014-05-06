@@ -4061,7 +4061,7 @@ msgstr "Kirjoita uusi salasanasi ja profiilisi päivitetään"
 
 #: ckan/templates/user/read.html:13
 msgid "You haven't created any datasets."
-msgstr "Et ole luonut tietoaineistoja"
+msgstr "Et ole luonut tietoaineistoja."
 
 #: ckan/templates/user/read.html:15
 msgid "Create one now?"
