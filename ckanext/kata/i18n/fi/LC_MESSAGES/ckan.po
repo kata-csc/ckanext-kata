@@ -463,8 +463,8 @@ msgstr "Ei oikeuksia lukea ryhmää {group_id}"
 #: ckan/controllers/group.py:682
 #: ckan/controllers/package.py:1238
 #: ckan/controllers/user.py:594
-msgid "You are now following {0}"
-msgstr "Seuraat nyt tätä: {0}"
+msgid "You are now following %s"
+msgstr "Seuraat nyt tätä: %s"
 
 #: ckan/controllers/group.py:701
 #: ckan/controllers/package.py:1257
@@ -11193,6 +11193,9 @@ msgstr "Kenttä on pakollinen, mutta generoidaan automaattisesti jos jätetty ty
 
 msgid "Missing compulsory distributor contact"
 msgstr "Pakollinen jakelijan tieto puuttuu"
+
+msgid "Missing compulsory agent: {0}"
+msgstr "Pakollinen toimija puuttuu: {0}"
 
 msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr "Tagin \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: '_.()/#+."
