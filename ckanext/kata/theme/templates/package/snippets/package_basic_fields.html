@@ -73,7 +73,7 @@
             {% if errors and errors.get('__extras') %}
               {% set auth_errors = [] %}
               {% for error in errors.get('__extras') %}
-                {% if "Author" in error %}
+                {% if "Author" in error or "Laatija" in error %}
                   {% if auth_errors.append(error) %}{% endif %}
                 {% endif %}
               {% endfor %}
@@ -101,7 +101,7 @@
                 </div>
               </div>
             {% endfor %}
-            {% if auth_errors and auth_errors is iterable %}<span class="error-block-kata">{{ auth_errors|join(', ') }}</span>{% endif %}
+            {% if auth_errors and auth_errors is iterable %}<span class="error-block-kata">{{ auth_errors|join('. ') }}</span>{% endif %}
           </div>
         </div>
 
@@ -115,10 +115,7 @@
           <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords (tags) that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />You can change the language of suggested words from the language menu.<br /><br />The suggestions are retrieved from the ONKI vocabulary service (see http://onki.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
           <span class="kata-btn-span tta-orange">?</span></button><br /><br />
           {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-          {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-medium'], attrs=tag_attrs) }}
-          {% if errors.tag_string %}
-            <span class="error-block">{{ errors.tag_string[0] }}</span>
-          {% endif %}
+          {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], attrs=tag_attrs) }}
         </div>
         <br />
 
@@ -161,7 +158,7 @@
             {% if errors and errors.get('__extras') %}
               {% set distributor_errors = [] %}
               {% for error in errors.get('__extras') %}
-                {% if "contact" in error %}
+                {% if "contact" in error or "jakelijan" in error %}
                   {% if distributor_errors.append(error) %}{% endif %}
                 {% endif %}
               {% endfor %}
@@ -183,26 +180,26 @@
             {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a valid web address to your web page. In case you don\'t have one, you could for example give an address to your research group\'s site or any site that could make it possible to contact the origin of the dataset in case of need.')) }}
           {% endcall %}
 
-          {% if distributor_errors and distributor_errors is iterable %}<span class="error-block-kata">{{ distributor_errors|join(', ') }}</span>{% endif %}
+          {% if distributor_errors and distributor_errors is iterable %}<span class="error-block-kata">{{ distributor_errors|join('. ') }}</span>{% endif %}
         </div>
         <h3 class="module-heading-add-dataset">{{ _('Project that produced this dataset') }}</h3>
         <input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True">{{ _('This dataset was produced in a project.') }}
         <div class="module-content" id="projdiv" {% if not h.get_funder(data) %}style="display: none;"{% endif %}>
           {% set funder = h.get_funder(data) %}
           {% call form.input('agent__0__organisation', label=_('Name'), id='agent__0__organisation', placeholder=_('my project'), value=funder.organisation, error=h.get_dict_field_errors(errors, 'agent', 0, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s name.")) }}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project\'s name.")) }}
           {% endcall %}
 
           {% call form.input('agent__0__name', label=_('Funder'), id='agent__0__name', placeholder=_('my funder'), value=funder.name, error=h.get_dict_field_errors(errors, 'agent', 0, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project funder\'s name.")) }}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project funder\'s name.")) }}
           {% endcall %}
 
           {% call form.input('agent__0__funding-id', label=_('Funding id'), id='agent__0__funding-id', placeholder=_('1234'), value=funder['funding-id'], error=h.get_dict_field_errors(errors, 'agent', 0, 'funding-id'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s funding id. The funding id is not shown publicly.")) }}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project\'s funding id. The funding id is not shown publicly.")) }}
           {% endcall %}
 
           {% call form.input('agent__0__URL', label=_('Homepage'), id='agent__0__URL', placeholder=_('http://myproject'), value=funder.URL, error=h.get_dict_field_errors(errors, 'agent', 0, 'URL'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was not produced in a project.\' is unchecked.<br /><br />Type the project\'s homepage")) }}
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project\'s homepage")) }}
           {% endcall %}
           <input type="hidden" id="agent__0__role" name="agent__0__role" value="funder" />
         </div>

@@ -51,7 +51,7 @@
 	</tr>
 	{% for agent in pkg_dict.agent %}
 	<tr>
-		<td>{{ h.resolve_agent_role(agent.role) }}</td>
+		<td>{{_(h.resolve_agent_role(agent.role))}}</td>
 		{% if nme %}<td>{{ agent.name }}</td>{% endif%}
 		{% if org %}<td>{{ agent.organisation }}</td>{% endif%}
 		{% if url %}<td>{{ agent.URL }}</td>{% endif%}
