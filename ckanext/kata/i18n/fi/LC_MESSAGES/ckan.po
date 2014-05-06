@@ -11356,6 +11356,9 @@ msgstr "Kata on integroitu TTA:n REMS-palveluun, Reettaan. Tämä tarkoittaa sit
 msgid "REMS manual"
 msgstr "REMS:n käyttöohjeista"
 
+msgid "For additional help send email to: "
+msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
+
 # REMS (these should be in ckanext-rems?)
 msgid "Dataset saved but REMS application creation failed. To retry, save dataset later without changes."
 msgstr "Tietoaineisto tallennettu, mutta REMS-hakemuksen luonti epäonnistui. Yritä uudelleen myöhemmin tallentamalla muutoksitta."
