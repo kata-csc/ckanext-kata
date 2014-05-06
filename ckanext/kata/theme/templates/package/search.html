@@ -71,10 +71,10 @@
                  placeholder="{{ _('Search...') }}"/>
             <button type="submit" value="{{ _('Search') }}">Submit</button>
           </span>
-          <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+          {#<span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
           <span class="search-infotext">
           {{ _('Use wildcard to search with various spellings, for example: cat*') }}
-          </span>
+          </span>#}
 
           {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
 
