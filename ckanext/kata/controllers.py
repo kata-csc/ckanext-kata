@@ -242,7 +242,7 @@ class KATAApiController(ApiController):
 
     def tag_autocomplete(self):
         query = request.params.get('incomplete', '')
-        return self._onki_autocomplete(query, "yso")
+        return self._onki_autocomplete(query, "koko")
 
     def discipline_autocomplete(self):
         query = request.params.get('incomplete', '')

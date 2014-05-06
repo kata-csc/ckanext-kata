@@ -7270,11 +7270,8 @@ msgid ""
 msgstr "Laatijat: laatija ja laatijan organisaatio. Metadataan voidaan syöttää useampia laatija-organisaatio -pareja."
 
 #: ckanext/kata/theme/templates/kata/help.html:167
-msgid ""
-"Keywords: Keywords use YSO ontology from http://onki.fi/. The keywords "
-"are chosen from suggestions or you can also provide your own word if "
-"suitable is not available."
-msgstr "Avainsanat (tagit): avainsanoissa on käytössä JavaScript-valitsin, joka hakee ehdotuksia sanoiksi YSO-ontologiasta, kts. http://onki.fi/. Avainsanat valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei löydy."
+msgid "Keywords: Keywords use KOKO ontology from http://onki.fi/. The keywords are chosen from suggestions or you can also provide your own word if suitable is not available."
+msgstr "Avainsanat (tagit): avainsanoissa on käytössä JavaScript-valitsin, joka hakee ehdotuksia sanoiksi KOKO-ontologiasta, kts. http://onki.fi/. Avainsanat valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei löydy."
 
 #: ckanext/kata/theme/templates/kata/help.html:171
 msgid ""
@@ -10065,9 +10062,9 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:118
 msgid ""
-"Search keywords from YSO ontology, select keywords with enter or mouse "
+"Search keywords from KOKO ontology, select keywords with enter or mouse "
 "click."
-msgstr "Etsi avainsanoja (tageja) YSO-ontologiasta. Valitse valittu avainsana näppäimistösi enter-painikkeella tai hiiren klikkauksella."
+msgstr "Etsi avainsanoja (tageja) KOKO-ontologiasta. Valitse valittu avainsana näppäimistösi enter-painikkeella tai hiiren klikkauksella."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:119
 msgid ""
