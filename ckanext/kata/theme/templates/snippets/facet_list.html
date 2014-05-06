@@ -27,13 +27,24 @@ extras
 
 #}
 {% with items = items or h.get_facet_items_dict(name) %}
+{% set found = False %}
   <section class="module module-narrow module-shallow">
     <h2 class="module-heading tta-lblue">
-      <i class="icon-medium icon-filter tta-blue"></i>
+      <!-- i class="icon-medium icon-filter tta-blue"></i -->
       {{ title or h.get_facet_title(name) }}
-      <a href="{{ h.remove_url_param(name, extras=extras) }}" class="action">{{ _('Clear All') }}</a>
+      {% if items %}
+      <a class="tta-lblue pull-right" href="#recmod" onclick="$('#{{ title or h.get_facet_title(name) }}').toggle()">
+      <i class="icon-chevron-down tta-blue"></i></a>
+      {% endif %}
+      <!-- <a href="{{ h.remove_url_param(name, extras=extras) }}" class="action">{{ _('Clear All') }}</a> -->
     </h2>
-    {% if items %}
+      {% if fields.get(name) and fields.get(name)|length > 0 %}
+        <div id="{{ title or h.get_facet_title(name) }}">
+      {% elif limits.get(name) == 0 %}
+        <div id="{{ title or h.get_facet_title(name) }}">
+      {% else %}
+        <div style="display: none;" id="{{ title or h.get_facet_title(name) }}">
+      {% endif %}
       <nav>
         <ul class="unstyled nav nav-simple nav-facet">
           {% for item in items %}
@@ -56,8 +67,10 @@ extras
           <a href="{{ h.remove_url_param('_%s_limit' % name, extras=extras) }}" class="read-more">{{ _('Show Only Popular') }}</a>
         {% endif %}
       </p>
-    {% else %}
-      <p class="module-content empty">{{ _('There are no filters for this search') }}</p>
-    {% endif %}
+     </div>
+    {#% else %#}
+      {#<p class="module-content empty">{{ _('There are no filters for this search') }}</p>#}
+    {#% endif %#}
+    
   </section>
 {% endwith %}
