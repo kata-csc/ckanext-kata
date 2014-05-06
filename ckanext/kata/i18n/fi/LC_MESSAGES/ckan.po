@@ -10175,8 +10175,8 @@ msgid "Project that produced this dataset"
 msgstr "Tietoaineiston tuottanut projekti"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:165
-msgid "This dataset was not produced in a project."
-msgstr "Tätä tietoaineistoa ei ole tuotettu projektissa"
+msgid "This dataset was produced in a project."
+msgstr "Tämä tietoaineisto on tuotettu projektissa."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:167
 msgid "my project"
@@ -11354,3 +11354,10 @@ msgstr "Tietoa sisäänkirjautumisesta"
 
 msgid "Currently Kata only provides login using Haka."
 msgstr "Tällä hetkellä Katassa tarjotaan sisäänkirjautuminen vain käyttäen Hakaa."
+
+# Contact form
+msgid "Request edit rights"
+msgstr "Pyydä muokkausoikeuksia"
+
+msgid "Send"
+msgstr "Lähetä"

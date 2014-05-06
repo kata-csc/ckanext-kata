@@ -250,7 +250,8 @@ def hide_sensitive_fields(pkg_dict1):
         fun.pop('funding-id', None)
 
     for con in pkg_dict1.get('contact', []):
-        con.pop('email', None)
+        # String 'hidden' triggers the link for contact form, see metadata_info.html
+        con['email'] = 'hidden'
 
     return pkg_dict1
 

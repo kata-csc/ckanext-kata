@@ -117,7 +117,13 @@
     {% for contact in pkg_dict.contact %}
       <tr>
         <td>{{ contact.name }}</td>
-        {% if email %}<td>{{ contact.email }}</td>{% endif %}
+        {% if email %}
+          {% if contact.email == 'hidden' %}
+            <td><a href="/contact/{{pkg_dict.id}}">{{_('Send a message') }}</a></td>
+          {% else %}
+            <td>{{ contact.email }}</td>
+          {% endif %}
+        {% endif %}
         <td><a href="{{ contact.URL }}">{{ contact.URL }}</a></td>
         <td>{{ contact.phone }}</td>
       </tr>

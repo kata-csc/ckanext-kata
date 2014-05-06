@@ -574,9 +574,10 @@ class ContactController(BaseController):
 
     def send_contact(self, pkg_id):
         '''
-        Send a user message from CKAN to dataset distributor contact. Not used.
+        Send a user message from CKAN to dataset distributor contact.
         '''
-
+        # Todo: replan and fix when we have multiple distributor emails available
+        # This only works because we have only one contact
         prologue_template = u'{a} ({b}) has sent you a message regarding the following dataset:\
 \n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
 \n\n{c} (Tunniste: {d})\n\nViesti:\n\n    ---'
@@ -591,11 +592,14 @@ käytä yllä olevaa sähköpostiosoitetta.'
         package_title = package.title if package.title else package.name
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-            # email = package.maintainer_email
+            # Todo: this should take the specific contact address, not just the first contact email
             email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
+            
             emails = [con[1] for con in email_tuples]
             email = fn.first(emails)
-            recipient = package.maintainer
+            
+            # consequently, this now prints "Dear email@address.com", should be contact_0_name instead
+            recipient = email
 
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
