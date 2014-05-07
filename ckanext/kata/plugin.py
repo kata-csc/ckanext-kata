@@ -142,9 +142,9 @@ class KataMetadata(SingletonPlugin):
         map.connect('/contact/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
                     action="render_contact")
-        map.connect('/dataset/import_xml/',
-                    controller="ckanext.harvest.controllers.view:ViewController",
-                    action="import_xml")
+        # map.connect('/dataset/import_xml/',
+        #             controller="ckanext.harvest.controllers.view:ViewController",
+        #             action="import_xml")
         map.connect('/user/logged_in',
                     controller="ckanext.kata.controllers:KataUserController",
                     action="logged_in")

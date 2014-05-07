@@ -11373,3 +11373,7 @@ msgstr "Pyydä muokkausoikeuksia"
 
 msgid "Send"
 msgstr "Lähetä"
+
+#: ckanext/kata/theme/templates/package/read.html:73
+msgid "metadata score {rating}/5"
+msgstr "Metatiedon laatu {rating}/5"

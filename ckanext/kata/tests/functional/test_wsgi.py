@@ -35,6 +35,21 @@ class TestPages(KataWsgiTestCase):
         res = self.app.get(offset)
         assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
 
+    def test_harvest_page(self):
+        offset = url_for('/harvest')
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+
+    def test_dataset_page(self):
+        offset = url_for('/dataset')
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+
+    def test_urnexport_page(self):
+        offset = url_for('/urnexport')
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+
 
 class TestResources(KataWsgiTestCase):
     """
