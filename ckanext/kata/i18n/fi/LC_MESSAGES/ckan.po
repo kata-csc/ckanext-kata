@@ -6844,8 +6844,8 @@ msgid "Kata and metadata"
 msgstr "Kata ja metadata"
 
 #: ckanext/kata/theme/templates/kata/faq.html:14
-msgid "What is Kata?"
-msgstr "Mikä Kata on?"
+msgid "What is Kata metadata catalogue?"
+msgstr "Mikä Kata-metadatakatalogi on?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:15
 msgid ""
@@ -11093,6 +11093,12 @@ msgstr "esim. ilmasto"
 
 msgid "Newest datasets"
 msgstr "Uusimmat tietoaineistot"
+
+msgid "Terms of use"
+msgstr "Käyttöehdot"
+
+msgid "Privacy policy for personal information"
+msgstr "Henkilörekisteriseloste"
 
 # View dataset
 msgid "contacting the distributor"

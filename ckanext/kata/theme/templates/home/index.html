@@ -21,7 +21,7 @@
                     {% endblock %}
                     {% block home_primary_text %}
                       <h4>
-                        {{ _('What is Kata?') }}
+                        {{ _('What is Kata metadata catalogue?') }}
                       </h4>
                       <p>
                         {{ _('Kata metadata catalogue contains metadata of research data. Here you can search and find research data for your needs or even add you own data for others to reuse.') }}
@@ -45,6 +45,15 @@
                       </h4>
                       <p>
                         {{ _('Almost all metadata is open, but it is for the author to decide how the data is accessed and by who. Nevertheless, providing your data openly is recommended.') }}
+                      </p>
+                      <h4>
+                        {{ _('Terms of use') }}
+                      </h4>
+                      <p>
+                        <a href="{{ _('http://www.tdata.fi/kayttoehdot') }}">{{ _('Terms of use') }}</a>
+                      </p>
+                      <p>
+                        <a href="{{ _('http://www.tdata.fi/henkilorekisteriseloste') }}">{{ _('Privacy policy for personal information') }}</a>
                       </p>
                     {% endblock %}
                   {% endblock %}
