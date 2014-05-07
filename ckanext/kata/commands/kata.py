@@ -50,27 +50,27 @@ class Kata(CkanCommand):
         super(Kata, self)._load_config()
 
     def initdb(self):
-        kata = Group.get('KATA')
-        if not kata:
-            repo.new_revision()
-            kata = Group(name="KATA", title="Tieteenalat")
-            kata.save()
-            for tiede in tieteet.tieteet:
-                t = Group(description=tiede['description'],
-                          name=tiede['name'],
-                          title=tiede['title'])
-                t.save()
-                m = Member(group=kata, table_id=t.id, table_name="group")
-                m.save()
+#        kata = Group.get('KATA')
+#        if not kata:
+#            repo.new_revision()
+#            kata = Group(name="KATA", title="Tieteenalat")
+#            kata.save()
+#            for tiede in tieteet.tieteet:
+#                t = Group(description=tiede['description'],
+#                          name=tiede['name'],
+#                          title=tiede['title'])
+#                t.save()
+#                m = Member(group=kata, table_id=t.id, table_name="group")
+#                m.save()
         setup()
 
     def harvest_sources(self):
         ddi = HarvestSource(url='http://www.fsd.uta.fi/fi/aineistot/luettelo/fsd-ddi-records-uris-fi.txt',
                             type='DDI')
         ddi.save()
-        oai = HarvestSource(url='http://helda.helsinki.fi/oai/request',
-                            type='OAI-PMH')
-        oai.save()
+        #oai = HarvestSource(url='http://helda.helsinki.fi/oai/request',
+        #                    type='OAI-PMH')
+        #oai.save()
 
     def send_emails(self):
         all_reqs = model.Session.query(KataAccessRequest).all()
