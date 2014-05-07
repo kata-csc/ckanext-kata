@@ -10,6 +10,7 @@ import iso8601
 import re
 from pylons.i18n import _
 
+import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid
 from ckan.logic.validators import tag_length_validator
@@ -203,7 +204,7 @@ def validate_access_application_url(key, data, errors, context):
         if data[('access_application_new_form',)] not in [u'True', u'on']:
             not_empty(key, data, errors, context)
         else:
-            data[key] = 'Dummy, overwritten in ckanext-rems'
+            data[key] = h.full_current_url().replace('/edit/', '/')
         converters.convert_to_extras_kata(key, data, errors, context)
     else:
         data.pop(key, None)
