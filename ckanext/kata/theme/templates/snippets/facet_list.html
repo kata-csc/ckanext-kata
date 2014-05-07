@@ -38,9 +38,9 @@ extras
       {% endif %}
       <!-- <a href="{{ h.remove_url_param(name, extras=extras) }}" class="action">{{ _('Clear All') }}</a> -->
     </h2>
-      {% if fields.get(name) and fields.get(name)|length > 0 %}
+      {% if fields and fields.get(name, "")|length > 0 %}
         <div id="{{ title or h.get_facet_title(name) }}">
-      {% elif limits.get(name) == 0 %}
+      {% elif limits and limits.get(name, "") == 0 %}
         <div id="{{ title or h.get_facet_title(name) }}">
       {% else %}
         <div style="display: none;" id="{{ title or h.get_facet_title(name) }}">
