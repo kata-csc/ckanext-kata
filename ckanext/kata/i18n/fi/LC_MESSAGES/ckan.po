@@ -6844,8 +6844,8 @@ msgid "Kata and metadata"
 msgstr "Kata ja metadata"
 
 #: ckanext/kata/theme/templates/kata/faq.html:14
-msgid "What is Kata?"
-msgstr "Mikä Kata on?"
+msgid "What is Kata metadata catalogue?"
+msgstr "Mikä Kata-metadatakatalogi on?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:15
 msgid ""
