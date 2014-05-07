@@ -11094,6 +11094,12 @@ msgstr "esim. ilmasto"
 msgid "Newest datasets"
 msgstr "Uusimmat tietoaineistot"
 
+msgid "Terms of use"
+msgstr "Käyttöehdot"
+
+msgid "Privacy policy for personal information"
+msgstr "Henkilörekisteriseloste"
+
 # View dataset
 msgid "contacting the distributor"
 msgstr "ottamalla yhteyttä jakelijaan"
