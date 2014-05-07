@@ -612,16 +612,22 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         The titles show up on the search page.
         """
 
-        facet_titles.update(settings.get_field_titles(t._))
-        return facet_titles
+        return self.dataset_facets(facet_titles, None)
     
     def dataset_facets(self, facets_dict, package_type):
         '''
         Updating facets, before rendering search page.
         This is CKAN 2.0.3 hook, 2.1 will use the function above
         '''
-        facets_dict.update(settings.get_field_titles(t._))
+        titles = settings.get_field_titles(t._)
+        kata_facet_titles = dict((field, title) for (field, title) in titles.iteritems() if field in settings.FACETS)
 
+        # Replace the facet dictionary with Kata facets.
+        # CKAN adds 'Groups' and 'Formats' there which we don't want.
+        # /harvest page has a 'Frequency' facet which we lose also when replacing the dict here.
+
+        # facets_dict.update(kata_facet_titles)
+        facets_dict = kata_facet_titles
         return facets_dict
 
     def extract_search_params(self, data_dict):
