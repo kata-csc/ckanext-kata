@@ -408,6 +408,7 @@ def check_agent_fields(key, data, errors, context):
         data.pop(key, None)
         raise StopOnError
 
+
 def check_langtitle(key, data, errors, context):
     '''
     Check that langtitle field exists
@@ -432,23 +433,19 @@ def check_pids(key, data, errors, context):
         raise Invalid(_(error))
 
 
-    
 def check_events(key, data, errors, context):
     '''
     Validates that none of the event's data is empty
     If there is only type, removes it
     '''
     (k0, k1, k2) = key
-    found = False
-    for k in data.keys():
-        if k[0] == k0 and k[1] == k1 and k[2] != k2:
-            if data[(k0, k1, k[2])]:
-                found = True
-    if found == False:
+    if (data[(k0, k1, 'when')] or
+        data[(k0, k1, 'who')] or
+        data[(k0, k1, 'descr')]):
+        if not (data[(k0, k1, 'when')] and
+                data[(k0, k1, 'who')] and
+                data[(k0, k1, 'descr')]):
+            raise Invalid(_('Missing value'))
+    else:
         data.pop(key, None)
         raise StopOnError
-        
-    else:
-        if not (data[(k0, k1, 'when')] and data[(k0, k1, 'who')] and data[(k0, k1, 'descr')]):
-            raise Invalid(_('Missing value'))
-    
