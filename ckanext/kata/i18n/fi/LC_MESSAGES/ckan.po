@@ -11043,7 +11043,7 @@ msgstr "Hae Dataa"
 msgid "Tools and additional information"
 msgstr "Työkalut ja lisätietoa"
 
-msgid "The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:"
+msgid "The minimum metadata model recommends a common set of metadata fields. Explore the minimum metadata model:"
 msgstr "Minimimetatietomalli määrittelee aineistokuvailuille yhteisiä metadatakenttiä. Tutustu TTA:n metatietotyöryhmän tuottamaan minimimetatietomalliin:"
 
 msgid "Minimum metadata model"
