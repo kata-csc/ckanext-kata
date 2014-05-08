@@ -256,8 +256,15 @@
 {% endblock %}
 
 {% block secondary_content %}
-  {% for facet in c.facet_titles %}
+{{ h.snippet('snippets/facet_list.html', title=_('Keywords'), name='tags', fields=c.fields_grouped, limits=c.search_facets_limits) }}
+{{ h.snippet('snippets/facet_list.html', title=_('Discipline'), name='extras_discipline', fields=c.fields_grouped, limits=c.search_facets_limits) }}
+{{ h.snippet('snippets/facet_list.html', title=_('Author'), name='authorstring', fields=c.fields_grouped, limits=c.search_facets_limits) }}
+{{ h.snippet('snippets/facet_list.html', title=_('Organization'), name='organizationstring', fields=c.fields_grouped, limits=c.search_facets_limits) }}
+{{ h.snippet('snippets/facet_list.html', title=_('License'), name='license_id', fields=c.fields_grouped, limits=c.search_facets_limits) }}
+{{ h.snippet('snippets/facet_list.html', title=_('MIME'), name='mimetypestring', fields=c.fields_grouped, limits=c.search_facets_limits) }}
+{{ h.snippet('snippets/facet_list.html', title=_('Language'), name='extras_language', fields=c.fields_grouped, limits=c.search_facets_limits) }}
+  {#% for facet in c.facet_titles %}
       {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, fields=c.fields_grouped, limits=c.search_facets_limits) }}
-  {% endfor %}
+  {% endfor %#}
 {% endblock %}
 
