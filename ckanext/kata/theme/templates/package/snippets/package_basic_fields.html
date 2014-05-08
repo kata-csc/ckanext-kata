@@ -165,7 +165,7 @@
             {% endif %}
 
           {% call form.input('contact__0__name', label=_('Name'), id='contact__0__name', placeholder=_('John Doe'), value=contact.name, error=h.get_dict_field_errors(errors, 'contact', 0, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-            {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone or something that can be contacted if more information about the data is required or the person or organisation responsible for the data needs to be contacted. By default, the system suggests you to be this person.')) }}
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the publisher. Publisher is someone or something that can be contacted if more information about the data is required or the person or organisation responsible for the data needs to be contacted.')) }}
           {% endcall %}
 
           {% call form.input('contact__0__phone', label=_('Phone'), id='contact__0__phone', placeholder=_('+35844122123'), value=contact.phone, error=h.get_dict_field_errors(errors, 'contact', 0, 'phone'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}

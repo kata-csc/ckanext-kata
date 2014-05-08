@@ -10132,8 +10132,8 @@ msgid ""
 "Field is compulsory.<br /><br />Type the name of the publisher. Publisher"
 " is someone or something that can be contacted if more information about the data is "
 "required or the person or organisation responsible for the data needs to "
-"be contacted. By default, the system suggests you to be this person."
-msgstr "Kenttä on pakollinen.<br /><br />Kirjoita julkaisijan nimi. Julkaisija on joku tai jokin, jolta voidaan esimerkiksi tiedustella lisätietoa datasta. Oletuksellisesti palvelu ehdottaa sinua täksi henkilöksi."
+"be contacted."
+msgstr "Kenttä on pakollinen.<br /><br />Kirjoita julkaisijan nimi. Julkaisija on joku tai jokin, jolta voidaan esimerkiksi tiedustella lisätietoa datasta."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:152
 msgid "+35844122123"
