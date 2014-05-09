@@ -523,7 +523,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema = cls.create_package_schema()
 
         schema['discipline'].insert(0, ignore_missing)
-        schema['event'] = {'type': [ignore_missing, check_events, unicode, flattened_to_extras, validate_general],
+        schema['event'] = {'type': [ignore_missing, unicode, flattened_to_extras, validate_general],
                            'who': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric],
                            'when': [ignore_missing, unicode, flattened_to_extras, validate_kata_date_relaxed],
                            'descr': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric]}
