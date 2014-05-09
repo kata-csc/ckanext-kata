@@ -11020,6 +11020,9 @@ msgstr "MIME-tyyppi"
 msgid "Search results"
 msgstr "Hakutulokset"
 
+msgid "Agent"
+msgstr "Toimija"
+
 msgid "Use wildcard to search with various spellings, for example: cat*"
 msgstr "Käytä jokerimerkkiä hakeaksesi eri kirjoitusasuilla, esimerkiksi kissa*"
 
