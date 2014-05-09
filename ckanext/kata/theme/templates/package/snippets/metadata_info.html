@@ -231,10 +231,10 @@
         </colgroup>
       {% for ev in pkg_dict.event %}
         <tr>
-          <td class="dataset-details">{{ _(ev.get('type', '')) }}</td>
-          <td class="dataset-details">{{ ev.get('who', '') }}</td>
-		  <td class="dataset-details">{{ ev.get('when', '') }}</td>
-		  <td class="dataset-details">{{ ev.get('descr', '') }}</td>
+          <td class="dataset-details">{{ _(ev.get('type', ' ')) }}</td>
+          <td class="dataset-details">{{ ev.get('who', ' ') }}</td>
+		  <td class="dataset-details">{{ ev.get('when', ' ') }}</td>
+		  <td class="dataset-details">{{ ev.get('descr', ' ') }}</td>
         </tr>
       {% endfor %}
       </table>
