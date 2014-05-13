@@ -30,7 +30,7 @@
                                 }] %}
 
 {% set advanced_search = false %}
-{% if c.current_search_rows  or c.current_search_limiters %}
+{% if c.advanced_search or c.current_search_rows  or c.current_search_limiters %}
   {% set advanced_search = true %}
 {% endif %}
 
@@ -186,6 +186,10 @@
           </div>
           <input type="hidden" id="default_search_field" value="{{ c.search_fields | first }}"/>
           <div id="advanced-search-ext"></div>
+
+          <span>
+            <input type="hidden" name="ext_advanced-search" value="true" />
+          </span>
 
         </form>
       </div>

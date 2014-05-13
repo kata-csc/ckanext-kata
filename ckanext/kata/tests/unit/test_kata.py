@@ -120,7 +120,7 @@ class TestKataPlugin(TestCase):
 
     def test_extract_search_params(self):
         """Test extract_search_params() output parameters number."""
-        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        terms, ops, dates, adv_search = self.kata_plugin.extract_search_params(self.some_data_dict)
         n_extracted = len(terms) + len(ops) + len(dates)
         assert len(self.some_data_dict['extras']) == n_extracted - 1, \
             "KataPlugin.extract_search_params() parameter number mismatch"
@@ -130,7 +130,7 @@ class TestKataPlugin(TestCase):
     def test_parse_search_terms(self):
         """Test parse_search_terms() result string."""
         test_dict = self.some_data_dict.copy()
-        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        terms, ops, dates, adv_search = self.kata_plugin.extract_search_params(self.some_data_dict)
         self.kata_plugin.parse_search_terms(test_dict, terms, ops)
         assert test_dict['q'] == self.test_q_terms, \
             "KataPlugin.parse_search_terms() error in query parsing q=%s, test_q_terms=%s" % (
@@ -139,7 +139,7 @@ class TestKataPlugin(TestCase):
     def test_parse_search_dates(self):
         """Test parse_search_dates() result string."""
         test_dict = self.some_data_dict.copy()
-        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        terms, ops, dates, adv_search = self.kata_plugin.extract_search_params(self.some_data_dict)
         self.kata_plugin.parse_search_dates(test_dict, dates)
         assert test_dict['q'] == self.test_q_dates, \
             "KataPlugin.parse_search_dates() error in query parsing"

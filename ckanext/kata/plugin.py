@@ -640,6 +640,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         extra_terms = []
         extra_ops = []
         extra_dates = {}
+        extra_advanced_search = False
         # Extract parameters
         for (param, value) in data_dict['extras'].items():
             if len(value):
@@ -652,9 +653,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     param_tokens = param.split('-')
                     extra_dates[param_tokens[2]] = value  # 'start' or 'end' date
                     extra_dates['field'] = param_tokens[1]
+                elif param.startswith('ext_advanced-search'):
+                    if value:
+                        extra_advanced_search = True
                 else: # Extract search terms
                     extra_terms.append((param, value))
-        return extra_terms, extra_ops, extra_dates
+        return extra_terms, extra_ops, extra_dates, extra_advanced_search
 
     def parse_search_terms(self, data_dict, extra_terms, extra_ops):
         """
@@ -754,7 +758,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             #log.debug("before_search(): data_dict['extras']: %r" %
             #          data_dict['extras'].items())
 
-            extra_terms, extra_ops, extra_dates = self.extract_search_params(data_dict)
+            extra_terms, extra_ops, extra_dates, c.advanced_search = self.extract_search_params(data_dict)
             #log.debug("before_search(): extra_terms: %r; extra_ops: %r; "
             #          + "extra_dates: %r", extra_terms, extra_ops, extra_dates)
 
