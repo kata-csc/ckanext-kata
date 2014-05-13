@@ -29,11 +29,6 @@
                                 'operator': 'AND'
                                 }] %}
 
-{% set advanced_search = false %}
-{% if c.advanced_search or c.current_search_rows  or c.current_search_limiters %}
-  {% set advanced_search = true %}
-{% endif %}
-
 {% if c.current_search_rows %}
   {% do current_search_rows.extend(c.current_search_rows) %}
 {% else %}
@@ -46,10 +41,10 @@
 <article class="module">
   <header class="module-content page-header">
     <ul id="search-tabs" class="nav nav-tabs">
-      <li{% if not advanced_search %} class="active"{% endif %}>
+      <li{% if not c.advanced_search %} class="active"{% endif %}>
         <a href="#search-tab" data-toggle="tab">{{ _('Search') }}</a>
       </li>
-      <li{% if advanced_search %} class="active"{% endif %}>
+      <li{% if c.advanced_search %} class="active"{% endif %}>
         <a href="#advanced-search-tab" data-toggle="tab">{{ _('Advanced search') }}</a>
       </li>
     </ul>
@@ -63,7 +58,7 @@
 
       {# Basic search tab #}
 
-      <div id="search-tab" class="tab-pane{% if not advanced_search %} active{% endif %}">
+      <div id="search-tab" class="tab-pane{% if not c.advanced_search %} active{% endif %}">
         <form id="dataset-search" class="dataset-search clearfix" method="get" data-module="select-switch">
           <div class="search-terms">
           <span class="control-group search-giant">
@@ -93,7 +88,7 @@
 
       {# Advanced search tab #}
 
-      <div id="advanced-search-tab" class="tab-pane{% if advanced_search %} active{% endif %}">
+      <div id="advanced-search-tab" class="tab-pane{% if c.advanced_search %} active{% endif %}">
         <form id="advanced-search" class="dataset-search clearfix form-horizontal" method="get" data-module="advanced-search-kata select-switch-order-by">
           <div class="search-terms">
           <span id="advanced-search-group" class="control-group">
