@@ -22,7 +22,10 @@ this.ckan.module('advanced-search-kata', function (jQuery, _) {
   };
 });
 
-this.ckan.module('select-switch-kata', {
+/*
+ * Similar to select-switch in CKAN, but targets only the result order selector.
+ */
+this.ckan.module('select-switch-order-by', {
 
   options: {
     target: 'select#field-order-by'
