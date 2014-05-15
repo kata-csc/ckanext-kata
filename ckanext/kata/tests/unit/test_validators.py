@@ -29,7 +29,8 @@ class TestValidators(TestCase):
     def setup_class(cls):
         """Set up tests."""
 
-        # TODO: Update the data_dict below. Also flatten it to provide data for validation/converters in show_package_schema.
+        # TODO: PINJA: Update the data_dict below. Also flatten it to provide data for validation/converters in show_package_schema.
+        # Move this dataset to something like test_fixtures/flattened.py
 
         cls.test_data = {('__extras',): {'_ckan_phase': u'',
                                          'evdescr': [],

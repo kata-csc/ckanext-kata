@@ -566,8 +566,6 @@ class TestSchema(KataApiTestCase):
         logg.disabled = True
 
         fields = settings.KATA_FIELDS_REQUIRED
-        # fields.pop(fields.index('contact_phone'))   # TODO: This will be removed
-        # fields.pop(fields.index('contact_URL'))     # TODO: This will be removed
 
         for requirement in fields:
             print requirement

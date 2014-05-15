@@ -97,7 +97,7 @@ def package_create(context, data_dict):
             
     except KeyError:
         log.debug("Tried to check the package type, but it wasn't present!")
-        # TODO: Dubious to let pass without checking user.sysadmin
+        # TODO: JUHO: Dubious to let pass without checking user.sysadmin
         pass
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
@@ -214,11 +214,11 @@ def package_update(context, data_dict):
     # package_update() and popping extras here should have no effect.
 
     data_dict.pop('extras', None)
-    # TODO: Get rid of popping extras here and rather pop the additional extras in converters so we could remove the
+    # TODO: MIKKO: Get rid of popping extras here and rather pop the additional extras in converters so we could remove the
     # popping and the above "context['allow_partial_update'] = True" which causes the extras to be processed in a way
     # that nothing gets added to extras from the converters and everything not initially present in extras gets removed.
 
-    # TODO Apply correct schema depending on dataset
+    # TODO: JUHO: Apply correct schema depending on dataset
     # This is quick resolution. More robust way would be to check through
     # model.Package to which harvest source the dataset belongs and then get the
     # type of the harvester (eg. DDI)

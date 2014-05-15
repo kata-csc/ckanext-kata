@@ -141,7 +141,7 @@ class TestKataWithUser(TestCase):
             assert 0, "Error processing the user registration page"
 
         try:
-            # TODO: This XPATH should be better
+            # TODO: PINJA: This XPATH should be better
             WebDriverWait(reg_browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ol[contains(@class, 'breadcrumb')]/li[contains(@class, 'active')]")))
         except TimeoutException:
             reg_browser.get_screenshot_as_file('_register_user.png')
@@ -474,6 +474,7 @@ class TestKataWithUser(TestCase):
     #         return visible_elements[id]
     #
     #     # TODO: Use all fields.
+          # Add button for titles not working.
     #
     #     dataset_to_add = [
     #         # Add titles
