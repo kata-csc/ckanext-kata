@@ -3,17 +3,21 @@
 Utility functions for Kata.
 """
 
-from ckan.lib.email_notifications import send_notification
-from pylons import config
-from ckan.model import User, Package
-from ckan.lib import helpers as h
 import logging
 import tempfile
 import subprocess
 import urllib2
-from lxml import etree
 import socket
+
+from pylons import config
+import functionally as fn
+from lxml import etree
+
+from ckan.lib.email_notifications import send_notification
+from ckan.model import User, Package
+from ckan.lib import helpers as h
 from ckanext.kata import settings
+
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
 
@@ -196,3 +200,128 @@ def dataset_to_resource(data_dict):
     }
 
     return data_dict
+
+
+def get_authors(data_dict):
+    '''Get all authors from agent field in data_dict'''
+    return filter(lambda x: x.get('role') == u'author', data_dict.get('agent', []))
+
+
+def get_contact(data_dict):
+    '''Get one contact from data_dict'''
+    return fn.first(data_dict.get('contact', []))
+
+
+def get_distributor(data_dict):
+    '''Get a single distributor from agent field in data_dict'''
+    return fn.first(filter(lambda x: x.get('role') == u'distributor', data_dict.get('agent', [])))
+
+
+def get_funder(data_dict):
+    '''Get a single funder from agent field in data_dict'''
+    return fn.first(get_funders(data_dict))
+
+
+def get_funders(data_dict):
+    '''Get all funders from agent field in data_dict'''
+    # return filter(lambda x: x.get('role') == u'funder', data_dict.get('agent', []))
+    # TODO: Fix validators to not create empty agents
+    return filter(lambda x: x.get('role') == u'funder' and \
+                            (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
+                  data_dict.get('agent', []))
+
+
+def get_owner(data_dict):
+    '''Get a single owner from agent field in data_dict'''
+    return fn.first(filter(lambda x: x.get('role') == u'owner', data_dict.get('agent', [])))
+
+
+def hide_sensitive_fields(pkg_dict1):
+    '''
+    Hide fields that contain sensitive data. Modifies input dict directly.
+
+    :param pkg_dict1: data dictionary from package_show
+    '''
+
+    # pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
+    # pkg_dict1['project_funding'] = _('Not authorized to see this information')
+    funders = get_funders(pkg_dict1)
+    for fun in funders:
+        fun.pop('funding-id', None)
+
+    for con in pkg_dict1.get('contact', []):
+        # String 'hidden' triggers the link for contact form, see metadata_info.html
+        con['email'] = 'hidden'
+
+    return pkg_dict1
+
+
+def get_package_ratings(data):
+    '''
+    Create a metadata rating (1-5) for given dataset
+
+    :param data: A CKAN data_dict
+    '''
+    score = 0   # Scale 0-49
+
+    required_fields =['pids', 'version', 'contact', 'license_id', 'agent', 'language', 'availability']
+    if all(data.get(field) for field in required_fields):
+        score += 2
+
+    # MAX 2
+
+    pid_types = [pid.get('type') for pid in data.get('pids', [])]
+    pid_types_expected = ['data', 'metadata', 'version']
+    if len(pid_types) < 3:
+        # The minimum metadata model is a bit vague in this part, this is one iterpretation
+        pid_types_expected.pop(2)
+
+    if all(pid_type in pid_types for pid_type in pid_types_expected):
+        score += 2 * len(pid_types) if len(pid_types) < 3 else 6
+
+    if len(unicode(data.get('version', ''))) > 15:   # ISO8601 datetime
+        score += 1
+
+    # MAX 9
+
+    if data.get('license_id', '') not in ['notspecified', '']:
+        score += 6
+
+    if not (data.get('tags') or data.get('tag_string')):    # Either of these should be present
+        score -= 5  # MINUS
+
+    if len(data.get('agent', [])) >= 2:
+        score += 2 * len(data['agent']) if len(data['agent']) < 6 else 6
+
+    if len(data.get('event', [])) >= 1:
+        score += 1
+
+    if get_funder(data):
+        score += 6
+
+    # MAX 28
+
+    if len(unicode(data.get('notes', ''))) >= 10:
+        score += (len(data['notes']) / 10) if len(data['notes']) < 60 else 6
+
+    required_fields = ['geographic_coverage', 'event', 'checksum', 'algorithm', 'mimetype', 'langtitle']
+    score += len(filter(lambda field: data.get(field), required_fields))
+
+    # MAX 40
+
+    if filter(lambda con: con.get('name') and con.get('email') and con.get('URL') and con.get('phone'), data.get('contact')):
+        score += 4
+
+    # MAX 44
+
+    if data.get('temporal_coverage_begin') and data.get('temporal_coverage_end'):
+        score += 1
+
+    if data.get('discipline'):
+        score += 4
+
+    # MAX 49
+
+    rating = 1 + int(score / 10)
+    stars = u'★★★★★'[:rating] + u'☆☆☆☆☆'[rating:]   # Star rating as string
+    return (rating, stars)

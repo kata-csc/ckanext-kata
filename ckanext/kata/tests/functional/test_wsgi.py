@@ -1,3 +1,4 @@
+# coding: utf-8
 # pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable
 
 '''
@@ -39,6 +40,23 @@ class TestPages(KataWsgiTestCase):
         Test that faq page is found and rendered.
         """
         offset = url_for('/faq')
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+
+    # def test_harvest_page(self):
+    #     # TODO: This seems to always get 404 from app.get, this should be solved somehow if possible.
+    #     # Where is "/harvest" added to routes anyway?
+    #
+    #     res = self.app.get('/harvest', extra_environ={})
+    #     assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+
+    def test_dataset_page(self):
+        offset = url_for('/dataset')
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+
+    def test_urnexport_page(self):
+        offset = url_for('/urnexport')
         res = self.app.get(offset)
         assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
 

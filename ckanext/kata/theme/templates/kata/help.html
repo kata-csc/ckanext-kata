@@ -114,7 +114,7 @@
         <li>{{ _('If you don\'t have enough priveleges but you are logged in, you can request for edit rights.') }}</li>
         <li>{{ _('From the tabs you can see dataset\'s past activities and followers.') }}</li>
         <li>{{ _('In the related tab you can see publications and datasets related to the dataset in question and if you are logged in you can add a relation to this dataset.') }}</li>
-        <li>{{ _('In the right hand navigation you can choose to export the dataset\'s basic metadata in RDF format from the "RDF" link.') }}</li>
+        {#<li>{{ _('In the right hand navigation you can choose to export the dataset\'s basic metadata in RDF format from the "RDF" link.') }}</li>#}
         <li>{{ _('If you are logged in, you can choose to follow the dataset. By following the dataset you would start to receive changes to this data to your Dashboard\'s news feed.') }}</li>
       </ul>
       
@@ -138,7 +138,7 @@
         {{ _('Authors: Author and author\'s organisation. Multiple author/organisation pairs can be given.') }}
       </div>
       <div class="example">
-        {{ _('Keywords: Keywords use YSO ontology from http://onki.fi/. The keywords are chosen from suggestions or you can also provide your own word if suitable is not available.') }}
+        {{ _('Keywords: Keywords use KOKO ontology from http://onki.fi/. The keywords are chosen from suggestions or you can also provide your own word if suitable is not available.') }}
       </div>
       <div class="example">
         {{ _('Languages: List of languages the data contains, in ISO 639-3 format. If there is no language, you can check the checkbox.') }}
@@ -184,7 +184,7 @@
       {{ _('Coverage provides fields for spatial and temporal coverage:') }}
       </p>
       <div class="example">
-        {{ _('Spatial coverage: Places are provided from SUO ontology from http://onki.fi/. Choose the locations covered in your data from the suggestions. You can also add your own location by typing and accepting it.') }}
+        {{ _('Spatial coverage: Location names are retrieved the location name database at http://onki.fi/. Choose the locations covered in your data from the suggestions. You can also add your own location by typing and accepting it.') }}
       </div>
       <div class="example">
         {{ _('Temporal coverage: Choose a time period covered in your data using the date selector.') }}
@@ -232,6 +232,11 @@
         <p>
         {{ _('The Stats link will take you to the statistics page. The page will show you some general information about Kata, its datasets and users.') }}
         </p>
+        <h3 class="help-page"><a id="rems" class="help-h4">{{ _('REMS') }}</a></h3>
+        <p>
+        {{ _('Kata is integrated to TTA\'s REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: ') }}
+        <a href="https://confluence.csc.fi/display/REMS/REMS+Manual">{{ _('REMS manual') }}</a>
+        </p>
         {#<h3 class="help-page"><a id="collections" class="help-h4">{{ _('Collections') }}</a></h3>
         <p>
         {{ _('The Collections page shows categories which may have datasets under them, grouped together under one set. You can also add a new collection and from the collection page also add a dataset under this collection. Note, that for now only collections\' administrators can add datasets under it.') }}
@@ -268,12 +273,17 @@
           <li>
             <a href="#stats" class="toc-sub">{{ _('- Stats') }}</a>
           </li>
+          <li>
+            <a href="#rems" class="toc-sub">{{ _('- REMS') }}</a>
+          </li>
           {#<li>
             <a href="#collections" class="toc-sub">{{ _('- Collections') }}</a>
           </li>#}
         </ul>
       </div>
-    
+      <div class="faq-helpdesk">
+        <p>{{ _('For additional help send email to: ')}}<br /><b><i>kata-help at postit.csc.fi</i></b></p>
+      </div>
     </div>
   </section>
 </div>

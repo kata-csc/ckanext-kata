@@ -14,6 +14,7 @@ from pylons.util import PylonsContext, pylons, AttribSafeContextObj
 from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 from ckanext.kata.plugin import KataPlugin
 from ckanext.kata import settings, utils, actions
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 
 
 class TestKataExtension(TestCase):
@@ -119,7 +120,7 @@ class TestKataPlugin(TestCase):
 
     def test_extract_search_params(self):
         """Test extract_search_params() output parameters number."""
-        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        terms, ops, dates, adv_search = self.kata_plugin.extract_search_params(self.some_data_dict)
         n_extracted = len(terms) + len(ops) + len(dates)
         assert len(self.some_data_dict['extras']) == n_extracted - 1, \
             "KataPlugin.extract_search_params() parameter number mismatch"
@@ -129,7 +130,7 @@ class TestKataPlugin(TestCase):
     def test_parse_search_terms(self):
         """Test parse_search_terms() result string."""
         test_dict = self.some_data_dict.copy()
-        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        terms, ops, dates, adv_search = self.kata_plugin.extract_search_params(self.some_data_dict)
         self.kata_plugin.parse_search_terms(test_dict, terms, ops)
         assert test_dict['q'] == self.test_q_terms, \
             "KataPlugin.parse_search_terms() error in query parsing q=%s, test_q_terms=%s" % (
@@ -138,7 +139,7 @@ class TestKataPlugin(TestCase):
     def test_parse_search_dates(self):
         """Test parse_search_dates() result string."""
         test_dict = self.some_data_dict.copy()
-        terms, ops, dates = self.kata_plugin.extract_search_params(self.some_data_dict)
+        terms, ops, dates, adv_search = self.kata_plugin.extract_search_params(self.some_data_dict)
         self.kata_plugin.parse_search_dates(test_dict, dates)
         assert test_dict['q'] == self.test_q_dates, \
             "KataPlugin.parse_search_dates() error in query parsing"
@@ -182,6 +183,29 @@ class TestKataPlugin(TestCase):
     def test_package_form(self):
         html_location = self.kata_plugin.package_form()
         assert len(html_location) > 0
+
+    def test_before_index(self):
+        pkg_dict = {'access_application_new_form': u'False',
+                     'agent_0_URL': u'www.csc.fi',
+                     'agent_0_funding-id': u'43096ertjgad\xf6sjgn89q3q4',
+                     'agent_0_name': u'F. Under',
+                     'agent_0_organisation': u'Agentti-Project',
+                     'agent_0_role': u'funder',
+                     'agent_1_name': u'o. oWNER',
+                     'agent_1_role': u'owner',
+                     'agent_2_name': u'M. Merger',
+                     'agent_2_role': u'author',
+                     'agent_3_name': u'juho',
+                     'agent_3_role': u'distributor',
+                     'data_dict': '{"dada": "dudu"}'}
+
+        #output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))
+        output = self.kata_plugin.before_index(pkg_dict)
+
+        assert 'funder_0' in output
+        assert 'owner_1' in output
+        assert 'author_2' in output
+        assert 'distributor_3' in output
 
 
 class TestKataSchemas(TestCase):
@@ -352,6 +376,35 @@ class TestUtils(TestCase):
         pid = utils.generate_pid()
         pid2 = utils.generate_pid()
         assert pid != pid2
+
+    def test_get_funder(self):
+        assert utils.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
+
+    def test_get_owner(self):
+        assert utils.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
+
+    def test_get_authors(self):
+        assert utils.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
+
+    def test_get_package_ratings(self):
+        (rating, stars) = utils.get_package_ratings(TEST_DATADICT)
+        assert rating == 5, rating
+        assert stars == u'★★★★★'
+
+    def test_get_package_ratings_2(self):
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict.pop('notes')
+        data_dict.pop('temporal_coverage_begin')
+        data_dict.pop('discipline')
+        data_dict.pop('algorithm')
+        data_dict.pop('checksum')
+        data_dict.pop('geographic_coverage')
+        data_dict.pop('mimetype')
+        data_dict['license_id'] = u''
+
+        (rating, stars) = utils.get_package_ratings(data_dict)
+        assert rating == 3, rating
+        assert stars == u'★★★☆☆'
 
 
 # class TestActions(TestCase):

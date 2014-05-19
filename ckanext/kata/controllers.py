@@ -3,15 +3,19 @@
 Controllers for Kata.
 """
 
+import json
 import logging
-from rdflib.term import Identifier, URIRef, Literal
+import functionally as fn
 from rdflib.namespace import XSD
+from rdflib.term import Identifier, URIRef, Literal, BNode
+import urllib2
 
 from paste.deploy.converters import asbool
 from pylons import response, config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
 
+from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.user import UserController
 import ckan.lib.i18n
@@ -90,7 +94,7 @@ class MetadataController(BaseController):
                                                                   extras["temporal_coverage_end"])
         return dcmi_period
 
-    @beaker_cache(type="dbm", expire=604800)
+    @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
         response.headers['Content-type'] = 'text/xml'
         return URNHelper.list_packages()
@@ -207,12 +211,65 @@ class MetadataController(BaseController):
             if "notes" in data:
                 graph.add((uri, DC.description, Literal(data["notes"])))
 
+            # TODO: Add agents
+
+            # for agent in data.get('agent', []):
+            #
+            #     # agent_ref = URIRef(agent['URL']) \
+            #     #     if agent.get('URL') \
+            #     #     else BNode()
+            #     agent_ref = BNode()
+            #
+            #     if agent.get('name'):
+            #         graph.add((agent_ref, FOAF.name, agent.get('name')))
+            #     if agent.get('URL'):
+            #         graph.add((agent_ref, FOAF.homepage, agent.get('URL')))
+            #
+            #     graph.add((uri, DC.creator, agent_ref))
+
             response.headers['Content-type'] = 'text/xml'
             if format == 'rdf':
                 format = 'pretty-xml'
             return graph.serialize(format=format)
         else:
             return ""
+
+
+class KATAApiController(ApiController):
+    '''
+    Functions for autocomplete fields in add dataset form
+    '''
+
+    def tag_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "koko")
+
+    def discipline_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "okm-tieteenala")
+
+    def location_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        return self._onki_autocomplete(query, "paikat")
+
+    def _onki_autocomplete(self, query, vocab):
+        url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
+
+        labels = []
+        if query:
+            url = url_template.format(q=query, v=vocab)
+            data = urllib2.urlopen(url).read()
+            jsondata = json.loads(data)
+            if u'results' in jsondata:
+                results = jsondata['results']
+                labels = [concept['prefLabel'].encode('utf-8') for concept in results]
+
+        result_set = {
+            'ResultSet': {
+                'Result': [{'Name': label} for label in labels]
+            }
+        }
+        return self._finish_ok(result_set)
 
 
 class AccessRequestController(BaseController):
@@ -516,7 +573,11 @@ class ContactController(BaseController):
         userobj.save()
 
     def send_contact(self, pkg_id):
-
+        '''
+        Send a user message from CKAN to dataset distributor contact.
+        '''
+        # Todo: replan and fix when we have multiple distributor emails available
+        # This only works because we have only one contact
         prologue_template = u'{a} ({b}) has sent you a message regarding the following dataset:\
 \n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
 \n\n{c} (Tunniste: {d})\n\nViesti:\n\n    ---'
@@ -531,8 +592,14 @@ käytä yllä olevaa sähköpostiosoitetta.'
         package_title = package.title if package.title else package.name
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-            email = package.maintainer_email
-            recipient = package.maintainer
+            # Todo: this should take the specific contact address, not just the first contact email
+            email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
+            
+            emails = [con[1] for con in email_tuples]
+            email = fn.first(emails)
+            
+            # consequently, this now prints "Dear email@address.com", should be contact_0_name instead
+            recipient = email
 
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
@@ -548,8 +615,10 @@ käytä yllä olevaa sähköpostiosoitetta.'
 
         return redirect(url)
 
-
     def send_request(self, pkg_id):
+        '''
+        Send a request to access data to CKAN dataset owner.
+        '''
 
         prologue_template = u'{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
 for which you are currently marked as distributor.\n\nThe message is below.\n\n\
@@ -565,14 +634,12 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         package_title = package.title if package.title else package.name
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-            email = package.maintainer_email
-            recipient = package.maintainer
 
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
             subject = _("Data access request for dataset / Datapyynto tietoaineistolle %s" % package_title)
-            self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
+            self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
         else:
             h.flash_error(_("Please login"))
 
@@ -641,6 +708,9 @@ class KataUserController(UserController):
         # we need to set the language explicitly here or the flash
         # messages will not be translated.
         ckan.lib.i18n.set_lang(lang)
+        
+        if h.url_is_local(came_from):
+            return h.redirect_to(str(came_from))
 
         if c.user:
             context = {'model': model,
@@ -650,11 +720,8 @@ class KataUserController(UserController):
 
             user_dict = get_action('user_show')(context, data_dict)
 
-            h.flash_success(_("%s is now logged in") %
-                            user_dict['display_name'])
-            if came_from:
-                return h.redirect_to(str(came_from))
-                # Rewritten in ckanext-kata
+            #h.flash_success(_("%s is now logged in") %
+            #                user_dict['display_name'])
             return h.redirect_to(controller='user', action='read', id=c.userobj.name)
         else:
             err = _('Login failed. Bad username or password.')
@@ -663,7 +730,7 @@ class KataUserController(UserController):
                          'with a user account.)')
             if asbool(config.get('ckan.legacy_templates', 'false')):
                 h.flash_error(err)
-                h.redirect_to(locale=lang, controller='user',
+                h.redirect_to(controller='user',
                               action='login', came_from=came_from)
             else:
                 return self.login(error=err)

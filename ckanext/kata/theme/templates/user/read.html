@@ -30,9 +30,11 @@
         <li{% if c.action == 'activity' %} class="active"{% endif %}>
           {% link_for _('Activity Stream'), controller='user', action='activity', id=user.name, icon='time' %}
         </li>
-        <li{% if c.action == 'followers' %} class="active"{% endif %}>
-          {% link_for _('Followers'), controller='user', action='followers', id=user.name, icon='group' %}
-        </li>
+        {% if h.check_access('sysadmin') %}
+          <li{% if c.action == 'followers' %} class="active"{% endif %}>
+            {% link_for _('Followers'), controller='user', action='followers', id=user.name, icon='group' %}
+          </li>
+        {% endif %}
       </ul>
     </header>
     <section class="module-content">
@@ -45,7 +47,7 @@
           {% if c.is_myself %}
             <p class="empty">
               {{ _("You haven\'t created any datasets.") }}
-              {% link_for _('Create one now?'), controller='package', action='new' %}.
+              {% link_for _('Create one now?'), controller='package', action='new' %}
             </p>
           {% else %}
             <p class="empty">

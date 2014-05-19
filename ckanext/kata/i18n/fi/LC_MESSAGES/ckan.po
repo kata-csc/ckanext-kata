@@ -463,8 +463,8 @@ msgstr "Ei oikeuksia lukea ryhmää {group_id}"
 #: ckan/controllers/group.py:682
 #: ckan/controllers/package.py:1238
 #: ckan/controllers/user.py:594
-msgid "You are now following {0}"
-msgstr "Seuraat nyt tätä: {0}"
+msgid "You are now following %s"
+msgstr "Seuraat nyt tätä: %s"
 
 #: ckan/controllers/group.py:701
 #: ckan/controllers/package.py:1257
@@ -4061,7 +4061,7 @@ msgstr "Kirjoita uusi salasanasi ja profiilisi päivitetään"
 
 #: ckan/templates/user/read.html:13
 msgid "You haven't created any datasets."
-msgstr "Et ole luonut tietoaineistoja"
+msgstr "Et ole luonut tietoaineistoja."
 
 #: ckan/templates/user/read.html:15
 msgid "Create one now?"
@@ -6434,9 +6434,9 @@ msgstr "Avainsanan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja 
 msgid "Project data received even if no project is associated."
 msgstr "Projektin tietoja vastaanotettu vaikka ei määritelty kuuluvaksi projektiin."
 
-#: ckanext/kata/validators.py:86
+#: ckanext/kata/validators.py:101
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
-msgstr "Päivämäärän muoto väärä, oikea muoto ISO 8601: 2012-12-31T13:12:11."
+msgstr "Päivämäärän muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
 
 #: ckanext/kata/validators.py:88
 msgid "Invalid date"
@@ -6844,8 +6844,8 @@ msgid "Kata and metadata"
 msgstr "Kata ja metadata"
 
 #: ckanext/kata/theme/templates/kata/faq.html:14
-msgid "What is Kata?"
-msgstr "Mikä Kata on?"
+msgid "What is Kata metadata catalogue?"
+msgstr "Mikä Kata-metadatakatalogi on?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:15
 msgid ""
@@ -7270,11 +7270,8 @@ msgid ""
 msgstr "Laatijat: laatija ja laatijan organisaatio. Metadataan voidaan syöttää useampia laatija-organisaatio -pareja."
 
 #: ckanext/kata/theme/templates/kata/help.html:167
-msgid ""
-"Keywords: Keywords use YSO ontology from http://onki.fi/. The keywords "
-"are chosen from suggestions or you can also provide your own word if "
-"suitable is not available."
-msgstr "Avainsanat (tagit): avainsanoissa on käytössä JavaScript-valitsin, joka hakee ehdotuksia sanoiksi YSO-ontologiasta, kts. http://onki.fi/. Avainsanat valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei löydy."
+msgid "Keywords: Keywords use KOKO ontology from http://onki.fi/. The keywords are chosen from suggestions or you can also provide your own word if suitable is not available."
+msgstr "Avainsanat (tagit): avainsanoissa on käytössä JavaScript-valitsin, joka hakee ehdotuksia sanoiksi KOKO-ontologiasta, kts. http://onki.fi/. Avainsanat valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei löydy."
 
 #: ckanext/kata/theme/templates/kata/help.html:171
 msgid ""
@@ -7384,12 +7381,12 @@ msgstr "Kattavuudet tarjoavat kentät maantieteelliseen ja ajalliseen kattavuute
 
 #: ckanext/kata/theme/templates/kata/help.html:223
 msgid ""
-"Spatial coverage: Places are provided from SUO ontology from "
+"Spatial coverage: Location names are retrieved the location name database at "
 "http://onki.fi/. Choose the locations covered in your data from the "
 "suggestions. You can also add your own location by typing and accepting "
 "it."
 msgstr ""
-"Maantieteellinen kattavuus: paikannimiä voi etsiä SUO-ontologiasta, josta "
+"Maantieteellinen kattavuus: paikannimiä voi etsiä paikannimirekisteristä, josta "
 "voit lukea lisää osoitteessa http://onki.fi. Valitse paikannimi, jota datasi "
 "käsittelee, annetuista ehdotuksista. Voit antaa myös omia paikannimia, "
 "jos sopivaa ei löydy, kirjoittamalla se kokonaan ja hyväksymällä näppäimistösi enter-painikkeella."
@@ -10043,8 +10040,8 @@ msgid "Authors and organizations"
 msgstr "Laatijat ja organisaatiot"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:79
-msgid "http://orcid.org/ or familyname, firstname"
-msgstr "http://orcid.org/ tai sukunimi, etunimi"
+msgid "Familyname, Firstname and/or http://orcid.org/"
+msgstr "Sukunimi, Etunimi ja/tai http://orcid.org/"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:81
 msgid ""
@@ -10065,9 +10062,9 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:118
 msgid ""
-"Search keywords from YSO ontology, select keywords with enter or mouse "
+"Search keywords from KOKO ontology, select keywords with enter or mouse "
 "click."
-msgstr "Etsi avainsanoja (tageja) YSO-ontologiasta. Valitse valittu avainsana näppäimistösi enter-painikkeella tai hiiren klikkauksella."
+msgstr "Etsi avainsanoja (tageja) KOKO-ontologiasta. Valitse valittu avainsana näppäimistösi enter-painikkeella tai hiiren klikkauksella."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:119
 msgid ""
@@ -10135,8 +10132,8 @@ msgid ""
 "Field is compulsory.<br /><br />Type the name of the publisher. Publisher"
 " is someone or something that can be contacted if more information about the data is "
 "required or the person or organisation responsible for the data needs to "
-"be contacted. By default, the system suggests you to be this person."
-msgstr "Kenttä on pakollinen.<br /><br />Kirjoita julkaisijan nimi. Julkaisija on joku tai jokin, jolta voidaan esimerkiksi tiedustella lisätietoa datasta. Oletuksellisesti palvelu ehdottaa sinua täksi henkilöksi."
+"be contacted."
+msgstr "Kenttä on pakollinen.<br /><br />Kirjoita julkaisijan nimi. Julkaisija on joku tai jokin, jolta voidaan esimerkiksi tiedustella lisätietoa datasta."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:152
 msgid "+35844122123"
@@ -10175,8 +10172,8 @@ msgid "Project that produced this dataset"
 msgstr "Tietoaineiston tuottanut projekti"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:165
-msgid "This dataset was not produced in a project."
-msgstr "Tätä tietoaineistoa ei ole tuotettu projektissa"
+msgid "This dataset was produced in a project."
+msgstr "Tämä tietoaineisto on tuotettu projektissa."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:167
 msgid "my project"
@@ -10184,9 +10181,9 @@ msgstr "oma projekti"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:168
 msgid ""
-"Field is compulsory if checkbox 'This dataset was not produced in a "
-"project.' is unchecked.<br /><br />Type the project's name."
-msgstr "Kenttä on pakollinen, jos valintaruutua ei ole valittu.<br /><br />Anna projektin nimi."
+"Field is compulsory if checkbox 'This dataset was produced in a "
+"project.' is checked.<br /><br />Type the project's name."
+msgstr "Kenttä on pakollinen, jos valintaruutu on valittu.<br /><br />Anna projektin nimi."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:171
 msgid "Funder"
@@ -10198,9 +10195,9 @@ msgstr "oma rahoittaja"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:172
 msgid ""
-"Field is compulsory if checkbox 'This dataset was not produced in a "
-"project.' is unchecked.<br /><br />Type the project funder's name."
-msgstr "Kenttä on pakollinen, jos valintaruutua ei ole valittu.<br /><br />Anna projektin rahoittajan nimi."
+"Field is compulsory if checkbox 'This dataset was produced in a "
+"project.' is checked.<br /><br />Type the project funder's name."
+msgstr "Kenttä on pakollinen, jos valintaruutu on valittu.<br /><br />Anna projektin rahoittajan nimi."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:175
 msgid "Funding id"
@@ -10212,9 +10209,9 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:176
 msgid ""
-"Field is compulsory if checkbox 'This dataset was not produced in a "
-"project.' is unchecked.<br /><br />Type the project's funding id. The funding id is not shown publicly."
-msgstr "Kenttä on pakollinen, jos valintaruutua ei ole valittu.<br /><br />Anna projektin rahoitustunniste. Rahoitustunnistetta ei näytetä julkisesti."
+"Field is compulsory if checkbox 'This dataset was produced in a "
+"project.' is checked.<br /><br />Type the project's funding id. The funding id is not shown publicly."
+msgstr "Kenttä on pakollinen, jos valintaruutu on valittu.<br /><br />Anna projektin rahoitustunniste. Rahoitustunnistetta ei näytetä julkisesti."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:179
 msgid "http://myproject"
@@ -10222,9 +10219,9 @@ msgstr "http://omaprojektini"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:180
 msgid ""
-"Field is compulsory if checkbox 'This dataset was not produced in a "
-"project.' is unchecked.<br /><br />Type the project's homepage"
-msgstr "Kenttä on pakollinen, jos valintaruutua ei ole valittu.<br /><br />Anna projektin kotisivu."
+"Field is compulsory if checkbox 'This dataset was produced in a "
+"project.' is checked.<br /><br />Type the project's homepage"
+msgstr "Kenttä on pakollinen, jos valintaruutu on valittu.<br /><br />Anna projektin kotisivu."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:183
 msgid "Owner information"
@@ -10255,19 +10252,8 @@ msgid "will be automatically generated if empty"
 msgstr "jos tyhjä, generoidaan automaattisesti"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:209
-msgid ""
-"Field is compulsory but automatically generated if left empty.<br /><br "
-"/>PID is a permanent, unique, identifier of the data, preferrably a URI. "
-"You can add your own identifier or use one generated by the service. <br "
-"/><br />The automatically generated PID is an URN identifier from the "
-"national library of Finland, of form \"urn:nbn:fi:csc-kata[unique "
-"number]\". Visit http://www.nationallibrary.fi/ for more information."
-msgstr ""
-"Kenttä on pakollinen, mutta generoidaan automaattisesti jos jätetty tyhjäksi.<br /><br />"
-"PID on pysyvä, uniikki datan tunniste. Voit lisätä oman tunnisteesi tai käyttää "
-"palvelun generoimaa tunnistetta<br /><br />Automaattisesti generoitu PID on "
-"URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi:csc-kata[numerosarja]\"."
-"Lisää tietoa osoitteessa http://www.kansalliskirjasto.fi/."
+msgid "Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi for more information."
+msgstr "Kenttä on pakollinen, mutta generoidaan automaattisesti jos jätetty tyhjäksi.<br /><br />PID on pysyvä, uniikki datan tunniste. Tämä tunniste on tämänhetkiselle datan versiolle. Voit lisätä oman tunnisteesi tai käyttää palvelun generoimaa tunnistetta<br /><br />Automaattisesti generoitu PID on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi:csc-kata[numerosarja]\". Lisää tietoa osoitteessa http://www.kansalliskirjasto.fi/."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:212
 msgid "Version Identifier"
@@ -10333,11 +10319,11 @@ msgid "downloadable after registration / identification"
 msgstr "avoimesti rekisteröitymällä tai tunnistautumalla"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:242
-msgid "with data access application"
+msgid "with data access application form"
 msgstr "lupahakemuksella"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:244
-msgid "Web address of access application"
+msgid "Web address of access application form"
 msgstr "hakemuksen osoite"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:244
@@ -10349,8 +10335,8 @@ msgid "only by contacting the distributor"
 msgstr "ottamalla yhteyttä yhteyshenkilöön"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:264
-msgid "License information can be found at"
-msgstr "Lisenssitieto löytyy osoitteesta"
+msgid "Information about licenses"
+msgstr "Tietoa lisensseistä"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:270
 msgid "License URL"
@@ -10396,9 +10382,9 @@ msgstr "Maantieteellinen kattavuus"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:27
 msgid ""
-"Search location from SUO ontology, select locations with enter or mouse "
+"Search location from location name database, select locations with enter or mouse "
 "click."
-msgstr "Etsi paikkaa SUO-ontologiasta, valitse paikat näppäimistön enter-painikkeella tai hiiren klikkauksella"
+msgstr "Etsi paikkaa paikannimirekisteristä, valitse paikat näppäimistön enter-painikkeella tai hiiren klikkauksella"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:28
 msgid ""
@@ -10478,12 +10464,8 @@ msgid "Relations"
 msgstr "Relaatiot"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:95
-msgid ""
-"Search keywords from OKM-TIETEENALA ontology, select keywords with enter "
-"or mouse click."
-msgstr ""
-"Etsi tieteenala okm-tieteenala-ontologiasta. Valitse oikea sana enter-painikkeella "
-"tai hiirenklikkauksella."
+msgid "Search keywords from okm-tieteenala ontology, select keywords with enter or mouse click. Note that the disciplines are provided in Finnish only."
+msgstr "Etsi tieteenala okm-tieteenala-ontologiasta. Valitse oikea sana enter-painikkeella tai hiirenklikkauksella. Huomaa, että tieteenalat ovat vain suomeksi."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:96
 msgid ""
@@ -10643,18 +10625,8 @@ msgid "used"
 msgstr "käyttö"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:295
-msgid ""
-"Describe the lifecycle of your data by adding important events related to "
-"the data. A single event consists of four fields: event, by whom, when "
-"and description. Fill all four fields when adding an event.<br /><br />"
-"You can add more events by first adding a new set of fields by clicking "
-"the '+' button."
-msgstr ""
-"Voit kuvailla datasi elinkaarta lisäämällä tähän datan syntyyn ja "
-"käyttöön liittyviä tapahtumia. Yksittäinen tapahtuma koostuu neljästä "
-"kentästä: tapahtuma, kenen toimesta, milloin ja kuvaus. Täytä kaikki kentät, "
-"kun lisäät tapahtuman.<br /><br />Voit lisätä kenttiä uusille tapahtumille "
-"'+'-nappulasta."
+msgid "Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the '+' button.<br /><br />To remove an event, delete its contents from the three text fields."
+msgstr "Voit kuvailla datasi elinkaarta lisäämällä tähän datan syntyyn ja käyttöön liittyviä tapahtumia. Yksittäinen tapahtuma koostuu neljästä kentästä: tapahtuma, kenen toimesta, milloin ja kuvaus. Täytä kaikki kentät, kun lisäät tapahtuman.<br /><br />Voit lisätä kenttiä uusille tapahtumille '+'-nappulasta.<br /><br />Poistaaksesi tapahtuman tyhjennä kyseisen tapahtuman sisältö sen kolmesta tekstikentästä."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:305
 msgid "By whom "
@@ -11048,6 +11020,9 @@ msgstr "MIME-tyyppi"
 msgid "Search results"
 msgstr "Hakutulokset"
 
+msgid "Agent"
+msgstr "Toimija"
+
 msgid "Use wildcard to search with various spellings, for example: cat*"
 msgstr "Käytä jokerimerkkiä hakeaksesi eri kirjoitusasuilla, esimerkiksi kissa*"
 
@@ -11071,7 +11046,7 @@ msgstr "Hae Dataa"
 msgid "Tools and additional information"
 msgstr "Työkalut ja lisätietoa"
 
-msgid "The minimum metadatamodel recommends a common set of metadata fields. Explore the minimum metadata model:"
+msgid "The minimum metadata model recommends a common set of metadata fields. Explore the minimum metadata model:"
 msgstr "Minimimetatietomalli määrittelee aineistokuvailuille yhteisiä metadatakenttiä. Tutustu TTA:n metatietotyöryhmän tuottamaan minimimetatietomalliin:"
 
 msgid "Minimum metadata model"
@@ -11122,6 +11097,12 @@ msgstr "esim. ilmasto"
 msgid "Newest datasets"
 msgstr "Uusimmat tietoaineistot"
 
+msgid "Terms of use"
+msgstr "Käyttöehdot"
+
+msgid "Privacy policy for personal information"
+msgstr "Henkilörekisteriseloste"
+
 # View dataset
 msgid "contacting the distributor"
 msgstr "ottamalla yhteyttä jakelijaan"
@@ -11146,6 +11127,9 @@ msgstr "Ensisijainen metadatan tunniste"
 
 msgid "Primary data identifier"
 msgstr "Ensisijainen datan tunniste"
+
+msgid "Distributor/Publisher"
+msgstr "Jakelija/Julkaisija"
 
 # Related
 msgid "Identifier"
@@ -11174,6 +11158,53 @@ msgstr "Yhtään tekijää ja organisaatiota ei ole annettu"
 msgid "Find language codes from: "
 msgstr "Löydät kielikoodit osoitteesta: "
 
+msgid "Value must contain alphanumeric characters"
+msgstr "Arvon täytyy sisältää aakkosnumeerisia merkkejä"
+
+msgid "University. Faculty. Department."
+msgstr "Yliopisto. Tiedekunta. Laitos."
+
+msgid "Temporal coverage begin"
+msgstr "Ajallinen kattavuus, alku"
+
+msgid "Temporal coverage end"
+msgstr "Ajallinen kattavuus, loppu"
+
+msgid "Subject"
+msgstr "Aihe"
+
+msgid "Locations"
+msgstr "Paikat"
+
+msgid "Disciplines"
+msgstr "Tieteenalat"
+
+msgid "Event"
+msgstr "Tapahtuma"
+
+msgid "Create a new access request form automatically"
+msgstr "Luo uusi lupahakemus automaattisesti"
+
+msgid "Note that the version identifier can NOT be edited after saving the dataset, but you can add new version identifiers."
+msgstr "Huomaa että versiotunnistetta EI voi muokata tallennuksen jälkeen, mutta voit lisätä uusia versiotunnisteita."
+
+msgid "Field is not compulsory, a version identifier is already given.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version."
+msgstr "Kenttä ei ole pakollinen, koska versiotunniste on jo annettu.<br /><br />PID on pysyvä, uniikki datan tunniste, mieluiten URI. Tämä pysyväistunniste on tarkoitettu datan versiolle,"
+
+msgid "insert new identifier or leave empty"
+msgstr "lisää uusi tunniste tai jätä tyhjäksi"
+
+msgid "Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier, preferably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/ for more information."
+msgstr "Kenttä on pakollinen, mutta generoidaan automaattisesti jos jätetty tyhjäksi.<br /><br />PID on pysyvä, uniikki datan tunniste. Voit lisätä oman tunnisteesi tai käyttää palvelun generoimaa tunnistetta<br /><br />Automaattisesti generoitu PID on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi:csc-kata[numerosarja]\". Lisää tietoa osoitteessa http://www.kansalliskirjasto.fi/."
+
+msgid "Missing compulsory distributor contact"
+msgstr "Pakollinen jakelijan tieto puuttuu"
+
+msgid "Missing compulsory agent: {0}"
+msgstr "Pakollinen toimija puuttuu: {0}"
+
+msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
+msgstr "Tagin \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: '_.()/#+."
 
 # Resource, Additional Information (the key - value -variables)
 msgid "created"
@@ -11317,3 +11348,41 @@ msgstr "<h2>Tietoa Kata metadatakatalogista</h2> <p> Kata kerää tutkimusaineis
 # Edit user form
 msgid "Note that the changes in user information have no effect if you are using Haka login."
 msgstr "Muutokset käyttäjäprofiiliin jätetään huomioimatta jos käytät Haka-kirjautumista."
+
+# Help and FAQ
+msgid "What means creating a new access request form?"
+msgstr "Mitä tarkoittaa uuden lupahakemuksen luonti?"
+
+msgid "It means that Kata creates automatically a default workflow to REMS. REMS is software for managing access rights to research data. With it you can specify that a user must send an application in REMS service to you to gain access to your data. Find out more from: "
+msgstr "Se tarkoittaa Katan automaattisesti luomaa oletustyövuota REMS:iin. REMS on sovellus, jolla hallinnoidaan pääsyoikeuksia tutkimusdataan. Sen avulla voit määritellä, että käyttäjän pitää lähettää sinulle hakemus REMS-palvelussa, jonka perusteella voit myöntää oikeuden ja toimittaa datasi hakijalle. Lue lisää aiheesta: "
+
+msgid "Kata is integrated to TTA's REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: "
+msgstr "Kata on integroitu TTA:n REMS-palveluun, Reettaan. Tämä tarkoittaa sitä että voit määritellä datasi olevan saatavilla lupahakemuksen täyttämisen ja lähettämisen myötä. Datan omistajan roolissa hyväksyt tai hylkäät hakemuksen REMS-palvelussa ja toimitat datasi hakijalle. Voit luoda lupahakemuksen työvuon itse REMS-palvelussa, tai käyttää minimalistista automaattisesti luotavaa hakemusta. Kun datalla on olemassa lupahakemus, tietoaineiston sivulla oleva linkki vie suoraan lupahakemukseen. Lue lisää "
+
+msgid "REMS manual"
+msgstr "REMS:n käyttöohjeista"
+
+msgid "For additional help send email to: "
+msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
+
+# REMS (these should be in ckanext-rems?)
+msgid "Dataset saved but REMS application creation failed. To retry, save dataset later without changes."
+msgstr "Tietoaineisto tallennettu, mutta REMS-hakemuksen luonti epäonnistui. Yritä uudelleen myöhemmin tallentamalla muutoksitta."
+
+# Login
+msgid "About login"
+msgstr "Tietoa sisäänkirjautumisesta"
+
+msgid "Currently Kata only provides login using Haka."
+msgstr "Tällä hetkellä Katassa tarjotaan sisäänkirjautuminen vain käyttäen Hakaa."
+
+# Contact form
+msgid "Request edit rights"
+msgstr "Pyydä muokkausoikeuksia"
+
+msgid "Send"
+msgstr "Lähetä"
+
+#: ckanext/kata/theme/templates/package/read.html:73
+msgid "metadata score {rating}/5"
+msgstr "Metatiedon laatu {rating}/5"

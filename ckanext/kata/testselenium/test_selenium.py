@@ -141,7 +141,8 @@ class TestKataWithUser(TestCase):
             assert 0, "Error processing the user registration page"
 
         try:
-            WebDriverWait(reg_browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(text(),' logged in')]")))
+            # TODO: PINJA: This XPATH should be better
+            WebDriverWait(reg_browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ol[contains(@class, 'breadcrumb')]/li[contains(@class, 'active')]")))
         except TimeoutException:
             reg_browser.get_screenshot_as_file('_register_user.png')
             reg_browser.quit()
@@ -160,14 +161,14 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@id='langtitle__0__value_id']")
             field.send_keys('Selenium Dataset')
 
-            field = browser.find_element_by_xpath("//input[@id='orgauth__0__value_id']")
+            field = browser.find_element_by_xpath("//input[@name='agent__2__name']")
             field.send_keys('Selenium')
 
-            field = browser.find_element_by_xpath("//input[@name='orgauth__0__org']")
+            field = browser.find_element_by_xpath("//input[@name='agent__2__organisation']")
             field.send_keys('CSC Oy')
 
-            # Add keyword to onki collector via onki search
-            field = browser.find_element_by_xpath("//input[@id='field-tags']")
+            # Keywords -- the actual autocomplete field lacks the id attribute, so find it through an ancestor's sibling
+            field = browser.find_element_by_xpath("//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input")
             field.send_keys('Selenium')
             field.send_keys(Keys.RETURN)
 
@@ -178,19 +179,22 @@ class TestKataWithUser(TestCase):
             #field.send_keys('Selenium')
             #field.send_keys(Keys.RETURN)
 
-            field = browser.find_element_by_xpath("//input[@id='contact_phone']")
+            field = browser.find_element_by_xpath("//input[@id='contact__0__name']")
+            field.send_keys('Selenium contact')
+            field = browser.find_element_by_xpath("//input[@id='contact__0__email']")
+            field.send_keys('kata.selenium@gmail.com')
+            field = browser.find_element_by_xpath("//input[@id='contact__0__URL']")
+            field.send_keys('https://localhost/')
+            field = browser.find_element_by_xpath("//input[@id='contact__0__phone']")
             field.send_keys('+35891234567')
 
-            field = browser.find_element_by_xpath("//input[@id='contact_URL']")
-            field.send_keys('https://localhost/')
-
-            field = browser.find_element_by_xpath("//input[@name='projdis']")
-            field.click()
-
+            # field = browser.find_element_by_xpath("//input[@name='projdis']")
+            # field.click()
+            #
             field = browser.find_element_by_xpath("//input[@id='contact_owner']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@id='owner']")
+            field = browser.find_element_by_xpath("//input[@name='agent__1__name']")
             field.send_keys('Selenium')
 
             #field = browser.find_element_by_xpath("//input[@id='licenseURL']")
@@ -203,7 +207,7 @@ class TestKataWithUser(TestCase):
             assert 0, "Error processing the create dataset page"
 
         try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ul/li/a[.='RDF']")))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/a[.='Hide/show']")))
         except TimeoutException:
             browser.get_screenshot_as_file('_add_dataset.png')
             browser.quit()
@@ -431,7 +435,7 @@ class TestKataWithUser(TestCase):
             assert 0, "Error processing the create dataset page"
 
         try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ul/li/a[.='RDF']")))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/a[.='Hide/show']")))
         except TimeoutException:
             browser.get_screenshot_as_file('_add_dataset_advanced.png')
             browser.quit()
@@ -442,6 +446,7 @@ class TestKataWithUser(TestCase):
         return browser.current_url
 
 
+    # TODO: fix entry of keywords and re-enable the test
     def test_add_dataset_all_fields(self):
         """Create a dataset with all fields filled."""
 
@@ -487,29 +492,39 @@ class TestKataWithUser(TestCase):
             #(find_plus_buttons, 3, [WebElement.click], None),
             #(find_plus_buttons, 3, [WebElement.click], None),
 
-            (browser.find_element_by_id, 'orgauth__0__value_id', [u'Ascii Author'], None),
-            (browser.find_element_by_name, 'orgauth__0__org', [u'CSC Oy'], None),
+            (browser.find_element_by_name, 'agent__2__name', [u'Ascii Author'], None),
+            (browser.find_element_by_name, 'agent__2__organisation', [u'CSC Oy'], None),
             #(browser.find_element_by_id, 'author__1__value_id', [u'Åke Author'], None),
             #(browser.find_element_by_id, 'organization__1__value_id', [u'Organization 2'], None),
             #(browser.find_element_by_id, 'author__2__value_id', [u'прстуфхцчшчьыъэюя Author'], None),
             #(browser.find_element_by_id, 'organization__2__value_id', [u'Organization 3'], None),
 
-            #(find_select2_inputs, 1, ['Selenium', Keys.ENTER, 'Keyword2', Keys.ENTER], None),  # keywords
-            (browser.find_element_by_id, 'field-tags', [u'Selenium', Keys.RETURN], 1),
-            (browser.find_element_by_id, 'field-tags', [u'Keyword2', Keys.RETURN], 1),
-            (browser.find_element_by_id, 'language', [u'rus, fin, eng'], None),
+            # keywords
+            (browser.find_element_by_xpath, "//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input", ['Selenium', Keys.RETURN, 'Keyword2', Keys.RETURN], None),
 
-            (browser.find_element_by_id, 'contact_phone', [u'+35891234567'], None),
-            (browser.find_element_by_id, 'contact_URL', [u'https://localhost/'], None),
+            (browser.find_element_by_id, 'language', [u'eng, fin, swe, tlh'], None),
 
-            (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
-            (browser.find_element_by_id, 'project_funder', [u'Selenium Funder'], None),
-            (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
-            (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
+            (browser.find_element_by_id, 'contact__0__name', [u'Selenium'], None),
+            (browser.find_element_by_id, 'contact__0__phone', [u'+35891234567'], None),
+            (browser.find_element_by_id, 'contact__0__email', [u'kata.selenium@gmail.com'], None),
+            (browser.find_element_by_id, 'contact__0__URL', [u'https://localhost/'], None),
 
-            (browser.find_element_by_id, 'owner', [u'прстуфхцчшчьыъэюя'], None),
+            (browser.find_element_by_name, 'projdis', [WebElement.click], None),
 
-            (browser.find_element_by_id, 'field-pid', [u'pid' + str(int(time.time() * 100))], None),
+            (browser.find_element_by_name, 'agent__0__organisation', [u'Selenium Project'], None),
+            (browser.find_element_by_name, 'agent__0__name', [u'Selenium Funder'], None),
+            (browser.find_element_by_name, 'agent__0__funding-id', [u'Selenium Funding'], None),
+            (browser.find_element_by_name, 'agent__0__URL', [u'https://localhost/'], None),
+
+            # (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
+            # (browser.find_element_by_id, 'project_funder', [u'Selenium Funder'], None),
+            # (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
+            # (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
+            #
+            (browser.find_element_by_name, 'agent__1__name', [u'прстуфхцчшчьыъэюя'], None),
+
+            (browser.find_element_by_id, 'name-pid', [u'pid' + str(int(time.time() * 100))], None),
+            (browser.find_element_by_name, 'new_version_pid', [u'pid' + str(int(time.time() * 100))], None),
 
             (browser.find_element_by_id, 'direct_download', [Keys.SPACE], None),
             (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),
@@ -519,11 +534,15 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_xpath, "//section[@id='recmod']/h2/a/i", [WebElement.click], None),
             # recommended info
 
-            (browser.find_element_by_id, 'geographic_coverage_field', [u'Espoo, Finland', Keys.RETURN], None),
+            (browser.find_element_by_xpath, "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input", [u'Espoo, Finland', Keys.RETURN], None),
+            # (browser.find_element_by_id, 'geographic_coverage_field', [u'Espoo, Finland', Keys.RETURN], None),
 
             #(find_select2_choice_inputs, 2, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
             #(find_select2_choice_inputs, 2, ['Selenium discipline', Keys.RETURN], None),  # discipline
-            (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.RETURN], None),
+
+            (browser.find_element_by_xpath, "//input[@id='discipline_field']/../div[@class='select2-container select2-container-multi']//input", [u'Matematiikka', Keys.RETURN], None),
+            # (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.RETURN], None),
+
             (browser.find_element_by_id, 'mimetype', [u'application/pdf'], None),
             (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
             (browser.find_element_by_id, 'algorithm', [u'md5'], None),

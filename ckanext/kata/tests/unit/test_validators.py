@@ -11,8 +11,8 @@ import json
 from unittest import TestCase
 from collections import defaultdict
 
-from ckanext.kata.validators import validate_kata_date, check_project, \
-    check_project_dis, validate_email, validate_phonenum, \
+from ckanext.kata.validators import validate_kata_date, \
+    validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
     validate_title_duplicates, validate_title, validate_direct_download_url
@@ -29,7 +29,8 @@ class TestValidators(TestCase):
     def setup_class(cls):
         """Set up tests."""
 
-        # TODO: Get a new flattened data_dict
+        # TODO: PINJA: Update the data_dict below. Also flatten it to provide data for validation/converters in show_package_schema.
+        # Move this dataset to something like test_fixtures/flattened.py
 
         cls.test_data = {('__extras',): {'_ckan_phase': u'',
                                          'evdescr': [],
@@ -66,7 +67,7 @@ class TestValidators(TestCase):
                                        {'key': 'project_name', 'value': u''},
                                        {'key': 'checksum', 'value': u''},
                                        {'key': 'temporal_coverage_end', 'value': u''},
-                                       {'key': 'projdis', 'value': u'True'},
+                                       # {'key': 'projdis', 'value': u'True'},
                                        {'key': 'language', 'value': u''}],
                          ('mimetype',): u'',
                          ('project_funder',): u'',
@@ -82,7 +83,7 @@ class TestValidators(TestCase):
                          ('owner',): u'dada',
                          ('phone',): u'+35805050505',
                          ('maintainer_email',): u'kata.selenium@gmail.com',
-                         ('projdis',): u'True',
+                         # ('projdis',): u'True',
                          ('project_funding',): u'',
                          ('project_homepage',): u'',
                          ('project_name',): u'',
@@ -219,54 +220,54 @@ class TestValidators(TestCase):
         convert_languages(('language',), dada, errors, None)
         assert len(errors) == 1
 
-    def test_project_valid(self):
-        errors = defaultdict(list)
-        dada = copy.deepcopy(self.test_data)
-        dada[('projdis',)] = 'False'
-        dada[('funder',)] = u'funder'
-        dada[('project_name',)] = u'project name'
-        dada[('project_funding',)] = u'project_funding'
-        dada[('project_homepage',)] = u'www.google.fi'
-
-        check_project_dis(('project_name',),
-                          dada, errors, None)
-        assert len(errors) == 0
-        check_project_dis(('funder',),
-                          dada, errors, None)
-        assert len(errors) == 0
-        check_project_dis(('project_funding',),
-                          dada, errors, None)
-        assert len(errors) == 0
-        check_project_dis(('project_homepage',),
-                          dada, errors, None)
-        assert len(errors) == 0
-
-    def test_project_invalid(self):
-        errors = defaultdict(list)
-        dada = copy.deepcopy(self.test_data)
-        dada[('projdis',)] = 'False'
-        dada[('funder',)] = u''
-        dada[('project_name',)] = u'project name'
-        dada[('project_funding',)] = u'project_funding'
-        dada[('project_homepage',)] = u'www.google.fi'
-
-        check_project_dis(('project_name',),
-                          dada, errors, None)
-        assert len(errors) == 0
-        check_project_dis(('funder',),
-                          dada, errors, None)
-        assert len(errors) > 0
-
-    def test_project_notgiven(self):
-        errors = defaultdict(list)
-        dada = copy.deepcopy(self.test_data)
-        dada[('projdis',)] = 'True'
-        dada[('project_name',)] = u'project name'
-        check_project(('project_name',),
-                      dada, errors, None)
-        print errors
-        assert len(errors) > 0
-
+    # def test_project_valid(self):
+    #     errors = defaultdict(list)
+    #     dada = copy.deepcopy(self.test_data)
+    #     # dada[('projdis',)] = 'False'
+    #     dada[('funder',)] = u'funder'
+    #     dada[('project_name',)] = u'project name'
+    #     dada[('project_funding',)] = u'project_funding'
+    #     dada[('project_homepage',)] = u'www.google.fi'
+    #
+    #     check_project_dis(('project_name',),
+    #                       dada, errors, None)
+    #     assert len(errors) == 0
+    #     check_project_dis(('funder',),
+    #                       dada, errors, None)
+    #     assert len(errors) == 0
+    #     check_project_dis(('project_funding',),
+    #                       dada, errors, None)
+    #     assert len(errors) == 0
+    #     check_project_dis(('project_homepage',),
+    #                       dada, errors, None)
+    #     assert len(errors) == 0
+    #
+    # def test_project_invalid(self):
+    #     errors = defaultdict(list)
+    #     dada = copy.deepcopy(self.test_data)
+    #     # dada[('projdis',)] = 'False'
+    #     dada[('funder',)] = u''
+    #     dada[('project_name',)] = u'project name'
+    #     dada[('project_funding',)] = u'project_funding'
+    #     dada[('project_homepage',)] = u'www.google.fi'
+    #
+    #     check_project_dis(('project_name',),
+    #                       dada, errors, None)
+    #     assert len(errors) == 0
+    #     check_project_dis(('funder',),
+    #                       dada, errors, None)
+    #     assert len(errors) > 0
+    #
+    # def test_project_notgiven(self):
+    #     errors = defaultdict(list)
+    #     dada = copy.deepcopy(self.test_data)
+    #     # dada[('projdis',)] = 'True'
+    #     dada[('project_name',)] = u'project name'
+    #     check_project(('project_name',),
+    #                   dada, errors, None)
+    #     print errors
+    #     assert len(errors) > 0
+    #
     def test_validate_email_valid(self):
         errors = defaultdict(list)
 
