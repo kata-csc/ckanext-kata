@@ -82,6 +82,48 @@ from ckanext.kata import actions, auth_functions, settings, utils
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
 t = toolkit                                 # pylint: disable=invalid-name
 
+###### Monkey patch for repoze.who ######
+# Enables secure setting for cookies
+# Part of repoze.who since version 2.0a4
+
+from repoze.who.plugins.auth_tkt import AuthTktCookiePlugin
+import datetime
+
+def _now():
+    return datetime.datetime.now()
+
+def _get_monkeys(self, environ, value, max_age=None):
+    
+    if max_age is not None:
+        max_age = int(max_age)
+        later = _now() + datetime.timedelta(seconds=max_age)
+        # Wdy, DD-Mon-YY HH:MM:SS GMT
+        expires = later.strftime('%a, %d %b %Y %H:%M:%S')
+        # the Expires header is *required* at least for IE7 (IE7 does
+        # not respect Max-Age)
+        max_age = "; Max-Age=%s; Expires=%s" % (max_age, expires)
+    else:
+        max_age = ''
+
+    secure = ''
+    if self.secure:
+        secure = '; secure; HttpOnly'
+
+    cur_domain = environ.get('HTTP_HOST', environ.get('SERVER_NAME'))
+    wild_domain = '.' + cur_domain
+    cookies = [
+        ('Set-Cookie', '%s="%s"; Path=/%s%s' % (
+        self.cookie_name, value, max_age, secure)),
+        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (
+        self.cookie_name, value, cur_domain, max_age, secure)),
+        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (
+        self.cookie_name, value, wild_domain, max_age, secure))
+        ]
+    return cookies
+
+AuthTktCookiePlugin._get_cookies = _get_monkeys
+
+###### End of Monkey patch ######
 
 class KataMetadata(SingletonPlugin):
     """
@@ -403,8 +445,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         Return the schema for validating new dataset dicts.
         """
 
-        # TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!
-        # Note: harvester schemas
+        # TODO: Use the general converter for lang_title and check that lang_title exists!
 
         schema = default_create_package_schema()
         schema.pop('author')
@@ -459,7 +500,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['version'] = [not_empty, unicode, validate_kata_date]
         schema['availability'] = [not_missing, convert_to_extras_kata]
         schema['langdis'] = [checkbox_to_boolean, convert_to_extras_kata]
-        # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
+        # TODO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
         # If something added to __extras it may break current error rendering for authors.
         schema['__extras'] = [check_agent, check_langtitle, check_contact]
         schema['__junk'] = [check_junk]
@@ -520,6 +561,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         :return schema
         '''
+        # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
 
         schema['discipline'].insert(0, ignore_missing)
@@ -724,12 +766,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data_dict['q'] += ' AND '
         qdate = ''
         if extra_dates.has_key('start'):
+            # TODO: Validate that input is valid year
             qdate += '[' + extra_dates['start'] + '-01-01T00:00:00.000Z TO '
             key = 'ext_date-' + extra_dates['field'] + '-start'
             c.current_search_limiters[key] = extra_dates['start']
         else:
             qdate += '[* TO '
         if extra_dates.has_key('end'):
+            # TODO: Validate that input is valid year
             qdate += extra_dates['end'] + '-12-31T23:59:59.999Z]'
             key = 'ext_date-' + extra_dates['field'] + '-end'
             c.current_search_limiters[key] = extra_dates['end']
