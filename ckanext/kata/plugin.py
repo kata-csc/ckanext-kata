@@ -445,7 +445,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         Return the schema for validating new dataset dicts.
         """
 
-        # TODO: Use the general converter for lang_title and check that lang_title exists!
+        # TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!
+        # Note: harvester schemas
 
         schema = default_create_package_schema()
         schema.pop('author')
@@ -500,8 +501,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         schema['version'] = [not_empty, unicode, validate_kata_date]
         schema['availability'] = [not_missing, convert_to_extras_kata]
         schema['langdis'] = [checkbox_to_boolean, convert_to_extras_kata]
-        # TODO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
-        # If something added to __extras it may break current error rendering for authors.
+        # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
         schema['__extras'] = [check_agent, check_langtitle, check_contact]
         schema['__junk'] = [check_junk]
         schema['name'] = [ignore_missing, unicode, update_pid, package_name_validator, validate_general]
@@ -561,7 +561,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         :return schema
         '''
-        # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
 
         schema['discipline'].insert(0, ignore_missing)
@@ -766,14 +765,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data_dict['q'] += ' AND '
         qdate = ''
         if extra_dates.has_key('start'):
-            # TODO: Validate that input is valid year
             qdate += '[' + extra_dates['start'] + '-01-01T00:00:00.000Z TO '
             key = 'ext_date-' + extra_dates['field'] + '-start'
             c.current_search_limiters[key] = extra_dates['start']
         else:
             qdate += '[* TO '
         if extra_dates.has_key('end'):
-            # TODO: Validate that input is valid year
             qdate += extra_dates['end'] + '-12-31T23:59:59.999Z]'
             key = 'ext_date-' + extra_dates['field'] + '-end'
             c.current_search_limiters[key] = extra_dates['end']
