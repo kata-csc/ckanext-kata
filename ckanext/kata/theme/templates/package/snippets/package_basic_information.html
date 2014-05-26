@@ -1,0 +1,118 @@
+{% import 'macros/form.html' as form %}
+{% import 'macros/kata_form.html' as kata_form %}
+
+<section class="module">
+  <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
+  <div class="module-content">
+    <div class="kata-multi-input">
+      <span class="kata-multi-heading">{{ _('Titles') }}</span><br />
+      {% set titles = [] %}
+      {% if data.langtitle %}
+        {% set titles = data.langtitle %}
+      {% endif %}
+      {% if (titles|length) == 0 %}
+        {% for extra in range(1,2) %}
+          {% do titles.append({'value': '', 'lang': ''}) %}
+        {% endfor %}
+      {% endif %}
+      <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numfields={{ (titles|length) }} id="lastlang">
+        {# Render title fields #}
+        {% for langtitle in titles %}
+          {% set index = loop.index0 %}
+          {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+            {% if index == 0 %}
+              {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
+            {% endif %}
+            <label class="control-label kata-input-comp" for="langtitle__{{index}}__lang">{{ _('Language') }}</label>
+            <div class="controls kata-input-comp">
+              <select name="langtitle__{{ index }}__lang">
+                {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
+              </select>
+              {% if index == 0 %}
+                {{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();") }}
+              {% endif %}
+              {#% if title.value %#}
+                <input style="display: none;" type="checkbox" id="lbtn__{{ index }}__value_id" name="lbtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+              {#% endif %#}
+            </div>
+          {% endcall %}
+        {% endfor %}
+
+        {% if errors.langtitle %}
+          <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="kata-multi-input">
+      <span class="kata-multi-heading">{{ _('Authors and organizations') }}</span><br />
+      {% set authors = h.get_authors(data) %}
+      {% if authors|length == 0 %}
+        {% for extra in range(1, 2) %}
+          {% do authors.append(dict(role='author',)) %}
+        {% endfor %}
+      {% endif %}
+      <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields={{ authors|length }} id="agent">
+        {# Render author and organisation fields #}
+        {# If something added to __extras it may break current error rendering for authors and contacts. #}
+        {% if errors and errors.get('__extras') %}
+          {% set auth_errors = [] %}
+          {% for error in errors.get('__extras') %}
+            {% if "Author" in error or "Laatija" in error %}
+              {% if auth_errors.append(error) %}{% endif %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% for agent in authors %}
+          {% set index = 2 + loop.index0 %}
+          <div class="control-group control-custom{{ " error" if auth_errors }}">
+            <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
+            <label class="control-label kata-input-comp" for="agent__{{ index }}__name_id">{{ _('Author') }}</label>
+            <div class="controls editor">
+              <input class="kata-medium-input" type="text" placeholder="{{ _('Familyname, Firstname and/or http://orcid.org/') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
+              {% if loop.index0 == 0 %}
+                {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
+              {% endif %}
+            </div>
+
+            <label class="control-label kata-input-comp" for="agent__{{index}}__organisation">{{ _('Organisation') }}</label>
+            <div class="controls editor" style="margin-top: 5px;">
+              <input type="text" name="agent__{{ index }}__organisation" class="kata-medium-input" placeholder="{{ _('University. Faculty. Department.') }}" value="{{ agent.organisation }}">
+              {% if loop.index0 == 0 %}
+                {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+              {% endif %}
+              <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+            </div>
+          </div>
+        {% endfor %}
+        {% if auth_errors and auth_errors is iterable %}<span class="error-block-kata">{{ auth_errors|join('. ') }}</span>{% endif %}
+      </div>
+    </div>
+
+    {# Autocomplete for keywords #}
+
+    <div class="kata-multi-input">
+      <span class="kata-multi-heading">{{ _('Subject') }}</span><br />
+      {{ _('Search keywords from KOKO ontology, select keywords with enter or mouse click.') }}
+      <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords (tags) that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />You can change the language of suggested words from the language menu.<br /><br />The suggestions are retrieved from the ONKI vocabulary service (see http://onki.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
+      <span class="kata-btn-span tta-orange">?</span></button><br /><br />
+      {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+      {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], attrs=tag_attrs) }}
+    </div>
+    <br />
+
+    {# Languages #}
+
+    <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset contains non-textual data') }}
+    <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
+      {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
+        {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
+      {% endcall %}
+      <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+      <span class="add-dataset-infotext">
+        {{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
+      </span>
+    </div>
+  </div>
+</section>
