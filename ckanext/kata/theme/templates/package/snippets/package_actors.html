@@ -19,7 +19,7 @@
         {% if errors and errors.get('__extras') %}
           {% set distributor_errors = [] %}
           {% for error in errors.get('__extras') %}
-            {% if "contact" in error or "jakelijan" in error %}
+            {% if _("contact") in error or "jakelijan" in error %}
               {% if distributor_errors.append(error) %}{% endif %}
             {% endif %}
           {% endfor %}

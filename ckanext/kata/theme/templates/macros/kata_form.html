@@ -54,10 +54,10 @@ Example:
            Distributor is not possible. #}
         {% for key, error in errors.items() %}
           {% if key == "  extras"%}
-            {% if "Author" in error %}
+            {% if _("Author") in error %}
               <li data-field-label="{{ key }}">{% if key %}{{ _('Author') }}{% endif %}</li>
             {% endif %}
-            {% if "distributor" in error %}
+            {% if _("distributor") in error or "jakelijan" in error %}
               <li data-field-label="{{ key }}">{% if key %}{{ _('Distributor') }}{% endif %}</li>
             {% endif %}
           {% else %}

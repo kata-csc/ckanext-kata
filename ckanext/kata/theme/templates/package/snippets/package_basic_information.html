@@ -58,7 +58,7 @@
         {% if errors and errors.get('__extras') %}
           {% set auth_errors = [] %}
           {% for error in errors.get('__extras') %}
-            {% if "Author" in error or "Laatija" in error %}
+            {% if _("Author") in error %}
               {% if auth_errors.append(error) %}{% endif %}
             {% endif %}
           {% endfor %}
