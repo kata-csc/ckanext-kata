@@ -5,6 +5,8 @@ Controllers for Kata.
 
 import json
 import logging
+import string
+import mimetypes
 import functionally as fn
 from rdflib.namespace import XSD
 from rdflib.term import Identifier, URIRef, Literal, BNode
@@ -239,6 +241,17 @@ class KATAApiController(ApiController):
     '''
     Functions for autocomplete fields in add dataset form
     '''
+
+    def media_type_autocomplete(self):
+        query = request.params.get('incomplete', '')
+        known_types = set(mimetypes.types_map.values())
+        matches = [ type_label for type_label in known_types if string.find(type_label, query) != -1 ]
+        result_set = {
+            'ResultSet': {
+                'Result': [{'Name': label} for label in matches]
+            }
+        }
+        return self._finish_ok(result_set)
 
     def tag_autocomplete(self):
         query = request.params.get('incomplete', '')

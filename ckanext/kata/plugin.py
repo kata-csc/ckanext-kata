@@ -162,6 +162,10 @@ class KataMetadata(SingletonPlugin):
                     controller=api_controller,
                     conditions=get,
                     action="tag_autocomplete")
+        map.connect('/api/2/util/media_type_autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="media_type_autocomplete")
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="unlock_access")
