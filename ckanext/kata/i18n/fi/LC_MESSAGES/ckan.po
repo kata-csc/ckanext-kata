@@ -7289,7 +7289,7 @@ msgid ""
 msgstr "Jakelijan / julkaisijan yhteystiedot: anna nimi, puhelinnumero, sähköpostiosoite ja kotisivu, joiden avulla muut voivat ottaa yhteyttä datasta. Huomaa, että sähköpostiosoite piilotetaan muiden näkyvistä ja se on korvattu yhteydenottolomakkeella."
 
 #: ckanext/kata/theme/templates/kata/help.html:179
-msgid "Actors and roles:"
+msgid "Agents and roles:"
 msgstr "Toimijat ja roolit:"
 
 #: ckanext/kata/theme/templates/kata/help.html:182
@@ -10116,7 +10116,7 @@ msgid ""
 msgstr "Kenttä on pakollinen, jos valintaruutua ei ole valittu.<br /><br />Anna pilkulla erotettu lista datassasi käytetyistä kielistä ISO 639-2 T muodossa, esimerkiksi \"eng, fin, swe\"."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:141
-msgid "Actors and roles"
+msgid "Agents and roles"
 msgstr "Toimijat ja roolit"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:143
