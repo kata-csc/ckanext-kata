@@ -264,20 +264,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'get_package_ratings': utils.get_package_ratings,
                 'has_agents_field': helpers.has_agents_field,
                 'has_contacts_field': helpers.has_contacts_field,
-                'is_custom_form': self.is_custom_form,
                 'kata_sorted_extras': helpers.kata_sorted_extras,
                 'reference_update': helpers.reference_update,
                 'resolve_agent_role': settings.resolve_agent_role,
                 }
-
-    def is_custom_form(self, _dict):
-        """
-        Template helper, used to identify ckan custom form
-        """
-        for key in self.hide_extras_form:
-            if _dict.get('key', None) and _dict['key'].find(key) > -1:
-                return False
-        return True
 
     def update_config(self, config):
         """
