@@ -31,6 +31,7 @@ from ckan.plugins.core import unload
 from ckanext.kata import actions, auth_functions, settings, utils
 import ckanext.kata.schemas as sch
 
+from ckanext.kata import actions, auth_functions, settings, utils, helpers
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
 t = toolkit                                 # pylint: disable=invalid-name
@@ -116,6 +117,10 @@ class KataMetadata(SingletonPlugin):
                     controller=api_controller,
                     conditions=get,
                     action="tag_autocomplete")
+        map.connect('/api/2/util/media_type_autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="media_type_autocomplete")
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="unlock_access")
@@ -219,88 +224,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """ Register helpers """
         return {'get_authors': utils.get_authors,
                 'get_contact': utils.get_contact,
-                'get_dict_field_errors': self.get_dict_field_errors,
+                'get_dict_field_errors': helpers.get_dict_field_errors,
                 'get_distributor': utils.get_distributor,
                 'get_funder': utils.get_funder,
                 'get_funders': utils.get_funders,
                 'get_owner': utils.get_owner,
                 'get_package_ratings': utils.get_package_ratings,
-                'has_agents_field': self.has_agents_field,
-                'has_contacts_field': self.has_contacts_field,
-                'is_custom_form': self.is_custom_form,
-                'kata_sorted_extras': self.kata_sorted_extras,
-                'reference_update': self.reference_update,
+                'has_agents_field': helpers.has_agents_field,
+                'has_contacts_field': helpers.has_contacts_field,
+                'kata_sorted_extras': helpers.kata_sorted_extras,
+                'reference_update': helpers.reference_update,
                 'resolve_agent_role': settings.resolve_agent_role,
                 }
-
-    def get_dict_field_errors(self, errors, field, index, name):
-        '''Get errors correctly for fields that are represented as nested dict fields in data_dict.
-
-        :return: [u'error1', u'error2']
-        '''
-        error = []
-        error_dict = errors.get(field)
-        if error_dict and error_dict[index]:
-            error = error_dict[index].get(name)
-        return error
-
-    def has_agents_field(self, data_dict, field):
-        '''Return true if some of the data dict's agents has attribute given in field.'''
-        return [] != filter(lambda x : x.get(field), data_dict.get('agent', []))
-
-    def has_contacts_field(self, data_dict, field):
-        '''Return true if some of the data dict's contacts has attribute given in field'.'''
-        return [] != filter(lambda x : x.get(field), data_dict.get('contact', []))
-
-    def reference_update(self, ref):
-        #@beaker_cache(type="dbm", expire=2678400)
-        def cached_url(url):
-            return url
-        return cached_url(ref)
-
-    def is_custom_form(self, _dict):
-        """
-        Template helper, used to identify ckan custom form
-        """
-        for key in self.hide_extras_form:
-            if _dict.get('key', None) and _dict['key'].find(key) > -1:
-                return False
-        return True
-
-    def kata_sorted_extras(self, list_):
-        '''
-        Used for outputting package extras, skips package_hide_extras
-        '''
-        output = []
-        for extra in sorted(list_, key=lambda x:x['key']):
-            if extra.get('state') == 'deleted':
-                continue
-            
-            key, val = extra['key'], extra['value']
-            if key in g.package_hide_extras and\
-                key in settings.KATA_FIELDS and\
-                key.startswith('author_') and\
-                key.startswith('organization_'):
-                continue
-            
-            if  key.startswith('title_') or\
-                key.startswith('lang_title_') or\
-                key == 'harvest_object_id' or\
-                key == 'harvest_source_id' or\
-                key == 'harvest_source_title':
-                continue
-            
-            found = False
-            for _key in g.package_hide_extras:
-                if extra['key'].startswith(_key):
-                    found = True
-            if found:
-                continue
-            
-            if isinstance(val, (list, tuple)):
-                val = ", ".join(map(unicode, val))
-            output.append((key, val))
-        return output
 
     def update_config(self, config):
         """

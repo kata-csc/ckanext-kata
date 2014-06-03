@@ -541,7 +541,7 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_xpath, "//input[@id='discipline_field']/../div[@class='select2-container select2-container-multi']//input", [u'Matematiikka', Keys.RETURN], None),
             # (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.RETURN], None),
 
-            (browser.find_element_by_id, 'mimetype', [u'application/pdf'], None),
+            (browser.find_element_by_xpath, "//input[@id='mimetype']/../div[@class='select2-container select2-container-multi']//input", [u'application/pdf', Keys.RETURN], None),
             (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
             (browser.find_element_by_id, 'algorithm', [u'md5'], None),
 

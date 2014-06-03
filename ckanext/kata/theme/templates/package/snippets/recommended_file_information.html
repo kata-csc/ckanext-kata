@@ -6,16 +6,19 @@
 <section class="module">
   <h2 class="module-heading-add-dataset">{{ _('File information') }}</h2>
   <div class="module-content">
-    {% call form.input('mimetype', label=_('File format'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-      {{ kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.")) }}
-      {% if errors.resources %}
-        {% if errors.resources[0].mimetype %}
-          <span class="error-block">
-            {{ errors.resources[0].mimetype[0] }}
-          </span>
+    <div class="kata-autocomplete">
+      {% set mimetype_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/media_type_autocomplete?incomplete=?'} %}
+      {% call form.input('mimetype', label=_('File format'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=mimetype_attrs) %}
+        {{ kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.")) }}
+        {% if errors.resources %}
+          {% if errors.resources[0].mimetype %}
+            <span class="error-block">
+              {{ errors.resources[0].mimetype[0] }}
+            </span>
+          {% endif %}
         {% endif %}
-      {% endif %}
-    {% endcall %}
+      {% endcall %}
+    </div>
         
     {% call form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
       {{ kata_form.tooltip(tooltip=_("The checksum of the data file can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Checksums are a good way to enable verification of the content to ensure the file is unchanged and genuine.")) }}
