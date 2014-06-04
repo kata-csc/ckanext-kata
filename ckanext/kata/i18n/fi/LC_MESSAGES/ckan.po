@@ -11131,6 +11131,18 @@ msgstr "Ensisijainen datan tunniste"
 msgid "Distributor/Publisher"
 msgstr "Jakelija/Julkaisija"
 
+msgid "through data provider"
+msgstr "datan jakelijan kautta"
+
+msgid " available through "
+msgstr " saatavilla "
+
+msgid "data provider"
+msgstr "datan jakelijan kautta"
+
+msgid "Data provider's web address"
+msgstr "Datan jakelijan web-osoite"
+
 # Related
 msgid "Identifier"
 msgstr "Tunniste"
@@ -11386,3 +11398,10 @@ msgstr "Lähetä"
 #: ckanext/kata/theme/templates/package/read.html:73
 msgid "metadata score {rating}/5"
 msgstr "Metatiedon laatu {rating}/5"
+
+# Backup node
+msgid "There is a maintenance break in service"
+msgstr "Palvelussa on huoltokatko"
+
+msgid "You can not add or edit data during maintenance break"
+msgstr "Et voi lisätä tai muokata dataa huoltokatkon aikana"
