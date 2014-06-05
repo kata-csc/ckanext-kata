@@ -11377,6 +11377,12 @@ msgstr "REMS:n käyttöohjeista"
 msgid "For additional help send email to: "
 msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
 
+msgid "I'm trying to accept an application in REMS but the link to form received by email is empty."
+msgstr "Yritän hyväksyä hakemuksen REMS:ssä, mutta sähköpostin välityksellä tulleen linkin lomake on tyhjä"
+
+msgid "Most likely the distributor's email address isn't bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the acceptor. To fix this, log in to reetta.csc.fi with identity bound to the email address or change the dataset's distributor's email address to a valid one."
+msgstr "Todennäköistä on että joko jakelijan sähköpostiosoitetta ei ole sidottuna mihinkään Haka-identiteettiin tai kukaan ei ole kirjautunut sisään kyseisellä identiteetillä REMS-palveluun. Tällöin REMS ei voi tunnistaa hyväksyjää. Korjataksesi tämän kirjaudu sisään palvelimelle reetta.csc.fi identiteetillä, johon sähköposti on sidottu tai muuta tietoaineiston jakelijan sähköpostiosoite Hakan tunnistamaksi."
+
 # REMS (these should be in ckanext-rems?)
 msgid "Dataset saved but REMS application creation failed. To retry, save dataset later without changes."
 msgstr "Tietoaineisto tallennettu, mutta REMS-hakemuksen luonti epäonnistui. Yritä uudelleen myöhemmin tallentamalla muutoksitta."
