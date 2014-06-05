@@ -14,6 +14,18 @@
 
 /* general-styles */
 
+.form-actions .action-info-kata {
+    float: left;
+    line-height: 2;
+    margin: 0;
+    text-align: left;
+    width: 50%;
+}
+.form-actions .action-info-kata.small {
+	font-size: 12px;
+    line-height: 1.2;
+}
+
 /* header */
 
 /* nav */

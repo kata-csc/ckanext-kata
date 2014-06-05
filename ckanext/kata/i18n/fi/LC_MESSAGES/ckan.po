@@ -11218,6 +11218,9 @@ msgstr "Pakollinen toimija puuttuu: {0}"
 msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr "Tagin \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: '_.()/#+."
 
+msgid "Important: By submitting content, you agree to release your contributions under the Open Database License. "
+msgstr "Tärkeää: lisäämällä sisältöä sitoudut julkaisemaan lisäyksesi Open Database License -lisenssin alla."
+
 # Resource, Additional Information (the key - value -variables)
 msgid "created"
 msgstr "luotu"
