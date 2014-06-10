@@ -55,10 +55,10 @@ def create_package_schema(cls):
                        'id': [ignore_empty, va.validate_general, unicode, co.flattened_to_extras],
                        'organisation': [ignore_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
                        'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
-                       # Note: Changed to 'funding-id' for now because 'funding_id'
+                       # Note: Changed to 'fundingid' for now because 'funding_id'
                        # was returned as 'funding' from db. Somewhere '_id' was
                        # splitted off.
-                       'funding-id': [ignore_empty, va.validate_general, unicode, co.flattened_to_extras]}
+                       'fundingid': [ignore_empty, va.validate_general, unicode, co.flattened_to_extras]}
     schema['contact'] = {'name': [not_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
                          'email': [not_empty, unicode, va.validate_email, co.flattened_to_extras],
                          'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],

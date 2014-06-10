@@ -247,7 +247,7 @@ def hide_sensitive_fields(pkg_dict1):
     # pkg_dict1['project_funding'] = _('Not authorized to see this information')
     funders = get_funders(pkg_dict1)
     for fun in funders:
-        fun.pop('funding-id', None)
+        fun.pop('fundingid', None)
 
     for con in pkg_dict1.get('contact', []):
         # String 'hidden' triggers the link for contact form, see metadata_info.html
