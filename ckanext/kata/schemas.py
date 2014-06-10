@@ -14,12 +14,9 @@ from ckan.logic.validators import (owner_org_validator,
                                    vocabulary_id_exists)
 import ckanext.kata.validators as va
 import ckanext.kata.converters as co
-from ckanext.kata import utils
 import ckanext.kata.settings as settings
-import ckanext.kata.plugin
 
-@classmethod
-def tags_schema(cls):
+def tags_schema():
     schema = {
         'name': [not_missing,
                  not_empty,
@@ -34,8 +31,7 @@ def tags_schema(cls):
     }
     return schema
 
-@classmethod
-def create_package_schema(cls):
+def create_package_schema():
     """
     Return the schema for validating new dataset dicts.
     """
@@ -87,7 +83,7 @@ def create_package_schema(cls):
                       'type': [not_missing, unicode, co.flattened_to_extras]}
     schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
     # otherwise the tags would be validated with default tag validator during update
-    schema['tags'] = cls.tags_schema()
+    schema['tags'] = tags_schema()
     schema['xpaths'] = [ignore_missing, co.to_extras_json]
     # these two can be missing from the first Kata end users
     # TODO: version date validation should be tighter, see metadata schema
@@ -115,8 +111,7 @@ def create_package_schema(cls):
     schema['resources']['mimetype'].append(va.validate_mimetype)
     return schema
 
-@classmethod
-def create_package_schema_oai_dc(cls):
+def create_package_schema_oai_dc():
     '''
     Modified schema for datasets imported with oai_dc reader.
     Some fields are missing, as the dublin core format
@@ -125,7 +120,7 @@ def create_package_schema_oai_dc(cls):
     :return schema
     '''
     # Todo: requires additional testing and planning
-    schema = cls.create_package_schema()
+    schema = create_package_schema()
     
     schema['__extras'] = [ignore]   # This removes orgauth checking
     schema['availability'].insert(0, ignore_missing)
@@ -140,14 +135,13 @@ def create_package_schema_oai_dc(cls):
     schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
     return schema
 
-@classmethod
-def create_package_schema_ddi(cls):
+def create_package_schema_ddi():
     '''
     Modified schema for datasets imported with ddi reader.
     Some fields in ddi import are allowed to be  missing.
     :return schema
     '''
-    schema = cls.create_package_schema()
+    schema = create_package_schema()
     schema['discipline'].insert(0, ignore_missing)
     schema['event'] = {'type': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general],
                        'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
@@ -161,20 +155,18 @@ def create_package_schema_ddi(cls):
 
     return schema
 
-@classmethod
-def update_package_schema(cls):
+def update_package_schema():
     """
     Return the schema for validating updated dataset dicts.
     """
-    schema = cls.create_package_schema()
+    schema = create_package_schema()
     # Taken from ckan.logic.schema.default_update_package_schema():
     schema['id'] = [ignore_missing, package_id_not_changed]
     schema['name'] = [ignore_missing, va.package_name_not_changed]
     schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
     return schema
 
-@classmethod
-def update_package_schema_oai_dc(cls):
+def update_package_schema_oai_dc():
     '''
     Modified schema for datasets imported with oai_dc reader.
     Some fields are missing, as the dublin core format
@@ -182,15 +174,14 @@ def update_package_schema_oai_dc(cls):
     
     :return schema
     '''
-    schema = cls.create_package_schema_oai_dc()
+    schema = create_package_schema_oai_dc()
     
     schema['id'] = [ignore_missing, package_id_not_changed]
     schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
     
     return schema
 
-@classmethod
-def show_package_schema(self):
+def show_package_schema():
     """
     The data fields that are returned from CKAN for each dataset can be changed with this method.
     This method is called when viewing or editing a dataset.
