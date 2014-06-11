@@ -230,6 +230,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'get_funders': utils.get_funders,
                 'get_owner': utils.get_owner,
                 'get_package_ratings': helpers.get_package_ratings,
+                'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
                 'has_agents_field': helpers.has_agents_field,
                 'has_contacts_field': helpers.has_contacts_field,
                 'kata_sorted_extras': helpers.kata_sorted_extras,

@@ -1,8 +1,13 @@
 # coding=utf-8
 
+import ckan.model as model
+
 from ckan.lib.base import g
+from ckan.logic import get_action
 from ckanext.kata import settings
-from ckanext.kata import utils
+from ckanext.kata.schemas import Schemas
+
+import ckanext.kata.utils as utils
 
 def has_agents_field(data_dict, field):
     '''Return true if some of the data dict's agents has attribute given in field.'''
@@ -63,6 +68,15 @@ def get_dict_field_errors(errors, field, index, name):
     if error_dict and error_dict[index]:
         error = error_dict[index].get(name)
     return error
+
+def get_package_ratings_for_data_dict(data_dict):
+    context = {
+        'model': model,
+        'schema': Schemas.show_package_schema()
+    }
+    #raise Exception()
+    pkg_dict = get_action('package_show')(context, data_dict)
+    return get_package_ratings(pkg_dict)
 
 def get_package_ratings(data):
     '''
