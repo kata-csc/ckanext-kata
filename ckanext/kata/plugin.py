@@ -27,6 +27,7 @@ from ckan.plugins import (implements,
                           SingletonPlugin)
                               
 from ckan.plugins.core import unload
+from ckan.controllers.package import PackageController
 
 from ckanext.kata import actions, auth_functions, settings, utils
 import ckanext.kata.schemas as sch
@@ -95,9 +96,11 @@ class KataMetadata(SingletonPlugin):
         get = dict(method=['GET'])
         controller = "ckanext.kata.controllers:MetadataController"
         api_controller = "ckanext.kata.controllers:KATAApiController"
-        map.connect('/dataset/{id}.{format:rdf}',
-                    controller=controller,
-                    action='tordf')
+        # Full stops from harvested objects screw up the read method
+        # when using the default ckan route
+        map.connect('/dataset/{id:.*?}.{format:rdf}',
+                  controller="ckan.controllers.package:PackageController", 
+                  action='read')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
@@ -235,6 +238,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'kata_sorted_extras': helpers.kata_sorted_extras,
                 'reference_update': helpers.reference_update,
                 'resolve_agent_role': settings.resolve_agent_role,
+                'get_related_urls': helpers.get_related_urls,
+                'get_rdf_extras': helpers.get_rdf_extras,
+                'get_if_url': helpers.get_if_url,
+                'string_to_list': helpers.string_to_list,
+                'get_first_admin': helpers.get_first_admin,
+                'get_rightscategory': helpers.get_rightscategory,
                 }
 
     def update_config(self, config):
