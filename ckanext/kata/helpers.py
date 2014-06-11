@@ -130,6 +130,6 @@ def get_package_ratings(data):
     # MAX 49
 
     rating = 1 + int(score / 10)
-    stars = u'★★★★★'[:rating] + u'☆☆☆☆☆'[rating:]   # Star rating as string
+    stars = u'●●●●●'[:rating] + u'○○○○○'[rating:]   # Star rating as string
     return (rating, stars)
 
