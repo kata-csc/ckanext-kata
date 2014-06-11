@@ -2,6 +2,7 @@
 
 from ckan.lib.base import g
 from ckanext.kata import settings
+from ckanext.kata import utils
 
 def has_agents_field(data_dict, field):
     '''Return true if some of the data dict's agents has attribute given in field.'''
