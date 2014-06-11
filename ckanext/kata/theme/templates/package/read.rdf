@@ -16,8 +16,8 @@
 
   <rdf:Description rdf:about="${ c.pkg_dict.get('name', None) }">
     <dct:description py:if="c.pkg_dict.get('notes', None)">${ c.pkg_dict['notes'] }</dct:description>
-    <py:for each="tag_dict in c.pkg_dict['tags']">
-      <dct:subject>${ tag_dict['name'] }</dct:subject>
+    <py:for each="tag_dict in c.pkg_dict.get('tags', None)">
+      <dct:subject>${ tag_dict.get('name') }</dct:subject>
     </py:for>
     <foaf:homepage rdf:resource="${ h.url_for(controller='package', action='read', id=c.pkg_dict['name'], qualified=True)}"/>
 
@@ -30,11 +30,11 @@
     </py:for>
 
     <dct:rights rdf:parseType="Literal" xmlns="http://www.loc.gov/METS/">
-      <RightsDeclaration py:if="c.pkg_dict['availability']=='contact_owner'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
-      <RightsDeclaration py:if="c.pkg_dict['availability']=='direct_download'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
-      <RightsDeclaration py:if="c.pkg_dict['availability']=='access_application'" RIGHTSCATEGORY="CONTRACTUAL">${ c.pkg_dict.get('access_application_URL', None) }</RightsDeclaration>
-      <RightsDeclaration py:if="c.pkg_dict['availability']=='access_request'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
-      <RightsDeclaration py:if="c.pkg_dict['availability']=='through_provider'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
+      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='contact_owner'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
+      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='direct_download'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
+      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='access_application'" RIGHTSCATEGORY="CONTRACTUAL">${ c.pkg_dict.get('access_application_URL', None) }</RightsDeclaration>
+      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='access_request'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
+      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='through_provider'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
 
     </dct:rights>
 

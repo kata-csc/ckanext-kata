@@ -120,8 +120,8 @@ def get_if_url(data):
     '''
     Try to guess if data is sufficient type for rdf:about
     '''
-    if data.startswith('http://') or data.startswith('https://') or \
-    data.startswith('urn:'):
+    if data and (data.startswith('http://') or data.startswith('https://') or \
+    data.startswith('urn:')):
         return True
     return False
 
@@ -129,7 +129,9 @@ def string_to_list(data):
     '''
     Split languages and make it a list for Genshi (read.rdf)
     '''
-    return data.split(", ")
+    if data:
+        return data.split(", ")
+    return ''
 
 def get_first_admin(id):
     '''
