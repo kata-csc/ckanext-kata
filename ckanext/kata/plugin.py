@@ -29,7 +29,7 @@ from ckan.plugins import (implements,
 from ckan.plugins.core import unload
 
 from ckanext.kata import actions, auth_functions, settings, utils
-import ckanext.kata.schemas as sch
+from ckanext.kata.schemas import Schemas
 
 from ckanext.kata import actions, auth_functions, settings, utils, helpers
 
@@ -177,13 +177,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IAuthFunctions, inherit=True)
     implements(IFacets, inherit=True)
     
-    create_package_schema = sch.create_package_schema
-    create_package_schema_oai_dc = sch.create_package_schema_oai_dc
-    create_package_schema_ddi = sch.create_package_schema_ddi
-    update_package_schema = sch.update_package_schema
-    update_package_schema_oai_dc = sch.update_package_schema_oai_dc
-    show_package_schema = sch.show_package_schema
-    tags_schema = sch.tags_schema
+    create_package_schema = Schemas.create_package_schema
+    create_package_schema_oai_dc = Schemas.create_package_schema_oai_dc
+    create_package_schema_ddi = Schemas.create_package_schema_ddi
+    update_package_schema = Schemas.update_package_schema
+    update_package_schema_oai_dc = Schemas.update_package_schema_oai_dc
+    show_package_schema = Schemas.show_package_schema
+    tags_schema = Schemas.tags_schema
     
 
     def get_auth_functions(self):
