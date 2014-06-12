@@ -13,7 +13,7 @@ from pylons.util import PylonsContext, pylons, AttribSafeContextObj
 
 from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 from ckanext.kata.plugin import KataPlugin
-from ckanext.kata import settings, utils, actions
+from ckanext.kata import settings, utils, helpers, actions
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 
 
@@ -386,10 +386,14 @@ class TestUtils(TestCase):
     def test_get_authors(self):
         assert utils.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
 
+
+class TestHelpers(TestCase):
+    """Unit tests for functions in helpers.py."""
+
     def test_get_package_ratings(self):
-        (rating, stars) = utils.get_package_ratings(TEST_DATADICT)
+        (rating, stars) = helpers.get_package_ratings(TEST_DATADICT)
         assert rating == 5, rating
-        assert stars == u'★★★★★'
+        assert stars == u'●●●●●'
 
     def test_get_package_ratings_2(self):
         data_dict = copy.deepcopy(TEST_DATADICT)
@@ -402,9 +406,9 @@ class TestUtils(TestCase):
         data_dict.pop('mimetype')
         data_dict['license_id'] = u''
 
-        (rating, stars) = utils.get_package_ratings(data_dict)
+        (rating, stars) = helpers.get_package_ratings(data_dict)
         assert rating == 3, rating
-        assert stars == u'★★★☆☆'
+        assert stars == u'●●●○○'
 
 
 class TestActions(TestCase):
