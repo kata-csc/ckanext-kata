@@ -975,3 +975,9 @@ input, button, select, textarea {
 	color: #e0cb55;
 	//text-shadow: 1px 1px #AAAAAA;
 }
+
+.rating-text {
+    font-size: small;
+    color: #ababab;
+    float: right;
+}
