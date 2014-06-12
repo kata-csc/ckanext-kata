@@ -11405,8 +11405,8 @@ msgid "Send"
 msgstr "Lähetä"
 
 #: ckanext/kata/theme/templates/package/read.html:73
-msgid "metadata score {rating}/5"
-msgstr "Metatiedon laatu: {rating}/5"
+msgid "Metadata score {rating}/5"
+msgstr "Metatiedon laatu {rating}/5"
 
 # Backup node
 msgid "There is a maintenance break in service"
