@@ -72,11 +72,20 @@ def get_dict_field_errors(errors, field, index, name):
     return error
 
 def get_package_ratings_for_data_dict(data_dict):
+    '''
+    Create a metadata rating (1-5) for given data_dict.
+
+    This is the same as get_package_ratings but can be used
+    for getting metadata ratings e.g. for search results where
+    only raw data_dicts are available rather than already-converted
+    package dicts.
+
+    :param data: A CKAN data_dict
+    '''
     context = {
         'model': model,
         'schema': Schemas.show_package_schema()
     }
-    #raise Exception()
     pkg_dict = get_action('package_show')(context, data_dict)
     return get_package_ratings(pkg_dict)
 
