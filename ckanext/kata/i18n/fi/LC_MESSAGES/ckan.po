@@ -11408,6 +11408,10 @@ msgstr "Lähetä"
 msgid "Metadata score {rating}/5"
 msgstr "Metatiedon laatu {rating}/5"
 
+#: ckanext/kata/theme/templates/package/read.html:74
+msgid "Metadata score:"
+msgstr "Metatiedon laatu:"
+
 # Backup node
 msgid "There is a maintenance break in service"
 msgstr "Palvelussa on huoltokatko"

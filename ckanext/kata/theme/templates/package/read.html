@@ -69,9 +69,11 @@
 
       {% block package_description %}
       {% set (rating, stars)=h.get_package_ratings(pkg) %}
-      <h2 class="module-content">{{pkg.title}}
+      <div class="rating-text">{{ _('Metadata score:') }}
         <span class="rating" title="{{ _('Metadata score {rating}/5').format(rating=rating) }}">{{ stars }}</span>
-      </h2>
+      </div>
+
+      <h2 class="module-content">{{pkg.title}}</h2>
         {% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj, pkg_notes_formatted=c.pkg_notes_formatted %}
 
       {% endblock %}

@@ -980,4 +980,7 @@ input, button, select, textarea {
     font-size: small;
     color: #ababab;
     float: right;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
