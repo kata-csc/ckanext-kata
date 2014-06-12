@@ -969,6 +969,14 @@ input, button, select, textarea {
 	padding: 20px;
 	font-size: 12px;
 }
+
+.rating-container {
+    float: right;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
 .rating {
     font-size: 20px;
 	margin-left: 10px;
@@ -979,8 +987,6 @@ input, button, select, textarea {
 .rating-text {
     font-size: small;
     color: #ababab;
-    float: right;
-    margin-top: 10px;
     margin-left: 20px;
-    margin-right: 20px;
+    float: right;
 }

@@ -69,7 +69,8 @@
 
       {% block package_description %}
       {% set (rating, stars)=h.get_package_ratings(pkg) %}
-      <div class="rating-text">{{ _('Metadata score:') }}
+      <div class="rating-container">
+        {{ _('Metadata score:') }}
         <span class="rating" title="{{ _('Metadata score {rating}/5').format(rating=rating) }}">{{ stars }}</span>
       </div>
 
