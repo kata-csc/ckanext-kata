@@ -2,10 +2,12 @@
 
 import ckan.model as model
 
-from ckan.lib.base import g
+from ckan.lib.base import g, h
 from ckan.logic import get_action
 from ckanext.kata import settings
 from ckanext.kata.schemas import Schemas
+from ckan.model import Related, Package, User
+from pylons import config
 
 import ckanext.kata.utils as utils
 
@@ -148,3 +150,105 @@ def get_package_ratings(data):
     stars = u'●●●●●'[:rating] + u'○○○○○'[rating:]   # Star rating as string
     return (rating, stars)
 
+def get_related_urls(pkg):
+    '''
+    Get related urls for package
+    '''
+    ret = []
+    for rel in Related.get_for_dataset(pkg):
+        ret.append(rel.related.url)
+    return ret
+
+def get_rdf_extras(pkg_dict):
+    '''
+    Get extras that have no defined location in rdf
+    
+    Contains much "manual" stuff for keeping the logical
+    order and for prettier display
+    
+    :pkg_dict: the package data dict
+    :return: [{ 'key': 'the key', 'value': 'the value'}, {..}, ..]
+    '''
+    ret = []
+    if pkg_dict.get('discipline', None):
+        ret.append({'key': 'discipline', 
+                    'value': pkg_dict.get('discipline', None)})
+    if pkg_dict.get('event', None):
+        for event in pkg_dict.get('event'):
+            value = 'type=' + event.get('type', '') + '; who=' + \
+                    event.get('who', '') + '; when=' + \
+                    event.get('when', '') + '; description=' + \
+                    event.get('descr', '')
+            ret.append({'key': 'event', 'value': value})
+    availability = pkg_dict.get('availability', '')
+    if availability == 'direct_download':
+        ret.append({'key': 'availability', 
+                    'value': availability})
+        ret.append({'key': 'direct_download_URL', 
+                    'value': pkg_dict.get('direct_download_URL', None)})            
+    if availability == 'access_application':
+        ret.append({'key': 'availability', 
+                    'value': availability})
+        ret.append({'key': 'access_application_URL', 
+                    'value': pkg_dict.get('access_application_URL', None)})
+    if availability == 'access_request':
+        ret.append({'key': 'availability', 'value': availability})
+        ret.append({'key': 'access_request_URL', 
+                    'value': pkg_dict.get('access_request_URL', None)})
+    if availability == 'contact_owner':
+         ret.append({'key': 'availability', 'value': availability})
+    
+    ret.append({'key': 'hash', 'value': pkg_dict.get('hash', None)})
+    ret.append({'key': 'algorithm', 'value': pkg_dict.get('algorithm', None)})
+    
+    return ret
+
+def get_if_url(data):
+    '''
+    Try to guess if data is sufficient type for rdf:about
+    '''
+    if data and (data.startswith('http://') or data.startswith('https://') or \
+    data.startswith('urn:')):
+        return True
+    return False
+
+def string_to_list(data):
+    '''
+    Split languages and make it a list for Genshi (read.rdf)
+    '''
+    if data:
+        return data.split(", ")
+    return ''
+
+def get_first_admin(id):
+    '''
+    Get the url of the first one with an admin role
+    '''
+    pkg = Package.get(id)
+    if pkg:
+        data = pkg.as_dict()
+        user = None
+        if pkg.roles:
+            owner = [role for role in pkg.roles if role.role == 'admin']
+            if len(owner):
+                user = User.get(owner[0].user_id)
+                profileurl = ""
+                if user:
+                    profileurl = config.get('ckan.site_url', '') + \
+                                 h.url_for(controller="user", action="read", 
+                                           id=user.name)
+                    return profileurl
+    return False
+
+def get_rightscategory(license):
+    '''
+    Return rightscategory based on license id
+    
+    :return LICENSED, COPYRIGHTED, PUBLIC DOMAIN
+    '''
+    if license == "other_closed":
+        return "COPYRIGHTED"
+    if license == "cc-zero" or license == "cc-by" or license == "cc-by-4.0":
+        return "LICENSED"
+    # Can not recognise the license:
+    return "OTHER"
