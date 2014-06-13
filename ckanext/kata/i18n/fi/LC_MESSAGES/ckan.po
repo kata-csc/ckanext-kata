@@ -11419,6 +11419,10 @@ msgstr "Palvelussa on huoltokatko"
 msgid "You can not add or edit data during maintenance break"
 msgstr "Et voi lisätä tai muokata dataa huoltokatkon aikana"
 
-#: ckanext-kata/ckanext/kata/theme/templates/snippets/package_item.html:40
+#: ckanext-kata/ckanext/kata/theme/templates/snippets/package_item.html:26
 msgid "Metadata: {rating}/5"
 msgstr "Metatiedot: {rating}/5"
+
+#: ckanext-kata/ckanext/kata/theme/templates/snippets/package_item.html:27
+msgid "Metadata completeness score"
+msgstr "Metatietojen kattavuuspisteet"
