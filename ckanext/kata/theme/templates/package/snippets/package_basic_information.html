@@ -72,7 +72,7 @@
             <div class="controls editor">
               <input class="kata-medium-input" type="text" placeholder="{{ _('Familyname, Firstname and/or http://orcid.org/') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
               {% if loop.index0 == 0 %}
-                {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added title field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
+                {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
               {% endif %}
             </div>
 
