@@ -11143,6 +11143,12 @@ msgstr "datan jakelijan kautta"
 msgid "Data provider's web address"
 msgstr "Datan jakelijan web-osoite"
 
+msgid "Event automatically created at import."
+msgstr "Tapahtuma on luotu automaattisesti tuonnin yhteydessä."
+
+msgid "Original metadata record"
+msgstr "Alkuperäinen metadatatiedosto"
+
 # Related
 msgid "Identifier"
 msgstr "Tunniste"
