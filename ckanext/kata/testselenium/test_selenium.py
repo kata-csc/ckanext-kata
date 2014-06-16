@@ -529,7 +529,7 @@ class TestKataWithUser(TestCase):
 
             #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
 
-            (browser.find_element_by_xpath, "//section[@id='recmod']/h2/a/i", [WebElement.click], None),
+            (browser.find_element_by_xpath, "//section[@id='recmod']/h2", [WebElement.click], None),
             # recommended info
 
             (browser.find_element_by_xpath, "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input", [u'Espoo, Finland', Keys.RETURN], None),
