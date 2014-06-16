@@ -380,12 +380,6 @@ class TestUtils(TestCase):
     def test_get_funder(self):
         assert utils.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
 
-    def test_get_owner(self):
-        assert utils.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
-
-    def test_get_authors(self):
-        assert utils.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
-
 
 class TestHelpers(TestCase):
     """Unit tests for functions in helpers.py."""
@@ -409,6 +403,12 @@ class TestHelpers(TestCase):
         (rating, stars) = helpers.get_package_ratings(data_dict)
         assert rating == 3, rating
         assert stars == u'●●●○○'
+
+    def test_get_owner(self):
+        assert helpers.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
+
+    def test_get_authors(self):
+        assert helpers.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
 
 
 class TestActions(TestCase):

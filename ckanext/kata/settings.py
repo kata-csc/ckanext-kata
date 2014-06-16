@@ -157,4 +157,3 @@ def get_field_title(key, _):
 
 def resolve_agent_role(role):
     return AGENT_ROLES.get(role, None)
-
