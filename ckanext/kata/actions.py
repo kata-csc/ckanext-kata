@@ -331,7 +331,7 @@ def package_search(context, data_dict):
         data_dict['sort'] = "metadata_modified desc"
         data_dict['rows'] = 5
         # don't want harvest source packages
-        data_dict['q'] = "author:['' TO *]"
+        data_dict['fq'] += " +dataset_type:dataset"
 
     return ckan.logic.action.get.package_search(context, data_dict)
 
