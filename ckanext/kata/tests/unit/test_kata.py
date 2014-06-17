@@ -187,7 +187,7 @@ class TestKataPlugin(TestCase):
     def test_before_index(self):
         pkg_dict = {'access_application_new_form': u'False',
                      'agent_0_URL': u'www.csc.fi',
-                     'agent_0_funding-id': u'43096ertjgad\xf6sjgn89q3q4',
+                     'agent_0_fundingid': u'43096ertjgad\xf6sjgn89q3q4',
                      'agent_0_name': u'F. Under',
                      'agent_0_organisation': u'Agentti-Project',
                      'agent_0_role': u'funder',
@@ -380,12 +380,6 @@ class TestUtils(TestCase):
     def test_get_funder(self):
         assert utils.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
 
-    def test_get_owner(self):
-        assert utils.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
-
-    def test_get_authors(self):
-        assert utils.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
-
 
 class TestHelpers(TestCase):
     """Unit tests for functions in helpers.py."""
@@ -409,6 +403,12 @@ class TestHelpers(TestCase):
         (rating, stars) = helpers.get_package_ratings(data_dict)
         assert rating == 3, rating
         assert stars == u'●●●○○'
+
+    def test_get_owner(self):
+        assert helpers.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
+
+    def test_get_authors(self):
+        assert helpers.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
 
 
 class TestActions(TestCase):
