@@ -11149,6 +11149,9 @@ msgstr "Tapahtuma on luotu automaattisesti tuonnin yhteydessä."
 msgid "Original metadata record"
 msgstr "Alkuperäinen metadatatiedosto"
 
+msgid "Agents"
+msgstr "Toimijat"
+
 # Related
 msgid "Identifier"
 msgstr "Tunniste"
