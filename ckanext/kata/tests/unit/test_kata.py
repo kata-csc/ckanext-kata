@@ -187,7 +187,7 @@ class TestKataPlugin(TestCase):
     def test_before_index(self):
         pkg_dict = {'access_application_new_form': u'False',
                      'agent_0_URL': u'www.csc.fi',
-                     'agent_0_funding-id': u'43096ertjgad\xf6sjgn89q3q4',
+                     'agent_0_fundingid': u'43096ertjgad\xf6sjgn89q3q4',
                      'agent_0_name': u'F. Under',
                      'agent_0_organisation': u'Agentti-Project',
                      'agent_0_role': u'funder',

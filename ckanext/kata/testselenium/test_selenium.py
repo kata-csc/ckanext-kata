@@ -511,7 +511,7 @@ class TestKataWithUser(TestCase):
 
             (browser.find_element_by_name, 'agent__0__organisation', [u'Selenium Project'], None),
             (browser.find_element_by_name, 'agent__0__name', [u'Selenium Funder'], None),
-            (browser.find_element_by_name, 'agent__0__funding-id', [u'Selenium Funding'], None),
+            (browser.find_element_by_name, 'agent__0__fundingid', [u'Selenium Funding'], None),
             (browser.find_element_by_name, 'agent__0__URL', [u'https://localhost/'], None),
 
             # (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
