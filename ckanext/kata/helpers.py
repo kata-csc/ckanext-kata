@@ -3,7 +3,7 @@
 import ckan.model as model
 
 from ckan.lib.base import g, h
-from ckan.logic import get_action
+from ckan.logic import get_action, ValidationError
 from ckanext.kata import settings
 from ckanext.kata.schemas import Schemas
 from ckan.model import Related, Package, User
@@ -87,7 +87,11 @@ def get_package_ratings_for_data_dict(data_dict):
         'model': model,
         'schema': Schemas.show_package_schema()
     }
-    pkg_dict = get_action('package_show')(context, data_dict)
+    try:
+        pkg_dict = get_action('package_show')(context, data_dict)
+    except ValidationError:
+        return (0, u'○○○○○')
+
     return get_package_ratings(pkg_dict)
 
 def get_package_ratings(data):
