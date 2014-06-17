@@ -11319,6 +11319,9 @@ msgstr "Projektin rahoitustunniste"
 msgid "Langtitle"
 msgstr "Kieli ja otsikko"
 
+msgid "Title + language"
+msgstr "Otsikko + kieli"
+
 # Profile
 msgid "Telephone"
 msgstr "Puhelin"

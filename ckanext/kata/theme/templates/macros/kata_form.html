@@ -62,6 +62,8 @@ Example:
             {% endif %}
           {% elif key == _("Pids") %}
               <li data-field-label="{{ key }}">{% if key %}{{ _('PID') }}{% endif %}</li>
+          {% elif key == _("Langtitle") %}
+              <li data-field-label="{{ key }}">{% if key %}{{ _('Title + language') }}{% endif %}</li>
           {% else %}
             <li data-field-label="{{ key }}">{% if key %}{{ _(key) }}{% endif %}</li>
           {% endif %}
