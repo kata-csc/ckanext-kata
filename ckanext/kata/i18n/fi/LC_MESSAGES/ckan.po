@@ -10369,8 +10369,8 @@ msgid "Visibility"
 msgstr "Näkyvyys"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:13
-msgid "Click chevron to hide/show recommended fields"
-msgstr "Klikkaa nuolta näyttääksesi tai piilottaaksesi suositellut tiedot"
+msgid "Click to show/hide recommended fields"
+msgstr "Klikkaa näyttääksesi tai piilottaaksesi suositellut tiedot"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:18
 msgid "Coverage"

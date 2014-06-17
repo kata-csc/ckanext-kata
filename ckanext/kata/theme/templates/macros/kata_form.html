@@ -60,6 +60,8 @@ Example:
             {% if _("distributor") in error or "jakelijan" in error %}
               <li data-field-label="{{ key }}">{% if key %}{{ _('Distributor') }}{% endif %}</li>
             {% endif %}
+          {% elif key == _("Pids") %}
+              <li data-field-label="{{ key }}">{% if key %}{{ _('PID') }}{% endif %}</li>
           {% else %}
             <li data-field-label="{{ key }}">{% if key %}{{ _(key) }}{% endif %}</li>
           {% endif %}
