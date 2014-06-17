@@ -283,9 +283,9 @@ def validate_spatial(key, data, errors, context):
         if not spatial_match.match(val):
             mismatch = '|'.join([s for s in val.split(',')
                                  if not spatial_match.match(s)])
-            raise Invalid(_("Spatial coverage '%s' must be alphanumeric "
-                            "characters or symbols: -'/,:()."
-                            "Mismatching strings: '%s'") % (val, mismatch))
+            raise Invalid(_("Spatial coverage \"%s\" must be alphanumeric "
+                            "characters or symbols: -'/,:(). "
+                            "Mismatching strings: \"%s\"") % (val, mismatch))
     else:
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way

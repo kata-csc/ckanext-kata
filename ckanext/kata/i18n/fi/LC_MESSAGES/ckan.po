@@ -6469,8 +6469,8 @@ msgstr "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja
 "erikoismerkeistä: -,"
 
 #: ckanext/kata/validators.py:247
-msgid "Spatial coverage \"%s\" must be alphanumeric characters or symbols: -,:()."
-msgstr "Maantieteellisen kattavuuden \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja näistä erikoismerkeistä: -,:()."
+msgid "Spatial coverage \"%s\" must be alphanumeric characters or symbols: -'/,:(). Mismatching strings: \"%s\""
+msgstr "Maantieteellisen kattavuuden \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja näistä erikoismerkeistä: -'/,:(). Kelpaamattomat merkkijonot: \"%s\""
 
 #: ckanext/kata/validators.py:263
 msgid ""

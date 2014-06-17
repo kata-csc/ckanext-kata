@@ -16,9 +16,6 @@
       <span class="kata-btn-span tta-orange">?</span></button><br /><br />
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/location_autocomplete?incomplete=?'} %}
       {{ form.input('geographic_coverage', id='geographic_coverage_field', label=_('Locations'), placeholder=_('eg. Finland'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium'], attrs=tag_attrs) }}
-      {% if errors.geographic_coverage %}
-        <span class="error-block">{{ errors.geographic_coverage[0] }}</span>
-      {% endif %}
     </div>
     <br />
         
