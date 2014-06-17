@@ -37,6 +37,10 @@
     float: none;
     font-size: 14px;
 }
+.checkbox-generate {
+	margin-bottom: 10px !important;
+	width: 15px !important;
+}
 
 /* footer */
 
