@@ -40,9 +40,6 @@
 
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?'} %}
       {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-medium'], attrs=tag_attrs) }}
-      {% if errors.discipline %}
-        <span class="error-block">{{ errors.discipline[0] }}</span>
-      {% endif %}
     </div>
     <br />
   </div>
