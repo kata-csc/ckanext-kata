@@ -57,7 +57,7 @@
         <!-- TODO: Use h.get_dict_field_errors(). Remove ca. 10 rows of code. -->
         {# If indexing of different agents is changed it may break current error
            rendering for authors, funders and owners. #}
-        {% if errors and errors.get('agent')[2:] %}
+        {% if errors and errors.get('agent') and errors.get('agent')[2:] %}
           {% set auth_errors = [] %}
           {% for error in errors.get('agent')[2:] %}
               {% if error.get('name') %}
