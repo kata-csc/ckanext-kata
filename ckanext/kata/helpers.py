@@ -68,8 +68,11 @@ def get_dict_field_errors(errors, field, index, name):
     '''
     error = []
     error_dict = errors.get(field)
-    if error_dict and error_dict[index]:
-        error = error_dict[index].get(name)
+    try:
+        if error_dict and error_dict[index]:
+            error = error_dict[index].get(name)
+    except IndexError:
+        pass
     return error
 
 def get_package_ratings_for_data_dict(data_dict):

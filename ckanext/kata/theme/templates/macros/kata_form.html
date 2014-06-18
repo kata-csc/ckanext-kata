@@ -50,17 +50,10 @@ Example:
       <p>{{ _('The form contains invalid entries:') }}</p>
       <ul>
         {# Awful hack for error messages. 'errors' is a summary and has only
-           one (first) error message for 'error'. So showing both Author and
-           Distributor is not possible. #}
+           one (first) error message for 'error'. So showing different Agents
+           is not possible. #}
         {% for key, error in errors.items() %}
-          {% if key == "  extras"%}
-            {% if _("Author") in error %}
-              <li data-field-label="{{ key }}">{% if key %}{{ _('Author') }}{% endif %}</li>
-            {% endif %}
-            {% if _("distributor") in error or "jakelijan" in error %}
-              <li data-field-label="{{ key }}">{% if key %}{{ _('Distributor') }}{% endif %}</li>
-            {% endif %}
-          {% elif key == _("Pids") %}
+          {% if key == _("Pids") %}
               <li data-field-label="{{ key }}">{% if key %}{{ _('PID') }}{% endif %}</li>
           {% elif key == _("Langtitle") %}
               <li data-field-label="{{ key }}">{% if key %}{{ _('Title + language') }}{% endif %}</li>
