@@ -13,7 +13,7 @@ from pylons.i18n import _
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid
-from ckan.logic.validators import tag_length_validator
+from ckan.logic.validators import tag_length_validator, url_validator
 from ckan.model import Package
 from ckanext.kata import utils, converters, settings
 
@@ -178,21 +178,6 @@ def validate_phonenum(key, data, errors, context):
         if not TEL_REGEX.match(data[key]):
             errors[key].append(_('Invalid telephone number, must be like +13221221'))
 
-
-# def check_project_dis(key, data, errors, context):
-#     '''
-#     If projdis checkbox is checked, check that the project fields have data.
-#     '''
-#     if not ('projdis',) in data:
-#         not_empty(key, data, errors, context)
-#     else:
-#         projdis = data.get(('projdis',), False)
-#         value = data.get(key)
-#         if not projdis or projdis == 'False':
-#             if value == "":
-#                 errors[(key[0],)].append(_('Missing value'))
-#
-
 def validate_access_application_url(key, data, errors, context):
     '''
     Validate dataset's access_application_URL.
@@ -200,12 +185,12 @@ def validate_access_application_url(key, data, errors, context):
     Dummy value _must_ be added for a new form so that it can be overwritten
     in the same session in iPackageController 'edit' hook. For REMS.
     '''
-    if data[('availability',)] == 'access_application':
-        if data[('access_application_new_form',)] not in [u'True', u'on']:
-            not_empty(key, data, errors, context)
-        else:
+    if data.get(('availability',)) == 'access_application':
+        if data.get(('access_application_new_form',)) in [u'True', u'on']:
             data[key] = h.full_current_url().replace('/edit/', '/')
-        converters.convert_to_extras_kata(key, data, errors, context)
+        else:
+            not_empty(key, data, errors, context)
+            url_validator(key, data, errors, context)
     else:
         data.pop(key, None)
         raise StopOnError
@@ -215,10 +200,10 @@ def check_direct_download_url(key, data, errors, context):
     '''
     Validate dataset's direct download URL (resource.url).
     '''
-    if ('availability',) in data and data[('availability',)] == 'direct_download':
+    if data.get(('availability',)) == 'direct_download':
         not_empty(key, data, errors, context)
     else:
-        data.pop(key, None)
+        # data.pop(key, None)
         raise StopOnError
 
 
@@ -226,7 +211,7 @@ def check_access_request_url(key, data, errors, context):
     '''
     Validate dataset's access request URL.
     '''
-    if ('availability',) in data and data[('availability',)] == 'access_request':
+    if data.get(('availability',)) == 'access_request':
         not_empty(key, data, errors, context)
     else:
         data.pop(key, None)
@@ -237,7 +222,7 @@ def check_through_provider_url(key, data, errors, context):
     '''
     Validate dataset's through_provider_URL.
     '''
-    if ('availability',) in data and data[('availability',)] == 'through_provider':
+    if data.get(('availability',)) == 'through_provider':
         not_empty(key, data, errors, context)
     else:
         data.pop(key, None)
@@ -351,15 +336,6 @@ def package_name_not_changed(key, data, errors, context):
     if package and value != package.name:
         raise Invalid('Cannot change value of key from %s to %s. '
                       'This key is read-only' % (package.name, value))
-
-
-def validate_direct_download_url(key, data, errors, context):
-    '''
-    Validates that direct_download_URL (at this stage a resource.url) is present
-    '''
-    if data[('availability',)] == 'direct_download' and\
-      (data[key] == u'' or data[key] == u'http://'):
-        raise Invalid(_('Missing URL'))
 
 
 def check_agent(key, data, errors, context):

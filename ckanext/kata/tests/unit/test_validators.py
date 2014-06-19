@@ -15,8 +15,8 @@ from ckanext.kata.validators import validate_kata_date, \
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
-    validate_title_duplicates, validate_title, validate_direct_download_url
-from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
+    validate_title_duplicates, validate_title, check_direct_download_url
+from ckan.lib.navl.dictization_functions import Invalid, flatten_dict, StopOnError
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
     flattened_to_extras, flattened_from_extras
 from ckanext.kata import settings
@@ -401,13 +401,13 @@ class TestResourceValidators(TestCase):
 
         self.assertRaises(Invalid, validate_algorithm, ('resources', 0, 'algorithm',), data, errors, None)
         
-    def test_validate_direct_download_url_invalid(self):
+    def test_check_direct_download_url_invalid(self):
         errors = defaultdict(list)
         dada = copy.deepcopy(self.test_data)
         dada['availability'] = u'direct_download'
         dada['resources'][0]['url'] = u''
         data = flatten_dict(dada)
-        self.assertRaises(Invalid, validate_direct_download_url, ('resources', 0, 'url'), data, errors, None)
+        self.assertRaises(Exception, check_direct_download_url, ('resources', 0, 'url'), data, errors, None)
 
 
 class TestJSONConverters(TestCase):

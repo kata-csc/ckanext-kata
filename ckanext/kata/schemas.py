@@ -98,17 +98,19 @@ class Schemas:
         schema['__extras'] = [va.check_agent, va.check_langtitle, va.check_contact]
         schema['__junk'] = [va.check_junk]
         schema['name'] = [ignore_missing, unicode, co.update_pid, package_name_validator, va.validate_general]
-        schema['access_application_new_form'] = [co.checkbox_to_boolean, co.convert_to_extras_kata, co.remove_access_application_new_form]
+        schema['access_application_new_form'] = [co.checkbox_to_boolean, co.convert_to_extras_kata,
+                                                 co.remove_access_application_new_form]
         schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,
-                                            unicode, va.validate_general]
-        schema['access_request_URL'] = [ignore_missing, va.check_access_request_url, url_validator, co.convert_to_extras_kata,
-                                   unicode, va.validate_general]
-        schema['through_provider_URL'] = [ignore_missing, va.check_through_provider_url, url_validator, co.convert_to_extras_kata,
-                                     unicode]
+                                            unicode, va.validate_general, co.convert_to_extras_kata]
+        schema['access_request_URL'] = [ignore_missing, va.check_access_request_url, url_validator,
+                                        unicode, va.validate_general, co.convert_to_extras_kata]
+        schema['through_provider_URL'] = [ignore_missing, va.check_through_provider_url, url_validator,
+                                          unicode, va.validate_general, co.convert_to_extras_kata]
         schema['discipline'] = [ignore_missing, va.validate_discipline, co.convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
         schema['license_URL'] = [ignore_missing, co.convert_to_extras_kata, unicode, va.validate_general]
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, va.validate_general, va.validate_direct_download_url]
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_direct_download_url,
+                                      url_validator, unicode, va.validate_general]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
         schema['resources']['algorithm'] = [ignore_missing, unicode, va.validate_algorithm]
         schema['resources']['hash'].append(va.validate_general)
