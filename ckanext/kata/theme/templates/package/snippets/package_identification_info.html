@@ -21,7 +21,9 @@
     {% if errors and errors.get('pids', '') %}
       {% set pid_errors = [] %}
       {% for error in errors.get('pids') %}
-        {% if pid_errors.append(error.get("id", "")[0]) %}{% endif %}
+        {% if error.get("id") %}
+          {% do pid_errors.append(error.get("id")[0]) %}
+        {% endif %}
       {% endfor %}
     {% endif %}
     <div class="control-group control-custom{{ " error" if pid_errors }}">
