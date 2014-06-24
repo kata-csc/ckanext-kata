@@ -6465,8 +6465,7 @@ msgstr "Puuttuva arvo"
 
 #: ckanext/kata/validators.py:226
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
-msgstr "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
-"erikoismerkeistä: -,"
+msgstr "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja erikoismerkeistä: -,"
 
 #: ckanext/kata/validators.py:247
 msgid "Spatial coverage \"%s\" must be alphanumeric characters or symbols: -'/,:(). Mismatching strings: \"%s\""
