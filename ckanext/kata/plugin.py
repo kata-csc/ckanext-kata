@@ -19,14 +19,6 @@ from ckan.lib.navl.validators import (default,
                                       not_empty,
                                       not_missing)
 from ckan.lib.plugins import DefaultDatasetForm
-from ckan.logic.schema import (default_create_package_schema,
-                               default_show_package_schema)
-from ckan.logic.validators import (owner_org_validator,
-                                   package_id_not_changed,
-                                   package_name_validator,
-                                   tag_length_validator,
-                                   url_validator,
-                                   vocabulary_id_exists)
 from ckan.plugins import (implements,
                           toolkit,
                           IActions,
@@ -39,49 +31,60 @@ from ckan.plugins import (implements,
                           IFacets,
                           ITemplateHelpers,
                           SingletonPlugin)
+                              
 from ckan.plugins.core import unload
-from ckanext.kata.validators import (check_access_request_url,
-                                     check_agent,
-                                     check_junk,
-                                     kata_tag_name_validator,
-                                     kata_tag_string_convert,
-                                     validate_access_application_url,
-                                     validate_algorithm,
-                                     validate_discipline,
-                                     validate_email,
-                                     validate_general,
-                                     validate_kata_date,
-                                     validate_kata_date_relaxed,
-                                     validate_mimetype,
-                                     validate_phonenum,
-                                     validate_spatial,
-                                     validate_title,
-                                     validate_title_duplicates,
-                                     check_through_provider_url,
-                                     contains_alphanumeric,
-                                     check_events,
-                                     validate_direct_download_url,
-                                     package_name_not_changed, check_langtitle, check_pids, check_agent_fields,
-                                     check_contact)
-from ckanext.kata.converters import (checkbox_to_boolean,
-                                     convert_from_extras_kata,
-                                     convert_languages,
-                                     convert_to_extras_kata,
-                                     ltitle_from_extras,
-                                     ltitle_to_extras,
-                                     remove_access_application_new_form,
-                                     remove_disabled_languages,
-                                     update_pid,
-                                     to_extras_json,
-                                     from_extras_json,
-                                     flattened_to_extras,
-                                     flattened_from_extras)
-from ckanext.kata import actions, auth_functions, settings, utils
+from ckan.controllers.package import PackageController
 
+from ckanext.kata import actions, auth_functions, settings, utils
+from ckanext.kata.schemas import Schemas
+
+from ckanext.kata import actions, auth_functions, settings, utils, helpers
 
 log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
 t = toolkit                                 # pylint: disable=invalid-name
 
+###### Monkey patch for repoze.who ######
+# Enables secure setting for cookies
+# Part of repoze.who since version 2.0a4
+
+from repoze.who.plugins.auth_tkt import AuthTktCookiePlugin
+import datetime
+
+def _now():
+    return datetime.datetime.now()
+
+def _get_monkeys(self, environ, value, max_age=None):
+    
+    if max_age is not None:
+        max_age = int(max_age)
+        later = _now() + datetime.timedelta(seconds=max_age)
+        # Wdy, DD-Mon-YY HH:MM:SS GMT
+        expires = later.strftime('%a, %d %b %Y %H:%M:%S')
+        # the Expires header is *required* at least for IE7 (IE7 does
+        # not respect Max-Age)
+        max_age = "; Max-Age=%s; Expires=%s" % (max_age, expires)
+    else:
+        max_age = ''
+
+    secure = ''
+    if self.secure:
+        secure = '; secure; HttpOnly'
+
+    cur_domain = environ.get('HTTP_HOST', environ.get('SERVER_NAME'))
+    wild_domain = '.' + cur_domain
+    cookies = [
+        ('Set-Cookie', '%s="%s"; Path=/%s%s' % (
+        self.cookie_name, value, max_age, secure)),
+        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (
+        self.cookie_name, value, cur_domain, max_age, secure)),
+        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (
+        self.cookie_name, value, wild_domain, max_age, secure))
+        ]
+    return cookies
+
+AuthTktCookiePlugin._get_cookies = _get_monkeys
+
+###### End of Monkey patch ######
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
@@ -97,8 +100,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IActions, inherit=True)
     implements(IAuthFunctions, inherit=True)
     implements(IFacets, inherit=True)
-
     implements(IRoutes, inherit=True)
+    
+    create_package_schema = Schemas.create_package_schema
+    create_package_schema_oai_dc = Schemas.create_package_schema_oai_dc
+    create_package_schema_ddi = Schemas.create_package_schema_ddi
+    update_package_schema = Schemas.update_package_schema
+    update_package_schema_oai_dc = Schemas.update_package_schema_oai_dc
+    show_package_schema = Schemas.show_package_schema
+    tags_schema = Schemas.tags_schema
 
     def before_map(self, map):
         """
@@ -107,9 +117,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         get = dict(method=['GET'])
         controller = "ckanext.kata.controllers:MetadataController"
         api_controller = "ckanext.kata.controllers:KATAApiController"
-        map.connect('/dataset/{id}.{format:rdf}',
-                    controller=controller,
-                    action='tordf')
+        # Full stops from harvested objects screw up the read method
+        # when using the default ckan route
+        map.connect('/dataset/{id:.*?}.{format:rdf}',
+                  controller="ckan.controllers.package:PackageController", 
+                  action='read')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
@@ -129,6 +141,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action="tag_autocomplete")
+        map.connect('/api/2/util/media_type_autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="media_type_autocomplete")
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:AccessRequestController",
                     action="unlock_access")
@@ -205,20 +221,26 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def get_helpers(self):
         """ Register helpers """
-        return {'get_authors': utils.get_authors,
-                'get_contact': utils.get_contact,
-                'get_dict_field_errors': self.get_dict_field_errors,
-                'get_distributor': utils.get_distributor,
+        return {'get_authors': helpers.get_authors,
+                'get_contact': helpers.get_contact,
+                'get_dict_field_errors': helpers.get_dict_field_errors,
+                'get_distributor': helpers.get_distributor,
                 'get_funder': utils.get_funder,
                 'get_funders': utils.get_funders,
-                'get_owner': utils.get_owner,
-                'get_package_ratings': utils.get_package_ratings,
-                'has_agents_field': self.has_agents_field,
-                'has_contacts_field': self.has_contacts_field,
-                'is_custom_form': self.is_custom_form,
-                'kata_sorted_extras': self.kata_sorted_extras,
-                'reference_update': self.reference_update,
+                'get_owner': helpers.get_owner,
+                'get_package_ratings': helpers.get_package_ratings,
+                'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
+                'has_agents_field': helpers.has_agents_field,
+                'has_contacts_field': helpers.has_contacts_field,
+                'kata_sorted_extras': helpers.kata_sorted_extras,
+                'reference_update': helpers.reference_update,
                 'resolve_agent_role': settings.resolve_agent_role,
+                'get_related_urls': helpers.get_related_urls,
+                'get_rdf_extras': helpers.get_rdf_extras,
+                'get_if_url': helpers.get_if_url,
+                'string_to_list': helpers.string_to_list,
+                'get_first_admin': helpers.get_first_admin,
+                'get_rightscategory': helpers.get_rightscategory,
                 }
 
     def get_dict_field_errors(self, errors, field, index, name):
@@ -263,28 +285,28 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for extra in sorted(list_, key=lambda x:x['key']):
             if extra.get('state') == 'deleted':
                 continue
-
+            
             key, val = extra['key'], extra['value']
             if key in g.package_hide_extras and\
                 key in settings.KATA_FIELDS and\
                 key.startswith('author_') and\
                 key.startswith('organization_'):
                 continue
-
+            
             if  key.startswith('title_') or\
                 key.startswith('lang_title_') or\
                 key == 'harvest_object_id' or\
                 key == 'harvest_source_id' or\
                 key == 'harvest_source_title':
                 continue
-
+            
             found = False
             for _key in g.package_hide_extras:
                 if extra['key'].startswith(_key):
                     found = True
             if found:
                 continue
-
+            
             if isinstance(val, (list, tuple)):
                 val = ", ".join(map(unicode, val))
             output.append((key, val))
@@ -372,226 +394,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def package_form(self):
         """Return location of the main package page"""
         return 'package/new_package_form.html'
-
-    @classmethod
-    def tags_schema(cls):
-        schema = {
-            'name': [not_missing,
-                     not_empty,
-                     unicode,
-                     tag_length_validator,
-                     kata_tag_name_validator,
-                     ],
-            'vocabulary_id': [ignore_missing, unicode, vocabulary_id_exists],
-            'revision_timestamp': [ignore],
-            'state': [ignore],
-            'display_name': [ignore],
-        }
-        return schema
-
-    @classmethod
-    def create_package_schema(cls):
-        """
-        Return the schema for validating new dataset dicts.
-        """
-
-        # TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!
-        # Note: harvester schemas
-
-        schema = default_create_package_schema()
-        schema.pop('author')
-        # schema.pop('organization')
-
-        for key in settings.KATA_FIELDS_REQUIRED:
-            schema[key] = [not_empty, convert_to_extras_kata, unicode, validate_general]
-        for key in settings.KATA_FIELDS_RECOMMENDED:
-            schema[key] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
-
-        schema['agent'] = {'role': [not_empty, check_agent_fields, validate_general, unicode, flattened_to_extras],
-                           'name': [ignore_empty, validate_general, unicode, contains_alphanumeric, flattened_to_extras],
-                           'id': [ignore_empty, validate_general, unicode, flattened_to_extras],
-                           'organisation': [ignore_empty, validate_general, unicode, contains_alphanumeric, flattened_to_extras],
-                           'URL': [ignore_empty, url_validator, validate_general, unicode, flattened_to_extras],
-                           # Note: Changed to 'funding-id' for now because 'funding_id'
-                           # was returned as 'funding' from db. Somewhere '_id' was
-                           # splitted off.
-                           'funding-id': [ignore_empty, validate_general, unicode, flattened_to_extras]}
-        schema['contact'] = {'name': [not_empty, validate_general, unicode, contains_alphanumeric, flattened_to_extras],
-                             'email': [not_empty, unicode, validate_email, flattened_to_extras],
-                             'URL': [ignore_empty, url_validator, validate_general, unicode, flattened_to_extras],
-                             # phone number can be missing from the first users
-                             'phone': [ignore_missing, unicode, validate_phonenum, flattened_to_extras]}
-        # phone number can be missing from the first users
-        # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
-        # schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
-        schema['event'] = {'type': [ignore_missing, check_events, unicode, flattened_to_extras, validate_general],
-                           'who': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric],
-                           'when': [ignore_missing, unicode, flattened_to_extras, validate_kata_date],
-                           'descr': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric]}
-        schema['id'] = [default(u''), update_pid, unicode]
-        schema['langtitle'] = {'value': [not_missing, unicode, validate_title, validate_title_duplicates, ltitle_to_extras],
-                               'lang': [not_missing, unicode, convert_languages]}
-        schema['language'] = \
-            [ignore_missing, convert_languages, remove_disabled_languages, convert_to_extras_kata, unicode]
-        # schema['maintainer'] = [not_empty, unicode, validate_general, contains_alphanumeric]
-        # schema['maintainer_email'] = [not_empty, unicode, validate_email]
-        schema['temporal_coverage_begin'] = \
-            [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
-        schema['temporal_coverage_end'] = \
-            [ignore_missing, validate_kata_date, convert_to_extras_kata, unicode]
-        schema['pids'] = {'provider': [not_missing, unicode, flattened_to_extras],
-                          'id': [not_missing, unicode, flattened_to_extras],
-                          'type': [not_missing, unicode, flattened_to_extras]}
-        schema['tag_string'] = [ignore_missing, not_empty, kata_tag_string_convert]
-        # otherwise the tags would be validated with default tag validator during update
-        schema['tags'] = cls.tags_schema()
-        schema['xpaths'] = [ignore_missing, to_extras_json]
-        # these two can be missing from the first Kata end users
-        # TODO: version date validation should be tighter, see metadata schema
-        schema['version'] = [not_empty, unicode, validate_kata_date]
-        schema['availability'] = [not_missing, convert_to_extras_kata]
-        schema['langdis'] = [checkbox_to_boolean, convert_to_extras_kata]
-        # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
-        # If something added to __extras it may break current error rendering for authors.
-        schema['__extras'] = [check_agent, check_langtitle, check_contact]
-        schema['__junk'] = [check_junk]
-        schema['name'] = [ignore_missing, unicode, update_pid, package_name_validator, validate_general]
-        schema['access_application_new_form'] = [checkbox_to_boolean, convert_to_extras_kata, remove_access_application_new_form]
-        schema['access_application_URL'] = [ignore_missing, validate_access_application_url,
-                                            unicode, validate_general]
-        schema['access_request_URL'] = [ignore_missing, check_access_request_url, url_validator, convert_to_extras_kata,
-                                   unicode, validate_general]
-        schema['through_provider_URL'] = [ignore_missing, check_through_provider_url, url_validator, convert_to_extras_kata,
-                                     unicode]
-        schema['discipline'] = [ignore_missing, validate_discipline, convert_to_extras_kata, unicode]
-        schema['geographic_coverage'] = [ignore_missing, validate_spatial, convert_to_extras_kata, unicode]
-        schema['license_URL'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
-
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), unicode, validate_general, validate_direct_download_url]
-        # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
-        schema['resources']['algorithm'] = [ignore_missing, unicode, validate_algorithm]
-        schema['resources']['hash'].append(validate_general)
-        schema['resources']['mimetype'].append(validate_mimetype)
-
-        return schema
-    
-    @classmethod
-    def create_package_schema_oai_dc(cls):
-        '''
-        Modified schema for datasets imported with oai_dc reader.
-        Some fields are missing, as the dublin core format
-        doesn't provide so many options
-        
-        :return schema
-        '''
-        # Todo: requires additional testing and planning
-        schema = cls.create_package_schema()
-        
-        schema['__extras'] = [ignore]   # This removes orgauth checking
-        schema['availability'].insert(0, ignore_missing)
-        # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
-        schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
-        schema['discipline'].insert(0, ignore_missing)
-        schema['geographic_coverage'].insert(0, ignore_missing)
-        #schema['maintainer_email'].insert(0, ignore_missing)
-        # schema['maintainer_email'] = [ignore_missing, validate_email, unicode]
-        # schema['maintainer'].insert(0, ignore_missing)
-        schema['maintainer'] = [ignore_missing, unicode, validate_general]
-        # schema['orgauth'] = {'value': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general],
-        #                      'org': [ignore_missing, unicode, org_auth_to_extras_oai, validate_general]}
-        # schema['owner'] = [ignore_missing, convert_to_extras_kata, unicode, validate_general]
-        schema['version'] = [not_empty, unicode, validate_kata_date_relaxed]
-
-        return schema
-
-    @classmethod
-    def create_package_schema_ddi(cls):
-        '''
-        Modified schema for datasets imported with ddi reader.
-        Some fields in ddi import are allowed to be  missing.
-
-        :return schema
-        '''
-        schema = cls.create_package_schema()
-
-        schema['discipline'].insert(0, ignore_missing)
-        schema['event'] = {'type': [ignore_missing, unicode, flattened_to_extras, validate_general],
-                           'who': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric],
-                           'when': [ignore_missing, unicode, flattened_to_extras, validate_kata_date_relaxed],
-                           'descr': [ignore_missing, unicode, flattened_to_extras, validate_general, contains_alphanumeric]}
-        schema['geographic_coverage'].insert(0, ignore_missing)
-        schema['temporal_coverage_begin'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
-        schema['temporal_coverage_end'] = [ignore_missing, validate_kata_date_relaxed, convert_to_extras_kata, unicode]
-        schema['version'] = [not_empty, unicode, validate_kata_date_relaxed]
-        # schema['xpaths'] = [xpath_to_extras]
-
-        return schema
-
-    def update_package_schema(self):
-        """
-        Return the schema for validating updated dataset dicts.
-        """
-
-        schema = self.create_package_schema()
-
-        # Taken from ckan.logic.schema.default_update_package_schema():
-        schema['id'] = [ignore_missing, package_id_not_changed]
-        schema['name'] = [ignore_missing, package_name_not_changed]
-        schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
-        return schema
-    
-    @classmethod
-    def update_package_schema_oai_dc(cls):
-        '''
-        Modified schema for datasets imported with oai_dc reader.
-        Some fields are missing, as the dublin core format
-        doesn't provide so many options
-        
-        :return schema
-        '''
-        schema = cls.create_package_schema_oai_dc()
-        
-        schema['id'] = [ignore_missing, package_id_not_changed]
-        schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
-        
-        return schema
-
-    @classmethod
-    def show_package_schema(cls):
-        """
-        The data fields that are returned from CKAN for each dataset can be changed with this method.
-        This method is called when viewing or editing a dataset.
-        """
-
-        schema = default_show_package_schema()
-
-        # Put back validators for several keys into the schema so validation
-        # doesn't bring back the keys from the package dicts if the values are
-        # 'missing' (i.e. None).
-        # See few lines into 'default_show_package_schema()'
-        schema['author'] = [ignore_missing]
-        schema['author_email'] = [ignore_missing]
-        schema['organization'] = [ignore_missing]
-
-        for key in settings.KATA_FIELDS:
-            schema[key] = [convert_from_extras_kata, ignore_missing, unicode]
-
-        schema['agent'] = [flattened_from_extras, ignore_missing]
-        schema['contact'] = [flattened_from_extras, ignore_missing]
-        schema['access_application_new_form'] = [unicode],
-        # schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
-        schema['event'] = [flattened_from_extras, ignore_missing]
-        schema['langdis'] = [unicode]
-        # schema['organization'] = [ignore_missing, unicode]
-        schema['pids'] = [flattened_from_extras, ignore_missing]
-        # schema['projdis'] = [unicode]
-        schema['title'] = [ltitle_from_extras, ignore_missing]
-        #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
-        schema['xpaths'] = [from_extras_json, ignore_missing, unicode]
-
-        #schema['resources']['resource_type'] = [from_resource]
-
-        return schema
 
     def update_facet_titles(self, facet_titles):
         """

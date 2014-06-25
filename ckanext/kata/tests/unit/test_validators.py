@@ -15,11 +15,12 @@ from ckanext.kata.validators import validate_kata_date, \
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
-    validate_title_duplicates, validate_title, validate_direct_download_url
-from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
+    validate_title_duplicates, validate_title, check_direct_download_url
+from ckan.lib.navl.dictization_functions import Invalid, flatten_dict, StopOnError
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
     flattened_to_extras, flattened_from_extras
 from ckanext.kata import settings
+from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
 
 
 class TestValidators(TestCase):
@@ -28,75 +29,6 @@ class TestValidators(TestCase):
     @classmethod
     def setup_class(cls):
         """Set up tests."""
-
-        # TODO: PINJA: Update the data_dict below. Also flatten it to provide data for validation/converters in show_package_schema.
-        # Move this dataset to something like test_fixtures/flattened.py
-
-        cls.test_data = {('__extras',): {'_ckan_phase': u'',
-                                         'evdescr': [],
-                                         'evwhen': [],
-                                         'evwho': [],
-                                         'groups': [],
-                                         'pkg_name': u''},
-                         ('availability',): u'contact',
-                         ('access_application_URL',): u'',
-                         ('access_request_URL',): u'',
-                         ('algorithm',): u'',
-                         ('author', 0, 'value'): u'dada',
-                         ('checksum',): u'',
-                         ('contact_URL',): u'http://google.com',
-                         ('discipline',): u'',
-                         ('evtype', 0, 'value'): u'collection',
-                         ('extras',): [{'key': 'funder', 'value': u''},
-                                       {'key': 'discipline', 'value': u''},
-                                       {'key': 'maintainer', 'value': u'dada'},
-                                       {'key': 'mimetype', 'value': u''},
-                                       {'key': 'project_funding', 'value': u''},
-                                       {'key': 'project_homepage', 'value': u''},
-                                       {'key': 'owner', 'value': u'dada'},
-                                       {'key': 'temporal_coverage_begin', 'value': u''},
-                                       {'key': 'direct_download_URL', 'value': u''},
-                                       {'key': 'phone', 'value': u'+35805050505'},
-                                       {'key': 'license_URL', 'value': u'dada'},
-                                       {'key': 'geographic_coverage', 'value': u''},
-                                       {'key': 'access', 'value': u'contact'},
-                                       {'key': 'algorithm', 'value': u''},
-                                       {'key': 'langdis', 'value': u'True'},
-                                       {'key': 'access_application_URL', 'value': u''},
-                                       {'key': 'contact_URL', 'value': u'http://google.com'},
-                                       {'key': 'project_name', 'value': u''},
-                                       {'key': 'checksum', 'value': u''},
-                                       {'key': 'temporal_coverage_end', 'value': u''},
-                                       # {'key': 'projdis', 'value': u'True'},
-                                       {'key': 'language', 'value': u''}],
-                         ('mimetype',): u'',
-                         ('project_funder',): u'',
-                         ('geographic_coverage',): u'',
-                         ('langdis',): u'False',
-                         ('language',): u'swe',
-                         ('license_URL',): u'dada',
-                         ('license_id',): u'',
-                         ('log_message',): u'',
-                         ('name',): u'',
-                         ('notes',): u'',
-                         ('organization', 0, 'value'): u'dada',
-                         ('owner',): u'dada',
-                         ('phone',): u'+35805050505',
-                         ('maintainer_email',): u'kata.selenium@gmail.com',
-                         # ('projdis',): u'True',
-                         ('project_funding',): u'',
-                         ('project_homepage',): u'',
-                         ('project_name',): u'',
-                         ('maintainer',): u'dada',
-                         ('save',): u'finish',
-                         ('tag_string',): u'dada',
-                         ('temporal_coverage_begin',): u'',
-                         ('temporal_coverage_end',): u'',
-                         ('langtitle', 0, 'lang'): u'sv',
-                         ('langtitle', 0, 'value'): u'dada',
-                         ('type',): None,
-                         ('version',): u'2013-08-14T10:37:09Z',
-                         ('version_PID',): u''}
 
     def test_validate_kata_date_valid(self):
         errors = defaultdict(list)
@@ -140,18 +72,18 @@ class TestValidators(TestCase):
 
     def test_validate_language_valid(self):
         errors = defaultdict(list)
-        convert_languages(('language',), self.test_data, errors, None)
+        convert_languages(('language',), TEST_DATA_FLATTENED, errors, None)
         assert len(errors) == 0
 
     def test_remove_disabled_languages_valid(self):
         errors = defaultdict(list)
-        remove_disabled_languages(('language',), self.test_data, errors, None)
+        remove_disabled_languages(('language',), TEST_DATA_FLATTENED, errors, None)
         assert len(errors) == 0
 
     def test_validate_language_valid_2(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('language',)] = u''
         dada[('langdis',)] = 'True'
 
@@ -164,7 +96,7 @@ class TestValidators(TestCase):
     def test_validate_language_valid_3(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('language',)] = u'fin, swe, eng, isl'
         dada[('langdis',)] = 'False'
 
@@ -178,7 +110,7 @@ class TestValidators(TestCase):
     def test_validate_language_delete(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('language',)] = u'fin, swe, eng, ita'
         dada[('langdis',)] = 'True'
 
@@ -192,7 +124,7 @@ class TestValidators(TestCase):
     def test_validate_language_invalid(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('language',)] = u'aa, ab, ac, ad, ae, af'
         dada[('langdis',)] = 'False'
 
@@ -202,7 +134,7 @@ class TestValidators(TestCase):
     def test_validate_language_invalid_2(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('language',)] = u''
         dada[('langdis',)] = 'False'
 
@@ -213,7 +145,7 @@ class TestValidators(TestCase):
     def test_validate_language_invalid_3(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('language',)] = u'finglish, sv, en'
         dada[('langdis',)] = 'True'
 
@@ -271,70 +203,70 @@ class TestValidators(TestCase):
     def test_validate_email_valid(self):
         errors = defaultdict(list)
 
-        validate_email(('maintainer_email',), self.test_data, errors, None)
+        validate_email(('contact', 0, 'email'), TEST_DATA_FLATTENED, errors, None)
 
         assert len(errors) == 0
 
     def test_validate_email_valid_2(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
-        dada[('maintainer_email',)] = u'a.b.c.d@e.com'
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('contact', 0, 'email')] = u'a.b.c.d@e.com'
 
-        validate_email(('maintainer_email',), dada, errors, None)
+        validate_email(('contact', 0, 'email'), dada, errors, None)
 
         assert len(errors) == 0
 
     def test_validate_email_invalid(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
-        dada[('maintainer_email',)] = u'a.b.c.d'
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('contact', 0, 'email')] = u'a.b.c.d'
 
-        validate_email(('maintainer_email',), dada, errors, None)
+        validate_email(('contact', 0, 'email'), dada, errors, None)
 
         assert len(errors) == 1
 
     def test_validate_email_invalid_2(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
-        dada[('maintainer_email',)] = u'a.b@com'
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('contact', 0, 'email')] = u'a.b@com'
 
-        validate_email(('maintainer_email',), dada, errors, None)
+        validate_email(('contact', 0, 'email'), dada, errors, None)
 
         assert len(errors) == 1
 
     def test_validate_phonenum_valid(self):
         errors = defaultdict(list)
 
-        validate_phonenum(('phone',), self.test_data, errors, None)
+        validate_phonenum(('contact', 0, 'phone'), TEST_DATA_FLATTENED, errors, None)
 
         assert len(errors) == 0
 
     def test_validate_phonenum_invalid(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
-        dada[('phone',)] = u'123_notgood_456'
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('contact', 0, 'phone')] = u'123_notgood_456'
 
-        validate_phonenum(('phone',), dada, errors, None)
+        validate_phonenum(('contact', 0, 'phone'), dada, errors, None)
 
         assert len(errors) == 1
 
     def test_general_validator_invalid(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
-        dada[('project_homepage',)] = u'http://www.<asdf123456>'
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('agent', 2, 'URL')] = u'http://www.<asdf123456>'
 
-        validate_general(('project_homepage',), dada, errors, None)
+        validate_general(('agent', 2, 'URL'), dada, errors, None)
         assert len(errors) == 1
 
     def test_validate_discipline(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('discipline',)] = u'Matematiikka'
 
         validate_discipline(('discipline',), dada, errors, None)
@@ -350,7 +282,7 @@ class TestValidators(TestCase):
     def test_validate_spatial(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('geographic_coverage',)] = u'Uusimaa (laani)'
 
         validate_spatial(('geographic_coverage',), dada, errors, None)
@@ -366,7 +298,7 @@ class TestValidators(TestCase):
     def test_checkbox_to_boolean(self):
         errors = defaultdict(list)
 
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('langdis',)] = u'True'
         checkbox_to_boolean(('langdis',), dada, errors, None)
         assert dada[('langdis',)] == u'True'
@@ -385,7 +317,7 @@ class TestValidators(TestCase):
         
     def test_validate_duplicate_titles_valid(self):
         errors = defaultdict(list)
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('langtitle', 1, 'lang')] = u'fi'
         dada[('langtitle', 1, 'value')] = u'diedo'
         try:
@@ -395,14 +327,14 @@ class TestValidators(TestCase):
         
     def test_validate_duplicate_titles_invalid(self):
         errors = defaultdict(list)
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('langtitle', 1, 'lang')] = u'sv'
         dada[('langtitle', 1, 'value')] = u'diedo'
         self.assertRaises(Invalid, validate_title_duplicates, ('langtitle', 0, 'value'), dada, errors, None)
         
     def test_validate_title_invalid(self):
         errors = defaultdict(list)
-        dada = copy.deepcopy(self.test_data)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('langtitle', 0, 'lang')] = u''
         dada[('langtitle', 0, 'value')] = u''
         self.assertRaises(Invalid, validate_title, ('langtitle', 0, 'lang'), dada, errors, None)
@@ -469,13 +401,13 @@ class TestResourceValidators(TestCase):
 
         self.assertRaises(Invalid, validate_algorithm, ('resources', 0, 'algorithm',), data, errors, None)
         
-    def test_validate_direct_download_url_invalid(self):
+    def test_check_direct_download_url_invalid(self):
         errors = defaultdict(list)
         dada = copy.deepcopy(self.test_data)
         dada['availability'] = u'direct_download'
         dada['resources'][0]['url'] = u''
         data = flatten_dict(dada)
-        self.assertRaises(Invalid, validate_direct_download_url, ('resources', 0, 'url'), data, errors, None)
+        self.assertRaises(Exception, check_direct_download_url, ('resources', 0, 'url'), data, errors, None)
 
 
 class TestJSONConverters(TestCase):

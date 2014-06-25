@@ -141,8 +141,7 @@ class TestKataWithUser(TestCase):
             assert 0, "Error processing the user registration page"
 
         try:
-            # TODO: PINJA: This XPATH should be better
-            WebDriverWait(reg_browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//ol[contains(@class, 'breadcrumb')]/li[contains(@class, 'active')]")))
+            WebDriverWait(reg_browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//i[contains(@class, 'icon-signout')]")))
         except TimeoutException:
             reg_browser.get_screenshot_as_file('_register_user.png')
             reg_browser.quit()
@@ -513,7 +512,7 @@ class TestKataWithUser(TestCase):
 
             (browser.find_element_by_name, 'agent__0__organisation', [u'Selenium Project'], None),
             (browser.find_element_by_name, 'agent__0__name', [u'Selenium Funder'], None),
-            (browser.find_element_by_name, 'agent__0__funding-id', [u'Selenium Funding'], None),
+            (browser.find_element_by_name, 'agent__0__fundingid', [u'Selenium Funding'], None),
             (browser.find_element_by_name, 'agent__0__URL', [u'https://localhost/'], None),
 
             # (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
@@ -531,7 +530,7 @@ class TestKataWithUser(TestCase):
 
             #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
 
-            (browser.find_element_by_xpath, "//section[@id='recmod']/h2/a/i", [WebElement.click], None),
+            (browser.find_element_by_xpath, "//section[@id='recmod']/h2", [WebElement.click], None),
             # recommended info
 
             (browser.find_element_by_xpath, "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input", [u'Espoo, Finland', Keys.RETURN], None),
@@ -543,7 +542,7 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_xpath, "//input[@id='discipline_field']/../div[@class='select2-container select2-container-multi']//input", [u'Matematiikka', Keys.RETURN], None),
             # (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.RETURN], None),
 
-            (browser.find_element_by_id, 'mimetype', [u'application/pdf'], None),
+            (browser.find_element_by_xpath, "//input[@id='mimetype']/../div[@class='select2-container select2-container-multi']//input", [u'application/pdf', Keys.RETURN], None),
             (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
             (browser.find_element_by_id, 'algorithm', [u'md5'], None),
 

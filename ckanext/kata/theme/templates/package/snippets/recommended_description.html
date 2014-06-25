@@ -1,0 +1,11 @@
+{% import 'macros/form.html' as form %}
+{% import 'macros/kata_form.html' as kata_form %}
+
+<section class="module">
+  <h2 class="module-heading-add-dataset">{{ _('Free description') }}</h2>
+  <div class="module-content">
+    {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('a freeform description'), value=data.notes, error=errors.notes) }}
+    {# The tooltip can't be inserted so that it would look nice. If needed, add the tooltip below later. #}
+<!--  {{ kata_form.tooltip(tooltip=_('Type a description about the data over here. The field can be filled with free text and you can format the text with Markdown formatting.')) }}  -->
+  </div>
+</section>

@@ -1,0 +1,48 @@
+{% import 'macros/form.html' as form %}
+{% import 'macros/kata_form.html' as kata_form %}
+
+<section class="module">
+  <h2 class="module-heading-add-dataset">{{ _('Coverage') }}</h2>
+  <div class="module-content">
+        
+  {# Autocomplete for spatial data #}
+
+    <div class="kata-multi-input kata-autocomplete">
+      <span class="kata-multi-heading">
+        {{ _('Spatial coverage') }}
+      </span><br />
+      {{ _('Search location from location name database, select locations with enter or mouse click.') }}
+      <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Specify the geographical areas or locations that your dataset pertains to. This could be for example the location where the data has been collected or the region where the research subjects live.<br /><br />Once you start typing, you will automatically get suggestions for matching geographical names. You can then select the appropriate location from the list of suggestions with a mouse click, or you can enter one of your own. If you make a mistake, you can remove a location by clicking the \'x\' next to it.<br /><br />You can change the language of suggested names from the language menu.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
+      <span class="kata-btn-span tta-orange">?</span></button><br /><br />
+      {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/location_autocomplete?incomplete=?'} %}
+      {{ form.input('geographic_coverage', id='geographic_coverage_field', label=_('Locations'), placeholder=_('eg. Finland'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium'], attrs=tag_attrs) }}
+    </div>
+    <br />
+        
+    <div class="kata-multi-input">
+      <span class="kata-multi-heading">
+        {{ _('Temporal coverage') }}
+      </span><br />
+      <div data-module="dateselect-dcmi-kata">
+        <div id="temporal_coverage">
+          <label class="control-label kata-input-comp" for="temporal_coverage_begin">{{ _('Begin') }}</label>
+          <div class="controls">
+            <input type="text" id="temporal_coverage_begin" name="temporal_coverage_begin" value="{{data.temporal_coverage_begin}}" />
+            {{ kata_form.tooltip(tooltip=_('Temporal coverage - begin - can be filled to include the starting time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br /><br />Click the field to open a calendar tool to choose a modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires JavaScript to be enabled in the browser.')) }}
+            {% if errors.temporal_coverage_begin %}
+              <span class="error-block">{{ errors.temporal_coverage_begin[0] }}</span>
+            {% endif %}
+          </div>
+          <label class="control-label kata-input-comp" for="temporal_coverage_end">{{ _('End') }}</label>
+          <div class="controls">
+            <input type="text" id="temporal_coverage_end" name="temporal_coverage_end" value="{{data.temporal_coverage_end}}" />
+            {{ kata_form.tooltip(tooltip=_('Temporal coverage - end - can be filled to include the ending time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br /><br />Click the field to open a calendar tool to choose a modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires JavaScript to be enabled in the browser.')) }}
+            {% if errors.temporal_coverage_end %}
+              <span class="error-block">{{ errors.temporal_coverage_end[0] }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

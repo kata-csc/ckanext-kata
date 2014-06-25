@@ -13,7 +13,7 @@ from pylons.util import PylonsContext, pylons, AttribSafeContextObj
 
 from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
 from ckanext.kata.plugin import KataPlugin
-from ckanext.kata import settings, utils, actions
+from ckanext.kata import settings, utils, helpers, actions
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 
 
@@ -187,7 +187,7 @@ class TestKataPlugin(TestCase):
     def test_before_index(self):
         pkg_dict = {'access_application_new_form': u'False',
                      'agent_0_URL': u'www.csc.fi',
-                     'agent_0_funding-id': u'43096ertjgad\xf6sjgn89q3q4',
+                     'agent_0_fundingid': u'43096ertjgad\xf6sjgn89q3q4',
                      'agent_0_name': u'F. Under',
                      'agent_0_organisation': u'Agentti-Project',
                      'agent_0_role': u'funder',
@@ -380,16 +380,14 @@ class TestUtils(TestCase):
     def test_get_funder(self):
         assert utils.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
 
-    def test_get_owner(self):
-        assert utils.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
 
-    def test_get_authors(self):
-        assert utils.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
+class TestHelpers(TestCase):
+    """Unit tests for functions in helpers.py."""
 
     def test_get_package_ratings(self):
-        (rating, stars) = utils.get_package_ratings(TEST_DATADICT)
+        (rating, stars) = helpers.get_package_ratings(TEST_DATADICT)
         assert rating == 5, rating
-        assert stars == u'★★★★★'
+        assert stars == u'●●●●●'
 
     def test_get_package_ratings_2(self):
         data_dict = copy.deepcopy(TEST_DATADICT)
@@ -402,9 +400,15 @@ class TestUtils(TestCase):
         data_dict.pop('mimetype')
         data_dict['license_id'] = u''
 
-        (rating, stars) = utils.get_package_ratings(data_dict)
+        (rating, stars) = helpers.get_package_ratings(data_dict)
         assert rating == 3, rating
-        assert stars == u'★★★☆☆'
+        assert stars == u'●●●○○'
+
+    def test_get_owner(self):
+        assert helpers.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
+
+    def test_get_authors(self):
+        assert helpers.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
 
 
 # class TestActions(TestCase):

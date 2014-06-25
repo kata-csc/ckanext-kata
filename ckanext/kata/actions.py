@@ -116,8 +116,8 @@ def package_create(context, data_dict):
     # Get version PID (or generate a new one?)
     new_version_pid = data_dict.get('new_version_pid')
 
-    # if not new_version_pid:
-    #     new_version_pid = utils.generate_pid()
+    if not new_version_pid and data_dict.get('generate_version_pid', None) == 'on':
+        new_version_pid = utils.generate_pid()
 
     if new_version_pid:
         data_dict['pids'] = data_dict.get('pids', []) + [{'id': new_version_pid, 'type': 'version', 'provider': 'kata'}]
@@ -193,6 +193,9 @@ def package_update(context, data_dict):
     data_dict['pids'] = temp_pkg_dict.get('pids', [])
 
     new_version_pid = data_dict.get('new_version_pid', None)
+    if not new_version_pid and data_dict.get('generate_version_pid', None) == 'on':
+        new_version_pid = utils.generate_pid()
+        
     if new_version_pid:
         data_dict['pids'] += [{'id': new_version_pid,
                               'type': 'version',
@@ -329,7 +332,7 @@ def package_search(context, data_dict):
         data_dict['sort'] = "metadata_modified desc"
         data_dict['rows'] = 5
         # don't want harvest source packages
-        data_dict['q'] = "author:['' TO *]"
+        data_dict['fq'] += " +dataset_type:dataset"
 
     return ckan.logic.action.get.package_search(context, data_dict)
 

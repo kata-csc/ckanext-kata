@@ -29,12 +29,11 @@ extras
 {% with items = items or h.get_facet_items_dict(name) %}
 {% set found = False %}
   <section class="module module-narrow module-shallow">
-    <h2 class="module-heading tta-lblue">
+    <h2 class="module-heading tta-lblue {% if items %}accordion-toggle{% endif %}" {% if items %}onclick="$('#{{ title or h.get_facet_title(name) }}').toggle()"{% endif %}>
       <!-- i class="icon-medium icon-filter tta-blue"></i -->
       {{ title or h.get_facet_title(name) }}
       {% if items %}
-      <a class="tta-lblue pull-right" href="#recmod" onclick="$('#{{ title or h.get_facet_title(name) }}').toggle()">
-      <i class="icon-chevron-down tta-blue"></i></a>
+      <i class="icon-chevron-down tta-blue pull-right"></i>
       {% endif %}
       <!-- <a href="{{ h.remove_url_param(name, extras=extras) }}" class="action">{{ _('Clear All') }}</a> -->
     </h2>

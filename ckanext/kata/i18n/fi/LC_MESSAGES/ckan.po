@@ -6465,12 +6465,11 @@ msgstr "Puuttuva arvo"
 
 #: ckanext/kata/validators.py:226
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
-msgstr "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
-"erikoismerkeistä: -,"
+msgstr "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja erikoismerkeistä: -,"
 
 #: ckanext/kata/validators.py:247
-msgid "Spatial coverage \"%s\" must be alphanumeric characters or symbols: -,:()."
-msgstr "Maantieteellisen kattavuuden \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja näistä erikoismerkeistä: -,:()."
+msgid "Spatial coverage \"%s\" must be alphanumeric characters or symbols: -'/,:(). Mismatching strings: \"%s\""
+msgstr "Maantieteellisen kattavuuden \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja näistä erikoismerkeistä: -'/,:(). Kelpaamattomat merkkijonot: \"%s\""
 
 #: ckanext/kata/validators.py:263
 msgid ""
@@ -7270,8 +7269,8 @@ msgid ""
 msgstr "Laatijat: laatija ja laatijan organisaatio. Metadataan voidaan syöttää useampia laatija-organisaatio -pareja."
 
 #: ckanext/kata/theme/templates/kata/help.html:167
-msgid "Keywords: Keywords use KOKO ontology from http://onki.fi/. The keywords are chosen from suggestions or you can also provide your own word if suitable is not available."
-msgstr "Avainsanat (tagit): avainsanoissa on käytössä JavaScript-valitsin, joka hakee ehdotuksia sanoiksi KOKO-ontologiasta, kts. http://onki.fi/. Avainsanat valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei löydy."
+msgid "Keywords: Keywords use KOKO ontology from http://finto.fi/. The keywords are chosen from suggestions or you can also provide your own word if suitable is not available."
+msgstr "Avainsanat (tagit): avainsanoissa on käytössä JavaScript-valitsin, joka hakee ehdotuksia sanoiksi KOKO-ontologiasta, kts. http://finto.fi/. Avainsanat valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei löydy."
 
 #: ckanext/kata/theme/templates/kata/help.html:171
 msgid ""
@@ -7289,7 +7288,7 @@ msgid ""
 msgstr "Jakelijan / julkaisijan yhteystiedot: anna nimi, puhelinnumero, sähköpostiosoite ja kotisivu, joiden avulla muut voivat ottaa yhteyttä datasta. Huomaa, että sähköpostiosoite piilotetaan muiden näkyvistä ja se on korvattu yhteydenottolomakkeella."
 
 #: ckanext/kata/theme/templates/kata/help.html:179
-msgid "Actors and roles:"
+msgid "Agents and roles:"
 msgstr "Toimijat ja roolit:"
 
 #: ckanext/kata/theme/templates/kata/help.html:182
@@ -7382,12 +7381,12 @@ msgstr "Kattavuudet tarjoavat kentät maantieteelliseen ja ajalliseen kattavuute
 #: ckanext/kata/theme/templates/kata/help.html:223
 msgid ""
 "Spatial coverage: Location names are retrieved the location name database at "
-"http://onki.fi/. Choose the locations covered in your data from the "
+"http://finto.fi/. Choose the locations covered in your data from the "
 "suggestions. You can also add your own location by typing and accepting "
 "it."
 msgstr ""
 "Maantieteellinen kattavuus: paikannimiä voi etsiä paikannimirekisteristä, josta "
-"voit lukea lisää osoitteessa http://onki.fi. Valitse paikannimi, jota datasi "
+"voit lukea lisää osoitteessa http://finto.fi. Valitse paikannimi, jota datasi "
 "käsittelee, annetuista ehdotuksista. Voit antaa myös omia paikannimia, "
 "jos sopivaa ei löydy, kirjoittamalla se kokonaan ja hyväksymällä näppäimistösi enter-painikkeella."
 
@@ -7404,10 +7403,10 @@ msgstr "Relaatiot:"
 #: ckanext/kata/theme/templates/kata/help.html:233
 msgid ""
 "Discipline/branch of science: The disciplines are chosen from the OKM-"
-"TIETEENALA ontology, from http://onki.fi/. The disciplines are provided "
+"TIETEENALA ontology, from http://finto.fi/. The disciplines are provided "
 "only in Finnish and you should use these Finnish versions to help "
 "grouping and searching of the data."
-msgstr "Tieteenala: tieteenalat tarjotaan okm-tieteenala-ontologiasta (http://onki.fi). Tieteenalat tarjotaan vain suomeksi ja jotta ryhmittely ja haku on helpompaa, valitse tieteenala tarjotuista."
+msgstr "Tieteenala: tieteenalat tarjotaan okm-tieteenala-ontologiasta (http://finto.fi). Tieteenalat tarjotaan vain suomeksi ja jotta ryhmittely ja haku on helpompaa, valitse tieteenala tarjotuista."
 
 #: ckanext/kata/theme/templates/kata/help.html:238
 msgid "File information is especially technical information about your data:"
@@ -10048,7 +10047,7 @@ msgid ""
 "Field is compulsory.<br /><br />Type names of authors and organisations "
 "to the corresponding fields, one author per a field pair. You can add "
 "more fields for additional authors by pressing the '+' button. If you "
-"leave an added title field empty, it is discarded, but note that the "
+"leave an added author field empty, it is discarded, but note that the "
 "first author/organisation field pair must have values.<br /><br />You "
 "can enter either the author's name or an identifier URI, such as an ORCID identifier. "
 "If you choose to enter a name, please use format \"familyname, firstname\"."
@@ -10074,7 +10073,7 @@ msgid ""
 "click, or you can enter your own keywords. If you make a mistake, you can "
 "remove a keyword by clicking the 'x' next to it.<br /><br />You can "
 "change the language of suggested words from the language menu.<br /><br />"
-"The suggestions are retrieved from the ONKI vocabulary service (see http://onki.fi/en/). "
+"The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). "
 "Note that you must have JavaScript enabled in your browser in order for the "
 "automatic suggestions to work."
 msgstr ""
@@ -10083,8 +10082,8 @@ msgstr ""
 "Voit valita ehdotuksista sopivan klikkaamalla sitä hiirellä. Voit myös kirjoittaa "
 "oman sanasi, jos ehdotetuista vaihtoehdoista ei löydy sopivaa. Voit poistaa jo syöttämäsi "
 "avainsanan 'x'-painikkeesta.<br /><br />Voit vaihtaa ehdotettavien avainsanojen "
-"kieltä kielivalikosta.<br /><br />Ehdotukset haetaan ONKI-sanastopalvelusta "
-"(http://onki.fi). JavaScript-tuen on oltava käytössä selaimessasi, jotta "
+"kieltä kielivalikosta.<br /><br />Ehdotukset haetaan Finto-sanastopalvelusta "
+"(http://finto.fi). JavaScript-tuen on oltava käytössä selaimessasi, jotta "
 "automaattiset ehdotukset toimisivat."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:121
@@ -10116,7 +10115,7 @@ msgid ""
 msgstr "Kenttä on pakollinen, jos valintaruutua ei ole valittu.<br /><br />Anna pilkulla erotettu lista datassasi käytetyistä kielistä ISO 639-2 T muodossa, esimerkiksi \"eng, fin, swe\"."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:141
-msgid "Actors and roles"
+msgid "Agents and roles"
 msgstr "Toimijat ja roolit"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:143
@@ -10369,8 +10368,8 @@ msgid "Visibility"
 msgstr "Näkyvyys"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:13
-msgid "Click chevron to hide/show recommended fields"
-msgstr "Klikkaa nuolta näyttääksesi tai piilottaaksesi suositellut tiedot"
+msgid "Click to show/hide recommended fields"
+msgstr "Klikkaa näyttääksesi tai piilottaaksesi suositellut tiedot"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:18
 msgid "Coverage"
@@ -10396,8 +10395,8 @@ msgid ""
 "suggestions with a mouse click, or you can enter one of your own. If you make "
 "a mistake, you can remove a location by clicking the 'x' next to it."
 "<br /><br />You can change the language of suggested names from the language "
-"menu.<br /><br />The suggestions are retrieved from the ONKI vocabulary service "
-"(http://onki.fi/en/). Note that you must have JavaScript enabled in your "
+"menu.<br /><br />The suggestions are retrieved from the Finto vocabulary service "
+"(http://finto.fi/en/). Note that you must have JavaScript enabled in your "
 "browser in order for the automatic suggestions to work."
 msgstr ""
 "Määritä maantieteelliset alueet tai paikat, joita datasi käsittelee. Tämä "
@@ -10408,7 +10407,7 @@ msgstr ""
 "kirjoittaa omasi, jos ehdotetuista vaihtoehdoista ei löydy sopivaa. Voit "
 "poistaa jo syöttämäsi paikannimen 'x'-painikkeesta.<br /><br />Voit vaihtaa "
 "ehdotettavien nimien kieltä kielivalikosta.<br /><br />Ehdotukset haetaan "
-"ONKI-sanastopalvelusta (http://onki.fi). JavaScript-tuen on oltava "
+"Finto-sanastopalvelusta (http://finto.fi). JavaScript-tuen on oltava "
 "käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:30
@@ -10476,7 +10475,7 @@ msgid ""
 "suggestions. You can select the appropropriate discipline from the list of "
 "suggestions with a mouse click. If you make a mistake, you can remove a "
 "discipline by clicking the 'x' next to it.<br /><br />The suggestions are "
-"retrieved from the ONKI vocabulary service (http://onki.fi/en/). The "
+"retrieved from the Finto vocabulary service (http://finto.fi/en/). The "
 "vocabulary is only available in Finnish at this time. Note that you must "
 "have JavaScript enabled in your browser in order for the automatic "
 "suggestions to work."
@@ -10486,8 +10485,8 @@ msgstr ""
 "saat automaattisesti ehdotuksia tieteenalaksi. Alat tulee valita annetuista "
 "suomenkielisistä ehdotuksista. Voit valita sopivan tieteenalan ehdotettujen "
 "joukosta klikkaamalla sitä hiirellä. Voit poistaa jo valitsemasi tieteenalan "
-"'x'-painikkeesta.<br /><br />Ehdotukset haetaan ONKI-sanastopalvelusta "
-"(http://onki.fi). JavaScript-tuen on oltava käytössä selaimessasi, jotta "
+"'x'-painikkeesta.<br /><br />Ehdotukset haetaan Finto-sanastopalvelusta "
+"(http://finto.fi). JavaScript-tuen on oltava käytössä selaimessasi, jotta "
 "automaattiset ehdotukset toimisivat."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:99
@@ -11131,6 +11130,27 @@ msgstr "Ensisijainen datan tunniste"
 msgid "Distributor/Publisher"
 msgstr "Jakelija/Julkaisija"
 
+msgid "through data provider"
+msgstr "datan jakelijan kautta"
+
+msgid " available through "
+msgstr " saatavilla "
+
+msgid "data provider"
+msgstr "datan jakelijan kautta"
+
+msgid "Data provider's web address"
+msgstr "Datan jakelijan web-osoite"
+
+msgid "Event automatically created at import."
+msgstr "Tapahtuma on luotu automaattisesti tuonnin yhteydessä."
+
+msgid "Original metadata record"
+msgstr "Alkuperäinen metadatatiedosto"
+
+msgid "Agents"
+msgstr "Toimijat"
+
 # Related
 msgid "Identifier"
 msgstr "Tunniste"
@@ -11188,14 +11208,20 @@ msgstr "Luo uusi lupahakemus automaattisesti"
 msgid "Note that the version identifier can NOT be edited after saving the dataset, but you can add new version identifiers."
 msgstr "Huomaa että versiotunnistetta EI voi muokata tallennuksen jälkeen, mutta voit lisätä uusia versiotunnisteita."
 
-msgid "Field is not compulsory, a version identifier is already given.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version."
-msgstr "Kenttä ei ole pakollinen, koska versiotunniste on jo annettu.<br /><br />PID on pysyvä, uniikki datan tunniste, mieluiten URI. Tämä pysyväistunniste on tarkoitettu datan versiolle,"
+msgid "Field is not compulsory, a version identifier is already given.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version. You can add a new one by typing it to the text field or by leaving the text field empty and checking the checkbox to automatically generate a new identifier."
+msgstr "Kenttä ei ole pakollinen, koska versiotunniste on jo annettu.<br /><br />PID on pysyvä, uniikki datan tunniste, mieluiten URI. Tämä pysyväistunniste on tarkoitettu datan versiolle. Voit antaa uuden versiotunnisteen kirjoittamalla sen tekstikenttään tai jättämällä tekstikentän tyhjäksi ja ruksittamalla valintaruudun, jolloin palvelin generoi URN-tunnisteen automaattisesti."
 
 msgid "insert new identifier or leave empty"
 msgstr "lisää uusi tunniste tai jätä tyhjäksi"
 
 msgid "Field is compulsory but automatically generated if left empty.<br /><br />PID is a permanent, unique, identifier, preferably a URI. You can add your own identifier or use one generated by the service. <br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi/ for more information."
 msgstr "Kenttä on pakollinen, mutta generoidaan automaattisesti jos jätetty tyhjäksi.<br /><br />PID on pysyvä, uniikki datan tunniste. Voit lisätä oman tunnisteesi tai käyttää palvelun generoimaa tunnistetta<br /><br />Automaattisesti generoitu PID on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi:csc-kata[numerosarja]\". Lisää tietoa osoitteessa http://www.kansalliskirjasto.fi/."
+
+msgid "Field is compulsory but automatically generated if left empty with the checkbox checked.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version. You can add your own identifier or use one generated by the service by leaving the text field empty and checking the checkbox next to the field. <br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi for more information."
+msgstr "Kenttä on pakollinen, mutta generoidaan automaattisesti jos kenttä on jätetty tyhjäksi ja valintaruutu on valittu.<br /><br />PID on pysyvä, uniikki datan tunniste. Voit lisätä oman tunnisteesi tai käyttää palvelun generoimaa tunnistetta<br /><br />Automaattisesti generoitu PID on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi:csc-kata[numerosarja]\". Lisää tietoa osoitteessa http://www.kansalliskirjasto.fi/."
+
+msgid "Check to automatically generate a permanent identifier."
+msgstr "Ruksimalla ruudun palvelu generoi pysyvän tunnisteen automaattisesti."
 
 msgid "Missing compulsory distributor contact"
 msgstr "Pakollinen jakelijan tieto puuttuu"
@@ -11205,6 +11231,9 @@ msgstr "Pakollinen toimija puuttuu: {0}"
 
 msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr "Tagin \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: '_.()/#+."
+
+msgid "Important: By submitting content, you agree to release your contributions under the Open Database License. "
+msgstr "Tärkeää: lisäämällä sisältöä sitoudut julkaisemaan lisäyksesi Open Database License -lisenssin alla."
 
 # Resource, Additional Information (the key - value -variables)
 msgid "created"
@@ -11289,6 +11318,9 @@ msgstr "Projektin rahoitustunniste"
 msgid "Langtitle"
 msgstr "Kieli ja otsikko"
 
+msgid "Title + language"
+msgstr "Otsikko + kieli"
+
 # Profile
 msgid "Telephone"
 msgstr "Puhelin"
@@ -11365,6 +11397,12 @@ msgstr "REMS:n käyttöohjeista"
 msgid "For additional help send email to: "
 msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
 
+msgid "I'm trying to accept an application in REMS but the link to form received by email is empty."
+msgstr "Yritän hyväksyä hakemuksen REMS:ssä, mutta sähköpostin välityksellä tulleen linkin lomake on tyhjä"
+
+msgid "Most likely the distributor's email address isn't bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the acceptor. To fix this, log in to reetta.csc.fi with identity bound to the email address or change the dataset's distributor's email address to a valid one."
+msgstr "Todennäköistä on että joko jakelijan sähköpostiosoitetta ei ole sidottuna mihinkään Haka-identiteettiin tai kukaan ei ole kirjautunut sisään kyseisellä identiteetillä REMS-palveluun. Tällöin REMS ei voi tunnistaa hyväksyjää. Korjataksesi tämän kirjaudu sisään palvelimelle reetta.csc.fi identiteetillä, johon sähköposti on sidottu tai muuta tietoaineiston jakelijan sähköpostiosoite Hakan tunnistamaksi."
+
 # REMS (these should be in ckanext-rems?)
 msgid "Dataset saved but REMS application creation failed. To retry, save dataset later without changes."
 msgstr "Tietoaineisto tallennettu, mutta REMS-hakemuksen luonti epäonnistui. Yritä uudelleen myöhemmin tallentamalla muutoksitta."
@@ -11384,5 +11422,24 @@ msgid "Send"
 msgstr "Lähetä"
 
 #: ckanext/kata/theme/templates/package/read.html:73
-msgid "metadata score {rating}/5"
+msgid "Metadata score {rating}/5"
 msgstr "Metatiedon laatu {rating}/5"
+
+#: ckanext/kata/theme/templates/package/read.html:74
+msgid "Metadata score:"
+msgstr "Metatiedon laatu:"
+
+# Backup node
+msgid "There is a maintenance break in service"
+msgstr "Palvelussa on huoltokatko"
+
+msgid "You can not add or edit data during maintenance break"
+msgstr "Et voi lisätä tai muokata dataa huoltokatkon aikana"
+
+#: ckanext-kata/ckanext/kata/theme/templates/snippets/package_item.html:26
+msgid "Metadata: {rating}/5"
+msgstr "Metatiedot: {rating}/5"
+
+#: ckanext-kata/ckanext/kata/theme/templates/snippets/package_item.html:27
+msgid "Metadata completeness score"
+msgstr "Metatietojen kattavuuspisteet"

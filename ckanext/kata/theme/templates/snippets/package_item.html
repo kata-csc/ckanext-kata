@@ -23,6 +23,9 @@ Example:
 {% endif %}
 <li class="{{ item_class or "dataset-item" }}">
   <div class="dataset-content">
+    {% set (rating, stars)=h.get_package_ratings_for_data_dict(package) %}
+    <span class="rating-text" title="{{ _("Metadata completeness score") }}">{{ _('Metadata: {rating}/5').format(rating=rating) }}</span>
+
     <h3 class="dataset-heading">
       {{ h.link_to(h.truncate(title, truncate_title), h.url_for(controller='package', action='read', id=package.name)) }}
       {% if package.get(state, '').startswith('draft') %}
@@ -35,6 +38,7 @@ Example:
     {% if banner %}
       <span class="banner">Popular</span>
     {% endif %}
+
     {% if notes %}
       <div>{{ notes|urlize }}</div>
     {% else %}
