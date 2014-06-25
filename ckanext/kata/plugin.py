@@ -11,13 +11,6 @@ import json
 import re
 
 from ckan.lib.base import g, c
-import ckan.lib.helpers as h
-from ckan.lib.navl.validators import (default,
-                                      ignore,
-                                      ignore_empty,
-                                      ignore_missing,
-                                      not_empty,
-                                      not_missing)
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
                           toolkit,
