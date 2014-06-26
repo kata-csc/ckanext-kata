@@ -6274,8 +6274,8 @@ msgstr "Käyttäjällä %s ei ole oikeuksia poistaa tietoaineistoa %s"
 
 #: ckanext/kata/controllers.py:334
 #, python-format
-msgid "You now requested editor rights to package %s"
-msgstr "Pyysit muokkausoikeuksia aineistoon %s"
+msgid "A request for editing privileges to package %s will be sent to the package administrator"
+msgstr "Pyyntö muokkausoikeuksien saamiseksi aineistoon %s lähetetään aineiston ylläpitäjälle"
 
 #: ckanext/kata/controllers.py:337
 #: ckanext/kata/controllers.py:376
