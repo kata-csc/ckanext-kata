@@ -4,6 +4,11 @@
 
 {% block subtitle %}{{ _('Revision') }} {{ rev.id }}{% endblock %}
 
+{% block breadcrumb_content %}
+  <li>{% link_for _('Revisions'), controller='revision', action='index' %}</li>
+  <li class="active"><a href="" title="{{ _('Revision') }} {{ rev.id }}">{{ rev.id |truncate(35) }}</a></li>
+{% endblock %}
+
 {% block add_action_content %}
   {% if c.revision_change_state_allowed %}
     <form
@@ -28,10 +33,6 @@
       </li>
     </form>
   {% endif %}
-{% endblock %}
-{% block breadcrumb_content %}
-  <li>{% link_for _('Revisions'), controller='revision', action='index' %}</li>
-  <li class="active"><a href="" title="{{ _('Revision') }} {{ rev.id }}">{{ rev.id |truncate(35) }}</a></li>
 {% endblock %}
 
 {% block primary_content_inner %}
