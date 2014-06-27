@@ -12,8 +12,9 @@
         </div>
       {% endwith %}
     {% else %}
-      <p>{{ _('Add publications or related datasets') }}</p>
-      <p class="action">{% link_for _('Add publication or related dataset'), controller='related', action='new', id=pkg_name, icon='plus', class_='btn' %}</p>
+      {% if h.check_access('related_create') %}
+        <p class="action">{% link_for _('Add Item'), controller='related', action='new', id=pkg_name, icon='plus', class_='btn' %}</p>
+      {% endif %}
     {% endif %}
   </div>
 </section>

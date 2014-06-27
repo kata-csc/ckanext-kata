@@ -25,10 +25,26 @@ count_label
 extras
   Extra info passed into the add/remove params to make the url
 
+alternative_url
+  URL to use when building the necessary URLs, instead of the default
+  ones returned by url_for. Useful eg for dataset types.
+
+hide_empty
+  Do not show facet if there are none, Default: false.
+
+within_tertiary
+  Boolean for when a facet list should appear in the the right column of the
+  page and not the left column.
+
 #}
 {% with items = items or h.get_facet_items_dict(name) %}
 {% set found = False %}
-  <section class="module module-narrow module-shallow">
+  {% if within_tertiary %}
+    {% set nav_class = 'nav nav-pills nav-stacked' %}
+    {% set nav_item_class = ' ' %}
+    {% set wrapper_class = 'nav-facet nav-facet-tertiary' %}
+  {% endif %}
+  <section class="{{ wrapper_class or 'module module-narrow module-shallow' }}">
     <h2 class="module-heading tta-lblue {% if items %}accordion-toggle{% endif %}" {% if items %}onclick="$('#{{ title or h.get_facet_title(name) }}').toggle()"{% endif %}>
       <!-- i class="icon-medium icon-filter tta-blue"></i -->
       {{ title or h.get_facet_title(name) }}
@@ -47,7 +63,7 @@ extras
       <nav>
         <ul class="unstyled nav nav-simple nav-facet">
           {% for item in items %}
-            {% set href = h.remove_url_param(name, item.name, extras=extras) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras) %}
+            {% set href = h.remove_url_param(name, item.name, extras=extras) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
             {% set label = label_function(item) if label_function else item.display_name %}
             {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
             {% set count = count_label(item['count']) if count_label else ('(%d)' % item['count']) %}
@@ -61,9 +77,9 @@ extras
       </nav>
       <p class="module-footer">
         {% if h.get_param_int('_%s_limit' % name) %}
-          <a href="{{ h.remove_url_param('_%s_limit' % name, replace=0, extras=extras) }}" class="read-more">{{ _('Show More') }}</a>
+          <a href="{{ h.remove_url_param('_%s_limit' % name, replace=0, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show More') }}</a>
         {% else %}
-          <a href="{{ h.remove_url_param('_%s_limit' % name, extras=extras) }}" class="read-more">{{ _('Show Only Popular') }}</a>
+          <a href="{{ h.remove_url_param('_%s_limit' % name, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show Only Popular') }}</a>
         {% endif %}
       </p>
      </div>
