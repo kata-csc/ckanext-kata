@@ -6274,8 +6274,8 @@ msgstr "Käyttäjällä %s ei ole oikeuksia poistaa tietoaineistoa %s"
 
 #: ckanext/kata/controllers.py:334
 #, python-format
-msgid "A request for editing privileges to package %s will be sent to the package administrator"
-msgstr "Pyyntö muokkausoikeuksien saamiseksi aineistoon %s lähetetään aineiston ylläpitäjälle"
+msgid "A request for editing privileges will be sent to the administrator of package %s"
+msgstr "Pyyntö muokkausoikeuksien saamiseksi lähetetään aineiston %s ylläpitäjälle"
 
 #: ckanext/kata/controllers.py:337
 #: ckanext/kata/controllers.py:376
@@ -6854,7 +6854,7 @@ msgid ""
 msgstr "Kata on TTA:n (Tutkimuksen Tietoaineistot) metatietokatalogipalvelu. TTA on opetus- ja kulttuuriministeriön hanke."
 
 #: ckanext/kata/theme/templates/kata/faq.html:17
-msgid "What kind of data Kata contains?"
+msgid "What kind of data does Kata contain?"
 msgstr "Minkälaista dataa Kata sisältää?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:18
@@ -6954,7 +6954,7 @@ msgstr "Yleistiedot"
 
 #: ckanext/kata/theme/templates/kata/help.html:17
 msgid ""
-"This Kata metadata catalogue's help page will guide you through the most "
+"This help page of the metadata catalogue will guide you through the most "
 "common tasks in the service. Use the right side's links to quickly "
 "navigate to the desired section."
 msgstr "Tämä Kata-metadatakatalogin ohjesivu ohjaa sinua tavallisimmissa palvelun ominaisuuksissa. Käytä oikean laidan linkkejä navigoidaksesi nopeasti haluamaasi osioon."
@@ -7180,12 +7180,12 @@ msgid ""
 msgstr "Valitessasi tietoaineiston hakutuloksista, palvelu vie tietoaineiston katselunäkymään. Tietoaineiston sivu tarjoaa myös seuraavia ominaisuuksia: "
 
 #: ckanext/kata/theme/templates/kata/help.html:133
-msgid "If you have sufficient privileges, you can choose to edit the dataset."
-msgstr "Jos sinulla on tarvittavat käyttöoikeudet, voit muokata tietoaineistoa."
+msgid "If you have sufficient privileges, you can choose to edit the metadata of the dataset."
+msgstr "Jos sinulla on tarvittavat käyttöoikeudet, voit muokata tietoaineiston metatietoja."
 
 #: ckanext/kata/theme/templates/kata/help.html:134
 msgid ""
-"If you don't have enough priveleges but you are logged in, you can "
+"If you don't have enough privileges but you are logged in, you can "
 "request for edit rights."
 msgstr "Jos sinulla ei ole tarpeeksi oikeuksia, mutta olet sisäänkirjautunut, voit pyytää muokkausoikeuksia aineiston omistajalta."
 
@@ -7221,7 +7221,7 @@ msgstr "Jos olet kirjautuneena sisään, voit halutessasi alkaa seuraamaan tieto
 msgid ""
 "If you are logged in you will find \"Add Dataset\" button for example "
 "from the Datasets and Dashboard pages. This button brings you to the Add "
-"Dataset form. The Add Dataset page encourages and guides you to fullfill "
+"Dataset form. The Add Dataset page encourages and guides you to fill in "
 "the metadata as well as possible to ensure that metadata is of good "
 "quality and your data is as well described as possible. The fields are "
 "accompanied with a tooltip, \"?\", which will give instructions for that "
@@ -11203,7 +11203,7 @@ msgid "Event"
 msgstr "Tapahtuma"
 
 msgid "Create a new access request form automatically"
-msgstr "Luo uusi lupahakemus automaattisesti"
+msgstr "Luo uusi lupahakemuslomake automaattisesti"
 
 msgid "Note that the version identifier can NOT be edited after saving the dataset, but you can add new version identifiers."
 msgstr "Huomaa että versiotunnistetta EI voi muokata tallennuksen jälkeen, mutta voit lisätä uusia versiotunnisteita."
@@ -11360,9 +11360,9 @@ msgstr "Tietoaineiston web-osoite"
 
 # About
 msgid ""
-" <h2>About Kata metadata catalogue</h2> <p> Kata collects metadata of "
+" <h2>About the Kata metadata catalogue</h2> <p> Kata collects metadata of "
 "research data from various external sources as well as provides a web "
-"interface to add metadata straight into Kata. The data is never stored in "
+"interface to add metadata straight into Kata. Actual research data is never stored in "
 "Kata so it can be placed anywhere but with the help of Kata it can be found "
 "by anyone. </p> <p> Comprehensive depiction of data plays a very important "
 "role in visibility of data. Kata encourages this by adapting the minimum "
@@ -11370,23 +11370,23 @@ msgid ""
 "of Kata's various tools adding the common metadata fields is made easier. The"
 " service also promotes adding unified information about usability, ownership and "
 "licensing of data. Important data to funders is also provided which promotes "
-"reporting. Kata's powerful search tools will help to find the data which in "
-"its part brings merit to the researchers. </p> <p> Kata service is provided "
+"reporting. Kata's powerful search tools will make the data easier to find, which also "
+"helps in bringing merit to the researchers. </p> <p> Kata service is provided "
 "by the Ministry of Education and Culture of Finland. Kata is maintained by "
-"CSC - IT Center for Science. The service is discipline independent and free. "
+"CSC - IT Center for Science Ltd. The service is discipline independent and free. "
 "</p> "
-msgstr "<h2>Tietoa Kata metadatakatalogista</h2> <p> Kata kerää tutkimusaineistojen metadataa useista ulkopuolisista lähteistä sekä tarjoaa käyttöliittymän metadatan lisäämiseen suoraan Kataan. Tutkimusdataa ei koskaan tallenneta Kataan, vaan se säilytetään missä tahansa tallennuspalvelussa. Katassa olevien metatietojen avulla data on kuitenkin helposti kenen tahansa löydettävissä. </p> <p> Datan kattava kuvailu lisää olennaisesti sen näkyvyyttä. Kata pyrkii edistämään kuvailujen tasoa soveltamalla minimimetatietomallia ja sen kaikille tieteenaloille yhteisiä metatietokenttiä. Katan sisältämillä aputyökaluilla yhteisten metatietokenttien täyttäminen on tehty mahdollisimman helpoksi. Osana yhteisiä metatietokenttiä on myös kentät, jotka kertovat datan käyttöoikeuksista, omistajuudesta ja lisenssistä. Tällä pyritään yhtenäistämään erityisesti käyttöoikeus- ja lisenssikäytäntöjä. Lisäksi on mahdollisuus syöttää rahoitukseen liittyvää tietoa, mikä edistää tiedon raportointia myös rahoittajille päin. Katan monipuolisten hakuominaisuuksien ansioista datan löytäminen on helpompaa. Tämä myös edistää meriitin syntymistä tutkijoille. </p> <p> Kata-palvelun omistaa opetus- ja kulttuuriministeriö. Palvelun tuottaa CSC - tieteen tietotekniikan keskus. Palvelu on tieteenalariippumaton ja käyttäjilleen maksuton.</p> "
+msgstr "<h2>Tietoa Kata-metadatakatalogista</h2> <p> Kata kerää tutkimusaineistojen metadataa useista ulkopuolisista lähteistä sekä tarjoaa käyttöliittymän metadatan lisäämiseen suoraan Kataan. Tutkimusdataa ei koskaan tallenneta Kataan, vaan se voidaan säilyttää missä tahansa tallennuspalvelussa. Katassa olevien metatietojen avulla data on kuitenkin helposti kenen tahansa löydettävissä. </p> <p> Datan kattava kuvailu lisää olennaisesti sen näkyvyyttä. Kata pyrkii edistämään kuvailujen tasoa soveltamalla minimimetatietomallia ja sen kaikille tieteenaloille yhteisiä metatietokenttiä. Katan sisältämillä aputyökaluilla yhteisten metatietokenttien täyttäminen on tehty mahdollisimman helpoksi. Osana yhteisiä metatietokenttiä on myös kentät, jotka kertovat datan käyttöoikeuksista, omistajuudesta ja lisenssistä. Tällä pyritään yhtenäistämään erityisesti käyttöoikeus- ja lisenssikäytäntöjä. Lisäksi on mahdollisuus syöttää rahoitukseen liittyvää tietoa, mikä edistää tiedon raportointia myös rahoittajille päin. Katan monipuolisten hakuominaisuuksien ansiosta datan löytäminen on helpompaa. Tämä myös edistää meriitin syntymistä tutkijoille. </p> <p> Kata-palvelun omistaa opetus- ja kulttuuriministeriö. Palvelun tuottaa CSC - Tieteen tietotekniikan keskus Oy. Palvelu on tieteenalariippumaton ja käyttäjilleen maksuton.</p> "
 
 # Edit user form
 msgid "Note that the changes in user information have no effect if you are using Haka login."
 msgstr "Muutokset käyttäjäprofiiliin jätetään huomioimatta jos käytät Haka-kirjautumista."
 
 # Help and FAQ
-msgid "What means creating a new access request form?"
-msgstr "Mitä tarkoittaa uuden lupahakemuksen luonti?"
+msgid "What does creating a new access application form mean?"
+msgstr "Mitä tarkoittaa uuden lupahakemuslomakkeen luonti?"
 
-msgid "It means that Kata creates automatically a default workflow to REMS. REMS is software for managing access rights to research data. With it you can specify that a user must send an application in REMS service to you to gain access to your data. Find out more from: "
-msgstr "Se tarkoittaa Katan automaattisesti luomaa oletustyövuota REMS:iin. REMS on sovellus, jolla hallinnoidaan pääsyoikeuksia tutkimusdataan. Sen avulla voit määritellä, että käyttäjän pitää lähettää sinulle hakemus REMS-palvelussa, jonka perusteella voit myöntää oikeuden ja toimittaa datasi hakijalle. Lue lisää aiheesta: "
+msgid "It means that Kata creates automatically a default workflow to REMS (Resource Entitlement Management System). REMS is a service for managing access rights to research data. With it you can specify that a user must send an application in the REMS service to you to gain access to your data. Find out more from: "
+msgstr "Se tarkoittaa Katan automaattisesti luomaa oletustyövuota REMS:iin (Resource Entitlement Management System). REMS on palvelu, jolla hallinnoidaan pääsyoikeuksia tutkimusdataan. Sen avulla voit määritellä, että käyttäjän pitää lähettää sinulle hakemus REMS-palvelussa, jonka perusteella voit myöntää oikeuden ja toimittaa datasi hakijalle. Lue lisää aiheesta: "
 
 msgid "Kata is integrated to TTA's REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: "
 msgstr "Kata on integroitu TTA:n REMS-palveluun, Reettaan. Tämä tarkoittaa sitä että voit määritellä datasi olevan saatavilla lupahakemuksen täyttämisen ja lähettämisen myötä. Datan omistajan roolissa hyväksyt tai hylkäät hakemuksen REMS-palvelussa ja toimitat datasi hakijalle. Voit luoda lupahakemuksen työvuon itse REMS-palvelussa, tai käyttää minimalistista automaattisesti luotavaa hakemusta. Kun datalla on olemassa lupahakemus, tietoaineiston sivulla oleva linkki vie suoraan lupahakemukseen. Lue lisää "
@@ -11397,10 +11397,10 @@ msgstr "REMS:n käyttöohjeista"
 msgid "For additional help send email to: "
 msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
 
-msgid "I'm trying to accept an application in REMS but the link to form received by email is empty."
+msgid "I'm trying to accept an application in REMS but the link to the form received by email is empty."
 msgstr "Yritän hyväksyä hakemuksen REMS:ssä, mutta sähköpostin välityksellä tulleen linkin lomake on tyhjä"
 
-msgid "Most likely the distributor's email address isn't bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the acceptor. To fix this, log in to reetta.csc.fi with identity bound to the email address or change the dataset's distributor's email address to a valid one."
+msgid "Most likely the distributor's email address isn't bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the person accepting the application. To fix this, log in to reetta.csc.fi with identity bound to the email address or change the dataset's distributor's email address to a valid one."
 msgstr "Todennäköistä on että joko jakelijan sähköpostiosoitetta ei ole sidottuna mihinkään Haka-identiteettiin tai kukaan ei ole kirjautunut sisään kyseisellä identiteetillä REMS-palveluun. Tällöin REMS ei voi tunnistaa hyväksyjää. Korjataksesi tämän kirjaudu sisään palvelimelle reetta.csc.fi identiteetillä, johon sähköposti on sidottu tai muuta tietoaineiston jakelijan sähköpostiosoite Hakan tunnistamaksi."
 
 # REMS (these should be in ckanext-rems?)

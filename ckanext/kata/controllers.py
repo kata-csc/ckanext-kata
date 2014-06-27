@@ -140,7 +140,7 @@ class AccessRequestController(BaseController):
             if not self._have_pending_requests(pkg_id, user.id):
                 req = KataAccessRequest(user.id, pkg.id)
                 req.save()
-                h.flash_success(_("A request for editing privileges to package %s will be sent to the package administrator") % pkg_title)
+                h.flash_success(_("A request for editing privileges will be sent to the administrator of package %s") % pkg_title)
                 redirect(url)
             else:
                 h.flash_error(_("A request is already pending"))
