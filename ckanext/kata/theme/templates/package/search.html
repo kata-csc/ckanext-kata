@@ -35,7 +35,6 @@
   {% do current_search_rows.append({ 'field': c.search_fields | first, 'text': '', 'operator': 'AND' }) %}
 {% endif %}
 
-
 {% block primary_content %}
 
 <article class="module">
@@ -53,43 +52,58 @@
   <section class="module-content">
 
     {% block primary_content_inner %}
-
     <div class="module-content tab-content active">
 
       {# Basic search tab #}
 
       <div id="search-tab" class="tab-pane{% if not c.advanced_search %} active{% endif %}">
-        <form id="dataset-search" class="dataset-search clearfix" method="get" data-module="select-switch">
+        <form id="dataset-search" class="dataset-search clearfix search-form" method="get" data-module="select-switch">
           <div class="search-terms">
-          <span class="control-group search-giant">
-            <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
-                 placeholder="{{ _('Search...') }}"/>
-            <button type="submit" value="{{ _('Search') }}">Submit</button>
-          </span>
-          {#<span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
-          <span class="search-infotext">
-          {{ _('Use wildcard to search with various spellings, for example: cat*') }}
-          </span>#}
+             <div class="search-input control-group search-giant">
+               <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('Search...') }}">
+               <button type="submit" value="search">
+                 <i class="icon-search"></i>
+                 <span>{{ _('Submit') }}</span>
+               </button>
+             </div>
 
-          {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
-
-          {% if c.fields -%}
-          <span>
-            {%- for k, v in c.fields -%}
-            <input type="hidden" name="{{ k }}" value="{{ v }}"/>
-            {% endfor -%}
-          </span>
-          {%- endif %}
+            {% if c.fields -%}
+              <span>
+                {%- for k, v in c.fields -%}
+                  <input type="hidden" name="{{ k }}" value="{{ v }}"/>
+                {% endfor -%}
+              </span>
+            {%- endif %}
           </div>
           <div id="dataset-search-ext"></div>
+          
+            {% set sorting = [
+              (_('Relevance'), 'score desc, metadata_modified desc'),
+              (_('Name Ascending'), 'title_string asc'),
+              (_('Name Descending'), 'title_string desc'),
+              (_('Last Modified'), 'metadata_modified desc'),
+              (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
+            %}
+            {% if sorting %}
+              <div class="form-select control-group control-order-by">
+                <label for="field-order-by">{{ _('Order by') }}</label>
+                <select id="field-order-by" name="sort">
+                  {% for label, value in sorting %}
+                    {% if label and value %}
+                      <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
+              </div>
+            {% endif %}
         </form>
-
       </div>
 
       {# Advanced search tab #}
 
       <div id="advanced-search-tab" class="tab-pane{% if c.advanced_search %} active{% endif %}">
-        <form id="advanced-search" class="dataset-search clearfix form-horizontal" method="get" data-module="advanced-search-kata select-switch-order-by">
+        <form id="advanced-search" class="dataset-search clearfix form-horizontal search-form" method="get" data-module="advanced-search-kata select-switch-order-by">
           <div class="search-terms">
           <span id="advanced-search-group" class="control-group">
 
@@ -158,74 +172,87 @@
                 </div>
               </span>
             </div>
-            
 
-            <div>
             <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
             <span class="search-infotext">
               {{ _('Use wildcard to search with various spellings, for example: cat*') }}
             </span>
               <button id="advanced_search_submit" class="btn btn-primary kata-search-button" type="submit" value="{{ _('Search') }}">{{ _('Search') }}</button>
             </div>
-          </span>
 
-          {{ h.snippet('snippets/sort_by.html', sort=c.sort_by_selected) }}
+            
+            {% set sorting = [
+                (_('Relevance'), 'score desc, metadata_modified desc'),
+                (_('Name Ascending'), 'title_string asc'),
+                (_('Name Descending'), 'title_string desc'),
+                (_('Last Modified'), 'metadata_modified desc'),
+                (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
+            %}
+            {% if sorting %}
+              <div class="form-select control-group control-order-by">
+                <label for="field-order-by">{{ _('Order by') }}</label>
+                <select id="field-order-by" name="sort">
+                  {% for label, value in sorting %}
+                    {% if label and value %}
+                      <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
+              </div>
+            {% endif %}
 
-          {% if c.fields -%}
-          <span>
-            {%- for k, v in c.fields -%}
-            <input type="hidden" name="{{ k }}" value="{{ v }}"/>
-            {% endfor -%}
-          </span>
-          {%- endif %}
-          </div>
-          <input type="hidden" id="default_search_field" value="{{ c.search_fields | first }}"/>
-          <div id="advanced-search-ext"></div>
+            {% if c.fields -%}
+            <span>
+              {%- for k, v in c.fields -%}
+              <input type="hidden" name="{{ k }}" value="{{ v }}"/>
+              {% endfor -%}
+            </span>
+            {%- endif %}
+            </div>
+            <input type="hidden" id="default_search_field" value="{{ c.search_fields | first }}"/>
+            <div id="advanced-search-ext"></div>
 
-          <span>
-            <input type="hidden" name="ext_advanced-search" value="true" />
-          </span>
-
+            <span>
+              <input type="hidden" name="ext_advanced-search" value="true" />
+            </span>
         </form>
       </div>
-
-      <div class="results">
-        <strong>
-          {% if c.q %}
-            {% snippet 'snippets/search_result_text.html', query=c.q, count=c.page.item_count, type='dataset' %}
-          {% else %}
-          {# Desperate attempt to make the header text more sane #}
-            {% if c.search_url_params|length > 1 and c.page.item_count == 0 %}
-              <p class="extra">{{ _('Please try another search term.') }}</p>
-            {% elif c.search_url_params|length > 1 and c.page.item_count != 0 %}
-              <p class="extra">{{ _('Search results') }}</p>
-            {# This will never trigger in the current setup #}
-            {% else %}
-              {{ _('All datasets') }}
-            {% endif %}
-          {% endif %}
-        </strong>
-
-        <div class="filter-list">
-          {% for field in c.fields_grouped %}
-          <span class="facet">{{ c.facet_titles.get(field) }}:</span>
-          {% for value in c.fields_grouped[field] %}
-          <span class="filtered pill">
-            {%- if c.translated_fields and c.translated_fields.has_key((field,value)) -%}
-              {{ c.translated_fields[(field,value)] }}
-            {%- else -%}
-              {{ value }}
-            {%- endif %}
-            <a href="{{ c.remove_field(field, value) }}" class="remove" title="{{ _('Remove') }}"><i
-               class="icon-remove"></i></a>
-          </span>
-          {% endfor %}
-          {% endfor %}
-        </div>
-
-        {% if c.q and c.page.item_count == 0 %}
-          <p class="extra">{{ _('Please try another search term.') }}</p>
+      
+      <div id='search-results-kata'>
+      {% block search_title %}
+        {% if not no_title %}
+          <h2>{% snippet 'snippets/search_result_text.html', query=c.q, count=c.page.item_count, type='dataset' %}</h2>
         {% endif %}
+      {% endblock %}
+      
+      {% block search_facets %}
+        {% set facets = {
+          'fields': c.fields_grouped,
+          'search': c.search_facets,
+          'titles': c.facet_titles,
+          'translated_fields': c.translated_fields,
+          'remove_field': c.remove_field }
+        %}
+        {% if facets %}
+          <p class="filter-list">
+            {% for field in facets.fields %}
+              {% set search_facets_items = facets.search.get(field)['items'] %}
+              <span class="facet">{{ facets.titles.get(field) }}:</span>
+              {% for value in facets.fields[field] %}
+                <span class="filtered pill">
+                  {%- if facets.translated_fields and facets.translated_fields.has_key((field,value)) -%}
+                    {{ facets.translated_fields[(field,value)] }}
+                  {%- else -%}
+                    {{ h.list_dict_filter(search_facets_items, 'name', 'display_name', value) }}
+                  {%- endif %}
+                  <a href="{{ facets.remove_field(field, value) }}" class="remove" title="{{ _('Remove') }}"><i class="icon-remove"></i></a>
+                </span>
+              {% endfor %}
+            {% endfor %}
+          </p>
+        {% endif %}
+      {% endblock %}
       </div>
 
       {% if c.query_error %}
@@ -234,27 +261,37 @@
         {% endtrans %}
       {% endif %}
       {{ h.snippet('snippets/package_list.html', packages=c.page.items) }}
-    </div>
 
-    {{ c.page.pager(q=c.q) }}
+      {{ c.page.pager(q=c.q) }}
     {% endblock %}
   </section>
 </article>
 
-<section class="module module-narrow module-shallow">
-  <small class="module-content">
-    {{ _('You can also access this registry using the ') }}{{ h.link_to(_('API'), h.url_for(controller='api', action='get_api',
-    ver=1)) }}
-    <!--! FIXME the API Docs link should be for the version of ckan being used but the dev version of ckan needs to point to latest so not trivial -->
-    ({{ _('see ') }} {{ h.link_to(_('API Docs'), 'http://docs.ckan.org/en/latest/api/index.html') }})
-    {% if g.dumps_url -%}
-    or download a <a href="{{ g.dumps_url }}">full {{ g.dumps_format }} dump</a>
-    {%- endif %}.
-  </small>
-</section>
+  {% block package_search_results_api %}
+    <section class="module">
+      <div class="module-content">
+        <small>
+          {% set api_link = h.link_to(_('API'), h.url_for(controller='api', action='get_api', ver=3)) %}
+          {% set api_doc_link = h.link_to(_('API Docs'), 'http://docs.ckan.org/en/{0}/api.html'.format(g.ckan_doc_version)) %}
+          {% if g.dumps_url -%}
+            {% set dump_link = h.link_to(_('full {format} dump').format(format=g.dumps_format), g.dumps_url) %}
+            {% trans %}
+              You can also access this registry using the {{ api_link }} (see {{ api_doc_link }}) or download a {{ dump_link }}.
+            {% endtrans %}
+          {% else %}
+            {% trans %}
+              You can also access this registry using the {{ api_link }} (see {{ api_doc_link}}).
+            {% endtrans %}
+          {%- endif %}
+        </small>
+      </div>
+    </section>
+  {% endblock %}
+
 {% endblock %}
 
 {% block secondary_content %}
+
 {{ h.snippet('snippets/facet_list.html', title=_('Keywords'), name='tags', fields=c.fields_grouped, limits=c.search_facets_limits) }}
 {{ h.snippet('snippets/facet_list.html', title=_('Discipline'), name='extras_discipline', fields=c.fields_grouped, limits=c.search_facets_limits) }}
 {{ h.snippet('snippets/facet_list.html', title=_('Author'), name='authorstring', fields=c.fields_grouped, limits=c.search_facets_limits) }}
@@ -262,8 +299,6 @@
 {{ h.snippet('snippets/facet_list.html', title=_('License'), name='license_id', fields=c.fields_grouped, limits=c.search_facets_limits) }}
 {{ h.snippet('snippets/facet_list.html', title=_('MIME'), name='mimetypestring', fields=c.fields_grouped, limits=c.search_facets_limits) }}
 {{ h.snippet('snippets/facet_list.html', title=_('Language'), name='extras_language', fields=c.fields_grouped, limits=c.search_facets_limits) }}
-  {#% for facet in c.facet_titles %}
-      {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, fields=c.fields_grouped, limits=c.search_facets_limits) }}
-  {% endfor %#}
+
 {% endblock %}
 

@@ -31,6 +31,31 @@
 /* nav */
 
 /* content */
+
+.search-terms {
+	background-color: #ebebec;
+	border-radius: 4px;
+	border: 1px solid;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-color: #ababac;
+	padding: 4px;
+	padding-top: 30px !important;
+	padding-bottom: 10px !important;
+	margin-bottom: 10px !important;
+}
+
+.search-form {
+    border-bottom: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+#search-results-kata {
+    border: 1px solid #DDDDDD;
+    margin-bottom: 20px;
+    padding: 20px;
+}
 /* Overwrite selector in main.css */
 .info-block [class^="icon-"], .info-block [class*=" icon-"] {
     display: inline;
@@ -955,17 +980,7 @@ input, button, select, textarea {
 #field-license {
 	width: 300px !important;
 }
-.search-terms {
-	background-color: #ebebec;
-	border-radius: 4px;
-	border: 1px solid;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-color: #ababac;
-	padding: 4px;
-	padding-top: 30px !important;
-	padding-bottom: 10px !important;
-}
+
 .search-infotext {
 	font-size: 12px;
 }
