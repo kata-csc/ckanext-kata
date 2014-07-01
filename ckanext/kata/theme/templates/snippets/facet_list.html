@@ -45,7 +45,7 @@ within_tertiary
     {% set wrapper_class = 'nav-facet nav-facet-tertiary' %}
   {% endif %}
   <section class="{{ wrapper_class or 'module module-narrow module-shallow' }}">
-    <h2 class="module-heading tta-lblue {% if items %}accordion-toggle{% endif %}" {% if items %}onclick="$('#{{ title or h.get_facet_title(name) }}').toggle()"{% endif %}>
+    <h2 class="module-heading tta-lblue {% if items %}accordion-toggle{% endif %}" {% if items %}onclick="$('#{{ title or h.get_facet_title(name) }}').toggle('fast')"{% endif %}>
       <!-- i class="icon-medium icon-filter tta-blue"></i -->
       {{ title or h.get_facet_title(name) }}
       {% if items %}
