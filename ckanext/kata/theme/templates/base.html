@@ -1,19 +1,19 @@
 {% ckan_extends %}
 {# Kata static files #}
 {% block styles %}
-    {{super()}}
-    {% resource 'kata-resources/css/kata.css' %}
-    {% resource 'kata-resources/css/jquery-ui-1.9.2.custom.css' %}
+  {{super()}}
+  {% resource 'kata-resources/css/jquery-ui-1.9.2.custom.css' %}
+  {% resource 'kata-resources/css/kata.css' %}
 {% endblock%}
 {% block scripts %}
-{{ super() }}
-{% block kata_scripts %}
-{% resource 'kata-resources/javascript/custom-fields-kata.js' %}
-{% resource 'kata-resources/javascript/advanced-search-kata.js' %}
-{% resource 'kata-resources/javascript/jqueryui/jquery-ui-main.js' %}
-{% resource 'kata-resources/javascript/jquerytimepicker/jquery-ui-timepicker-addon.js' %}
-{% resource 'kata-resources/javascript/kata-modules/dateselect-modules-kata.js' %}
-{% resource 'kata-resources/javascript/kata-modules/kata-notification-tools.js' %}
-{% endblock %}
-{% endblock %}
+  {{ super() }}
+  {% block kata_scripts %}
+    {% resource 'kata-resources/javascript/custom-fields-kata.js' %}
+    {% resource 'kata-resources/javascript/advanced-search-kata.js' %}
+    {% resource 'kata-resources/javascript/jqueryui/jquery-ui-main.js' %}
+    {% resource 'kata-resources/javascript/jquerytimepicker/jquery-ui-timepicker-addon.js' %}
+    {% resource 'kata-resources/javascript/kata-modules/dateselect-modules-kata.js' %}
+    {% resource 'kata-resources/javascript/kata-modules/kata-notification-tools.js' %}
+  {% endblock kata_scripts %}
+{% endblock scripts %}
 
