@@ -45,7 +45,7 @@
 	margin-bottom: 10px !important;
 }
 
-.search-form {
+#dataset-search, #advanced-search {
     border-bottom: 0px !important;
     margin-bottom: 0px !important;
     padding-bottom: 0px !important;
