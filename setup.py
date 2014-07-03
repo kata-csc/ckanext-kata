@@ -38,10 +38,13 @@ setup(
                         ('kata/theme/templates/kata/**.html', 'ckan', None),
                         ('kata/theme/templates/group/**.html', 'ckan', None),
                         ('kata/theme/templates/datamining/**.html', 'ckan', None),
+                        ('kata/theme/templates/macros/**.html', 'ckan', None),
                         ('kata/theme/templates/revision/**.html', 'ckan', None),
                         ('kata/theme/templates/contact/**.html', 'ckan', None),
                         ('kata/theme/templates/snippets/**.html', 'ckan', None),
                         ('kata/theme/templates/home/**.html', 'ckan', None),
+                        ('kata/theme/templates/user/**.html', 'ckan', None),
+                        ('kata/theme/templates/organization/**.html', 'ckan', None),
                         
                         ],
     },
