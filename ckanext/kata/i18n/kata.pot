@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-03 07:47+0300\n"
+"POT-Creation-Date: 2014-07-03 08:42+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -670,12 +670,40 @@ msgstr ""
 msgid "Newest datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:8
+#: ckanext/kata/theme/templates/kata/dummy.html:10
 msgid "There is a maintenance break in service"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:9
+#: ckanext/kata/theme/templates/kata/dummy.html:11
 msgid "You can not add or edit data during maintenance break"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:15
+msgid "Original metadata record"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:16
+msgid "Event automatically created at import."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:19
+msgid "Tag string"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:20
+msgid "Availability"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:21
+msgid "Agent"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:22
+msgid "Event"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:23
+msgid "Geographic coverage"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:3

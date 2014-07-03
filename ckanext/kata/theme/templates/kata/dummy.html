@@ -5,7 +5,21 @@ test the translation easily, use this file #}
 
 {% block primary_content %}
 
+  {# maintenance break #}
+  
   {{ _('There is a maintenance break in service') }}<br />
   {{ _('You can not add or edit data during maintenance break') }}<br />
+  
+  {# harvested datasets #}
+  
+  {{ _('Original metadata record') }}<br />
+  {{ _('Event automatically created at import.') }}<br />
+  
+  {# error summary #}
+  {{ _('Tag string') }}<br />
+  {{ _('Availability') }}<br />
+  {{ _('Agent') }}<br />
+  {{ _('Event') }}<br />
+  {{ _('Geographic coverage') }}<br />
 
 {% endblock %}
