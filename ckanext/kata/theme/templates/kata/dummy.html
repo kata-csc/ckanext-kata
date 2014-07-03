@@ -1,0 +1,11 @@
+{% extends "page.html" %}
+
+{# To automatically add certain strings to translations and to
+test the translation easily, use this file #}
+
+{% block primary_content %}
+
+  {{ _('There is a maintenance break in service') }}<br />
+  {{ _('You can not add or edit data during maintenance break') }}<br />
+
+{% endblock %}
