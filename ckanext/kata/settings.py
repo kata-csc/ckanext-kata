@@ -9,9 +9,8 @@ AGENT_ROLES = {
     'producer': 'Producer',
 }
 
-# Facets used in Solr queries
-# Facets need also to be changed to search.html. This all should be fixed in newer CKAN versions with IFacets interface.
-FACETS = ['extras_discipline', 'tags', 'mimetypestring', 'license_id', 'authorstring', 'organizationstring', 'extras_language']
+# Ordered list of facets used in dataset page.
+FACETS = ['tags', 'extras_discipline', 'authorstring', 'organizationstring', 'license_id', 'mimetypestring', 'extras_language']
 
 # Default sorting method. Pre-selects the corresponding option on search form.
 DEFAULT_SORT_BY = u'metadata_modified desc'

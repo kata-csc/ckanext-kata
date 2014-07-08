@@ -4,13 +4,14 @@
 Main plugin file for Kata CKAN extension. Compatible with CKAN 2.1 and 2.2.
 """
 
-import datetime
 import logging
 import os
 import json
 import re
+import datetime
 
 from ckan.lib.base import g, c
+from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
                           toolkit,
@@ -26,9 +27,7 @@ from ckan.plugins import (implements,
                           SingletonPlugin)
                               
 from ckan.plugins.core import unload
-from ckan.controllers.package import PackageController
 
-from ckanext.kata import actions, auth_functions, settings, utils
 from ckanext.kata.schemas import Schemas
 
 from ckanext.kata import actions, auth_functions, settings, utils, helpers
@@ -41,7 +40,6 @@ t = toolkit                                 # pylint: disable=invalid-name
 # Part of repoze.who since version 2.0a4
 
 from repoze.who.plugins.auth_tkt import AuthTktCookiePlugin
-import datetime
 
 def _now():
     return datetime.datetime.now()
@@ -388,27 +386,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """Return location of the main package page"""
         return 'package/new_package_form.html'
 
-    def update_facet_titles(self, facet_titles):
-        """
-        Update the dictionary mapping facet names to facet titles.
-
-        Example: {'facet_name': 'The title of the facet'}
-
-        Called after the search operation was performed and
-        before the search page will be displayed.
-        The titles show up on the search page.
-        """
-
-        return self.dataset_facets(facet_titles, None)
-    
     def dataset_facets(self, facets_dict, package_type):
         '''
-        Updating facets, before rendering search page.
-        This is CKAN 2.0.3 hook, 2.1 will use the function above
+        Update the dictionary mapping facet names to facet titles.
+        The dict supplied is actually an ordered dict.
+
+        Example: {'facet_name': 'The title of the facet'}
         '''
-        # facets_dict.update(settings.get_field_titles(toolkit._))
         titles = settings.get_field_titles(t._)
-        kata_facet_titles = dict((field, title) for (field, title) in titles.iteritems() if field in settings.FACETS)
+        kata_facet_titles = OrderedDict((field, titles[field]) for field in settings.FACETS)
 
         # Replace the facet dictionary with Kata facets.
         # CKAN adds 'Groups' and 'Formats' there which we don't want.
