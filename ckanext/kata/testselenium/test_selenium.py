@@ -16,16 +16,12 @@ To run as apache user do these also:
     chown apache:apache /var/www/.gnome2/
     chown apache:apache /var/www/.mozilla/
 
-
-These tests need CKAN to be running so they cannot be combined with normal tests. Ideally run selenium tests after
-normal testing to get an empty database.
+These tests need CKAN to be running so they cannot be combined with normal tests. Also they use your
+main CKAN database.
 
 To run from pyenv:
-
     xvfb-run nosetests ckanext-kata/ckanext/kata/testselenium/test_selenium.py
-
 or
-
     ./ckanext-kata/nose.sh selenium
 
 """
@@ -206,7 +202,7 @@ class TestKataWithUser(TestCase):
             assert 0, "Error processing the create dataset page"
 
         try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/a[.='Hide/show']")))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/div/a[.='Hide/show']")))
         except TimeoutException:
             browser.get_screenshot_as_file('_add_dataset.png')
             browser.quit()
@@ -262,6 +258,7 @@ class TestKataWithUser(TestCase):
 
         browser.back()
         browser.get(contact_form_url)
+        browser.implicitly_wait(10)      # Wait for some javascript magic
 
         try:
             field = browser.find_element_by_xpath("//textarea[@name='msg']")
@@ -368,13 +365,14 @@ class TestKataWithUser(TestCase):
             browser.get_screenshot_as_file('test_3_advanced_search.png')
             assert 0, "Didn't get the expected search result"
 
-        result = browser.find_element_by_xpath("//div/strong/p[contains(text(),' results')]")
-
         # As the Solr index seems to live it's own life and the database might not have been cleared,
         # we cannot be sure how many hits should be expected. So this works for 1 or more results.
 
-        assert u'no datasets' not in result.text, result.text
-        assert u' results' in result.text, result.text
+        try:
+            browser.find_element_by_xpath("//li/div/h3/a[contains(text(),'Selenium Dataset')]")
+        except NoSuchElementException:
+            assert 0, 'Selenium Dataset not found with advanced search'
+
 
         browser.quit()
 
@@ -411,7 +409,7 @@ class TestKataWithUser(TestCase):
         browser.get("https://localhost/en/dataset/new")
 
         # TODO: rather wait for a certain element that the js creates
-        browser.implicitly_wait(8)  # Wait for javascript magic to alter fields
+        browser.implicitly_wait(15)  # Wait for javascript magic to alter fields
 
         try:
             for (funct, param, values, wait_for) in dataset_list:
@@ -434,7 +432,7 @@ class TestKataWithUser(TestCase):
             assert 0, "Error processing the create dataset page"
 
         try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/a[.='Hide/show']")))
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/div/a[.='Hide/show']")))
         except TimeoutException:
             browser.get_screenshot_as_file('_add_dataset_advanced.png')
             browser.quit()
@@ -445,7 +443,6 @@ class TestKataWithUser(TestCase):
         return browser.current_url
 
 
-    # TODO: fix entry of keywords and re-enable the test
     def test_add_dataset_all_fields(self):
         """Create a dataset with all fields filled."""
 
