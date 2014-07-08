@@ -216,8 +216,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'get_contact': helpers.get_contact,
                 'get_dict_field_errors': helpers.get_dict_field_errors,
                 'get_distributor': helpers.get_distributor,
-                'get_funder': utils.get_funder,
-                'get_funders': utils.get_funders,
+                'get_funder': helpers.get_funder,
+                'get_funders': helpers.get_funders,
                 'get_owner': helpers.get_owner,
                 'get_package_ratings': helpers.get_package_ratings,
                 'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
@@ -225,7 +225,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'has_contacts_field': helpers.has_contacts_field,
                 'kata_sorted_extras': helpers.kata_sorted_extras,
                 'reference_update': helpers.reference_update,
-                'resolve_agent_role': settings.resolve_agent_role,
+                'resolve_agent_role': helpers.resolve_agent_role,
                 'get_related_urls': helpers.get_related_urls,
                 'get_rdf_extras': helpers.get_rdf_extras,
                 'get_if_url': helpers.get_if_url,
@@ -393,7 +393,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         Example: {'facet_name': 'The title of the facet'}
         '''
-        titles = settings.get_field_titles(t._)
+        titles = utils.get_field_titles(t._)
         kata_facet_titles = OrderedDict((field, titles[field]) for field in settings.FACETS)
 
         # Replace the facet dictionary with Kata facets.
@@ -523,7 +523,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             c.sort_by_selected = settings.DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
 
         c.search_fields = settings.SEARCH_FIELDS
-        c.translated_field_titles = settings.get_field_titles(toolkit._)
+        c.translated_field_titles = utils.get_field_titles(toolkit._)
 
         # Start advanced search parameter parsing
         if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
