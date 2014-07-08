@@ -4,13 +4,14 @@
 Main plugin file for Kata CKAN extension. Compatible with CKAN 2.1 and 2.2.
 """
 
-import datetime
 import logging
 import os
 import json
 import re
+import datetime
 
 from ckan.lib.base import g, c
+from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
                           toolkit,
@@ -26,9 +27,7 @@ from ckan.plugins import (implements,
                           SingletonPlugin)
                               
 from ckan.plugins.core import unload
-from ckan.controllers.package import PackageController
 
-from ckanext.kata import actions, auth_functions, settings, utils
 from ckanext.kata.schemas import Schemas
 
 from ckanext.kata import actions, auth_functions, settings, utils, helpers
@@ -41,7 +40,6 @@ t = toolkit                                 # pylint: disable=invalid-name
 # Part of repoze.who since version 2.0a4
 
 from repoze.who.plugins.auth_tkt import AuthTktCookiePlugin
-import datetime
 
 def _now():
     return datetime.datetime.now()
@@ -218,8 +216,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'get_contact': helpers.get_contact,
                 'get_dict_field_errors': helpers.get_dict_field_errors,
                 'get_distributor': helpers.get_distributor,
-                'get_funder': utils.get_funder,
-                'get_funders': utils.get_funders,
+                'get_funder': helpers.get_funder,
+                'get_funders': helpers.get_funders,
                 'get_owner': helpers.get_owner,
                 'get_package_ratings': helpers.get_package_ratings,
                 'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
@@ -227,7 +225,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'has_contacts_field': helpers.has_contacts_field,
                 'kata_sorted_extras': helpers.kata_sorted_extras,
                 'reference_update': helpers.reference_update,
-                'resolve_agent_role': settings.resolve_agent_role,
+                'resolve_agent_role': helpers.resolve_agent_role,
                 'get_related_urls': helpers.get_related_urls,
                 'get_rdf_extras': helpers.get_rdf_extras,
                 'get_if_url': helpers.get_if_url,
@@ -388,27 +386,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """Return location of the main package page"""
         return 'package/new_package_form.html'
 
-    def update_facet_titles(self, facet_titles):
-        """
-        Update the dictionary mapping facet names to facet titles.
-
-        Example: {'facet_name': 'The title of the facet'}
-
-        Called after the search operation was performed and
-        before the search page will be displayed.
-        The titles show up on the search page.
-        """
-
-        return self.dataset_facets(facet_titles, None)
-    
     def dataset_facets(self, facets_dict, package_type):
         '''
-        Updating facets, before rendering search page.
-        This is CKAN 2.0.3 hook, 2.1 will use the function above
+        Update the dictionary mapping facet names to facet titles.
+        The dict supplied is actually an ordered dict.
+
+        Example: {'facet_name': 'The title of the facet'}
         '''
-        # facets_dict.update(settings.get_field_titles(toolkit._))
-        titles = settings.get_field_titles(t._)
-        kata_facet_titles = dict((field, title) for (field, title) in titles.iteritems() if field in settings.FACETS)
+        titles = utils.get_field_titles(t._)
+        kata_facet_titles = OrderedDict((field, titles[field]) for field in settings.FACETS)
 
         # Replace the facet dictionary with Kata facets.
         # CKAN adds 'Groups' and 'Formats' there which we don't want.
@@ -537,7 +523,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             c.sort_by_selected = settings.DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
 
         c.search_fields = settings.SEARCH_FIELDS
-        c.translated_field_titles = settings.get_field_titles(toolkit._)
+        c.translated_field_titles = utils.get_field_titles(toolkit._)
 
         # Start advanced search parameter parsing
         if data_dict.has_key('extras') and len(data_dict['extras']) > 0:

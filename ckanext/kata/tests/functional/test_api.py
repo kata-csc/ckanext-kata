@@ -8,16 +8,13 @@ Functional tests for Kata that use CKAN API.
 
 import copy
 import logging
-from nose import with_setup
-
 import testfixtures
 
 from ckan.lib.helpers import url_for
-import ckan.lib.search as search
+from ckan.lib import search
 from ckan.tests import call_action_api
-from ckan import model
 
-from ckanext.kata import settings, utils
+from ckanext.kata import settings, utils, helpers
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT, TEST_RESOURCE
 
@@ -366,7 +363,7 @@ class TestDataReading(KataApiTestCase):
                    contact['email'] == u'Not authorized to see this information' or \
                    contact['email'] == u'hidden'
 
-        for funder in utils.get_funders(output):
+        for funder in helpers.get_funders(output):
             assert 'fundingid' not in funder or \
                    funder['fundingid'] == u'Not authorized to see this information'
 

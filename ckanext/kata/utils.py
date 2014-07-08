@@ -10,13 +10,12 @@ import urllib2
 import socket
 
 from pylons import config
-import functionally as fn
 from lxml import etree
 
 from ckan.lib.email_notifications import send_notification
 from ckan.model import User, Package
 from ckan.lib import helpers as h
-from ckanext.kata import settings
+from ckanext.kata import settings, helpers
 
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
@@ -201,17 +200,6 @@ def dataset_to_resource(data_dict):
 
     return data_dict
 
-def get_funder(data_dict):
-    '''Get a single funder from agent field in data_dict'''
-    return fn.first(get_funders(data_dict))
-
-def get_funders(data_dict):
-    '''Get all funders from agent field in data_dict'''
-    # return filter(lambda x: x.get('role') == u'funder', data_dict.get('agent', []))
-    # TODO: Fix validators to not create empty agents
-    return filter(lambda x: x.get('role') == u'funder' and \
-                            (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
-                  data_dict.get('agent', []))
 
 def hide_sensitive_fields(pkg_dict1):
     '''
@@ -222,7 +210,7 @@ def hide_sensitive_fields(pkg_dict1):
 
     # pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
     # pkg_dict1['project_funding'] = _('Not authorized to see this information')
-    funders = get_funders(pkg_dict1)
+    funders = helpers.get_funders(pkg_dict1)
     for fun in funders:
         fun.pop('fundingid', None)
 
@@ -232,3 +220,29 @@ def hide_sensitive_fields(pkg_dict1):
 
     return pkg_dict1
 
+
+def get_field_titles(_):
+    '''
+    Get correctly translated titles for search fields
+
+    :param _: gettext translator
+    :return: dict of titles for fields
+    '''
+
+    translated_field_titles = {}
+
+    for k, v in settings._FIELD_TITLES.iteritems():
+        translated_field_titles[k] = _(v)
+
+    return translated_field_titles
+
+
+def get_field_title(key, _):
+    '''
+    Get correctly translated title for one search field
+
+    :param _: gettext translator
+    :return: dict of titles for fields
+    '''
+
+    return _(settings._FIELD_TITLES[key])

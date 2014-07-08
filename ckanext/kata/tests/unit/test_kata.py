@@ -11,42 +11,10 @@ from unittest import TestCase
 
 from pylons.util import PylonsContext, pylons, AttribSafeContextObj
 
-from ckanext.kata.settings import get_field_titles, _FIELD_TITLES, get_field_title
+from ckanext.kata.settings import _FIELD_TITLES
 from ckanext.kata.plugin import KataPlugin
-from ckanext.kata import settings, utils, helpers, actions
+from ckanext.kata import settings, utils, helpers
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
-
-
-class TestKataExtension(TestCase):
-    """General tests for Kata CKAN extension."""
-
-    def test_get_field_titles(self):
-        """Test settings.get_field_titles()"""
-
-        titles = get_field_titles(lambda x: x)
-
-        assert len(titles) > 2, 'Found less than 3 field titles'
-        assert 'tags' in titles, 'No tags field found in field titles'
-        assert 'authorstring' in titles, 'No authorstring field found in field titles'
-
-    def test_get_field_titles_translate(self):
-        """Test settings.get_field_titles() translation"""
-
-        translator = lambda x: x[::-1]  # Reverse string
-
-        titles = get_field_titles(translator)
-
-        assert translator(_FIELD_TITLES['tags']) in titles.values(), 'No tags field found in field titles'
-        assert translator(_FIELD_TITLES['authorstring']) in titles.values(), 'No authorstring found in field titles'
-
-    def test_get_field_title(self):
-        """Test settings.get_field_title()"""
-
-        translator = lambda x: x[::-1]  # Reverse string
-
-        title = get_field_title('tags', translator)
-
-        assert translator(_FIELD_TITLES['tags']) == title
 
 
 class TestKataPlugin(TestCase):
@@ -378,7 +346,35 @@ class TestUtils(TestCase):
         assert pid != pid2
 
     def test_get_funder(self):
-        assert utils.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
+        assert helpers.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
+
+    def test_get_field_titles(self):
+        """Test settings.get_field_titles()"""
+
+        titles = utils.get_field_titles(lambda x: x)
+
+        assert len(titles) > 2, 'Found less than 3 field titles'
+        assert 'tags' in titles, 'No tags field found in field titles'
+        assert 'authorstring' in titles, 'No authorstring field found in field titles'
+
+    def test_get_field_titles_translate(self):
+        """Test settings.get_field_titles() translation"""
+
+        translator = lambda x: x[::-1]  # Reverse string
+
+        titles = utils.get_field_titles(translator)
+
+        assert translator(_FIELD_TITLES['tags']) in titles.values(), 'No tags field found in field titles'
+        assert translator(_FIELD_TITLES['authorstring']) in titles.values(), 'No authorstring found in field titles'
+
+    def test_get_field_title(self):
+        """Test settings.get_field_title()"""
+
+        translator = lambda x: x[::-1]  # Reverse string
+
+        title = utils.get_field_title('tags', translator)
+
+        assert translator(_FIELD_TITLES['tags']) == title
 
 
 class TestHelpers(TestCase):

@@ -9,14 +9,13 @@ AGENT_ROLES = {
     'producer': 'Producer',
 }
 
-# Facets used in Solr queries
-# Facets need also to be changed to search.html. This all should be fixed in newer CKAN versions with IFacets interface.
-FACETS = ['extras_discipline', 'tags', 'mimetypestring', 'license_id', 'authorstring', 'organizationstring', 'extras_language']
+# Ordered list of facets used in dataset page.
+FACETS = ['tags', 'extras_discipline', 'authorstring', 'organizationstring', 'license_id', 'mimetypestring', 'extras_language']
 
 # Default sorting method. Pre-selects the corresponding option on search form.
 DEFAULT_SORT_BY = u'metadata_modified desc'
 
-# Titles for all fields used in searches, should be used through get_field_titles() for translation
+# Titles for all fields used in searches, should be used through helpers.get_field_titles() for translation
 _FIELD_TITLES = {'organizationstring': 'Organization',
                  'ext_organizationstring': 'Organization',
                  'ext_organization': 'Organization',
@@ -127,33 +126,3 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            'temporal_coverage_end']
 
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
-
-
-def get_field_titles(_):
-    '''
-    Get correctly translated titles for search fields
-
-    :param _: gettext translator
-    :return: dict of titles for fields
-    '''
-
-    translated_field_titles = {}
-
-    for k, v in _FIELD_TITLES.iteritems():
-        translated_field_titles[k] = _(v)
-
-    return translated_field_titles
-
-
-def get_field_title(key, _):
-    '''
-    Get correctly translated title for one search field
-
-    :param _: gettext translator
-    :return: dict of titles for fields
-    '''
-
-    return _(_FIELD_TITLES[key])
-
-def resolve_agent_role(role):
-    return AGENT_ROLES.get(role, None)

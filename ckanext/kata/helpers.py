@@ -1,30 +1,34 @@
 # coding=utf-8
+'''
+Template helpers for Kata CKAN extension.
+'''
+
+from pylons import config
+import functionally as fn
 
 import ckan.model as model
-
+from ckan.model import Related, Package, User
 from ckan.lib.base import g, h
 from ckan.logic import get_action, ValidationError
 from ckanext.kata import settings
-from ckanext.kata.schemas import Schemas
-from ckan.model import Related, Package, User
-from pylons import config
 
-import ckanext.kata.utils as utils
-import functionally as fn
 
 def has_agents_field(data_dict, field):
     '''Return true if some of the data dict's agents has attribute given in field.'''
     return [] != filter(lambda x : x.get(field), data_dict.get('agent', []))
 
+
 def has_contacts_field(data_dict, field):
     '''Return true if some of the data dict's contacts has attribute given in field'.'''
     return [] != filter(lambda x : x.get(field), data_dict.get('contact', []))
+
 
 def reference_update(ref):
     #@beaker_cache(type="dbm", expire=2678400)
     def cached_url(url):
         return url
     return cached_url(ref)
+
 
 def kata_sorted_extras(list_):
     '''
@@ -61,6 +65,7 @@ def kata_sorted_extras(list_):
         output.append((key, val))
     return output
 
+
 def get_dict_field_errors(errors, field, index, name):
     '''Get errors correctly for fields that are represented as nested dict fields in data_dict.
 
@@ -75,6 +80,7 @@ def get_dict_field_errors(errors, field, index, name):
         pass
     return error
 
+
 def get_package_ratings_for_data_dict(data_dict):
     '''
     Create a metadata rating (1-5) for given data_dict.
@@ -86,6 +92,8 @@ def get_package_ratings_for_data_dict(data_dict):
 
     :param data: A CKAN data_dict
     '''
+    from ckanext.kata.schemas import Schemas         # Importing here prevents circular import
+
     context = {
         'model': model,
         'schema': Schemas.show_package_schema()
@@ -96,6 +104,7 @@ def get_package_ratings_for_data_dict(data_dict):
         return (0, u'○○○○○')
 
     return get_package_ratings(pkg_dict)
+
 
 def get_package_ratings(data):
     '''
@@ -137,7 +146,7 @@ def get_package_ratings(data):
     if len(data.get('event', [])) >= 1:
         score += 1
 
-    if utils.get_funder(data):
+    if get_funder(data):
         score += 6
 
     # MAX 28
@@ -167,6 +176,7 @@ def get_package_ratings(data):
     stars = u'●●●●●'[:rating] + u'○○○○○'[rating:]   # Star rating as string
     return (rating, stars)
 
+
 def get_related_urls(pkg):
     '''
     Get related urls for package
@@ -175,6 +185,7 @@ def get_related_urls(pkg):
     for rel in Related.get_for_dataset(pkg):
         ret.append(rel.related.url)
     return ret
+
 
 def get_rdf_extras(pkg_dict):
     '''
@@ -220,6 +231,7 @@ def get_rdf_extras(pkg_dict):
     
     return ret
 
+
 def get_if_url(data):
     '''
     Try to guess if data is sufficient type for rdf:about
@@ -229,6 +241,7 @@ def get_if_url(data):
         return True
     return False
 
+
 def string_to_list(data):
     '''
     Split languages and make it a list for Genshi (read.rdf)
@@ -236,6 +249,7 @@ def string_to_list(data):
     if data:
         return data.split(", ")
     return ''
+
 
 def get_first_admin(id):
     '''
@@ -256,6 +270,7 @@ def get_first_admin(id):
                                            id=user.name)
                     return profileurl
     return False
+
 
 def get_rightscategory(license):
     '''
@@ -289,3 +304,24 @@ def get_distributor(data_dict):
 def get_owner(data_dict):
     '''Get a single owner from agent field in data_dict'''
     return fn.first(filter(lambda x: x.get('role') == u'owner', data_dict.get('agent', [])))
+
+
+def resolve_agent_role(role):
+    '''
+    Get a non-translated role name.
+    '''
+    return settings.AGENT_ROLES.get(role, None)
+
+
+def get_funder(data_dict):
+    '''Get a single funder from agent field in data_dict'''
+    return fn.first(get_funders(data_dict))
+
+
+def get_funders(data_dict):
+    '''Get all funders from agent field in data_dict'''
+    # return filter(lambda x: x.get('role') == u'funder', data_dict.get('agent', []))
+    # TODO: Fix validators to not create empty agents
+    return filter(lambda x: x.get('role') == u'funder' and \
+                            (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
+                  data_dict.get('agent', []))
