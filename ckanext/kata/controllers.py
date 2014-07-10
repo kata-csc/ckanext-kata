@@ -628,9 +628,9 @@ class KataPackageController(PackageController):
             data_dict['role'] = role
             data_dict['username'] = username
             ret = get_action('dataset_editor_add')(context, data_dict)
-            if ret.get('errmsg', None):
-                h.flash_error(ret.get('errmsg'))
-            elif ret.get('msg', None):
+            if not ret.get('success', None):
+                h.flash_error(ret.get('msg'))
+            else:
                 h.flash_success(ret.get('msg'))
 
         if email:
@@ -654,7 +654,6 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
                 h.flash_error(error_msg)
 
         pkg = model.Package.get(name)
-        #data_dict['domain_object'] = pkg.id
         data_dict = get_action('package_show')(context, {'id':pkg.id})
         data_dict['domain_object'] = pkg.id
         domain_object_ref = _get_or_bust(data_dict, 'domain_object')
@@ -675,34 +674,24 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
         context = {'model': model, 'session': model.Session, 'user': c.user}
         data_dict = {}
         data_dict['name'] = name
-        data_dict['username'] = User.get(request.params.get('username', None))
+        data_dict['username'] = request.params.get('username', None)
         data_dict['role'] = request.params.get('role', None)
-        pkg = model.Package.get(name)
-        data_dict['domain_object'] = pkg.id
-        data_dict['id'] = pkg.id
 
         ret = ckan.logic.get_action('dataset_editor_delete')(context, data_dict)
 
-        data_dict = get_action('package_show')(context, {'id':pkg.id})
-        data_dict['domain_object'] = pkg.id
-        domain_object_ref = _get_or_bust(data_dict, 'domain_object')
-        domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
-
-        if ret.get('errmsg', None):
-            h.flash_error(ret.get('errmsg'))
-        elif ret.get('msg', None):
+        if not ret.get('success', None):
+            h.flash_error(ret.get('msg'))
+        else:
             h.flash_success(ret.get('msg'))
-        log.debug(ret)
 
-        #return self.dataset_editor_manage(name)
-        #return self._show_dataset_role_page(domain_object, context, data_dict)
         h.redirect_to(h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=name))
 
     def _roles_list(self, userobj, domain_object):
         '''
         Builds the selection of roles for the role popup menu
         '''
-        if ckan.model.authz.user_has_role(userobj, 'admin', domain_object):
+        if ckan.model.authz.user_has_role(userobj, 'admin', domain_object) or \
+                userobj.sysadmin == True:
             return [{'text': 'Admin', 'value':'admin'},
                    {'text': 'Editor', 'value':'editor'},
                    {'text': 'Reader', 'value':'reader'}]
@@ -714,7 +703,7 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
         '''
         Adds data for template and renders it
         '''
-        #pkg_dict = get_action('package_show')(context, {'id': data_dict['id']})
+
         c.roles = self._roles_list(c.userobj, domain_object)
         editor_list = get_action('roles_show')(context, data_dict)
         c.members = []

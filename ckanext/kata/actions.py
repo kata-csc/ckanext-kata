@@ -23,6 +23,7 @@ from ckan.logic import check_access, NotAuthorized, side_effect_free, Validation
 from ckanext.kata import utils
 from ckan.logic import get_action
 _get_or_bust = ckan.logic.get_or_bust
+_authz = model.authz
 
 
 
@@ -404,79 +405,101 @@ def related_update(context, data_dict):
 
 def dataset_editor_delete(context, data_dict):
     '''
+    Deletes user and role in a dataset
+
     :param username: user name to delete
     :id: dataset id
     :role: string (editor, admin, reader)
 
     :rtype = message dict
     '''
-    pkg = model.Package.get(data_dict.get('id', None))
-    user = model.User.get(context['user'])
-    role = data_dict.get('role')
-    username = data_dict.get('username', None)
-    domain_object = data_dict.get(data_dict['domain_object'], None)
-    errmsg = ""
+    pkg = model.Package.get(data_dict.get('name', None))
+    user = model.User.get(context.get('user', None))
+    role = data_dict.get('role', None)
+    username = model.User.get(data_dict.get('username', None))
     msg = ""
 
-    if pkg and username and role:
-        if not domain_object:
-            pkg_dict = get_action('package_show')(context, {'id': pkg.id})
-            pkg_dict['domain_object'] = data_dict['id']
-            domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
-            domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
+    if not (pkg and username and role):
+        msg = _('Required information missing')
+        {'success': False, 'msg': msg}
 
-        if ckan.model.authz.user_has_role(user, role, domain_object) or \
-                ckan.model.authz.user_has_role(user, 'admin', domain_object) or \
-                role == 'reader':
-            if not ckan.model.authz.user_has_role(username, role, pkg):
-                errmsg = _('No such user and role combination')
-            elif user.id == username.id:
-                errmsg = _('You can not remove yourself')
-            else:
-                ckan.model.authz.remove_user_from_role(username, role, pkg)
-                msg = _('User removed from role %s') % role
+    pkg_dict = get_action('package_show')(context, {'id': pkg.id})
+    pkg_dict['domain_object'] = pkg.id
+    domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
+    domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
 
-        else:
-            errmsg =_('No sufficient privileges to add a user to role %s.') % role
-    else:
-        errmsg = _('Required information missing')
-    return {'errmsg': errmsg, 'msg': msg}
+    # Todo: use check_access instead? It is not this detailed, though
+    if not (_authz.user_has_role(user, role, domain_object) or
+            _authz.user_has_role(user, 'admin', domain_object) or
+            role == 'reader' or user.sysadmin == True):
+        msg =_('No sufficient privileges to remove user from role %s.') % role
+        return {'success': False, 'msg': msg}
+
+    if not _authz.user_has_role(username, role, pkg):
+        msg = _('No such user and role combination')
+        return {'success': False, 'msg': msg}
+
+    if username == 'visitor' or username == 'logged_in':
+        msg = _('Built-in users can not be removed')
+        return {'success': False, 'msg': msg}
+
+    if user.id == username.id:
+        msg = _('You can not remove yourself')
+        return {'success': False, 'msg': msg}
+
+    _authz.remove_user_from_role(username, role, pkg)
+    msg = _('User removed from role %s') % role
+
+    return {'success': True, 'msg': msg}
 
 
 def dataset_editor_add(context, data_dict):
     '''
+    Adds a user and role to dataset
 
+    :name: dataset name
+    :role: string (admin, editor, reader)
+    :username: string, user to add
+
+    :rtype: message dict
     '''
     pkg = model.Package.get(data_dict.get('name', None))
-    user = model.User.get(context['user'])
-    errmsg = ""
+    user = model.User.get(context.get('user', None))
+    role = data_dict.get('role', None)
+    username = model.User.get(data_dict.get('username', None))
     msg = ""
-    if pkg:
 
-        pkg_dict = get_action('package_show')(context, {'id': pkg.id})
-        pkg_dict['domain_object'] = pkg_dict.get('id')
+    if not (pkg and user and role):
+        msg = _('Required information missing')
+        return {'success': False, 'msg': msg}
 
-        domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
-        domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
+    pkg_dict = get_action('package_show')(context, {'id': pkg.id})
+    pkg_dict['domain_object'] = pkg_dict.get('id')
 
-        if ckan.model.authz.user_has_role(user, data_dict['role'], domain_object) or \
-                        ckan.model.authz.user_has_role(user, 'admin', domain_object) or \
-                        data_dict['role'] == 'reader':
-            # Check if user isn't there already and check that given user exists
-            username = model.User.get(data_dict['username'])
-            if username:
-                if ckan.model.authz.user_has_role(username, data_dict['role'], domain_object):
-                    errmsg = _('User already has %s rights') % data_dict['role']
-                else:
-                    model.add_user_to_role(username, data_dict['role'], pkg)
-                    model.meta.Session.commit()
-                    msg = _('User added')
-            else:
-                errmsg = _('User not found')
+    domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
+    domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
 
-        else:
-            errmsg = _('No sufficient privileges to add a user to role %s.') % role
-    else:
-        errmsg = _('No such dataset found')
+    # Todo: use check_access instead? It is not this detailed, though
+    if not (_authz.user_has_role(user, role, domain_object) or
+            _authz.user_has_role(user, 'admin', domain_object) or
+            role == 'reader' or user.sysadmin == True):
+        msg = _('No sufficient privileges to add a user to role %s.') % role
+        return {'success': False, 'msg': msg}
 
-    return {'errmsg': errmsg, 'msg': msg}
+    if not username:
+        msg = _('User not found')
+        return {'success': False, 'msg': msg}
+
+    if _authz.user_has_role(username, role, domain_object):
+        msg = _('User already has %s rights') % role
+        return {'success': False, 'msg': msg}
+
+    if user.id == username.id:
+        msg = _('You can not add yourself')
+        return {'success': False, 'msg': msg}
+
+    model.add_user_to_role(username, role, pkg)
+    model.meta.Session.commit()
+    msg = _('User added')
+
+    return {'success': True, 'msg': msg}
