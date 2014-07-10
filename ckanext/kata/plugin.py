@@ -176,6 +176,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_faq")
+        map.connect('/package_administration/{name}',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="dataset_editor_manage")
+        map.connect('/dataset_editor_delete/{name}',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="dataset_editor_delete")
         return map
 
     def get_auth_functions(self):
@@ -210,6 +216,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'organization_create': actions.organization_create,
                 'organization_update': actions.organization_update,
                 'organization_delete': actions.organization_delete,
+                'dataset_editor_delete': actions.dataset_editor_delete,
+                'dataset_editor_add': actions.dataset_editor_add,
                 }
 
     def get_helpers(self):
