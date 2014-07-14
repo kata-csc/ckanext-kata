@@ -615,6 +615,10 @@ class KataPackageController(PackageController):
         '''
         context = {'model': model, 'session': model.Session, 'user': c.user}
 
+        if not h.check_access('package_update', {'id': name }):
+            h.flash_error(_('Not authorized to see this page'))
+            h.redirect_to(h.url_for(controller='package', action='read', id=name))
+
         data_dict = {}
         data_dict['name'] = name
 
