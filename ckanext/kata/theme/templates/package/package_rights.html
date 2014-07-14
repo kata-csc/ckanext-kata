@@ -14,7 +14,7 @@
 {% block primary_content_inner %}
     {% block subtitle %}{{ _('Dataset title') }}: {{ c.pkg.title }}{% endblock %}
 
-  <h3 class="page-heading">{{ _('{0} named roles'.format(c.members|length)) }}</h3>
+  <h3 class="page-heading">{{ _('{0} named roles').format(c.members|length) }}</h3>
   <table class="table table-header table-hover table-bordered">
     <col width="70" />
     <col width="40" />
