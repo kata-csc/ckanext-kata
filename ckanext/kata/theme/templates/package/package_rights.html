@@ -12,9 +12,9 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-    {% block subtitle %}{{ _('Members') }} - {{ c.pkg.title }}{% endblock %}
+    {% block subtitle %}{{ _('Dataset title') }}: {{ c.pkg.title }}{% endblock %}
 
-  <h3 class="page-heading">{{ _('{0} members'.format(c.members|length)) }}</h3>
+  <h3 class="page-heading">{{ _('{0} named roles'.format(c.members|length)) }}</h3>
   <table class="table table-header table-hover table-bordered">
     <col width="70" />
     <col width="40" />
@@ -50,7 +50,7 @@
   </table>
 
   <h1 class="page-heading">
-    {% block page_heading %}{{ _('Edit Member') if user else _('Add Member') }}{% endblock %}
+    {% block page_heading %}{{ _('Add a user for role') }}{% endblock %}
   </h1>
   {% block form %}
   <form class="dataset-form form-horizontal" method='post'>
@@ -67,10 +67,10 @@
   </form>
   <form class="dataset-form form-horizontal" method='post'>
     <h1>{{ _('Send invitation') }}</h1>
-    <p>{{ _('Did not find the user you were searching for? Send her or him an e-mail invitation to log in to Kata service.') }}</p>
+    <p>{{ _('Did not find the user you were searching for? Send her or him an email invitation to log in to Kata service.') }}</p>
     <p>{{ _('If you want to, you can add your own message to be sent to the person.') }}
-    {{ _('After the person has logged in to the service, she or he can be added for editor or admin role.') }}</p>
-    {{ form.input('email', id='field-email', label=_('Email address'), placeholder=_('darth.vader@deathstar.sw'), value='', error='', classes=['control-medium'], type='email') }}
+    {{ _('After the person has logged in to the service, she or he can be added to a role.') }}</p>
+    {{ form.input('email', id='field-email', label=_('Email address'), placeholder=_('john.doe@example.com'), value='', error='', classes=['control-medium'], type='email') }}
     {{ form.textarea('mail_message', id='field-emailmsg', label=_('Your message'), value='', error='', classes=['control-medium']) }}
     {% if g.recaptcha_publickey %}
       <div class="control-group">
@@ -101,6 +101,26 @@
 
   {% block secondary_help_content %}{% endblock %}
   
-  {{ _('Ehlo') }}
+   {% block info_module %}
+    <section class="module module-narrow">
+      <h2 class="module-heading"><i class="icon-large icon-info-sign"></i> {{ _('Modify dataset\'s editors and admins') }}</h2>
+      <div class="module-content">
+        <p>
+          {% trans %}
+            Here you can add and remove editors of this dataset. You
+            can also add and remove admins, if you have sufficient
+            privileges.
+          {% endtrans %}
+        </p><p>
+          {% trans %}
+            If you can not find a user, most likely he or she
+            hasn't logged in yet. Then invite him or her to use this service
+            via email. Note, that the email is just plain email,
+            the service doesn't provide any automation.
+          {% endtrans %}
+        </p>
+      </div>
+    </section>
+  {% endblock %}
 
 {% endblock %}

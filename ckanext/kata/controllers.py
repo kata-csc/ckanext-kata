@@ -8,8 +8,7 @@ import logging
 import string
 import mimetypes
 import functionally as fn
-from rdflib.namespace import XSD
-from rdflib.term import Identifier, URIRef, Literal, BNode
+import re
 import urllib2
 
 from paste.deploy.converters import asbool
@@ -25,11 +24,10 @@ from ckan.lib.base import BaseController, c, h, redirect, render
 from ckan.lib.email_notifications import send_notification
 from ckan.logic import get_action
 import ckan.model as model
-from ckan.model import Package, User, Related, meta, license
+from ckan.model import Package, User, meta
 from ckan.model.authz import add_user_to_role
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
-from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, Graph
 import ckan.lib.captcha as captcha
 
 _get_or_bust = ckan.logic.get_or_bust
@@ -624,6 +622,9 @@ class KataPackageController(PackageController):
         email = request.params.get('email', False)
         role = request.params.get('role', False)
 
+        pkg = model.Package.get(name)
+        data_dict = get_action('package_show')(context, {'id': pkg.id})
+
         if username:
             data_dict['role'] = role
             data_dict['username'] = username
@@ -634,27 +635,40 @@ class KataPackageController(PackageController):
                 h.flash_success(ret.get('msg'))
 
         if email:
-            try:
-                captcha.check_recaptcha(request)
-                try:
-                    subject = u'Invitation to use Kata metadata catalogue - kutsu käyttämään Kata-metadatakatalogia'
-                    body = u'\n\n%s would like to add you to editors for package %s \
-in Kata service. To enable this, please log in to the service: %s.\n\n' % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
-                    body += u'\n\n%s haluaisi lisätä sinut muokkaajaksi tietoaineistoon %s \
+            EMAIL_REGEX = re.compile(
+    r"""
+    ^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~]
+    [\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~.]+
+    @
+    [a-z.A-Z0-9-]+
+    \.
+    [a-zA-Z]{2,6}$
+    """,
+            re.VERBOSE)
+            if isinstance(email, basestring) and email:
+                if not EMAIL_REGEX.match(email):
+                    error_msg = _(u'Invalid email address')
+                    h.flash_error(error_msg)
+                else:
+                    try:
+                        captcha.check_recaptcha(request)
+                        try:
+                            subject = u'Invitation to use Kata metadata catalogue - kutsu käyttämään Kata-metadatakatalogia'
+                            body = u'\n\n%s would like to add you to editors for dataset "%s" \
+in Kata metadata catalogue service. To enable this, please log in to the service: %s.\n\n' % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
+                            body += u'\n\n%s haluaisi lisätä sinut muokkaajaksi tietoaineistoon "%s" \
 Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: %s.\n\n' \
-                            % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
-                    body += u'\n------------\nLähettäjän viesti / Sender\'s message:\n%s\n\n' % (request.params.get('mail_message', ''))
+                                    % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
+                            body += u'\n------------\nLähettäjän viesti / Sender\'s message:\n\n%s\n------------\n' % (request.params.get('mail_message', ''))
 
-                    ckan.lib.mailer.mail_recipient(email, email, subject, body)
-                    h.flash_success(_('Message sent'))
-                except ckan.lib.mailer.MailerException:
-                    raise
-            except captcha.CaptchaError:
-                error_msg = _(u'Bad Captcha. Please try again.')
-                h.flash_error(error_msg)
+                            ckan.lib.mailer.mail_recipient(email, email, subject, body)
+                            h.flash_success(_('Message sent'))
+                        except ckan.lib.mailer.MailerException:
+                            raise
+                    except captcha.CaptchaError:
+                        error_msg = _(u'Bad Captcha. Please try again.')
+                        h.flash_error(error_msg)
 
-        pkg = model.Package.get(name)
-        data_dict = get_action('package_show')(context, {'id':pkg.id})
         data_dict['domain_object'] = pkg.id
         domain_object_ref = _get_or_bust(data_dict, 'domain_object')
         domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
