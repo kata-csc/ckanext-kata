@@ -56,6 +56,11 @@
     margin-bottom: 20px;
     padding: 20px;
 }
+
+.kata-package-editor {
+    border-bottom: 1px solid !important;
+    padding-bottom: 25px !important;
+}
 /* Overwrite selector in main.css */
 .info-block [class^="icon-"], .info-block [class*=" icon-"] {
     display: inline;

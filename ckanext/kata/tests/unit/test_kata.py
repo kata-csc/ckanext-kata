@@ -15,7 +15,9 @@ from ckanext.kata.settings import _FIELD_TITLES
 from ckanext.kata.plugin import KataPlugin
 from ckanext.kata import settings, utils, helpers
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
-
+import ckan.model as model
+from ckan.lib.create_test_data import CreateTestData
+import ckanext.kata.model as kata_model
 
 class TestKataPlugin(TestCase):
     """
@@ -407,7 +409,187 @@ class TestHelpers(TestCase):
         assert helpers.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
 
 
-# class TestActions(TestCase):
-#     """Unit tests for action functions."""
-#
-#
+class TestActions(TestCase):
+    '''
+    Unit tests for action functions.
+    '''
+    @classmethod
+    def setup_class(cls):
+        '''Set up testing environment.'''
+        # Todo: fix. The harvest tables are not generated here
+        # so this class can't be run alone
+        kata_model.setup()
+        CreateTestData.create()
+
+    @classmethod
+    def teardown_class(cls):
+        '''Get away from testing environment.'''
+        kata_model.delete_tables()
+        CreateTestData.delete()
+
+
+    def test_add_member_1_fails(self):
+        '''
+        Test add member to dataset
+        Result: required information is missing
+        '''
+        context = self._build_context(user='tester')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'bogus'
+        assert actions.dataset_editor_add(context, data_dict).get('msg') == 'Required information missing'
+
+    def test_add_member_2_fails(self):
+        '''
+        Test add member to dataset
+        Result: user is not found
+        '''
+        context = self._build_context(user='testsysadmin')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'bogus'
+        data_dict['role'] = u'editor'
+        msg = actions.dataset_editor_add(context, data_dict).get('msg')
+        assert msg == 'User not found', msg
+
+    def test_add_member_3_fails(self):
+        '''
+        Test add member to dataset
+        Result: no sufficient privileges
+        '''
+        context = self._build_context(user='tester')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'tester'
+        data_dict['role'] = u'editor'
+        msg = actions.dataset_editor_add(context, data_dict).get('msg')
+        assert msg == 'No sufficient privileges to add a user to role editor.', msg
+
+    def test_add_member_4_fails(self):
+        '''
+        Test add member to dataset
+        Result: can't add thyself
+        '''
+        context = self._build_context(user='testsysadmin')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'testsysadmin'
+        data_dict['role'] = u'editor'
+        msg = actions.dataset_editor_add(context, data_dict).get('msg')
+        assert msg == 'You can not add yourself', msg
+
+    def test_add_member_5_success(self):
+        '''
+        Test add member to dataset
+        Result: success
+        '''
+        context = self._build_context(user='testsysadmin')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'tester'
+        data_dict['role'] = u'editor'
+        msg = actions.dataset_editor_add(context, data_dict).get('msg')
+        assert msg == 'User added', msg
+
+    def test_add_member_6_fails(self):
+        '''
+        Test add member to dataset
+        Result: can't add duplicate
+        '''
+        context = self._build_context(user='testsysadmin')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'tester'
+        data_dict['role'] = u'editor'
+        msg = actions.dataset_editor_add(context, data_dict).get('msg')
+        assert msg == 'User already has editor rights', msg
+
+    def test_delete_member_1_fails(self):
+        '''
+        Test delete member from dataset
+        Result: required information is missing
+        '''
+        context = self._build_context(user='testsysadmin')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'tester'
+        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        assert msg == 'Required information missing', msg
+
+    def test_delete_member_2_fails(self):
+        '''
+        Test delete member from dataset
+        Result: user doesn't exist
+        '''
+        context = self._build_context(user='testsysadmin')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'bogus'
+        data_dict['role'] = u'editor'
+        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        assert msg == 'User not found', msg
+
+    def test_delete_member_3_fails(self):
+        '''
+        Test delete member from dataset
+        Result: not enough privileges
+        '''
+        context = self._build_context(user='tester')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'testsysadmin'
+        data_dict['role'] = u'admin'
+        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        assert msg == 'No sufficient privileges to remove user from role admin.', msg
+
+    def test_delete_member_4_fails(self):
+        '''
+        Test delete member from dataset
+        Result: built-in users and yourself can't be removed
+        '''
+        context = self._build_context(user='tester')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'tester'
+        data_dict['role'] = u'editor'
+        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        assert msg == 'You can not remove yourself', msg
+        data_dict['username'] = u'visitor'
+        data_dict['role'] = u'reader'
+        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        assert msg == 'Built-in users can not be removed', msg
+
+    def test_delete_member_5_fails(self):
+        '''
+        Test delete member from dataset
+        Result: can't remove non-existent user role
+        '''
+        context = self._build_context(user='testsysadmin')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'tester'
+        data_dict['role'] = u'admin'
+        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        assert msg == 'No such user and role combination', msg
+
+    def test_delete_member_6_success(self):
+        '''
+        Test delete member from dataset
+        Result: user role removed
+        '''
+        context = self._build_context(user='testsysadmin')
+        data_dict = {}
+        data_dict['name'] = u'annakarenina'
+        data_dict['username'] = u'tester'
+        data_dict['role'] = u'editor'
+        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        assert msg == 'User removed from role editor', msg
+
+    def _build_context(self, user=None):
+        ctx = {'model': model,
+               'session': model.Session,
+               'user': user or self.user.id}
+
+        return ctx
+
+
