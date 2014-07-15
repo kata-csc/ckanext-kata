@@ -18,6 +18,7 @@ from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 import ckan.model as model
 from ckan.lib.create_test_data import CreateTestData
 import ckanext.kata.model as kata_model
+import ckanext.kata.actions as actions
 
 class TestKataPlugin(TestCase):
     """
