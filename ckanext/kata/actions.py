@@ -411,35 +411,39 @@ def dataset_editor_delete(context, data_dict):
     :id: dataset id
     :role: string (editor, admin, reader)
 
-    :rtype = message dict
+    :rtype = message dict with 'success' and 'msg'
     '''
     pkg = model.Package.get(data_dict.get('name', None))
     user = model.User.get(context.get('user', None))
     role = data_dict.get('role', None)
     username = model.User.get(data_dict.get('username', None))
-    msg = ""
 
-    if not (pkg and username and role):
+    if not (pkg and user and role):
         msg = _('Required information missing')
-        {'success': False, 'msg': msg}
+        return {'success': False, 'msg': msg}
 
     pkg_dict = get_action('package_show')(context, {'id': pkg.id})
-    pkg_dict['domain_object'] = pkg.id
+    pkg_dict['domain_object'] = pkg_dict.get('id')
     domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
+    # This could be simpler, as domain_object_ref is pkg.id
     domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
 
     # Todo: use check_access instead? It is not this detailed, though
+    if not username:
+        msg = _('User not found')
+        return {'success': False, 'msg': msg}
+
     if not (_authz.user_has_role(user, role, domain_object) or
             _authz.user_has_role(user, 'admin', domain_object) or
             role == 'reader' or user.sysadmin == True):
-        msg =_('No sufficient privileges to remove user from role %s.') % role
+        msg = _('No sufficient privileges to remove user from role %s.') % role
         return {'success': False, 'msg': msg}
 
     if not _authz.user_has_role(username, role, pkg):
         msg = _('No such user and role combination')
         return {'success': False, 'msg': msg}
 
-    if username == 'visitor' or username == 'logged_in':
+    if username.name == 'visitor' or username.name == 'logged_in':
         msg = _('Built-in users can not be removed')
         return {'success': False, 'msg': msg}
 
@@ -461,13 +465,12 @@ def dataset_editor_add(context, data_dict):
     :role: string (admin, editor, reader)
     :username: string, user to add
 
-    :rtype: message dict
+    :rtype: message dict with 'success' and 'msg'
     '''
     pkg = model.Package.get(data_dict.get('name', None))
     user = model.User.get(context.get('user', None))
     role = data_dict.get('role', None)
     username = model.User.get(data_dict.get('username', None))
-    msg = ""
 
     if not (pkg and user and role):
         msg = _('Required information missing')
@@ -480,14 +483,14 @@ def dataset_editor_add(context, data_dict):
     domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
 
     # Todo: use check_access instead? It is not this detailed, though
+    if not username:
+        msg = _('User not found')
+        return {'success': False, 'msg': msg}
+
     if not (_authz.user_has_role(user, role, domain_object) or
             _authz.user_has_role(user, 'admin', domain_object) or
             role == 'reader' or user.sysadmin == True):
         msg = _('No sufficient privileges to add a user to role %s.') % role
-        return {'success': False, 'msg': msg}
-
-    if not username:
-        msg = _('User not found')
         return {'success': False, 'msg': msg}
 
     if _authz.user_has_role(username, role, domain_object):

@@ -675,6 +675,7 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
 
         data_dict['domain_object'] = pkg.id
         domain_object_ref = _get_or_bust(data_dict, 'domain_object')
+        # domain_object_ref is actually pkg.id, so this could be simplified
         domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
 
         return self._show_dataset_role_page(domain_object, context, data_dict)
@@ -702,7 +703,8 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
         else:
             h.flash_success(ret.get('msg'))
 
-        h.redirect_to(h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=name))
+        h.redirect_to(h.url_for(controller='ckanext.kata.controllers:KataPackageController',
+                                action='dataset_editor_manage', name=name))
 
     def _roles_list(self, userobj, domain_object):
         '''
@@ -710,19 +712,22 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
         '''
         if ckan.model.authz.user_has_role(userobj, 'admin', domain_object) or \
                 userobj.sysadmin == True:
-            return [{'text': 'Admin', 'value':'admin'},
-                   {'text': 'Editor', 'value':'editor'},
-                   {'text': 'Reader', 'value':'reader'}]
+            return [{'text': 'Admin', 'value': 'admin'},
+                    {'text': 'Editor', 'value': 'editor'},
+                    {'text': 'Reader', 'value': 'reader'}]
         else:
-            return [{'text': 'Editor', 'value':'editor'},
-                   {'text': 'Reader', 'value':'reader'}]
+            return [{'text': 'Editor', 'value': 'editor'},
+                    {'text': 'Reader', 'value': 'reader'}]
 
     def _show_dataset_role_page(self, domain_object, context, data_dict):
         '''
         Adds data for template and renders it
         '''
 
-        c.roles = self._roles_list(c.userobj, domain_object)
+        c.roles = []
+        if c.userobj:
+            c.roles = self._roles_list(c.userobj, domain_object)
+
         editor_list = get_action('roles_show')(context, data_dict)
         c.members = []
 
