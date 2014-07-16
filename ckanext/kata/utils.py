@@ -31,7 +31,10 @@ def generate_pid():
 
 def send_email(req):
     """
-    Send access request e-mail.
+    Send access request email.
+
+    :param user_id: user who requests access
+    :param pkg_id: dataset's id
     """
     requester = User.get(req.user_id)
     pkg = Package.get(req.pkg_id)
@@ -85,6 +88,8 @@ def convert_to_text(resource, resource_fname):
 def label_list_yso(tag_url):
     """
     Takes tag keyword URL and fetches the labels that link to it.
+
+    :returns: the labels
     """
 
     _tagspaces = {
@@ -133,6 +138,9 @@ def resource_to_dataset(data_dict):
 
     We need field conversions to make sure the whole 'resources' key in datadict doesn't get overwritten when
     modifying the dataset in WUI. That would drop all manually added resources if resources was already present.
+
+    :param data_dict: the data dictionary
+    :returns: the modified data dictionary (resources handled)
     '''
     resource = None
 
@@ -165,6 +173,9 @@ def dataset_to_resource(data_dict):
     Now finds the first 'dataset' resource and updates it. Not sure how this should be handled with multiple
     'dataset' resources. Maybe just remove all of them and add new ones as they all are expected to be present
     when updating a dataset.
+
+    :param data_dict: the data dictionary
+    :returns: the modified data dictionary (resources handled)
     '''
     resource_index = None
 
@@ -206,6 +217,7 @@ def hide_sensitive_fields(pkg_dict1):
     Hide fields that contain sensitive data. Modifies input dict directly.
 
     :param pkg_dict1: data dictionary from package_show
+    :returns: the modified data dictionary
     '''
 
     # pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
@@ -226,7 +238,7 @@ def get_field_titles(_):
     Get correctly translated titles for search fields
 
     :param _: gettext translator
-    :return: dict of titles for fields
+    :returns: dict of titles for fields
     '''
 
     translated_field_titles = {}
@@ -242,7 +254,7 @@ def get_field_title(key, _):
     Get correctly translated title for one search field
 
     :param _: gettext translator
-    :return: dict of titles for fields
+    :returns: dict of titles for fields
     '''
 
     return _(settings._FIELD_TITLES[key])

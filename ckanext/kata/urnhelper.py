@@ -7,8 +7,19 @@ from pylons import config
 
 
 class URNHelper(object):
+    '''
+    Class to generate the urn export feature
+    '''
     @classmethod
     def list_packages(cls):
+        '''
+        Lists packages, which have names like
+        urn:nbn:fi:csc-kata or ida. Generates the
+        required xml data.
+
+        :returns: the packages with urns given by the service
+        :rtype: string (xml)
+        '''
         xmlns = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping"
         def locns(loc):
             return "{%s}%s" % (xmlns, loc)

@@ -41,6 +41,11 @@ def get_package_owner(package):
     """Returns the user id of the package admin for the specified package.
        If multiple user accounts are associated with the package as admins,
        an arbitrary one is returned.
+
+       :param package: package data
+       :type package: dictionary
+       :returns: userid
+       :rtype: string
     """
     userid = None
     for role in package.roles:
@@ -53,10 +58,18 @@ def get_package_owner(package):
 class MetadataController(BaseController):
     '''
     URN export
+
+
     '''
 
     @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
+        '''
+        The urnexport page
+
+        :returns: the packages with service generated urns
+        :rtype: string
+        '''
         response.headers['Content-type'] = 'text/xml'
         return URNHelper.list_packages()
 
@@ -67,6 +80,11 @@ class KATAApiController(ApiController):
     '''
 
     def media_type_autocomplete(self):
+        '''
+        Suggestions for mimetype
+
+        :rtype: dictionary
+        '''
         query = request.params.get('incomplete', '')
         known_types = set(mimetypes.types_map.values())
         matches = [ type_label for type_label in known_types if string.find(type_label, query) != -1 ]
@@ -78,18 +96,44 @@ class KATAApiController(ApiController):
         return self._finish_ok(result_set)
 
     def tag_autocomplete(self):
+        '''
+        Suggestions for tags (keywords)
+
+        :rtype: dictionary
+        '''
         query = request.params.get('incomplete', '')
         return self._onki_autocomplete(query, "koko")
 
     def discipline_autocomplete(self):
+        '''
+        Suggestions for discipline
+
+        :rtype: dictionary
+        '''
         query = request.params.get('incomplete', '')
         return self._onki_autocomplete(query, "okm-tieteenala")
 
     def location_autocomplete(self):
+        '''
+        Suggestions for spatial coverage
+
+        :rtype: dictionary
+        '''
         query = request.params.get('incomplete', '')
         return self._onki_autocomplete(query, "paikat")
 
     def _onki_autocomplete(self, query, vocab):
+        '''
+        Queries the remote ontology for suggestions and
+        formats the data.
+
+        :param query: the string to search for
+        :type query: string
+        :param vocab: the vocabulary/ontology
+        :type vocab: string
+
+        :rtype: dictionary
+        '''
         url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
 
         labels = []
@@ -120,6 +164,13 @@ class AccessRequestController(BaseController):
         """
         Returns whether there are already pending requests
         from the given user regarding the given package.
+
+        :param pkg_id: package id
+        :type pkg_id: string
+        :param user_id: user id
+        :type user_id: string
+
+        :rtype: boolean
         """
 
         pending_requests = model.Session.query(KataAccessRequest).filter(
@@ -129,6 +180,10 @@ class AccessRequestController(BaseController):
     def create_request(self, pkg_id):
         """
         Creates a new editor access request in the database.
+        Redirects the user to dataset view page
+
+        :param pkg_id: package id
+        :type pkg_id: string
         """
 
         url = h.url_for(controller='package', action='read', id=pkg_id)
@@ -151,6 +206,13 @@ class AccessRequestController(BaseController):
             redirect(url)
 
     def unlock_access(self, id):
+        '''
+        Adds a user to role editor for a dataset and
+        redirects the user to dataset view page
+
+        :param id: package id
+        :type id: string
+        '''
         q = model.Session.query(KataAccessRequest)
         q = q.filter_by(id=id)
         req = q.first()
@@ -189,8 +251,8 @@ class AccessRequestController(BaseController):
             h.flash_error(_("You must be logged in to request edit access"))
             redirect(url)
 
-
-'''DataMiningController is here for reference, some stuff like the file parsing might be useful'''
+##############################################################################
+#DataMiningController is here for reference, some stuff like the file parsing might be useful#
 # class DataMiningController(BaseController):
 #     '''
 #     Controller for scraping metadata content from files.
@@ -350,7 +412,7 @@ class ContactController(BaseController):
     Add features to contact the dataset's owner. 
     
     From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author. 
-    The feature provides a form for message sending, and the message is sent via e-mail. 
+    The feature provides a form for message sending, and the message is sent via email.
     """
 
     def _send_message(self, recipient, email, email_dict):
@@ -368,6 +430,14 @@ class ContactController(BaseController):
         Send a contact e-mail if allowed.
 
         All of the arguments should be unicode strings.
+
+        :param pkg_id: package id
+        :param subject: email's subject
+        :param msg: the message to be sent
+        :param prologue: message's prologue (optional)
+        :param epilogue: message's epilogue (optional)
+        :param recipient: recipient (optional)
+        :param email: email address where the message is to be sent (optional)
         """
 
         package = Package.get(pkg_id)
@@ -412,6 +482,12 @@ class ContactController(BaseController):
     def send_contact(self, pkg_id):
         '''
         Send a user message from CKAN to dataset distributor contact.
+        Constructs the message and calls :meth:`_send_if_allowed`.
+
+        Redirects the user to dataset view page.
+
+        :param pkg_id: package id
+        :type pkg_id: string
         '''
         # Todo: replan and fix when we have multiple distributor emails available
         # This only works because we have only one contact
@@ -455,6 +531,13 @@ käytä yllä olevaa sähköpostiosoitetta.'
     def send_request(self, pkg_id):
         '''
         Send a request to access data to CKAN dataset owner.
+
+        Constructs the message and calls :meth:`_send_if_allowed`.
+
+        Redirects the user to dataset view page.
+
+        :param pkg_id: package id
+        :type pkg_id: string
         '''
 
         prologue_template = u'{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
@@ -490,6 +573,9 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
     def render_contact(self, pkg_id):
         """
         Render the contact form if allowed.
+
+        :param pkg_id: package id
+        :type pkg_id: string
         """
 
         c.package = Package.get(pkg_id)
@@ -509,6 +595,9 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
     def render_request(self, pkg_id):
         """
         Render the access request contact form if allowed.
+
+        :param pkg_id: package id
+        :type pkg_id: string
         """
 
         c.package = Package.get(pkg_id)
@@ -535,7 +624,6 @@ class KataUserController(UserController):
         """
         Minor rewrite to redirect the user to the own profile page instead of
         the dashboard.
-        @return - some sort of redirect object??
         """
         # we need to set the language via a redirect
         lang = session.pop('lang', None)
@@ -581,10 +669,10 @@ class KataPackageController(PackageController):
     def advanced_search(self):
         """
         Parse query parameters from different search form inputs, modify into
-        one query string 'q' in the context and call basic search() method of
+        one query string 'q' in the context and call basic :meth:`search` method of
         the super class.
 
-        @return - dictionary with keys results and count
+        :returns: dictionary with keys results and count
         """
         # parse author search into q
         q_author = c.q_author = request.params.get('q_author', u'')
@@ -600,17 +688,21 @@ class KataPackageController(PackageController):
 
     def dataset_editor_manage(self, name):
         '''
-        Manages (adds) editors and admins of a dataset and sends an invitation e-mail
+        Manages (adds) editors and admins of a dataset and sends an invitation email
         if wanted in case user has not yet logged in to the service.
         The invitation email feature has no automatic features bound to it, it is a
         plain email sender.
 
-        :name: package name
-        :username: if username (string) and role (string) are set, the user is added for the role
-        :role: if username (string) and role (string) are set, the user is added for the role
-        :email: if email address is given, an invitation email is sent
+        :param name: package name
+        :type name: string
+        :param username: if username (request.param) and role (request.param) are set, the user is added for the role
+        :type username: string
+        :param role: if username (request.param) and role (request.param) are set, the user is added for the role
+        :type role: string
+        :param email: if email address (request.param) is given, an invitation email is sent
+        :type email: string
 
-        Renders the package_administration page via _show_dataset_role_page()
+        Renders the package_administration page via :meth:`_show_dataset_role_page`
 
         '''
         context = {'model': model, 'session': model.Session, 'user': c.user}
@@ -684,11 +776,14 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
         '''
         Deletes a user from a dataset role.
 
-        :name: dataset name
-        :username: user (string) and role (string) to be deleted from dataset
-        :role: user (string) and role(string) to be deleted from dataset
+        :param name: dataset name
+        :type name: string
+        :param username: user (request.param) and role (request.param) to be deleted from dataset
+        :type username: string
+        :param role: user (request.param) and role (request.param) to be deleted from dataset
+        :type role: string
 
-        redirects to dataset_editor_manage
+        redirects to dataset_editor_manage.
         '''
         context = {'model': model, 'session': model.Session, 'user': c.user}
         data_dict = {}
@@ -709,6 +804,9 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
     def _roles_list(self, userobj, domain_object):
         '''
         Builds the selection of roles for the role popup menu
+
+        :param userobj: user object
+        :param domain_object: dataset domain object
         '''
         if ckan.model.authz.user_has_role(userobj, 'admin', domain_object) or \
                 userobj.sysadmin == True:
@@ -722,6 +820,10 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
     def _show_dataset_role_page(self, domain_object, context, data_dict):
         '''
         Adds data for template and renders it
+
+        :param domain_object: dataset domain object
+        :param context: context
+        :param data_dict: data dictionary
         '''
 
         c.roles = []

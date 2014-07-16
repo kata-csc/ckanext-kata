@@ -49,7 +49,12 @@ def org_auth_to_extras(key, data, errors, context):
 
 def org_auth_from_extras(key, data, errors, context):
     '''
-    Convert (author, organization) pairs from package.extra to 'orgauths' dict
+    Convert (author, organization) pairs from `package.extra` to `orgauths` dict
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     orgauths = data.get(('orgauth',), [])
     if not orgauths:
@@ -91,6 +96,11 @@ def ltitle_to_extras(key, data, errors, context):
     '''
     Convert title & language pair from dataset form to db format and validate.
     Title & language pairs will be stored in package_extra.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     extras = data.get(('extras',), [])
     if not extras:
@@ -109,6 +119,11 @@ def ltitle_to_extras(key, data, errors, context):
 def ltitle_from_extras(key, data, errors, context):
     '''
     Convert all title & language pairs from db format to dataset form format.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     langtitles = data.get(('langtitle',), [])
     if not langtitles:
@@ -146,6 +161,10 @@ def ltitle_from_extras(key, data, errors, context):
             langtitles.append(langtitle)
 
 def export_as_related(key, data, errors, context):
+    '''
+    Not used?
+    '''
+    # Todo: find out if this is used
     if 'id' in data[('__extras',)]:
         for value in data[key].split(';'):
             if value != '':
@@ -159,6 +178,11 @@ def export_as_related(key, data, errors, context):
 def add_to_group(key, data, errors, context):
     '''
     Add a new group if it doesn't yet exist.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     val = data.get(key)
     if val:
@@ -174,9 +198,14 @@ def add_to_group(key, data, errors, context):
 
 def remove_disabled_languages(key, data, errors, context):
     '''
-    If langdis == 'True', remove all languages.
+    If `langdis == 'True'`, remove all languages.
 
-    Expecting language codes in data['key'].
+    Expecting language codes in `data['key']`.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     langdis = data.get(('langdis',))
 
@@ -203,7 +232,12 @@ def remove_access_application_new_form(key, data, errors, context):
     '''
     If availability changes remove access_application_new_form.
 
-    Expecting string: "True" or "False" in data['key'].
+    Expecting string: `True` or `False` in `data['key']`.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     if data.get(('availability',)) != 'access_application':
         # Remove checkbox value.
@@ -238,6 +272,11 @@ def convert_from_extras_kata(key, data, errors, context):
     Convert all extras fields from extras to data dict and remove
     fields from extras. Removal helps counter IndexError with unflatten after
     validation.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key' and data[k] in settings.KATA_FIELDS:
@@ -253,6 +292,11 @@ def convert_to_extras_kata(key, data, errors, context):
     Convert one extras fields from extras to data dict and remove
     fields from extras. Removal helps counter IndexError with unflatten after
     validation.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     extras = data.get(('extras',), [])
     if not extras:
@@ -262,6 +306,12 @@ def convert_to_extras_kata(key, data, errors, context):
 
 def xpath_to_extras(key, data, errors, context):
     '''
+    Convert xpaths to extras
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     extras = data.get(('extras',), [])
     if not extras:
@@ -272,9 +322,13 @@ def xpath_to_extras(key, data, errors, context):
 
 def convert_languages(key, data, errors, context):
     '''
-    Convert ISO 639 language abbreviations to ISO 639-2 T
-
+    Convert ISO 639 language abbreviations to ISO 639-2 T.
     data['key'] may be a string with comma separated values or a single language code.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
 
     value = data.get(key)
@@ -307,11 +361,13 @@ def convert_languages(key, data, errors, context):
 def from_extras_json(key, data, errors, context):
     '''
     Convert a field from JSON format in extras to data_dict.
-    The 'key' parameter is the field where to save values, so we need to search data_dict to find the correct
+    The `key` parameter is the field where to save values, so we need to search data_dict to find the correct
     value which we are converting.
 
-    :param key: for example ('pids',)
-    :param data: Contains value somewhere like ('extras', 5, 'value')
+    :param key: key for example `('pids',)`
+    :param data: data, contains value somewhere, like `('extras', 5, 'value')`
+    :param errors: validation errors
+    :param context: context
     '''
     for k in data.keys():
         if k[0] == 'extras' and k[-1] == 'key' and data[k] == key[0]:
@@ -334,13 +390,16 @@ def to_extras_json(key, data, errors, context):
 def flattened_to_extras(key, data, errors, context):
     '''
     Convert a flattened key-value pair from data_dict to extras.
-    For example (pids, 0, provider) -> extras['pids_0_provider'].
+    For example `(pids, 0, provider)` -> `extras['pids_0_provider']`.
 
-    The key-value pairs to convert are before CKAN's flattening in format
-    pids: [{ id: 'some pid', type: 'data', ...},
-           { id: 'other pid', type: 'data', ...}]
+    .. note::
+       The key-value pairs to convert are before CKAN's flattening in format
+       pids: [{ id: 'some pid', type: 'data', ...},{ id: 'other pid', type: 'data', ...}]
 
-    :param key: For example (pids, 0, provider)
+    :param key: key, for example `(pids, 0, provider)`
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     extras = data.get(('extras',), [])
     if not extras:
@@ -353,9 +412,12 @@ def flattened_to_extras(key, data, errors, context):
 def flattened_from_extras(key, data, errors, context):
     '''
     Convert a whole bunch of flattened key-value pairs from extras to a list of dicts in data_dict.
-    Format in extras must be like key[0]_index_innerkey. For example: pids_02_provider.
+    Format in extras must be like `key[0]_index_innerkey`. For example: `pids_02_provider`.
 
-    :param key: The key to convert as tuple, for example ('pids',)
+    :param key: The key to convert as tuple, for example `('pids',)`
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
     destination_key = key[0]    # For example 'pids'
 

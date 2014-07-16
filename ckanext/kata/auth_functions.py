@@ -11,6 +11,14 @@ log = logging.getLogger(__name__)
 def is_owner(context, data_dict):
     '''
     This is used in "request edit rights" feature.
+    Checks if the user is admin or editor of the
+    package in question
+
+    :param context: context
+    :param data_dict: package data
+    :type data_dict: dictionary
+
+    :rtype: dictionary
     '''
     
     pkg = context.get('package', None)
@@ -29,6 +37,11 @@ def is_owner(context, data_dict):
 def edit_resource(context, data_dict):
     '''
     Check if a user is allowed edit a resource.
+
+    :param context: context
+    :param data_dict: data dictionary
+
+    :rype: dictionary
     '''
     auth_dict = update.resource_update(context, data_dict)
 
@@ -44,9 +57,11 @@ def package_delete(context, data_dict):
     delete the package. In addition to privileges given by CKAN's
     authorisation, also the package owner has full privileges in Kata.
     
-    :param context:
-    :param data_dict:
-    :return dict: 'success': True|False
+    :param context: context
+    :type context: dictionary
+    :param data_dict: package data
+    :type data_dict: dictionary
+    :rtype: dictionary with 'success': True|False
     '''
     user = context['user']
     package = get_package_object(context, data_dict)
