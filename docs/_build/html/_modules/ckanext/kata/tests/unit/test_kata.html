@@ -1,0 +1,693 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ckanext.kata.tests.unit.test_kata &mdash; Kata metadata catalogue documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="Kata metadata catalogue documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../../../index.html">Kata</a></div>
+        <div class="rel">
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for ckanext.kata.tests.unit.test_kata</h1><div class="highlight"><pre>
+<span class="c"># coding: utf-8</span>
+<span class="c">#</span>
+<span class="c"># pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Test classes for Kata CKAN Extension.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">TestCase</span>
+
+<span class="kn">from</span> <span class="nn">pylons.util</span> <span class="kn">import</span> <span class="n">PylonsContext</span><span class="p">,</span> <span class="n">pylons</span><span class="p">,</span> <span class="n">AttribSafeContextObj</span>
+
+<span class="kn">from</span> <span class="nn">ckanext.kata.settings</span> <span class="kn">import</span> <span class="n">_FIELD_TITLES</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata.plugin</span> <span class="kn">import</span> <span class="n">KataPlugin</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">settings</span><span class="p">,</span> <span class="n">utils</span><span class="p">,</span> <span class="n">helpers</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata.tests.test_fixtures.unflattened</span> <span class="kn">import</span> <span class="n">TEST_DATADICT</span>
+<span class="kn">import</span> <span class="nn">ckan.model</span> <span class="kn">as</span> <span class="nn">model</span>
+<span class="kn">from</span> <span class="nn">ckan.lib.create_test_data</span> <span class="kn">import</span> <span class="n">CreateTestData</span>
+<span class="kn">import</span> <span class="nn">ckanext.kata.model</span> <span class="kn">as</span> <span class="nn">kata_model</span>
+<span class="kn">import</span> <span class="nn">ckanext.kata.actions</span> <span class="kn">as</span> <span class="nn">actions</span>
+
+<div class="viewcode-block" id="TestKataPlugin"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin">[docs]</a><span class="k">class</span> <span class="nc">TestKataPlugin</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    General tests for KataPlugin.</span>
+
+<span class="sd">    Provides a a dummy context object to test functions and methods that rely on it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestKataPlugin.setup_class"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.setup_class">[docs]</a>    <span class="k">def</span> <span class="nf">setup_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up tests.&quot;&quot;&quot;</span>
+
+        <span class="n">cls</span><span class="o">.</span><span class="n">some_data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;sort&#39;</span><span class="p">:</span> <span class="s">u&#39;metadata_modified desc&#39;</span><span class="p">,</span>
+                              <span class="s">&#39;fq&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+                              <span class="s">&#39;rows&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                              <span class="s">&#39;facet.field&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;groups&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;tags&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;extras_fformat&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;license&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;authorstring&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;organizationstring&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;extras_language&#39;</span><span class="p">],</span>
+                              <span class="s">&#39;q&#39;</span><span class="p">:</span> <span class="s">u&#39;&#39;</span><span class="p">,</span>
+                              <span class="s">&#39;start&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                              <span class="s">&#39;extras&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;ext_author-4&#39;</span><span class="p">:</span> <span class="s">u&#39;testauthor&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_date-metadata_modified-end&#39;</span><span class="p">:</span> <span class="s">u&#39;2013&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_date-metadata_modified-start&#39;</span><span class="p">:</span> <span class="s">u&#39;2000&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_groups-6&#39;</span><span class="p">:</span> <span class="s">u&#39;testdiscipline&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_operator-2&#39;</span><span class="p">:</span> <span class="s">u&#39;OR&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_operator-3&#39;</span><span class="p">:</span> <span class="s">u&#39;AND&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_operator-4&#39;</span><span class="p">:</span> <span class="s">u&#39;AND&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_operator-5&#39;</span><span class="p">:</span> <span class="s">u&#39;OR&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_operator-6&#39;</span><span class="p">:</span> <span class="s">u&#39;NOT&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_organization-3&#39;</span><span class="p">:</span> <span class="s">u&#39;testorg&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_tags-1&#39;</span><span class="p">:</span> <span class="s">u&#39;testkeywd&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_tags-2&#39;</span><span class="p">:</span> <span class="s">u&#39;testkeywd2&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;ext_title-5&#39;</span><span class="p">:</span> <span class="s">u&#39;testtitle&#39;</span><span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">short_data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;sort&#39;</span><span class="p">:</span> <span class="s">u&#39;metadata_modified desc&#39;</span><span class="p">,</span>
+                               <span class="s">&#39;fq&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+                               <span class="s">&#39;rows&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                               <span class="s">&#39;facet.field&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;groups&#39;</span><span class="p">,</span>
+                                               <span class="s">&#39;tags&#39;</span><span class="p">,</span>
+                                               <span class="s">&#39;extras_fformat&#39;</span><span class="p">,</span>
+                                               <span class="s">&#39;license&#39;</span><span class="p">,</span>
+                                               <span class="s">&#39;authorstring&#39;</span><span class="p">,</span>
+                                               <span class="s">&#39;organizationstring&#39;</span><span class="p">,</span>
+                                               <span class="s">&#39;extras_language&#39;</span><span class="p">],</span>
+                               <span class="s">&#39;q&#39;</span><span class="p">:</span> <span class="s">u&#39;&#39;</span><span class="p">,</span>
+                               <span class="s">&#39;start&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">test_q_terms</span> <span class="o">=</span> <span class="s">u&#39; ((tags:testkeywd) OR ( tags:testkeywd2 AND &#39;</span> <span class="o">+</span> \
+                           <span class="s">u&#39;organization:testorg AND author:testauthor) OR &#39;</span> <span class="o">+</span> \
+                           <span class="s">u&#39;( title:testtitle NOT groups:testdiscipline))&#39;</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">test_q_dates</span> <span class="o">=</span> <span class="s">u&#39; metadata_modified:[2000-01-01T00:00:00.000Z TO &#39;</span> <span class="o">+</span> \
+                           <span class="s">u&#39;2013-12-31T23:59:59.999Z]&#39;</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">kata_plugin</span> <span class="o">=</span> <span class="n">KataPlugin</span><span class="p">()</span>
+
+        <span class="c"># The Pylons globals are not available outside a request. This is a hack to provide context object.</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">AttribSafeContextObj</span><span class="p">()</span>
+        <span class="n">py_obj</span> <span class="o">=</span> <span class="n">PylonsContext</span><span class="p">()</span>
+        <span class="n">py_obj</span><span class="o">.</span><span class="n">tmpl_context</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">pylons</span><span class="o">.</span><span class="n">tmpl_context</span><span class="o">.</span><span class="n">_push_object</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestKataPlugin.teardown_class"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.teardown_class">[docs]</a>    <span class="k">def</span> <span class="nf">teardown_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get away from testing environment.&quot;&quot;&quot;</span>
+
+        <span class="n">pylons</span><span class="o">.</span><span class="n">tmpl_context</span><span class="o">.</span><span class="n">_pop_object</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_extract_search_params"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_extract_search_params">[docs]</a>    <span class="k">def</span> <span class="nf">test_extract_search_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test extract_search_params() output parameters number.&quot;&quot;&quot;</span>
+        <span class="n">terms</span><span class="p">,</span> <span class="n">ops</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">adv_search</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">extract_search_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">some_data_dict</span><span class="p">)</span>
+        <span class="n">n_extracted</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">ops</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">some_data_dict</span><span class="p">[</span><span class="s">&#39;extras&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="n">n_extracted</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> \
+            <span class="s">&quot;KataPlugin.extract_search_params() parameter number mismatch&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">ops</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> \
+            <span class="s">&quot;KataPlugin.extract_search_params() term/operator ratio mismatch&quot;</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_parse_search_terms"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_parse_search_terms">[docs]</a>    <span class="k">def</span> <span class="nf">test_parse_search_terms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test parse_search_terms() result string.&quot;&quot;&quot;</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">some_data_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">terms</span><span class="p">,</span> <span class="n">ops</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">adv_search</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">extract_search_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">some_data_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">parse_search_terms</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">test_dict</span><span class="p">[</span><span class="s">&#39;q&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_q_terms</span><span class="p">,</span> \
+            <span class="s">&quot;KataPlugin.parse_search_terms() error in query parsing q=</span><span class="si">%s</span><span class="s">, test_q_terms=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="n">test_dict</span><span class="p">[</span><span class="s">&#39;q&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_q_terms</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_parse_search_dates"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_parse_search_dates">[docs]</a>    <span class="k">def</span> <span class="nf">test_parse_search_dates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test parse_search_dates() result string.&quot;&quot;&quot;</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">some_data_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">terms</span><span class="p">,</span> <span class="n">ops</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">adv_search</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">extract_search_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">some_data_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">parse_search_dates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="n">dates</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">test_dict</span><span class="p">[</span><span class="s">&#39;q&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_q_dates</span><span class="p">,</span> \
+            <span class="s">&quot;KataPlugin.parse_search_dates() error in query parsing&quot;</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_before_search"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_before_search">[docs]</a>    <span class="k">def</span> <span class="nf">test_before_search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test before_search() output type and more.&quot;&quot;&quot;</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">before_search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">some_data_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s">&quot;KataPlugin.before_search() didn&#39;t output a dict&quot;</span>
+
+        <span class="c"># Test that no errors occur without &#39;extras&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">before_search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">short_data_dict</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_get_actions"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_get_actions">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test get_actions() output type.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">get_actions</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">),</span> <span class="s">&quot;KataPlugin.get_actions() didn&#39;t output a dict&quot;</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_get_helpers"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_get_helpers">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_helpers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test get_helpers() output type.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">get_helpers</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">),</span> <span class="s">&quot;KataPlugin.get_helpers() didn&#39;t output a dict&quot;</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_new_template"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_new_template">[docs]</a>    <span class="k">def</span> <span class="nf">test_new_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">html_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">new_template</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">html_location</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_comments_template"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_comments_template">[docs]</a>    <span class="k">def</span> <span class="nf">test_comments_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">html_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">comments_template</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">html_location</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_search_template"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_search_template">[docs]</a>    <span class="k">def</span> <span class="nf">test_search_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">html_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">search_template</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">html_location</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_read_template"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_read_template">[docs]</a>    <span class="k">def</span> <span class="nf">test_read_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">html_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">read_template</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">html_location</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_history_template"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_history_template">[docs]</a>    <span class="k">def</span> <span class="nf">test_history_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">html_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">history_template</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">html_location</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_package_form"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_package_form">[docs]</a>    <span class="k">def</span> <span class="nf">test_package_form</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">html_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">package_form</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">html_location</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataPlugin.test_before_index"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_before_index">[docs]</a>    <span class="k">def</span> <span class="nf">test_before_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pkg_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;access_application_new_form&#39;</span><span class="p">:</span> <span class="s">u&#39;False&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_0_URL&#39;</span><span class="p">:</span> <span class="s">u&#39;www.csc.fi&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_0_fundingid&#39;</span><span class="p">:</span> <span class="s">u&#39;43096ertjgad</span><span class="se">\xf6</span><span class="s">sjgn89q3q4&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_0_name&#39;</span><span class="p">:</span> <span class="s">u&#39;F. Under&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_0_organisation&#39;</span><span class="p">:</span> <span class="s">u&#39;Agentti-Project&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_0_role&#39;</span><span class="p">:</span> <span class="s">u&#39;funder&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_1_name&#39;</span><span class="p">:</span> <span class="s">u&#39;o. oWNER&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_1_role&#39;</span><span class="p">:</span> <span class="s">u&#39;owner&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_2_name&#39;</span><span class="p">:</span> <span class="s">u&#39;M. Merger&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_2_role&#39;</span><span class="p">:</span> <span class="s">u&#39;author&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_3_name&#39;</span><span class="p">:</span> <span class="s">u&#39;juho&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;agent_3_role&#39;</span><span class="p">:</span> <span class="s">u&#39;distributor&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;data_dict&#39;</span><span class="p">:</span> <span class="s">&#39;{&quot;dada&quot;: &quot;dudu&quot;}&#39;</span><span class="p">}</span>
+
+        <span class="c">#output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">before_index</span><span class="p">(</span><span class="n">pkg_dict</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="s">&#39;funder_0&#39;</span> <span class="ow">in</span> <span class="n">output</span>
+        <span class="k">assert</span> <span class="s">&#39;owner_1&#39;</span> <span class="ow">in</span> <span class="n">output</span>
+        <span class="k">assert</span> <span class="s">&#39;author_2&#39;</span> <span class="ow">in</span> <span class="n">output</span>
+        <span class="k">assert</span> <span class="s">&#39;distributor_3&#39;</span> <span class="ow">in</span> <span class="n">output</span>
+
+</div></div>
+<div class="viewcode-block" id="TestKataSchemas"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas">[docs]</a><span class="k">class</span> <span class="nc">TestKataSchemas</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestKataSchemas.setup_class"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas.setup_class">[docs]</a>    <span class="k">def</span> <span class="nf">setup_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">kata_plugin</span> <span class="o">=</span> <span class="n">KataPlugin</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="TestKataSchemas.test_create_package_schema"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_package_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">create_package_schema</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataSchemas.test_update_package_schema"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_update_package_schema">[docs]</a>    <span class="k">def</span> <span class="nf">test_update_package_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">update_package_schema</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataSchemas.test_show_package_schema"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_show_package_schema">[docs]</a>    <span class="k">def</span> <span class="nf">test_show_package_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">show_package_schema</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataSchemas.test_create_package_schema_oai_dc"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema_oai_dc">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_package_schema_oai_dc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">create_package_schema_oai_dc</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataSchemas.test_update_package_schema_oai_dc"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_update_package_schema_oai_dc">[docs]</a>    <span class="k">def</span> <span class="nf">test_update_package_schema_oai_dc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">update_package_schema_oai_dc</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataSchemas.test_create_package_schema_ddi"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema_ddi">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_package_schema_ddi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">create_package_schema_ddi</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TestKataSchemas.test_tags_schema"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_tags_schema">[docs]</a>    <span class="k">def</span> <span class="nf">test_tags_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_plugin</span><span class="o">.</span><span class="n">tags_schema</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+</div></div>
+<div class="viewcode-block" id="TestResouceConverters"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestResouceConverters">[docs]</a><span class="k">class</span> <span class="nc">TestResouceConverters</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unit tests for resource conversions in actions.&quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestResouceConverters.setup_class"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestResouceConverters.setup_class">[docs]</a>    <span class="k">def</span> <span class="nf">setup_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up tests.&quot;&quot;&quot;</span>
+
+        <span class="n">cls</span><span class="o">.</span><span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">u&#39;test&#39;</span><span class="p">,</span>
+            <span class="s">&#39;direct_download_URL&#39;</span><span class="p">:</span> <span class="s">u&#39;http://www.csc.fi&#39;</span><span class="p">,</span>
+            <span class="s">&#39;algorithm&#39;</span><span class="p">:</span> <span class="s">u&#39;MD5&#39;</span><span class="p">,</span>
+            <span class="s">&#39;checksum&#39;</span><span class="p">:</span> <span class="s">u&#39;f60e586509d99944e2d62f31979a802f&#39;</span><span class="p">,</span>
+            <span class="s">&#39;mimetype&#39;</span><span class="p">:</span> <span class="s">u&#39;application/pdf&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">cls</span><span class="o">.</span><span class="n">test_data2</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">u&#39;test&#39;</span><span class="p">,</span>
+            <span class="s">&#39;resources&#39;</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="s">&#39;url&#39;</span><span class="p">:</span> <span class="s">u&#39;http://www.csc.fi&#39;</span><span class="p">,</span>
+                <span class="s">&#39;algorithm&#39;</span><span class="p">:</span> <span class="s">u&#39;MD5&#39;</span><span class="p">,</span>
+                <span class="s">&#39;hash&#39;</span><span class="p">:</span> <span class="s">u&#39;f60e586509d99944e2d62f31979a802f&#39;</span><span class="p">,</span>
+                <span class="s">&#39;mimetype&#39;</span><span class="p">:</span> <span class="s">u&#39;application/pdf&#39;</span><span class="p">,</span>
+                <span class="s">&#39;resource_type&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">RESOURCE_TYPE_DATASET</span><span class="p">,</span>
+            <span class="p">}]}</span>
+
+        <span class="n">cls</span><span class="o">.</span><span class="n">test_data3</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">u&#39;test&#39;</span><span class="p">,</span>
+            <span class="s">&#39;resources&#39;</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="s">&#39;url&#39;</span><span class="p">:</span> <span class="s">u&#39;http://www.csc.fi&#39;</span><span class="p">,</span>
+                <span class="s">&#39;algorithm&#39;</span><span class="p">:</span> <span class="s">u&#39;MD5&#39;</span><span class="p">,</span>
+                <span class="s">&#39;hash&#39;</span><span class="p">:</span> <span class="s">u&#39;f60e586509d99944e2d62f31979a802f&#39;</span><span class="p">,</span>
+                <span class="s">&#39;mimetype&#39;</span><span class="p">:</span> <span class="s">u&#39;application/pdf&#39;</span><span class="p">,</span>
+                <span class="s">&#39;resource_type&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">RESOURCE_TYPE_DATASET</span><span class="p">,</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="s">&#39;url&#39;</span><span class="p">:</span> <span class="s">u&#39;http://www.helsinki.fi&#39;</span><span class="p">,</span>
+                <span class="s">&#39;algorithm&#39;</span><span class="p">:</span> <span class="s">u&#39;SHA&#39;</span><span class="p">,</span>
+                <span class="s">&#39;hash&#39;</span><span class="p">:</span> <span class="s">u&#39;somehash&#39;</span><span class="p">,</span>
+                <span class="s">&#39;format&#39;</span><span class="p">:</span> <span class="s">u&#39;application/csv&#39;</span><span class="p">,</span>
+                <span class="s">&#39;resource_type&#39;</span><span class="p">:</span> <span class="s">&#39;file&#39;</span><span class="p">,</span>
+            <span class="p">}]</span>
+        <span class="p">}</span>
+</div>
+<div class="viewcode-block" id="TestResouceConverters.test_dataset_to_resource"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_dataset_to_resource">[docs]</a>    <span class="k">def</span> <span class="nf">test_dataset_to_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_dict</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">dataset_to_resource</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">dataset_to_resource</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+</div>
+<div class="viewcode-block" id="TestResouceConverters.test_dataset_to_resource_invalid"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_dataset_to_resource_invalid">[docs]</a>    <span class="k">def</span> <span class="nf">test_dataset_to_resource_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;direct_download_URL&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;checksum&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;mimetype&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_dict</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">dataset_to_resource</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="c"># dataset_to_resource can handle missing data, so resources is created</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+</div>
+<div class="viewcode-block" id="TestResouceConverters.test_resource_to_dataset"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_to_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">test_resource_to_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data2</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">resource_to_dataset</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;direct_download_URL&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+</div>
+<div class="viewcode-block" id="TestResouceConverters.test_resource_to_dataset_invalid"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_to_dataset_invalid">[docs]</a>    <span class="k">def</span> <span class="nf">test_resource_to_dataset_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data2</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;resource_type&#39;</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">resource_to_dataset</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;direct_download_URL&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_dict</span>
+</div>
+<div class="viewcode-block" id="TestResouceConverters.test_resource_handling"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_handling">[docs]</a>    <span class="k">def</span> <span class="nf">test_resource_handling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">resource_to_dataset</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;direct_download_URL&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;availability&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;contact_owner&#39;</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">dataset_to_resource</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">resource_to_dataset</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+        <span class="k">assert</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;availability&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;contact_owner&#39;</span>
+
+        <span class="k">assert</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;algorithm&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;algorithm&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;checksum&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;hash&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;mimetype&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;mimetype&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;direct_download_URL&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestResouceConverters.test_resource_handling_2"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_handling_2">[docs]</a>    <span class="k">def</span> <span class="nf">test_resource_handling_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">resource_to_dataset</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;direct_download_URL&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;availability&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;direct_download&#39;</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">dataset_to_resource</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">resource_to_dataset</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span>
+
+        <span class="k">assert</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;algorithm&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;algorithm&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;checksum&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;hash&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;mimetype&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;mimetype&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;direct_download_URL&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data3</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;url&#39;</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="TestUtils"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestUtils">[docs]</a><span class="k">class</span> <span class="nc">TestUtils</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unit tests for functions in utils.py.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TestUtils.test_generate_pid"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestUtils.test_generate_pid">[docs]</a>    <span class="k">def</span> <span class="nf">test_generate_pid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_pid</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pid</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;urn&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">10</span>
+</div>
+<div class="viewcode-block" id="TestUtils.test_generate_pid2"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestUtils.test_generate_pid2">[docs]</a>    <span class="k">def</span> <span class="nf">test_generate_pid2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_pid</span><span class="p">()</span>
+        <span class="n">pid2</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_pid</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">pid</span> <span class="o">!=</span> <span class="n">pid2</span>
+</div>
+<div class="viewcode-block" id="TestUtils.test_get_funder"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestUtils.test_get_funder">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_funder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_funder</span><span class="p">(</span><span class="n">TEST_DATADICT</span><span class="p">)[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">u&#39;R. Ahanen&#39;</span>
+</div>
+<div class="viewcode-block" id="TestUtils.test_get_field_titles"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_titles">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_field_titles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test settings.get_field_titles()&quot;&quot;&quot;</span>
+
+        <span class="n">titles</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_field_titles</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;Found less than 3 field titles&#39;</span>
+        <span class="k">assert</span> <span class="s">&#39;tags&#39;</span> <span class="ow">in</span> <span class="n">titles</span><span class="p">,</span> <span class="s">&#39;No tags field found in field titles&#39;</span>
+        <span class="k">assert</span> <span class="s">&#39;authorstring&#39;</span> <span class="ow">in</span> <span class="n">titles</span><span class="p">,</span> <span class="s">&#39;No authorstring field found in field titles&#39;</span>
+</div>
+<div class="viewcode-block" id="TestUtils.test_get_field_titles_translate"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_titles_translate">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_field_titles_translate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test settings.get_field_titles() translation&quot;&quot;&quot;</span>
+
+        <span class="n">translator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c"># Reverse string</span>
+
+        <span class="n">titles</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_field_titles</span><span class="p">(</span><span class="n">translator</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">translator</span><span class="p">(</span><span class="n">_FIELD_TITLES</span><span class="p">[</span><span class="s">&#39;tags&#39;</span><span class="p">])</span> <span class="ow">in</span> <span class="n">titles</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="s">&#39;No tags field found in field titles&#39;</span>
+        <span class="k">assert</span> <span class="n">translator</span><span class="p">(</span><span class="n">_FIELD_TITLES</span><span class="p">[</span><span class="s">&#39;authorstring&#39;</span><span class="p">])</span> <span class="ow">in</span> <span class="n">titles</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="s">&#39;No authorstring found in field titles&#39;</span>
+</div>
+<div class="viewcode-block" id="TestUtils.test_get_field_title"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_title">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_field_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test settings.get_field_title()&quot;&quot;&quot;</span>
+
+        <span class="n">translator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c"># Reverse string</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_field_title</span><span class="p">(</span><span class="s">&#39;tags&#39;</span><span class="p">,</span> <span class="n">translator</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">translator</span><span class="p">(</span><span class="n">_FIELD_TITLES</span><span class="p">[</span><span class="s">&#39;tags&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="n">title</span>
+
+</div></div>
+<div class="viewcode-block" id="TestHelpers"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestHelpers">[docs]</a><span class="k">class</span> <span class="nc">TestHelpers</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unit tests for functions in helpers.py.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TestHelpers.test_get_package_ratings"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_package_ratings">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_package_ratings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">(</span><span class="n">rating</span><span class="p">,</span> <span class="n">stars</span><span class="p">)</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_package_ratings</span><span class="p">(</span><span class="n">TEST_DATADICT</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">rating</span> <span class="o">==</span> <span class="mi">5</span><span class="p">,</span> <span class="n">rating</span>
+        <span class="k">assert</span> <span class="n">stars</span> <span class="o">==</span> <span class="s">u&#39;●●●●●&#39;</span>
+</div>
+<div class="viewcode-block" id="TestHelpers.test_get_package_ratings_2"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_package_ratings_2">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_package_ratings_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TEST_DATADICT</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;notes&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;temporal_coverage_begin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;discipline&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;algorithm&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;checksum&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;geographic_coverage&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;mimetype&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;license_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;&#39;</span>
+
+        <span class="p">(</span><span class="n">rating</span><span class="p">,</span> <span class="n">stars</span><span class="p">)</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_package_ratings</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">rating</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="n">rating</span>
+        <span class="k">assert</span> <span class="n">stars</span> <span class="o">==</span> <span class="s">u&#39;●●●○○&#39;</span>
+</div>
+<div class="viewcode-block" id="TestHelpers.test_get_owner"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_owner">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_owner</span><span class="p">(</span><span class="n">TEST_DATADICT</span><span class="p">)[</span><span class="s">&#39;organisation&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">u&#39;CSC Oy&#39;</span>
+</div>
+<div class="viewcode-block" id="TestHelpers.test_get_authors"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_authors">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_authors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_authors</span><span class="p">(</span><span class="n">TEST_DATADICT</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">u&#39;T. Tekijä&#39;</span>
+
+</div></div>
+<div class="viewcode-block" id="TestActions"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions">[docs]</a><span class="k">class</span> <span class="nc">TestActions</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Unit tests for action functions.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestActions.setup_class"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.setup_class">[docs]</a>    <span class="k">def</span> <span class="nf">setup_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set up testing environment.&#39;&#39;&#39;</span>
+        <span class="c"># Todo: fix. The harvest tables are not generated here</span>
+        <span class="c"># so this class can&#39;t be run alone</span>
+        <span class="n">kata_model</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+        <span class="n">CreateTestData</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestActions.teardown_class"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.teardown_class">[docs]</a>    <span class="k">def</span> <span class="nf">teardown_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get away from testing environment.&#39;&#39;&#39;</span>
+        <span class="n">kata_model</span><span class="o">.</span><span class="n">delete_tables</span><span class="p">()</span>
+        <span class="n">CreateTestData</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="TestActions.test_add_member_1_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_1_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_member_1_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test add member to dataset</span>
+<span class="sd">        Result: required information is missing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;tester&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;bogus&#39;</span>
+        <span class="k">assert</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_add</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;Required information missing&#39;</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_add_member_2_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_2_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_member_2_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test add member to dataset</span>
+<span class="sd">        Result: user is not found</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;testsysadmin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;bogus&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;editor&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_add</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;User not found&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_add_member_3_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_3_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_member_3_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test add member to dataset</span>
+<span class="sd">        Result: no sufficient privileges</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;tester&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;tester&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;editor&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_add</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;No sufficient privileges to add a user to role editor.&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_add_member_4_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_4_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_member_4_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test add member to dataset</span>
+<span class="sd">        Result: can&#39;t add thyself</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;testsysadmin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;testsysadmin&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;editor&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_add</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;You can not add yourself&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_add_member_5_success"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_5_success">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_member_5_success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test add member to dataset</span>
+<span class="sd">        Result: success</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;testsysadmin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;tester&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;editor&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_add</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;User added&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_add_member_6_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_6_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_add_member_6_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test add member to dataset</span>
+<span class="sd">        Result: can&#39;t add duplicate</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;testsysadmin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;tester&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;editor&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_add</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;User already has editor rights&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_delete_member_1_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_1_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_delete_member_1_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test delete member from dataset</span>
+<span class="sd">        Result: required information is missing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;testsysadmin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;tester&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;Required information missing&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_delete_member_2_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_2_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_delete_member_2_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test delete member from dataset</span>
+<span class="sd">        Result: user doesn&#39;t exist</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;testsysadmin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;bogus&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;editor&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;User not found&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_delete_member_3_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_3_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_delete_member_3_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test delete member from dataset</span>
+<span class="sd">        Result: not enough privileges</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;tester&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;testsysadmin&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;admin&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;No sufficient privileges to remove user from role admin.&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_delete_member_4_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_4_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_delete_member_4_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test delete member from dataset</span>
+<span class="sd">        Result: built-in users and yourself can&#39;t be removed</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;tester&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;tester&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;editor&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;You can not remove yourself&#39;</span><span class="p">,</span> <span class="n">msg</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;visitor&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;reader&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;Built-in users can not be removed&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_delete_member_5_fails"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_5_fails">[docs]</a>    <span class="k">def</span> <span class="nf">test_delete_member_5_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test delete member from dataset</span>
+<span class="sd">        Result: can&#39;t remove non-existent user role</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;testsysadmin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;tester&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;admin&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;No such user and role combination&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="TestActions.test_delete_member_6_success"><a class="viewcode-back" href="../../../../../ckanext.kata.tests.unit.html#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_6_success">[docs]</a>    <span class="k">def</span> <span class="nf">test_delete_member_6_success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test delete member from dataset</span>
+<span class="sd">        Result: user role removed</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_context</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;testsysadmin&#39;</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;annakarenina&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;tester&#39;</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;editor&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s">&#39;User removed from role editor&#39;</span><span class="p">,</span> <span class="n">msg</span>
+</div>
+    <span class="k">def</span> <span class="nf">_build_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
+               <span class="s">&#39;session&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">Session</span><span class="p">,</span>
+               <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">ctx</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="simple">
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2014, CSC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
