@@ -1,0 +1,712 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ckanext.kata.tests.unit package &mdash; Kata metadata catalogue documentation</title>
+    
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Kata metadata catalogue documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">Kata</a></div>
+        <div class="rel">
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ckanext-kata-tests-unit-package">
+<h1>ckanext.kata.tests.unit package<a class="headerlink" href="#ckanext-kata-tests-unit-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-ckanext.kata.tests.unit.test_kata">
+<span id="ckanext-kata-tests-unit-test-kata-module"></span><h2>ckanext.kata.tests.unit.test_kata module<a class="headerlink" href="#module-ckanext.kata.tests.unit.test_kata" title="Permalink to this headline">¶</a></h2>
+<p>Test classes for Kata CKAN Extension.</p>
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_kata.</tt><tt class="descname">TestActions</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<p>Unit tests for action functions.</p>
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.setup_class">
+<em class="property">classmethod </em><tt class="descname">setup_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up testing environment.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.teardown_class">
+<em class="property">classmethod </em><tt class="descname">teardown_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.teardown_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.teardown_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get away from testing environment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_1_fails">
+<tt class="descname">test_add_member_1_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_add_member_1_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_1_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test add member to dataset
+Result: required information is missing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_2_fails">
+<tt class="descname">test_add_member_2_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_add_member_2_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_2_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test add member to dataset
+Result: user is not found</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_3_fails">
+<tt class="descname">test_add_member_3_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_add_member_3_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_3_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test add member to dataset
+Result: no sufficient privileges</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_4_fails">
+<tt class="descname">test_add_member_4_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_add_member_4_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_4_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test add member to dataset
+Result: can&#8217;t add thyself</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_5_success">
+<tt class="descname">test_add_member_5_success</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_add_member_5_success"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_5_success" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test add member to dataset
+Result: success</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_6_fails">
+<tt class="descname">test_add_member_6_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_add_member_6_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_add_member_6_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test add member to dataset
+Result: can&#8217;t add duplicate</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_1_fails">
+<tt class="descname">test_delete_member_1_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_delete_member_1_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_1_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test delete member from dataset
+Result: required information is missing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_2_fails">
+<tt class="descname">test_delete_member_2_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_delete_member_2_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_2_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test delete member from dataset
+Result: user doesn&#8217;t exist</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_3_fails">
+<tt class="descname">test_delete_member_3_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_delete_member_3_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_3_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test delete member from dataset
+Result: not enough privileges</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_4_fails">
+<tt class="descname">test_delete_member_4_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_delete_member_4_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_4_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test delete member from dataset
+Result: built-in users and yourself can&#8217;t be removed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_5_fails">
+<tt class="descname">test_delete_member_5_fails</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_delete_member_5_fails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_5_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test delete member from dataset
+Result: can&#8217;t remove non-existent user role</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_6_success">
+<tt class="descname">test_delete_member_6_success</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestActions.test_delete_member_6_success"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestActions.test_delete_member_6_success" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test delete member from dataset
+Result: user role removed</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_kata.TestHelpers">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_kata.</tt><tt class="descname">TestHelpers</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestHelpers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestHelpers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<p>Unit tests for functions in helpers.py.</p>
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_authors">
+<tt class="descname">test_get_authors</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestHelpers.test_get_authors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_authors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_owner">
+<tt class="descname">test_get_owner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestHelpers.test_get_owner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_owner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_package_ratings">
+<tt class="descname">test_get_package_ratings</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestHelpers.test_get_package_ratings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_package_ratings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_package_ratings_2">
+<tt class="descname">test_get_package_ratings_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestHelpers.test_get_package_ratings_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestHelpers.test_get_package_ratings_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_kata.</tt><tt class="descname">TestKataPlugin</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<p>General tests for KataPlugin.</p>
+<p>Provides a a dummy context object to test functions and methods that rely on it.</p>
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.setup_class">
+<em class="property">classmethod </em><tt class="descname">setup_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up tests.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.teardown_class">
+<em class="property">classmethod </em><tt class="descname">teardown_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.teardown_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.teardown_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get away from testing environment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_before_index">
+<tt class="descname">test_before_index</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_before_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_before_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_before_search">
+<tt class="descname">test_before_search</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_before_search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_before_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test before_search() output type and more.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_comments_template">
+<tt class="descname">test_comments_template</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_comments_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_comments_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_extract_search_params">
+<tt class="descname">test_extract_search_params</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_extract_search_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_extract_search_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test extract_search_params() output parameters number.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_get_actions">
+<tt class="descname">test_get_actions</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_get_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_get_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test get_actions() output type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_get_helpers">
+<tt class="descname">test_get_helpers</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_get_helpers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_get_helpers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test get_helpers() output type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_history_template">
+<tt class="descname">test_history_template</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_history_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_history_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_new_template">
+<tt class="descname">test_new_template</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_new_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_new_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_package_form">
+<tt class="descname">test_package_form</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_package_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_package_form" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_parse_search_dates">
+<tt class="descname">test_parse_search_dates</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_parse_search_dates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_parse_search_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test parse_search_dates() result string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_parse_search_terms">
+<tt class="descname">test_parse_search_terms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_parse_search_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_parse_search_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test parse_search_terms() result string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_read_template">
+<tt class="descname">test_read_template</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_read_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_read_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_search_template">
+<tt class="descname">test_search_template</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataPlugin.test_search_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataPlugin.test_search_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_kata.</tt><tt class="descname">TestKataSchemas</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas.setup_class">
+<em class="property">classmethod </em><tt class="descname">setup_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema">
+<tt class="descname">test_create_package_schema</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas.test_create_package_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema_ddi">
+<tt class="descname">test_create_package_schema_ddi</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas.test_create_package_schema_ddi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema_ddi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema_oai_dc">
+<tt class="descname">test_create_package_schema_oai_dc</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas.test_create_package_schema_oai_dc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_create_package_schema_oai_dc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_show_package_schema">
+<tt class="descname">test_show_package_schema</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas.test_show_package_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_show_package_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_tags_schema">
+<tt class="descname">test_tags_schema</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas.test_tags_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_tags_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_update_package_schema">
+<tt class="descname">test_update_package_schema</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas.test_update_package_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_update_package_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_update_package_schema_oai_dc">
+<tt class="descname">test_update_package_schema_oai_dc</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestKataSchemas.test_update_package_schema_oai_dc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestKataSchemas.test_update_package_schema_oai_dc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_kata.TestResouceConverters">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_kata.</tt><tt class="descname">TestResouceConverters</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestResouceConverters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestResouceConverters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<p>Unit tests for resource conversions in actions.</p>
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_kata.TestResouceConverters.setup_class">
+<em class="property">classmethod </em><tt class="descname">setup_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestResouceConverters.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestResouceConverters.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up tests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_dataset_to_resource">
+<tt class="descname">test_dataset_to_resource</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestResouceConverters.test_dataset_to_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_dataset_to_resource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_dataset_to_resource_invalid">
+<tt class="descname">test_dataset_to_resource_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestResouceConverters.test_dataset_to_resource_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_dataset_to_resource_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_handling">
+<tt class="descname">test_resource_handling</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestResouceConverters.test_resource_handling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_handling" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_handling_2">
+<tt class="descname">test_resource_handling_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestResouceConverters.test_resource_handling_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_handling_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_to_dataset">
+<tt class="descname">test_resource_to_dataset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestResouceConverters.test_resource_to_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_to_dataset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_to_dataset_invalid">
+<tt class="descname">test_resource_to_dataset_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestResouceConverters.test_resource_to_dataset_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestResouceConverters.test_resource_to_dataset_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_kata.TestUtils">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_kata.</tt><tt class="descname">TestUtils</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<p>Unit tests for functions in utils.py.</p>
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestUtils.test_generate_pid">
+<tt class="descname">test_generate_pid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestUtils.test_generate_pid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestUtils.test_generate_pid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestUtils.test_generate_pid2">
+<tt class="descname">test_generate_pid2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestUtils.test_generate_pid2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestUtils.test_generate_pid2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_title">
+<tt class="descname">test_get_field_title</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestUtils.test_get_field_title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test settings.get_field_title()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_titles">
+<tt class="descname">test_get_field_titles</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestUtils.test_get_field_titles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_titles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test settings.get_field_titles()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_titles_translate">
+<tt class="descname">test_get_field_titles_translate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestUtils.test_get_field_titles_translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestUtils.test_get_field_titles_translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test settings.get_field_titles() translation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_kata.TestUtils.test_get_funder">
+<tt class="descname">test_get_funder</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_kata.html#TestUtils.test_get_funder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_kata.TestUtils.test_get_funder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ckanext.kata.tests.unit.test_validators">
+<span id="ckanext-kata-tests-unit-test-validators-module"></span><h2>ckanext.kata.tests.unit.test_validators module<a class="headerlink" href="#module-ckanext.kata.tests.unit.test_validators" title="Permalink to this headline">¶</a></h2>
+<p>Test classes for Kata&#8217;s validators.</p>
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_validators.TestExtrasFlatteners">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_validators.</tt><tt class="descname">TestExtrasFlatteners</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestExtrasFlatteners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestExtrasFlatteners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_validators.TestExtrasFlatteners.setup_class">
+<em class="property">classmethod </em><tt class="descname">setup_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestExtrasFlatteners.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestExtrasFlatteners.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestExtrasFlatteners.test_flattened_from_extras">
+<tt class="descname">test_flattened_from_extras</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestExtrasFlatteners.test_flattened_from_extras"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestExtrasFlatteners.test_flattened_from_extras" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestExtrasFlatteners.test_flattened_to_extras">
+<tt class="descname">test_flattened_to_extras</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestExtrasFlatteners.test_flattened_to_extras"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestExtrasFlatteners.test_flattened_to_extras" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_validators.TestJSONConverters">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_validators.</tt><tt class="descname">TestJSONConverters</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestJSONConverters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestJSONConverters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<p>Test JSON converters</p>
+<dl class="attribute">
+<dt id="ckanext.kata.tests.unit.test_validators.TestJSONConverters.PIDS">
+<tt class="descname">PIDS</tt><em class="property"> = {u'kata': {u'version': [u'kata_version_pid']}, u'http://helda.helsinki.fi/oai/request': {u'version': [u'version_pid', u'another_version_pid'], u'data': [u'some_data_pid', u'another_data_pid'], u'metadata': [u'metadata_pid', u'another_metadata_pid', u'third_metadata_pid']}}</em><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestJSONConverters.PIDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_validators.TestJSONConverters.setup_class">
+<em class="property">classmethod </em><tt class="descname">setup_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestJSONConverters.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestJSONConverters.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestJSONConverters.test_from_extras_json">
+<tt class="descname">test_from_extras_json</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestJSONConverters.test_from_extras_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestJSONConverters.test_from_extras_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestJSONConverters.test_to_extras_json">
+<tt class="descname">test_to_extras_json</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestJSONConverters.test_to_extras_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestJSONConverters.test_to_extras_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_validators.TestResourceValidators">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_validators.</tt><tt class="descname">TestResourceValidators</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestResourceValidators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestResourceValidators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<p>Test validators for resources</p>
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_validators.TestResourceValidators.setup_class">
+<em class="property">classmethod </em><tt class="descname">setup_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestResourceValidators.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestResourceValidators.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using the resource&#8217;s format for resource validator tests</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_check_direct_download_url_invalid">
+<tt class="descname">test_check_direct_download_url_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestResourceValidators.test_check_direct_download_url_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_check_direct_download_url_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_validate_algorithm_invalid">
+<tt class="descname">test_validate_algorithm_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestResourceValidators.test_validate_algorithm_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_validate_algorithm_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_validate_algorithm_valid">
+<tt class="descname">test_validate_algorithm_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestResourceValidators.test_validate_algorithm_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_validate_algorithm_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_validate_mimetype_invalid">
+<tt class="descname">test_validate_mimetype_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestResourceValidators.test_validate_mimetype_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_validate_mimetype_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_validate_mimetype_valid">
+<tt class="descname">test_validate_mimetype_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestResourceValidators.test_validate_mimetype_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestResourceValidators.test_validate_mimetype_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.tests.unit.test_validators.</tt><tt class="descname">TestValidators</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.TestCase</span></tt></p>
+<p>Tests for Kata validators.</p>
+<dl class="classmethod">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.setup_class">
+<em class="property">classmethod </em><tt class="descname">setup_class</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.setup_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.setup_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up tests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_checkbox_to_boolean">
+<tt class="descname">test_checkbox_to_boolean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_checkbox_to_boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_checkbox_to_boolean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_general_validator_invalid">
+<tt class="descname">test_general_validator_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_general_validator_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_general_validator_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_remove_disabled_languages_valid">
+<tt class="descname">test_remove_disabled_languages_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_remove_disabled_languages_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_remove_disabled_languages_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_discipline">
+<tt class="descname">test_validate_discipline</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_discipline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_discipline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_duplicate_titles_invalid">
+<tt class="descname">test_validate_duplicate_titles_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_duplicate_titles_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_duplicate_titles_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_duplicate_titles_valid">
+<tt class="descname">test_validate_duplicate_titles_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_duplicate_titles_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_duplicate_titles_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_email_invalid">
+<tt class="descname">test_validate_email_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_email_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_email_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_email_invalid_2">
+<tt class="descname">test_validate_email_invalid_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_email_invalid_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_email_invalid_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_email_valid">
+<tt class="descname">test_validate_email_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_email_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_email_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_email_valid_2">
+<tt class="descname">test_validate_email_valid_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_email_valid_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_email_valid_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_invalid">
+<tt class="descname">test_validate_kata_date_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_kata_date_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_invalid_2">
+<tt class="descname">test_validate_kata_date_invalid_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_kata_date_invalid_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_invalid_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_invalid">
+<tt class="descname">test_validate_kata_date_relaxed_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_kata_date_relaxed_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_invalid_2">
+<tt class="descname">test_validate_kata_date_relaxed_invalid_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_kata_date_relaxed_invalid_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_invalid_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_valid">
+<tt class="descname">test_validate_kata_date_relaxed_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_kata_date_relaxed_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_valid_2">
+<tt class="descname">test_validate_kata_date_relaxed_valid_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_kata_date_relaxed_valid_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_valid_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_valid_3">
+<tt class="descname">test_validate_kata_date_relaxed_valid_3</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_kata_date_relaxed_valid_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_relaxed_valid_3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_valid">
+<tt class="descname">test_validate_kata_date_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_kata_date_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_kata_date_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_delete">
+<tt class="descname">test_validate_language_delete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_language_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_invalid">
+<tt class="descname">test_validate_language_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_language_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_invalid_2">
+<tt class="descname">test_validate_language_invalid_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_language_invalid_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_invalid_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_invalid_3">
+<tt class="descname">test_validate_language_invalid_3</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_language_invalid_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_invalid_3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_valid">
+<tt class="descname">test_validate_language_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_language_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_valid_2">
+<tt class="descname">test_validate_language_valid_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_language_valid_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_valid_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_valid_3">
+<tt class="descname">test_validate_language_valid_3</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_language_valid_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_language_valid_3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_phonenum_invalid">
+<tt class="descname">test_validate_phonenum_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_phonenum_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_phonenum_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_phonenum_valid">
+<tt class="descname">test_validate_phonenum_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_phonenum_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_phonenum_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_spatial">
+<tt class="descname">test_validate_spatial</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_spatial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_spatial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_title_invalid">
+<tt class="descname">test_validate_title_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/tests/unit/test_validators.html#TestValidators.test_validate_title_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.tests.unit.test_validators.TestValidators.test_validate_title_invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ckanext.kata.tests.unit">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ckanext.kata.tests.unit" title="Permalink to this headline">¶</a></h2>
+<p>Unit test package for Kata</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="simple">
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="_sources/ckanext.kata.tests.unit.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2014, CSC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

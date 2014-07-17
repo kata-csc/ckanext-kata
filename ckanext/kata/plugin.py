@@ -237,7 +237,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_dict_field_errors(self, errors, field, index, name):
         '''Get errors correctly for fields that are represented as nested dict fields in data_dict.
 
-        :return: [u'error1', u'error2']
+        :param errors: errors dictionary
+        :param field: field name
+        :param index: index
+        :param name:
+        :returns: `[u'error1', u'error2']`
         '''
         error = []
         error_dict = errors.get(field)
@@ -245,15 +249,25 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             error = error_dict[index].get(name)
         return error
 
+    # Todo: some of these can be found from helpers, too. This shouldn't be
     def has_agents_field(self, data_dict, field):
-        '''Return true if some of the data dict's agents has attribute given in field.'''
+        '''
+        Return true if some of the data dict's agents has attribute given in field.
+
+        :rtype: boolean
+        '''
         return [] != filter(lambda x : x.get(field), data_dict.get('agent', []))
 
     def has_contacts_field(self, data_dict, field):
-        '''Return true if some of the data dict's contacts has attribute given in field'.'''
+        '''
+        Return true if some of the data dict's contacts has attribute given in field'.
+
+        :rtype: boolean
+        '''
         return [] != filter(lambda x : x.get(field), data_dict.get('contact', []))
 
     def reference_update(self, ref):
+        # Todo: this can be found from helpers as well!
         #@beaker_cache(type="dbm", expire=2678400)
         def cached_url(url):
             return url
@@ -270,13 +284,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def kata_sorted_extras(self, list_):
         '''
-        Used for outputting package extras, skips package_hide_extras
+        Used for outputting package extras, skips `package_hide_extras`
         '''
         output = []
         for extra in sorted(list_, key=lambda x:x['key']):
             if extra.get('state') == 'deleted':
                 continue
-            
+
+            # Todo: the AND makes no sense. Isn't this in helpers too?
             key, val = extra['key'], extra['value']
             if key in g.package_hide_extras and\
                 key in settings.KATA_FIELDS and\
@@ -306,7 +321,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def update_config(self, config):
         """
         This IConfigurer implementation causes CKAN to look in the
-        ```templates``` directory when looking for the package_form()
+        `templates` directory when looking for the `package_form()`
         """
         toolkit.add_template_directory(config, 'theme/templates')
         toolkit.add_public_directory(config, 'theme/public')
@@ -340,7 +355,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def is_fallback(self):
         '''
-        Overrides IDatasetForm.is_fallback()
+        Overrides ``IDatasetForm.is_fallback()``
         From CKAN documentation:  "Returns true iff this provides the fallback behaviour,
         when no other plugin instance matches a package's type."
         '''
@@ -355,7 +370,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def setup_template_variables(self, context, data_dict):
         """
-        Override DefaultDatasetForm.setup_template_variables() form  method from ckan.lib.plugins.py.
+        Override ``DefaultDatasetForm.setup_template_variables()`` form  method from :file:`ckan.lib.plugins.py`.
         """
         super(KataPlugin, self).setup_template_variables(context, data_dict)
 
@@ -391,7 +406,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         Update the dictionary mapping facet names to facet titles.
         The dict supplied is actually an ordered dict.
 
-        Example: {'facet_name': 'The title of the facet'}
+        Example: ``{'facet_name': 'The title of the facet'}``
+
+        :param facets_dict: the facets dictionary
+        :param package_type: eg. `dataset`
+        :returns: the modified facets_dict
         '''
         titles = utils.get_field_titles(toolkit._)
         kata_facet_titles = OrderedDict((field, titles[field]) for field in settings.FACETS)
@@ -406,10 +425,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def extract_search_params(self, data_dict):
         """
-        Extracts parameters beginning with 'ext_' from data_dict['extras']
+        Extracts parameters beginning with ``ext_`` from `data_dict['extras']`
         for advanced search.
-        @param data_dict: contains all parameters from search.html
-        @return: unordered lists extra_terms and extra_ops, dict extra_dates
+
+        :param data_dict: contains all parameters from search.html
+        :rtype: unordered lists extra_terms and extra_ops, dict extra_dates
         """
         extra_terms = []
         extra_ops = []
@@ -437,14 +457,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def parse_search_terms(self, data_dict, extra_terms, extra_ops):
         """
         Parse extra terms and operators into query q into data_dict:
-        data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND \
-          tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*))
+        `data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND
+        tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*))`
         Note that all ANDs and NOTs are enclosed in parenthesis by ORs.
         Outer parenthesis are for date limits to work correctly.
 
-        @param data_dict: full data_dict from package:search
-        @param extra_terms: [(ext_organization-2, u'someOrg'), ...]
-        @param extra_ops: [(ext_operator-2, u'AND'), ...]
+        :param data_dict: full data_dict from package:search
+        :param extra_terms: `[(ext_organization-2, u'someOrg'), ...]`
+        :param extra_ops: `[(ext_operator-2, u'AND'), ...]`
         """
         def extras_cmp(a, b):
             a  = a.split("-")[-1]
@@ -484,14 +504,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def parse_search_dates(self, data_dict, extra_dates):
         """
         Parse extra date into query q into data_dict:
-        data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND \
-          tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*)) AND \
-          metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]
+        `data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND
+        tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*)) AND
+        metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]`
 
-        @param data_dict: full data_dict from package:search
-        @param extra_dates: {'start': 1991,
+        :param data_dict: full data_dict from package:search
+        :param extra_dates: ``{'start': 1991,
                              'end': 1994,
-                             'field': 'metadata_modified'}
+                             'field': 'metadata_modified'}``
         """
         c.current_search_limiters = {}
         if len(data_dict['q']) > 0:
@@ -513,7 +533,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def before_search(self, data_dict):
         '''
-        Things to do before querying Solr.
+        Things to do before querying Solr. Basically used by
+        the advanced search feature.
 
         :param data_dict: data_dict to modify
         '''
@@ -561,9 +582,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def before_index(self, pkg_dict):
         '''
         Modification to package dictionary before
-        indexing it to Solr index
+        indexing it to Solr index. For example, we
+        add resource mimetype to the index, modify
+        agents and hide the email address
         
         :param pkg_dict: pkg_dict to modify
+        :returns: the modified package dict to be indexed
         '''
         EMAIL = re.compile(r'.*contact_\d*_email')
 

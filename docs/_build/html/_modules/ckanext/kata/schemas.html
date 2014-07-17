@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ckanext.kata.schemas &mdash; Kata metadata catalogue documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Kata metadata catalogue documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../index.html">Kata</a></div>
+        <div class="rel">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for ckanext.kata.schemas</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">ckan.lib.navl.validators</span> <span class="kn">import</span> <span class="p">(</span><span class="n">default</span><span class="p">,</span>
+                                      <span class="n">ignore</span><span class="p">,</span>
+                                      <span class="n">ignore_empty</span><span class="p">,</span>
+                                      <span class="n">ignore_missing</span><span class="p">,</span>
+                                      <span class="n">not_empty</span><span class="p">,</span>
+                                      <span class="n">not_missing</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">ckan.logic.schema</span> <span class="kn">import</span> <span class="p">(</span><span class="n">default_create_package_schema</span><span class="p">,</span>
+                               <span class="n">default_show_package_schema</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">ckan.logic.validators</span> <span class="kn">import</span> <span class="p">(</span><span class="n">owner_org_validator</span><span class="p">,</span>
+                                   <span class="n">package_id_not_changed</span><span class="p">,</span>
+                                   <span class="n">package_name_validator</span><span class="p">,</span>
+                                   <span class="n">tag_length_validator</span><span class="p">,</span>
+                                   <span class="n">url_validator</span><span class="p">,</span>
+                                   <span class="n">vocabulary_id_exists</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">ckanext.kata.validators</span> <span class="kn">as</span> <span class="nn">va</span>
+<span class="kn">import</span> <span class="nn">ckanext.kata.converters</span> <span class="kn">as</span> <span class="nn">co</span>
+<span class="kn">import</span> <span class="nn">ckanext.kata.settings</span> <span class="kn">as</span> <span class="nn">settings</span>
+
+<div class="viewcode-block" id="Schemas"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.schemas.Schemas">[docs]</a><span class="k">class</span> <span class="nc">Schemas</span><span class="p">:</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Schemas.tags_schema"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.schemas.Schemas.tags_schema">[docs]</a>    <span class="k">def</span> <span class="nf">tags_schema</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_missing</span><span class="p">,</span>
+                     <span class="n">not_empty</span><span class="p">,</span>
+                     <span class="nb">unicode</span><span class="p">,</span>
+                     <span class="n">tag_length_validator</span><span class="p">,</span>
+                     <span class="n">va</span><span class="o">.</span><span class="n">kata_tag_name_validator</span><span class="p">,</span>
+                     <span class="p">],</span>
+            <span class="s">&#39;vocabulary_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">vocabulary_id_exists</span><span class="p">],</span>
+            <span class="s">&#39;revision_timestamp&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore</span><span class="p">],</span>
+            <span class="s">&#39;state&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore</span><span class="p">],</span>
+            <span class="s">&#39;display_name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">schema</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Schemas.create_package_schema"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.schemas.Schemas.create_package_schema">[docs]</a>    <span class="k">def</span> <span class="nf">create_package_schema</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the schema for validating new dataset dicts.</span>
+
+<span class="sd">        :rtype: schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!</span>
+        <span class="c"># Note: harvester schemas</span>
+
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">default_create_package_schema</span><span class="p">()</span>
+        <span class="n">schema</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;author&#39;</span><span class="p">)</span>
+        <span class="c"># schema.pop(&#39;organization&#39;)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">KATA_FIELDS_REQUIRED</span><span class="p">:</span>
+            <span class="n">schema</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">not_empty</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">KATA_FIELDS_RECOMMENDED</span><span class="p">:</span>
+            <span class="n">schema</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">]</span>
+
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_empty</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">check_agent_fields</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                           <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_empty</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">contains_alphanumeric</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                           <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_empty</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                           <span class="s">&#39;organisation&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_empty</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">contains_alphanumeric</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                           <span class="s">&#39;URL&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_empty</span><span class="p">,</span> <span class="n">url_validator</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                           <span class="c"># Note: Changed to &#39;fundingid&#39; for now because &#39;funding_id&#39;</span>
+                           <span class="c"># was returned as &#39;funding&#39; from db. Somewhere &#39;_id&#39; was</span>
+                           <span class="c"># splitted off.</span>
+                           <span class="s">&#39;fundingid&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_empty</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">]}</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;contact&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_empty</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">contains_alphanumeric</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                             <span class="s">&#39;email&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_empty</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_email</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                             <span class="s">&#39;URL&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_empty</span><span class="p">,</span> <span class="n">url_validator</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                             <span class="c"># phone number can be missing from the first users</span>
+                             <span class="s">&#39;phone&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_phonenum</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">]}</span>
+        <span class="c"># phone number can be missing from the first users</span>
+        <span class="c"># schema[&#39;contact_phone&#39;] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]</span>
+        <span class="c"># schema[&#39;contact_URL&#39;] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">check_events</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">],</span>
+                           <span class="s">&#39;who&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">contains_alphanumeric</span><span class="p">],</span>
+                           <span class="s">&#39;when&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date</span><span class="p">],</span>
+                           <span class="s">&#39;descr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">contains_alphanumeric</span><span class="p">]}</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">default</span><span class="p">(</span><span class="s">u&#39;&#39;</span><span class="p">),</span> <span class="n">co</span><span class="o">.</span><span class="n">update_pid</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;langtitle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_title</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_title_duplicates</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">ltitle_to_extras</span><span class="p">],</span>
+                               <span class="s">&#39;lang&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_languages</span><span class="p">]}</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;language&#39;</span><span class="p">]</span> <span class="o">=</span> \
+            <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_languages</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">remove_disabled_languages</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="c"># schema[&#39;maintainer&#39;] = [not_empty, unicode, validate_general, contains_alphanumeric]</span>
+        <span class="c"># schema[&#39;maintainer_email&#39;] = [not_empty, unicode, validate_email]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;temporal_coverage_begin&#39;</span><span class="p">]</span> <span class="o">=</span> \
+            <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;temporal_coverage_end&#39;</span><span class="p">]</span> <span class="o">=</span> \
+            <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;provider&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                          <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">],</span>
+                          <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">not_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">]}</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;tag_string&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">not_empty</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">kata_tag_string_convert</span><span class="p">]</span>
+        <span class="c"># otherwise the tags would be validated with default tag validator during update</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">tags_schema</span><span class="p">()</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;xpaths&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">to_extras_json</span><span class="p">]</span>
+        <span class="c"># these two can be missing from the first Kata end users</span>
+        <span class="c"># TODO: version date validation should be tighter, see metadata schema</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">not_empty</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;availability&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">not_missing</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;langdis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">checkbox_to_boolean</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">]</span>
+        <span class="c"># TODO: MIKKO: __extras: check_langtitle needed? Its &#39;raise&#39; seems to be unreachable</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;__extras&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">va</span><span class="o">.</span><span class="n">check_agent</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">check_langtitle</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">check_contact</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;__junk&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">va</span><span class="o">.</span><span class="n">check_junk</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">update_pid</span><span class="p">,</span> <span class="n">package_name_validator</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;access_application_new_form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">checkbox_to_boolean</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span>
+                                                 <span class="n">co</span><span class="o">.</span><span class="n">remove_access_application_new_form</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;access_application_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_access_application_url</span><span class="p">,</span>
+                                            <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;access_request_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">check_access_request_url</span><span class="p">,</span> <span class="n">url_validator</span><span class="p">,</span>
+                                        <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;through_provider_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">check_through_provider_url</span><span class="p">,</span> <span class="n">url_validator</span><span class="p">,</span>
+                                          <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;discipline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_discipline</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;geographic_coverage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_spatial</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;license_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="s">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">default</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">DATASET_URL_UNKNOWN</span><span class="p">),</span> <span class="n">va</span><span class="o">.</span><span class="n">check_direct_download_url</span><span class="p">,</span>
+                                      <span class="n">url_validator</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">]</span>
+        <span class="c"># Conversion (and validation) of direct_download_URL to resource[&#39;url&#39;] is in utils.py:dataset_to_resource()</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="s">&#39;algorithm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_algorithm</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="s">&#39;hash&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">)</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">][</span><span class="s">&#39;mimetype&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">va</span><span class="o">.</span><span class="n">validate_mimetype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">schema</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Schemas.create_package_schema_oai_dc"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.schemas.Schemas.create_package_schema_oai_dc">[docs]</a>    <span class="k">def</span> <span class="nf">create_package_schema_oai_dc</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Modified schema for datasets imported with oai_dc reader.</span>
+<span class="sd">        Some fields are missing, as the dublin core format</span>
+<span class="sd">        doesn&#39;t provide so many options</span>
+
+<span class="sd">        :rtype: schema</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># Todo: requires additional testing and planning</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">create_package_schema</span><span class="p">()</span>
+
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;__extras&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore</span><span class="p">]</span>   <span class="c"># This removes orgauth checking</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;availability&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">)</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;contact_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">url_validator</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;discipline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">)</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;geographic_coverage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">)</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;maintainer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">]</span>
+    <span class="c">#    schema[&#39;contact&#39;] = {&#39;name&#39;: [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],</span>
+    <span class="c">#                         &#39;email&#39;: [ignore_missing, unicode, va.validate_email, co.flattened_to_extras],</span>
+    <span class="c">#                         &#39;URL&#39;: [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],</span>
+    <span class="c">#                         &#39;phone&#39;: [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">not_empty</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date_relaxed</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">schema</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Schemas.create_package_schema_ddi"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.schemas.Schemas.create_package_schema_ddi">[docs]</a>    <span class="k">def</span> <span class="nf">create_package_schema_ddi</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Modified schema for datasets imported with ddi reader.</span>
+<span class="sd">        Some fields in ddi import are allowed to be  missing.</span>
+
+<span class="sd">        :rtype: schema</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">create_package_schema</span><span class="p">()</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;discipline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">)</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">],</span>
+                           <span class="s">&#39;who&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">contains_alphanumeric</span><span class="p">],</span>
+                           <span class="s">&#39;when&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date_relaxed</span><span class="p">],</span>
+                           <span class="s">&#39;descr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">flattened_to_extras</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_general</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">contains_alphanumeric</span><span class="p">]}</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;geographic_coverage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">)</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;temporal_coverage_begin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date_relaxed</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;temporal_coverage_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date_relaxed</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">convert_to_extras_kata</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">not_empty</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">validate_kata_date_relaxed</span><span class="p">]</span>
+        <span class="c"># schema[&#39;xpaths&#39;] = [xpath_to_extras]</span>
+
+        <span class="k">return</span> <span class="n">schema</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Schemas.update_package_schema"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.schemas.Schemas.update_package_schema">[docs]</a>    <span class="k">def</span> <span class="nf">update_package_schema</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the schema for validating updated dataset dicts.</span>
+
+<span class="sd">        :rtype: schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">create_package_schema</span><span class="p">()</span>
+        <span class="c"># Taken from ckan.logic.schema.default_update_package_schema():</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">package_id_not_changed</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">va</span><span class="o">.</span><span class="n">package_name_not_changed</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;owner_org&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">owner_org_validator</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">schema</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Schemas.update_package_schema_oai_dc"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.schemas.Schemas.update_package_schema_oai_dc">[docs]</a>    <span class="k">def</span> <span class="nf">update_package_schema_oai_dc</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Modified schema for datasets imported with oai_dc reader.</span>
+<span class="sd">        Some fields are missing, as the dublin core format</span>
+<span class="sd">        doesn&#39;t provide so many options</span>
+
+<span class="sd">        :rtype: schema</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">create_package_schema_oai_dc</span><span class="p">()</span>
+
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">package_id_not_changed</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;owner_org&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">,</span> <span class="n">owner_org_validator</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">schema</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Schemas.show_package_schema"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.schemas.Schemas.show_package_schema">[docs]</a>    <span class="k">def</span> <span class="nf">show_package_schema</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The data fields that are returned from CKAN for each dataset can be changed with this method.</span>
+<span class="sd">        This method is called when viewing or editing a dataset.</span>
+
+<span class="sd">        :rtype: schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">default_show_package_schema</span><span class="p">()</span>
+        <span class="c"># Put back validators for several keys into the schema so validation</span>
+        <span class="c"># doesn&#39;t bring back the keys from the package dicts if the values are</span>
+        <span class="c"># &#39;missing&#39; (i.e. None).</span>
+        <span class="c"># See few lines into &#39;default_show_package_schema()&#39;</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;author_email&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;organization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ignore_missing</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">KATA_FIELDS</span><span class="p">:</span>
+            <span class="n">schema</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">convert_from_extras_kata</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">flattened_from_extras</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;contact&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">flattened_from_extras</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;access_application_new_form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">unicode</span><span class="p">],</span>
+        <span class="c"># schema[&#39;author&#39;] = [org_auth_from_extras, ignore_missing, unicode]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">flattened_from_extras</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;langdis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">unicode</span><span class="p">]</span>
+        <span class="c"># schema[&#39;organization&#39;] = [ignore_missing, unicode]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">flattened_from_extras</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">]</span>
+        <span class="c"># schema[&#39;projdis&#39;] = [unicode]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">ltitle_from_extras</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">]</span>
+        <span class="c">#schema[&#39;version_PID&#39;] = [version_pid_from_extras, ignore_missing, unicode]</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s">&#39;xpaths&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">co</span><span class="o">.</span><span class="n">from_extras_json</span><span class="p">,</span> <span class="n">ignore_missing</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+        <span class="c">#schema[&#39;resources&#39;][&#39;resource_type&#39;] = [from_resource]</span>
+
+        <span class="k">return</span> <span class="n">schema</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="simple">
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2014, CSC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

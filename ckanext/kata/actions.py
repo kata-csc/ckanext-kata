@@ -89,10 +89,11 @@ def package_create(context, data_dict):
     Extends ckan's similar method to instantly reindex the SOLR index, 
     so that this newly added package emerges in search results instantly instead of 
     during the next timed reindexing.
-    
-    Arguments: 
-    :param context    - ?
-    :param data_dict  - ?
+
+    :param context: context
+    :param data_dict: data dictionary (package data)
+
+    :rtype: dictionary
     """
     user = model.User.get(context['user'])
     try:
@@ -167,8 +168,11 @@ def package_update(context, data_dict):
     to be specific).
 
     :type context: dict
+    :param context: context
     :type data_dict: dict
     :param data_dict: dataset as dictionary
+
+    :rtype: dictionary
     '''
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
@@ -259,10 +263,12 @@ def package_delete(context, data_dict):
     Extends ckan's similar method to instantly re-index the SOLR index. 
     Otherwise the changes would only be added during a re-index (a rebuild of search index,
     to be specific).
-    
-    Arguments:
-    :param context:
-    :param data_dict: package data as dictionary
+
+    :param context: context
+    :type context: dictionary
+    :param data_dict: package data
+    :type data_dict: dictionary
+
     '''
     # Logging for production use
     try:
@@ -326,6 +332,8 @@ def package_search(context, data_dict):
 
     :param id: the id or name of the dataset
     :type id: string
+    :param context: context
+    :type context: dictionary
 
     :rtype: dictionary
     '''
@@ -352,6 +360,18 @@ def group_list(context, data_dict):
 
 
 def related_create(context, data_dict):
+    '''
+    Uses different schema and adds logging.
+    Otherwise does what ckan's similar function does.
+
+    :param context: context
+    :type context: dictionary
+    :param data_dict: related item's data
+    :type data_dict: dictionary
+
+    :returns: the newly created related item
+    :rtype: dictionary
+    '''
     schema = {
         'id': [ignore_missing, unicode],
         'title': [not_empty, unicode],
@@ -379,6 +399,18 @@ def related_create(context, data_dict):
 
 
 def related_update(context, data_dict):
+    '''
+    Uses different schema and adds logging.
+    Otherwise does what ckan's similar function does.
+
+    :param context: context
+    :type context: dictionary
+    :param data_dict: related item's data
+    :type data_dict: dictionary
+
+    :returns: the newly updated related item
+    :rtype: dictionary
+    '''
     schema = {
         'id': [ignore_missing, unicode],
         'title': [not_empty, unicode],
@@ -408,10 +440,13 @@ def dataset_editor_delete(context, data_dict):
     Deletes user and role in a dataset
 
     :param username: user name to delete
-    :id: dataset id
-    :role: string (editor, admin, reader)
+    :type username: string
+    :param id: dataset id
+    :type id: string
+    :param role: editor, admin or reader
+    :type role: string
 
-    :rtype = message dict with 'success' and 'msg'
+    :rtype: message dict with `success` and `msg`
     '''
     pkg = model.Package.get(data_dict.get('name', None))
     user = model.User.get(context.get('user', None))
@@ -461,9 +496,12 @@ def dataset_editor_add(context, data_dict):
     '''
     Adds a user and role to dataset
 
-    :name: dataset name
-    :role: string (admin, editor, reader)
-    :username: string, user to add
+    :param name: dataset name
+    :type name: string
+    :param role: admin, editor or reader
+    :type role: string
+    :param username: user to be added
+    :type username: string
 
     :rtype: message dict with 'success' and 'msg'
     '''

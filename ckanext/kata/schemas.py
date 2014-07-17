@@ -38,6 +38,8 @@ class Schemas:
     def create_package_schema(cls):
         """
         Return the schema for validating new dataset dicts.
+
+        :rtype: schema
         """
         # TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!
         # Note: harvester schemas
@@ -124,7 +126,7 @@ class Schemas:
         Some fields are missing, as the dublin core format
         doesn't provide so many options
 
-        :return schema
+        :rtype: schema
         '''
         # Todo: requires additional testing and planning
         schema = cls.create_package_schema()
@@ -147,7 +149,8 @@ class Schemas:
         '''
         Modified schema for datasets imported with ddi reader.
         Some fields in ddi import are allowed to be  missing.
-        :return schema
+
+        :rtype: schema
         '''
         schema = cls.create_package_schema()
         schema['discipline'].insert(0, ignore_missing)
@@ -167,6 +170,8 @@ class Schemas:
     def update_package_schema(cls):
         """
         Return the schema for validating updated dataset dicts.
+
+        :rtype: schema
         """
         schema = cls.create_package_schema()
         # Taken from ckan.logic.schema.default_update_package_schema():
@@ -182,7 +187,7 @@ class Schemas:
         Some fields are missing, as the dublin core format
         doesn't provide so many options
 
-        :return schema
+        :rtype: schema
         '''
         schema = cls.create_package_schema_oai_dc()
 
@@ -196,6 +201,8 @@ class Schemas:
         """
         The data fields that are returned from CKAN for each dataset can be changed with this method.
         This method is called when viewing or editing a dataset.
+
+        :rtype: schema
         """
 
         schema = default_show_package_schema()
