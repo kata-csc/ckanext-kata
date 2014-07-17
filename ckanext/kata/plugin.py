@@ -194,7 +194,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'resource_create': actions.resource_create,
                 'resource_update': actions.resource_update,
                 'resource_delete': actions.resource_delete,
-                'group_list': actions.group_list,
+                # 'group_list': actions.group_list,
                 'group_create': actions.group_create,
                 'group_update': actions.group_update,
                 'group_delete': actions.group_delete,

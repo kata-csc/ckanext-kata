@@ -349,14 +349,14 @@ def package_search(context, data_dict):
     return ckan.logic.action.get.package_search(context, data_dict)
 
 
-def group_list(context, data_dict):
-    '''
-    Return a list of the names of the site's groups.
-    '''
-    if not "for_view" in context:
-        return []
-    else:
-        return ckan.logic.action.get.group_list(context, data_dict)
+# def group_list(context, data_dict):
+#     '''
+#     Return a list of the names of the site's groups.
+#     '''
+#     if not "for_view" in context:
+#         return []
+#     else:
+#         return ckan.logic.action.get.group_list(context, data_dict)
 
 
 def related_create(context, data_dict):
