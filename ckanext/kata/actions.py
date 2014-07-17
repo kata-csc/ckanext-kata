@@ -544,3 +544,14 @@ def dataset_editor_add(context, data_dict):
     msg = _('User added')
 
     return {'success': True, 'msg': msg}
+
+
+@side_effect_free
+def organization_list_for_user(context, data_dict):
+    from ckan.logic.action.get import organization_list_for_user
+    import ckan.new_authz
+
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS['member'] = ['read', 'delete_dataset', 'create_dataset', 'update_dataset']
+
+    return organization_list_for_user(context, data_dict)
