@@ -576,3 +576,95 @@ class TestSchema(KataApiTestCase):
 
         logg.disabled = False
 
+
+class TestOrganizations(KataApiTestCase):
+    """Tests for creating organizations and playing with them through API."""
+
+    TEST_ORG = {
+        'description': u'Description, blah blah...',
+        'title': u'Test Organization',
+        'image_url': u'http://192.168.56.101:5000/base/images/kata-logo.png',
+        'users': [{'capacity': 'admin', 'name': u'testsysadmin'}],
+        'type': 'organization',
+        'name': u'testi-org'
+    }
+
+    def test_create_organization(self):
+        output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **self.TEST_ORG)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
+        assert output
+        assert output['title'] == self.TEST_ORG['title'], output
+        assert output['image_url'] == self.TEST_ORG['image_url'], output
+        assert output['description'] == self.TEST_ORG['description'], output
+        assert output['type'] == self.TEST_ORG['type'], output
+
+    def test_organization_members_allowed(self):
+        NEW_ORG = self.TEST_ORG
+        NEW_ORG['name'] = 'new-org'
+
+        output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **NEW_ORG)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+        # Sysadmin can create an admin for organization
+        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'admin'})
+        # group_member_create doesn't return anything, so no checking...
+
+        # admin can create an editor for organization
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': 'joeadmin',
+                                                'role': 'editor'})
+
+        # editor can create a member for organization
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': 'annafan',
+                                                'role': 'member'})
+
+    def test_organization_members_role_changes(self):
+        NEW_ORG = self.TEST_ORG
+        NEW_ORG['name'] = 'newest-org'
+
+        output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **NEW_ORG)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'admin'})
+
+        # admin can change self to editor
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'editor'})
+
+        # editor can not change self back to admin
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=403, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'admin'})
+
+        # editor can change self to member
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'member'})
+
+        # member can not change self back to editor
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=403, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'editor'})
