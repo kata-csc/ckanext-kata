@@ -119,7 +119,7 @@
         <td>{{ contact.name }}</td>
         {% if email %}
           {% if contact.email == 'hidden' %}
-            <td><a href="/contact/{{pkg_dict.id}}">{{_('Send a message') }}</a></td>
+            <td><a href="{{ h.url_for(controller='ckanext.kata.controllers:ContactController', action='render_contact', pkg_id=pkg_dict.id) }}">{{_('Send a message') }}</a></td>
           {% else %}
             <td>{{ contact.email }}</td>
           {% endif %}
