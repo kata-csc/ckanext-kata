@@ -109,7 +109,7 @@
 
   {% if h.check_access('package_update', {'id':pkg.id }) %}
     <section class="module module-narrow">
-      <h2 class="module-heading">{{ _('Metadata export') }}</h2>
+      <h2 class="module-heading">{{ _('Dataset administration') }}</h2>
       <ul class="nav nav-simple">
          <li class="nav-item">
            <a href={{h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=pkg.name)}}><i class="icon-wrench"></i>{{ _('Administer dataset rights') }}</a>
