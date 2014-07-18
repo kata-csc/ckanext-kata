@@ -222,7 +222,7 @@ class AccessRequestController(BaseController):
             pkg_title = pkg.title if pkg.title else pkg.name
             add_user_to_role(user, 'editor', pkg)
             url = h.url_for(controller='package', action='read', id=req.pkg_id)
-            h.flash_success(_("%s now has editor rights to package %s" % (user.name, pkg_title)))
+            h.flash_success(_("%s now has editor rights to package %s") % (user.name, pkg_title))
             req.delete()
             meta.Session.commit()
             redirect(url)
