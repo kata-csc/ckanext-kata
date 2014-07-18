@@ -77,7 +77,6 @@ def package_delete(context, data_dict):
     user = context['user']
     package = get_package_object(context, data_dict)
     if is_owner(context, data_dict)['success'] == True:
-    # TODO: Don't use is_owner, but rather the one below and fix possible issues with missing rights for package editors
     # if h.check_access('package_delete', data_dict):
         return {'success': True}
     else:
