@@ -10,6 +10,7 @@ import copy
 import logging
 import testfixtures
 
+from ckan import model
 from ckan.lib.helpers import url_for
 from ckan.lib import search
 from ckan.tests import call_action_api
@@ -668,3 +669,55 @@ class TestOrganizations(KataApiTestCase):
                                  status=403, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'editor'})
+
+        # member can not change self back to admin
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=403, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'admin'})
+
+    def test_organization_members_role_changes_2(self):
+        NEW_ORG = self.TEST_ORG
+        NEW_ORG['name'] = 'even-newer-org'
+
+        output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **NEW_ORG)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'admin'})
+
+        # admin can add an editor
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': 'joeadmin',
+                                                'role': 'editor'})
+
+        # admin can change editor to member
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': 'joeadmin',
+                                                'role': 'member'})
+
+        # admin can change member to editor
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': 'joeadmin',
+                                                'role': 'editor'})
+
+        # admin can not add admin
+        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+                                 status=403, **{'id': NEW_ORG['name'],
+                                                'username': 'annafan',
+                                                'role': 'admin'})
+
+        # editor can not add editor
+        call_action_api(self.app, 'group_member_create', apikey=model.User.get('joeadmin').apikey,
+                                 status=403, **{'id': NEW_ORG['name'],
+                                                'username': 'annafan',
+                                                'role': 'editor'})
+

@@ -22,6 +22,7 @@ from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, ValidationError
 from ckanext.kata import utils
 from ckan.logic import get_action
+import ckan.new_authz
 _get_or_bust = ckan.logic.get_or_bust
 _authz = model.authz
 
@@ -315,7 +316,7 @@ resource_create = _decorate(ckan.logic.action.create.resource_create, 'resource'
 resource_update = _decorate(ckan.logic.action.update.resource_update, 'resource', 'update')
 resource_delete = _decorate(ckan.logic.action.delete.resource_delete, 'resource', 'delete')
 related_delete = _decorate(ckan.logic.action.delete.related_delete, 'related', 'delete')
-member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'create')
+# member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'create')
 member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
 group_create = _decorate(ckan.logic.action.create.group_create, 'group', 'create')
 group_update = _decorate(ckan.logic.action.update.group_update, 'group', 'update')
@@ -555,9 +556,51 @@ def organization_list_for_user(context, data_dict):
     :returns: list of dictized organizations that the user is authorized to edit
     :rtype: list of dicts
     '''
-    import ckan.new_authz
-
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
-    ckan.new_authz.ROLE_PERMISSIONS['member'] = ['read', 'delete_dataset', 'create_dataset', 'update_dataset']
+    editor = ckan.new_authz.ROLE_PERMISSIONS['editor']
+    # ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['update', 'membership', 'organization_show'] + editor
+    ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['admin']
+    ckan.new_authz.ROLE_PERMISSIONS['member'] = editor
 
     return ckan.logic.action.get.organization_list_for_user(context, data_dict)
+
+
+def member_create(context, data_dict=None):
+    '''
+    Make an object (e.g. a user, dataset or group) a member of a group.
+
+    Custom organization permission handling added on top of CKAN's own member_create action.
+    '''
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['admin']
+
+    model = context['model']
+    user = context['user']
+
+    group_id, obj_id, obj_type, capacity = _get_or_bust(data_dict, ['id', 'object', 'object_type', 'capacity'])
+
+    user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
+    if not user_id:
+        raise ckan.logic.NotAuthorized(
+                _("You must be logged in."))
+
+    # get any roles the user has for the group
+    q = model.Session.query(model.Member) \
+        .filter(model.Member.group_id == group_id) \
+        .filter(model.Member.table_name == 'user') \
+        .filter(model.Member.state == 'active') \
+        .filter(model.Member.table_id == user_id)
+
+    # Editor can only create 'member' role
+    if capacity != 'member' and len(filter( lambda group: group.capacity == 'editor', q.all())):
+        raise ckan.logic.NotAuthorized(
+                _("You don't have permission to add anything but 'member' roles."))
+
+    # Only sysadmin can create 'admin' role
+    if capacity == 'admin' and not ckan.new_authz.is_sysadmin(user):
+        raise ckan.logic.NotAuthorized(
+                _("You don't have permission to add 'admin' roles."))
+
+    return ckan.logic.action.create.member_create(context, data_dict)
+
+# TODO: Add logging for member_create and group_list
