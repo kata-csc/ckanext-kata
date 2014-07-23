@@ -721,3 +721,36 @@ class TestOrganizations(KataApiTestCase):
                                                 'username': 'annafan',
                                                 'role': 'editor'})
 
+        # editor can not lower the role of admin/editor to member
+        call_action_api(self.app, 'group_member_create', apikey=model.User.get('joeadmin').apikey,
+                                 status=403, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'member'})
+
+    def test_organization_members_role_changes_sysadmin(self):
+        NEW_ORG = self.TEST_ORG
+        NEW_ORG['name'] = 'most-newest-org'
+
+        output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **NEW_ORG)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+        # Sysadmin can create an admin for organization
+        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'admin'})
+
+        # Sysadmin can lower an admin to editor
+        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'editor'})
+
+        # Sysadmin can lower an editor to member
+        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'member'})

@@ -577,29 +577,60 @@ def member_create(context, data_dict=None):
     model = context['model']
     user = context['user']
 
-    group_id, obj_id, obj_type, capacity = _get_or_bust(data_dict, ['id', 'object', 'object_type', 'capacity'])
-
     user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
     if not user_id:
-        raise ckan.logic.NotAuthorized(
-                _("You must be logged in."))
+        raise ckan.logic.NotAuthorized(_("You must be logged in."))
+
+    group_id, obj_id, obj_type, capacity = _get_or_bust(data_dict, ['id', 'object', 'object_type', 'capacity'])
 
     # get any roles the user has for the group
-    q = model.Session.query(model.Member) \
+    user_role_query = model.Session.query(model.Member) \
         .filter(model.Member.group_id == group_id) \
         .filter(model.Member.table_name == 'user') \
         .filter(model.Member.state == 'active') \
         .filter(model.Member.table_id == user_id)
 
-    # Editor can only create 'member' role
-    if capacity != 'member' and len(filter( lambda group: group.capacity == 'editor', q.all())):
-        raise ckan.logic.NotAuthorized(
-                _("You don't have permission to add anything but 'member' roles."))
+    # get roles for the target of this role change
+    target = model.Session.query(model.Member) \
+        .filter(model.Member.group_id == group_id) \
+        .filter(model.Member.table_name == 'user') \
+        .filter(model.Member.state == 'active') \
+        .filter(model.Member.table_id == obj_id)
 
-    # Only sysadmin can create 'admin' role
-    if capacity == 'admin' and not ckan.new_authz.is_sysadmin(user):
-        raise ckan.logic.NotAuthorized(
-                _("You don't have permission to add 'admin' roles."))
+    user_roles = []
+    target_roles = []
+
+    if user_role_query:
+        user_roles = [group.capacity for group in user_role_query.all()]
+    if target:
+        target_roles = [group.capacity for group in target.all()]
+
+    if ckan.new_authz.is_sysadmin(user):
+        # Sysadmin can do anything
+        pass
+    elif capacity == 'admin':
+        # Only sysadmin can add 'admin' roles for users.
+        raise ckan.logic.NotAuthorized(_("You don't have permission to add 'admin' users."))
+
+    elif capacity == 'editor':
+        # Only admin can add 'editor' roles for users. An admin can also lower herself to 'editor'.
+        if not 'admin' in user_roles:
+            raise ckan.logic.NotAuthorized(_("You don't have permission to modify 'admin' users."))
+        elif 'admin' in target_roles and not user_id == obj_id:
+            raise ckan.logic.NotAuthorized(_("You don't have permission to modify other 'admin' users."))
+
+    elif capacity == 'member':
+        # Member can not create member role. Admin can lower editors to members.
+        # Admin/Editor can lower herself to member.
+        if not ('admin' in user_roles or 'editor' in user_roles):
+            raise ckan.logic.NotAuthorized(_("You don't have permission to modify roles for this organization."))
+
+        if 'admin' in target_roles and not user_id == obj_id:
+            raise ckan.logic.NotAuthorized(_("You don't have permission to modify other 'admin' users."))
+        elif 'editor' in target_roles and not (user_id == obj_id or 'admin' in user_roles):
+            raise ckan.logic.NotAuthorized(_("You don't have permission to modify other 'editor' users."))
+    else:
+        raise ckan.logic.NotAuthorized(_("You don't have permission to modify roles for this organization."))
 
     return ckan.logic.action.create.member_create(context, data_dict)
 
