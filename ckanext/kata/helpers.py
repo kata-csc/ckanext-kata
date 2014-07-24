@@ -352,7 +352,11 @@ def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
     :param target_role: target's current role
     '''
 
-    user = filter(lambda user: user.get('id') == user_id, group_dict['users'])[0]
+    user = fn.first(filter(lambda user: user.get('id') == user_id, group_dict['users']))
+
+    if not user:
+        return False
+
     user_role = user.get('capacity')
 
     target_role = target_role.lower()

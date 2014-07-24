@@ -5,6 +5,7 @@ Kata's action overrides.
 
 import datetime
 import logging
+import functionally as fn
 
 import re
 from pylons import c
@@ -317,7 +318,7 @@ resource_update = _decorate(ckan.logic.action.update.resource_update, 'resource'
 resource_delete = _decorate(ckan.logic.action.delete.resource_delete, 'resource', 'delete')
 related_delete = _decorate(ckan.logic.action.delete.related_delete, 'related', 'delete')
 # member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'create')
-member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
+# member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
 group_create = _decorate(ckan.logic.action.create.group_create, 'group', 'create')
 group_update = _decorate(ckan.logic.action.update.group_update, 'group', 'update')
 # group_list = _decorate(ckan.logic.action.get.group_list, 'group', 'list')
@@ -565,12 +566,31 @@ def organization_list_for_user(context, data_dict):
     return ckan.logic.action.get.organization_list_for_user(context, data_dict)
 
 
+def _get_member_role(group_id, user_id):
+    """
+    Get the user's role for this group.
+
+    :param group_id: Group ID
+    :param user_id: User ID
+    :rtype: list of strings
+    """
+    query = model.Session.query(model.Member) \
+        .filter(model.Member.group_id == group_id) \
+        .filter(model.Member.table_name == 'user') \
+        .filter(model.Member.state == 'active') \
+        .filter(model.Member.table_id == user_id)
+
+    return fn.first([group.capacity for group in query.all()])
+
+
 def member_create(context, data_dict=None):
     '''
     Make an object (e.g. a user, dataset or group) a member of a group.
 
     Custom organization permission handling added on top of CKAN's own member_create action.
     '''
+    # TODO: Handle dataset (and group?)
+
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
     ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['admin']
 
@@ -583,55 +603,95 @@ def member_create(context, data_dict=None):
 
     group_id, obj_id, obj_type, capacity = _get_or_bust(data_dict, ['id', 'object', 'object_type', 'capacity'])
 
-    # get any roles the user has for the group
-    user_role_query = model.Session.query(model.Member) \
-        .filter(model.Member.group_id == group_id) \
-        .filter(model.Member.table_name == 'user') \
-        .filter(model.Member.state == 'active') \
-        .filter(model.Member.table_id == user_id)
+    # get role the user has for the group
+    user_role = _get_member_role(group_id, user_id)
 
-    # get roles for the target of this role change
-    target = model.Session.query(model.Member) \
-        .filter(model.Member.group_id == group_id) \
-        .filter(model.Member.table_name == 'user') \
-        .filter(model.Member.state == 'active') \
-        .filter(model.Member.table_id == obj_id)
+    # get role for the target of this role change
+    target_role = _get_member_role(group_id, obj_id)
 
-    user_roles = []
-    target_roles = []
-
-    if user_role_query:
-        user_roles = [group.capacity for group in user_role_query.all()]
-    if target:
-        target_roles = [group.capacity for group in target.all()]
+    if not user_role:
+        raise ckan.logic.NotAuthorized(_("You don't have permission to modify organization."))
 
     if ckan.new_authz.is_sysadmin(user):
         # Sysadmin can do anything
         pass
+
     elif capacity == 'admin':
         # Only sysadmin can add 'admin' roles for users.
         raise ckan.logic.NotAuthorized(_("You don't have permission to add 'admin' users."))
 
     elif capacity == 'editor':
         # Only admin can add 'editor' roles for users. An admin can also lower herself to 'editor'.
-        if not 'admin' in user_roles:
+        if user_role != 'admin':
             raise ckan.logic.NotAuthorized(_("You don't have permission to modify 'admin' users."))
-        elif 'admin' in target_roles and not user_id == obj_id:
+        elif target_role =='admin' and not user_id == obj_id:
             raise ckan.logic.NotAuthorized(_("You don't have permission to modify other 'admin' users."))
 
     elif capacity == 'member':
         # Member can not create member role. Admin can lower editors to members.
         # Admin/Editor can lower herself to member.
-        if not ('admin' in user_roles or 'editor' in user_roles):
+        if user_role not in ['admin', 'editor']:
             raise ckan.logic.NotAuthorized(_("You don't have permission to modify roles for this organization."))
 
-        if 'admin' in target_roles and not user_id == obj_id:
+        if target_role == 'admin' and not user_id == obj_id:
             raise ckan.logic.NotAuthorized(_("You don't have permission to modify other 'admin' users."))
-        elif 'editor' in target_roles and not (user_id == obj_id or 'admin' in user_roles):
+        elif target_role == 'editor' and not (user_id == obj_id or user_role == 'admin'):
             raise ckan.logic.NotAuthorized(_("You don't have permission to modify other 'editor' users."))
-    else:
-        raise ckan.logic.NotAuthorized(_("You don't have permission to modify roles for this organization."))
 
     return ckan.logic.action.create.member_create(context, data_dict)
 
-# TODO: Add logging for member_create and group_list
+# TODO: Add logging for member_create, member_delete and group_list
+
+
+def member_delete(context, data_dict=None):
+    '''
+    Remove an object (e.g. a user, dataset or group) from a group.
+
+    Custom organization permission handling added on top of CKAN's own member_create action.
+    '''
+    # TODO: Handle dataset (and group?)
+
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['admin']
+
+    model = context['model']
+    user = context['user']
+
+    user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
+    if not user_id:
+        raise ckan.logic.NotAuthorized(_("You must be logged in."))
+
+    group_id, obj_id, obj_type = _get_or_bust(data_dict, ['id', 'object', 'object_type'])
+
+    # get role the user has for the group
+    user_role = _get_member_role(group_id, user_id)
+
+    # get role for the target of this role change
+    target_role = _get_member_role(group_id, obj_id)
+
+    if not user_role:
+        raise ckan.logic.NotAuthorized(_("You don't have permission to modify organization."))
+
+    if ckan.new_authz.is_sysadmin(user) or user_id == obj_id:
+        # Sysadmin can do anything. Anyone can also remove herself.
+        pass
+
+    elif target_role == 'admin':
+        # Admin can delete other admins?
+        if user_role != 'admin':
+            raise ckan.logic.NotAuthorized(_("You don't have permission to remove 'admin' users."))
+
+    elif target_role == 'editor':
+        # Only admin can delete 'editor' roles for users.
+        if user_role != 'admin':
+            raise ckan.logic.NotAuthorized(_("You don't have permission to remove 'admin' users."))
+
+    elif target_role == 'member':
+        # Admin/Editor can remove member.
+        if user_role not in ['admin', 'editor']:
+            raise ckan.logic.NotAuthorized(_("You don't have permission to remove members for this organization."))
+
+        if target_role == 'admin':
+            raise ckan.logic.NotAuthorized(_("You don't have permission to modify other 'admin' users."))
+
+    return ckan.logic.action.delete.member_delete(context, data_dict)
