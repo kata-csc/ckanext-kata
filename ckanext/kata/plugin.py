@@ -235,6 +235,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'string_to_list': helpers.string_to_list,
                 'get_first_admin': helpers.get_first_admin,
                 'get_rightscategory': helpers.get_rightscategory,
+                'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
                 }
 
     def get_dict_field_errors(self, errors, field, index, name):

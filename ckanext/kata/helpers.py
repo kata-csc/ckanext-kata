@@ -341,3 +341,32 @@ def get_funders(data_dict):
     return filter(lambda x: x.get('role') == u'funder' and \
                             (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
                   data_dict.get('agent', []))
+
+def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
+    '''
+    Check if the user is allowed to edit an organization member
+
+    :param group_dict: dict of all groups (organizations)
+    :param user_id: user id
+    :param target_id: target user id
+    :param target_role: target's current role
+    '''
+
+    user = filter(lambda user: user.get('id') == user_id, group_dict['users'])[0]
+    user_role = user.get('capacity')
+
+    target_role = target_role.lower()
+
+    # import pprint
+    # pprint.pprint(group_dict['users'])
+    if user.get('sysadmin'):
+        return True
+
+    elif user_role == 'admin' and (user_id == target_id or target_role != 'admin'):
+        return True
+
+    elif user_role == 'editor' and (user_id == target_id or target_role == 'member'):
+        return True
+
+    else:
+        return False
