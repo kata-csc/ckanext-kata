@@ -17,7 +17,7 @@ from ckan.tests import call_action_api
 
 from ckanext.kata import settings, utils, helpers
 from ckanext.kata.tests.functional import KataApiTestCase
-from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT, TEST_RESOURCE
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
 
 
 class TestCreateDatasetAndResources(KataApiTestCase):
@@ -25,7 +25,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
 
     def test_create_dataset(self):
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert output
@@ -33,7 +33,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
 
     def test_create_dataset_sysadmin(self):
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert output
@@ -45,7 +45,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         '''
         print 'Create dataset'
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
@@ -68,7 +68,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert 'id' in output
 
         # Check that some metadata value is correct.
-        assert output['checksum'] == TEST_DATADICT['checksum']
+        assert output['checksum'] == self.TEST_DATADICT['checksum']
 
     def test_create_update_delete_dataset(self):
         '''
@@ -76,12 +76,12 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         '''
         print 'Create dataset'
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
 
-        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['id'] = output['id']
 
         print 'Update dataset'
@@ -101,7 +101,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
                                  status=200, id=data_dict['id'])
 
     def test_create_dataset_fails(self):
-        data = copy.deepcopy(TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
 
         # Make sure we will get a validation error
         data.pop('langtitle')
@@ -126,7 +126,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         '''
         print 'Create dataset'
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
@@ -156,9 +156,9 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         '''
         print 'Create dataset'
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         
-        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
         
         orig_id = output['id']
         data_dict['id'] = orig_id
@@ -184,14 +184,14 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         log = logging.getLogger('ckan.controllers.api')     # pylint: disable=invalid-name
         log.disabled = True
 
-        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['agent'][2].pop('role')
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey, status=409, **data_dict)
         assert output
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
 
-        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict.pop('agent', None)
         data_dict['agent'] = [{'role': u'author'}]
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey, status=409, **data_dict)
@@ -200,6 +200,19 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert output['__type'] == 'Validation Error'
 
         log.disabled = False
+
+    def test_create_dataset_no_org(self):
+        '''A user without organization cannot create test dataset'''
+        output = call_action_api(self.app, 'package_create', apikey=model.User.get('annafan').apikey,
+                                 status=403, **self.TEST_DATADICT)
+
+    def test_create_dataset_no_org_2(self):
+        '''A user with organization cannot create organizationless dataset'''
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['owner_org'] = ''
+        data_dict['name'] = 'test'
+        output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
+                                 status=409, **data_dict)
 
 
 class TestSearchDataset(KataApiTestCase):
@@ -216,18 +229,44 @@ class TestSearchDataset(KataApiTestCase):
         search.clear()
 
         # Create a dataset for this test class
-        call_action_api(cls.app, 'package_create', apikey=cls.normal_user.apikey,
-                        status=200, **TEST_DATADICT)
+        output = call_action_api(cls.app, 'package_create', apikey=cls.normal_user.apikey,
+                                 status=200, **cls.TEST_DATADICT)
+
+        cls.package_id = output.get('id')
 
     def test_search_dataset(self):
         '''
-        Test that terms in TEST_SEARCH_QUERY were indexed correctly by Solr and
-        that dataset is found by the terms.
+        Test that agent name was indexed correctly by Solr.
         '''
         output = call_action_api(self.app, 'package_search', status=200,
                                  **{'q': 'Runoilija'})
         print(output)
         assert output['count'] == 1
+
+        output = call_action_api(self.app, 'package_search', status=200,
+                                 **{'q': 'R. Runoilija'})
+        print(output)
+        assert output['count'] == 1
+
+    def test_search_dataset_private(self):
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data['id'] = self.package_id
+        data['private'] = True
+
+        # Make the dataset private
+        call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey,
+                        status=200, **data)
+
+        output = call_action_api(self.app, 'package_search', status=200,
+                                 **{'q': 'Runoilija'})
+
+        # Private dataset should not be found
+        assert output['count'] == 0, output['count']
+
+        # Make the dataset public again
+        data['private'] = False
+        call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey,
+                        status=200, **data)
 
     def test_search_dataset_agent_id(self):
         output = call_action_api(self.app, 'package_search', status=200,
@@ -259,12 +298,16 @@ class TestDataReading(KataApiTestCase):
     Tests for checking that values match between original data_dict and package_show output.
     '''
 
-    def _compare_datadicts(self, input, output):
+    def _compare_datadicts(self, original, output):
         '''
-        Compare a CKAN generated datadict to TEST_DATADICT
+        Compare a CKAN generated datadict to original datadict. Returns True if identical,
+        otherwise throws an exception with useful output of differences.
+
+        :param original: original datadict
+        :param output: a datadict received from CKAN API
         '''
 
-        data_dict = copy.deepcopy(input)
+        data_dict = copy.deepcopy(original)
 
         # name (data pid) and title are generated so they shouldn't match
         data_dict.pop('name', None)
@@ -274,7 +317,7 @@ class TestDataReading(KataApiTestCase):
         # TODO: convert both to the same format and then compare?
         data_dict.pop('tag_string', None)
 
-        # TODO: Removed because: xpath-json converter not working
+        # Remove xpaths because xpath-json converter not yet implemented
         data_dict.pop('xpaths', None)
 
         # Remove all values that are not present in the original data_dict
@@ -292,7 +335,7 @@ class TestDataReading(KataApiTestCase):
         Create and read a dataset through API and check that values are correct
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
@@ -303,7 +346,7 @@ class TestDataReading(KataApiTestCase):
         # Make sure user is added as distributor
         assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
-        assert self._compare_datadicts(TEST_DATADICT, output)
+        assert self._compare_datadicts(self.TEST_DATADICT, output)
 
     def test_create_and_read_dataset_2(self):
         '''
@@ -311,24 +354,24 @@ class TestDataReading(KataApiTestCase):
         Read as a different user than dataset creator.
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
 
-        output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
+        output = call_action_api(self.app, 'package_show', apikey=model.User.get('annafan').apikey,
                                  status=200, id=output['id'])
 
-        # Use hide_sensitive_fields() because user is not the creater of the dataset
-        input = copy.deepcopy(TEST_DATADICT)
-        assert self._compare_datadicts(utils.hide_sensitive_fields(input), output)
+        # Use hide_sensitive_fields() because user is not the creator of the dataset
+        original = copy.deepcopy(self.TEST_DATADICT)
+        assert self._compare_datadicts(utils.hide_sensitive_fields(original), output)
 
     def test_create_update_and_read_dataset(self):
         '''
         Create, update and read a dataset through API and check that values are correct
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         assert 'id' in output
         output = call_action_api(self.app, 'package_show', apikey=self.normal_user.apikey,
                                  status=200, id=output['id'])
@@ -344,18 +387,18 @@ class TestDataReading(KataApiTestCase):
         # Make sure CKAN user is still present as distributor
         assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
-        assert self._compare_datadicts(TEST_DATADICT, output)
+        assert self._compare_datadicts(self.TEST_DATADICT, output)
         
     def test_secured_fields(self):
         '''
         Test that anonymous user can not read protected data
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
-        
+
         output = call_action_api(self.app, 'package_show', status=200, id=output['id'])
         assert output
 
@@ -376,10 +419,10 @@ class TestDataReading(KataApiTestCase):
         ACCESS_URL = 'http://www.csc.fi/english/'
 
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         assert 'id' in output
 
-        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['id'] = output['id']
         data_dict['availability'] = 'access_application'
         data_dict['access_application_URL'] = ACCESS_URL
@@ -425,7 +468,7 @@ class TestDataReading(KataApiTestCase):
         '''
         Test that value None will remove a field completely
         '''
-        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['discipline'] = None
 
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
@@ -458,7 +501,7 @@ class TestDataReading(KataApiTestCase):
         '''
         Create and read resource data through API and test that 'url' matches. Availability 'through_provider'.
         '''
-        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['availability'] = 'through_provider'
         data_dict['through_provider_URL'] = 'http://www.tdata.fi/'
         data_dict.pop('direct_download_URL')
@@ -489,7 +532,7 @@ class TestDataReading(KataApiTestCase):
         Test with sysadmin user.
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         assert 'id' in output
 
         new_res = copy.deepcopy(TEST_RESOURCE)
@@ -513,7 +556,7 @@ class TestDataReading(KataApiTestCase):
         Create and delete a resource data through API and test that dataset still matches.
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         assert 'id' in output
 
         new_res = copy.deepcopy(TEST_RESOURCE)
@@ -529,14 +572,14 @@ class TestDataReading(KataApiTestCase):
                                  status=200, id=new_res['package_id'])
         assert 'id' in output
 
-        assert self._compare_datadicts(TEST_DATADICT, output)
+        assert self._compare_datadicts(self.TEST_DATADICT, output)
 
     def test_create_and_read_rdf(self):
         '''
         Create and read a dataset through API and check that RDF generation doesn't break.
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.sysadmin_user.apikey,
-                                 status=200, **TEST_DATADICT)
+                                 status=200, **self.TEST_DATADICT)
         assert 'id' in output
 
         offset = url_for("/dataset/{0}.rdf".format(output['id']))
@@ -546,7 +589,7 @@ class TestDataReading(KataApiTestCase):
         # TODO: Check some fields in result rdf, like agent and pids
 
         # print res
-        # for agent in TEST_DATADICT['agent']:
+        # for agent in self.TEST_DATADICT['agent']:
         #     assert agent.get('name') in res.body
 
 
@@ -567,7 +610,7 @@ class TestSchema(KataApiTestCase):
 
         for requirement in fields:
             print requirement
-            data = TEST_DATADICT.copy()
+            data = self.TEST_DATADICT.copy()
             data.pop(requirement)
 
             output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
@@ -581,29 +624,20 @@ class TestSchema(KataApiTestCase):
 class TestOrganizations(KataApiTestCase):
     """Tests for creating organizations and playing with them through API."""
 
-    TEST_ORG = {
-        'description': u'Description, blah blah...',
-        'title': u'Test Organization',
-        'image_url': u'http://192.168.56.101:5000/base/images/kata-logo.png',
-        'users': [{'capacity': 'admin', 'name': u'testsysadmin'}],
-        'type': 'organization',
-        'name': u'testi-org'
-    }
-
     def test_create_organization(self):
         output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
-                                 status=200, **self.TEST_ORG)
+                                 status=200, **TEST_ORGANIZATION)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
 
         assert output
-        assert output['title'] == self.TEST_ORG['title'], output
-        assert output['image_url'] == self.TEST_ORG['image_url'], output
-        assert output['description'] == self.TEST_ORG['description'], output
-        assert output['type'] == self.TEST_ORG['type'], output
+        assert output['title'] == TEST_ORGANIZATION['title'], output
+        assert output['image_url'] == TEST_ORGANIZATION['image_url'], output
+        assert output['description'] == TEST_ORGANIZATION['description'], output
+        assert output['type'] == TEST_ORGANIZATION['type'], output
 
     def test_organization_members_allowed(self):
-        NEW_ORG = self.TEST_ORG
+        NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'new-org'
 
         output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
@@ -642,7 +676,7 @@ class TestOrganizations(KataApiTestCase):
                                                 'username': 'joeadmin'})
 
     def test_organization_members_role_changes(self):
-        NEW_ORG = self.TEST_ORG
+        NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'newest-org'
 
         output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
@@ -687,7 +721,7 @@ class TestOrganizations(KataApiTestCase):
                                                 'role': 'admin'})
 
     def test_organization_members_role_changes_2(self):
-        NEW_ORG = self.TEST_ORG
+        NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'even-newer-org'
 
         output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
@@ -738,7 +772,7 @@ class TestOrganizations(KataApiTestCase):
                                                 'role': 'member'})
 
     def test_organization_members_sysadmin(self):
-        NEW_ORG = self.TEST_ORG
+        NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'most-newest-org'
 
         output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
@@ -766,7 +800,7 @@ class TestOrganizations(KataApiTestCase):
                                                 'role': 'member'})
 
     def test_member_delete_sysadmin(self):
-        NEW_ORG = self.TEST_ORG
+        NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'test_member_delete_sysadmin-org'
 
         output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
@@ -787,7 +821,7 @@ class TestOrganizations(KataApiTestCase):
                                                 'username': self.normal_user.name})
 
     def test_member_delete_oneself(self):
-        NEW_ORG = self.TEST_ORG
+        NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'test_member_delete_oneself-org'
 
         output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
@@ -820,7 +854,7 @@ class TestOrganizations(KataApiTestCase):
 
 
     def test_organization_members_not_logged_in(self):
-        NEW_ORG = self.TEST_ORG
+        NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'test_organization_members_not_logged_in-org'
 
         output = call_action_api(self.app, 'organization_create', status=403, **NEW_ORG)

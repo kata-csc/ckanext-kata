@@ -3,6 +3,25 @@
 Test data in unflattened package dictionary format.
 """
 
+TEST_ORGANIZATION = {
+    'description': u'Description of an organization',
+    'title': u'Test Organization',
+    'image_url': u'http://kata.csc.fi/base/images/kata-logo.png',
+    'users': [{'capacity': 'admin', 'name': u'testsysadmin'}],
+    'type': 'organization',
+    'name': u'test-org'
+}
+
+TEST_ORGANIZATION_COMMON = {
+    'description': u'Description of an organization',
+    'title': u'Test Organization',
+    'image_url': u'http://kata.csc.fi/base/images/kata-logo.png',
+    'users': [{'capacity': 'editor', 'name': u'tester'},
+              {'capacity': 'admin', 'name': u'testsysadmin'}],
+    'type': 'organization',
+    'name': u'test_org_common'
+}
+
 TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'algorithm': u'SHA',
                  'hash': u'somehash',
@@ -64,8 +83,9 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'notes': u'''This is a dataset used for testing Kata CKAN extension.
                  This is entirely fictional data and any resemblance to anything is purely coincidental.
                  No animals were harmed during this dataset creation.''',
+                 'owner_org': '',
                  'event': [
-                        {
+                     {
                             u'when': u'2000-01-01',
                             u'who': u'T. Tekijä',
                             u'type': u'creation',
@@ -112,9 +132,10 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'title': u'',
                  'type': u'dataset',
                  'version': u'2013-11-18T12:25:53Z',
+                 'private': False,
                  'xpaths': {
                      'xpath/path1': u'xpath_value',
                      'xpath/path2': u'xpath_value2',
                  },
-}
+                 }
 
