@@ -7,7 +7,6 @@ Functional tests for Kata that use CKAN API.
 """
 
 import copy
-import logging
 import testfixtures
 
 from ckan import model
@@ -108,14 +107,8 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data.pop('language')
         data.pop('availability')
 
-        # Hide validation error message which cannot be silenced with nosetest parameters. Has to be done here.
-        logg = logging.getLogger('ckan.controllers.api')
-        logg.disabled = True
-
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=409, **data)
-
-        logg.disabled = False
 
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
@@ -169,11 +162,8 @@ class TestCreateDatasetAndResources(KataApiTestCase):
 
         print 'Update dataset'
         
-        log = logging.getLogger('ckan.controllers.api')     # pylint: disable=invalid-name
-        log.disabled = True
         output = call_action_api(self.app, 'package_update', apikey=self.normal_user.apikey, status=409, **data_dict)
-        log.disabled = False
-        
+
         assert output
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
@@ -181,38 +171,34 @@ class TestCreateDatasetAndResources(KataApiTestCase):
     def test_create_dataset_invalid_agents(self):
         '''Test required fields for agents (role, name/organisation/URL)'''
 
-        log = logging.getLogger('ckan.controllers.api')     # pylint: disable=invalid-name
-        log.disabled = True
-
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['agent'][2].pop('role')
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey, status=409, **data_dict)
         assert output
-        assert '__type' in output
-        assert output['__type'] == 'Validation Error'
+        assert output.get('__type') == 'Validation Error'
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict.pop('agent', None)
         data_dict['agent'] = [{'role': u'author'}]
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey, status=409, **data_dict)
         assert output
-        assert '__type' in output
-        assert output['__type'] == 'Validation Error'
-
-        log.disabled = False
+        assert output.get('__type') == 'Validation Error'
 
     def test_create_dataset_no_org(self):
         '''A user without organization cannot create test dataset'''
-        output = call_action_api(self.app, 'package_create', apikey=model.User.get('annafan').apikey,
-                                 status=403, **self.TEST_DATADICT)
+        call_action_api(self.app, 'package_create', apikey=model.User.get('annafan').apikey,
+                        status=403, **self.TEST_DATADICT)
 
     def test_create_dataset_no_org_2(self):
         '''A user with organization cannot create organizationless dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['owner_org'] = ''
         data_dict['name'] = 'test'
+
         output = call_action_api(self.app, 'package_create', apikey=self.normal_user.apikey,
                                  status=409, **data_dict)
+        assert output
+        assert output.get('__type') == 'Validation Error'
 
 
 class TestSearchDataset(KataApiTestCase):
@@ -602,10 +588,6 @@ class TestSchema(KataApiTestCase):
         '''
         Remove each of Kata's required fields from a complete data_dict and make sure we get a validation error.
         '''
-        # Hide validation error message which cannot be silenced with nosetest parameters. Has to be done here.
-        logg = logging.getLogger('ckan.controllers.api')
-        logg.disabled = True
-
         fields = settings.KATA_FIELDS_REQUIRED
 
         for requirement in fields:
@@ -617,8 +599,6 @@ class TestSchema(KataApiTestCase):
                                      status=409, **data)
             assert '__type' in output
             assert output['__type'] == 'Validation Error'
-
-        logg.disabled = False
 
 
 class TestOrganizations(KataApiTestCase):

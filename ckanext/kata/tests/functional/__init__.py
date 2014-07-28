@@ -1,5 +1,6 @@
 '''Functional test package for Kata'''
 import copy
+import logging
 import unittest
 
 import paste.fixture
