@@ -23,7 +23,7 @@ Example:
     <ul class="unstyled nav nav-simple">
       {% block package_resource_list %}
       {% for resource in resources %}
-        {% if resource.resource_type == 'file' %}
+        {% if resource.resource_type == 'file' or resource.resource_type == 'file.upload' or resource.resource_type == 'api' %}
           <li class="nav-item{{ ' active' if active == resource.id }}">
             {% link_for h.resource_display_name(resource)|truncate(30), controller='package', action='resource_edit', id=pkg.name, resource_id=resource.id, inner_span=true %}
           </li>
