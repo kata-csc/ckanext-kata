@@ -63,7 +63,7 @@ SEARCH_FIELDS = ['ext_text',
                  #'ext_extras_language',
                  ]
 
-# File types and converters used by DataMiningController.
+# File types and converters used for extracting plain text from structured documents.
 TEXTOUTPUTPROGS = {
     'doc': '/usr/bin/catdoc',
     'html': '/usr/bin/w3m',
@@ -72,6 +72,7 @@ TEXTOUTPUTPROGS = {
     'ods': '/usr/bin/ods2txt',
     'ppt': '/usr/bin/catppt',
     'odp': '/usr/bin/odp2txt',
+    'pdf': '/usr/bin/pdftotext',
     }
 
 # Text string to use for when dataset's URL is not known. Changing might cause issues as this is also CKAN default.
