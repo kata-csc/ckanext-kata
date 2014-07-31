@@ -22,9 +22,10 @@ from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, ValidationError
 from ckanext.kata import utils
 from ckan.logic import get_action
+import ckanext.kata.extractor as extractor
+
 _get_or_bust = ckan.logic.get_or_bust
 _authz = model.authz
-
 
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
@@ -266,6 +267,25 @@ def package_delete(context, data_dict):
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
+def resource_create(context, data_dict):
+    '''
+    Appends a new resource to a datasets list of resources.
+
+    Extends the resource_create action from CKAN to also include
+    the text contents of attached resources in the pkg_dict so that
+    they can be included in the search index.
+    '''
+    from pprint import pformat
+    log.info("*** data_dict at resource_create:")
+    log.info(pformat(data_dict))
+
+    if data_dict['resource_type'] in ('file', 'file.upload'):
+        text = extractor.extract_text(data_dict['url'], data_dict['format'])
+        log.info("Got text:")
+        log.info(text)
+
+    return ckan.logic.action.create.resource_create(context, data_dict)
+
 def _log_action(target_type, action, who, target_id):
     try:
         log_str = '[ ' + target_type + ' ] [ ' + str(datetime.datetime.now())
@@ -291,7 +311,7 @@ def _decorate(f, target_type, action):
     return call
 
 # Overwriting to add logging
-resource_create = _decorate(ckan.logic.action.create.resource_create, 'resource', 'create')
+#resource_create = _decorate(ckan.logic.action.create.resource_create, 'resource', 'create')
 resource_update = _decorate(ckan.logic.action.update.resource_update, 'resource', 'update')
 resource_delete = _decorate(ckan.logic.action.delete.resource_delete, 'resource', 'delete')
 related_delete = _decorate(ckan.logic.action.delete.related_delete, 'related', 'delete')
