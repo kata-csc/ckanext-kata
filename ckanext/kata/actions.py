@@ -145,13 +145,7 @@ def package_create(context, data_dict):
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 
     # Logging for production use
-    try:
-        log_str = '[' + str(datetime.datetime.now())
-        log_str += ']' + ' Package created ' + 'by: ' + context['user']
-        log_str += ' target: ' + pkg_dict1['id']
-        log.info(log_str)
-    except:
-        pass
+    _log_action('Package', 'create', context['user'], pkg_dict1['id'])
 
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
@@ -241,13 +235,7 @@ def package_update(context, data_dict):
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
 
     # Logging for production use
-    try:
-        log_str = '[' + str(datetime.datetime.now())
-        log_str += ']' + ' Package updated ' + 'by: ' + context['user']
-        log_str += ' target: ' + data_dict['id']
-        log.info(log_str)
-    except:
-        pass
+    _log_action('Package', 'update', context['user'], data_dict['id'])
 
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': True}
@@ -273,40 +261,32 @@ def package_delete(context, data_dict):
 
     '''
     # Logging for production use
-    try:
-        log_str = '[' + str(datetime.datetime.now())
-        log_str += ']' + ' Package deleted ' + 'by: ' + context['user']
-        log_str += ' target: ' + data_dict['id']
-        log.info(log_str)
-    except:
-        pass
+    _log_action('Package', 'delete', context['user'], data_dict['id'])
 
     index = index_for('package')
     index.remove_dict(data_dict)
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
+def _log_action(target_type, action, who, target_id):
+    try:
+        log_str = '[ ' + target_type + ' ] [ ' + str(datetime.datetime.now())
+        log_str += ' ] ' + target_type + ' ' + action + 'd by: ' + who
+        log_str += ' target: ' + target_id
+        log.info(log_str)
+    except:
+        log.info('Debug failed! Action not logged')
+
 # Log should show who did what and when
-def _decorate(f, actiontype, action):
+def _decorate(f, target_type, action):
     def call(*args, **kwargs):
-        log_str = '[ ' + actiontype + ' ] [ ' + str(datetime.datetime.now())
         if action is 'delete':
             # log id before we delete the data
-            try:
-                log_str += ' ] ' + actiontype + ' deleted by: ' + args[0]['user']
-                log_str += ' target: ' + args[1]['id']
-                log.info(log_str)
-            except:
-                log.info('Debug failed! Action not logged')
+            _log_action(target_type, action, args[0]['user'], args[1]['id'])
 
         ret = f(*args, **kwargs)
         if action is 'create' or action is 'update':
-            try:
-                log_str += ' ] ' + actiontype + ' ' + action + 'd by: ' + args[0]['user']
-                log_str += ' target: ' + ret['id']
-                log.info(log_str)
-            except:
-                log.info('Debug failed! Action not logged')
+            _log_action(target_type, action, args[0]['user'], ret['id'])
 
         return ret
 

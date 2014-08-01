@@ -21,7 +21,7 @@ setup(
         # -*- Extra requirements: -*-
         'rdflib',
         'iso8601 >= 0.1.5',
-        'pycountry',
+        'pycountry >= 1.8',
     ],
     package_data={
         'ckan': [
