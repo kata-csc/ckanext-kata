@@ -64,15 +64,19 @@ SEARCH_FIELDS = ['ext_text',
                  ]
 
 # File types and converters used for extracting plain text from structured documents.
+# The 'args' member can be used for passing extra arguments to the program in addition
+# to the input file name which is always given as the first argument.
+# This can be used e.g. if the command requires a specific argument to print output
+# on stdout.
 TEXTOUTPUTPROGS = {
-    'doc': '/usr/bin/catdoc',
-    'html': '/usr/bin/w3m',
-    'odt': '/usr/bin/odt2txt',
-    'xls': '/usr/bin/xls2csv',
-    'ods': '/usr/bin/ods2txt',
-    'ppt': '/usr/bin/catppt',
-    'odp': '/usr/bin/odp2txt',
-    'pdf': '/usr/bin/pdftotext',
+    'doc': { 'exec': '/usr/bin/catdoc', 'args': '' },
+    'html': { 'exec': '/usr/bin/w3m', 'args': '' },
+    'odt': { 'exec': '/usr/bin/odt2txt', 'args': '' },
+    'xls': { 'exec': '/usr/bin/xls2csv', 'args': '' },
+    'ods': { 'exec': '/usr/bin/ods2txt', 'args': '' },
+    'ppt': { 'exec': '/usr/bin/catppt', 'args': '' },
+    'odp': { 'exec': '/usr/bin/odp2txt', 'args': '' },
+    'pdf': { 'exec': '/usr/bin/pdftotext', 'args': '-' },
     }
 
 # Text string to use for when dataset's URL is not known. Changing might cause issues as this is also CKAN default.

@@ -68,22 +68,27 @@ saavan muokkausoikeudet aineiston metatietoihin:\n\
     send_notification(admin_dict, email_dict)
 
 
-def convert_to_text(resource, resource_fname):
+def convert_file_to_text(resource_file_path, format):
     """
-    Convert structured documents to pure text.
+    Returns the file descriptor and path for a temporary file that contains
+    the contents of the given resource converted to plain text.
+
+    If there is no suitable converter for the format,
+    the return value will be (None, None).
     """
-    fmt = resource.format.lower()
-    prog = settings.TEXTOUTPUTPROGS[fmt] if (fmt in settings.TEXTOUTPUTPROGS and
-                                             fmt is not 'txt') else ''
+
+    prog = settings.TEXTOUTPUTPROGS[format] if (format in settings.TEXTOUTPUTPROGS and
+                                                format is not 'txt') else None
+
     if not prog:
         return None, None
     else:
-        convert_fd, convert_path = tempfile.mkstemp()
-        log.debug(resource_fname)
-        process = subprocess.Popen([prog, resource_fname], stdout=convert_fd)
-        process.communicate()
-        return convert_fd, convert_path
+        converted_fd, converted_path = tempfile.mkstemp()
 
+        log.debug(resource_file_path)
+        process = subprocess.Popen([prog['exec'], resource_file_path, prog['args']], stdout=converted_fd)
+        process.communicate()
+        return converted_fd, converted_path
 
 def label_list_yso(tag_url):
     """

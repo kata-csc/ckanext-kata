@@ -4,11 +4,12 @@ Functions for extracting text contents from files.
 
 import urllib2
 import logging
-import tempfile
+import os
 
 import ckan.controllers.storage as storage
 import pylons.config as config
 import pairtree.storage_exceptions as storage_exceptions
+from ckanext.kata import utils
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
 
@@ -22,6 +23,8 @@ def extract_text(resource_url, format):
     label = resource_url.split(STORAGE_BASE_URL)[-1]
     label = urllib2.unquote(label)
 
+    format = format.lower()
+
     log.info("*** Resource label: %s" % label)
 
     try:
@@ -31,15 +34,23 @@ def extract_text(resource_url, format):
         log.warn("Unable to extract text from {u} -- is the resource remote?".format(u=resource_url))
         raise
 
-    if format.lower() != 'txt':
-        # FIXME: add conversion
-        log.info("Resource not plain text and conversion is not yet supported")
-        return
+    if format != 'txt':
+        log.info("Converting {p} to plain text".format(p=file_path))
+        converted_fd, converted_path = utils.convert_file_to_text(file_path, format)
+        file_path = converted_path
+        tmp_file = True
+    else:
+        tmp_file = False
 
+    if file_path is not None:
+        log.info("*** Reading from %s" % file_path)
+        with open(file_path, 'r') as text_file:
+            text = text_file.read()
+    else:
+        text = ""
 
-    log.info("*** Reading from %s" % file_path)
-    with open(file_path, 'r') as text_file:
-        text = text_file.read()
+    if tmp_file:
+        os.remove(file_path)
 
     return text
 
