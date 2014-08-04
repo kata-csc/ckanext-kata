@@ -101,12 +101,25 @@ class TestKataWithUser(TestCase):
     def setup_class(cls):
         """Initialize tests."""
 
+        # Create a sysadmin user using paster. Required for adding an organization.
+        args = ['paster', '--plugin=ckan', 'sysadmin', 'add', 'selenium_admin', '-c', '/etc/kata.ini']
+        import subprocess
+        process = subprocess.Popen(args, stdin=subprocess.PIPE)
+        try:
+            process.communicate(input='y')
+            process.communicate(input="selenium\n")     # password
+            process.communicate(input="selenium\n")
+        except ValueError:
+            # The user probably exists already
+            pass
+
+
     @classmethod
     def teardown_class(cls):
         """Uninitialize tests."""
         pass
 
-    def _register_user(self, reg_browser, username = 'seleniumuser', fullname = 'seleniumuser'):
+    def _register_user(self, reg_browser, username=u'seleniumuser', fullname=u'seleniumuser'):
         """Register a new user, will be logged in automatically."""
 
         reg_browser.get("https://localhost/en/user/register")
@@ -142,6 +155,7 @@ class TestKataWithUser(TestCase):
             reg_browser.get_screenshot_as_file('_register_user.png')
             reg_browser.quit()
             assert 0, "User registration didn't finish"
+
 
 
     def _add_dataset(self, browser):
@@ -227,7 +241,7 @@ class TestKataWithUser(TestCase):
         Test for user registration with special characters.
         """
         browser = webdriver.Firefox()
-        self._register_user(browser, username='selenium', fullname= u'АБВГДЕЁЖЗИЙ κόσμε...')
+        self._register_user(browser, username=u'selenium', fullname=u'АБВГДЕЁЖЗИЙ κόσμε...')
         browser.quit()
 
 
