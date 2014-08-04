@@ -17,7 +17,6 @@ BUCKET = config.get('ckan.storage.bucket', 'default')
 STORAGE_BASE_URL = config.get('ckan.site_url') + '/storage/f/'
 
 def extract_text(resource_url, format):
-    log.info("*** extract_text ***")
     ofs = storage.get_ofs()
 
     label = resource_url.split(STORAGE_BASE_URL)[-1]
@@ -25,7 +24,7 @@ def extract_text(resource_url, format):
 
     format = format.lower()
 
-    log.info("*** Resource label: %s" % label)
+    log.debug("*** Resource label: %s" % label)
 
     try:
         # Get file location
@@ -35,7 +34,7 @@ def extract_text(resource_url, format):
         raise
 
     if format != 'txt':
-        log.info("Converting {p} to plain text".format(p=file_path))
+        log.info("Extracting plain text from {p}".format(p=file_path))
         converted_fd, converted_path = utils.convert_file_to_text(file_path, format)
         file_path = converted_path
         tmp_file = True

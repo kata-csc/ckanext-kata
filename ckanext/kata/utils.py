@@ -85,7 +85,6 @@ def convert_file_to_text(resource_file_path, format):
     else:
         converted_fd, converted_path = tempfile.mkstemp()
 
-        log.debug(resource_file_path)
         process = subprocess.Popen([prog['exec'], resource_file_path, prog['args']], stdout=converted_fd)
         process.communicate()
         return converted_fd, converted_path
