@@ -1,5 +1,14 @@
 '''Settings and constants for Kata CKAN extension'''
 
+from ckan.common import OrderedDict
+
+# Overridden CKAN role permissions
+ROLE_PERMISSIONS = OrderedDict([
+    ('admin', ['admin']),
+    ('editor', ['admin']),
+    ('member', ['read', 'create_dataset']),
+])
+
 ORGANIZATION_MEMBER_PERMISSIONS = {
     # ORGANIZATION_MEMBER_PERMISSIONS format:
     # (user role, target original role, target final role, user == target): has permission to modify role

@@ -21,16 +21,14 @@ from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free
-from ckanext.kata import utils
+from ckanext.kata import utils, settings
 from ckan.logic import get_action
 import ckan.new_authz
 
 _get_or_bust = ckan.logic.get_or_bust
 _authz = model.authz
 
-
-
-log = logging.getLogger(__name__)     # pylint: disable=invalid-name
+log = logging.getLogger(__name__)
 
 TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
@@ -539,10 +537,7 @@ def organization_list_for_user(context, data_dict):
     :rtype: list of dicts
     '''
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
-    editor = ckan.new_authz.ROLE_PERMISSIONS['editor']
-    # ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['update', 'membership', 'organization_show'] + editor
-    ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['admin']
-    ckan.new_authz.ROLE_PERMISSIONS['member'] = editor
+    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     return ckan.logic.action.get.organization_list_for_user(context, data_dict)
 
@@ -571,9 +566,6 @@ def member_create(context, data_dict=None):
     Custom organization permission handling added on top of CKAN's own member_create action.
     '''
     # TODO: Handle dataset (and group?)
-
-    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
-    ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['admin']
 
     user = context['user']
     user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
@@ -608,6 +600,9 @@ def member_delete(context, data_dict=None):
     '''
     # TODO: Handle dataset (and group?)
 
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+
     user = context['user']
     user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
 
@@ -635,6 +630,6 @@ def organization_member_create(context, data_dict):
     Wrapper for CKAN's group_member_create to modify organization permissions.
     '''
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
-    ckan.new_authz.ROLE_PERMISSIONS['editor'] = ['admin']
+    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     return ckan.logic.action.create.group_member_create(context, data_dict)
