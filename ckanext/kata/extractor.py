@@ -1,5 +1,5 @@
 """
-Functions for extracting text contents from files.
+The extractor module provides functions for extracting text contents from files.
 """
 
 import urllib2
@@ -35,7 +35,7 @@ def extract_text(resource_url, format):
         raise
 
     if format != 'txt':
-        log.info("Extracting plain text from {p}".format(p=file_path))
+        log.debug("Extracting plain text from {p}".format(p=file_path))
         converted_fd, converted_path = utils.convert_file_to_text(file_path, format)
         file_path = converted_path
         tmp_file = True
@@ -43,7 +43,7 @@ def extract_text(resource_url, format):
         tmp_file = False
 
     if file_path is not None:
-        log.info("*** Reading from %s" % file_path)
+        log.debug("*** Reading from %s" % file_path)
         with codecs.open(file_path, mode='r', encoding='utf-8') as text_file:
             text = text_file.read()
     else:
