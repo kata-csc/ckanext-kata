@@ -76,7 +76,6 @@ TEXTOUTPUTPROGS = {
     'ods': { 'exec': '/usr/bin/ods2txt', 'args': '' },
     'ppt': { 'exec': '/usr/bin/catppt', 'args': '' },
     'odp': { 'exec': '/usr/bin/odp2txt', 'args': '' },
-    'pdf': { 'exec': '/usr/bin/pdftotext', 'args': '-' },
     }
 
 # Text string to use for when dataset's URL is not known. Changing might cause issues as this is also CKAN default.
