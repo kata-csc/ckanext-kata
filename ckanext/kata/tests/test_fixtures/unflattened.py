@@ -4,20 +4,29 @@ Test data in unflattened package dictionary format.
 """
 
 TEST_ORGANIZATION = {
-    'description': u'Description of an organization',
     'title': u'Test Organization',
-    'image_url': u'http://kata.csc.fi/base/images/kata-logo.png',
+    'description': u'Description of an organization',
+    'image_url': u'',
     'users': [{'capacity': 'admin', 'name': u'testsysadmin'}],
     'type': 'organization',
     'name': u'test-org'
 }
 
 TEST_ORGANIZATION_COMMON = {
-    'description': u'Description of an organization',
     'title': u'Test Organization',
-    'image_url': u'http://kata.csc.fi/base/images/kata-logo.png',
+    'description': u'Description of an organization',
+    'image_url': u'',
     'users': [{'capacity': 'editor', 'name': u'tester'},
               {'capacity': 'admin', 'name': u'testsysadmin'}],
+    'type': 'organization',
+    'name': u'test_org_common'
+}
+
+TEST_ORGANIZATION_SELENIUM = {
+    'title': u'Kata Testing',
+    'description': u'An organization for handling Kata\'s Selenium testing',
+    'image_url': u'http://www.csc.fi/logo_en.gif',
+    'users': [],
     'type': 'organization',
     'name': u'test_org_common'
 }

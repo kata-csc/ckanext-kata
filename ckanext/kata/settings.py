@@ -1,5 +1,42 @@
 '''Settings and constants for Kata CKAN extension'''
 
+ORGANIZATION_MEMBER_PERMISSIONS = {
+    # ORGANIZATION_MEMBER_PERMISSIONS format:
+    # (user role, target original role, target final role, user == target): has permission to modify role
+
+    # Permission to delete a role is given if one has permission to change role to 'member'.
+
+    ('admin', 'admin', 'admin', True):      True,
+    ('admin', 'admin', 'admin', False):     False,
+    ('admin', 'admin', 'editor', True):     True,
+    ('admin', 'admin', 'editor', False):    False,
+    ('admin', 'admin', 'member', True):     True,
+    ('admin', 'admin', 'member', False):    False,
+
+    ('admin', 'editor', 'admin', False):    False,
+    ('admin', 'editor', 'editor', False):   True,
+    ('admin', 'editor', 'member', False):   True,
+
+    ('admin', 'member', 'admin', False):    False,
+    ('admin', 'member', 'editor', False):   True,
+    ('admin', 'member', 'member', False):   True,
+
+    ('editor', 'admin', 'admin', False):    False,
+    ('editor', 'admin', 'editor', False):   False,
+    ('editor', 'admin', 'member', False):   False,
+
+    ('editor', 'editor', 'admin', True):    False,
+    ('editor', 'editor', 'admin', False):    False,
+    ('editor', 'editor', 'editor', True):    True,
+    ('editor', 'editor', 'editor', False):    False,
+    ('editor', 'editor', 'member', True):    True,
+    ('editor', 'editor', 'member', False):    False,
+
+    ('editor', 'member', 'admin', False):    False,
+    ('editor', 'member', 'editor', False):   False,
+    ('editor', 'member', 'member', False):   True,
+}
+
 AGENT_ROLES = {
     'author': 'Author',
     'contributor': 'Contributor',

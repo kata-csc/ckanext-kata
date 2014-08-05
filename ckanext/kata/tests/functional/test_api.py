@@ -627,31 +627,31 @@ class TestOrganizations(KataApiTestCase):
         assert output
 
         # Sysadmin can create an admin for organization
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'admin'})
-        # group_member_create doesn't return anything, so no checking...
+        # organization_member_create doesn't return anything, so no checking...
 
         # admin can create an editor for organization
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': 'joeadmin',
                                                 'role': 'editor'})
 
         # editor can create a member for organization
-        call_action_api(self.app, 'group_member_create', apikey=model.User.get('joeadmin').apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=model.User.get('joeadmin').apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': 'annafan',
                                                 'role': 'member'})
 
         # editor can remove a member from organization
-        call_action_api(self.app, 'group_member_delete', apikey=model.User.get('joeadmin').apikey,
+        call_action_api(self.app, 'organization_member_delete', apikey=model.User.get('joeadmin').apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': 'annafan'})
 
         # admin can remove an editor from organization
-        call_action_api(self.app, 'group_member_delete', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_delete', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': 'joeadmin'})
 
@@ -665,37 +665,37 @@ class TestOrganizations(KataApiTestCase):
             assert output['__type'] != 'Validation Error'
         assert output
 
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'admin'})
 
         # admin can change self to editor
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'editor'})
 
         # editor can not change self back to admin
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=403, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'admin'})
 
         # editor can change self to member
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'member'})
 
         # member can not change self back to editor
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=403, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'editor'})
 
         # member can not change self back to admin
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=403, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'admin'})
@@ -710,43 +710,43 @@ class TestOrganizations(KataApiTestCase):
             assert output['__type'] != 'Validation Error'
         assert output
 
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'admin'})
 
         # admin can add an editor
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': 'joeadmin',
                                                 'role': 'editor'})
 
         # admin can change editor to member
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': 'joeadmin',
                                                 'role': 'member'})
 
         # admin can change member to editor
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': 'joeadmin',
                                                 'role': 'editor'})
 
         # admin can not add admin
-        call_action_api(self.app, 'group_member_create', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.normal_user.apikey,
                                  status=403, **{'id': NEW_ORG['name'],
                                                 'username': 'annafan',
                                                 'role': 'admin'})
 
         # editor can not add editor
-        call_action_api(self.app, 'group_member_create', apikey=model.User.get('joeadmin').apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=model.User.get('joeadmin').apikey,
                                  status=403, **{'id': NEW_ORG['name'],
                                                 'username': 'annafan',
                                                 'role': 'editor'})
 
         # editor can not lower the role of admin/editor to member
-        call_action_api(self.app, 'group_member_create', apikey=model.User.get('joeadmin').apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=model.User.get('joeadmin').apikey,
                                  status=403, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'member'})
@@ -762,26 +762,26 @@ class TestOrganizations(KataApiTestCase):
         assert output
 
         # Sysadmin can create an admin for organization
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'admin'})
 
         # Sysadmin can lower an admin to editor
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'editor'})
 
         # Sysadmin can lower an editor to member
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'member'})
 
-    def test_member_delete_sysadmin(self):
+    def test_member_delete_as_sysadmin(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
-        NEW_ORG['name'] = 'test_member_delete_sysadmin-org'
+        NEW_ORG['name'] = 'test_member_delete_as_sysadmin-org'
 
         output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **NEW_ORG)
@@ -790,13 +790,13 @@ class TestOrganizations(KataApiTestCase):
         assert output
 
         # Sysadmin can create an admin for organization
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'admin'})
 
         # Sysadmin can delete an admin
-        call_action_api(self.app, 'group_member_delete', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_delete', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name})
 
@@ -811,31 +811,54 @@ class TestOrganizations(KataApiTestCase):
         assert output
 
         # Sysadmin create an admin for organization
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'admin'})
 
         # Admin can delete herself
-        call_action_api(self.app, 'group_member_delete', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_delete', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name})
 
         # Sysadmin create an editor for organization
-        call_action_api(self.app, 'group_member_create', apikey=self.sysadmin_user.apikey,
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name,
                                                 'role': 'editor'})
 
         # Editor can delete herself
-        call_action_api(self.app, 'group_member_delete', apikey=self.normal_user.apikey,
+        call_action_api(self.app, 'organization_member_delete', apikey=self.normal_user.apikey,
                                  status=200, **{'id': NEW_ORG['name'],
                                                 'username': self.normal_user.name})
 
-
-    def test_organization_members_not_logged_in(self):
+    def test_organization_create_not_logged_in(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
-        NEW_ORG['name'] = 'test_organization_members_not_logged_in-org'
+        NEW_ORG['name'] = 'test_organization_create_not_logged_in-org'
 
         output = call_action_api(self.app, 'organization_create', status=403, **NEW_ORG)
 
+    def test_member_delete(self):
+        NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
+        NEW_ORG['name'] = 'test_member_delete-org'
+
+        output = call_action_api(self.app, 'organization_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **NEW_ORG)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert output
+
+        # Sysadmin can create an admin for organization
+        call_action_api(self.app, 'organization_member_create', apikey=self.sysadmin_user.apikey,
+                                 status=200, **{'id': NEW_ORG['name'],
+                                                'username': self.normal_user.name,
+                                                'role': 'admin'})
+
+        # Unknown user can not add member
+        call_action_api(self.app, 'organization_member_create', status=403, **{'id': NEW_ORG['name'],
+                                                'username': 'annafan',
+                                                'role': 'member'})
+
+        # User without API key can not delete member
+        call_action_api(self.app, 'organization_member_delete', status=403,
+                        **{'id': NEW_ORG['name'], 'username': self.normal_user.name})

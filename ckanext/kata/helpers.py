@@ -358,19 +358,14 @@ def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
         return False
 
     user_role = user.get('capacity')
-
     target_role = target_role.lower()
 
-    # import pprint
-    # pprint.pprint(group_dict['users'])
     if user.get('sysadmin'):
         return True
 
-    elif user_role == 'admin' and (user_id == target_id or target_role != 'admin'):
-        return True
+    for possible_role in ['admin', 'editor', 'member']:
+        if settings.ORGANIZATION_MEMBER_PERMISSIONS.get((user_role, target_role, possible_role, user_id == target_id), False):
+            return True
 
-    elif user_role == 'editor' and (user_id == target_id or target_role == 'member'):
-        return True
+    return False
 
-    else:
-        return False

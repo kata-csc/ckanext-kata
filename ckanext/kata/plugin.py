@@ -180,9 +180,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         implementation overrides
         """
         return {
+            'package_delete': auth_functions.package_delete,
             'package_update': auth_functions.is_owner,
             'resource_update': auth_functions.edit_resource,
-            'package_delete': auth_functions.package_delete,
         }
 
     def get_actions(self):
@@ -209,6 +209,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'organization_update': actions.organization_update,
             'organization_delete': actions.organization_delete,
             'organization_list_for_user': actions.organization_list_for_user,
+            'organization_member_create': actions.organization_member_create,
             'dataset_editor_delete': actions.dataset_editor_delete,
             'dataset_editor_add': actions.dataset_editor_add,
         }
