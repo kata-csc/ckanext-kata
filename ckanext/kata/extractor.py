@@ -5,6 +5,7 @@ Functions for extracting text contents from files.
 import urllib2
 import logging
 import os
+import codecs
 
 import ckan.controllers.storage as storage
 import pylons.config as config
@@ -43,10 +44,10 @@ def extract_text(resource_url, format):
 
     if file_path is not None:
         log.info("*** Reading from %s" % file_path)
-        with open(file_path, 'r') as text_file:
+        with codecs.open(file_path, mode='r', encoding='utf-8') as text_file:
             text = text_file.read()
     else:
-        text = ""
+        text = u""
 
     if tmp_file:
         os.remove(file_path)
