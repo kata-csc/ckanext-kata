@@ -32,6 +32,8 @@ from ckanext.kata.schemas import Schemas
 
 from ckanext.kata import actions, auth_functions, settings, utils, helpers
 
+import ckanext.kata.extractor as extractor
+
 log = logging.getLogger('ckanext.kata')
 
 ###### MONKEY PATCH FOR REPOZE.WHO ######
@@ -595,6 +597,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Add res_mimetype to pkg_dict. Can be removed after res_mimetype is
         # added to CKAN's index function.
         data = json.loads(pkg_dict['data_dict'])
+
         res_mimetype = []
         for resource in data.get('resources', []):
             if resource['mimetype'] == None:
@@ -602,6 +605,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             else:
                 res_mimetype.append(resource['mimetype'])
         pkg_dict['res_mimetype'] = res_mimetype
+
+        # Extract plain text from resources and add to the data dict for indexing
+        for resource in data.get('resources', []):
+            if resource['resource_type'] in ('file', 'file.upload'):
+                text = extractor.extract_text(resource['url'], resource['format'])
+                if text:
+                    all_text = pkg_dict.get('res_contents', '')
+                    all_text += (text + '\n')
+                    pkg_dict['res_contents'] = all_text
 
         # Separate agent roles for Solr indexing
 
@@ -637,5 +649,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 item['value'] = u''
 
         pkg_dict['data_dict'] = json.dumps(data)
+
+        # from pprint import pformat
+        # log.debug("*** pkg_dict at the end of before_index:")
+        # log.debug(pformat(pkg_dict))
 
         return pkg_dict
