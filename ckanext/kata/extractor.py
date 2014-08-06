@@ -28,7 +28,7 @@ def extract_text(resource_url, format):
 
     format = format.lower()
 
-    log.debug("*** Resource label: %s" % label)
+    log.debug("Resource label: %s" % label)
 
     try:
         # Get file location
@@ -38,18 +38,19 @@ def extract_text(resource_url, format):
         raise
 
     if format != 'txt':
-        log.debug("Extracting plain text from {p}".format(p=file_path))
+        log.debug("Attempting to extract plain text from {p}".format(p=file_path))
         converted_fd, converted_path = convert_file_to_text(file_path, format)
         file_path = converted_path
         if file_path is not None:
             tmp_file = True
         else:
+            log.debug("Extraction failed; unsupported format?")
             tmp_file = False
     else:
         tmp_file = False
 
     if file_path is not None:
-        log.debug("*** Reading from %s" % file_path)
+        log.debug("Reading from %s" % file_path)
         with codecs.open(file_path, mode='r', encoding='utf-8') as text_file:
             text = text_file.read()
             log.debug("Resource plain text contents:")
