@@ -21,6 +21,7 @@ setup(
         # -*- Extra requirements: -*-
         'rdflib',
         'iso8601 >= 0.1.5',
+        'pexpect >= 3.3',
         'pycountry >= 1.8',
     ],
     package_data={

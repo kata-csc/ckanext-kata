@@ -26,6 +26,8 @@ or
 
 """
 
+import pexpect
+
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
 from selenium.webdriver.common.keys import Keys
@@ -33,8 +35,10 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
-from unittest import TestCase
+
 import time
+
+from unittest import TestCase
 
 
 class TestKataBasics(TestCase):
@@ -102,21 +106,25 @@ class TestKataWithUser(TestCase):
         """Initialize tests."""
 
         # Create a sysadmin user using paster. Required for adding an organization.
-        args = ['paster', '--plugin=ckan', 'sysadmin', 'add', 'selenium_admin', '-c', '/etc/kata.ini']
-        import subprocess
-        process = subprocess.Popen(args, stdin=subprocess.PIPE)
         try:
-            process.communicate(input='y')
-            process.communicate(input="selenium\n")     # password
-            process.communicate(input="selenium\n")
-        except ValueError:
-            # The user probably exists already
+            child = pexpect.spawn('paster', ['--plugin=ckan', 'sysadmin', 'add', 'selenium_admin', '-c', '/etc/kata.ini'])
+            # child.logfile = sys.stderr    # Uncomment to show output
+            child.expect('Create new user: .+')
+            child.sendline('y')
+            child.expect('Password: ')
+            child.sendline('selenium')
+            child.expect('Confirm password: ')
+            child.sendline('selenium')
+            child.expect('Added .+ as sysadmin')
+        except pexpect.EOF:
+            # Sysadmin seems to exist already
             pass
-
 
     @classmethod
     def teardown_class(cls):
         """Uninitialize tests."""
+
+        # TODO: Remove sysadmin user
         pass
 
     def _register_user(self, reg_browser, username=u'seleniumuser', fullname=u'seleniumuser'):
@@ -250,6 +258,8 @@ class TestKataWithUser(TestCase):
 
         browser = webdriver.Firefox()
         self._register_user(browser)
+
+        # TODO: Add organization
 
         dataset_url = self._add_dataset(browser)
         browser.quit()
@@ -563,6 +573,8 @@ class TestKataWithUser(TestCase):
         ]
 
         self._register_user(browser)
+
+        # TODO: Add organization
 
         dataset_url = self._add_dataset_advanced(browser, dataset_to_add)
 
