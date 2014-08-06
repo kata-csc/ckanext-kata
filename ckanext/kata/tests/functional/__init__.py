@@ -52,8 +52,10 @@ class KataApiTestCase(unittest.TestCase):
 
         kata_model.setup()
         CreateTestData.create()
-        cls.sysadmin_user = model.User.get('testsysadmin')
-        cls.normal_user = model.User.get('tester')
+        cls.user_sysadmin = model.User.get('testsysadmin')
+        cls.user_normal = model.User.get('tester')
+        cls.user_anna = model.User.get('annafan')
+        cls.user_joe = model.User.get('joeadmin')
 
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
@@ -61,7 +63,7 @@ class KataApiTestCase(unittest.TestCase):
         cls.TEST_DATADICT = copy.deepcopy(TEST_DATADICT)
 
         try:
-            output = call_action_api(cls.app, 'organization_create', apikey=cls.sysadmin_user.apikey,
+            output = call_action_api(cls.app, 'organization_create', apikey=cls.user_sysadmin.apikey,
                                      status=200, **TEST_ORGANIZATION_COMMON)
             cls.TEST_DATADICT['owner_org'] = output.get('id')
 

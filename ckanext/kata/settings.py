@@ -15,11 +15,11 @@ ORGANIZATION_MEMBER_PERMISSIONS = {
 
     # Permission to delete a role is given if one has permission to change role to 'member'.
 
-    ('admin', 'admin', 'admin', True):      True,
+    ('admin', 'admin', 'admin', True):      False,
     ('admin', 'admin', 'admin', False):     False,
-    ('admin', 'admin', 'editor', True):     True,
+    ('admin', 'admin', 'editor', True):     False,
     ('admin', 'admin', 'editor', False):    False,
-    ('admin', 'admin', 'member', True):     True,
+    ('admin', 'admin', 'member', True):     False,  # Admin should not be able to delete oneself
     ('admin', 'admin', 'member', False):    False,
 
     ('admin', 'editor', 'admin', False):    False,
