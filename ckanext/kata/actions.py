@@ -19,7 +19,7 @@ import ckan.model as model
 from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
-from ckan.logic import check_access, NotAuthorized, side_effect_free, ValidationError
+from ckan.logic import check_access, NotAuthorized, side_effect_free
 from ckanext.kata import utils
 from ckan.logic import get_action
 

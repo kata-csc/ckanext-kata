@@ -12,7 +12,7 @@ import codecs
 import ckan.controllers.storage as storage
 import pylons.config as config
 import pairtree.storage_exceptions as storage_exceptions
-from ckanext.kata import utils, settings
+from ckanext.kata import settings
 from ckanext.kata.utils import log
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
