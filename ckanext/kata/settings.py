@@ -69,13 +69,13 @@ SEARCH_FIELDS = ['ext_text',
 # This can be used e.g. if the command requires a specific argument to print output
 # on stdout.
 TEXTOUTPUTPROGS = {
-    'doc': { 'exec': '/usr/bin/catdoc', 'args': '' },
-    'html': { 'exec': '/usr/bin/w3m', 'args': '' },
-    'odt': { 'exec': '/usr/bin/odt2txt', 'args': '' },
-    'xls': { 'exec': '/usr/bin/xls2csv', 'args': '' },
-    'ods': { 'exec': '/usr/bin/ods2txt', 'args': '' },
-    'ppt': { 'exec': '/usr/bin/catppt', 'args': '' },
-    'odp': { 'exec': '/usr/bin/odp2txt', 'args': '' },
+    'doc': { 'exec': '/usr/bin/catdoc' },
+    'html': { 'exec': '/usr/bin/w3m' },
+    'odt': { 'exec': '/usr/bin/odt2txt' },
+    'xls': { 'exec': '/usr/bin/xls2csv' },
+    'ods': { 'exec': '/usr/bin/ods2txt' },
+    'ppt': { 'exec': '/usr/bin/catppt' },
+    'odp': { 'exec': '/usr/bin/odp2txt' },
     }
 
 # Text string to use for when dataset's URL is not known. Changing might cause issues as this is also CKAN default.

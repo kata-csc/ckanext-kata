@@ -38,7 +38,10 @@ def extract_text(resource_url, format):
         log.debug("Extracting plain text from {p}".format(p=file_path))
         converted_fd, converted_path = utils.convert_file_to_text(file_path, format)
         file_path = converted_path
-        tmp_file = True
+        if file_path is not None:
+            tmp_file = True
+        else:
+            tmp_file = False
     else:
         tmp_file = False
 
@@ -46,6 +49,8 @@ def extract_text(resource_url, format):
         log.debug("*** Reading from %s" % file_path)
         with codecs.open(file_path, mode='r', encoding='utf-8') as text_file:
             text = text_file.read()
+            log.debug("Resource plain text contents:")
+            log.debug(text)
     else:
         text = u""
 
