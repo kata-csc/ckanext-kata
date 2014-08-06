@@ -4,8 +4,6 @@ Utility functions for Kata.
 """
 
 import logging
-import tempfile
-import subprocess
 import urllib2
 import socket
 
@@ -67,30 +65,6 @@ saavan muokkausoikeudet aineiston metatietoihin:\n\
     email_dict["body"] = body
     send_notification(admin_dict, email_dict)
 
-
-def convert_file_to_text(resource_file_path, format):
-    """
-    Returns the file descriptor and path for a temporary file that contains
-    the contents of the given resource converted to plain text.
-
-    If there is no suitable converter for the format,
-    the return value will be (None, None).
-    """
-
-    prog = settings.TEXTOUTPUTPROGS[format] if (format in settings.TEXTOUTPUTPROGS and
-                                                format is not 'txt') else None
-
-    if not prog:
-        return None, None
-    else:
-        converted_fd, converted_path = tempfile.mkstemp()
-
-        log.debug("Converting to plain text; prog={p}, file={f}"
-                  .format(p=prog['exec'], f=resource_file_path)
-        )
-        process = subprocess.Popen([prog['exec'], resource_file_path], stdout=converted_fd)
-        process.communicate()
-        return converted_fd, converted_path
 
 def label_list_yso(tag_url):
     """
