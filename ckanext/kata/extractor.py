@@ -38,13 +38,13 @@ def extract_text(resource_url, format):
         raise
 
     if format != 'txt':
-        log.debug("Attempting to extract plain text from {p}".format(p=file_path))
+        log.info("Attempting to extract plain text from {p}".format(p=file_path))
         converted_fd, converted_path = convert_file_to_text(file_path, format)
         file_path = converted_path
         if file_path is not None:
             tmp_file = True
         else:
-            log.debug("Extraction failed; unsupported format?")
+            log.info("Extraction failed; unsupported format?")
             tmp_file = False
     else:
         tmp_file = False
