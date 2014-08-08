@@ -66,16 +66,17 @@ SEARCH_FIELDS = ['ext_text',
 # File types and converters used for extracting plain text from structured documents.
 # The 'args' member can be used for passing extra arguments to the program in addition
 # to the input file name which is always given as the first argument.
-# This can be used e.g. if the command requires a specific argument to print output
-# on stdout.
+# The 'output' member can be used if the command requires a specific argument to
+# print output on stdout.
 TEXTOUTPUTPROGS = {
-    'doc': { 'exec': '/usr/bin/catdoc' },
-    'html': { 'exec': '/usr/bin/w3m' },
-    'odt': { 'exec': '/usr/bin/odt2txt' },
-    'xls': { 'exec': '/usr/bin/xls2csv' },
-    'ods': { 'exec': '/usr/bin/ods2txt' },
-    'ppt': { 'exec': '/usr/bin/catppt' },
-    'odp': { 'exec': '/usr/bin/odp2txt' },
+    'doc': { 'exec': '/usr/bin/catdoc', 'args': '', 'output': '' },
+    'html': { 'exec': '/usr/bin/w3m', 'args': '', 'output': '' },
+    'odt': { 'exec': '/usr/bin/odt2txt', 'args': '', 'output': '' },
+    'xls': { 'exec': '/usr/bin/xls2csv', 'args': '', 'output': '' },
+    'ods': { 'exec': '/usr/bin/ods2txt', 'args': '', 'output': '' },
+    'ppt': { 'exec': '/usr/bin/catppt', 'args': '', 'output': '' },
+    'odp': { 'exec': '/usr/bin/odp2txt', 'args': '', 'output': ''},
+    'pdf': { 'exec': '/usr/bin/pdftotext', 'args': '-enc ASCII7 -nopgbrk', 'output': '-' },
     }
 
 # Text string to use for when dataset's URL is not known. Changing might cause issues as this is also CKAN default.

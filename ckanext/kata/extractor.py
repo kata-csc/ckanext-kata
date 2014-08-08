@@ -84,6 +84,14 @@ def convert_file_to_text(resource_file_path, format):
         log.debug("Converting to plain text; prog={p}, file={f}"
                   .format(p=prog['exec'], f=resource_file_path)
         )
-        process = subprocess.Popen([prog['exec'], resource_file_path], stdout=converted_fd)
+        command = [prog['exec']]
+        if prog['args']:
+            command.extend(prog['args'].split())
+        command.append(resource_file_path)
+        if prog['output']:
+            command.append(prog['output'])
+
+        log.debug("Subprocess command: {c}".format(c=command))
+        process = subprocess.Popen(command, stdout=converted_fd)
         process.communicate()
         return converted_fd, converted_path
