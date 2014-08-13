@@ -19,8 +19,9 @@ from pylons.i18n import _
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.user import UserController
+from ckan.controllers.storage import StorageController
 import ckan.lib.i18n
-from ckan.lib.base import BaseController, c, h, redirect, render
+from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
 from ckan.logic import get_action
 import ckan.model as model
@@ -28,7 +29,10 @@ from ckan.model import Package, User, meta
 from ckan.model.authz import add_user_to_role
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
+import ckanext.kata.exception as exception
 import ckan.lib.captcha as captcha
+
+import pyclamd
 
 _get_or_bust = ckan.logic.get_or_bust
 
@@ -862,3 +866,80 @@ class KataInfoController(BaseController):
         '''
         return render('kata/faq.html')
 
+
+class CheckedStorageController(StorageController):
+    '''
+    CheckedStorageController extends the standard CKAN StorageController
+    class by adding a malware check on file uploads.
+    '''
+
+    def upload_handle(self):
+        params = dict(request.params.items())
+        field_storage = params.get('file')
+        buffer = field_storage.file
+
+        try:
+            passed = self._detect_malware(buffer)
+            buffer.seek(0)
+        except exception.MalwareCheckError as err:
+            passed = False
+            h.flash_error(_("Checking the file for malware failed; file upload was rejected"))
+            log.error(str(err))
+        if passed:
+            return StorageController.upload_handle(self)
+        else:
+            h.flash_error(_("File did not pass malware check"))
+            abort(403)
+
+    def _detect_malware(self, stream):
+        '''
+        Checks for malware in the stream using ClamAV.
+        Inspired by the example code in pyclamd.
+        '''
+
+        log.debug("in CheckedStorageController._detect_malware")
+
+        scan_required = config.get('kata.storage.malware_scan_required', True)
+
+        try:
+            daemon = pyclamd.ClamdNetworkSocket()
+            daemon.ping()
+        except pyclamd.ConnectionError:
+            daemon = None
+
+        if daemon:
+            log.debug("Scanning file for malware")
+
+            try:
+                result = daemon.scan_stream(stream.read())
+
+                if result:
+                    # scan_stream only returns a non-None result on error or detection
+                    passed = False
+
+                    status = result['stream']
+                    log.debug("Scan status: {s}".format(s=status))
+
+                    if status[0] == 'FOUND':
+                        log.warn('Malware detected in upload: {s}'.format(s=status))
+                    else:
+                        log.error('Malware scan failed: {s}'.format(s=status))
+                        raise exception.MalwareCheckError(
+                            "ClamAV scan produced an error: {e}".format(e=status)
+                        )
+                else:
+                    passed = True
+            except pyclamd.BufferTooLongError:
+                passed = False
+                h.flash_error(_("Uploaded file is too large for malware check"))
+                raise exception.MalwareCheckError()
+
+        else:
+            if scan_required:
+                passed = False
+                raise exception.MalwareCheckError("Connecting to ClamAV daemon failed")
+            else:
+                log.warn("Unable to run a ClamAV scan on uploaded stream; scan configured as optional, so passing")
+                passed = True
+
+        return passed

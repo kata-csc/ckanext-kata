@@ -22,6 +22,7 @@ setup(
         'rdflib',
         'iso8601 >= 0.1.5',
         'pycountry >= 1.8',
+        'pyClamd >= 0.3.10',
     ],
     package_data={
         'ckan': [

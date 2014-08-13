@@ -174,6 +174,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/dataset_editor_delete/{name}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="dataset_editor_delete")
+        map.connect('/storage/upload_handle',
+                    controller="ckanext.kata.controllers:CheckedStorageController",
+                    action='upload_handle')
+
         return map
 
     def get_auth_functions(self):
