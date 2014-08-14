@@ -215,7 +215,7 @@ class TestSearchDataset(KataApiTestCase):
         search.clear()
 
         # Create a dataset for this test class
-        output = call_action_api(cls.app, 'package_create', apikey=cls.normal_user.apikey,
+        output = call_action_api(cls.app, 'package_create', apikey=cls.user_normal.apikey,
                                  status=200, **cls.TEST_DATADICT)
 
         cls.package_id = output.get('id')
@@ -601,7 +601,7 @@ class TestSchema(KataApiTestCase):
             assert output['__type'] == 'Validation Error'
 
 
-class TestOrganizations(KataApiTestCase):
+class TestOrganizationAdmin(KataApiTestCase):
     """Tests for creating organizations and playing with them through API."""
 
     def test_create_organization(self):
