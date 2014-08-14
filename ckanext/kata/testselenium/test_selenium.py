@@ -105,34 +105,41 @@ class TestKataWithUser(TestCase):
     def setup_class(cls):
         """Initialize tests."""
 
+        cls.sysadmin = 'selenium_admin'
+        cls.sysadmin_pwd = 'selenium'
+
         # Create a sysadmin user using paster. Required for adding an organization.
         try:
-            child = pexpect.spawn('paster', ['--plugin=ckan', 'sysadmin', 'add', 'selenium_admin', '-c', '/etc/kata.ini'])
+            child = pexpect.spawn('paster', ['--plugin=ckan', 'sysadmin', 'add', cls.sysadmin, '-c', '/etc/kata.ini'])
             # child.logfile = sys.stderr    # Uncomment to show output
             child.expect('Create new user: .+')
             child.sendline('y')
             child.expect('Password: ')
-            child.sendline('selenium')
+            child.sendline(cls.sysadmin_pwd)
             child.expect('Confirm password: ')
-            child.sendline('selenium')
+            child.sendline(cls.sysadmin_pwd)
             child.expect('Added .+ as sysadmin')
         except pexpect.EOF:
-            # Sysadmin seems to exist already
+            # Sysadmin probably exists already
             pass
 
     @classmethod
     def teardown_class(cls):
         """Uninitialize tests."""
 
-        # TODO: Remove sysadmin user
-        pass
+        # Remove sysadmin user using paster.
+        try:
+            child = pexpect.spawn('paster', ['--plugin=ckan', 'sysadmin', 'remove', cls.sysadmin, '-c', '/etc/kata.ini'])
+            # child.logfile = sys.stderr    # Uncomment to show output
+            child.expect('Access OK.')
+        except pexpect.EOF:
+            # Sysadmin probably exists already
+            pass
 
     def _register_user(self, reg_browser, username=u'seleniumuser', fullname=u'seleniumuser'):
         """Register a new user, will be logged in automatically."""
 
         reg_browser.get("https://localhost/en/user/register")
-
-        username = username + str(int(time.time()*100))
 
         try:
             field = reg_browser.find_element_by_xpath("//input[@id='field-username']")
@@ -234,14 +241,72 @@ class TestKataWithUser(TestCase):
 
         return ''.join(browser.current_url)
 
+    def _create_organization(self, organization_name, user_name, user_role):
+        '''
+        Create an organization and add a user to it.
+        :return:
+        '''
 
-    def test_register_user(self):
-        """
-        Test for user registration.
-        """
-        browser = webdriver.Firefox()
-        self._register_user(browser)
-        browser.quit()
+        driver = webdriver.Firefox()
+
+        try:
+            driver.get("https://localhost/en/user/login")
+            driver.find_element_by_link_text("Log in").click()
+            WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "field-login")))
+            driver.find_element_by_id("field-login").clear()
+            driver.find_element_by_id("field-login").send_keys(self.sysadmin)
+            driver.find_element_by_id("field-password").clear()
+            driver.find_element_by_id("field-password").send_keys(self.sysadmin_pwd)
+            driver.find_element_by_css_selector("button.btn.btn-primary").click()
+            # driver.find_element_by_link_text("Organizations").click()
+
+            WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//i[contains(@class, 'icon-signout')]")))
+            driver.get("https://localhost/en/organization/new")
+
+            driver.find_element_by_id("field-title").clear()
+            driver.find_element_by_id("field-title").send_keys(organization_name)
+            WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Edit')]")))
+            driver.find_element_by_xpath("//button[contains(text(), 'Edit')]").click()
+            driver.find_element_by_id("field-url").clear()
+            driver.find_element_by_id("field-url").send_keys(organization_name)
+            driver.find_element_by_id("field-description").clear()
+            driver.find_element_by_id("field-description").send_keys("Doing some testing")
+            driver.find_element_by_name("save").click()
+
+            WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.PARTIAL_LINK_TEXT, "Follow")))
+
+            driver.get("https://localhost/en/organization/members/" + organization_name)
+
+            driver.find_element_by_partial_link_text("Add Member").click()
+            WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//div/a/span[text()='Username']")))
+
+            member_element = driver.find_element_by_xpath("//div/a/span[text()='Username']")
+            member_element.send_keys(Keys.RETURN)
+
+            member_element = driver.find_element_by_xpath("html/body/div/div/input")
+            member_element.send_keys(user_name)
+
+            member_element.send_keys(Keys.RETURN)
+
+            role_element = driver.find_element_by_xpath("//div/a/span[text()='Member']")
+            role_element.send_keys(Keys.RETURN)
+
+            role_element = driver.find_element_by_xpath("html/body/div/div/input")
+            role_element.send_keys(user_role)
+
+            role_element.send_keys(Keys.RETURN)
+
+            driver.find_element_by_name("submit").click()
+
+            WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//h3[contains(text(), '2 members')]")))
+            driver.get_screenshot_as_file('_create_organization_TEMP.png')
+
+        except (TimeoutException, NoSuchElementException):
+            driver.get_screenshot_as_file('_create_organization.png')
+            driver.quit()
+            raise
+
+        driver.quit()
 
 
     def test_register_user_fullname_utf8(self):
@@ -249,7 +314,7 @@ class TestKataWithUser(TestCase):
         Test for user registration with special characters.
         """
         browser = webdriver.Firefox()
-        self._register_user(browser, username=u'selenium', fullname=u'АБВГДЕЁЖЗИЙ κόσμε...')
+        self._register_user(browser, username=u'selenium_unicode_user' + str(int(time.time()*100)), fullname=u'АБВГДЕЁЖЗИЙ κόσμε...')
         browser.quit()
 
 
@@ -257,15 +322,17 @@ class TestKataWithUser(TestCase):
         """Test that user can go back from contact form and still go forward to send it."""
 
         browser = webdriver.Firefox()
-        self._register_user(browser)
+        username = u'selenium_contact_user' + str(int(time.time()*100))
+        self._register_user(browser, username=username)
 
-        # TODO: Add organization
+        org_name = 'seleniumtesting' + str(int(time.time()*100))
+        self._create_organization(org_name, username, 'editor')
 
         dataset_url = self._add_dataset(browser)
         browser.quit()
 
         browser = webdriver.Firefox()  # Get a new session
-        self._register_user(browser)
+        self._register_user(browser, username='selenium_contact_user' + str(int(time.time()*100)))
 
         assert dataset_url is not None, "dataset url not found"
 
@@ -310,7 +377,7 @@ class TestKataWithUser(TestCase):
         """
         # These should match often twice, clumsy, fix in the future
         browser = webdriver.Firefox()
-        self._register_user(browser)
+        self._register_user(browser, username=u'selenium_navigator' + str(int(time.time()*100)))
 
         browser.get("https://localhost/")
         try:
@@ -353,61 +420,13 @@ class TestKataWithUser(TestCase):
         browser.quit()
 
 
-    def test_advanced_search(self):
-        """Test that advanced search returns our shiny new dataset."""
-
-        browser = webdriver.Firefox()
-        self._register_user(browser)
-
-        browser.get("https://localhost/en/dataset")
-
-        try:
-            btn = browser.find_element_by_xpath("//a[contains(@href, '#advanced-search-tab')]")
-            btn.click()
-
-        except NoSuchElementException:
-            browser.get_screenshot_as_file('test_3_advanced_search.png')
-            assert 0, 'Advanced search tab not found'
-
-        try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.ID, 'advanced-search-date-end')))
-        except TimeoutException:
-            browser.get_screenshot_as_file('test_3_advanced_search.png')
-            assert 0, "Error switching to advanced search"
-
-        try:
-            field = browser.find_element_by_id("advanced-search-text-1")
-            field.send_keys('Selenium')
-            field.send_keys(Keys.ENTER)
-        except NoSuchElementException:
-            browser.get_screenshot_as_file('test_3_advanced_search.png')
-            assert 0, 'Search text field not found'
-
-        try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//footer")))
-        except TimeoutException:
-            browser.get_screenshot_as_file('test_3_advanced_search.png')
-            assert 0, "Didn't get the expected search result"
-
-        # As the Solr index seems to live it's own life and the database might not have been cleared,
-        # we cannot be sure how many hits should be expected. So this works for 1 or more results.
-
-        try:
-            browser.find_element_by_xpath("//li/div/h3/a[contains(text(),'Selenium Dataset')]")
-        except NoSuchElementException:
-            assert 0, 'Selenium Dataset not found with advanced search'
-
-
-        browser.quit()
-
-
     def test_logout(self):
         """
         Test logout for Selenium user.
         """
 
         browser = webdriver.Firefox()
-        self._register_user(browser)
+        self._register_user(browser, username=u'selenium_logoutter' + str(int(time.time()*100)))
 
         browser.get("https://localhost/en/user/_logout")
 
@@ -423,6 +442,8 @@ class TestKataWithUser(TestCase):
     def _add_dataset_advanced(self, browser, dataset_list):
         """
         Create a dataset with values from argument dataset_list.
+
+        Also test that advanced search can find the dataset.
 
         dataset_list element format:
         (element_search_function, function_parameter, keyboard_input_to_element (or WebElement.click), wait_for)
@@ -450,17 +471,17 @@ class TestKataWithUser(TestCase):
                         browser.implicitly_wait(wait_for)
                         #WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located(wait_for))
 
-        except (NoSuchElementException, ElementNotVisibleException) as exception:
+        except (NoSuchElementException, ElementNotVisibleException):
             browser.get_screenshot_as_file('_add_dataset_advanced.png')
-            print exception
-            assert 0, "Error processing the create dataset page"
+            browser.quit()
+            raise
 
         try:
             WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/div/a[.='Hide/show']")))
         except TimeoutException:
             browser.get_screenshot_as_file('_add_dataset_advanced.png')
             browser.quit()
-            assert 0, "Dataset creation didn't finish, URL: %r" % browser.current_url
+            raise
 
         assert "Kata" in browser.title, "Dataset creation failed somehow"
 
@@ -472,27 +493,33 @@ class TestKataWithUser(TestCase):
 
         browser = webdriver.Firefox()
 
-        def find_select2_inputs(id):
-            """
-            Finds 'select2-input's
-            """
-            elements = browser.find_elements_by_class_name('select2-input')
-            return elements[id]
+        username = u'selenium_advanced_user' + str(int(time.time()*100))
+        self._register_user(browser, username=username)
 
-        def find_select2_choice_inputs(id):
-            """
-            Finds 'select2-choice's
-            """
-            elements = browser.find_elements_by_class_name('select2-choice')
-            return elements[id]
+        org_name = 'seleniumtesting' + str(int(time.time()*100))
+        self._create_organization(org_name, username, 'editor')
 
-        def find_plus_buttons(id):
-            """
-            Finds '?' and '+' buttons
-            """
-            all_elements = browser.find_elements_by_class_name('kata-plus-btn')
-            visible_elements = filter(lambda elem: elem.is_displayed(), all_elements)
-            return visible_elements[id]
+        # def find_select2_inputs(id):
+        #     """
+        #     Finds 'select2-input's
+        #     """
+        #     elements = browser.find_elements_by_class_name('select2-input')
+        #     return elements[id]
+        #
+        # def find_select2_choice_inputs(id):
+        #     """
+        #     Finds 'select2-choice's
+        #     """
+        #     elements = browser.find_elements_by_class_name('select2-choice')
+        #     return elements[id]
+        #
+        # def find_plus_buttons(id):
+        #     """
+        #     Finds '?' and '+' buttons
+        #     """
+        #     all_elements = browser.find_elements_by_class_name('kata-plus-btn')
+        #     visible_elements = filter(lambda elem: elem.is_displayed(), all_elements)
+        #     return visible_elements[id]
 
         # TODO: Use all fields.
 
@@ -550,6 +577,7 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),
 
             #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
+            (browser.find_element_by_id, 'field-private', [u'Public'], None),
 
             (browser.find_element_by_xpath, "//section[@id='recmod']/h2", [WebElement.click], None),
             # recommended info
@@ -572,10 +600,28 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_xpath, "//button[@name='save']", [WebElement.click], None)
         ]
 
-        self._register_user(browser)
-
-        # TODO: Add organization
-
         dataset_url = self._add_dataset_advanced(browser, dataset_to_add)
+
+        # Use search to test that dataset is found from index.
+
+        browser.get("https://localhost/en/dataset")
+
+        try:
+            btn = browser.find_element_by_xpath("//a[contains(@href, '#advanced-search-tab')]")
+            btn.click()
+
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.ID, 'advanced-search-date-end')))
+
+            field = browser.find_element_by_id("advanced-search-text-1")
+            field.send_keys('Advanced Selenium')
+            field.send_keys(Keys.ENTER)
+
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//footer")))
+
+            browser.find_element_by_xpath("//li/div/h3/a[contains(text(),'Advanced Selenium Dataset')]")
+
+        except (TimeoutException, NoSuchElementException):
+            browser.get_screenshot_as_file('test_3_advanced_search.png')
+            raise
 
         browser.quit()
