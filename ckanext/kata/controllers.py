@@ -88,6 +88,7 @@ class KATAApiController(ApiController):
         query = request.params.get('incomplete', '')
         known_types = set(mimetypes.types_map.values())
         matches = [ type_label for type_label in known_types if string.find(type_label, query) != -1 ]
+        matches = sorted(matches)
         result_set = {
             'ResultSet': {
                 'Result': [{'Name': label} for label in matches]
