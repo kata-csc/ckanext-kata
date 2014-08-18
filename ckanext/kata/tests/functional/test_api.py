@@ -200,6 +200,23 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert output
         assert output.get('__type') == 'Validation Error'
 
+    def test_create_public_dataset_by_member(self):
+        '''Organization member cannot create public dataset'''
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['private'] = False
+
+        call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey,
+                                 status=403, **data_dict)
+
+    def test_create_public_dataset_by_editor(self):
+        '''Organization editor can create public dataset'''
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['private'] = False
+
+        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
+                                 status=200, **data_dict)
+        assert output
+
 
 class TestSearchDataset(KataApiTestCase):
     '''
@@ -214,9 +231,12 @@ class TestSearchDataset(KataApiTestCase):
         super(TestSearchDataset, cls).setup_class()
         search.clear()
 
+        data_dict = copy.deepcopy(cls.TEST_DATADICT)    # Create public dataset
+        data_dict['private'] = False
+
         # Create a dataset for this test class
-        output = call_action_api(cls.app, 'package_create', apikey=cls.user_normal.apikey,
-                                 status=200, **cls.TEST_DATADICT)
+        output = call_action_api(cls.app, 'package_create', apikey=cls.user_sysadmin.apikey,
+                                 status=200, **data_dict)
 
         cls.package_id = output.get('id')
 
@@ -284,6 +304,16 @@ class TestDataReading(KataApiTestCase):
     Tests for checking that values match between original data_dict and package_show output.
     '''
 
+    @classmethod
+    def setup_class(cls):
+        '''
+        Set up test class
+        '''
+        super(TestDataReading, cls).setup_class()
+
+        cls.public_dataset = copy.deepcopy(cls.TEST_DATADICT)    # Create public dataset
+        cls.public_dataset['private'] = False
+
     def _compare_datadicts(self, original, output):
         '''
         Compare a CKAN generated datadict to original datadict. Returns True if identical,
@@ -340,7 +370,7 @@ class TestDataReading(KataApiTestCase):
         Read as a different user than dataset creator.
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **self.TEST_DATADICT)
+                                 status=200, **self.public_dataset)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
@@ -349,8 +379,21 @@ class TestDataReading(KataApiTestCase):
                                  status=200, id=output['id'])
 
         # Use hide_sensitive_fields() because user is not the creator of the dataset
-        original = copy.deepcopy(self.TEST_DATADICT)
+        original = copy.deepcopy(self.public_dataset)
         assert self._compare_datadicts(utils.hide_sensitive_fields(original), output)
+
+    def test_create_and_read_dataset_private(self):
+        '''
+        Check that private dataset may not be read by other user
+        '''
+        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
+                                 status=200, **self.TEST_DATADICT)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        assert 'id' in output
+
+        call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey,
+                                 status=403, id=output['id'])
 
     def test_create_update_and_read_dataset(self):
         '''
@@ -379,8 +422,8 @@ class TestDataReading(KataApiTestCase):
         '''
         Test that anonymous user can not read protected data
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                 status=200, **self.TEST_DATADICT)
+        output = call_action_api(self.app, 'package_create', apikey=self.user_sysadmin.apikey,
+                                 status=200, **self.public_dataset)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
@@ -482,7 +525,6 @@ class TestDataReading(KataApiTestCase):
                                  status=200, id=data_dict['id'])
         assert 'discipline' not in output
 
-
     def test_create_and_read_resource(self):
         '''
         Create and read resource data through API and test that 'url' matches. Availability 'through_provider'.
@@ -565,7 +607,7 @@ class TestDataReading(KataApiTestCase):
         Create and read a dataset through API and check that RDF generation doesn't break.
         '''
         output = call_action_api(self.app, 'package_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **self.TEST_DATADICT)
+                                 status=200, **self.public_dataset)
         assert 'id' in output
 
         offset = url_for("/dataset/{0}.rdf".format(output['id']))

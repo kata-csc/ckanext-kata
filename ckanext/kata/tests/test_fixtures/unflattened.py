@@ -16,8 +16,11 @@ TEST_ORGANIZATION_COMMON = {
     'title': u'Test Organization',
     'description': u'Description of an organization',
     'image_url': u'',
-    'users': [{'capacity': 'editor', 'name': u'tester'},
-              {'capacity': 'admin', 'name': u'testsysadmin'}],
+    'users': [
+        {'capacity': 'admin', 'name': u'testsysadmin'},
+        {'capacity': 'editor', 'name': u'tester'},
+        {'capacity': 'member', 'name': u'joeadmin'}
+    ],
     'type': 'organization',
     'name': u'test_org_common'
 }
@@ -141,7 +144,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'title': u'',
                  'type': u'dataset',
                  'version': u'2013-11-18T12:25:53Z',
-                 'private': False,
+                 'private': True,  # Use Python boolean or fix _compare_datadicts() in tests to support 'True' == True
                  'xpaths': {
                      'xpath/path1': u'xpath_value',
                      'xpath/path2': u'xpath_value2',

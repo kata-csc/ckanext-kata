@@ -52,10 +52,10 @@ class KataApiTestCase(unittest.TestCase):
 
         kata_model.setup()
         CreateTestData.create()
-        cls.user_sysadmin = model.User.get('testsysadmin')
-        cls.user_normal = model.User.get('tester')
+        cls.user_sysadmin = model.User.get('testsysadmin')  # Org admin
+        cls.user_normal = model.User.get('tester')          # Org editor
         cls.user_anna = model.User.get('annafan')
-        cls.user_joe = model.User.get('joeadmin')
+        cls.user_joe = model.User.get('joeadmin')           # Org member
 
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
