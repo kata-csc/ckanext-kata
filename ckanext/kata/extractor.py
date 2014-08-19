@@ -34,8 +34,7 @@ def extract_text(resource_url, format):
         # Get file location
         file_path = ofs.get_url(BUCKET, label).split('file://')[-1]
     except storage_exceptions.FileNotFoundException:
-        log.warn("Unable to extract text from {u} -- is the resource remote?".format(u=resource_url))
-        raise
+        raise IOError("Unable to extract text from {u} -- is the resource remote?".format(u=resource_url))
 
     if format != 'txt':
         log.info("Attempting to extract plain text from {p}".format(p=file_path))

@@ -609,7 +609,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Extract plain text from resources and add to the data dict for indexing
         for resource in data.get('resources', []):
             if resource['resource_type'] in ('file', 'file.upload'):
-                text = extractor.extract_text(resource['url'], resource['format'])
+                try:
+                    text = extractor.extract_text(resource['url'], resource['format'])
+                except IOError as ioe:
+                    log.debug(str(ioe))
+                    text = ""
                 if text:
                     all_text = pkg_dict.get('res_contents', '')
                     all_text += (text + '\n')
