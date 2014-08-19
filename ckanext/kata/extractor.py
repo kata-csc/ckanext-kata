@@ -25,9 +25,11 @@ def extract_text(resource_url, format):
     Attempts to extract plain text contents from the CKAN resource with the
     given URL. Only local resources are supported at the moment.
 
-    If required and if possible, non-plain text files are first converted
-    to a plain text representation.
+    Non-plain text files are first converted to a plain text representation
+    if possible.
 
+    :param resource_url: URL string
+    :param format: the file format of the resource (practically file name extension)
     :rtype: unicode
     """
     ofs = storage.get_ofs()
@@ -83,6 +85,8 @@ def convert_file_to_text(resource_file_path, format):
     If there is no suitable converter for the format,
     the return value will be (None, None).
 
+    :param resource_file_path: the file system path to the resource file
+    :param format: the file format of the resource (
     :rtype: tuple
     """
 
