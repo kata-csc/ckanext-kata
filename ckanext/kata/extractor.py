@@ -1,5 +1,5 @@
 """
-The extractor module provides functions for extracting text contents from files.
+The extractor module provides functions for extracting text contents from resources.
 """
 import subprocess
 import tempfile
@@ -21,6 +21,15 @@ BUCKET = config.get('ckan.storage.bucket', 'default')
 STORAGE_BASE_URL = config.get('ckan.site_url') + '/storage/f/'
 
 def extract_text(resource_url, format):
+    """
+    Attempts to extract plain text contents from the CKAN resource with the
+    given URL. Only local resources are supported at the moment.
+
+    If required and if possible, non-plain text files are first converted
+    to a plain text representation.
+
+    :rtype: unicode
+    """
     ofs = storage.get_ofs()
 
     label = resource_url.split(STORAGE_BASE_URL)[-1]
@@ -70,6 +79,8 @@ def convert_file_to_text(resource_file_path, format):
 
     If there is no suitable converter for the format,
     the return value will be (None, None).
+
+    :rtype: tuple
     """
 
     prog = settings.TEXTOUTPUTPROGS[format] if (format in settings.TEXTOUTPUTPROGS and
