@@ -39,27 +39,30 @@ def extract_text(resource_url, format):
 
     log.debug("Resource label: %s" % label)
 
+    original_path = None
+    converted_path = None
+
     try:
         # Get file location
-        file_path = ofs.get_url(BUCKET, label).split('file://')[-1]
+        original_path = ofs.get_url(BUCKET, label).split('file://')[-1]
     except storage_exceptions.FileNotFoundException:
         raise IOError("Unable to extract text from {u} -- is the resource remote?".format(u=resource_url))
 
     if format != 'txt':
-        log.info("Attempting to extract plain text from {p}".format(p=file_path))
-        converted_fd, converted_path = convert_file_to_text(file_path, format)
-        file_path = converted_path
-        if file_path is not None:
+        log.debug("Attempting to extract plain text from {p}".format(p=original_path))
+        converted_fd, converted_path = convert_file_to_text(original_path, format)
+        if converted_path is not None:
             tmp_file = True
         else:
-            log.info("Extraction failed; unsupported format?")
+            log.info("Extracting plain text from {p} failed; unsupported format?".format(p=original_path))
             tmp_file = False
     else:
         tmp_file = False
+        converted_path = original_path
 
-    if file_path is not None:
-        log.debug("Reading from %s" % file_path)
-        with codecs.open(file_path, mode='r', encoding='utf-8') as text_file:
+    if converted_path is not None:
+        log.debug("Reading from %s" % converted_path)
+        with codecs.open(converted_path, mode='r', encoding='utf-8') as text_file:
             text = text_file.read()
             log.debug("Resource plain text contents:")
             log.debug(text)
@@ -67,7 +70,7 @@ def extract_text(resource_url, format):
         text = u""
 
     if tmp_file:
-        os.remove(file_path)
+        os.remove(converted_path)
 
     return text
 
