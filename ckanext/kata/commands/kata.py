@@ -7,7 +7,6 @@ import ckan.model as model
 from ckan.model import Group, repo, Member
 from ckanext.harvest.model import HarvestSource
 from ckanext.kata.model import setup, KataAccessRequest
-import ckanext.kata.tieteet as tieteet
 from ckanext.kata.utils import send_email
 
 class Kata(CkanCommand):
