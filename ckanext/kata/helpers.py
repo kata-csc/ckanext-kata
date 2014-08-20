@@ -10,7 +10,7 @@ import ckan.model as model
 from ckan.model import Related, Package, User
 from ckan.lib.base import g, h
 from ckan.logic import get_action, ValidationError
-from ckanext.kata import settings
+from ckanext.kata import settings, utils
 
 
 def has_agents_field(data_dict, field):
@@ -336,11 +336,7 @@ def get_funder(data_dict):
 
 def get_funders(data_dict):
     '''Get all funders from agent field in data_dict'''
-    # return filter(lambda x: x.get('role') == u'funder', data_dict.get('agent', []))
-    # TODO: Fix validators to not create empty agents
-    return filter(lambda x: x.get('role') == u'funder' and \
-                            (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
-                  data_dict.get('agent', []))
+    return utils.get_funders(data_dict)
 
 def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
     '''
@@ -369,3 +365,11 @@ def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
 
     return False
 
+
+def get_visibility_options(group_id, user_id):
+    '''Get possible dataset visibility options for this group and user'''
+
+    if (not group_id or not user_id) or utils.get_member_role(group_id, user_id) == 'member':
+        return [(True, 'Private')]
+    else:
+        return [(True, 'Private'), (False, 'Public')]

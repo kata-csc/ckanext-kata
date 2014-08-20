@@ -5,7 +5,6 @@ Kata's action overrides.
 
 import datetime
 import logging
-import functionally as fn
 
 import re
 from pylons import c
@@ -25,12 +24,14 @@ from ckanext.kata import utils, settings
 from ckan.logic import get_action
 import ckan.new_authz
 
+
 _get_or_bust = ckan.logic.get_or_bust
 _authz = model.authz
 
 log = logging.getLogger(__name__)
 
 TITLE_MATCH = re.compile(r'^(title_)?\d?$')
+
 
 @side_effect_free
 def package_show(context, data_dict):
@@ -267,6 +268,7 @@ def package_delete(context, data_dict):
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
+
 def _log_action(target_type, action, who, target_id):
     try:
         log_str = '[ ' + target_type + ' ] [ ' + str(datetime.datetime.now())
@@ -275,6 +277,7 @@ def _log_action(target_type, action, who, target_id):
         log.info(log_str)
     except:
         log.info('Debug failed! Action not logged')
+
 
 # Log should show who did what and when
 def _decorate(f, target_type, action):
@@ -300,7 +303,7 @@ related_delete = _decorate(ckan.logic.action.delete.related_delete, 'related', '
 # member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
 group_create = _decorate(ckan.logic.action.create.group_create, 'group', 'create')
 group_update = _decorate(ckan.logic.action.update.group_update, 'group', 'update')
-# group_list = _decorate(ckan.logic.action.get.group_list, 'group', 'list')
+group_list = _decorate(ckan.logic.action.get.group_list, 'group', 'list')
 group_delete = _decorate(ckan.logic.action.delete.group_delete, 'group', 'delete')
 organization_create = _decorate(ckan.logic.action.create.organization_create, 'organization', 'create')
 organization_update = _decorate(ckan.logic.action.update.organization_update, 'organization', 'update')
@@ -415,6 +418,7 @@ def related_update(context, data_dict):
         pass
 
     return ckan.logic.action.update.related_update(context, data_dict)
+
 
 def dataset_editor_delete(context, data_dict):
     '''
@@ -542,42 +546,28 @@ def organization_list_for_user(context, data_dict):
     return ckan.logic.action.get.organization_list_for_user(context, data_dict)
 
 
-def _get_member_role(group_id, user_id):
-    """
-    Get the user's role for this group.
-
-    :param group_id: Group ID
-    :param user_id: User ID
-    :rtype: list of strings
-    """
-    query = model.Session.query(model.Member) \
-        .filter(model.Member.group_id == group_id) \
-        .filter(model.Member.table_name == 'user') \
-        .filter(model.Member.state == 'active') \
-        .filter(model.Member.table_id == user_id)
-
-    return fn.first([group.capacity for group in query.all()])
-
-
 def member_create(context, data_dict=None):
     '''
     Make an object (e.g. a user, dataset or group) a member of a group.
 
     Custom organization permission handling added on top of CKAN's own member_create action.
     '''
-    # TODO: Handle dataset (and group?)
+    _log_action('Member', 'create', context['user'], data_dict.get('id'))
+
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     user = context['user']
     user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
 
     group_id, obj_id, obj_type, capacity = _get_or_bust(data_dict, ['id', 'object', 'object_type', 'capacity'])
 
-    if obj_type == 'user':
-        # get role the user has for the group
-        user_role = _get_member_role(group_id, user_id)
+    # get role the user has for the group
+    user_role = utils.get_member_role(group_id, user_id)
 
+    if obj_type == 'user':
         # get role for the target of this role change
-        target_role = _get_member_role(group_id, obj_id)
+        target_role = utils.get_member_role(group_id, obj_id)
         if target_role is None:
             target_role = capacity
 
@@ -589,8 +579,6 @@ def member_create(context, data_dict=None):
 
     return ckan.logic.action.create.member_create(context, data_dict)
 
-# TODO: Add logging for member_create, member_delete and group_list
-
 
 def member_delete(context, data_dict=None):
     '''
@@ -598,7 +586,7 @@ def member_delete(context, data_dict=None):
 
     Custom organization permission handling added on top of CKAN's own member_create action.
     '''
-    # TODO: Handle dataset (and group?)
+    _log_action('Member', 'delete', context['user'], data_dict.get('id'))
 
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
     ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
@@ -610,12 +598,12 @@ def member_delete(context, data_dict=None):
 
     if obj_type == 'user':
         # get user's role for this group
-        user_role = _get_member_role(group_id, user_id)
+        user_role = utils.get_member_role(group_id, user_id)
 
         target_id = ckan.new_authz.get_user_id_for_username(target_name, allow_none=True)
 
         # get target's role for this group
-        target_role = _get_member_role(group_id, target_id)
+        target_role = utils.get_member_role(group_id, target_id)
 
         if ckan.new_authz.is_sysadmin(user):
             # Sysadmin can do anything.
@@ -625,6 +613,7 @@ def member_delete(context, data_dict=None):
 
     return ckan.logic.action.delete.member_delete(context, data_dict)
 
+
 def organization_member_create(context, data_dict):
     '''
     Wrapper for CKAN's group_member_create to modify organization permissions.
@@ -633,3 +622,24 @@ def organization_member_create(context, data_dict):
     ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     return ckan.logic.action.create.group_member_create(context, data_dict)
+
+
+def package_owner_org_update(context, data_dict):
+    '''
+    Update the owning organization of a dataset
+
+    Used by both package_create and package_update
+    '''
+
+    user_id = model.User.by_name(context.get('user')).id
+    org_id = data_dict.get('organization_id')
+
+    # get role the user has for the group
+    user_role = utils.get_member_role(org_id, user_id)
+
+    pkg = model.Package.get(data_dict['id'])
+
+    if not pkg.private and user_role == 'member':
+        raise ckan.logic.NotAuthorized(_("You are not allowed to create public datasets for this organization."))
+
+    return ckan.logic.action.update.package_owner_org_update(context, data_dict)

@@ -8,14 +8,16 @@ import tempfile
 import subprocess
 import urllib2
 import socket
+import functionally as fn
 
 from pylons import config
 from lxml import etree
+from ckan import model as model
 
 from ckan.lib.email_notifications import send_notification
 from ckan.model import User, Package
 from ckan.lib import helpers as h
-from ckanext.kata import settings, helpers
+from ckanext.kata import settings
 
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
@@ -222,7 +224,7 @@ def hide_sensitive_fields(pkg_dict1):
 
     # pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
     # pkg_dict1['project_funding'] = _('Not authorized to see this information')
-    funders = helpers.get_funders(pkg_dict1)
+    funders = get_funders(pkg_dict1)
     for fun in funders:
         fun.pop('fundingid', None)
 
@@ -258,3 +260,30 @@ def get_field_title(key, _):
     '''
 
     return _(settings._FIELD_TITLES[key])
+
+
+def get_member_role(group_id, user_id):
+    """
+    Get the user's role for this group.
+
+    :param group_id: Group ID
+    :param user_id: User ID
+    :rtype: list of strings
+    """
+    query = model.Session.query(model.Member) \
+        .filter(model.Member.group_id == group_id) \
+        .filter(model.Member.table_name == 'user') \
+        .filter(model.Member.state == 'active') \
+        .filter(model.Member.table_id == user_id)
+
+    return fn.first([group.capacity for group in query.all()])
+
+
+def get_funders(data_dict):
+    '''
+    Get all funders from agent field in data_dict
+    '''
+    # TODO: Fix validators to not create empty agents
+    return filter(lambda x: x.get('role') == u'funder' and
+                  (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
+                  data_dict.get('agent', []))

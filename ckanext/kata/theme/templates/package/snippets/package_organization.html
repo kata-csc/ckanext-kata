@@ -18,6 +18,7 @@
 
     <div data-module="dataset-visibility">
 
+
     {% set existing_org = data.owner_org %}
     <div class="control-group">
       <label for="field-organizations" class="control-label">{{ _('Organization') }}</label>
@@ -27,24 +28,31 @@
           {% for organization in organizations_available %}
             {# get out first org from users list only if there is not an existing org #}
             {% set selected_org = (existing_org and existing_org == organization.id) or (not existing_org and not data.id and organization.id == organizations_available[0].id) %}
+            {% if selected_org %}
+              {% set current_org = organization %}
+            {% endif %}
             <option value="{{ organization.id }}" {% if selected_org %} selected="selected" {% endif %}>{{ organization.name }}</option>
           {% endfor %}
         </select>
       </div>
     </div>
 
-    {% block package_metadata_fields_visibility %}
-      <div class="control-group">
-        <label for="field-private" class="control-label">{{ _('Visibility') }}</label>
-        <div class="controls">
-          <select id="field-private" name="private">
-            {% for option in [(true, _('Private')), (false, _('Public'))] %}
-            <option value="{{ option[0] }}" {% if option[0] == data.private %}selected="selected"{% endif %}>{{ option[1] }}</option>
-            {% endfor %}
-          </select>
-        </div>
+    {% if not current_org and organizations_available %}
+      {% set current_org = organizations_available[0].id %}
+    {% else %}
+      {% set current_org = None %}
+    {% endif %}
+
+    <div class="control-group">
+      <label for="field-private" class="control-label">{{ _('Visibility') }}</label>
+      <div class="controls">
+        <select id="field-private" name="private">
+          {% for option in h.get_visibility_options( current_org, user.id ) %}
+          <option value="{{ option[0] }}" {% if option[0] == data.private %}selected="selected"{% endif %}>{{ _(option[1]) }}</option>
+          {% endfor %}
+        </select>
       </div>
-    {% endblock %}
+    </div>
 
     </div>
 

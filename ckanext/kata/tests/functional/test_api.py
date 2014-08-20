@@ -910,3 +910,30 @@ class TestOrganizationAdmin(KataApiTestCase):
         # User without API key can not delete member
         call_action_api(self.app, 'organization_member_delete', status=403,
                         **{'id': NEW_ORG['name'], 'username': self.user_normal.name})
+
+    def test_create_dataset_switch_organization(self):
+        # CREATE ORGANIZATION 2
+        org2 = copy.deepcopy(TEST_ORGANIZATION)
+        org2['name'] = 'someorgan'
+        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
+                                 status=200, **org2)
+
+        org2_id = output['id']
+
+        # CREATE DATASET
+        output = call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey,
+                                 status=200, **self.TEST_DATADICT)
+
+        data_dict = output
+        data_dict2 = copy.deepcopy(data_dict)
+        data_dict2['owner_org'] = org2_id
+
+        # MOVE DATASET TO ORGANIZATION 2 AS SYSADMIN
+        call_action_api(self.app, 'package_update', apikey=self.user_sysadmin.apikey, status=200, **data_dict2)
+
+        # MOVE DATASET TO ORGANIZATION 1 AS MEMBER
+        call_action_api(self.app, 'package_update', apikey=self.user_joe.apikey, status=200, **data_dict)
+
+        # TRY TO MOVE DATASET TO ORGANIZATION 2 AS NON MEMBER
+        call_action_api(self.app, 'package_update', apikey=self.user_joe.apikey, status=409, **data_dict2)
+
