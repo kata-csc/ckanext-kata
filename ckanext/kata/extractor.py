@@ -28,8 +28,10 @@ def extract_text(resource_url, format):
     Non-plain text files are first converted to a plain text representation
     if possible.
 
-    :param resource_url: URL string
+    :param resource_url: URL to the resource
+    :type resource_url: str
     :param format: the file format of the resource (practically file name extension)
+    :type format: str
     :rtype: unicode
     """
     ofs = storage.get_ofs()
@@ -86,7 +88,9 @@ def convert_file_to_text(resource_file_path, format):
     the return value will be (None, None).
 
     :param resource_file_path: the file system path to the resource file
+    :type resource_file_path: str
     :param format: the file format of the resource (
+    :type format: str
     :rtype: tuple
     """
 
