@@ -3,8 +3,8 @@
 {% block secondary_content %}
   {{ super() }}
 
-  {#% block import_xml_module %#}
-    {#% snippet "package/snippets/import_xml.html" %#}
-  {#% endblock %#}
+  {% block import_xml_module %}
+    {% snippet "package/snippets/import_xml.html" %}
+  {% endblock %}
 
 {% endblock %}

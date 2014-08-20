@@ -23,16 +23,19 @@ from ckan.controllers.user import UserController
 import ckan.lib.i18n
 from ckan.lib.base import BaseController, c, h, redirect, render
 from ckan.lib.email_notifications import send_notification
-from ckan.logic import get_action
+import ckan.logic as logic
 import ckan.model as model
 from ckan.model import Package, User, Related, meta, license
 from ckan.model.authz import add_user_to_role
+import ckan.plugins as plugins
+import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
 from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, Graph
 
 log = logging.getLogger('ckanext.kata.controller')
-
+get_action = logic.get_action
+t = plugins.toolkit                         # pylint: disable=invalid-name
 # BUCKET = config.get('ckan.storage.bucket', 'default')
 
 
@@ -531,10 +534,8 @@ class KataUserController(UserController):
     """
 
     def logged_in(self):
-        """
-        Minor rewrite to redirect the user to the own profile page instead of
+        """Minor rewrite to redirect the user to the own profile page instead of
         the dashboard.
-        @return - some sort of redirect object??
         """
         # we need to set the language via a redirect
         lang = session.pop('lang', None)
@@ -598,6 +599,43 @@ class KataPackageController(PackageController):
         return self.search()
 
 
+    def import_xml(self):
+        """
+        Import XML
+        """
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author}
+
+        try:
+            t.check_access('package_create', context)
+        except t.NotAuthorized:
+            t.abort(401, _('Unauthorized to import metadata'))
+
+        # log.debug('t.request.method() {met}'.format(met=t.request.method))
+        if t.request.method == 'POST':
+            return h.redirect_to(controller='package', action='new')
+        url = t.request.params.get('url', u'')
+        format = t.request.params.get('format', u'')
+        log.debug('import_xml: url: {ur}'.format(ur=url))
+        log.debug('import_xml: format: {fo}'.format(fo=format))
+        # VALIDATE URL
+        for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
+            info = harvester.info()
+            if not info or 'name' not in info:
+                log.error('Harvester %r does not provide the harvester name in the info response' % str(harvester))
+                continue
+            log.debug('import_xml: Harvester name: {nam}'.format(nam=info['name']))
+            if format == info['name']:
+                try:
+                    pkg_dict = harvester.import_xml(url, context)
+                    # pkg_dict['state'] = 'draft'  # Tried, no use
+                    return self.new(data=pkg_dict)
+                    # return h.redirect_to(controller='package', action='new', data=pkg_dict)
+                except (urllib2.URLError, urllib2.HTTPError):
+                    log.debug('Could not fetch from url {ur}!'.format(ur=url))
+                    return h.redirect_to(controller='package', action='new')
+
+
 class KataInfoController(BaseController):
     '''
     KataInfoController provides info pages, which
@@ -616,3 +654,40 @@ class KataInfoController(BaseController):
         '''
         return render('kata/faq.html')
 
+
+# class ImportXMLController(BaseController):
+#     """
+#     Import user's xml to populate new dataset form.
+#     """
+#
+#     def import_xml(self):
+#         """
+#         Import XML
+#         """
+#         context = {'model': model, 'session': model.Session,
+#                    'user': c.user or c.author}
+#
+#         try:
+#             t.check_access('package_create', context)
+#         except t.NotAuthorized:
+#             t.abort(401, _('Unauthorized to import metadata'))
+#
+#
+#         url = t.request.params.get('url', u'')
+#         format = t.request.params.get('format', u'')
+#         log.debug('import_xml: url: {ur}'.format(ur=url))
+#         log.debug('import_xml: format: {fo}'.format(fo=format))
+#         # VALIDATE URL
+#         for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
+#             info = harvester.info()
+#             if not info or 'name' not in info:
+#                 log.error('Harvester %r does not provide the harvester name in the info response' % str(harvester))
+#                 continue
+#             log.debug('import_xml: Harvester name: {nam}'.format(nam=info['name']))
+#             if format == info['name']:
+#                 try:
+#                     pkg_dict = harvester.import_xml(url, context)
+#                     h.redirect_to(controller='package', action='new', data=pkg_dict)
+#                 except (urllib2.URLError, urllib2.HTTPError):
+#                     log.debug('Could not fetch from url {ur}!'.format(ur=url))
+#                     h.redirect_to(controller='package', action='new')

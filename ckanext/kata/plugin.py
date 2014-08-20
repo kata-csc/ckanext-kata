@@ -174,6 +174,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_faq")
+        # map.connect('import_xml',
+        #             '/import_xml',
+        #             controller="ckanext.kata.controllers:ImportXMLController",
+        #             action="import_xml")
+        map.connect('import_xml_2',
+                    '/dataset/import',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="import_xml")
         return map
 
     def get_auth_functions(self):
