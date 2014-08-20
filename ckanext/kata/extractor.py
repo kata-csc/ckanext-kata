@@ -33,6 +33,7 @@ def extract_text(resource_url, format):
     :param format: the file format of the resource (practically file name extension)
     :type format: str
     :rtype: unicode
+    :raises IOError: if the resource is remote or cannot be read
     """
     ofs = storage.get_ofs()
 
@@ -112,7 +113,7 @@ def convert_file_to_text(resource_file_path, format):
         if prog['output']:
             command.append(prog['output'])
 
-        log.debug("Subprocess command: {c}".format(c=command))
+        log.debug("Subprocess command line array: {c}".format(c=command))
         process = subprocess.Popen(command, stdout=converted_fd)
         process.communicate()
         return converted_fd, converted_path

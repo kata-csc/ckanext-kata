@@ -15,7 +15,7 @@ def scan_for_malware(stream):
     :raises MalwareCheckError: if connecting to the ClamAV daemon fails or there is another error
     '''
 
-    log.debug("in clamd_wrapper.scan_for_malware")
+    log.debug("Running malware scan on input stream")
 
     try:
         daemon = pyclamd.ClamdNetworkSocket()
