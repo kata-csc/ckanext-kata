@@ -103,7 +103,7 @@ add_search_row = function(index) {
   }
 
   // Update element adding button
-  $('a#new_search_element').attr('onclick', 'add_search_row(' + new_index + ');');
+  $('a#new_search_element').attr('onclick', 'add_search_row(' + new_index + '); return false;');
 
 }
 
