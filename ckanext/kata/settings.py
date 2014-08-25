@@ -1,7 +1,7 @@
 '''Settings and constants for Kata CKAN extension'''
 
 from ckan.common import OrderedDict
-
+from pylons.i18n.translation import gettext_noop as N_
 # Overridden CKAN role permissions
 ROLE_PERMISSIONS = OrderedDict([
     ('admin', ['admin']),
@@ -47,12 +47,12 @@ ORGANIZATION_MEMBER_PERMISSIONS = {
 }
 
 AGENT_ROLES = {
-    'author': 'Author',
-    'contributor': 'Contributor',
-    'distributor': 'Distributor/Publisher',
-    'funder': 'Funder',
-    'owner': 'Owner',
-    'producer': 'Producer',
+    'author': N_('Author'),
+    'contributor': N_('Contributor'),
+    'distributor': N_('Distributor/Publisher'),
+    'funder': N_('Funder'),
+    'owner': N_('Owner'),
+    'producer': N_('Producer'),
 }
 
 # Ordered list of facets used in dataset page.

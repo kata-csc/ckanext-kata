@@ -48,50 +48,31 @@
       <span class="kata-multi-heading">{{ _('Authors and organizations') }}</span><br />
       {% set authors = h.get_authors(data) %}
       {% if authors|length == 0 %}
-        {% for extra in range(1, 2) %}
-          {% do authors.append(dict(role='author',)) %}
-        {% endfor %}
+        {% do authors.append(dict(role='author',)) %}
       {% endif %}
-      <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields={{ authors|length }} id="agent">
-        {# Render author and organisation fields #}
-        <!-- TODO: Use h.get_dict_field_errors(). Remove ca. 10 rows of code. -->
-        {# If indexing of different agents is changed it may break current error
-           rendering for authors, funders and owners. #}
-        {% if errors and errors.get('agent') and errors.get('agent')[2:] %}
-          {% set auth_errors = [] %}
-          {% for error in errors.get('agent')[2:] %}
-              {% if error.get('name') %}
-                {% if auth_errors.extend(error['name']) %}{% endif %}
-              {% endif %}
-              {% if error.get('organisation') %}
-                {% if auth_errors.extend(error['organisation']) %}{% endif %}
-              {% endif %}
-          {% endfor %}
-        {% endif %}
-
+      <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields={{ authors|length }} data-module-index="agent-index" id="agent">
+        {% set author_errors = h.get_dict_errors(errors, '__extras', 'author') %}
         {% for agent in authors %}
-          {% set index = 2 + loop.index0 %}
-          <div class="control-group control-custom{{ " error" if auth_errors }}">
+          {% set index = agent_index.increase() %}
+          <div class="control-group control-custom{{ " error" if author_errors }}">
             <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
-            <label class="control-label kata-input-comp" for="agent__{{ index }}__name_id">{{ _('Author') }}</label>
-            <div class="controls editor">
-              <input class="kata-medium-input" type="text" placeholder="{{ _('Familyname, Firstname and/or http://orcid.org/') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
+
+            {% call form.input('agent__' ~ index ~ '__name', label=_('Author'), id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname, Firstname and/or http://orcid.org/'), value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
               {% if loop.index0 == 0 %}
                 {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
               {% endif %}
-            </div>
+            {% endcall %}
 
-            <label class="control-label kata-input-comp" for="agent__{{index}}__organisation">{{ _('Organisation') }}</label>
-            <div class="controls editor" style="margin-top: 5px;">
-              <input type="text" name="agent__{{ index }}__organisation" class="kata-medium-input" placeholder="{{ _('University. Faculty. Department.') }}" value="{{ agent.organisation }}">
+            {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation'), id='agent__' ~ index ~ '__organisation_id', placeholder=_('University. Faculty. Department.'), value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
               {% if loop.index0 == 0 %}
-                {{ kata_form.plusbutton(onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+                {{ kata_form.plusbutton(id="authors_add", onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
               {% endif %}
-              <input style="display: none;" type="checkbox" id="obtn__{{index}}__value_id" name="obtn__{{index}}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-            </div>
+
+            {% endcall %}
+            <input style="display: none;" type="checkbox" id="obtn__{{ index }}__value_id" name="obtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
           </div>
         {% endfor %}
-        {% if auth_errors and auth_errors is iterable %}<span class="error-block-kata">{{ auth_errors|join('. ') }}</span>{% endif %}
+        {% if author_errors and author_errors is iterable %}<span class="error-block-kata">{{ author_errors|join('. ') }}</span>{% endif %}
       </div>
     </div>
 

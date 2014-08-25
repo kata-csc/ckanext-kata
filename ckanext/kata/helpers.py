@@ -13,6 +13,25 @@ from ckan.logic import get_action, ValidationError
 from ckanext.kata import settings, utils
 
 
+class LoopIndex(object):
+    """ Simple index object for Jinja2 templates. Avoids problem with Jinja2 variable scope. """
+
+    def __init__(self):
+        """ New index with value 0 """
+        super(LoopIndex, self).__init__()
+        self.index = 0
+
+    def increase(self):
+        """ Increase index value by one and return previous value """
+        current = self.index
+        self.index = self.index + 1
+        return current
+
+    def next(self):
+        """ Returns next index number, but does not increase value. """
+        return self.index + 1
+
+
 def has_agents_field(data_dict, field):
     '''Return true if some of the data dict's agents has attribute given in field.'''
     return [] != filter(lambda x : x.get(field), data_dict.get('agent', []))
@@ -317,9 +336,9 @@ def get_distributor(data_dict):
     return fn.first(filter(lambda x: x.get('role') == u'distributor', data_dict.get('agent', [])))
 
 
-def get_owner(data_dict):
-    '''Get a single owner from agent field in data_dict'''
-    return fn.first(filter(lambda x: x.get('role') == u'owner', data_dict.get('agent', [])))
+def get_owners(data_dict):
+    '''Get a all owners from agent field in data_dict'''
+    return filter(lambda x: x.get('role') == u'owner', data_dict.get('agent', []))
 
 
 def resolve_agent_role(role):
@@ -373,3 +392,20 @@ def get_visibility_options(group_id, user_id):
         return [(True, 'Private')]
     else:
         return [(True, 'Private'), (False, 'Public')]
+
+
+def create_loop_index():
+    """ Create and return LoopIndex object """
+    return LoopIndex()
+
+
+def get_dict_errors(errors, errors_key, field_key):
+    """ Return dictionary error values from errors dictionary """
+    result = []
+
+    if errors:
+        for error in errors.get(errors_key, []):
+            if isinstance(error, dict) and error.get('key', None) == field_key:
+                result.append(error.get('value', "Internal error"))
+
+    return result

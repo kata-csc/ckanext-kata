@@ -9,7 +9,8 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
     options: {
       /* The selector used for each custom field wrapper */
       fieldSelector: '.control-custom',
-      numfields: 1
+      numfields: 1,
+      index: null,
     },
 
     /* Initializes the module and attaches custom event listeners. This
@@ -27,7 +28,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
 
         // Style the remove checkbox like a button.
         //this.$('.checkbox').addClass("btn btn-danger icon-remove");
-        
+
         // Create tooltips with no fade-in (change false to number for a fade-in)
         jQuery( ".kata-plus-btn" ).tooltip({ show: false });
       }
@@ -65,15 +66,20 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      */
     resetFields: function (field) {
       var numfields = this.options.numfields;
+      var get_number = function (int) { return parseInt(int, 10) + numfields; };
+      if (this.options.index) {
+          numfields = parseInt($('#' + this.options.index).val());
+          get_number = function (int) { return numfields; };
+      }
+
       function increment(index, string) {
-        var str = (string || '').replace(/\d+/, function (int) { return parseInt(int, 10) + numfields; })
-        return str;
+        return (string || '').replace(/\d+/, get_number);
       }
 
       var input = field.find(":input").not("[name*='role']");
       input.val('').attr('id', increment).attr('name', increment);
-      
-      var roleField = field.find(":input[name*='role']")
+
+      var roleField = field.find(":input[name*='role']");
       roleField.attr('id', increment).attr('name', increment);
 
       var label = field.find('label');
@@ -105,7 +111,13 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       if (event.target.value !== '') {
         var parent = jQuery(event.target).parents('.control-custom');
         this.newField(parent);
-        this.options.numfields += 1
+
+        if (this.options.index) {
+          var index = $('#' + this.options.index);
+          index.val(parseInt(index.val()) + 1);
+        } else {
+          this.options.numfields += 1;
+        }
       }
     },
     /* Event handler called when the remove checkbox is checked */
@@ -116,41 +128,41 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
   };
 });
 
-KATA = function() {}
+KATA = function() {};
 KATA.toggleAccess = function(obj) {
-	/* Shows and hides data access inputs according to selection */
-	switch (obj.id) {
-		case 'access_application':
-			$('#urlDiv_access_application').slideDown("fast");
-			$('#urlDiv_access_request').slideUp("fast");
-			$('#urlDiv_direct_download').slideUp("fast");
-			break;
-		case 'direct_download':
-			$('#urlDiv_access_application').slideUp("fast");
-			$('#urlDiv_access_request').slideUp("fast");
-			$('#urlDiv_direct_download').slideDown("fast");
-			break;
-		case 'access_request':
-			$('#urlDiv_access_application').slideUp("fast");
-			$('#urlDiv_access_request').slideDown("fast");
-			$('#urlDiv_direct_download').slideUp("fast");
-			break;
-		case 'contact_owner':
-			$('#urlDiv_access_application').slideUp("fast");
-			$('#urlDiv_access_request').slideUp("fast");
-			$('#urlDiv_direct_download').slideUp("fast");
-			break;
-	    case 'through_provider':
-			$('#urlDiv_access_application').hide();
-			$('#urlDiv_access_request').hide();
-			$('#urlDiv_direct_download').hide();
-			break;
-		}
-	}
+    /* Shows and hides data access inputs according to selection */
+    switch (obj.id) {
+        case 'access_application':
+            $('#urlDiv_access_application').slideDown("fast");
+            $('#urlDiv_access_request').slideUp("fast");
+            $('#urlDiv_direct_download').slideUp("fast");
+            break;
+        case 'direct_download':
+            $('#urlDiv_access_application').slideUp("fast");
+            $('#urlDiv_access_request').slideUp("fast");
+            $('#urlDiv_direct_download').slideDown("fast");
+            break;
+        case 'access_request':
+            $('#urlDiv_access_application').slideUp("fast");
+            $('#urlDiv_access_request').slideDown("fast");
+            $('#urlDiv_direct_download').slideUp("fast");
+            break;
+        case 'contact_owner':
+            $('#urlDiv_access_application').slideUp("fast");
+            $('#urlDiv_access_request').slideUp("fast");
+            $('#urlDiv_direct_download').slideUp("fast");
+            break;
+        case 'through_provider':
+            $('#urlDiv_access_application').hide();
+            $('#urlDiv_access_request').hide();
+            $('#urlDiv_direct_download').hide();
+            break;
+        }
+};
 KATA.checkLang = function(obj) {
-	$('#langdiv').toggle();
-	if ($(obj).val().length > 0 && !$('#langdiv').is(':visible')) {
-		alert('Losing data on language if this is disabled!');
-	}
-}
+    $('#langdiv').toggle();
+    if ($(obj).val().length > 0 && !$('#langdiv').is(':visible')) {
+        alert('Losing data on language if this is disabled!');
+    }
+};
 
