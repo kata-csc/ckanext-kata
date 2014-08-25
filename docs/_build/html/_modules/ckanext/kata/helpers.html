@@ -1,0 +1,442 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ckanext.kata.helpers &mdash; Kata metadata catalogue documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Kata metadata catalogue documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../index.html">Kata</a></div>
+        <div class="rel">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for ckanext.kata.helpers</h1><div class="highlight"><pre>
+<span class="c"># coding=utf-8</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Template helpers for Kata CKAN extension.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">pylons</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span> <span class="nn">functionally</span> <span class="kn">as</span> <span class="nn">fn</span>
+
+<span class="kn">import</span> <span class="nn">ckan.model</span> <span class="kn">as</span> <span class="nn">model</span>
+<span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">Related</span><span class="p">,</span> <span class="n">Package</span><span class="p">,</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">ckan.lib.base</span> <span class="kn">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span>
+<span class="kn">from</span> <span class="nn">ckan.logic</span> <span class="kn">import</span> <span class="n">get_action</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">settings</span>
+
+
+<div class="viewcode-block" id="has_agents_field"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.has_agents_field">[docs]</a><span class="k">def</span> <span class="nf">has_agents_field</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Return true if some of the data dict&#39;s agents has attribute given in field.&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">[]</span> <span class="o">!=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+
+</div>
+<div class="viewcode-block" id="has_contacts_field"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.has_contacts_field">[docs]</a><span class="k">def</span> <span class="nf">has_contacts_field</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Return true if some of the data dict&#39;s contacts has attribute given in field&#39;.&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">[]</span> <span class="o">!=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+
+</div>
+<div class="viewcode-block" id="reference_update"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.reference_update">[docs]</a><span class="k">def</span> <span class="nf">reference_update</span><span class="p">(</span><span class="n">ref</span><span class="p">):</span>
+    <span class="c">#@beaker_cache(type=&quot;dbm&quot;, expire=2678400)</span>
+    <span class="k">def</span> <span class="nf">cached_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">url</span>
+    <span class="k">return</span> <span class="n">cached_url</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="kata_sorted_extras"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.kata_sorted_extras">[docs]</a><span class="k">def</span> <span class="nf">kata_sorted_extras</span><span class="p">(</span><span class="n">list_</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Used for outputting package extras, skips package_hide_extras</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">extra</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">list_</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">extra</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;state&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;deleted&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="c"># Todo: fix. The ANDs make no sense</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">extra</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">],</span> <span class="n">extra</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">package_hide_extras</span> <span class="ow">and</span>\
+            <span class="n">key</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">KATA_FIELDS</span> <span class="ow">and</span>\
+            <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;author_&#39;</span><span class="p">)</span> <span class="ow">and</span>\
+            <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;organization_&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span>  <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;title_&#39;</span><span class="p">)</span> <span class="ow">or</span>\
+            <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;lang_title_&#39;</span><span class="p">)</span> <span class="ow">or</span>\
+            <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;harvest_object_id&#39;</span> <span class="ow">or</span>\
+            <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;harvest_source_id&#39;</span> <span class="ow">or</span>\
+            <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;harvest_source_title&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">for</span> <span class="n">_key</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">package_hide_extras</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">extra</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">_key</span><span class="p">):</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">unicode</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">output</span>
+
+</div>
+<div class="viewcode-block" id="get_dict_field_errors"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_dict_field_errors">[docs]</a><span class="k">def</span> <span class="nf">get_dict_field_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get errors correctly for fields that are represented as nested dict fields in data_dict.</span>
+
+<span class="sd">    :param errors: the error dict</span>
+<span class="sd">    :param field: field name</span>
+<span class="sd">    :param index: index, eg. agents are repeatable -&gt; a certain agent might lie in index 2</span>
+<span class="sd">    :param name:</span>
+<span class="sd">    :returns: `[u&#39;error1&#39;, u&#39;error2&#39;]`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">error_dict</span> <span class="o">=</span> <span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">error_dict</span> <span class="ow">and</span> <span class="n">error_dict</span><span class="p">[</span><span class="n">index</span><span class="p">]:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">error_dict</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">error</span>
+
+</div>
+<div class="viewcode-block" id="get_package_ratings_for_data_dict"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_package_ratings_for_data_dict">[docs]</a><span class="k">def</span> <span class="nf">get_package_ratings_for_data_dict</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create a metadata rating (1-5) for given data_dict.</span>
+
+<span class="sd">    This is the same as :meth:`get_package_ratings` but can be used</span>
+<span class="sd">    for getting metadata ratings e.g. for search results where</span>
+<span class="sd">    only raw data_dicts are available rather than already-converted</span>
+<span class="sd">    package dicts.</span>
+
+<span class="sd">    :param data_dict: A CKAN data_dict</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">from</span> <span class="nn">ckanext.kata.schemas</span> <span class="kn">import</span> <span class="n">Schemas</span>         <span class="c"># Importing here prevents circular import</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
+        <span class="s">&#39;schema&#39;</span><span class="p">:</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">show_package_schema</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pkg_dict</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="s">&#39;package_show&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ValidationError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">u&#39;○○○○○&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">get_package_ratings</span><span class="p">(</span><span class="n">pkg_dict</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_package_ratings"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_package_ratings">[docs]</a><span class="k">def</span> <span class="nf">get_package_ratings</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create a metadata rating (1-5) for given dataset</span>
+
+<span class="sd">    :param data: A CKAN data_dict</span>
+<span class="sd">    :returns: `(rating, stars)`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c"># Scale 0-49</span>
+
+    <span class="n">required_fields</span> <span class="o">=</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">,</span> <span class="s">&#39;version&#39;</span><span class="p">,</span> <span class="s">&#39;contact&#39;</span><span class="p">,</span> <span class="s">&#39;license_id&#39;</span><span class="p">,</span> <span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="s">&#39;language&#39;</span><span class="p">,</span> <span class="s">&#39;availability&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">2</span>
+
+    <span class="c"># MAX 2</span>
+
+    <span class="n">pid_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">pid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pids&#39;</span><span class="p">,</span> <span class="p">[])]</span>
+    <span class="n">pid_types_expected</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;metadata&#39;</span><span class="p">,</span> <span class="s">&#39;version&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pid_types</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="c"># The minimum metadata model is a bit vague in this part, this is one iterpretation</span>
+        <span class="n">pid_types_expected</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">pid_type</span> <span class="ow">in</span> <span class="n">pid_types</span> <span class="k">for</span> <span class="n">pid_type</span> <span class="ow">in</span> <span class="n">pid_types_expected</span><span class="p">):</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">pid_types</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pid_types</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="k">else</span> <span class="mi">6</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;version&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">:</span>   <span class="c"># ISO8601 datetime</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c"># MAX 9</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;license_id&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;notspecified&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">]:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">6</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tags&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tag_string&#39;</span><span class="p">)):</span>    <span class="c"># Either of these should be present</span>
+        <span class="n">score</span> <span class="o">-=</span> <span class="mi">5</span>  <span class="c"># MINUS</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;agent&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;agent&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="k">else</span> <span class="mi">6</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;event&#39;</span><span class="p">,</span> <span class="p">[]))</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">get_funder</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">6</span>
+
+    <span class="c"># MAX 28</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;notes&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)))</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;notes&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;notes&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">60</span> <span class="k">else</span> <span class="mi">6</span>
+
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;geographic_coverage&#39;</span><span class="p">,</span> <span class="s">&#39;event&#39;</span><span class="p">,</span> <span class="s">&#39;checksum&#39;</span><span class="p">,</span> <span class="s">&#39;algorithm&#39;</span><span class="p">,</span> <span class="s">&#39;mimetype&#39;</span><span class="p">,</span> <span class="s">&#39;langtitle&#39;</span><span class="p">]</span>
+    <span class="n">score</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">field</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">required_fields</span><span class="p">))</span>
+
+    <span class="c"># MAX 40</span>
+
+    <span class="k">if</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">con</span><span class="p">:</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;URL&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;phone&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">)):</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">4</span>
+
+    <span class="c"># MAX 44</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;temporal_coverage_begin&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;temporal_coverage_end&#39;</span><span class="p">):</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;discipline&#39;</span><span class="p">):</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">4</span>
+
+    <span class="c"># MAX 49</span>
+
+    <span class="n">rating</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">score</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">stars</span> <span class="o">=</span> <span class="s">u&#39;●●●●●&#39;</span><span class="p">[:</span><span class="n">rating</span><span class="p">]</span> <span class="o">+</span> <span class="s">u&#39;○○○○○&#39;</span><span class="p">[</span><span class="n">rating</span><span class="p">:]</span>   <span class="c"># Star rating as string</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">rating</span><span class="p">,</span> <span class="n">stars</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_related_urls"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_related_urls">[docs]</a><span class="k">def</span> <span class="nf">get_related_urls</span><span class="p">(</span><span class="n">pkg</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get related urls for package</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">Related</span><span class="o">.</span><span class="n">get_for_dataset</span><span class="p">(</span><span class="n">pkg</span><span class="p">):</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rel</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+</div>
+<div class="viewcode-block" id="get_rdf_extras"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_rdf_extras">[docs]</a><span class="k">def</span> <span class="nf">get_rdf_extras</span><span class="p">(</span><span class="n">pkg_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get extras that have no defined location in rdf</span>
+<span class="sd">    </span>
+<span class="sd">    Contains much &quot;manual&quot; stuff for keeping the logical</span>
+<span class="sd">    order and for prettier display</span>
+<span class="sd">    </span>
+<span class="sd">    :param pkg_dict: the package data dict</span>
+<span class="sd">    :returns: `[{ &#39;key&#39;: &#39;the key&#39;, &#39;value&#39;: &#39;the value&#39;}, {..}, ..]`</span>
+<span class="sd">    :rtype: list of dicts</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;discipline&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;discipline&#39;</span><span class="p">,</span> 
+                    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;discipline&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)})</span>
+    <span class="k">if</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;event&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;event&#39;</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;type=&#39;</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;; who=&#39;</span> <span class="o">+</span> \
+                    <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;who&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;; when=&#39;</span> <span class="o">+</span> \
+                    <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;when&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;; description=&#39;</span> <span class="o">+</span> \
+                    <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;descr&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;event&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+    <span class="n">availability</span> <span class="o">=</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;availability&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">availability</span> <span class="o">==</span> <span class="s">&#39;direct_download&#39;</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;availability&#39;</span><span class="p">,</span> 
+                    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">availability</span><span class="p">})</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;direct_download_URL&#39;</span><span class="p">,</span> 
+                    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;direct_download_URL&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)})</span>            
+    <span class="k">if</span> <span class="n">availability</span> <span class="o">==</span> <span class="s">&#39;access_application&#39;</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;availability&#39;</span><span class="p">,</span> 
+                    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">availability</span><span class="p">})</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;access_application_URL&#39;</span><span class="p">,</span> 
+                    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;access_application_URL&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)})</span>
+    <span class="k">if</span> <span class="n">availability</span> <span class="o">==</span> <span class="s">&#39;access_request&#39;</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;availability&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">availability</span><span class="p">})</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;access_request_URL&#39;</span><span class="p">,</span> 
+                    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;access_request_URL&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)})</span>
+    <span class="k">if</span> <span class="n">availability</span> <span class="o">==</span> <span class="s">&#39;contact_owner&#39;</span><span class="p">:</span>
+         <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;availability&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">availability</span><span class="p">})</span>
+    
+    <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;hash&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;hash&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)})</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;algorithm&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;algorithm&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)})</span>
+    
+    <span class="k">return</span> <span class="n">ret</span>
+
+</div>
+<div class="viewcode-block" id="get_if_url"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_if_url">[docs]</a><span class="k">def</span> <span class="nf">get_if_url</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Try to guess if data is sufficient type for rdf:about</span>
+
+<span class="sd">    :param data: the data to check out</span>
+<span class="sd">    :rtype: boolean</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">and</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;http://&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;https://&#39;</span><span class="p">)</span> <span class="ow">or</span> \
+    <span class="n">data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;urn:&#39;</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="string_to_list"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.string_to_list">[docs]</a><span class="k">def</span> <span class="nf">string_to_list</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Split languages and make it a list for Genshi (read.rdf)</span>
+
+<span class="sd">    :param data: the string to split</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&#39;&#39;</span>
+
+</div>
+<div class="viewcode-block" id="get_first_admin"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_first_admin">[docs]</a><span class="k">def</span> <span class="nf">get_first_admin</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the url of the first one with an admin role</span>
+
+<span class="sd">    :param id: the package id</span>
+<span class="sd">    :returns: profile url</span>
+<span class="sd">    :rtype: string</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkg</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pkg</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">roles</span><span class="p">:</span>
+            <span class="n">owner</span> <span class="o">=</span> <span class="p">[</span><span class="n">role</span> <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">pkg</span><span class="o">.</span><span class="n">roles</span> <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s">&#39;admin&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">owner</span><span class="p">):</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">owner</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+                <span class="n">profileurl</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+                <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+                    <span class="n">profileurl</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ckan.site_url&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> \
+                                 <span class="n">h</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;read&quot;</span><span class="p">,</span> 
+                                           <span class="nb">id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">profileurl</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="get_rightscategory"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_rightscategory">[docs]</a><span class="k">def</span> <span class="nf">get_rightscategory</span><span class="p">(</span><span class="n">license</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return rightscategory based on license id</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: LICENSED, COPYRIGHTED or PUBLIC DOMAIN</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">license</span> <span class="o">==</span> <span class="s">&quot;other_closed&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;COPYRIGHTED&quot;</span>
+    <span class="k">if</span> <span class="n">license</span> <span class="o">==</span> <span class="s">&quot;cc-zero&quot;</span> <span class="ow">or</span> <span class="n">license</span> <span class="o">==</span> <span class="s">&quot;cc-by&quot;</span> <span class="ow">or</span> <span class="n">license</span> <span class="o">==</span> <span class="s">&quot;cc-by-4.0&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;LICENSED&quot;</span>
+    <span class="c"># Can not recognise the license:</span>
+    <span class="k">return</span> <span class="s">&quot;OTHER&quot;</span>
+
+</div>
+<div class="viewcode-block" id="get_authors"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_authors">[docs]</a><span class="k">def</span> <span class="nf">get_authors</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get all authors from agent field in data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;author&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+
+</div>
+<div class="viewcode-block" id="get_contact"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_contact">[docs]</a><span class="k">def</span> <span class="nf">get_contact</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get one contact from data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+
+</div>
+<div class="viewcode-block" id="get_distributor"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_distributor">[docs]</a><span class="k">def</span> <span class="nf">get_distributor</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get a single distributor from agent field in data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;distributor&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[])))</span>
+
+</div>
+<div class="viewcode-block" id="get_owner"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_owner">[docs]</a><span class="k">def</span> <span class="nf">get_owner</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get a single owner from agent field in data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;owner&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[])))</span>
+
+</div>
+<div class="viewcode-block" id="resolve_agent_role"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.resolve_agent_role">[docs]</a><span class="k">def</span> <span class="nf">resolve_agent_role</span><span class="p">(</span><span class="n">role</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get a non-translated role name.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">settings</span><span class="o">.</span><span class="n">AGENT_ROLES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_funder"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_funder">[docs]</a><span class="k">def</span> <span class="nf">get_funder</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get a single funder from agent field in data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">get_funders</span><span class="p">(</span><span class="n">data_dict</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="get_funders"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_funders">[docs]</a><span class="k">def</span> <span class="nf">get_funders</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get all funders from agent field in data_dict&#39;&#39;&#39;</span>
+    <span class="c"># return filter(lambda x: x.get(&#39;role&#39;) == u&#39;funder&#39;, data_dict.get(&#39;agent&#39;, []))</span>
+    <span class="c"># TODO: Fix validators to not create empty agents</span>
+    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;funder&#39;</span> <span class="ow">and</span> \
+                            <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;URL&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;organisation&#39;</span><span class="p">)),</span>
+                  <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="simple">
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2014, CSC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

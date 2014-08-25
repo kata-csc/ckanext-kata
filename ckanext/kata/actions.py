@@ -20,12 +20,18 @@ from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free
-from ckanext.kata import utils
+from ckanext.kata import utils, settings
+from ckan.logic import get_action
+import ckan.new_authz
 
 
-log = logging.getLogger(__name__)     # pylint: disable=invalid-name
+_get_or_bust = ckan.logic.get_or_bust
+_authz = model.authz
+
+log = logging.getLogger(__name__)
 
 TITLE_MATCH = re.compile(r'^(title_)?\d?$')
+
 
 @side_effect_free
 def package_show(context, data_dict):
@@ -85,10 +91,11 @@ def package_create(context, data_dict):
     Extends ckan's similar method to instantly reindex the SOLR index, 
     so that this newly added package emerges in search results instantly instead of 
     during the next timed reindexing.
-    
-    Arguments: 
-    :param context    - ?
-    :param data_dict  - ?
+
+    :param context: context
+    :param data_dict: data dictionary (package data)
+
+    :rtype: dictionary
     """
     user = model.User.get(context['user'])
     try:
@@ -138,13 +145,7 @@ def package_create(context, data_dict):
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 
     # Logging for production use
-    try:
-        log_str = '[' + str(datetime.datetime.now())
-        log_str += ']' + ' Package created ' + 'by: ' + context['user']
-        log_str += ' target: ' + pkg_dict1['id']
-        log.info(log_str)
-    except:
-        pass
+    _log_action('Package', 'create', context['user'], pkg_dict1['id'])
 
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': False}
@@ -163,8 +164,11 @@ def package_update(context, data_dict):
     to be specific).
 
     :type context: dict
+    :param context: context
     :type data_dict: dict
     :param data_dict: dataset as dictionary
+
+    :rtype: dictionary
     '''
     # Remove ONKI generated parameters for tidiness
     # They won't exist when adding via API
@@ -231,13 +235,7 @@ def package_update(context, data_dict):
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
 
     # Logging for production use
-    try:
-        log_str = '[' + str(datetime.datetime.now())
-        log_str += ']' + ' Package updated ' + 'by: ' + context['user']
-        log_str += ' target: ' + data_dict['id']
-        log.info(log_str)
-    except:
-        pass
+    _log_action('Package', 'update', context['user'], data_dict['id'])
 
     context = {'model': model, 'ignore_auth': True, 'validate': False,
                'extras_as_string': True}
@@ -255,46 +253,42 @@ def package_delete(context, data_dict):
     Extends ckan's similar method to instantly re-index the SOLR index. 
     Otherwise the changes would only be added during a re-index (a rebuild of search index,
     to be specific).
-    
-    Arguments:
-    :param context:
-    :param data_dict: package data as dictionary
+
+    :param context: context
+    :type context: dictionary
+    :param data_dict: package data
+    :type data_dict: dictionary
+
     '''
     # Logging for production use
-    try:
-        log_str = '[' + str(datetime.datetime.now())
-        log_str += ']' + ' Package deleted ' + 'by: ' + context['user']
-        log_str += ' target: ' + data_dict['id']
-        log.info(log_str)
-    except:
-        pass
+    _log_action('Package', 'delete', context['user'], data_dict['id'])
 
     index = index_for('package')
     index.remove_dict(data_dict)
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
+
+def _log_action(target_type, action, who, target_id):
+    try:
+        log_str = '[ ' + target_type + ' ] [ ' + str(datetime.datetime.now())
+        log_str += ' ] ' + target_type + ' ' + action + 'd by: ' + who
+        log_str += ' target: ' + target_id
+        log.info(log_str)
+    except:
+        log.info('Debug failed! Action not logged')
+
+
 # Log should show who did what and when
-def _decorate(f, actiontype, action):
+def _decorate(f, target_type, action):
     def call(*args, **kwargs):
-        log_str = '[ ' + actiontype + ' ] [ ' + str(datetime.datetime.now())
         if action is 'delete':
             # log id before we delete the data
-            try:
-                log_str += ' ] ' + actiontype + ' deleted by: ' + args[0]['user']
-                log_str += ' target: ' + args[1]['id']
-                log.info(log_str)
-            except:
-                log.info('Debug failed! Action not logged')
+            _log_action(target_type, action, args[0]['user'], args[1]['id'])
 
         ret = f(*args, **kwargs)
         if action is 'create' or action is 'update':
-            try:
-                log_str += ' ] ' + actiontype + ' ' + action + 'd by: ' + args[0]['user']
-                log_str += ' target: ' + ret['id']
-                log.info(log_str)
-            except:
-                log.info('Debug failed! Action not logged')
+            _log_action(target_type, action, args[0]['user'], ret['id'])
 
         return ret
 
@@ -305,11 +299,11 @@ resource_create = _decorate(ckan.logic.action.create.resource_create, 'resource'
 resource_update = _decorate(ckan.logic.action.update.resource_update, 'resource', 'update')
 resource_delete = _decorate(ckan.logic.action.delete.resource_delete, 'resource', 'delete')
 related_delete = _decorate(ckan.logic.action.delete.related_delete, 'related', 'delete')
-member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'create')
-member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
+# member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'create')
+# member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
 group_create = _decorate(ckan.logic.action.create.group_create, 'group', 'create')
 group_update = _decorate(ckan.logic.action.update.group_update, 'group', 'update')
-# group_list = _decorate(ckan.logic.action.get.group_list, 'group', 'list')
+group_list = _decorate(ckan.logic.action.get.group_list, 'group', 'list')
 group_delete = _decorate(ckan.logic.action.delete.group_delete, 'group', 'delete')
 organization_create = _decorate(ckan.logic.action.create.organization_create, 'organization', 'create')
 organization_update = _decorate(ckan.logic.action.update.organization_update, 'organization', 'update')
@@ -322,6 +316,8 @@ def package_search(context, data_dict):
 
     :param id: the id or name of the dataset
     :type id: string
+    :param context: context
+    :type context: dictionary
 
     :rtype: dictionary
     '''
@@ -337,17 +333,29 @@ def package_search(context, data_dict):
     return ckan.logic.action.get.package_search(context, data_dict)
 
 
-def group_list(context, data_dict):
-    '''
-    Return a list of the names of the site's groups.
-    '''
-    if not "for_view" in context:
-        return []
-    else:
-        return ckan.logic.action.get.group_list(context, data_dict)
+# def group_list(context, data_dict):
+#     '''
+#     Return a list of the names of the site's groups.
+#     '''
+#     if not "for_view" in context:
+#         return []
+#     else:
+#         return ckan.logic.action.get.group_list(context, data_dict)
 
 
 def related_create(context, data_dict):
+    '''
+    Uses different schema and adds logging.
+    Otherwise does what ckan's similar function does.
+
+    :param context: context
+    :type context: dictionary
+    :param data_dict: related item's data
+    :type data_dict: dictionary
+
+    :returns: the newly created related item
+    :rtype: dictionary
+    '''
     schema = {
         'id': [ignore_missing, unicode],
         'title': [not_empty, unicode],
@@ -375,6 +383,18 @@ def related_create(context, data_dict):
 
 
 def related_update(context, data_dict):
+    '''
+    Uses different schema and adds logging.
+    Otherwise does what ckan's similar function does.
+
+    :param context: context
+    :type context: dictionary
+    :param data_dict: related item's data
+    :type data_dict: dictionary
+
+    :returns: the newly updated related item
+    :rtype: dictionary
+    '''
     schema = {
         'id': [ignore_missing, unicode],
         'title': [not_empty, unicode],
@@ -398,3 +418,228 @@ def related_update(context, data_dict):
         pass
 
     return ckan.logic.action.update.related_update(context, data_dict)
+
+
+def dataset_editor_delete(context, data_dict):
+    '''
+    Deletes user and role in a dataset
+
+    :param username: user name to delete
+    :type username: string
+    :param id: dataset id
+    :type id: string
+    :param role: editor, admin or reader
+    :type role: string
+
+    :rtype: message dict with `success` and `msg`
+    '''
+    pkg = model.Package.get(data_dict.get('name', None))
+    user = model.User.get(context.get('user', None))
+    role = data_dict.get('role', None)
+    username = model.User.get(data_dict.get('username', None))
+
+    if not (pkg and user and role):
+        msg = _('Required information missing')
+        return {'success': False, 'msg': msg}
+
+    pkg_dict = get_action('package_show')(context, {'id': pkg.id})
+    pkg_dict['domain_object'] = pkg_dict.get('id')
+    domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
+    # This could be simpler, as domain_object_ref is pkg.id
+    domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
+
+    # Todo: use check_access instead? It is not this detailed, though
+    if not username:
+        msg = _('User not found')
+        return {'success': False, 'msg': msg}
+
+    if not (_authz.user_has_role(user, role, domain_object) or
+            _authz.user_has_role(user, 'admin', domain_object) or
+            role == 'reader' or user.sysadmin == True):
+        msg = _('No sufficient privileges to remove user from role %s.') % role
+        return {'success': False, 'msg': msg}
+
+    if not _authz.user_has_role(username, role, pkg):
+        msg = _('No such user and role combination')
+        return {'success': False, 'msg': msg}
+
+    if username.name == 'visitor' or username.name == 'logged_in':
+        msg = _('Built-in users can not be removed')
+        return {'success': False, 'msg': msg}
+
+    if user.id == username.id:
+        msg = _('You can not remove yourself')
+        return {'success': False, 'msg': msg}
+
+    _authz.remove_user_from_role(username, role, pkg)
+    msg = _('User removed from role %s') % role
+
+    return {'success': True, 'msg': msg}
+
+
+def dataset_editor_add(context, data_dict):
+    '''
+    Adds a user and role to dataset
+
+    :param name: dataset name
+    :type name: string
+    :param role: admin, editor or reader
+    :type role: string
+    :param username: user to be added
+    :type username: string
+
+    :rtype: message dict with 'success' and 'msg'
+    '''
+    pkg = model.Package.get(data_dict.get('name', None))
+    user = model.User.get(context.get('user', None))
+    role = data_dict.get('role', None)
+    username = model.User.get(data_dict.get('username', None))
+
+    if not (pkg and user and role):
+        msg = _('Required information missing')
+        return {'success': False, 'msg': msg}
+
+    pkg_dict = get_action('package_show')(context, {'id': pkg.id})
+    pkg_dict['domain_object'] = pkg_dict.get('id')
+
+    domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
+    domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
+
+    # Todo: use check_access instead? It is not this detailed, though
+    if not username:
+        msg = _('User not found')
+        return {'success': False, 'msg': msg}
+
+    if not (_authz.user_has_role(user, role, domain_object) or
+            _authz.user_has_role(user, 'admin', domain_object) or
+            role == 'reader' or user.sysadmin == True):
+        msg = _('No sufficient privileges to add a user to role %s.') % role
+        return {'success': False, 'msg': msg}
+
+    if _authz.user_has_role(username, role, domain_object):
+        msg = _('User already has %s rights') % role
+        return {'success': False, 'msg': msg}
+
+    if user.id == username.id:
+        msg = _('You can not add yourself')
+        return {'success': False, 'msg': msg}
+
+    model.add_user_to_role(username, role, pkg)
+    model.meta.Session.commit()
+    msg = _('User added')
+
+    return {'success': True, 'msg': msg}
+
+
+@side_effect_free
+def organization_list_for_user(context, data_dict):
+    '''
+    Get a list organizations available for current user. Modify CKAN organization permissions before calling original
+    action.
+
+    :returns: list of dictized organizations that the user is authorized to edit
+    :rtype: list of dicts
+    '''
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+
+    return ckan.logic.action.get.organization_list_for_user(context, data_dict)
+
+
+def member_create(context, data_dict=None):
+    '''
+    Make an object (e.g. a user, dataset or group) a member of a group.
+
+    Custom organization permission handling added on top of CKAN's own member_create action.
+    '''
+    _log_action('Member', 'create', context['user'], data_dict.get('id'))
+
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+
+    user = context['user']
+    user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
+
+    group_id, obj_id, obj_type, capacity = _get_or_bust(data_dict, ['id', 'object', 'object_type', 'capacity'])
+
+    # get role the user has for the group
+    user_role = utils.get_member_role(group_id, user_id)
+
+    if obj_type == 'user':
+        # get role for the target of this role change
+        target_role = utils.get_member_role(group_id, obj_id)
+        if target_role is None:
+            target_role = capacity
+
+        if ckan.new_authz.is_sysadmin(user):
+            # Sysadmin can do anything
+            pass
+        elif not settings.ORGANIZATION_MEMBER_PERMISSIONS.get((user_role, target_role, capacity, user_id == obj_id), False):
+            raise ckan.logic.NotAuthorized(_("You don't have permission to modify roles for this organization."))
+
+    return ckan.logic.action.create.member_create(context, data_dict)
+
+
+def member_delete(context, data_dict=None):
+    '''
+    Remove an object (e.g. a user, dataset or group) from a group.
+
+    Custom organization permission handling added on top of CKAN's own member_create action.
+    '''
+    _log_action('Member', 'delete', context['user'], data_dict.get('id'))
+
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+
+    user = context['user']
+    user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
+
+    group_id, target_name, obj_type = _get_or_bust(data_dict, ['id', 'object', 'object_type'])
+
+    if obj_type == 'user':
+        # get user's role for this group
+        user_role = utils.get_member_role(group_id, user_id)
+
+        target_id = ckan.new_authz.get_user_id_for_username(target_name, allow_none=True)
+
+        # get target's role for this group
+        target_role = utils.get_member_role(group_id, target_id)
+
+        if ckan.new_authz.is_sysadmin(user):
+            # Sysadmin can do anything.
+            pass
+        elif not settings.ORGANIZATION_MEMBER_PERMISSIONS.get((user_role, target_role, 'member', user_id == target_id), False):
+            raise ckan.logic.NotAuthorized(_("You don't have permission to remove this user."))
+
+    return ckan.logic.action.delete.member_delete(context, data_dict)
+
+
+def organization_member_create(context, data_dict):
+    '''
+    Wrapper for CKAN's group_member_create to modify organization permissions.
+    '''
+    # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
+    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+
+    return ckan.logic.action.create.group_member_create(context, data_dict)
+
+
+def package_owner_org_update(context, data_dict):
+    '''
+    Update the owning organization of a dataset
+
+    Used by both package_create and package_update
+    '''
+
+    user_id = model.User.by_name(context.get('user')).id
+    org_id = data_dict.get('organization_id')
+
+    # get role the user has for the group
+    user_role = utils.get_member_role(org_id, user_id)
+
+    pkg = model.Package.get(data_dict['id'])
+
+    if not pkg.private and user_role == 'member':
+        raise ckan.logic.NotAuthorized(_("You are not allowed to create public datasets for this organization."))
+
+    return ckan.logic.action.update.package_owner_org_update(context, data_dict)

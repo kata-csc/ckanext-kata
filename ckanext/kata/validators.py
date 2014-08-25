@@ -59,9 +59,11 @@ def kata_tag_name_validator(value, context):
 
 
 def kata_tag_string_convert(key, data, errors, context):
-    '''Takes a list of tags that is a comma-separated string (in data[key])
+    '''
+    Takes a list of tags that is a comma-separated string (in data[key])
     and parses tag names. These are added to the data dict, enumerated. They
-    are also validated.'''
+    are also validated.
+    '''
 
     if isinstance(data[key], basestring):
         tags = [tag.strip() \
@@ -107,9 +109,9 @@ def validate_kata_date(key, data, errors, context):
 def validate_kata_date_relaxed(key, data, errors, context):
     '''
     Validate a event date string. Empty strings also pass.
-    '2001-03-01',
-    '2001-03' and
-    '2001' pass.
+    `2001-03-01`,
+    `2001-03` and
+    `2001` pass.
     '''
     if isinstance(data[key], basestring) and data[key]:
         try:
@@ -134,7 +136,7 @@ def check_junk(key, data, errors, context):
 
 def check_last_and_update_pid(key, data, errors, context):
     '''
-    Generates a pid (URN) for package if package.extras.version has changed.
+    Generates a pid (URN) for package if `package.extras.version` has changed.
     '''
     if key == ('version',):
         pkg = Package.get(data[('name',)])
@@ -145,7 +147,7 @@ def check_last_and_update_pid(key, data, errors, context):
 
 def validate_email(key, data, errors, context):
     '''
-    Validate an e-mail address against a regular expression.
+    Validate an email address against a regular expression.
     '''
     if isinstance(data[key], basestring) and data[key]:
         if not EMAIL_REGEX.match(data[key]):
@@ -155,7 +157,7 @@ def validate_email(key, data, errors, context):
 def validate_general(key, data, errors, context):
     '''
     General input validator.
-    Validate arbitrary data for characters specified by GEN_REGEX
+    Validate arbitrary data for characters specified by `GEN_REGEX`
     '''
     if isinstance(data[key], basestring) and data[key]:
         if not GEN_REGEX.match(data[key]):
@@ -180,10 +182,10 @@ def validate_phonenum(key, data, errors, context):
 
 def validate_access_application_url(key, data, errors, context):
     '''
-    Validate dataset's access_application_URL.
+    Validate dataset's `access_application_URL`.
 
     Dummy value _must_ be added for a new form so that it can be overwritten
-    in the same session in iPackageController 'edit' hook. For REMS.
+    in the same session in iPackageController `edit` hook. For REMS.
     '''
     if data.get(('availability',)) == 'access_application':
         if data.get(('access_application_new_form',)) in [u'True', u'on']:
@@ -198,7 +200,7 @@ def validate_access_application_url(key, data, errors, context):
 
 def check_direct_download_url(key, data, errors, context):
     '''
-    Validate dataset's direct download URL (resource.url).
+    Validate dataset's direct download URL (`resource.url`).
     '''
     if data.get(('availability',)) == 'direct_download':
         not_empty(key, data, errors, context)
@@ -220,7 +222,7 @@ def check_access_request_url(key, data, errors, context):
 
 def check_through_provider_url(key, data, errors, context):
     '''
-    Validate dataset's through_provider_URL.
+    Validate dataset's `through_provider_URL`.
     '''
     if data.get(('availability',)) == 'through_provider':
         not_empty(key, data, errors, context)
@@ -234,9 +236,6 @@ def validate_discipline(key, data, errors, context):
     Validate discipline
     
     :param key: 'discipline'
-    :param data:
-    :param errors:
-    :param context:
     '''
     val = data.get(key)
     # Regexp is specifically for okm-tieteenala, at:
@@ -257,9 +256,6 @@ def validate_spatial(key, data, errors, context):
     Validate spatial (aka geographical) coverage
     
     :param key: eg. 'geographical_coverage'
-    :param data:
-    :param errors:
-    :param context:
     '''
     val = data.get(key)
     # Regexp is specifically for the SUO ontology

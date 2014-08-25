@@ -8,14 +8,16 @@ import tempfile
 import subprocess
 import urllib2
 import socket
+import functionally as fn
 
 from pylons import config
 from lxml import etree
+from ckan import model as model
 
 from ckan.lib.email_notifications import send_notification
 from ckan.model import User, Package
 from ckan.lib import helpers as h
-from ckanext.kata import settings, helpers
+from ckanext.kata import settings
 
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
@@ -31,7 +33,10 @@ def generate_pid():
 
 def send_email(req):
     """
-    Send access request e-mail.
+    Send access request email.
+
+    :param user_id: user who requests access
+    :param pkg_id: dataset's id
     """
     requester = User.get(req.user_id)
     pkg = Package.get(req.pkg_id)
@@ -85,6 +90,8 @@ def convert_to_text(resource, resource_fname):
 def label_list_yso(tag_url):
     """
     Takes tag keyword URL and fetches the labels that link to it.
+
+    :returns: the labels
     """
 
     _tagspaces = {
@@ -133,6 +140,9 @@ def resource_to_dataset(data_dict):
 
     We need field conversions to make sure the whole 'resources' key in datadict doesn't get overwritten when
     modifying the dataset in WUI. That would drop all manually added resources if resources was already present.
+
+    :param data_dict: the data dictionary
+    :returns: the modified data dictionary (resources handled)
     '''
     resource = None
 
@@ -165,6 +175,9 @@ def dataset_to_resource(data_dict):
     Now finds the first 'dataset' resource and updates it. Not sure how this should be handled with multiple
     'dataset' resources. Maybe just remove all of them and add new ones as they all are expected to be present
     when updating a dataset.
+
+    :param data_dict: the data dictionary
+    :returns: the modified data dictionary (resources handled)
     '''
     resource_index = None
 
@@ -206,11 +219,12 @@ def hide_sensitive_fields(pkg_dict1):
     Hide fields that contain sensitive data. Modifies input dict directly.
 
     :param pkg_dict1: data dictionary from package_show
+    :returns: the modified data dictionary
     '''
 
     # pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
     # pkg_dict1['project_funding'] = _('Not authorized to see this information')
-    funders = helpers.get_funders(pkg_dict1)
+    funders = get_funders(pkg_dict1)
     for fun in funders:
         fun.pop('fundingid', None)
 
@@ -226,7 +240,7 @@ def get_field_titles(_):
     Get correctly translated titles for search fields
 
     :param _: gettext translator
-    :return: dict of titles for fields
+    :returns: dict of titles for fields
     '''
 
     translated_field_titles = {}
@@ -242,7 +256,34 @@ def get_field_title(key, _):
     Get correctly translated title for one search field
 
     :param _: gettext translator
-    :return: dict of titles for fields
+    :returns: dict of titles for fields
     '''
 
     return _(settings._FIELD_TITLES[key])
+
+
+def get_member_role(group_id, user_id):
+    """
+    Get the user's role for this group.
+
+    :param group_id: Group ID
+    :param user_id: User ID
+    :rtype: list of strings
+    """
+    query = model.Session.query(model.Member) \
+        .filter(model.Member.group_id == group_id) \
+        .filter(model.Member.table_name == 'user') \
+        .filter(model.Member.state == 'active') \
+        .filter(model.Member.table_id == user_id)
+
+    return fn.first([group.capacity for group in query.all()])
+
+
+def get_funders(data_dict):
+    '''
+    Get all funders from agent field in data_dict
+    '''
+    # TODO: Fix validators to not create empty agents
+    return filter(lambda x: x.get('role') == u'funder' and
+                  (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
+                  data_dict.get('agent', []))

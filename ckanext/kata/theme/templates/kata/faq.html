@@ -36,9 +36,16 @@
        <h3 class="question">{{ _('There are two search fields, why?') }}</h3>
        <p>{{ _('The search field in the upmost part makes it easier to search for data from anywhere in the site. You can use any search field you prefer.') }}</p>
        <h3 class="question">{{ _('I can\'t make a search query I want from advanced search.') }}</h3>
-       <p>{{ _('You can make more complex search queries by using Solr query syntax. See more in: ') }}
+       <p>{{ _('You can make more complex search queries by using Solr query syntax. See more in: ') }}</p>
        <a href="http://lucene.apache.org/core/2_9_4/queryparsersyntax.html">{{ _('Solr query syntax') }}</a>
      </div>
+   </section>
+   <section class="module"><h2 class="module-heading"><a id="faq-user">{{ _('User related features') }}</a></h2>
+       <div class="module-content">
+           <h3 class="question">{{ _('I opened Kata and chose log in, then I was suddenly already logged in.') }}</h3>
+           <p>{{ _('If this happened, you opened Kata via an unencrypted connection, that is http://kata.csc.fi. The identification cookie is only sent via an encrypted connection and thus you could not be identified. Choosing "Log in" redirected you to use encrypted https connection. At the same time your identification cookie was sent and you were recognized.') }}
+           </p>
+       </div>
    </section>
   </section>
 {% endblock %}
@@ -53,13 +60,16 @@
       <div class="faq-toc">
         <ul>
         <li>
-          <a href="#faq-kata-metadata">{{ _('Kata and metadata') }}</a>
+            <a href="#faq-kata-metadata">{{ _('Kata and metadata') }}</a>
         </li>
         <li>
-          <a href="#faq-add-dataset">{{ _('Adding and modifying metadata') }}</a>
+            <a href="#faq-add-dataset">{{ _('Adding and modifying metadata') }}</a>
         </li>
         <li>
-          <a href="#faq-search">{{ _('Search: page and features') }}</a>
+            <a href="#faq-search">{{ _('Search: page and features') }}</a>
+        </li>
+        <li>
+            <a href="#faq-user">{{ _('User related features') }}</a>
         </li>
         </ul>
       </div>

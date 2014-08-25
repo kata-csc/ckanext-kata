@@ -32,8 +32,8 @@ class KataAccessRequest(DomainObject):
     @classmethod
     def get(cls, follower_id, object_id):
         '''
-        Return a UserFollowingDataset object for the given follower_id and
-        object_id, or None if no such follower exists.
+        Return a `UserFollowingDataset` object for the given `follower_id` and
+        `object_id`, or None if no such follower exists.
         '''
         query = meta.Session.query(KataAccessRequest)
         query = query.filter(KataAccessRequest.user_id == follower_id)
@@ -43,7 +43,7 @@ class KataAccessRequest(DomainObject):
     @classmethod
     def is_requesting(cls, follower_id, object_id):
         '''
-        Return True if follower_id is currently following object_id, False
+        Return `True` if `follower_id` is currently following `object_id`, `False`
         otherwise.
         '''
         return KataAccessRequest.get(follower_id, object_id) is not None
@@ -67,7 +67,7 @@ class UserExtra(vdm.sqlalchemy.RevisionedObjectMixin,
     @classmethod
     def by_userid_key(cls, userid, key):
         '''
-        Return all user extra records belonging to User 'userid' with key=key.
+        Return all user extra records belonging to User `userid` with `key=key`.
         '''
         session_query = meta.Session.query(cls).autoflush(False)
         return session_query.filter_by(user_id=userid).filter_by(key=key).first()

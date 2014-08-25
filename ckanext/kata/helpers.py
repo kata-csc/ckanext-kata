@@ -10,7 +10,7 @@ import ckan.model as model
 from ckan.model import Related, Package, User
 from ckan.lib.base import g, h
 from ckan.logic import get_action, ValidationError
-from ckanext.kata import settings
+from ckanext.kata import settings, utils
 
 
 def has_agents_field(data_dict, field):
@@ -38,7 +38,7 @@ def kata_sorted_extras(list_):
     for extra in sorted(list_, key=lambda x:x['key']):
         if extra.get('state') == 'deleted':
             continue
-
+        # Todo: fix. The ANDs make no sense
         key, val = extra['key'], extra['value']
         if key in g.package_hide_extras and\
             key in settings.KATA_FIELDS and\
@@ -69,7 +69,11 @@ def kata_sorted_extras(list_):
 def get_dict_field_errors(errors, field, index, name):
     '''Get errors correctly for fields that are represented as nested dict fields in data_dict.
 
-    :return: [u'error1', u'error2']
+    :param errors: the error dict
+    :param field: field name
+    :param index: index, eg. agents are repeatable -> a certain agent might lie in index 2
+    :param name:
+    :returns: `[u'error1', u'error2']`
     '''
     error = []
     error_dict = errors.get(field)
@@ -85,12 +89,12 @@ def get_package_ratings_for_data_dict(data_dict):
     '''
     Create a metadata rating (1-5) for given data_dict.
 
-    This is the same as get_package_ratings but can be used
+    This is the same as :meth:`get_package_ratings` but can be used
     for getting metadata ratings e.g. for search results where
     only raw data_dicts are available rather than already-converted
     package dicts.
 
-    :param data: A CKAN data_dict
+    :param data_dict: A CKAN data_dict
     '''
     from ckanext.kata.schemas import Schemas         # Importing here prevents circular import
 
@@ -111,6 +115,7 @@ def get_package_ratings(data):
     Create a metadata rating (1-5) for given dataset
 
     :param data: A CKAN data_dict
+    :returns: `(rating, stars)`
     '''
     score = 0   # Scale 0-49
 
@@ -194,8 +199,9 @@ def get_rdf_extras(pkg_dict):
     Contains much "manual" stuff for keeping the logical
     order and for prettier display
     
-    :pkg_dict: the package data dict
-    :return: [{ 'key': 'the key', 'value': 'the value'}, {..}, ..]
+    :param pkg_dict: the package data dict
+    :returns: `[{ 'key': 'the key', 'value': 'the value'}, {..}, ..]`
+    :rtype: list of dicts
     '''
     ret = []
     if pkg_dict.get('discipline', None):
@@ -235,6 +241,9 @@ def get_rdf_extras(pkg_dict):
 def get_if_url(data):
     '''
     Try to guess if data is sufficient type for rdf:about
+
+    :param data: the data to check out
+    :rtype: boolean
     '''
     if data and (data.startswith('http://') or data.startswith('https://') or \
     data.startswith('urn:')):
@@ -245,6 +254,9 @@ def get_if_url(data):
 def string_to_list(data):
     '''
     Split languages and make it a list for Genshi (read.rdf)
+
+    :param data: the string to split
+    :rtype: list
     '''
     if data:
         return data.split(", ")
@@ -254,6 +266,10 @@ def string_to_list(data):
 def get_first_admin(id):
     '''
     Get the url of the first one with an admin role
+
+    :param id: the package id
+    :returns: profile url
+    :rtype: string
     '''
     pkg = Package.get(id)
     if pkg:
@@ -276,7 +292,7 @@ def get_rightscategory(license):
     '''
     Return rightscategory based on license id
     
-    :return LICENSED, COPYRIGHTED, PUBLIC DOMAIN
+    :returns: LICENSED, COPYRIGHTED or PUBLIC DOMAIN
     '''
     if license == "other_closed":
         return "COPYRIGHTED"
@@ -320,8 +336,40 @@ def get_funder(data_dict):
 
 def get_funders(data_dict):
     '''Get all funders from agent field in data_dict'''
-    # return filter(lambda x: x.get('role') == u'funder', data_dict.get('agent', []))
-    # TODO: Fix validators to not create empty agents
-    return filter(lambda x: x.get('role') == u'funder' and \
-                            (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
-                  data_dict.get('agent', []))
+    return utils.get_funders(data_dict)
+
+def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
+    '''
+    Check if the user is allowed to edit an organization member
+
+    :param group_dict: dict of all groups (organizations)
+    :param user_id: user id
+    :param target_id: target user id
+    :param target_role: target's current role
+    '''
+
+    user = fn.first(filter(lambda user: user.get('id') == user_id, group_dict['users']))
+
+    if not user:
+        return False
+
+    user_role = user.get('capacity')
+    target_role = target_role.lower()
+
+    if user.get('sysadmin'):
+        return True
+
+    for possible_role in ['admin', 'editor', 'member']:
+        if settings.ORGANIZATION_MEMBER_PERMISSIONS.get((user_role, target_role, possible_role, user_id == target_id), False):
+            return True
+
+    return False
+
+
+def get_visibility_options(group_id, user_id):
+    '''Get possible dataset visibility options for this group and user'''
+
+    if (not group_id or not user_id) or utils.get_member_role(group_id, user_id) == 'member':
+        return [(True, 'Private')]
+    else:
+        return [(True, 'Private'), (False, 'Public')]

@@ -8,8 +8,7 @@ import logging
 import string
 import mimetypes
 import functionally as fn
-from rdflib.namespace import XSD
-from rdflib.term import Identifier, URIRef, Literal, BNode
+import re
 import urllib2
 
 from paste.deploy.converters import asbool
@@ -25,13 +24,15 @@ from ckan.lib.base import BaseController, c, h, redirect, render
 from ckan.lib.email_notifications import send_notification
 import ckan.logic as logic
 import ckan.model as model
-from ckan.model import Package, User, Related, meta, license
+from ckan.model import Package, User, meta
 from ckan.model.authz import add_user_to_role
 import ckan.plugins as plugins
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
-from ckanext.kata.vocab import DC, FOAF, RDF, RDFS, Graph
+import ckan.lib.captcha as captcha
+
+_get_or_bust = ckan.logic.get_or_bust
 
 log = logging.getLogger('ckanext.kata.controller')
 get_action = logic.get_action
@@ -43,6 +44,11 @@ def get_package_owner(package):
     """Returns the user id of the package admin for the specified package.
        If multiple user accounts are associated with the package as admins,
        an arbitrary one is returned.
+
+       :param package: package data
+       :type package: dictionary
+       :returns: userid
+       :rtype: string
     """
     userid = None
     for role in package.roles:
@@ -55,10 +61,18 @@ def get_package_owner(package):
 class MetadataController(BaseController):
     '''
     URN export
+
+
     '''
 
     @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
+        '''
+        The urnexport page
+
+        :returns: the packages with service generated urns
+        :rtype: string
+        '''
         response.headers['Content-type'] = 'text/xml'
         return URNHelper.list_packages()
 
@@ -69,9 +83,15 @@ class KATAApiController(ApiController):
     '''
 
     def media_type_autocomplete(self):
+        '''
+        Suggestions for mimetype
+
+        :rtype: dictionary
+        '''
         query = request.params.get('incomplete', '')
         known_types = set(mimetypes.types_map.values())
         matches = [ type_label for type_label in known_types if string.find(type_label, query) != -1 ]
+        matches = sorted(matches)
         result_set = {
             'ResultSet': {
                 'Result': [{'Name': label} for label in matches]
@@ -80,18 +100,44 @@ class KATAApiController(ApiController):
         return self._finish_ok(result_set)
 
     def tag_autocomplete(self):
+        '''
+        Suggestions for tags (keywords)
+
+        :rtype: dictionary
+        '''
         query = request.params.get('incomplete', '')
         return self._onki_autocomplete(query, "koko")
 
     def discipline_autocomplete(self):
+        '''
+        Suggestions for discipline
+
+        :rtype: dictionary
+        '''
         query = request.params.get('incomplete', '')
         return self._onki_autocomplete(query, "okm-tieteenala")
 
     def location_autocomplete(self):
+        '''
+        Suggestions for spatial coverage
+
+        :rtype: dictionary
+        '''
         query = request.params.get('incomplete', '')
         return self._onki_autocomplete(query, "paikat")
 
     def _onki_autocomplete(self, query, vocab):
+        '''
+        Queries the remote ontology for suggestions and
+        formats the data.
+
+        :param query: the string to search for
+        :type query: string
+        :param vocab: the vocabulary/ontology
+        :type vocab: string
+
+        :rtype: dictionary
+        '''
         url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
 
         labels = []
@@ -122,6 +168,13 @@ class AccessRequestController(BaseController):
         """
         Returns whether there are already pending requests
         from the given user regarding the given package.
+
+        :param pkg_id: package id
+        :type pkg_id: string
+        :param user_id: user id
+        :type user_id: string
+
+        :rtype: boolean
         """
 
         pending_requests = model.Session.query(KataAccessRequest).filter(
@@ -131,6 +184,10 @@ class AccessRequestController(BaseController):
     def create_request(self, pkg_id):
         """
         Creates a new editor access request in the database.
+        Redirects the user to dataset view page
+
+        :param pkg_id: package id
+        :type pkg_id: string
         """
 
         url = h.url_for(controller='package', action='read', id=pkg_id)
@@ -153,6 +210,13 @@ class AccessRequestController(BaseController):
             redirect(url)
 
     def unlock_access(self, id):
+        '''
+        Adds a user to role editor for a dataset and
+        redirects the user to dataset view page
+
+        :param id: package id
+        :type id: string
+        '''
         q = model.Session.query(KataAccessRequest)
         q = q.filter_by(id=id)
         req = q.first()
@@ -162,7 +226,7 @@ class AccessRequestController(BaseController):
             pkg_title = pkg.title if pkg.title else pkg.name
             add_user_to_role(user, 'editor', pkg)
             url = h.url_for(controller='package', action='read', id=req.pkg_id)
-            h.flash_success(_("%s now has editor rights to package %s" % (user.name, pkg_title)))
+            h.flash_success(_("%s now has editor rights to package %s") % (user.name, pkg_title))
             req.delete()
             meta.Session.commit()
             redirect(url)
@@ -191,8 +255,8 @@ class AccessRequestController(BaseController):
             h.flash_error(_("You must be logged in to request edit access"))
             redirect(url)
 
-
-'''DataMiningController is here for reference, some stuff like the file parsing might be useful'''
+##############################################################################
+#DataMiningController is here for reference, some stuff like the file parsing might be useful#
 # class DataMiningController(BaseController):
 #     '''
 #     Controller for scraping metadata content from files.
@@ -352,7 +416,7 @@ class ContactController(BaseController):
     Add features to contact the dataset's owner. 
     
     From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author. 
-    The feature provides a form for message sending, and the message is sent via e-mail. 
+    The feature provides a form for message sending, and the message is sent via email.
     """
 
     def _send_message(self, recipient, email, email_dict):
@@ -370,6 +434,14 @@ class ContactController(BaseController):
         Send a contact e-mail if allowed.
 
         All of the arguments should be unicode strings.
+
+        :param pkg_id: package id
+        :param subject: email's subject
+        :param msg: the message to be sent
+        :param prologue: message's prologue (optional)
+        :param epilogue: message's epilogue (optional)
+        :param recipient: recipient (optional)
+        :param email: email address where the message is to be sent (optional)
         """
 
         package = Package.get(pkg_id)
@@ -414,6 +486,12 @@ class ContactController(BaseController):
     def send_contact(self, pkg_id):
         '''
         Send a user message from CKAN to dataset distributor contact.
+        Constructs the message and calls :meth:`_send_if_allowed`.
+
+        Redirects the user to dataset view page.
+
+        :param pkg_id: package id
+        :type pkg_id: string
         '''
         # Todo: replan and fix when we have multiple distributor emails available
         # This only works because we have only one contact
@@ -457,6 +535,13 @@ käytä yllä olevaa sähköpostiosoitetta.'
     def send_request(self, pkg_id):
         '''
         Send a request to access data to CKAN dataset owner.
+
+        Constructs the message and calls :meth:`_send_if_allowed`.
+
+        Redirects the user to dataset view page.
+
+        :param pkg_id: package id
+        :type pkg_id: string
         '''
 
         prologue_template = u'{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
@@ -492,6 +577,9 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
     def render_contact(self, pkg_id):
         """
         Render the contact form if allowed.
+
+        :param pkg_id: package id
+        :type pkg_id: string
         """
 
         c.package = Package.get(pkg_id)
@@ -511,6 +599,9 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
     def render_request(self, pkg_id):
         """
         Render the access request contact form if allowed.
+
+        :param pkg_id: package id
+        :type pkg_id: string
         """
 
         c.package = Package.get(pkg_id)
@@ -581,10 +672,10 @@ class KataPackageController(PackageController):
     def advanced_search(self):
         """
         Parse query parameters from different search form inputs, modify into
-        one query string 'q' in the context and call basic search() method of
+        one query string 'q' in the context and call basic :meth:`search` method of
         the super class.
 
-        @return - dictionary with keys results and count
+        :returns: dictionary with keys results and count
         """
         # parse author search into q
         q_author = c.q_author = request.params.get('q_author', u'')
@@ -597,6 +688,162 @@ class KataPackageController(PackageController):
         #log.debug('advanced_search(): q: %r' % q)
         log.debug('advanced_search(): call to search()')
         return self.search()
+
+    def dataset_editor_manage(self, name):
+        '''
+        Manages (adds) editors and admins of a dataset and sends an invitation email
+        if wanted in case user has not yet logged in to the service.
+        The invitation email feature has no automatic features bound to it, it is a
+        plain email sender.
+
+        :param name: package name
+        :type name: string
+        :param username: if username (request.param) and role (request.param) are set, the user is added for the role
+        :type username: string
+        :param role: if username (request.param) and role (request.param) are set, the user is added for the role
+        :type role: string
+        :param email: if email address (request.param) is given, an invitation email is sent
+        :type email: string
+
+        Renders the package_administration page via :meth:`_show_dataset_role_page`
+
+        '''
+        context = {'model': model, 'session': model.Session, 'user': c.user}
+
+        if not h.check_access('package_update', {'id': name }):
+            h.flash_error(_('Not authorized to see this page'))
+            h.redirect_to(h.url_for(controller='package', action='read', id=name))
+
+        data_dict = {}
+        data_dict['name'] = name
+
+        username = request.params.get('username', False)
+        email = request.params.get('email', False)
+        role = request.params.get('role', False)
+
+        pkg = model.Package.get(name)
+        data_dict = get_action('package_show')(context, {'id': pkg.id})
+
+        if username:
+            data_dict['role'] = role
+            data_dict['username'] = username
+            ret = get_action('dataset_editor_add')(context, data_dict)
+            if not ret.get('success', None):
+                h.flash_error(ret.get('msg'))
+            else:
+                h.flash_success(ret.get('msg'))
+
+        if email:
+            EMAIL_REGEX = re.compile(
+    r"""
+    ^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~]
+    [\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~.]+
+    @
+    [a-z.A-Z0-9-]+
+    \.
+    [a-zA-Z]{2,6}$
+    """,
+            re.VERBOSE)
+            if isinstance(email, basestring) and email:
+                if not EMAIL_REGEX.match(email):
+                    error_msg = _(u'Invalid email address')
+                    h.flash_error(error_msg)
+                else:
+                    try:
+                        captcha.check_recaptcha(request)
+                        try:
+                            subject = u'Invitation to use Kata metadata catalogue - kutsu käyttämään Kata-metadatakatalogia'
+                            body = u'\n\n%s would like to add you to editors for dataset "%s" \
+in Kata metadata catalogue service. To enable this, please log in to the service: %s.\n\n' % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
+                            body += u'\n\n%s haluaisi lisätä sinut muokkaajaksi tietoaineistoon "%s" \
+Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: %s.\n\n' \
+                                    % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
+                            body += u'\n------------\nLähettäjän viesti / Sender\'s message:\n\n%s\n------------\n' % (request.params.get('mail_message', ''))
+
+                            ckan.lib.mailer.mail_recipient(email, email, subject, body)
+                            h.flash_success(_('Message sent'))
+                        except ckan.lib.mailer.MailerException:
+                            raise
+                    except captcha.CaptchaError:
+                        error_msg = _(u'Bad Captcha. Please try again.')
+                        h.flash_error(error_msg)
+
+        data_dict['domain_object'] = pkg.id
+        domain_object_ref = _get_or_bust(data_dict, 'domain_object')
+        # domain_object_ref is actually pkg.id, so this could be simplified
+        domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
+
+        return self._show_dataset_role_page(domain_object, context, data_dict)
+
+    def dataset_editor_delete(self, name):
+        '''
+        Deletes a user from a dataset role.
+
+        :param name: dataset name
+        :type name: string
+        :param username: user (request.param) and role (request.param) to be deleted from dataset
+        :type username: string
+        :param role: user (request.param) and role (request.param) to be deleted from dataset
+        :type role: string
+
+        redirects to dataset_editor_manage.
+        '''
+        context = {'model': model, 'session': model.Session, 'user': c.user}
+        data_dict = {}
+        data_dict['name'] = name
+        data_dict['username'] = request.params.get('username', None)
+        data_dict['role'] = request.params.get('role', None)
+
+        ret = ckan.logic.get_action('dataset_editor_delete')(context, data_dict)
+
+        if not ret.get('success', None):
+            h.flash_error(ret.get('msg'))
+        else:
+            h.flash_success(ret.get('msg'))
+
+        h.redirect_to(h.url_for(controller='ckanext.kata.controllers:KataPackageController',
+                                action='dataset_editor_manage', name=name))
+
+    def _roles_list(self, userobj, domain_object):
+        '''
+        Builds the selection of roles for the role popup menu
+
+        :param userobj: user object
+        :param domain_object: dataset domain object
+        '''
+        if ckan.model.authz.user_has_role(userobj, 'admin', domain_object) or \
+                userobj.sysadmin == True:
+            return [{'text': 'Admin', 'value': 'admin'},
+                    {'text': 'Editor', 'value': 'editor'},
+                    {'text': 'Reader', 'value': 'reader'}]
+        else:
+            return [{'text': 'Editor', 'value': 'editor'},
+                    {'text': 'Reader', 'value': 'reader'}]
+
+    def _show_dataset_role_page(self, domain_object, context, data_dict):
+        '''
+        Adds data for template and renders it
+
+        :param domain_object: dataset domain object
+        :param context: context
+        :param data_dict: data dictionary
+        '''
+
+        c.roles = []
+        if c.userobj:
+            c.roles = self._roles_list(c.userobj, domain_object)
+
+        editor_list = get_action('roles_show')(context, data_dict)
+        c.members = []
+
+        for role in editor_list.get('roles', ''):
+            q = model.Session.query(model.User).\
+                filter(model.User.id == role['user_id']).first()
+
+            c.members.append({'user_id': role['user_id'], 'user': q.name, 'role': role['role']})
+        c.pkg = Package.get(data_dict['id'])
+
+        return render('package/package_rights.html')
 
 
     def import_xml(self):

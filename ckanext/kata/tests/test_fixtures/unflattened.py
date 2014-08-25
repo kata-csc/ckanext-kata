@@ -3,6 +3,37 @@
 Test data in unflattened package dictionary format.
 """
 
+TEST_ORGANIZATION = {
+    'title': u'Test Organization',
+    'description': u'Description of an organization',
+    'image_url': u'',
+    'users': [{'capacity': 'admin', 'name': u'testsysadmin'}],
+    'type': 'organization',
+    'name': u'test-org'
+}
+
+TEST_ORGANIZATION_COMMON = {
+    'title': u'Test Organization',
+    'description': u'Description of an organization',
+    'image_url': u'',
+    'users': [
+        {'capacity': 'admin', 'name': u'testsysadmin'},
+        {'capacity': 'editor', 'name': u'tester'},
+        {'capacity': 'member', 'name': u'joeadmin'}
+    ],
+    'type': 'organization',
+    'name': u'test_org_common'
+}
+
+TEST_ORGANIZATION_SELENIUM = {
+    'title': u'Kata Testing',
+    'description': u'An organization for handling Kata\'s Selenium testing',
+    'image_url': u'http://www.csc.fi/logo_en.gif',
+    'users': [],
+    'type': 'organization',
+    'name': u'test_org_common'
+}
+
 TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'algorithm': u'SHA',
                  'hash': u'somehash',
@@ -64,8 +95,9 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'notes': u'''This is a dataset used for testing Kata CKAN extension.
                  This is entirely fictional data and any resemblance to anything is purely coincidental.
                  No animals were harmed during this dataset creation.''',
+                 'owner_org': '',
                  'event': [
-                        {
+                     {
                             u'when': u'2000-01-01',
                             u'who': u'T. Tekijä',
                             u'type': u'creation',
@@ -112,9 +144,10 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'title': u'',
                  'type': u'dataset',
                  'version': u'2013-11-18T12:25:53Z',
+                 'private': True,  # Use Python boolean or fix _compare_datadicts() in tests to support 'True' == True
                  'xpaths': {
                      'xpath/path1': u'xpath_value',
                      'xpath/path2': u'xpath_value2',
                  },
-}
+                 }
 

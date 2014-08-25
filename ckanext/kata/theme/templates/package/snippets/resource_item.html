@@ -5,7 +5,7 @@
   {# This should be the same as in settings.py. TODO: remove latter comparison and use value from settings. #}
   {% if res.url != 'http://' and h.resource_display_name(res) != 'http://' %}
     <p class="heading" title="{{ res.name or res.description }}">
-      {{ _(h.resource_display_name(res)) | truncate(50) }}<span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ res.format }}</span>
+      {{ _(h.resource_display_name(res)) if _(h.resource_display_name(res)) != _('Unnamed resource') else res.url | truncate(50) }}<span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ res.format }}</span>
       {{ h.popular('views', res.tracking_summary.total, min=10) if res.tracking_summary}}
     </p>
   {% endif %}

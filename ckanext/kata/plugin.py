@@ -32,23 +32,18 @@ from ckanext.kata.schemas import Schemas
 
 from ckanext.kata import actions, auth_functions, settings, utils, helpers
 
-log = logging.getLogger('ckanext.kata')     # pylint: disable=invalid-name
-t = toolkit                                 # pylint: disable=invalid-name
+log = logging.getLogger('ckanext.kata')
 
-###### Monkey patch for repoze.who ######
+###### MONKEY PATCH FOR REPOZE.WHO ######
 # Enables secure setting for cookies
 # Part of repoze.who since version 2.0a4
-
 from repoze.who.plugins.auth_tkt import AuthTktCookiePlugin
-
-def _now():
-    return datetime.datetime.now()
 
 def _get_monkeys(self, environ, value, max_age=None):
     
     if max_age is not None:
         max_age = int(max_age)
-        later = _now() + datetime.timedelta(seconds=max_age)
+        later = datetime.datetime.now() + datetime.timedelta(seconds=max_age)
         # Wdy, DD-Mon-YY HH:MM:SS GMT
         expires = later.strftime('%a, %d %b %Y %H:%M:%S')
         # the Expires header is *required* at least for IE7 (IE7 does
@@ -64,18 +59,15 @@ def _get_monkeys(self, environ, value, max_age=None):
     cur_domain = environ.get('HTTP_HOST', environ.get('SERVER_NAME'))
     wild_domain = '.' + cur_domain
     cookies = [
-        ('Set-Cookie', '%s="%s"; Path=/%s%s' % (
-        self.cookie_name, value, max_age, secure)),
-        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (
-        self.cookie_name, value, cur_domain, max_age, secure)),
-        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (
-        self.cookie_name, value, wild_domain, max_age, secure))
-        ]
+        ('Set-Cookie', '%s="%s"; Path=/%s%s' % (self.cookie_name, value, max_age, secure)),
+        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (self.cookie_name, value, cur_domain, max_age, secure)),
+        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (self.cookie_name, value, wild_domain, max_age, secure))
+    ]
     return cookies
 
 AuthTktCookiePlugin._get_cookies = _get_monkeys
+###### END OF MONKEY PATCH ######
 
-###### End of Monkey patch ######
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
@@ -174,6 +166,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_faq")
+        map.connect('/package_administration/{name}',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="dataset_editor_manage")
+        map.connect('/dataset_editor_delete/{name}',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="dataset_editor_delete")
         # map.connect('import_xml',
         #             '/import_xml',
         #             controller="ckanext.kata.controllers:ImportXMLController",
@@ -189,34 +187,41 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         Returns a dict of all the authorization functions which the
         implementation overrides
         """
-        return {'package_update': auth_functions.is_owner,
-                'resource_update': auth_functions.edit_resource,
-                'package_delete': auth_functions.package_delete,
-                }
+        return {
+            'package_delete': auth_functions.package_delete,
+            'package_update': auth_functions.is_owner,
+            'resource_update': auth_functions.edit_resource,
+        }
 
     def get_actions(self):
         """ Register actions. """
-        return {'package_show': actions.package_show,
-                'package_create': actions.package_create,
-                'package_update': actions.package_update,
-                'package_delete': actions.package_delete,
-                'package_search': actions.package_search,
-                'resource_create': actions.resource_create,
-                'resource_update': actions.resource_update,
-                'resource_delete': actions.resource_delete,
-                'group_list': actions.group_list,
-                'group_create': actions.group_create,
-                'group_update': actions.group_update,
-                'group_delete': actions.group_delete,
-                'related_create': actions.related_create,
-                'related_update': actions.related_update,
-                'related_delete': actions.related_delete,
-                'member_create': actions.member_create,
-                'member_delete': actions.member_delete,
-                'organization_create': actions.organization_create,
-                'organization_update': actions.organization_update,
-                'organization_delete': actions.organization_delete,
-                }
+        return {
+            'package_show': actions.package_show,
+            'package_create': actions.package_create,
+            'package_update': actions.package_update,
+            'package_delete': actions.package_delete,
+            'package_search': actions.package_search,
+            'resource_create': actions.resource_create,
+            'resource_update': actions.resource_update,
+            'resource_delete': actions.resource_delete,
+            # 'group_list': actions.group_list,
+            'group_create': actions.group_create,
+            'group_update': actions.group_update,
+            'group_delete': actions.group_delete,
+            'related_create': actions.related_create,
+            'related_update': actions.related_update,
+            'related_delete': actions.related_delete,
+            'member_create': actions.member_create,
+            'member_delete': actions.member_delete,
+            'package_owner_org_update': actions.package_owner_org_update,
+            'organization_create': actions.organization_create,
+            'organization_update': actions.organization_update,
+            'organization_delete': actions.organization_delete,
+            'organization_list_for_user': actions.organization_list_for_user,
+            'organization_member_create': actions.organization_member_create,
+            'dataset_editor_delete': actions.dataset_editor_delete,
+            'dataset_editor_add': actions.dataset_editor_add,
+        }
 
     def get_helpers(self):
         """ Register helpers """
@@ -229,23 +234,29 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'get_owner': helpers.get_owner,
                 'get_package_ratings': helpers.get_package_ratings,
                 'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
-                'has_agents_field': helpers.has_agents_field,
-                'has_contacts_field': helpers.has_contacts_field,
-                'kata_sorted_extras': helpers.kata_sorted_extras,
-                'reference_update': helpers.reference_update,
-                'resolve_agent_role': helpers.resolve_agent_role,
                 'get_related_urls': helpers.get_related_urls,
                 'get_rdf_extras': helpers.get_rdf_extras,
                 'get_if_url': helpers.get_if_url,
-                'string_to_list': helpers.string_to_list,
                 'get_first_admin': helpers.get_first_admin,
                 'get_rightscategory': helpers.get_rightscategory,
+                'get_visibility_options': helpers.get_visibility_options,
+                'has_agents_field': helpers.has_agents_field,
+                'has_contacts_field': helpers.has_contacts_field,
+                'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
+                'kata_sorted_extras': helpers.kata_sorted_extras,
+                'reference_update': helpers.reference_update,
+                'resolve_agent_role': helpers.resolve_agent_role,
+                'string_to_list': helpers.string_to_list,
                 }
 
     def get_dict_field_errors(self, errors, field, index, name):
         '''Get errors correctly for fields that are represented as nested dict fields in data_dict.
 
-        :return: [u'error1', u'error2']
+        :param errors: errors dictionary
+        :param field: field name
+        :param index: index
+        :param name:
+        :returns: `[u'error1', u'error2']`
         '''
         error = []
         error_dict = errors.get(field)
@@ -253,15 +264,25 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             error = error_dict[index].get(name)
         return error
 
+    # Todo: some of these can be found from helpers, too. This shouldn't be
     def has_agents_field(self, data_dict, field):
-        '''Return true if some of the data dict's agents has attribute given in field.'''
+        '''
+        Return true if some of the data dict's agents has attribute given in field.
+
+        :rtype: boolean
+        '''
         return [] != filter(lambda x : x.get(field), data_dict.get('agent', []))
 
     def has_contacts_field(self, data_dict, field):
-        '''Return true if some of the data dict's contacts has attribute given in field'.'''
+        '''
+        Return true if some of the data dict's contacts has attribute given in field'.
+
+        :rtype: boolean
+        '''
         return [] != filter(lambda x : x.get(field), data_dict.get('contact', []))
 
     def reference_update(self, ref):
+        # Todo: this can be found from helpers as well!
         #@beaker_cache(type="dbm", expire=2678400)
         def cached_url(url):
             return url
@@ -278,13 +299,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def kata_sorted_extras(self, list_):
         '''
-        Used for outputting package extras, skips package_hide_extras
+        Used for outputting package extras, skips `package_hide_extras`
         '''
         output = []
         for extra in sorted(list_, key=lambda x:x['key']):
             if extra.get('state') == 'deleted':
                 continue
-            
+
+            # Todo: the AND makes no sense. Isn't this in helpers too?
             key, val = extra['key'], extra['value']
             if key in g.package_hide_extras and\
                 key in settings.KATA_FIELDS and\
@@ -314,7 +336,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def update_config(self, config):
         """
         This IConfigurer implementation causes CKAN to look in the
-        ```templates``` directory when looking for the package_form()
+        `templates` directory when looking for the `package_form()`
         """
         toolkit.add_template_directory(config, 'theme/templates')
         toolkit.add_public_directory(config, 'theme/public')
@@ -348,7 +370,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def is_fallback(self):
         '''
-        Overrides IDatasetForm.is_fallback()
+        Overrides ``IDatasetForm.is_fallback()``
         From CKAN documentation:  "Returns true iff this provides the fallback behaviour,
         when no other plugin instance matches a package's type."
         '''
@@ -363,7 +385,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def setup_template_variables(self, context, data_dict):
         """
-        Override DefaultDatasetForm.setup_template_variables() form  method from ckan.lib.plugins.py.
+        Override ``DefaultDatasetForm.setup_template_variables()`` form  method from :file:`ckan.lib.plugins.py`.
         """
         super(KataPlugin, self).setup_template_variables(context, data_dict)
 
@@ -399,9 +421,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         Update the dictionary mapping facet names to facet titles.
         The dict supplied is actually an ordered dict.
 
-        Example: {'facet_name': 'The title of the facet'}
+        Example: ``{'facet_name': 'The title of the facet'}``
+
+        :param facets_dict: the facets dictionary
+        :param package_type: eg. `dataset`
+        :returns: the modified facets_dict
         '''
-        titles = utils.get_field_titles(t._)
+        titles = utils.get_field_titles(toolkit._)
         kata_facet_titles = OrderedDict((field, titles[field]) for field in settings.FACETS)
 
         # Replace the facet dictionary with Kata facets.
@@ -414,10 +440,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def extract_search_params(self, data_dict):
         """
-        Extracts parameters beginning with 'ext_' from data_dict['extras']
+        Extracts parameters beginning with ``ext_`` from `data_dict['extras']`
         for advanced search.
-        @param data_dict: contains all parameters from search.html
-        @return: unordered lists extra_terms and extra_ops, dict extra_dates
+
+        :param data_dict: contains all parameters from search.html
+        :rtype: unordered lists extra_terms and extra_ops, dict extra_dates
         """
         extra_terms = []
         extra_ops = []
@@ -445,14 +472,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def parse_search_terms(self, data_dict, extra_terms, extra_ops):
         """
         Parse extra terms and operators into query q into data_dict:
-        data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND \
-          tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*))
+        `data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND
+        tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*))`
         Note that all ANDs and NOTs are enclosed in parenthesis by ORs.
         Outer parenthesis are for date limits to work correctly.
 
-        @param data_dict: full data_dict from package:search
-        @param extra_terms: [(ext_organization-2, u'someOrg'), ...]
-        @param extra_ops: [(ext_operator-2, u'AND'), ...]
+        :param data_dict: full data_dict from package:search
+        :param extra_terms: `[(ext_organization-2, u'someOrg'), ...]`
+        :param extra_ops: `[(ext_operator-2, u'AND'), ...]`
         """
         def extras_cmp(a, b):
             a  = a.split("-")[-1]
@@ -492,14 +519,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def parse_search_dates(self, data_dict, extra_dates):
         """
         Parse extra date into query q into data_dict:
-        data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND \
-          tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*)) AND \
-          metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]
+        `data_dict['q']: ((author:*onstabl*) OR (title:*edliest jok* AND
+        tags:*somekeyword*) OR (title:sometitle NOT tags:*otherkeyword*)) AND
+        metadata_modified:[1900-01-01T00:00:00.000Z TO 2000-12-31T23:59:59.999Z]`
 
-        @param data_dict: full data_dict from package:search
-        @param extra_dates: {'start': 1991,
+        :param data_dict: full data_dict from package:search
+        :param extra_dates: ``{'start': 1991,
                              'end': 1994,
-                             'field': 'metadata_modified'}
+                             'field': 'metadata_modified'}``
         """
         c.current_search_limiters = {}
         if len(data_dict['q']) > 0:
@@ -521,7 +548,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def before_search(self, data_dict):
         '''
-        Things to do before querying Solr.
+        Things to do before querying Solr. Basically used by
+        the advanced search feature.
 
         :param data_dict: data_dict to modify
         '''
@@ -569,9 +597,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def before_index(self, pkg_dict):
         '''
         Modification to package dictionary before
-        indexing it to Solr index
+        indexing it to Solr index. For example, we
+        add resource mimetype to the index, modify
+        agents and hide the email address
         
         :param pkg_dict: pkg_dict to modify
+        :returns: the modified package dict to be indexed
         '''
         EMAIL = re.compile(r'.*contact_\d*_email')
 
