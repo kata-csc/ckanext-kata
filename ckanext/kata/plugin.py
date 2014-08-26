@@ -172,14 +172,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/dataset_editor_delete/{name}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="dataset_editor_delete")
-        # map.connect('import_xml',
-        #             '/import_xml',
-        #             controller="ckanext.kata.controllers:ImportXMLController",
-        #             action="import_xml")
-        map.connect('import_xml_2',
-                    '/dataset/import',
+        map.connect('add dataset with upload_xml',
+                    '/dataset/new',
                     controller="ckanext.kata.controllers:KataPackageController",
-                    action="import_xml")
+                    action="new")
         return map
 
     def get_auth_functions(self):

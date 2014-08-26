@@ -845,42 +845,44 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
 
         return render('package/package_rights.html')
 
-
-    def import_xml(self):
-        """
-        Import XML
-        """
+    def _upload_xml(self, errors=None, error_summary=None):
+        '''
+        Allow filling dataset form by parsing a user uploaded metadata file.
+        '''
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author}
-
         try:
             t.check_access('package_create', context)
         except t.NotAuthorized:
-            t.abort(401, _('Unauthorized to import metadata'))
+            t.abort(401, _('Unauthorized to upload metadata'))
 
-        # log.debug('t.request.method() {met}'.format(met=t.request.method))
-        if t.request.method == 'POST':
-            return h.redirect_to(controller='package', action='new')
         url = t.request.params.get('url', u'')
-        format = t.request.params.get('format', u'')
-        log.debug('import_xml: url: {ur}'.format(ur=url))
-        log.debug('import_xml: format: {fo}'.format(fo=format))
-        # VALIDATE URL
+        xmltype = t.request.params.get('format', u'')
+        log.debug('upload_xml: Importing from url: {ur}'.format(ur=url))
+        #TODO: validate url (in form by html5?)
         for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
             info = harvester.info()
             if not info or 'name' not in info:
                 log.error('Harvester %r does not provide the harvester name in the info response' % str(harvester))
                 continue
-            log.debug('import_xml: Harvester name: {nam}'.format(nam=info['name']))
-            if format == info['name']:
+            if xmltype == info['name']:
+                log.debug('upload_xml: Found harvester for import: {nam}'.format(nam=info['name']))
                 try:
+                    # TODO: virus check
                     pkg_dict = harvester.import_xml(url, context)
-                    # pkg_dict['state'] = 'draft'  # Tried, no use
-                    return self.new(data=pkg_dict)
-                    # return h.redirect_to(controller='package', action='new', data=pkg_dict)
+                    return super(KataPackageController, self).new(pkg_dict, errors, error_summary)
                 except (urllib2.URLError, urllib2.HTTPError):
                     log.debug('Could not fetch from url {ur}!'.format(ur=url))
                     return h.redirect_to(controller='package', action='new')
+
+    def new(self, data=None, errors=None, error_summary=None):
+        '''
+        Overwrite CKAN method to take uploading xml into sequence.
+        '''
+        if t.request.params.get('upload'):
+            return self._upload_xml(errors, error_summary)
+        else:
+            return super(KataPackageController, self).new(data, errors, error_summary)
 
 
 class KataInfoController(BaseController):
@@ -900,41 +902,3 @@ class KataInfoController(BaseController):
         Provides the FAQ page
         '''
         return render('kata/faq.html')
-
-
-# class ImportXMLController(BaseController):
-#     """
-#     Import user's xml to populate new dataset form.
-#     """
-#
-#     def import_xml(self):
-#         """
-#         Import XML
-#         """
-#         context = {'model': model, 'session': model.Session,
-#                    'user': c.user or c.author}
-#
-#         try:
-#             t.check_access('package_create', context)
-#         except t.NotAuthorized:
-#             t.abort(401, _('Unauthorized to import metadata'))
-#
-#
-#         url = t.request.params.get('url', u'')
-#         format = t.request.params.get('format', u'')
-#         log.debug('import_xml: url: {ur}'.format(ur=url))
-#         log.debug('import_xml: format: {fo}'.format(fo=format))
-#         # VALIDATE URL
-#         for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
-#             info = harvester.info()
-#             if not info or 'name' not in info:
-#                 log.error('Harvester %r does not provide the harvester name in the info response' % str(harvester))
-#                 continue
-#             log.debug('import_xml: Harvester name: {nam}'.format(nam=info['name']))
-#             if format == info['name']:
-#                 try:
-#                     pkg_dict = harvester.import_xml(url, context)
-#                     h.redirect_to(controller='package', action='new', data=pkg_dict)
-#                 except (urllib2.URLError, urllib2.HTTPError):
-#                     log.debug('Could not fetch from url {ur}!'.format(ur=url))
-#                     h.redirect_to(controller='package', action='new')
