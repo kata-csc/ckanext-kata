@@ -218,7 +218,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_helpers(self):
         """ Register helpers """
         return {'get_authors': helpers.get_authors,
-                'get_contact': helpers.get_contact,
+                'get_contacts': helpers.get_contacts,
                 'get_dict_field_errors': helpers.get_dict_field_errors,
                 'get_distributor': helpers.get_distributor,
                 'get_funder': helpers.get_funder,

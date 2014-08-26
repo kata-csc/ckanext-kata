@@ -15,7 +15,7 @@
           {% do titles.append({'value': '', 'lang': ''}) %}
         {% endfor %}
       {% endif %}
-      <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numfields={{ (titles|length) }} id="lastlang">
+      <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numfields="{{ (titles|length) }}" id="lastlang">
         {# Render title fields #}
         {% for langtitle in titles %}
           {% set index = loop.index0 %}
@@ -50,7 +50,7 @@
       {% if authors|length == 0 %}
         {% do authors.append(dict(role='author',)) %}
       {% endif %}
-      <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields={{ authors|length }} data-module-index="agent-index" id="agent">
+      <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields="{{ authors|length }}" data-module-index="agent-index" id="agent">
         {% set author_errors = h.get_dict_errors(errors, '__extras', 'author') %}
         {% for agent in authors %}
           {% set index = agent_index.increase() %}

@@ -326,9 +326,9 @@ def get_authors(data_dict):
     return filter(lambda x: x.get('role') == u'author', data_dict.get('agent', []))
 
 
-def get_contact(data_dict):
-    '''Get one contact from data_dict'''
-    return fn.first(data_dict.get('contact', []))
+def get_contacts(data_dict):
+    '''Get all contacts from data_dict'''
+    return data_dict.get('contact', [])
 
 
 def get_distributor(data_dict):
