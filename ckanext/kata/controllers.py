@@ -898,5 +898,5 @@ class CheckedStorageController(StorageController):
             return StorageController.upload_handle(self)
         else:
             # TODO: produce a meaningful error message through javascript?
-            abort(403, "Malware scan did not pass")
+            abort(403)
 
