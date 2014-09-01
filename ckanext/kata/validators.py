@@ -200,13 +200,10 @@ def validate_access_application_url(key, data, errors, context):
 
 def check_direct_download_url(key, data, errors, context):
     '''
-    Validate dataset's direct download URL (`resource.url`).
+    Validate dataset's direct download URL.
     '''
     if data.get(('availability',)) == 'direct_download':
         not_empty(key, data, errors, context)
-    else:
-        # data.pop(key, None)
-        raise StopOnError
 
 
 def check_access_request_url(key, data, errors, context):
