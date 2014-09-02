@@ -582,6 +582,10 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         """
 
         c.package = Package.get(pkg_id)
+
+        if not c.package:
+            abort(404, _("Dataset not found"))
+
         url = h.url_for(controller='package',
                         action="read",
                         id=c.package.id)
