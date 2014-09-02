@@ -4,8 +4,6 @@ Utility functions for Kata.
 """
 
 import logging
-import tempfile
-import subprocess
 import urllib2
 import socket
 import functionally as fn
@@ -68,23 +66,6 @@ saavan muokkausoikeudet aineiston metatietoihin:\n\
     email_dict["subject"] = u"Access request for dataset / pyyntö koskien tietoaineistoa %s" % pkg.title if pkg.title else pkg.name
     email_dict["body"] = body
     send_notification(admin_dict, email_dict)
-
-
-def convert_to_text(resource, resource_fname):
-    """
-    Convert structured documents to pure text.
-    """
-    fmt = resource.format.lower()
-    prog = settings.TEXTOUTPUTPROGS[fmt] if (fmt in settings.TEXTOUTPUTPROGS and
-                                             fmt is not 'txt') else ''
-    if not prog:
-        return None, None
-    else:
-        convert_fd, convert_path = tempfile.mkstemp()
-        log.debug(resource_fname)
-        process = subprocess.Popen([prog, resource_fname], stdout=convert_fd)
-        process.communicate()
-        return convert_fd, convert_path
 
 
 def label_list_yso(tag_url):

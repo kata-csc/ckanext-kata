@@ -28,7 +28,7 @@ onclick     - Javascript content for onclick element.
 #}
 
 {% macro plusbutton(id='', onclick='', attrs={}) %}
-  <button type="button" class="btn checkbox kata-plus-btn" onclick="{{ onclick }}" title="{{ _('Add') }}"><span class="kata-btn-span">+</span></button>
+  <button type="button" class="btn checkbox kata-plus-btn" onclick="{{ onclick }}" title="{{ _('Add') }}"{% if id %} id="{{ id }}{% endif %}"><span class="kata-btn-span">+</span></button>
 {% endmacro %}
 
 {#
@@ -57,6 +57,19 @@ Example:
               <li data-field-label="{{ key }}">{% if key %}{{ _('PID') }}{% endif %}</li>
           {% elif key == _("Langtitle") %}
               <li data-field-label="{{ key }}">{% if key %}{{ _('Title + language') }}{% endif %}</li>
+          {% elif key == _("  extras") %}
+              {% if not error.index %}
+                  {% set error = [error] %}
+              {% endif %}
+              {% for error_item in error %}
+              <li data-field-label="{{ key }}">
+              {% if error_item.key %}
+                {{ error_item.value }}
+              {% else %}
+                {{ error_item }}
+              {% endif %}
+              </li>
+              {% endfor %}
           {% else %}
             <li data-field-label="{{ key }}">{% if key %}{{ _(key) }}{% endif %}</li>
           {% endif %}

@@ -25,12 +25,14 @@ from ckan.plugins import (implements,
                           IFacets,
                           ITemplateHelpers,
                           SingletonPlugin)
-                              
+
 from ckan.plugins.core import unload
 
 from ckanext.kata.schemas import Schemas
 
 from ckanext.kata import actions, auth_functions, settings, utils, helpers
+
+import ckanext.kata.extractor as extractor
 
 log = logging.getLogger('ckanext.kata')
 
@@ -84,7 +86,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IAuthFunctions, inherit=True)
     implements(IFacets, inherit=True)
     implements(IRoutes, inherit=True)
-    
+
     create_package_schema = Schemas.create_package_schema
     create_package_schema_oai_dc = Schemas.create_package_schema_oai_dc
     create_package_schema_ddi = Schemas.create_package_schema_ddi
@@ -172,6 +174,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/dataset_editor_delete/{name}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="dataset_editor_delete")
+        map.connect('/storage/upload_handle',
+                    controller="ckanext.kata.controllers:CheckedStorageController",
+                    action='upload_handle')
         map.connect('add dataset with upload_xml',
                     '/dataset/new',
                     controller="ckanext.kata.controllers:KataPackageController",
@@ -222,12 +227,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_helpers(self):
         """ Register helpers """
         return {'get_authors': helpers.get_authors,
-                'get_contact': helpers.get_contact,
+                'get_contacts': helpers.get_contacts,
                 'get_dict_field_errors': helpers.get_dict_field_errors,
                 'get_distributor': helpers.get_distributor,
                 'get_funder': helpers.get_funder,
                 'get_funders': helpers.get_funders,
-                'get_owner': helpers.get_owner,
+                'get_owners': helpers.get_owners,
                 'get_package_ratings': helpers.get_package_ratings,
                 'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
                 'get_related_urls': helpers.get_related_urls,
@@ -243,6 +248,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'reference_update': helpers.reference_update,
                 'resolve_agent_role': helpers.resolve_agent_role,
                 'string_to_list': helpers.string_to_list,
+                'create_loop_index': helpers.create_loop_index,
+                'get_dict_errors': helpers.get_dict_errors,
                 }
 
     def get_dict_field_errors(self, errors, field, index, name):
@@ -605,6 +612,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Add res_mimetype to pkg_dict. Can be removed after res_mimetype is
         # added to CKAN's index function.
         data = json.loads(pkg_dict['data_dict'])
+
         res_mimetype = []
         for resource in data.get('resources', []):
             if resource['mimetype'] == None:
@@ -612,6 +620,19 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             else:
                 res_mimetype.append(resource['mimetype'])
         pkg_dict['res_mimetype'] = res_mimetype
+
+        # Extract plain text from resources and add to the data dict for indexing
+        for resource in data.get('resources', []):
+            if resource['resource_type'] in ('file', 'file.upload'):
+                try:
+                    text = extractor.extract_text(resource['url'], resource['format'])
+                except IOError as ioe:
+                    log.debug(str(ioe))
+                    text = ""
+                if text:
+                    all_text = pkg_dict.get('res_contents', '')
+                    all_text += (text + '\n')
+                    pkg_dict['res_contents'] = all_text
 
         # Separate agent roles for Solr indexing
 
@@ -647,5 +668,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 item['value'] = u''
 
         pkg_dict['data_dict'] = json.dumps(data)
+
+        # from pprint import pformat
+        # log.debug("*** pkg_dict at the end of before_index:")
+        # log.debug(pformat(pkg_dict))
 
         return pkg_dict

@@ -26,11 +26,11 @@
   {% block package_organization %} {{ super() }} {% endblock %}
 
   {% block package_groups %} {{ super() }} {% endblock %}
-
+    
   {% block package_social %} {{ super() }} {% endblock %}
-
+    
   {% block package_license %} {{ super() }} {% endblock %}
-
+    
   {% if h.check_access('package_update', {'id':pkg.id }) %}
     <section class="module module-narrow">
       <h2 class="module-heading">{{ _('Dataset administration') }}</h2>
@@ -40,6 +40,6 @@
          </li>
       </ul>
     </section>
-  {% endif %}    
-    
+  {% endif %}
+
 {% endblock secondary_content %}

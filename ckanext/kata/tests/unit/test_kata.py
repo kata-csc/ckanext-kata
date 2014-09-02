@@ -403,8 +403,8 @@ class TestHelpers(TestCase):
         assert rating == 3, rating
         assert stars == u'●●●○○'
 
-    def test_get_owner(self):
-        assert helpers.get_owner(TEST_DATADICT)['organisation'] == u'CSC Oy'
+    def test_get_owners(self):
+        assert helpers.get_owners(TEST_DATADICT)[0]['organisation'] == u'CSC Oy'
 
     def test_get_authors(self):
         assert helpers.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'

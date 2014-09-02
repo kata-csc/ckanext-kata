@@ -19,8 +19,9 @@ from pylons.i18n import _
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.user import UserController
+from ckan.controllers.storage import StorageController
 import ckan.lib.i18n
-from ckan.lib.base import BaseController, c, h, redirect, render
+from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
 import ckan.logic as logic
 import ckan.model as model
@@ -30,6 +31,7 @@ import ckan.plugins as plugins
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
+import ckanext.kata.clamd_wrapper as clamd_wrapper
 import ckan.lib.captcha as captcha
 
 _get_or_bust = ckan.logic.get_or_bust
@@ -902,3 +904,40 @@ class KataInfoController(BaseController):
         Provides the FAQ page
         '''
         return render('kata/faq.html')
+
+
+class CheckedStorageController(StorageController):
+    '''
+    CheckedStorageController extends the standard CKAN StorageController
+    class by adding a malware check on file uploads.
+
+    Malware scanning is enabled by default but can be disabled by setting
+    the configuration option kata.storage.malware_scan to false.
+    When scanning is enabled, not having a ClamAV daemon running
+    will cause uploads to be rejected.
+    '''
+
+    def upload_handle(self):
+        params = dict(request.params.items())
+        field_storage = params.get('file')
+        buffer = field_storage.file
+
+        do_scan = config.get('kata.storage.malware_scan', True)
+
+        if not do_scan:
+            passed = True
+        else:
+            try:
+                passed = clamd_wrapper.scan_for_malware(buffer)
+                # reset the stream so that the data can be properly read again
+                buffer.seek(0)
+            except clamd_wrapper.MalwareCheckError as err:
+                passed = False
+                log.error(str(err))
+
+        if passed:
+            return StorageController.upload_handle(self)
+        else:
+            # TODO: produce a meaningful error message through javascript?
+            abort(403)
+
