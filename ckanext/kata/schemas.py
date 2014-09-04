@@ -137,10 +137,10 @@ class Schemas:
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
         schema['maintainer'] = [ignore_missing, unicode, va.validate_general]
-    #    schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
-    #                         'email': [ignore_missing, unicode, va.validate_email, co.flattened_to_extras],
-    #                         'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
-    #                         'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
+        schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
+                             'email': [ignore_missing, unicode, va.validate_email, co.flattened_to_extras],
+                             'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
+                             'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
         return schema
 
