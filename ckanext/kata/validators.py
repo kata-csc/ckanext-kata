@@ -12,7 +12,7 @@ from pylons.i18n import _
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
-from ckan.lib.navl.dictization_functions import StopOnError, Invalid
+from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
 from ckan.logic.validators import tag_length_validator, url_validator
 from ckan.model import Package
 from ckanext.kata import utils, converters, settings
@@ -412,5 +412,21 @@ def check_events(key, data, errors, context):
                 data[(k0, k1, 'descr')]):
             raise Invalid(_('Missing value'))
     else:
+        data.pop(key, None)
+        raise StopOnError
+
+
+def ignore_empty_data(key, data, errors, context):
+    ''' Ignore empty data, example '-' or whitespace.
+
+    :raises ckan.lib.navl.dictization_functions.StopOnError: if ``data[key]``
+        is :py:data:`ckan.lib.navl.dictization_functions.missing` or ``None``
+
+    :returns: ``None``
+
+    '''
+    value = data.get(key)
+
+    if value is missing or value is None or re.match('^\s*-{0,1}\s*$', value):
         data.pop(key, None)
         raise StopOnError

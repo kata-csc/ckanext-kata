@@ -89,9 +89,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     create_package_schema = Schemas.create_package_schema
     create_package_schema_oai_dc = Schemas.create_package_schema_oai_dc
+    create_package_schema_oai_dc_ida = Schemas.create_package_schema_oai_dc_ida
     create_package_schema_ddi = Schemas.create_package_schema_ddi
     update_package_schema = Schemas.update_package_schema
     update_package_schema_oai_dc = Schemas.update_package_schema_oai_dc
+    update_package_schema_oai_dc_ida = Schemas.update_package_schema_oai_dc_ida
     show_package_schema = Schemas.show_package_schema
     tags_schema = Schemas.tags_schema
 

@@ -120,6 +120,20 @@ class Schemas:
         return schema
 
     @classmethod
+    def create_package_schema_oai_dc_ida(cls):
+        """
+        Mofidified schema for oai_dc using IDA. See `create_package_schema_oai_dc`.
+
+        :rtype: dictionary
+        """
+        schema = cls.create_package_schema_oai_dc()
+        for _key, value in schema['contact'].iteritems():
+            value.insert(0, va.ignore_empty_data)
+
+        schema.pop('tag_string')
+        return schema
+
+    @classmethod
     def create_package_schema_oai_dc(cls):
         '''
         Modified schema for datasets imported with oai_dc reader.
@@ -178,6 +192,20 @@ class Schemas:
         schema['id'] = [ignore_missing, package_id_not_changed]
         schema['name'] = [ignore_missing, va.package_name_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
+        return schema
+
+    @classmethod
+    def update_package_schema_oai_dc_ida(cls):
+        '''
+        Oai_dc reader schema for IDA. See `update_package_schema_oai_dc`.
+
+        :rtype: dict
+        '''
+        schema = cls.create_package_schema_oai_dc_ida()
+
+        schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
+
         return schema
 
     @classmethod
