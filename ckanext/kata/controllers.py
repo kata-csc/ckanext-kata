@@ -869,10 +869,10 @@ class KataInfoController(BaseController):
         return render('kata/faq.html')
 
 
-class CheckedStorageController(StorageController):
+class MalwareScanningStorageController(StorageController):
     '''
-    CheckedStorageController extends the standard CKAN StorageController
-    class by adding a malware check on file uploads.
+    MalwareScanningStorageController extends the standard CKAN StorageController
+    class by adding an optional malware check on file uploads.
 
     Malware scanning is disabled by default but can be enabled by setting
     the configuration option kata.storage.malware_scan to true.

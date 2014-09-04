@@ -175,7 +175,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="dataset_editor_delete")
         map.connect('/storage/upload_handle',
-                    controller="ckanext.kata.controllers:CheckedStorageController",
+                    controller="ckanext.kata.controllers:MalwareScanningStorageController",
                     action='upload_handle')
 
         return map
