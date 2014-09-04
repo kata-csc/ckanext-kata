@@ -1,0 +1,13 @@
+{% ckan_extends %}
+
+{% block basic_fields_data %}
+  <div class="control-group control-full">
+    <label class="control-label control-full" for="field-resource-type-upload">{{ _("File") }}</label>
+    <div class="controls"{% if allow_upload %} data-module="resource-upload-field"{% endif %}></div>
+  </div>
+{% endblock %}
+
+{# override CKAN original for a read-only field (automatically generated) and for layout tweaks #}
+{% block basic_fields_url %}
+  {{ form.input('url', id='field-url', label=_('Resource'), placeholder=_('Automatically generated'), value=data.url, error=errors.url, classes=['control-full'], attrs={'readonly': 'readonly'}) }}
+{% endblock %}
