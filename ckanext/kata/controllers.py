@@ -874,8 +874,8 @@ class CheckedStorageController(StorageController):
     CheckedStorageController extends the standard CKAN StorageController
     class by adding a malware check on file uploads.
 
-    Malware scanning is enabled by default but can be disabled by setting
-    the configuration option kata.storage.malware_scan to false.
+    Malware scanning is disabled by default but can be enabled by setting
+    the configuration option kata.storage.malware_scan to true.
     When scanning is enabled, not having a ClamAV daemon running
     will cause uploads to be rejected.
     '''
@@ -885,7 +885,7 @@ class CheckedStorageController(StorageController):
         field_storage = params.get('file')
         buffer = field_storage.file
 
-        do_scan = config.get('kata.storage.malware_scan', True)
+        do_scan = config.get('kata.storage.malware_scan', False)
 
         if not do_scan:
             passed = True
