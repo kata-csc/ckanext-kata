@@ -666,8 +666,4 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         pkg_dict['data_dict'] = json.dumps(data)
 
-        # from pprint import pformat
-        # log.debug("*** pkg_dict at the end of before_index:")
-        # log.debug(pformat(pkg_dict))
-
         return pkg_dict
