@@ -232,6 +232,20 @@ def package_update(context, data_dict):
     # if data_dict['name'].startswith('FSD'):
     #     context['schema'] = schemas.update_package_schema_ddi()
 
+    # If distributor isn't present in data_dict, get the old one
+    # This fix is made for users using API
+    orig_pkg = ckan.logic.action.get.package_show(context, data_dict)
+    distributor = False
+    for agent in data_dict.get('agent'):
+        if agent.get('role') == 'distributor':
+            distributor = True
+    if not distributor:
+        for agent in orig_pkg.get('agent'):
+            if agent.get('role') == 'distributor':
+                data_dict['agent'].append({'name': agent.get('name'),
+                                           'role': u'distributor',
+                                           'organisation': agent.get('organisation')})
+
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
 
     # Logging for production use
