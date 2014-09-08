@@ -629,9 +629,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     log.debug(str(ioe))
                     text = ""
                 if text:
-                    all_text = pkg_dict.get('res_contents', '')
+                    all_text = pkg_dict.get('res_text_contents', '')
                     all_text += (text + '\n')
-                    pkg_dict['res_contents'] = all_text
+                    pkg_dict['res_text_contents'] = all_text
 
         # Separate agent roles for Solr indexing
 
