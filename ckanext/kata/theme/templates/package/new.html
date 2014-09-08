@@ -11,5 +11,10 @@
   {% block import_xml_module %}
     {% snippet "package/snippets/import_xml.html" %}
   {% endblock %}
+{% endblock %}
 
+{% block scripts %}
+  {{ super() }}
+  {% resource 'vendor/fileupload' %}
+  {% resource 'kata-resources/javascript/metadata-upload-field.js' %}
 {% endblock %}
