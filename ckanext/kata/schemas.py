@@ -266,3 +266,23 @@ class Schemas:
         #schema['resources']['resource_type'] = [from_resource]
 
         return schema
+
+    @staticmethod
+    def _harvest_non_unique_url(schema):
+        schema['url'] = [not_empty, unicode, url_validator]
+        return schema
+
+    @classmethod
+    def harvest_source_create_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_create_package_schema
+        return cls._harvest_non_unique_url(harvest_source_create_package_schema())
+
+    @classmethod
+    def harvest_source_update_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_update_package_schema
+        return cls._harvest_non_unique_url(harvest_source_update_package_schema())
+
+    @classmethod
+    def harvest_source_show_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_show_package_schema
+        return cls._harvest_non_unique_url(harvest_source_show_package_schema())
