@@ -1,9 +1,18 @@
 {% ckan_extends %}
 
+{# override to omit tabs for external file URLs and API links
+ # and to turn the file upload radio button into a regular button look-alike
+ #}
 {% block basic_fields_data %}
   <div class="control-group control-full">
     <label class="control-label control-full" for="field-resource-type-upload">{{ _("File") }}</label>
-    <div class="controls"{% if allow_upload %} data-module="resource-upload-field"{% endif %}></div>
+    <div class="controls">
+      {% if allow_upload %}
+        <div class="btn" data-module="resource-upload-field"></div>
+      {% else %}
+        <p>{{ _('You must be logged in to upload a file.') }}</p>
+      {% endif %}
+    </div>
   </div>
 {% endblock %}
 
