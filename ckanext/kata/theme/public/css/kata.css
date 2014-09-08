@@ -1024,3 +1024,7 @@ input, button, select, textarea {
 .dataset-form-resource-types label {
   font-weight: normal !important;
 }
+
+#resource-upload-btn {
+  padding-bottom: 8px;
+}

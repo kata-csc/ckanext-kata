@@ -8,7 +8,7 @@
     <label class="control-label control-full" for="field-resource-type-upload">{{ _("File") }}</label>
     <div class="controls">
       {% if allow_upload %}
-        <div class="btn" data-module="resource-upload-field"></div>
+        <div id="resource-upload-btn" class="btn" data-module="resource-upload-field"></div>
       {% else %}
         <p>{{ _('You must be logged in to upload a file.') }}</p>
       {% endif %}
