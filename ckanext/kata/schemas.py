@@ -130,7 +130,13 @@ class Schemas:
         for _key, value in schema['contact'].iteritems():
             value.insert(0, va.ignore_empty_data)
 
-        schema.pop('tag_string')
+        schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, co.flattened_to_extras],
+                             'email': [ignore_missing, va.validate_general, unicode, co.flattened_to_extras],
+                             'URL': [ignore_missing, ignore_empty, va.validate_general, unicode, co.flattened_to_extras],
+                             'phone': [ignore_missing, unicode, va.validate_general, co.flattened_to_extras]}
+
+        schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
+        schema['version'] = [ignore_missing, unicode]
         return schema
 
     @classmethod
