@@ -26,7 +26,7 @@ setup(
         'pexpect >= 3.3',
         'pycountry >= 1.8',
         'pyClamd >= 0.3.10',
-        'lxml >= 3.2.0',
+        'lxml >= 3.1.2',
         'functionally >= 1.0.1',
     ],
     package_data={
