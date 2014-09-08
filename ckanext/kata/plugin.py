@@ -107,8 +107,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Full stops from harvested objects screw up the read method
         # when using the default ckan route
         map.connect('/dataset/{id:.*?}.{format:rdf}',
-                  controller="ckan.controllers.package:PackageController", 
-                  action='read')
+                    controller="ckan.controllers.package:PackageController",
+                    action='read')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
