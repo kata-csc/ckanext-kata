@@ -522,7 +522,7 @@ class TestKataWithUser(TestCase):
         #     return visible_elements[id]
 
         # TODO: Use all fields.
-        add_wait = 1
+        add_wait = 3
 
         dataset_to_add = [
             # Add titles
