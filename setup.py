@@ -1,3 +1,5 @@
+'''Setup Etsin'''
+
 from setuptools import setup, find_packages
 
 version = '1.0.1'
@@ -19,11 +21,13 @@ setup(
     zip_safe=False,
     install_requires=[
         # -*- Extra requirements: -*-
-        'rdflib',
+        'rdflib >= 3.4.0',
         'iso8601 >= 0.1.5',
         'pexpect >= 3.3',
         'pycountry >= 1.8',
         'pyClamd >= 0.3.10',
+        'lxml >= 3.2.0',
+        'functionally >= 1.0.1',
     ],
     package_data={
         'ckan': [
