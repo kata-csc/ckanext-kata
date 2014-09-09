@@ -8,6 +8,7 @@ from itertools import count
 
 import iso8601
 import re
+import urlparse
 from pylons.i18n import _
 
 import ckan.lib.helpers as h
@@ -203,7 +204,7 @@ def check_direct_download_url(key, data, errors, context):
     Validate dataset's direct download URL.
     '''
     if data.get(('availability',)) == 'direct_download':
-        not_empty(key, data, errors, context)
+        url_not_empty(key, data, errors, context)
 
 
 def check_access_request_url(key, data, errors, context):
@@ -430,3 +431,13 @@ def ignore_empty_data(key, data, errors, context):
     if value is missing or value is None or re.match('^\s*-{0,1}\s*$', value):
         data.pop(key, None)
         raise StopOnError
+
+
+def url_not_empty(key, data, errors, context):
+    value = data.get(key)
+    if value and value is not missing:
+        url_components = urlparse.urlparse(value)
+        if all([url_components.scheme, url_components.netloc]):
+            return
+
+    raise Invalid(_('Missing value'))
