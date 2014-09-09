@@ -18,7 +18,7 @@ from ckanext.kata.tests.test_fixtures.unflattened import TEST_ORGANIZATION_COMMO
 from ckan import model, tests
 
 
-class KataWsgiTestCase(tests.WsgiAppCase):
+class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
     '''
     Class to inherit for Kata's WSGI tests.
     '''

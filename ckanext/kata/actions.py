@@ -23,6 +23,7 @@ from ckan.logic import check_access, NotAuthorized, side_effect_free
 from ckanext.kata import utils, settings
 from ckan.logic import get_action
 import ckan.new_authz
+from ckanext.kata.schemas import Schemas
 
 
 _get_or_bust = ckan.logic.get_or_bust
@@ -42,6 +43,9 @@ def package_show(context, data_dict):
 
     :rtype: dictionary
     '''
+
+    if data_dict.get('type') == 'harvest':
+        context['schema'] = Schemas.harvest_source_show_package_schema()
 
     # Called before showing the dataset in some interface (browser, API),
     # or when adding package to Solr index (no validation / conversions then).
@@ -87,7 +91,7 @@ def package_show(context, data_dict):
 def package_create(context, data_dict):
     """
     Creates a new dataset.
-    
+
     Extends ckan's similar method to instantly reindex the SOLR index, 
     so that this newly added package emerges in search results instantly instead of 
     during the next timed reindexing.
@@ -101,7 +105,7 @@ def package_create(context, data_dict):
     try:
         if data_dict['type'] == 'harvest' and not user.sysadmin:
             ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
-            
+
     except KeyError:
         log.debug("Tried to check the package type, but it wasn't present!")
         # TODO: JUHO: Dubious to let pass without checking user.sysadmin
@@ -141,6 +145,9 @@ def package_create(context, data_dict):
             data_dict['agent'].append(
                 {'name': user_name, 'role': 'distributor', 'id': user.id}
             )
+
+    if data_dict.get('type') == 'harvest':
+        context['schema'] = Schemas.harvest_source_create_package_schema()
 
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 
@@ -215,7 +222,7 @@ def package_update(context, data_dict):
     new_version_pid = data_dict.get('new_version_pid', None)
     if not new_version_pid and data_dict.get('generate_version_pid', None) == 'on':
         new_version_pid = utils.generate_pid()
-        
+
     if new_version_pid:
         data_dict['pids'] += [{'id': new_version_pid,
                               'type': 'version',
@@ -247,6 +254,9 @@ def package_update(context, data_dict):
     # type of the harvester (eg. DDI)
     # if data_dict['name'].startswith('FSD'):
     #     context['schema'] = schemas.update_package_schema_ddi()
+
+    if data_dict.get('type') == 'harvest':
+        context['schema'] = Schemas.harvest_source_update_package_schema()
 
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
 
