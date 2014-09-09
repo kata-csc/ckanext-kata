@@ -434,6 +434,13 @@ def ignore_empty_data(key, data, errors, context):
 
 
 def url_not_empty(key, data, errors, context):
+    '''
+    Check that the data value is non-empty and contains both a URL scheme and a hostname.
+
+    :raises ckan.lib.navl.dictization_functions.Invalid: if data[key] is empty, missing, or
+                                                         omits either URL scheme or hostname
+    :returns: None
+    '''
     value = data.get(key)
     if value and value is not missing:
         url_components = urlparse.urlparse(value)
