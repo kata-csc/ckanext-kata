@@ -189,18 +189,19 @@ def package_update(context, data_dict):
         pass
 
     # Get all resources here since we get only 'dataset' resources from WUI.
-    temp_context = {'model': model, 'ignore_auth': True, 'validate': True,
+    package_context = {'model': model, 'ignore_auth': True, 'validate': True,
                     'extras_as_string': True}
-    temp_pkg_dict = ckan.logic.action.get.package_show(temp_context, data_dict)
+    package_data = ckan.logic.action.get.package_show(package_context, data_dict)
 
     # API needs distributor
     distributor = False
-    for agent in data_dict.get('agent', ''):
+    for agent in data_dict.get('agent', []):
         if agent.get('role') == 'distributor':
             distributor = True
-    if not distributor and temp_pkg_dict.get('agent') is not None:
+
+    if not distributor and package_data.get('agent', None) is not None:
         # Harvest objects do not have agents
-        for agent in temp_pkg_dict.get('agent'):
+        for agent in package_data.get('agent'):
             if agent.get('role') == 'distributor':
                 data_dict['agent'].append({'name': agent.get('name', u''),
                                            'role': u'distributor',
@@ -209,7 +210,7 @@ def package_update(context, data_dict):
                                            'organisation': agent.get('organisation', u''),
                                            'URL': agent.get('URL', u'')})
 
-    old_resources = temp_pkg_dict.get('resources', [])
+    old_resources = package_data.get('resources', [])
 
     if not 'resources' in data_dict:
         # When this is reached, we are updating a dataset, not creating a new resource
@@ -217,7 +218,7 @@ def package_update(context, data_dict):
         data_dict = utils.dataset_to_resource(data_dict)
 
     # Get all PIDs (except for package.id and package.name) from database and add new relevant PIDS there
-    data_dict['pids'] = temp_pkg_dict.get('pids', [])
+    data_dict['pids'] = package_data.get('pids', [])
 
     new_version_pid = data_dict.get('new_version_pid', None)
     if not new_version_pid and data_dict.get('generate_version_pid', None) == 'on':
@@ -255,7 +256,7 @@ def package_update(context, data_dict):
     # if data_dict['name'].startswith('FSD'):
     #     context['schema'] = schemas.update_package_schema_ddi()
 
-    if data_dict.get('type') == 'harvest':
+    if package_data.get('type', None) == 'harvest':
         context['schema'] = Schemas.harvest_source_update_package_schema()
 
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
@@ -275,7 +276,7 @@ def package_update(context, data_dict):
 def package_delete(context, data_dict):
     '''
     Deletes a package
-    
+
     Extends ckan's similar method to instantly re-index the SOLR index. 
     Otherwise the changes would only be added during a re-index (a rebuild of search index,
     to be specific).
