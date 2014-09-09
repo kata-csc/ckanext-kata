@@ -9,6 +9,7 @@ import re
 
 from ckan.tests import url_for
 import ckan.model as model
+from ckan.lib import search
 
 import ckanext.kata.settings as settings
 from ckanext.kata.tests.functional import KataWsgiTestCase
@@ -222,3 +223,31 @@ class TestAuthorisation(KataWsgiTestCase):
         assert 'Are you sure you want to delete this dataset?' in res, \
             'Dataset owner should have the delete button available'
 
+    def test_urnexport(self):
+        from ckanext.kata import controllers
+        from lxml import etree
+
+        # Switch to use uncached urnexport:
+        controllers.MetadataController.urnexport = controllers.MetadataController._urnexport
+
+        offset = url_for('/urnexport')
+
+        assert '<identifier>' not in self.app.get(offset)   # No datasets to export
+
+        revision = model.repo.new_revision()
+        pkg_id = u'annakarenina'
+        pkg = model.Package.get(pkg_id)
+        pkg.private = False
+        pkg.state = 'active'
+        pkg.name = 'urn:nbn:fi:csc-kata:0123456789'
+        model.Session.commit()
+        search.rebuild()
+
+        res = self.app.get(offset)
+        assert res.body.count('<identifier>') == 1    # One dataset should be found
+        assert pkg.name in res
+
+        try:
+            etree.XML(res.body)  # Validate that result is XML
+        except etree.LxmlError:
+            self.fail('Unexpected XML parsing error')

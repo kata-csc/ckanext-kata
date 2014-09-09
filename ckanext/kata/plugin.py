@@ -107,8 +107,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Full stops from harvested objects screw up the read method
         # when using the default ckan route
         map.connect('/dataset/{id:.*?}.{format:rdf}',
-                  controller="ckan.controllers.package:PackageController", 
-                  action='read')
+                    controller="ckan.controllers.package:PackageController",
+                    action='read')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
@@ -629,9 +629,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     log.debug(str(ioe))
                     text = ""
                 if text:
-                    all_text = pkg_dict.get('res_contents', '')
+                    all_text = pkg_dict.get('res_text_contents', '')
                     all_text += (text + '\n')
-                    pkg_dict['res_contents'] = all_text
+                    pkg_dict['res_text_contents'] = all_text
 
         # Separate agent roles for Solr indexing
 

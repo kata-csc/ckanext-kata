@@ -183,7 +183,7 @@ def get_package_ratings(data):
 
     # MAX 40
 
-    if filter(lambda con: con.get('name') and con.get('email') and con.get('URL') and con.get('phone'), data.get('contact')):
+    if filter(lambda con: con.get('name') and con.get('email') and con.get('URL') and con.get('phone'), data.get('contact', [])):
         score += 4
 
     # MAX 44

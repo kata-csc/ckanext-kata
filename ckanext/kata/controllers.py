@@ -3,6 +3,7 @@
 Controllers for Kata.
 """
 
+import datetime
 import json
 import logging
 import string
@@ -10,9 +11,12 @@ import mimetypes
 import functionally as fn
 import re
 import urllib2
+import sqlalchemy
+
+from lxml import etree
 
 from paste.deploy.converters import asbool
-from pylons import response, config, request, session, g
+from pylons import config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
 
@@ -25,12 +29,11 @@ from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
 from ckan.logic import get_action
 import ckan.model as model
-from ckan.model import Package, User, meta
+from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
 from ckanext.kata.model import KataAccessRequest
-from ckanext.kata.urnhelper import URNHelper
 import ckanext.kata.clamd_wrapper as clamd_wrapper
-import ckan.lib.captcha as captcha
+from ckan.lib import captcha, helpers
 
 _get_or_bust = ckan.logic.get_or_bust
 
@@ -60,20 +63,63 @@ def get_package_owner(package):
 class MetadataController(BaseController):
     '''
     URN export
-
-
     '''
+
+    def _urnexport(self):
+        '''
+        Uncached urnexport, needed for testing.
+        '''
+        _or_ = sqlalchemy.or_
+        _and_ = sqlalchemy.and_
+
+        xmlns = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping"
+        def locns(loc):
+            return "{%s}%s" % (xmlns, loc)
+        xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        schemalocation = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping " \
+                         "http://urn.kb.se/resolve?urn=urn:nbn:se:uu:ub:epc-schema:rs-location-mapping&godirectly"
+        records = etree.Element("{" + xmlns + "}records",
+                         attrib={"{" + xsi + "}schemaLocation": schemalocation},
+                         nsmap={'xsi': xsi, None: xmlns})
+        q = Session.query(Package)
+        q = q.filter(_and_(
+            _or_(Package.name.ilike('urn:nbn:fi:csc-kata%'), Package.name.ilike('urn:nbn:fi:csc-ida%')),
+            Package.state.like('active'),
+            Package.private == False,
+        ))
+        pkgs = q.all()
+        prot = etree.SubElement(records, locns('protocol-version'))
+        prot.text = '3.0'
+        datestmp = etree.SubElement(records, locns('datestamp'), attrib={'type': 'modified'})
+        now = datetime.datetime.now().isoformat()
+        datestmp.text = now
+        for pkg in pkgs:
+            record = etree.SubElement(records, locns('record'))
+            header = etree.SubElement(record, locns('header'))
+            datestmp = etree.SubElement(header, locns('datestamp'), attrib={'type': 'modified'})
+            datestmp.text = now
+            identifier = etree.SubElement(header, locns('identifier'))
+            identifier.text = pkg.name
+            destinations = etree.SubElement(header, locns('destinations'))
+            destination = etree.SubElement(destinations, locns('destination'), attrib={'status': 'activated'})
+            datestamp = etree.SubElement(destination, locns('datestamp'), attrib={'type': 'activated'})
+            url = etree.SubElement(destination, locns('url'))
+            url.text = "%s%s" % (config.get('ckan.site_url', ''),
+                             helpers.url_for(controller='package',
+                                       action='read',
+                                       id=pkg.name))
+        return etree.tostring(records)
 
     @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
         '''
-        The urnexport page
+        Generate an XML listing of packages, which have Kata or Ida URN as data PID.
+        Used by a third party service.
 
-        :returns: the packages with service generated urns
-        :rtype: string
+        :returns: An XML listing of packages and their URNs
+        :rtype: string (xml)
         '''
-        response.headers['Content-type'] = 'text/xml'
-        return URNHelper.list_packages()
+        return self._urnexport()
 
 
 class KATAApiController(ApiController):

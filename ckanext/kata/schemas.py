@@ -130,7 +130,13 @@ class Schemas:
         for _key, value in schema['contact'].iteritems():
             value.insert(0, va.ignore_empty_data)
 
-        schema.pop('tag_string')
+        schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, co.flattened_to_extras],
+                             'email': [ignore_missing, va.validate_general, unicode, co.flattened_to_extras],
+                             'URL': [ignore_missing, ignore_empty, va.validate_general, unicode, co.flattened_to_extras],
+                             'phone': [ignore_missing, unicode, va.validate_general, co.flattened_to_extras]}
+
+        schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
+        schema['version'] = [ignore_missing, unicode]
         return schema
 
     @classmethod
@@ -260,3 +266,23 @@ class Schemas:
         #schema['resources']['resource_type'] = [from_resource]
 
         return schema
+
+    @staticmethod
+    def _harvest_non_unique_url(schema):
+        schema['url'] = [not_empty, unicode, url_validator]
+        return schema
+
+    @classmethod
+    def harvest_source_create_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_create_package_schema
+        return cls._harvest_non_unique_url(harvest_source_create_package_schema())
+
+    @classmethod
+    def harvest_source_update_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_update_package_schema
+        return cls._harvest_non_unique_url(harvest_source_update_package_schema())
+
+    @classmethod
+    def harvest_source_show_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_show_package_schema
+        return cls._harvest_non_unique_url(harvest_source_show_package_schema())

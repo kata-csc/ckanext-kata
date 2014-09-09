@@ -19,6 +19,8 @@ import ckan.model as model
 from ckan.lib.create_test_data import CreateTestData
 import ckanext.kata.model as kata_model
 import ckanext.kata.actions as actions
+from ckan.logic import get_action
+from ckanext.harvest.model import setup
 
 class TestKataPlugin(TestCase):
     """
@@ -170,7 +172,7 @@ class TestKataPlugin(TestCase):
                      'agent_3_role': u'distributor',
                      'data_dict': '{"dada": "dudu"}'}
 
-        #output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))
+        # output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))
         output = self.kata_plugin.before_index(pkg_dict)
 
         assert 'funder_0' in output
@@ -420,6 +422,7 @@ class TestActions(TestCase):
         # Todo: fix. The harvest tables are not generated here
         # so this class can't be run alone
         kata_model.setup()
+        setup()
         CreateTestData.create()
 
     @classmethod
@@ -593,4 +596,19 @@ class TestActions(TestCase):
 
         return ctx
 
+class TestHarvestSource(TestCase):
+    @classmethod
+    def setup_class(cls):
+        setup()
+
+    def test_harvest_source_update(self):
+        model.User(name='test', sysadmin=True).save()
+        get_action('organization_create')({'user': 'test'}, {'name': 'test'})
+        context = {'user': 'test'}
+        data_dict = {'url': "http://example.com/test", 'name': 'test', 'owner_org': 'test', 'source_type': 'oai-pmh', 'title': 'test'}
+        response = get_action('harvest_source_create')(context, data_dict)
+        self.assertEquals(response.get('name', None), 'test')
+        data_dict['id'] = response['id']
+        data_dict['title'] = 'test update'
+        response = get_action('harvest_source_update')(context, data_dict)
 
