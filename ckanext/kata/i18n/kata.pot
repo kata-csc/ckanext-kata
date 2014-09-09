@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-25 13:53+0000\n"
+"POT-Creation-Date: 2014-09-08 18:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,74 +95,78 @@ msgstr ""
 msgid "User %s not authorized to delete package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:200
+#: ckanext/kata/controllers.py:202
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of package"
 " %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:203 ckanext/kata/controllers.py:249
+#: ckanext/kata/controllers.py:205 ckanext/kata/controllers.py:251
 msgid "A request is already pending"
 msgstr ""
 
-#: ckanext/kata/controllers.py:206 ckanext/kata/controllers.py:252
+#: ckanext/kata/controllers.py:208 ckanext/kata/controllers.py:254
 msgid "You must be logged in to request edit access"
 msgstr ""
 
-#: ckanext/kata/controllers.py:226
+#: ckanext/kata/controllers.py:228
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:231
+#: ckanext/kata/controllers.py:233
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:466 ckanext/kata/controllers.py:762
+#: ckanext/kata/controllers.py:468 ckanext/kata/controllers.py:768
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:468
+#: ckanext/kata/controllers.py:470
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:470
+#: ckanext/kata/controllers.py:472
 msgid "No owner found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:472 ckanext/kata/controllers.py:524
-#: ckanext/kata/controllers.py:565 ckanext/kata/controllers.py:593
-#: ckanext/kata/controllers.py:615
+#: ckanext/kata/controllers.py:474 ckanext/kata/controllers.py:526
+#: ckanext/kata/controllers.py:567 ckanext/kata/controllers.py:599
+#: ckanext/kata/controllers.py:621
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:562
+#: ckanext/kata/controllers.py:564
 #, python-format
 msgid "Data access request for dataset / Datapyynto tietoaineistolle %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:590 ckanext/kata/controllers.py:612
+#: ckanext/kata/controllers.py:587
+msgid "Dataset not found"
+msgstr ""
+
+#: ckanext/kata/controllers.py:596 ckanext/kata/controllers.py:618
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:653
+#: ckanext/kata/controllers.py:659
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:655
+#: ckanext/kata/controllers.py:661
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:712
+#: ckanext/kata/controllers.py:718
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:747 ckanext/kata/validators.py:154
+#: ckanext/kata/controllers.py:753 ckanext/kata/validators.py:154
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:766
+#: ckanext/kata/controllers.py:772
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
@@ -205,7 +209,7 @@ msgid "Distributor/Publisher"
 msgstr ""
 
 #: ckanext/kata/settings.py:53
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:65
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:84
 msgid "Funder"
 msgstr ""
 
@@ -248,45 +252,45 @@ msgstr ""
 msgid "Invalid telephone number, must be like +13221221"
 msgstr ""
 
-#: ckanext/kata/validators.py:246
+#: ckanext/kata/validators.py:243
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
 msgstr ""
 
-#: ckanext/kata/validators.py:267
+#: ckanext/kata/validators.py:264
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: -'/,:(). "
 "Mismatching strings: \"%s\""
 msgstr ""
 
-#: ckanext/kata/validators.py:286
+#: ckanext/kata/validators.py:283
 #, python-format
 msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
 msgstr ""
 
-#: ckanext/kata/validators.py:298
+#: ckanext/kata/validators.py:295
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 
-#: ckanext/kata/validators.py:309
+#: ckanext/kata/validators.py:306
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:321
+#: ckanext/kata/validators.py:318
 msgid "Duplicate titles for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:353
+#: ckanext/kata/validators.py:350
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:365
+#: ckanext/kata/validators.py:362
 msgid "Missing compulsory distributor contact"
 msgstr ""
 
-#: ckanext/kata/validators.py:416
+#: ckanext/kata/validators.py:413
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr ""
@@ -567,6 +571,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:7
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:49
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:114
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:21
 msgid "URL"
 msgstr ""
 
@@ -1632,18 +1637,6 @@ msgstr ""
 msgid "View dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/new_resource.html:9
-msgid "Add data to the dataset"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/new_resource.html:18
-msgid "What's a resource?"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/new_resource.html:20
-msgid "A resource can be any file or link to a file containing useful data."
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/package_rights.html:11
 #: ckanext/kata/theme/templates/snippets/related.html:2
 msgid "Related"
@@ -1694,7 +1687,7 @@ msgid "Email address"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/package_rights.html:73
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:29
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:35
 msgid "john.doe@example.com"
 msgstr ""
 
@@ -1980,6 +1973,14 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/info.html:15
 msgid "Edit Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/info.html:22
+msgid "Metadata documents"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/info.html:33
+msgid "Add new document"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/languages.html:2
@@ -3949,8 +3950,9 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:47
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:112
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:21
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:61
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:27
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:74
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:26
 msgid "Name"
 msgstr ""
 
@@ -3960,7 +3962,7 @@ msgid "Organisation"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:50
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:88
 msgid "Funding id"
 msgstr ""
 
@@ -4036,7 +4038,7 @@ msgid "E-Mail"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:115
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:25
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:31
 msgid "Phone"
 msgstr ""
 
@@ -4129,11 +4131,11 @@ msgstr ""
 msgid "Distributor / publisher contact information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:21
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:27
 msgid "John Doe"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:22
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:28
 msgid ""
 "Field is compulsory.<br /><br />Type the name of the publisher. Publisher is "
 "someone or something that can be contacted if more information about the data"
@@ -4141,39 +4143,39 @@ msgid ""
 "be contacted."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:25
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:31
 msgid "+35844122123"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:26
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:32
 msgid ""
 "Field is compulsory.<br /><br />Type the contact phone number. The phone "
 "number must be in form \"+35812341234\"."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:29
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:35
 #: ckanext/kata/theme/templates/user/edit_user_form.html:27
 #: ckanext/kata/theme/templates/user/new_user_form.html:14
 #: ckanext/kata/theme/templates/user/read.html:120
 msgid "Email"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:30
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:36
 msgid ""
 "Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail "
 "address is not shown publicly."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:33
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:73
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:39
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:78
 msgid "Homepage"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:33
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:39
 msgid "http://johndoe.com/contact"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:34
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:40
 msgid ""
 "Field is compulsory.<br /><br />Type a valid web address to your web page. In"
 " case you don't have one, you could for example give an address to your "
@@ -4181,68 +4183,68 @@ msgid ""
 "origin of the dataset in case of need."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:41
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:54
 msgid "Project that produced this dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:43
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:56
 msgid "This dataset was produced in a project."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:61
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:74
 msgid "my project"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:62
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:75
 msgid ""
 "Field is compulsory if checkbox 'This dataset was produced in a project.' is "
 "checked.<br /><br />Type the project's name."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:65
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:78
+msgid "http://myproject"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:79
+msgid ""
+"Field is compulsory if checkbox 'This dataset was produced in a project.' is "
+"checked.<br /><br />Type the project's homepage"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:84
 msgid "my funder"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:66
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:85
 msgid ""
 "Field is compulsory if checkbox 'This dataset was produced in a project.' is "
 "checked.<br /><br />Type the project funder's name."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:88
 msgid "1234"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:70
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:89
 msgid ""
 "Field is compulsory if checkbox 'This dataset was produced in a project.' is "
 "checked.<br /><br />Type the project's funding id. The funding id is not "
 "shown publicly."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:73
-msgid "http://myproject"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:74
-msgid ""
-"Field is compulsory if checkbox 'This dataset was produced in a project.' is "
-"checked.<br /><br />Type the project's homepage"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:86
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:103
 msgid "Owner information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:102
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:119
 msgid "Owner identity"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:104
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:121
 msgid "identification URL or name"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:106
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:123
 msgid ""
 "Field is compulsory.<br /><br />Type the dataset owner's name or an "
 "identifier, for example an ORCID identifier."
@@ -4793,6 +4795,22 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:42
 msgid "eg. Matematiikka"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:8
+msgid "Document"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:13
+msgid "You must be logged in to upload a file."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:21
+msgid "Automatically generated"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:26
+msgid "eg. Description of variables"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:8
