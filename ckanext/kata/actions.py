@@ -186,6 +186,22 @@ def package_update(context, data_dict):
                     'extras_as_string': True}
     temp_pkg_dict = ckan.logic.action.get.package_show(temp_context, data_dict)
 
+    # API needs distributor
+    distributor = False
+    for agent in data_dict.get('agent', ''):
+        if agent.get('role') == 'distributor':
+            distributor = True
+    if not distributor and temp_pkg_dict.get('agent') is not None:
+        # Harvest objects do not have agents
+        for agent in temp_pkg_dict.get('agent'):
+            if agent.get('role') == 'distributor':
+                data_dict['agent'].append({'name': agent.get('name', u''),
+                                           'role': u'distributor',
+                                           'id': agent.get('id', u''),
+                                           'fundingid': agent.get('fundingid', u''),
+                                           'organisation': agent.get('organisation', u''),
+                                           'URL': agent.get('URL', u'')})
+
     old_resources = temp_pkg_dict.get('resources', [])
 
     if not 'resources' in data_dict:
