@@ -1014,3 +1014,17 @@ input, button, select, textarea {
     margin-left: 20px;
     float: right;
 }
+
+/* Disable tab selection effects on the resource type selector / upload link */
+.dataset-form-resource-types input[type=radio]:checked + label:after {
+  background-image: none !important;
+}
+
+/* Make the text in the resource type selector / upload link always bold */
+.dataset-form-resource-types label {
+  font-weight: normal !important;
+}
+
+#resource-upload-btn {
+  padding-bottom: 8px;
+}
