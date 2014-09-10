@@ -14,6 +14,9 @@ import pylons.config as config
 import pairtree.storage_exceptions as storage_exceptions
 from ckanext.kata import settings
 from ckanext.kata.utils import log
+import magic
+from ckan.logic import ValidationError
+from ckan.common import _
 
 log = logging.getLogger(__name__)     # pylint: disable=invalid-name
 
@@ -66,11 +69,21 @@ def extract_text(resource_url, format):
         converted_path = original_path
 
     if converted_path is not None:
-        log.debug("Reading from %s" % converted_path)
-        with codecs.open(converted_path, mode='r', encoding='utf-8') as text_file:
-            text = text_file.read()
-            log.debug("Resource plain text contents:")
-            log.debug(text)
+        log.debug("Reading from %s", converted_path)
+        try:
+            with codecs.open(converted_path, mode='r', encoding='utf-8') as text_file:
+                text = text_file.read()
+        except UnicodeDecodeError:
+            log.debug("Failed to open file using UTF-8 encoding. Trying to guess encoding.")
+            try:
+                encoding = magic.Magic(mime_encoding=True).from_file(converted_path)
+                with codecs.open(converted_path, mode='r', encoding=encoding) as text_file:
+                    text = text_file.read()
+            except:
+                text = u""
+                #raise ValidationError({'resources': [[_("Failed to detect file encoding")]]})
+        log.debug("Resource plain text contents:")
+        log.debug(text)
     else:
         text = u""
 
