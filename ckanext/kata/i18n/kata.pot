@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-08 18:09+0300\n"
+"POT-Creation-Date: 2014-09-11 10:54+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,71 +17,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:72 ckanext/kata/converters.py:173
+#: ckanext/kata/actions.py:76 ckanext/kata/converters.py:173
 msgid "Paper"
 msgstr ""
 
-#: ckanext/kata/actions.py:103
+#: ckanext/kata/actions.py:107
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:442 ckanext/kata/actions.py:499
+#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:526
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:453 ckanext/kata/actions.py:510
+#: ckanext/kata/actions.py:480 ckanext/kata/actions.py:537
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:459
+#: ckanext/kata/actions.py:486
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:463
+#: ckanext/kata/actions.py:490
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:467
+#: ckanext/kata/actions.py:494
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:471
+#: ckanext/kata/actions.py:498
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:475
+#: ckanext/kata/actions.py:502
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:516
+#: ckanext/kata/actions.py:543
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:520
+#: ckanext/kata/actions.py:547
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:524
+#: ckanext/kata/actions.py:551
 msgid "You can not add yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:529
+#: ckanext/kata/actions.py:556
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:578
+#: ckanext/kata/actions.py:605
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:612
+#: ckanext/kata/actions.py:639
 msgid "You don't have permission to remove this user."
 msgstr ""
 
-#: ckanext/kata/actions.py:643
+#: ckanext/kata/actions.py:670
 msgid "You are not allowed to create public datasets for this organization."
 msgstr ""
 
@@ -95,78 +95,78 @@ msgstr ""
 msgid "User %s not authorized to delete package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:202
+#: ckanext/kata/controllers.py:248
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of package"
 " %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:205 ckanext/kata/controllers.py:251
+#: ckanext/kata/controllers.py:251 ckanext/kata/controllers.py:297
 msgid "A request is already pending"
 msgstr ""
 
-#: ckanext/kata/controllers.py:208 ckanext/kata/controllers.py:254
+#: ckanext/kata/controllers.py:254 ckanext/kata/controllers.py:300
 msgid "You must be logged in to request edit access"
 msgstr ""
 
-#: ckanext/kata/controllers.py:228
+#: ckanext/kata/controllers.py:274
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:233
+#: ckanext/kata/controllers.py:279
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:468 ckanext/kata/controllers.py:768
+#: ckanext/kata/controllers.py:514 ckanext/kata/controllers.py:814
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:470
+#: ckanext/kata/controllers.py:516
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:472
+#: ckanext/kata/controllers.py:518
 msgid "No owner found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:474 ckanext/kata/controllers.py:526
-#: ckanext/kata/controllers.py:567 ckanext/kata/controllers.py:599
-#: ckanext/kata/controllers.py:621
+#: ckanext/kata/controllers.py:520 ckanext/kata/controllers.py:572
+#: ckanext/kata/controllers.py:613 ckanext/kata/controllers.py:645
+#: ckanext/kata/controllers.py:667
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:564
+#: ckanext/kata/controllers.py:610
 #, python-format
 msgid "Data access request for dataset / Datapyynto tietoaineistolle %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:587
+#: ckanext/kata/controllers.py:633
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:596 ckanext/kata/controllers.py:618
+#: ckanext/kata/controllers.py:642 ckanext/kata/controllers.py:664
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:659
+#: ckanext/kata/controllers.py:705
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:661
+#: ckanext/kata/controllers.py:707
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:718
+#: ckanext/kata/controllers.py:764
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:753 ckanext/kata/validators.py:154
+#: ckanext/kata/controllers.py:799 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:772
+#: ckanext/kata/controllers.py:818
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
@@ -221,76 +221,76 @@ msgstr ""
 msgid "Producer"
 msgstr ""
 
-#: ckanext/kata/validators.py:56
+#: ckanext/kata/validators.py:57
 #, python-format
 msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 
-#: ckanext/kata/validators.py:103
+#: ckanext/kata/validators.py:104
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:106 ckanext/kata/validators.py:126
+#: ckanext/kata/validators.py:107 ckanext/kata/validators.py:127
 msgid "Invalid date"
 msgstr ""
 
-#: ckanext/kata/validators.py:123
+#: ckanext/kata/validators.py:124
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: 2001-03-01 "
 "or 2001-03"
 msgstr ""
 
-#: ckanext/kata/validators.py:164
+#: ckanext/kata/validators.py:165
 msgid "Invalid characters: <> not allowed"
 msgstr ""
 
-#: ckanext/kata/validators.py:173
+#: ckanext/kata/validators.py:174
 msgid "Value must contain alphanumeric characters"
 msgstr ""
 
-#: ckanext/kata/validators.py:181
+#: ckanext/kata/validators.py:182
 msgid "Invalid telephone number, must be like +13221221"
 msgstr ""
 
-#: ckanext/kata/validators.py:243
+#: ckanext/kata/validators.py:244
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
 msgstr ""
 
-#: ckanext/kata/validators.py:264
+#: ckanext/kata/validators.py:265
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: -'/,:(). "
 "Mismatching strings: \"%s\""
 msgstr ""
 
-#: ckanext/kata/validators.py:283
+#: ckanext/kata/validators.py:284
 #, python-format
 msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
 msgstr ""
 
-#: ckanext/kata/validators.py:295
+#: ckanext/kata/validators.py:296
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 
-#: ckanext/kata/validators.py:306
+#: ckanext/kata/validators.py:307
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:318
+#: ckanext/kata/validators.py:319
 msgid "Duplicate titles for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:350
+#: ckanext/kata/validators.py:351
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:362
+#: ckanext/kata/validators.py:363
 msgid "Missing compulsory distributor contact"
 msgstr ""
 
-#: ckanext/kata/validators.py:413
+#: ckanext/kata/validators.py:414 ckanext/kata/validators.py:450
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr ""
@@ -420,7 +420,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/kata/help.html:124
-#: ckanext/kata/theme/templates/kata/help.html:273
+#: ckanext/kata/theme/templates/kata/help.html:288
 #: ckanext/kata/theme/templates/package/search.html:15
 #: ckanext/kata/theme/templates/user/read.html:14
 msgid "Add Dataset"
@@ -976,7 +976,7 @@ msgid "Kata instructions"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:14
-#: ckanext/kata/theme/templates/kata/help.html:264
+#: ckanext/kata/theme/templates/kata/help.html:279
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:2
 msgid "General information"
 msgstr ""
@@ -1003,7 +1003,7 @@ msgid "Dataset: a single set of metadata (of data)"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:29
-#: ckanext/kata/theme/templates/kata/help.html:267
+#: ckanext/kata/theme/templates/kata/help.html:282
 msgid "Search (Datasets)"
 msgstr ""
 
@@ -1168,7 +1168,7 @@ msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:107
-#: ckanext/kata/theme/templates/kata/help.html:270
+#: ckanext/kata/theme/templates/kata/help.html:285
 #: ckanext/kata/theme/templates/package/package_rights.html:9
 msgid "Dataset"
 msgstr ""
@@ -1416,7 +1416,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:223
-#: ckanext/kata/theme/templates/kata/help.html:276
+#: ckanext/kata/theme/templates/kata/help.html:291
 msgid "Additional features"
 msgstr ""
 
@@ -1487,27 +1487,67 @@ msgid ""
 "user accounts, like visitor and logged_in, nor yourself."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:259
+#: ckanext/kata/theme/templates/kata/help.html:252
+msgid "Metadata supplements"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:254
+msgid ""
+"If you have additional documents that describe your data beyond the required "
+"and recommended fields, you can provide such extra information as metadata "
+"supplements. An example of a useful supplement would be a detailed "
+"description of variables in your data."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:257
+msgid ""
+"Adding supplements to the metadata requires that you have editor privileges "
+"to the dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:260
+msgid "To add supplementary metadata, follow these steps:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:262
+msgid ""
+"Open the dataset for editing and find the \"Add new document\" button on the "
+"left."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:263
+msgid ""
+"In the following form, click the button to upload the supplementary document "
+"from your computer to Kata."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:264
+msgid ""
+"Finally, be sure to confirm adding the supplement to your dataset by clicking"
+" \"Add\" at the bottom of the form."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:274
 msgid "Table of contents"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:279
+#: ckanext/kata/theme/templates/kata/help.html:294
 msgid "- User profile"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:282
+#: ckanext/kata/theme/templates/kata/help.html:297
 msgid "- Stats"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:285
+#: ckanext/kata/theme/templates/kata/help.html:300
 msgid "- REMS"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:288
+#: ckanext/kata/theme/templates/kata/help.html:303
 msgid "- Dataset administration"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:296
+#: ckanext/kata/theme/templates/kata/help.html:311
 msgid "For additional help send email to: "
 msgstr ""
 
