@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-09-08 18:09+0300\n"
+"POT-Creation-Date: 2014-09-11 15:32+0300\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -17,71 +17,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:72 ckanext/kata/converters.py:173
+#: ckanext/kata/actions.py:76 ckanext/kata/converters.py:173
 msgid "Paper"
 msgstr "Artikkeli"
 
-#: ckanext/kata/actions.py:103
+#: ckanext/kata/actions.py:107
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
 
-#: ckanext/kata/actions.py:442 ckanext/kata/actions.py:499
+#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:526
 msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
-#: ckanext/kata/actions.py:453 ckanext/kata/actions.py:510
+#: ckanext/kata/actions.py:480 ckanext/kata/actions.py:537
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
-#: ckanext/kata/actions.py:459
+#: ckanext/kata/actions.py:486
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
 
-#: ckanext/kata/actions.py:463
+#: ckanext/kata/actions.py:490
 msgid "No such user and role combination"
 msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
 
-#: ckanext/kata/actions.py:467
+#: ckanext/kata/actions.py:494
 msgid "Built-in users can not be removed"
 msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
 
-#: ckanext/kata/actions.py:471
+#: ckanext/kata/actions.py:498
 msgid "You can not remove yourself"
 msgstr "Et voi poistaa itseäsi"
 
-#: ckanext/kata/actions.py:475
+#: ckanext/kata/actions.py:502
 #, python-format
 msgid "User removed from role %s"
 msgstr "Käyttäjä poistettu roolista %s"
 
-#: ckanext/kata/actions.py:516
+#: ckanext/kata/actions.py:543
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
-#: ckanext/kata/actions.py:520
+#: ckanext/kata/actions.py:547
 #, python-format
 msgid "User already has %s rights"
 msgstr "Käyttäjällä on jo %s -oikeudet"
 
-#: ckanext/kata/actions.py:524
+#: ckanext/kata/actions.py:551
 msgid "You can not add yourself"
 msgstr "Et voi lisätä itseäsi"
 
-#: ckanext/kata/actions.py:529
+#: ckanext/kata/actions.py:556
 msgid "User added"
 msgstr "Käyttäjä lisätty"
 
-#: ckanext/kata/actions.py:578
+#: ckanext/kata/actions.py:605
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:612
+#: ckanext/kata/actions.py:639
 msgid "You don't have permission to remove this user."
 msgstr ""
 
-#: ckanext/kata/actions.py:643
+#: ckanext/kata/actions.py:670
 msgid "You are not allowed to create public datasets for this organization."
 msgstr ""
 
@@ -95,79 +95,79 @@ msgstr "Resurssia %s ei voi muokata"
 msgid "User %s not authorized to delete package %s"
 msgstr "Käyttäjällä %s ei ole oikeuksia poistaa tietoaineistoa %s"
 
-#: ckanext/kata/controllers.py:202
+#: ckanext/kata/controllers.py:248
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of "
 "package %s"
 msgstr "Pyyntö muokkausoikeuksien saamiseksi lähetetään aineiston %s ylläpitäjälle"
 
-#: ckanext/kata/controllers.py:205 ckanext/kata/controllers.py:251
+#: ckanext/kata/controllers.py:251 ckanext/kata/controllers.py:297
 msgid "A request is already pending"
 msgstr "Pyyntö on jo jonossa"
 
-#: ckanext/kata/controllers.py:208 ckanext/kata/controllers.py:254
+#: ckanext/kata/controllers.py:254 ckanext/kata/controllers.py:300
 msgid "You must be logged in to request edit access"
 msgstr "Sinun täytyy olla kirjautunut pyytääksesi muokkausoikeuksia"
 
-#: ckanext/kata/controllers.py:228
+#: ckanext/kata/controllers.py:274
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr "Käyttäjällä %s on nyt muokkausoikeudet tietoaineistoon %s"
 
-#: ckanext/kata/controllers.py:233
+#: ckanext/kata/controllers.py:279
 msgid "No such request found!"
 msgstr "Pyyntöä ei löytynyt."
 
-#: ckanext/kata/controllers.py:468 ckanext/kata/controllers.py:768
+#: ckanext/kata/controllers.py:514 ckanext/kata/controllers.py:814
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
-#: ckanext/kata/controllers.py:470
+#: ckanext/kata/controllers.py:516
 msgid "No message"
 msgstr "Viesti on tyhjä"
 
-#: ckanext/kata/controllers.py:472
+#: ckanext/kata/controllers.py:518
 msgid "No owner found"
 msgstr "Omistajaa ei löydetty"
 
-#: ckanext/kata/controllers.py:474 ckanext/kata/controllers.py:526
-#: ckanext/kata/controllers.py:567 ckanext/kata/controllers.py:599
-#: ckanext/kata/controllers.py:621
+#: ckanext/kata/controllers.py:520 ckanext/kata/controllers.py:572
+#: ckanext/kata/controllers.py:613 ckanext/kata/controllers.py:645
+#: ckanext/kata/controllers.py:667
 msgid "Please login"
 msgstr "Kirjaudu sisään"
 
-#: ckanext/kata/controllers.py:564
+#: ckanext/kata/controllers.py:610
 #, python-format
 msgid "Data access request for dataset / Datapyynto tietoaineistolle %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:587
+#: ckanext/kata/controllers.py:633
 #, fuzzy
 msgid "Dataset not found"
 msgstr "Käyttäjää ei löytynyt"
 
-#: ckanext/kata/controllers.py:596 ckanext/kata/controllers.py:618
+#: ckanext/kata/controllers.py:642 ckanext/kata/controllers.py:664
 msgid "Already contacted"
 msgstr "Olet ottanut yhteyttä jo aiemmin"
 
-#: ckanext/kata/controllers.py:659
+#: ckanext/kata/controllers.py:705
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:661
+#: ckanext/kata/controllers.py:707
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr " (Tai jos käytät OpenID:tä, sitä ei ole liitetty käyttäjätiliisi.)"
 
-#: ckanext/kata/controllers.py:718
+#: ckanext/kata/controllers.py:764
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:753 ckanext/kata/validators.py:154
+#: ckanext/kata/controllers.py:799 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
-#: ckanext/kata/controllers.py:772
+#: ckanext/kata/controllers.py:818
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
@@ -222,22 +222,22 @@ msgstr "Omistaja"
 msgid "Producer"
 msgstr ""
 
-#: ckanext/kata/validators.py:56
+#: ckanext/kata/validators.py:57
 #, python-format
 msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 "Tagin \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: \"\n"
 "\"'_.()/#+."
 
-#: ckanext/kata/validators.py:103
+#: ckanext/kata/validators.py:104
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr "Päivämäärän muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
 
-#: ckanext/kata/validators.py:106 ckanext/kata/validators.py:126
+#: ckanext/kata/validators.py:107 ckanext/kata/validators.py:127
 msgid "Invalid date"
 msgstr "Vääränlainen päivämäärä"
 
-#: ckanext/kata/validators.py:123
+#: ckanext/kata/validators.py:124
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: "
 "2001-03-01 or 2001-03"
@@ -246,26 +246,26 @@ msgstr ""
 "\"\n"
 "\"2001-01-01"
 
-#: ckanext/kata/validators.py:164
+#: ckanext/kata/validators.py:165
 msgid "Invalid characters: <> not allowed"
 msgstr "Kiellettyjä merkkejä: <> ei sallittu"
 
-#: ckanext/kata/validators.py:173
+#: ckanext/kata/validators.py:174
 msgid "Value must contain alphanumeric characters"
 msgstr "Arvon täytyy sisältää aakkosnumeerisia merkkejä"
 
-#: ckanext/kata/validators.py:181
+#: ckanext/kata/validators.py:182
 msgid "Invalid telephone number, must be like +13221221"
 msgstr "Vääränmuotoinen puhelinnumero, vaaditaan muotoa +13221221."
 
-#: ckanext/kata/validators.py:243
+#: ckanext/kata/validators.py:244
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
 msgstr ""
 "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: -,"
 
-#: ckanext/kata/validators.py:264
+#: ckanext/kata/validators.py:265
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
@@ -275,7 +275,7 @@ msgstr ""
 "merkeistä (ascii) ja näistä erikoismerkeistä: -'/,:(). Kelpaamattomat "
 "merkkijonot: \"%s\""
 
-#: ckanext/kata/validators.py:283
+#: ckanext/kata/validators.py:284
 #, python-format
 msgid ""
 "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: "
@@ -284,30 +284,30 @@ msgstr ""
 "Tiedostotyypin (mimetyyppi) \"%s\" pitää koostua alfanumeerisita "
 "merkeistä (ascii) ja näistä erikoismerkeistä: _'+./"
 
-#: ckanext/kata/validators.py:295
+#: ckanext/kata/validators.py:296
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 "Algoritmin \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: _-()"
 
-#: ckanext/kata/validators.py:306
+#: ckanext/kata/validators.py:307
 msgid "First title can not be empty"
 msgstr "Ensimmäinen otsikko ei voi olla tyhjä"
 
-#: ckanext/kata/validators.py:318
+#: ckanext/kata/validators.py:319
 msgid "Duplicate titles for a language not permitted"
 msgstr "Et voi syöttää useampia otsikoita samalla kielellä"
 
-#: ckanext/kata/validators.py:350
+#: ckanext/kata/validators.py:351
 msgid "Missing compulsory agent: {0}"
 msgstr "Pakollinen toimija puuttuu: {0}"
 
-#: ckanext/kata/validators.py:362
+#: ckanext/kata/validators.py:363
 msgid "Missing compulsory distributor contact"
 msgstr "Pakollinen jakelijan tieto puuttuu"
 
-#: ckanext/kata/validators.py:413
+#: ckanext/kata/validators.py:414 ckanext/kata/validators.py:450
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr "Puuttuva arvo"
@@ -887,43 +887,44 @@ msgid "Geographic coverage"
 msgstr "Maantieteellinen kattavuus"
 
 #: ckanext/kata/theme/templates/kata/faq.html:3
-msgid "Kata FAQ"
-msgstr "Kata FAQ"
+msgid "Etsin FAQ"
+msgstr "Etsin FAQ"
 
 #: ckanext/kata/theme/templates/kata/faq.html:12
 #: ckanext/kata/theme/templates/kata/faq.html:63
-msgid "Kata and metadata"
-msgstr "Kata ja metadata"
+msgid "Etsin and metadata"
+msgstr "Etsin ja metadata"
 
 #: ckanext/kata/theme/templates/kata/faq.html:14
-msgid "What is Kata?"
-msgstr "Mikä Kata on?"
+msgid "What is Etsin?"
+msgstr "Mikä Etsin on?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:15
 msgid ""
-"Kata is a metadata catalogue service of TTA (Finnish National Research "
-"Data Initiative). TTA is a data effort of Ministry of Education and "
-"Culture."
+"Etsin is a database and search service for research data. The service is "
+"produced as part of the Finnish National Research Data Initiative (TTA), "
+"an effort by the Ministry of Education and Culture."
 msgstr ""
-"Kata on TTA:n (Tutkimuksen Tietoaineistot) metatietokatalogipalvelu. TTA "
-"on opetus- ja kulttuuriministeriön hanke."
+"Etsin on hakupalvelu tutkimuksen tietoaineistoille. Palvelu on osa "
+"opetus- ja kulttuuriministeriön Tutkimuksen tietoaineistot (TTA) "
+"-hanketta."
 
 #: ckanext/kata/theme/templates/kata/faq.html:16
-msgid "What kind of data does Kata contain?"
-msgstr "Minkälaista dataa Kata sisältää?"
+msgid "What kind of data does Etsin contain?"
+msgstr "Minkälaista dataa Etsin sisältää?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:17
 msgid ""
-"Kata contains metadata of research data, from various branches of "
-"science. Kata does not contain the actual data itself, but the metadata "
-"catalogue allows you to browse and search for available data and lets you"
-" know how and where to gain access to it."
+"Etsin contains metadata of research data, from various branches of "
+"science. Etsin does not contain the actual data itself, but the service "
+"allows you to browse and search for available data and lets you know how "
+"and where to gain access to it."
 msgstr ""
-"Kata sisältää tutkimusaineistojen metadataa erinäisiltä tieteenaloilta. "
-"Kata ei sisällä varsinaista tutkimusdataa itsessään, mutta "
-"metatietokatalogin avulla voit selata ja hakea saatavilla olevia "
-"aineistoja. Metatiedoista selviää myös, mistä ja miten varsinainen "
-"tutkimusdata on saatavilla."
+"Etsin sisältää tutkimusaineistojen metadataa erinäisiltä tieteenaloilta. "
+"Etsin ei sisällä varsinaista tutkimusdataa itsessään, mutta metatietojen "
+"perusteella voit selata ja hakea saatavilla olevia aineistoja. "
+"Metatiedoista selviää myös, mistä ja miten varsinainen tutkimusdata on "
+"saatavilla."
 
 #: ckanext/kata/theme/templates/kata/faq.html:20
 #: ckanext/kata/theme/templates/kata/faq.html:66
@@ -959,14 +960,16 @@ msgstr ""
 "täyttää niihin mitään. Miten poistan ne?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:25
-msgid "You don't need to remove them. Leave them empty and Kata will ignore them."
+msgid ""
+"You don't need to remove them. Leave them empty and Etsin will ignore "
+"them."
 msgstr ""
-"Sinun ei tarvitse poistaa niitä. Jätä ne tyhjäksi ja Kata jättää ne "
+"Sinun ei tarvitse poistaa niitä. Jätä ne tyhjäksi ja Etsin jättää ne "
 "huomiotta."
 
 #: ckanext/kata/theme/templates/kata/faq.html:26
-msgid "How can I remove a dataset from the catalogue?"
-msgstr "Kuinka poistan aineiston tiedot katalogista?"
+msgid "How can I remove a dataset from Etsin?"
+msgstr "Kuinka poistan aineiston tiedot Etsimestä?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:27
 msgid ""
@@ -975,7 +978,7 @@ msgid ""
 "privileges to the dataset in order to remove it."
 msgstr ""
 "Avaa tietoaineiston muokkaussivu. Sivun lopussa on painike, jolla "
-"aineiston metatiedot voi poistaa Katasta. Tarvitset muokkausoikeudet "
+"aineiston metatiedot voi poistaa Etsimestä. Tarvitset muokkausoikeudet "
 "aineiston metatietoihin, jotta voisit poistaa ne."
 
 #: ckanext/kata/theme/templates/kata/faq.html:28
@@ -984,13 +987,13 @@ msgstr "Mitä tarkoittaa uuden lupahakemuslomakkeen luonti?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:29
 msgid ""
-"It means that Kata creates automatically a default workflow to REMS "
+"It means that Etsin creates automatically a default workflow to REMS "
 "(Resource Entitlement Management System). REMS is a service for managing "
 "access rights to research data. With it you can specify that a user must "
 "send an application in the REMS service to you to gain access to your "
 "data. Find out more from: "
 msgstr ""
-"Se tarkoittaa Katan automaattisesti luomaa oletustyövuota REMS:iin "
+"Se tarkoittaa Etsimen automaattisesti luomaa oletustyövuota REMS:iin "
 "(Resource Entitlement Management System). REMS on palvelu, jolla "
 "hallinnoidaan pääsyoikeuksia tutkimusdataan. Sen avulla voit määritellä, "
 "että käyttäjän pitää lähettää sinulle hakemus REMS-palvelussa, jonka "
@@ -1064,20 +1067,20 @@ msgid "User related features"
 msgstr "Käyttäjiin liittyvät ominaisuudet"
 
 #: ckanext/kata/theme/templates/kata/faq.html:45
-msgid "I opened Kata and chose log in, then I was suddenly already logged in."
+msgid "I opened Etsin and chose log in, then I was suddenly already logged in."
 msgstr ""
-"Avasin Katan ja valitsin Kirjaudu sisään, yhtäkkiä olinkin jo kirjautunut"
-" sisään."
+"Avasin Etsimen ja valitsin Kirjaudu sisään, mutta yhtäkkiä olinkin jo "
+"kirjautunut sisään."
 
 #: ckanext/kata/theme/templates/kata/faq.html:46
 msgid ""
-"If this happened, you opened Kata via an unencrypted connection, that is "
-"http://kata.csc.fi. The identification cookie is only sent via an "
+"If this happened, you opened Etsin via an unencrypted connection, that is"
+" http://kata.csc.fi. The identification cookie is only sent via an "
 "encrypted connection and thus you could not be identified. Choosing \"Log"
 " in\" redirected you to use encrypted https connection. At the same time "
 "your identification cookie was sent and you were recognized."
 msgstr ""
-"Tämä tapahtui, koska avasit Katan suojaamatonta yhteyttä pitkin, "
+"Tämä tapahtui, koska avasit Etsimen suojaamatonta yhteyttä pitkin, "
 "esimerkiksi osoitetta http://kata.csc.fi käyttäen. Tällöin "
 "kirjautumiskeksiä (cookie) ei lähetetty, koska yhteytesi oli suojaamaton."
 " Kun valitsit Kirjaudu sitään, sinut ohjattiin käyttämään salattua https-"
@@ -1092,8 +1095,8 @@ msgstr ""
 "osoitteeseen: "
 
 #: ckanext/kata/theme/templates/kata/help.html:3
-msgid "Kata instructions"
-msgstr "Katan käyttöohjeet"
+msgid "Etsin instructions"
+msgstr "Etsimen käyttöohjeet"
 
 #: ckanext/kata/theme/templates/kata/help.html:14
 #: ckanext/kata/theme/templates/kata/help.html:264
@@ -1103,13 +1106,12 @@ msgstr "Yleistiedot"
 
 #: ckanext/kata/theme/templates/kata/help.html:17
 msgid ""
-"This help page of the metadata catalogue will guide you through the most "
-"common tasks in the service. Use the right side's links to quickly "
-"navigate to the desired section."
+"This help page will guide you through the most common tasks in the "
+"service. Use the links on the left side of the page to quickly navigate "
+"to the desired section."
 msgstr ""
-"Tämä Kata-metadatakatalogin ohjesivu ohjaa sinua tavallisimmissa palvelun"
-" ominaisuuksissa. Käytä oikean laidan linkkejä navigoidaksesi nopeasti "
-"haluamaasi osioon."
+"Tämä ohjesivu opastaa sinua palvelun tavallisimmissa ominaisuuksissa. "
+"Käytä vasemman laidan linkkejä navigoidaksesi nopeasti haluamaasi osioon."
 
 #: ckanext/kata/theme/templates/kata/help.html:20
 msgid ""
@@ -1174,16 +1176,16 @@ msgid ""
 "searches. You can add as many search criteria as you want from the "
 "\"ADD\" button: Choose the desired target field from the menu and add "
 "logical operators from the leftmost menu. Note that the AND operators are"
-" grouped together by Kata so that they will take precedence over criteria"
-" bound by OR."
+" grouped together so that they will take precedence over criteria bound "
+"by OR."
 msgstr ""
 "Tarkennettu Haku -ominaisuus mahdollistaa monimutkaisempien hakujen "
 "suorittamisen helposti. Voit lisätä niin monta hakukriteeriä kuin haluat "
 "\"ADD\" -painikkeesta: valitse haluamasi kenttä alasvetovalikosta ja "
 "looginen operaattori vasemmanpuolimmaisesta valikosta. Huomaa, että AND-"
-"operaattorilla (JA-operaattori) erotellut parametrit ryhmitellään yhteen "
-"Katan toimesta. Tällöin AND-operaattori on priorisoiva esimerkiksi OR-"
-"operaattoriin (TAI-operaattori) nähden."
+"operaattorilla (JA-operaattori) erotellut parametrit ryhmitellään yhteen."
+" Tällöin AND-operaattori on priorisoiva esimerkiksi OR-operaattoriin "
+"(TAI-operaattori) nähden."
 
 #: ckanext/kata/theme/templates/kata/help.html:42
 msgid "Wildcards"
@@ -1227,15 +1229,15 @@ msgstr "Loogiset operaattorit ja ryhmittely"
 
 #: ckanext/kata/theme/templates/kata/help.html:60
 msgid ""
-"The search engine Kata uses supports the boolean operators AND, \"+\", "
-"OR, NOT and \"-\". Note that the boolean operators must be provided as "
-"upper case characters. To search datasets containing both \"climate\" and"
-" \"rain\" you would type: "
+"The search engine used by Etsin supports the boolean operators AND, "
+"\"+\", OR, NOT and \"-\". Note that the boolean operators must be "
+"provided as upper case characters. To search datasets containing both "
+"\"climate\" and \"rain\" you would type: "
 msgstr ""
-"Katan käyttämä hakukone tukee boolen operaattoreita AND, \"+\", OR, NOT "
-"ja \"-\". Huomaa, että boolen operaattorit tulee kirjoittaa isoilla "
-"kirjaimilla. Etsiäksesi tietoaineistoja, joissa on sekä \"ilmasto\" että "
-"\"sade\", kirjoita hakutermi: "
+"Etsimen käyttämä hakutekniikka tukee boolen operaattoreita AND, \"+\", "
+"OR, NOT ja \"-\". Huomaa, että boolen operaattorit tulee kirjoittaa "
+"isoilla kirjaimilla. Etsiäksesi tietoaineistoja, joissa on sekä "
+"\"ilmasto\" että \"sade\", kirjoita hakutermi: "
 
 #: ckanext/kata/theme/templates/kata/help.html:63
 msgid "climate AND rain"
@@ -1512,25 +1514,25 @@ msgstr "Aineiston tunnistustiedot:"
 #: ckanext/kata/theme/templates/kata/help.html:163
 msgid ""
 "Permanent identifier: The permanent identifier is the data's unique "
-"identifier. If none is provided, Kata will give it an URN identifier from"
-" National Library of Finland's address space, from a subspace given to "
-"Kata. This field can NOT be changed afterwards."
+"identifier. If none is provided, Etsin will give it an URN identifier "
+"from the address space of the National Library of Finland, from a "
+"subspace given to Etsin. This field can NOT be changed afterwards."
 msgstr ""
 "Pysyvä tunniste: pysyvä tunniste on datan yksilöivä tunniste. Jos "
-"tällaista ei ole annettu, Kata generoi URN-tunnisteen Kansalliskirjaston "
-"tunnisteavaruudesta, Katalle annetusta aliavaruudesta. Huomaa, että tätä "
-"kenttää EI voi muokata jälkikäteen!"
+"tällaista ei ole annettu, Etsin generoi URN-tunnisteen Kansalliskirjaston"
+" tunnisteavaruudesta, Etsimelle annetusta aliavaruudesta. Huomaa, että "
+"tätä kenttää EI voi muokata jälkikäteen!"
 
 #: ckanext/kata/theme/templates/kata/help.html:166
 msgid ""
 "Version identifier: The version PID can be given or if left empty is "
-"generated by Kata. If left to Kata, it will generate an URN identifier "
-"from National Library of Finland's address space, from a subspace given "
-"to Kata."
+"generated by Etsin. Automatically generated identifiers will be URNs from"
+" the address space of the National Library of Finland, from a subspace "
+"given to Etsin."
 msgstr ""
 "Versiotunniste: versiotunniste voidaan antaa tai kenttä voidaan jättää "
-"tyhjäksi, jolloin Kata generoi siihen URN-tunnisteen Kansalliskirjaston "
-"Katalla antamasta aliavaruudesta."
+"tyhjäksi, jolloin Etsin generoi siihen URN-tunnisteen Kansalliskirjaston "
+"Etsimelle antamasta aliavaruudesta."
 
 #: ckanext/kata/theme/templates/kata/help.html:169
 msgid ""
@@ -1687,8 +1689,8 @@ msgid "Additional features"
 msgstr "Lisäominaisuudet"
 
 #: ckanext/kata/theme/templates/kata/help.html:226
-msgid "Kata contains several other features which are shortly covered here."
-msgstr "Katassa on myös muita ominaisuuksia, joita käydään läpi seuraavaksi."
+msgid "Etsin contains several other features which are shortly covered here."
+msgstr "Etsimessä on myös muita ominaisuuksia, joita käydään läpi seuraavaksi."
 
 #: ckanext/kata/theme/templates/kata/help.html:228
 msgid "User profile"
@@ -1700,23 +1702,23 @@ msgid ""
 "actions. The user profile can be accessed from the upper right corner. "
 "The upper right corner also provides a direct link to your own datasets. "
 "Note that if you have logged in using Haka, you can not change your "
-"profile information from Kata: the changes must be done by your home "
+"profile information from Etsin: the changes must be done by your home "
 "organisation."
 msgstr ""
 "Käyttäjäprofiili sisältää käyttäjätunnukseesi liitetyt tiedot, "
 "tietoaineistosi ja tapahtumat. Käyttäjäprofiiliin pääset oikean yläkulman"
 " valintapainikkeesta. Oikean yläkulman painikkeet tarjoavat myös suoran "
 "linkin omiin tietoaineistoihisi. Huomaa, että jos olet kirjautunut Haka-"
-"tunnuksilla, et voi muokata profiilitietojasi Katassa: tiedot täytyy "
-"muuttaa kotiorganisaatiostasi käsin."
+"tunnuksilla, et voi muokata profiilitietojasi Etsimessä, vaan tiedot "
+"täytyy muuttaa kotiorganisaatiostasi käsin."
 
 #: ckanext/kata/theme/templates/kata/help.html:234
 msgid ""
 "The Stats link will take you to the statistics page. The page will show "
-"you some general information about Kata, its datasets and users."
+"you some general information about Etsin, its datasets and users."
 msgstr ""
-"Tilastot-linkki vie sinut tilastosivulle. Sivu näyttää perustietoa Katan "
-"sisältämistä tietoaineistoista ja käyttäjistä."
+"Tilastot-linkki vie sinut tilastosivulle. Sivu näyttää perustietoa "
+"Etsimen sisältämistä tietoaineistoista ja käyttäjistä."
 
 #: ckanext/kata/theme/templates/kata/help.html:236
 msgid "REMS"
@@ -1724,14 +1726,14 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:238
 msgid ""
-"Kata is integrated to TTA's REMS service, Reetta. This means that you can"
-" define your data to be accessible only after an application form is "
+"Etsin is integrated to TTA's REMS service, Reetta. This means that you "
+"can define your data to be accessible only after an application form is "
 "filled and sent to you to accept in the REMS service. You can create your"
 " own workflow or use the automatically generated simple form. When a REMS"
 " application is done user can go to fill the application from the "
 "download link of the data. Read more from: "
 msgstr ""
-"Kata on integroitu TTA:n REMS-palveluun, Reettaan. Tämä tarkoittaa sitä "
+"Etsin on integroitu TTA:n REMS-palveluun, Reettaan. Tämä tarkoittaa sitä "
 "että voit määritellä datasi olevan saatavilla lupahakemuksen täyttämisen "
 "ja lähettämisen myötä. Datan omistajan roolissa hyväksyt tai hylkäät "
 "hakemuksen REMS-palvelussa ja toimitat datasi hakijalle. Voit luoda "
@@ -1757,7 +1759,7 @@ msgid ""
 "privileges) for the dataset. Type and accept the username with enter or "
 "mouse click in the \"User\" field, choose a role from \"Role\" menu and "
 "press \"Add\". If you don't find the user, he or she probably hasn't "
-"logged in to Kata yet. In this case you can send an email with your own "
+"logged in to Etsin yet. In this case you can send an email with your own "
 "message added to it. The message is not obligatory. Note, that for spam "
 "protection you must also fill the CAPTCHA field. If the displayed words "
 "are too messy, you can reload the CAPTCHA to get a new string from its "
@@ -1771,7 +1773,7 @@ msgstr ""
 "hiiren klikkauksella. Tämän jälkeen valitse sopiva rooli ja klikkaa "
 "lopuksi Lisää-painiketta. Jollet löydä haluamaasi käyttäjää, hän ei "
 "luultavasti ole vielä kirjautunut palveluun. Voit tällöin lähettää "
-"hänelle sähköpostin kirjautumisesta Kataan. Voit lisätä myös oman "
+"hänelle sähköpostin kirjautumisesta Etsimeen. Voit lisätä myös oman "
 "viestisi osaksi sähköpostiviestiä. Roskapostin estämiseksi sinun on vielä"
 " täytettävä CAPTCHA-kenttä. Kirjoita kenttään näkemäsi merkit. Jos "
 "tarjotut merkit ovat liian suttuisia, voit generoida uudet CAPTCHA-kentän"
