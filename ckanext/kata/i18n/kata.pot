@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-11 15:32+0300\n"
+"POT-Creation-Date: 2014-09-11 17:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -375,7 +375,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:88
 #: ckanext/kata/theme/templates/header.html:89
-#: ckanext/kata/theme/templates/home/index.html:98
+#: ckanext/kata/theme/templates/home/index.html:105
 #: ckanext/kata/theme/templates/package/search.html:23
 #: ckanext/kata/theme/templates/package/search.html:167
 msgid "Search"
@@ -660,123 +660,130 @@ msgid "Welcome"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:24
-msgid "What is Kata metadata catalogue?"
+#: ckanext/kata/theme/templates/kata/faq.html:14
+msgid "What is Etsin?"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:27
 msgid ""
-"Kata metadata catalogue contains metadata of research data. Here you can "
-"search and find research data for your needs or even add you own data for "
-"others to reuse."
+"Etsin is a service for gathering and finding data from various fields of "
+"research. It allows you to search for data according to your needs and to "
+"provide your own datasets for others to find and reuse."
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:30
-msgid "What is metadata?"
+msgid ""
+"The research data itself is not stored in Etsin. Rather, Etsin allows you to "
+"search for and browse datasets based on their metadata."
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:33
-msgid ""
-"Shortly explained metadata is data of data. Metadata describes important "
-"features of data which can be for example authors, subject, format and "
-"license."
+msgid "What is metadata?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:34
+#: ckanext/kata/theme/templates/home/index.html:36
 msgid ""
-"The content of metadata varies a lot depending on the data, but this service "
-"will provide a uniform set of metadata fields tailored for research data, the"
-" metadata information defined by the minimum metadata model by TTA."
+"Metadata is data about data. Metadata describes important features of the "
+"data such as authors, subjects, storage formats and licenses."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:37
+#: ckanext/kata/theme/templates/home/index.html:39
+msgid ""
+"The content of metadata varies a lot depending on the data being described. "
+"However, this service provides a common set of metadata fields tailored for "
+"research data. The metadata conforms to the minimum metadata model defined by"
+" the Finnish National Research Data Initiative (TTA)."
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:42
 msgid "Is this service for me?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:40
+#: ckanext/kata/theme/templates/home/index.html:45
 msgid ""
-"Kata service aims to collect data from various places and from various "
-"branches of science to be a single point of access to all kinds of research "
-"data."
+"Etsin aims to collect datasets from various sources and from various branches"
+" of science and to be a single point of access to all kinds of research data."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:41
+#: ckanext/kata/theme/templates/home/index.html:48
 msgid ""
-"To search for data doesn't require you to be a professional scientist or "
-"researcher - useful data can be generated and reused anywhere and by anyone."
+"You do not have to be a professional scientist or researcher in order to "
+"search for data. Useful data can be generated and reused anywhere and by "
+"anyone."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:44
-msgid "Is all data open?"
+#: ckanext/kata/theme/templates/home/index.html:51
+msgid "Is all of the data open?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:47
+#: ckanext/kata/theme/templates/home/index.html:54
 msgid ""
-"Almost all metadata is open, but it is for the author to decide how the data "
-"is accessed and by who. Nevertheless, providing your data openly is "
-"recommended."
+"Almost all of the metadata is open, but it is for the author to decide how "
+"the data itself can be accessed and by whom. Nevertheless, providing your "
+"data openly is recommended."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:50
-#: ckanext/kata/theme/templates/home/index.html:53
+#: ckanext/kata/theme/templates/home/index.html:57
+#: ckanext/kata/theme/templates/home/index.html:60
 msgid "Terms of use"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:53
+#: ckanext/kata/theme/templates/home/index.html:60
 msgid "http://www.tdata.fi/kayttoehdot"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:56
+#: ckanext/kata/theme/templates/home/index.html:63
 msgid "http://www.tdata.fi/henkilorekisteriseloste"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:56
+#: ckanext/kata/theme/templates/home/index.html:63
 msgid "Privacy policy for personal information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:69
+#: ckanext/kata/theme/templates/home/index.html:76
 msgid "Tools and additional information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:72
+#: ckanext/kata/theme/templates/home/index.html:79
 msgid ""
 "The minimum metadata model recommends a common set of metadata fields. "
-"Explore the minimum metadata model:"
+"Explore the minimum metadata model (in Finnish):"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:73
+#: ckanext/kata/theme/templates/home/index.html:80
 msgid ""
 "http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli/c90929e4"
 "-3b7e-42a2-8419-a6481decb67d"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:73
+#: ckanext/kata/theme/templates/home/index.html:80
 msgid "Minimum metadata model"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:73
+#: ckanext/kata/theme/templates/home/index.html:80
 msgid "(In Finnish)"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:76
+#: ckanext/kata/theme/templates/home/index.html:83
 msgid ""
-"The preferred license recommended by TTA is Creative Commons 3.0 family. "
-"Learn more about licenses from:"
+"The preferred license recommended by TTA is the Creative Commons 3.0 family. "
+"Learn more about the licenses at Creative Commons:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:77
+#: ckanext/kata/theme/templates/home/index.html:84
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:93
+#: ckanext/kata/theme/templates/home/index.html:100
 msgid "Search Data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:95
+#: ckanext/kata/theme/templates/home/index.html:102
 msgid "eg. climate"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:106
+#: ckanext/kata/theme/templates/home/index.html:113
 msgid "Newest datasets"
 msgstr ""
 
@@ -823,10 +830,6 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/faq.html:12
 #: ckanext/kata/theme/templates/kata/faq.html:63
 msgid "Etsin and metadata"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/faq.html:14
-msgid "What is Etsin?"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:15
