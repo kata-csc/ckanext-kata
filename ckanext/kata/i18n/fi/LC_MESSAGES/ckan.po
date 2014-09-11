@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-09-11 10:54+0300\n"
+"POT-Creation-Date: 2014-09-11 14:31+0300\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -437,7 +437,7 @@ msgstr "Organisaatiot"
 
 #: ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/kata/help.html:124
-#: ckanext/kata/theme/templates/kata/help.html:288
+#: ckanext/kata/theme/templates/kata/help.html:289
 #: ckanext/kata/theme/templates/package/search.html:15
 #: ckanext/kata/theme/templates/user/read.html:14
 msgid "Add Dataset"
@@ -1096,7 +1096,7 @@ msgid "Kata instructions"
 msgstr "Katan käyttöohjeet"
 
 #: ckanext/kata/theme/templates/kata/help.html:14
-#: ckanext/kata/theme/templates/kata/help.html:279
+#: ckanext/kata/theme/templates/kata/help.html:280
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:2
 msgid "General information"
 msgstr "Yleistiedot"
@@ -1128,7 +1128,7 @@ msgid "Dataset: a single set of metadata (of data)"
 msgstr "Tietoaineisto: aineiston metatiedot"
 
 #: ckanext/kata/theme/templates/kata/help.html:29
-#: ckanext/kata/theme/templates/kata/help.html:282
+#: ckanext/kata/theme/templates/kata/help.html:283
 msgid "Search (Datasets)"
 msgstr "Haku (Tietoaineistot)"
 
@@ -1340,7 +1340,7 @@ msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr "\"pohjoinen pallonpuolisko\"^5 \"eteläinen pallonpuolisko\""
 
 #: ckanext/kata/theme/templates/kata/help.html:107
-#: ckanext/kata/theme/templates/kata/help.html:285
+#: ckanext/kata/theme/templates/kata/help.html:286
 #: ckanext/kata/theme/templates/package/package_rights.html:9
 msgid "Dataset"
 msgstr "Tietoaineisto"
@@ -1682,7 +1682,7 @@ msgstr ""
 "parantaa aineistosi kiinnostavuutta."
 
 #: ckanext/kata/theme/templates/kata/help.html:223
-#: ckanext/kata/theme/templates/kata/help.html:291
+#: ckanext/kata/theme/templates/kata/help.html:292
 msgid "Additional features"
 msgstr "Lisäominaisuudet"
 
@@ -1788,6 +1788,7 @@ msgstr ""
 "visitor ja logged_in, tai itseäsi."
 
 #: ckanext/kata/theme/templates/kata/help.html:252
+#: ckanext/kata/theme/templates/package/snippets/info.html:22
 msgid "Metadata supplements"
 msgstr "Metatietoliitteet"
 
@@ -1800,37 +1801,42 @@ msgid ""
 msgstr ""
 "Jos sinulla on pakollisten ja suositeltavien kenttien lisäksi muuta "
 "aineistoasi kuvailevaa dokumentaatiota, voit antaa tällaiset lisätiedot "
-"metatietoliitteinä. Metatietoliite voi olla esimerkiksi dokumentti, jossa "
-"kuvataan tarkemmin datassa olevat muuttujat."
+"metatietoliitteinä. Metatietoliite voi olla esimerkiksi dokumentti, jossa"
+" kuvataan tarkemmin datassa olevat muuttujat."
 
 #: ckanext/kata/theme/templates/kata/help.html:257
 msgid ""
 "Adding supplements to the metadata requires that you have editor "
 "privileges to the dataset."
 msgstr ""
-"Metatietoliitteiden lisääminen aineistoon edellyttää, että sinulla "
-"on muokkausoikeudet aineiston metatietoihin."
+"Metatietoliitteiden lisääminen aineistoon edellyttää, että sinulla on "
+"muokkausoikeudet aineiston metatietoihin."
 
 #: ckanext/kata/theme/templates/kata/help.html:260
 msgid "To add supplementary metadata, follow these steps:"
-msgstr "Voit lisätä aineistoon metatietoliitteillä seuraavasti:"
+msgstr "Voit täydentää aineiston tietoja metatietoliitteillä seuraavasti:"
 
 #: ckanext/kata/theme/templates/kata/help.html:262
 msgid ""
 "Open the dataset for editing and find the \"Add new document\" button on "
 "the left."
 msgstr ""
-"Avaa aineiston metatiedot muokattaviksi ja napsauta painiketta \"Lisää uusi dokumentti\" "
-"sivun vasemmassa laidassa."
+"Avaa aineiston metatiedot muokattaviksi ja napsauta painiketta \"Lisää "
+"uusi dokumentti\" sivun vasemmassa laidassa."
 
 #: ckanext/kata/theme/templates/kata/help.html:263
 msgid ""
 "In the following form, click the button to upload the supplementary "
 "document from your computer to Kata."
 msgstr ""
-"Lähetä liitedokumentti tietokoneeltasi Kataan painikkeesta \"Tallenna tiedosto\"."
+"Lähetä liitedokumentti tietokoneeltasi Kataan painikkeesta \"Tallenna "
+"tiedosto\"."
 
 #: ckanext/kata/theme/templates/kata/help.html:264
+msgid "Enter a name and, optionally, a description for the supplement."
+msgstr "Anna liitteelle nimi ja halutessasi myös kuvaus."
+
+#: ckanext/kata/theme/templates/kata/help.html:265
 msgid ""
 "Finally, be sure to confirm adding the supplement to your dataset by "
 "clicking \"Add\" at the bottom of the form."
@@ -1838,27 +1844,27 @@ msgstr ""
 "Vahvista lopuksi lähettämäsi tiedoston lisääminen aineiston liitteeksi "
 "napsauttamalla \"Lisää\"-painiketta sivun alareunassa."
 
-#: ckanext/kata/theme/templates/kata/help.html:274
+#: ckanext/kata/theme/templates/kata/help.html:275
 msgid "Table of contents"
 msgstr "Sisällysluettelo"
 
-#: ckanext/kata/theme/templates/kata/help.html:294
+#: ckanext/kata/theme/templates/kata/help.html:295
 msgid "- User profile"
 msgstr "- Käyttäjäprofiili"
 
-#: ckanext/kata/theme/templates/kata/help.html:297
+#: ckanext/kata/theme/templates/kata/help.html:298
 msgid "- Stats"
 msgstr "- Tilastot"
 
-#: ckanext/kata/theme/templates/kata/help.html:300
+#: ckanext/kata/theme/templates/kata/help.html:301
 msgid "- REMS"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:303
+#: ckanext/kata/theme/templates/kata/help.html:304
 msgid "- Dataset administration"
 msgstr "- Tietoaineiston hallinta"
 
-#: ckanext/kata/theme/templates/kata/help.html:311
+#: ckanext/kata/theme/templates/kata/help.html:312
 msgid "For additional help send email to: "
 msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
 
@@ -2355,10 +2361,6 @@ msgstr "Tuo"
 #: ckanext/kata/theme/templates/package/snippets/info.html:15
 msgid "Edit Dataset"
 msgstr "Muokkaa tietoaineistoa"
-
-#: ckanext/kata/theme/templates/package/snippets/info.html:22
-msgid "Metadata documents"
-msgstr "Metatietodokumentit"
 
 #: ckanext/kata/theme/templates/package/snippets/info.html:33
 msgid "Add new document"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-11 10:54+0300\n"
+"POT-Creation-Date: 2014-09-11 14:31+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -420,7 +420,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/kata/help.html:124
-#: ckanext/kata/theme/templates/kata/help.html:288
+#: ckanext/kata/theme/templates/kata/help.html:289
 #: ckanext/kata/theme/templates/package/search.html:15
 #: ckanext/kata/theme/templates/user/read.html:14
 msgid "Add Dataset"
@@ -976,7 +976,7 @@ msgid "Kata instructions"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:14
-#: ckanext/kata/theme/templates/kata/help.html:279
+#: ckanext/kata/theme/templates/kata/help.html:280
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:2
 msgid "General information"
 msgstr ""
@@ -1003,7 +1003,7 @@ msgid "Dataset: a single set of metadata (of data)"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:29
-#: ckanext/kata/theme/templates/kata/help.html:282
+#: ckanext/kata/theme/templates/kata/help.html:283
 msgid "Search (Datasets)"
 msgstr ""
 
@@ -1168,7 +1168,7 @@ msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:107
-#: ckanext/kata/theme/templates/kata/help.html:285
+#: ckanext/kata/theme/templates/kata/help.html:286
 #: ckanext/kata/theme/templates/package/package_rights.html:9
 msgid "Dataset"
 msgstr ""
@@ -1416,7 +1416,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:223
-#: ckanext/kata/theme/templates/kata/help.html:291
+#: ckanext/kata/theme/templates/kata/help.html:292
 msgid "Additional features"
 msgstr ""
 
@@ -1488,6 +1488,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:252
+#: ckanext/kata/theme/templates/package/snippets/info.html:22
 msgid "Metadata supplements"
 msgstr ""
 
@@ -1522,32 +1523,36 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:264
+msgid "Enter a name and, optionally, a description for the supplement."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:265
 msgid ""
 "Finally, be sure to confirm adding the supplement to your dataset by clicking"
 " \"Add\" at the bottom of the form."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:274
+#: ckanext/kata/theme/templates/kata/help.html:275
 msgid "Table of contents"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:294
+#: ckanext/kata/theme/templates/kata/help.html:295
 msgid "- User profile"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:297
+#: ckanext/kata/theme/templates/kata/help.html:298
 msgid "- Stats"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:300
+#: ckanext/kata/theme/templates/kata/help.html:301
 msgid "- REMS"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:303
+#: ckanext/kata/theme/templates/kata/help.html:304
 msgid "- Dataset administration"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:311
+#: ckanext/kata/theme/templates/kata/help.html:312
 msgid "For additional help send email to: "
 msgstr ""
 
@@ -2013,10 +2018,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/info.html:15
 msgid "Edit Dataset"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/info.html:22
-msgid "Metadata documents"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/info.html:33
