@@ -130,10 +130,20 @@ class Schemas:
         for _key, value in schema['contact'].iteritems():
             value.insert(0, va.ignore_empty_data)
 
-        schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, co.flattened_to_extras],
-                             'email': [ignore_missing, va.validate_general, unicode, co.flattened_to_extras],
-                             'URL': [ignore_missing, ignore_empty, va.validate_general, unicode, co.flattened_to_extras],
-                             'phone': [ignore_missing, unicode, va.validate_general, co.flattened_to_extras]}
+        schema['contact'] = {'name': [ignore_missing,  unicode, co.flattened_to_extras],
+                             'email': [ignore_missing, unicode, co.flattened_to_extras],
+                             'URL': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                             'phone': [ignore_missing, unicode, co.flattened_to_extras]}
+
+        schema['agent'] = {'role': [not_empty, va.check_agent_fields, va.validate_general, unicode, co.flattened_to_extras],
+                           'name': [ignore_missing, ignore_empty, unicode, va.contains_alphanumeric, co.flattened_to_extras],
+                           'id': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                           'organisation': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                           'URL': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                           'fundingid': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras]}
+
+        schema['language'] = \
+            [ignore_missing, co.convert_to_extras_kata, unicode]
 
         schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
         schema['version'] = [ignore_missing, unicode]
