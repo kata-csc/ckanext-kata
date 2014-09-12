@@ -14,8 +14,10 @@
             {% block home_primary %}
               <header>
                 {% if g.site_intro_text %}
-                  {{ h.render_markdown(g.site_intro_text) }}
-                {% else %}
+                  <div class=index-additional-info">
+                    {{ h.render_markdown(g.site_intro_text) }}
+                  </div>
+                {% endif %}
                   {% block home_primary_content %}
                     {% block home_primary_heading %}
                     {% endblock %}
@@ -57,7 +59,7 @@
                       </p>
                     {% endblock %}
                   {% endblock %}
-                {% endif %}
+
               </header>
             {% endblock %}
 
