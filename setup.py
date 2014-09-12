@@ -28,6 +28,7 @@ setup(
         'pyClamd >= 0.3.10',
         'lxml >= 3.1.2',
         'functionally >= 1.0.1',
+        'python-magic >= 0.4.6',
     ],
     package_data={
         'ckan': [
