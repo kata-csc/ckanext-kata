@@ -1,9 +1,7 @@
-{% extends "package/base.html" %}
+{% extends "package/read_base.html" %}
 {% import 'macros/form.html' as form %}
 
-{% block breadcrumb_content %}
-   <li>{% link_for _('Datasets'), controller='ckanext.kata.controllers:KataPackageController', action='package_administration', pkg=pkg%}</li>
-{% endblock %}
+{% block head_extras %}{% endblock %}
 
 {% block content_primary_nav %}
   {{ h.build_nav_icon('dataset_read', _('Dataset'), id=c.pkg.name) }}

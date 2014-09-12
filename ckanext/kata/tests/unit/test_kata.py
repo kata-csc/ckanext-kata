@@ -19,7 +19,7 @@ import ckan.model as model
 from ckan.lib.create_test_data import CreateTestData
 import ckanext.kata.model as kata_model
 import ckanext.kata.actions as actions
-from ckan.logic import get_action
+from ckan.logic import get_action, NotAuthorized, ValidationError, NotFound
 from ckanext.harvest.model import setup
 
 class TestKataPlugin(TestCase):
@@ -441,7 +441,7 @@ class TestActions(TestCase):
         data_dict = {}
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'bogus'
-        assert actions.dataset_editor_add(context, data_dict).get('msg') == 'Required information missing'
+        self.assertRaises(ValidationError, actions.dataset_editor_add, context, data_dict)
 
     def test_add_member_2_fails(self):
         '''
@@ -453,34 +453,31 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'bogus'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
-        assert msg == 'User not found', msg
+        self.assertRaises(NotFound, actions.dataset_editor_add, context, data_dict)
 
     def test_add_member_3_fails(self):
         '''
         Test add member to dataset
-        Result: no sufficient privileges
+        Result: NotAuthorized
         '''
         context = self._build_context(user='tester')
         data_dict = {}
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
-        assert msg == 'No sufficient privileges to add a user to role editor.', msg
+        self.assertRaises(NotAuthorized, actions.dataset_editor_add, context, data_dict)
 
     def test_add_member_4_fails(self):
         '''
         Test add member to dataset
-        Result: can't add thyself
+        Result: NotAuthorized
         '''
-        context = self._build_context(user='testsysadmin')
+        context = self._build_context(user='tester')
         data_dict = {}
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'testsysadmin'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
-        assert msg == 'You can not add yourself', msg
+        self.assertRaises(NotAuthorized, actions.dataset_editor_add, context, data_dict)
 
     def test_add_member_5_success(self):
         '''
@@ -492,7 +489,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
+        msg = actions.dataset_editor_add(context, data_dict)
         assert msg == 'User added', msg
 
     def test_add_member_6_fails(self):
@@ -505,8 +502,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
-        assert msg == 'User already has editor rights', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_add, context, data_dict)
 
     def test_delete_member_1_fails(self):
         '''
@@ -517,8 +513,7 @@ class TestActions(TestCase):
         data_dict = {}
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'Required information missing', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_2_fails(self):
         '''
@@ -530,8 +525,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'bogus'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'User not found', msg
+        self.assertRaises(NotFound, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_3_fails(self):
         '''
@@ -543,8 +537,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'testsysadmin'
         data_dict['role'] = u'admin'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'No sufficient privileges to remove user from role admin.', msg
+        self.assertRaises(NotAuthorized, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_4_fails(self):
         '''
@@ -556,12 +549,10 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'You can not remove yourself', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_delete, context, data_dict)
         data_dict['username'] = u'visitor'
         data_dict['role'] = u'reader'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'Built-in users can not be removed', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_5_fails(self):
         '''
@@ -573,8 +564,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'admin'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'No such user and role combination', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_6_success(self):
         '''
@@ -586,7 +576,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        msg = actions.dataset_editor_delete(context, data_dict)
         assert msg == 'User removed from role editor', msg
 
     def _build_context(self, user=None):

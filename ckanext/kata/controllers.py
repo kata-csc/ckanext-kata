@@ -27,7 +27,7 @@ from ckan.controllers.storage import StorageController
 import ckan.lib.i18n
 from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
-from ckan.logic import get_action
+from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
 import ckan.model as model
 from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
@@ -777,13 +777,19 @@ class KataPackageController(PackageController):
         if username:
             data_dict['role'] = role
             data_dict['username'] = username
-            ret = get_action('dataset_editor_add')(context, data_dict)
-            if not ret.get('success', None):
-                h.flash_error(ret.get('msg'))
-            else:
-                h.flash_success(ret.get('msg'))
+            try:
+                ret = get_action('dataset_editor_add')(context, data_dict)
+                h.flash_success(ret)
+            except ValidationError as e:
+                h.flash_error(e.error_dict.get('message', ''))
+            except NotAuthorized as e:
+                error_message = _('No sufficient privileges to add a user to role %s.') % role
+                h.flash_error(error_message)
+            except NotFound as e:
+                h.flash_error(e)
 
         if email:
+
             EMAIL_REGEX = re.compile(
     r"""
     ^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~]
@@ -795,8 +801,11 @@ class KataPackageController(PackageController):
     """,
             re.VERBOSE)
             if isinstance(email, basestring) and email:
-                if not EMAIL_REGEX.match(email):
-                    error_msg = _(u'Invalid email address')
+                if not EMAIL_REGEX.match(email) or not(asbool(config.get('kata.invitations', True))):
+                    if not (asbool(config.get('kata.invitations', True))):
+                        error_msg = _(u'Feature disabled')
+                    else:
+                        error_msg = _(u'Invalid email address')
                     h.flash_error(error_msg)
                 else:
                     try:
@@ -812,6 +821,7 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
 
                             ckan.lib.mailer.mail_recipient(email, email, subject, body)
                             h.flash_success(_('Message sent'))
+                            log.info("Invitation sent by %s to %s\n" % (c.userobj.name, email))
                         except ckan.lib.mailer.MailerException:
                             raise
                     except captcha.CaptchaError:
@@ -844,12 +854,17 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
         data_dict['username'] = request.params.get('username', None)
         data_dict['role'] = request.params.get('role', None)
 
-        ret = ckan.logic.get_action('dataset_editor_delete')(context, data_dict)
+        try:
+            ret = ckan.logic.get_action('dataset_editor_delete')(context, data_dict)
+            h.flash_success(ret)
 
-        if not ret.get('success', None):
-            h.flash_error(ret.get('msg'))
-        else:
-            h.flash_success(ret.get('msg'))
+        except ValidationError as e:
+            h.flash_error(e.error_dict.get('message', ''))
+        except NotAuthorized as e:
+            error_message = _('No sufficient privileges to remove user from role %s.') % role
+            h.flash_error(error_message)
+        except NotFound as e:
+            h.flash_error(e)
 
         h.redirect_to(h.url_for(controller='ckanext.kata.controllers:KataPackageController',
                                 action='dataset_editor_manage', name=name))
@@ -892,6 +907,7 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
 
             c.members.append({'user_id': role['user_id'], 'user': q.name, 'role': role['role']})
         c.pkg = Package.get(data_dict['id'])
+        c.pkg_dict = get_action('package_show')(context, data_dict)
 
         return render('package/package_rights.html')
 
