@@ -72,7 +72,7 @@
     {{ form.textarea('mail_message', id='field-emailmsg', label=_('Your message'), value='', error='', classes=['control-medium']) }}
     {% if g.recaptcha_publickey %}
       <div class="control-group">
-        <div class="controls">
+        <div class="controls kata-captcha-fix">
           <script type="text/javascript" src="https://www.google.com/recaptcha/api/challenge?k={{g.recaptcha_publickey}}"></script>
           <noscript>
             <iframe src="http://www.google.com/recaptcha/api/noscript?k={{g.recaptcha_publickey}}"

@@ -76,6 +76,10 @@
 
 /* widgets */
 
+.kata-captcha-fix table {
+	table-layout: initial !important;
+}
+
 /* other-stuff */
 .role-select {
 	margin: 0;

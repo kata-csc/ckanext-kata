@@ -1,8 +1,5 @@
 {% import "macros/form.html" as form %}
 {% import 'macros/kata_form.html' as kata_form %}
-{% block styles %}
-{% resource 'kata-resources/css/kata-fix-captcha.css' %}
-{% endblock %}
 <form class="form-horizontal" action="" method="post">
   {{ form.errors(error_summary) }}
 
@@ -16,7 +13,7 @@
   {{ form.input("password2", id="field-confirm-password", label=_("Confirm"), type="password", placeholder="••••••••", value=data.password2, error=errors.password1, classes=["control-medium"]) }}
 {% if g.recaptcha_publickey %}
 <div class="control-group">
-  <div class="controls">
+  <div class="controls kata-captcha-fix">
     <script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k={{g.recaptcha_publickey}}"></script>
     <noscript>
       <iframe src="http://www.google.com/recaptcha/api/noscript?k={{g.recaptcha_publickey}}"
