@@ -811,11 +811,11 @@ class KataPackageController(PackageController):
                     try:
                         captcha.check_recaptcha(request)
                         try:
-                            subject = u'Invitation to use Kata metadata catalogue - kutsu käyttämään Kata-metadatakatalogia'
-                            body = u'\n\n%s would like to add you to editors for dataset "%s" \
-in Kata metadata catalogue service. To enable this, please log in to the service: %s.\n\n' % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
+                            subject = u'Invitation to use the Etsin - kutsu käyttämään Etsin-palvelua'
+                            body = u'\n\n%s would like to add you as an editor for dataset "%s" \
+in the Etsin data search service. To enable this, please log in to the service: %s.\n\n' % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
                             body += u'\n\n%s haluaisi lisätä sinut muokkaajaksi tietoaineistoon "%s" \
-Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: %s.\n\n' \
+Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: %s.\n\n' \
                                     % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
                             body += u'\n------------\nLähettäjän viesti / Sender\'s message:\n\n%s\n------------\n' % (request.params.get('mail_message', ''))
 
