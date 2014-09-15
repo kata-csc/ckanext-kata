@@ -30,7 +30,7 @@ Example:
         {% endif %}
       {% endfor %}
       {% endblock %}
-      <li class="nav-btn"><a href="{{ h.url_for(controller='package', action='new_resource', id=pkg.name)  }}" class="btn{% if action == 'resource_new' %} disabled{% endif %}"><i class="icon-plus"></i> {{ _('Add new document') }}</a></li>
+      <li class="nav-btn"><a href="{{ h.url_for(controller='package', action='new_resource', id=pkg.name)  }}" class="btn{% if action == 'resource_new' %} disabled{% endif %}"><i class="icon-plus"></i> {{ _('Add new supplement') }}</a></li>
     </ul>
   </section>
 {% endif %}

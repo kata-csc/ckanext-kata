@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-11 23:31+0300\n"
+"POT-Creation-Date: 2014-09-12 02:45+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,63 +25,55 @@ msgstr ""
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:526
+#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:533
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:480 ckanext/kata/actions.py:537
+#: ckanext/kata/actions.py:480 ckanext/kata/actions.py:544
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:486
+#: ckanext/kata/actions.py:485 ckanext/kata/actions.py:489
+#: ckanext/kata/controllers.py:864
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:490
+#: ckanext/kata/actions.py:493
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:494
+#: ckanext/kata/actions.py:500
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:498
+#: ckanext/kata/actions.py:504
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:502
+#: ckanext/kata/actions.py:509
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:543
-#, python-format
-msgid "No sufficient privileges to add a user to role %s."
-msgstr ""
-
-#: ckanext/kata/actions.py:547
+#: ckanext/kata/actions.py:555
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:551
-msgid "You can not add yourself"
-msgstr ""
-
-#: ckanext/kata/actions.py:556
+#: ckanext/kata/actions.py:561
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:605
+#: ckanext/kata/actions.py:610
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:639
+#: ckanext/kata/actions.py:644
 msgid "You don't have permission to remove this user."
 msgstr ""
 
-#: ckanext/kata/actions.py:670
+#: ckanext/kata/actions.py:675
 msgid "You are not allowed to create public datasets for this organization."
 msgstr ""
 
@@ -119,7 +111,7 @@ msgstr ""
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:514 ckanext/kata/controllers.py:814
+#: ckanext/kata/controllers.py:514 ckanext/kata/controllers.py:823
 msgid "Message sent"
 msgstr ""
 
@@ -139,7 +131,7 @@ msgstr ""
 
 #: ckanext/kata/controllers.py:610
 #, python-format
-msgid "Data access request for dataset / Datapyynto tietoaineistolle %s"
+msgid "Data access request for dataset / Datapyyntö tietoaineistolle %s"
 msgstr ""
 
 #: ckanext/kata/controllers.py:633
@@ -162,11 +154,20 @@ msgstr ""
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:799 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:786
+#, python-format
+msgid "No sufficient privileges to add a user to role %s."
+msgstr ""
+
+#: ckanext/kata/controllers.py:806
+msgid "Feature disabled"
+msgstr ""
+
+#: ckanext/kata/controllers.py:808 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:818
+#: ckanext/kata/controllers.py:828
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
@@ -190,10 +191,6 @@ msgstr ""
 #: ckanext/kata/converters.py:354
 #, python-format
 msgid "Language %s not in ISO 639-2 T format"
-msgstr ""
-
-#: ckanext/kata/extractor.py:83
-msgid "Failed to detect file encoding"
 msgstr ""
 
 #: ckanext/kata/settings.py:50
@@ -282,19 +279,19 @@ msgstr ""
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:319
+#: ckanext/kata/validators.py:321
 msgid "Duplicate titles for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:351
+#: ckanext/kata/validators.py:353
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:363
+#: ckanext/kata/validators.py:365
 msgid "Missing compulsory distributor contact"
 msgstr ""
 
-#: ckanext/kata/validators.py:414 ckanext/kata/validators.py:450
+#: ckanext/kata/validators.py:416 ckanext/kata/validators.py:452
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr ""
@@ -379,7 +376,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:88
 #: ckanext/kata/theme/templates/header.html:89
-#: ckanext/kata/theme/templates/home/index.html:105
+#: ckanext/kata/theme/templates/home/index.html:107
 #: ckanext/kata/theme/templates/package/search.html:23
 #: ckanext/kata/theme/templates/package/search.html:167
 msgid "Search"
@@ -406,7 +403,6 @@ msgstr ""
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:3
 #: ckanext/kata/theme/templates/datamining/read.html:7
 #: ckanext/kata/theme/templates/group/read_base.html:17
-#: ckanext/kata/theme/templates/package/package_rights.html:5
 #: ckanext/kata/theme/templates/revision/diff.html:11
 #: ckanext/kata/theme/templates/revision/read.html:65
 #: ckanext/kata/theme/templates/user/read.html:28
@@ -455,7 +451,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/contact/contact_form.html:18
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:19
-#: ckanext/kata/theme/templates/package/package_rights.html:91
+#: ckanext/kata/theme/templates/package/package_rights.html:89
 msgid "Send"
 msgstr ""
 
@@ -554,7 +550,7 @@ msgid "Edit"
 msgstr ""
 
 #: ckanext/kata/theme/templates/group/read_base.html:18
-#: ckanext/kata/theme/templates/package/package_rights.html:10
+#: ckanext/kata/theme/templates/package/package_rights.html:8
 #: ckanext/kata/theme/templates/user/read.html:31
 msgid "Activity Stream"
 msgstr ""
@@ -611,7 +607,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:52
 #: ckanext/kata/theme/templates/organization/members.html:36
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:78
-#: ckanext/kata/theme/templates/package/package_rights.html:43
+#: ckanext/kata/theme/templates/package/package_rights.html:41
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:39
 #: ckanext/kata/theme/templates/revision/read.html:24
 msgid "Delete"
@@ -664,35 +660,35 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:24
+#: ckanext/kata/theme/templates/home/index.html:26
 #: ckanext/kata/theme/templates/kata/faq.html:14
 msgid "What is Etsin?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:27
+#: ckanext/kata/theme/templates/home/index.html:29
 msgid ""
 "Etsin is a service for gathering and finding data from various fields of "
 "research. It allows you to search for data according to your needs and to "
 "provide your own datasets for others to find and reuse."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:30
+#: ckanext/kata/theme/templates/home/index.html:32
 msgid ""
 "The research data itself is not stored in Etsin. Rather, Etsin allows you to "
 "search for and browse datasets based on their metadata."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:33
+#: ckanext/kata/theme/templates/home/index.html:35
 msgid "What is metadata?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:36
+#: ckanext/kata/theme/templates/home/index.html:38
 msgid ""
 "Metadata is data about data. Metadata describes important features of the "
 "data such as authors, subjects, storage formats and licenses."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:39
+#: ckanext/kata/theme/templates/home/index.html:41
 msgid ""
 "The content of metadata varies a lot depending on the data being described. "
 "However, this service provides a common set of metadata fields tailored for "
@@ -700,95 +696,95 @@ msgid ""
 " the Finnish National Research Data Initiative (TTA)."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:42
+#: ckanext/kata/theme/templates/home/index.html:44
 msgid "Is this service for me?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:45
+#: ckanext/kata/theme/templates/home/index.html:47
 msgid ""
 "Etsin aims to collect datasets from various sources and from various branches"
 " of science and to be a single point of access to all kinds of research data."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:48
+#: ckanext/kata/theme/templates/home/index.html:50
 msgid ""
 "You do not have to be a professional scientist or researcher in order to "
 "search for data. Useful data can be generated and reused anywhere and by "
 "anyone."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:51
+#: ckanext/kata/theme/templates/home/index.html:53
 msgid "Is all of the data open?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:54
+#: ckanext/kata/theme/templates/home/index.html:56
 msgid ""
 "Almost all of the metadata is open, but it is for the author to decide how "
 "the data itself can be accessed and by whom. Nevertheless, providing your "
 "data openly is recommended."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:57
-#: ckanext/kata/theme/templates/home/index.html:60
+#: ckanext/kata/theme/templates/home/index.html:59
+#: ckanext/kata/theme/templates/home/index.html:62
 msgid "Terms of use"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:60
+#: ckanext/kata/theme/templates/home/index.html:62
 msgid "http://www.tdata.fi/kayttoehdot"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:63
+#: ckanext/kata/theme/templates/home/index.html:65
 msgid "http://www.tdata.fi/henkilorekisteriseloste"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:63
+#: ckanext/kata/theme/templates/home/index.html:65
 msgid "Privacy policy for personal information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:76
+#: ckanext/kata/theme/templates/home/index.html:78
 msgid "Tools and additional information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:79
+#: ckanext/kata/theme/templates/home/index.html:81
 msgid ""
 "The minimum metadata model recommends a common set of metadata fields. "
 "Explore the minimum metadata model (in Finnish):"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:80
+#: ckanext/kata/theme/templates/home/index.html:82
 msgid ""
 "http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli/c90929e4"
 "-3b7e-42a2-8419-a6481decb67d"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:80
+#: ckanext/kata/theme/templates/home/index.html:82
 msgid "Minimum metadata model"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:80
+#: ckanext/kata/theme/templates/home/index.html:82
 msgid "(In Finnish)"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:83
+#: ckanext/kata/theme/templates/home/index.html:85
 msgid ""
 "The preferred license recommended by TTA is the Creative Commons 3.0 family. "
 "Learn more about the licenses at Creative Commons:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:84
+#: ckanext/kata/theme/templates/home/index.html:86
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:100
+#: ckanext/kata/theme/templates/home/index.html:102
 msgid "Search Data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:102
+#: ckanext/kata/theme/templates/home/index.html:104
 msgid "eg. climate"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:113
+#: ckanext/kata/theme/templates/home/index.html:115
 msgid "Newest datasets"
 msgstr ""
 
@@ -992,9 +988,9 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:17
 msgid ""
-"This help page will guide you through the most common tasks in the service. "
-"Use the links on the left side of the page to quickly navigate to the desired"
-" section."
+"This help page will guide you through the most common tasks in Etsin. Use the"
+" links on the left side of the page to quickly navigate to the desired "
+"section."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:20
@@ -1178,7 +1174,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:107
 #: ckanext/kata/theme/templates/kata/help.html:286
-#: ckanext/kata/theme/templates/package/package_rights.html:9
+#: ckanext/kata/theme/templates/package/package_rights.html:7
 msgid "Dataset"
 msgstr ""
 
@@ -1522,8 +1518,8 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:262
 msgid ""
-"Open the dataset for editing and find the \"Add new document\" button on the "
-"left."
+"Open the dataset for editing and find the \"Add new supplement\" button on "
+"the left."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:263
@@ -1588,7 +1584,7 @@ msgid "The form contains invalid entries:"
 msgstr ""
 
 #: ckanext/kata/theme/templates/macros/kata_form.html:31
-#: ckanext/kata/theme/templates/package/package_rights.html:64
+#: ckanext/kata/theme/templates/package/package_rights.html:62
 #: ckanext/kata/theme/templates/package/search.html:135
 msgid "Add"
 msgstr ""
@@ -1642,14 +1638,14 @@ msgid "Add Member"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/members.html:17
-#: ckanext/kata/theme/templates/package/package_rights.html:24
-#: ckanext/kata/theme/templates/package/package_rights.html:59
+#: ckanext/kata/theme/templates/package/package_rights.html:22
+#: ckanext/kata/theme/templates/package/package_rights.html:57
 msgid "User"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/members.html:18
-#: ckanext/kata/theme/templates/package/package_rights.html:25
-#: ckanext/kata/theme/templates/package/package_rights.html:61
+#: ckanext/kata/theme/templates/package/package_rights.html:23
+#: ckanext/kata/theme/templates/package/package_rights.html:59
 #: ckanext/kata/theme/templates/package/role_fields.html:13
 #: ckanext/kata/theme/templates/package/role_fields.html:40
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:46
@@ -1657,7 +1653,7 @@ msgid "Role"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/members.html:31
-#: ckanext/kata/theme/templates/package/package_rights.html:38
+#: ckanext/kata/theme/templates/package/package_rights.html:36
 msgid "Are you sure you want to delete this member?"
 msgstr ""
 
@@ -1692,75 +1688,75 @@ msgstr ""
 msgid "View dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:11
+#: ckanext/kata/theme/templates/package/package_rights.html:9
 #: ckanext/kata/theme/templates/snippets/related.html:2
 msgid "Related"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:15
+#: ckanext/kata/theme/templates/package/package_rights.html:13
 msgid "Dataset title"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:17
+#: ckanext/kata/theme/templates/package/package_rights.html:15
 msgid "{0} named roles"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:53
+#: ckanext/kata/theme/templates/package/package_rights.html:51
 msgid "Add a user for role"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:59
+#: ckanext/kata/theme/templates/package/package_rights.html:57
 #: ckanext/kata/theme/templates/user/edit_user_form.html:17
 #: ckanext/kata/theme/templates/user/logout_first.html:12
-#: ckanext/kata/theme/templates/user/new_user_form.html:9
+#: ckanext/kata/theme/templates/user/new_user_form.html:6
 #: ckanext/kata/theme/templates/user/read.html:101
 msgid "Username"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:69
+#: ckanext/kata/theme/templates/package/package_rights.html:67
 msgid "Send invitation"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:70
+#: ckanext/kata/theme/templates/package/package_rights.html:68
 msgid ""
 "Did not find the user you were searching for? Send her or him an email "
 "invitation to log in to Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:71
+#: ckanext/kata/theme/templates/package/package_rights.html:69
 msgid "If you want to, you can add your own message to be sent to the person."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:72
+#: ckanext/kata/theme/templates/package/package_rights.html:70
 msgid ""
 "After the person has logged in to the service, she or he can be added to a "
 "role."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:73
+#: ckanext/kata/theme/templates/package/package_rights.html:71
 msgid "Email address"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:73
+#: ckanext/kata/theme/templates/package/package_rights.html:71
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:35
 msgid "john.doe@example.com"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:74
+#: ckanext/kata/theme/templates/package/package_rights.html:72
 msgid "Your message"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:106
+#: ckanext/kata/theme/templates/package/package_rights.html:104
 msgid "Modify dataset's editors and admins"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:109
+#: ckanext/kata/theme/templates/package/package_rights.html:107
 msgid ""
 " Here you can add and remove editors of this dataset. You can also add and "
 "remove admins, if you have sufficient privileges. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:115
+#: ckanext/kata/theme/templates/package/package_rights.html:113
 msgid ""
 " If you can not find a user, most likely he or she hasn't logged in yet. Then"
 " invite him or her to use this service via email. Note, that the email is "
@@ -2031,7 +2027,7 @@ msgid "Edit Dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/info.html:33
-msgid "Add new document"
+msgid "Add new supplement"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/languages.html:2
@@ -4206,7 +4202,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:35
 #: ckanext/kata/theme/templates/user/edit_user_form.html:27
-#: ckanext/kata/theme/templates/user/new_user_form.html:14
+#: ckanext/kata/theme/templates/user/new_user_form.html:11
 #: ckanext/kata/theme/templates/user/read.html:120
 msgid "Email"
 msgstr ""
@@ -4849,7 +4845,7 @@ msgid "eg. Matematiikka"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:8
-msgid "Document"
+msgid "Supplement"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:13
@@ -5014,7 +5010,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/user/edit_user_form.html:41
 #: ckanext/kata/theme/templates/user/logout_first.html:13
-#: ckanext/kata/theme/templates/user/new_user_form.html:15
+#: ckanext/kata/theme/templates/user/new_user_form.html:12
 msgid "Password"
 msgstr ""
 
@@ -5088,23 +5084,23 @@ msgstr ""
 msgid "Log out now"
 msgstr ""
 
-#: ckanext/kata/theme/templates/user/new_user_form.html:9
+#: ckanext/kata/theme/templates/user/new_user_form.html:6
 msgid "username"
 msgstr ""
 
-#: ckanext/kata/theme/templates/user/new_user_form.html:10
+#: ckanext/kata/theme/templates/user/new_user_form.html:7
 msgid "Username should contain only lowercase characters and symbols: -_"
 msgstr ""
 
-#: ckanext/kata/theme/templates/user/new_user_form.html:13
+#: ckanext/kata/theme/templates/user/new_user_form.html:10
 msgid "Full Name"
 msgstr ""
 
-#: ckanext/kata/theme/templates/user/new_user_form.html:16
+#: ckanext/kata/theme/templates/user/new_user_form.html:13
 msgid "Confirm"
 msgstr ""
 
-#: ckanext/kata/theme/templates/user/new_user_form.html:31
+#: ckanext/kata/theme/templates/user/new_user_form.html:28
 msgid "Create Account"
 msgstr ""
 
