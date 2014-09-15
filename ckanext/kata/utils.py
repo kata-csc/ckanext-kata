@@ -10,6 +10,7 @@ import functionally as fn
 
 from pylons import config
 from lxml import etree
+import re
 from ckan import model as model
 
 from ckan.lib.email_notifications import send_notification
@@ -268,3 +269,10 @@ def get_funders(data_dict):
     return filter(lambda x: x.get('role') == u'funder' and
                   (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
                   data_dict.get('agent', []))
+
+
+def datapid_to_name(string):
+    '''
+    Wrap re.sub to convert a data-PID to package.name
+    '''
+    return re.sub(*settings.DATAPID_TO_NAME_REGEXES, string=string)

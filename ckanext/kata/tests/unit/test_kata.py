@@ -381,6 +381,11 @@ class TestUtils(TestCase):
 
         assert translator(_FIELD_TITLES['tags']) == title
 
+    def test_datapid_to_name(self):
+        name = utils.datapid_to_name('http://example.com/some/thing?good=true')
+        assert name
+        assert '/' not in name
+
 
 class TestHelpers(TestCase):
     """Unit tests for functions in helpers.py."""
