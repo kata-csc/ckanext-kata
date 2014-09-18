@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-12 02:45+0300\n"
+"POT-Creation-Date: 2014-09-18 10:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -420,7 +420,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/kata/help.html:124
-#: ckanext/kata/theme/templates/kata/help.html:289
+#: ckanext/kata/theme/templates/kata/help.html:292
 #: ckanext/kata/theme/templates/package/search.html:15
 #: ckanext/kata/theme/templates/user/read.html:14
 msgid "Add Dataset"
@@ -981,7 +981,7 @@ msgid "Etsin instructions"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:14
-#: ckanext/kata/theme/templates/kata/help.html:280
+#: ckanext/kata/theme/templates/kata/help.html:283
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:2
 msgid "General information"
 msgstr ""
@@ -1008,7 +1008,7 @@ msgid "Dataset: a single set of metadata (of data)"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:29
-#: ckanext/kata/theme/templates/kata/help.html:283
+#: ckanext/kata/theme/templates/kata/help.html:286
 msgid "Search (Datasets)"
 msgstr ""
 
@@ -1173,7 +1173,7 @@ msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:107
-#: ckanext/kata/theme/templates/kata/help.html:286
+#: ckanext/kata/theme/templates/kata/help.html:289
 #: ckanext/kata/theme/templates/package/package_rights.html:7
 msgid "Dataset"
 msgstr ""
@@ -1422,7 +1422,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:223
-#: ckanext/kata/theme/templates/kata/help.html:292
+#: ckanext/kata/theme/templates/kata/help.html:295
 msgid "Additional features"
 msgstr ""
 
@@ -1500,65 +1500,74 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:254
 msgid ""
-"If you have additional documents that describe your data beyond the required "
-"and recommended fields, you can provide such extra information as metadata "
+"If you have additional documents that describe your data beyond required and "
+"recommended fields, you can provide such extra information in metadata "
 "supplements. An example of a useful supplement would be a detailed "
 "description of variables in your data."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:257
 msgid ""
+"Metadata supplements are separate documents that appear to viewers of the "
+"dataset as downloadable resources. In many cases the dataset will also appear"
+" in search results based on the contents of its metadata supplements. "
+"Searching works for many common file formats (e.g. plain text, PDF, and many "
+"office document formats) but is not guaranteed to work for all files."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:260
+msgid ""
 "Adding supplements to the metadata requires that you have editor privileges "
 "to the dataset."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:260
-msgid "To add supplementary metadata, follow these steps:"
+#: ckanext/kata/theme/templates/kata/help.html:263
+msgid "To add metadata supplements for a dataset, follow these steps:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:262
+#: ckanext/kata/theme/templates/kata/help.html:265
 msgid ""
 "Open the dataset for editing and find the \"Add new supplement\" button on "
 "the left."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:263
+#: ckanext/kata/theme/templates/kata/help.html:266
 msgid ""
 "In the following form, click the button to upload the supplementary document "
-"from your computer to Kata."
+"from your computer to Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:264
+#: ckanext/kata/theme/templates/kata/help.html:267
 msgid "Enter a name and, optionally, a description for the supplement."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:265
+#: ckanext/kata/theme/templates/kata/help.html:268
 msgid ""
 "Finally, be sure to confirm adding the supplement to your dataset by clicking"
 " \"Add\" at the bottom of the form."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:275
+#: ckanext/kata/theme/templates/kata/help.html:278
 msgid "Table of contents"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:295
+#: ckanext/kata/theme/templates/kata/help.html:298
 msgid "- User profile"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:298
+#: ckanext/kata/theme/templates/kata/help.html:301
 msgid "- Stats"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:301
+#: ckanext/kata/theme/templates/kata/help.html:304
 msgid "- REMS"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:304
+#: ckanext/kata/theme/templates/kata/help.html:307
 msgid "- Dataset administration"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:312
+#: ckanext/kata/theme/templates/kata/help.html:315
 msgid "For additional help send email to: "
 msgstr ""
 

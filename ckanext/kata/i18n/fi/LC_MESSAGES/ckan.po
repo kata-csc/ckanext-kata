@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-09-12 02:45+0300\n"
+"POT-Creation-Date: 2014-09-18 10:06+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -437,7 +437,7 @@ msgstr "Organisaatiot"
 
 #: ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/kata/help.html:124
-#: ckanext/kata/theme/templates/kata/help.html:289
+#: ckanext/kata/theme/templates/kata/help.html:292
 #: ckanext/kata/theme/templates/package/search.html:15
 #: ckanext/kata/theme/templates/user/read.html:14
 msgid "Add Dataset"
@@ -1104,7 +1104,7 @@ msgid "Etsin instructions"
 msgstr "Etsimen käyttöohjeet"
 
 #: ckanext/kata/theme/templates/kata/help.html:14
-#: ckanext/kata/theme/templates/kata/help.html:280
+#: ckanext/kata/theme/templates/kata/help.html:283
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:2
 msgid "General information"
 msgstr "Yleistiedot"
@@ -1135,7 +1135,7 @@ msgid "Dataset: a single set of metadata (of data)"
 msgstr "Tietoaineisto: aineiston metatiedot"
 
 #: ckanext/kata/theme/templates/kata/help.html:29
-#: ckanext/kata/theme/templates/kata/help.html:283
+#: ckanext/kata/theme/templates/kata/help.html:286
 msgid "Search (Datasets)"
 msgstr "Haku (Tietoaineistot)"
 
@@ -1347,7 +1347,7 @@ msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr "\"pohjoinen pallonpuolisko\"^5 \"eteläinen pallonpuolisko\""
 
 #: ckanext/kata/theme/templates/kata/help.html:107
-#: ckanext/kata/theme/templates/kata/help.html:286
+#: ckanext/kata/theme/templates/kata/help.html:289
 #: ckanext/kata/theme/templates/package/package_rights.html:7
 msgid "Dataset"
 msgstr "Tietoaineisto"
@@ -1689,7 +1689,7 @@ msgstr ""
 "parantaa aineistosi kiinnostavuutta."
 
 #: ckanext/kata/theme/templates/kata/help.html:223
-#: ckanext/kata/theme/templates/kata/help.html:292
+#: ckanext/kata/theme/templates/kata/help.html:295
 msgid "Additional features"
 msgstr "Lisäominaisuudet"
 
@@ -1801,9 +1801,9 @@ msgstr "Metatietoliitteet"
 
 #: ckanext/kata/theme/templates/kata/help.html:254
 msgid ""
-"If you have additional documents that describe your data beyond the "
-"required and recommended fields, you can provide such extra information "
-"as metadata supplements. An example of a useful supplement would be a "
+"If you have additional documents that describe your data beyond required "
+"and recommended fields, you can provide such extra information in "
+"metadata supplements. An example of a useful supplement would be a "
 "detailed description of variables in your data."
 msgstr ""
 "Jos sinulla on pakollisten ja suositeltavien kenttien lisäksi muuta "
@@ -1813,17 +1813,34 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:257
 msgid ""
+"Metadata supplements are separate documents that appear to viewers of the"
+" dataset as downloadable resources. In many cases the dataset will also "
+"appear in search results based on the contents of its metadata "
+"supplements. Searching works for many common file formats (e.g. plain "
+"text, PDF, and many office document formats) but is not guaranteed to "
+"work for all files."
+msgstr ""
+"Metatietoliitteet ovat erillisiä dokumentteja, jotka jotka näkyvät "
+"aineiston muiden tietojen ohella ja jotka aineiston katselija voi ladata "
+"omalle tietokoneelleen luettaviksi. Aineisto näkyy myös hakutuloksissa "
+"sen metatietoliitteiden sisällön perusteella. Haku toimii monien "
+"yleisten tiedostomuotojen kanssa (esim. muotoilematon teksti, PDF ja "
+"monet toimisto-ohjelmien tallennusmuodot). Kaikkiin tiedostoihin haku ei "
+"kuitenkaan välttämättä ulotu."
+
+#: ckanext/kata/theme/templates/kata/help.html:260
+msgid ""
 "Adding supplements to the metadata requires that you have editor "
 "privileges to the dataset."
 msgstr ""
 "Metatietoliitteiden lisääminen aineistoon edellyttää, että sinulla on "
 "muokkausoikeudet aineiston metatietoihin."
 
-#: ckanext/kata/theme/templates/kata/help.html:260
-msgid "To add supplementary metadata, follow these steps:"
+#: ckanext/kata/theme/templates/kata/help.html:263
+msgid "To add metadata supplements for a dataset, follow these steps:"
 msgstr "Voit täydentää aineiston tietoja metatietoliitteillä seuraavasti:"
 
-#: ckanext/kata/theme/templates/kata/help.html:262
+#: ckanext/kata/theme/templates/kata/help.html:265
 msgid ""
 "Open the dataset for editing and find the \"Add new supplement\" button "
 "on the left."
@@ -1831,19 +1848,19 @@ msgstr ""
 "Avaa aineiston metatiedot muokattaviksi ja napsauta painiketta \"Lisää "
 "liite\" sivun vasemmassa laidassa."
 
-#: ckanext/kata/theme/templates/kata/help.html:263
+#: ckanext/kata/theme/templates/kata/help.html:266
 msgid ""
 "In the following form, click the button to upload the supplementary "
-"document from your computer to Kata."
+"document from your computer to Etsin."
 msgstr ""
-"Lähetä liitedokumentti tietokoneeltasi Kataan painikkeesta \"Tallenna "
+"Lähetä liitedokumentti tietokoneeltasi Etsimeen painikkeesta \"Tallenna "
 "tiedosto\"."
 
-#: ckanext/kata/theme/templates/kata/help.html:264
+#: ckanext/kata/theme/templates/kata/help.html:267
 msgid "Enter a name and, optionally, a description for the supplement."
 msgstr "Anna liitteelle nimi ja halutessasi myös kuvaus."
 
-#: ckanext/kata/theme/templates/kata/help.html:265
+#: ckanext/kata/theme/templates/kata/help.html:268
 msgid ""
 "Finally, be sure to confirm adding the supplement to your dataset by "
 "clicking \"Add\" at the bottom of the form."
@@ -1851,27 +1868,27 @@ msgstr ""
 "Vahvista lopuksi lähettämäsi tiedoston lisääminen aineiston liitteeksi "
 "napsauttamalla \"Lisää\"-painiketta sivun alareunassa."
 
-#: ckanext/kata/theme/templates/kata/help.html:275
+#: ckanext/kata/theme/templates/kata/help.html:278
 msgid "Table of contents"
 msgstr "Sisällysluettelo"
 
-#: ckanext/kata/theme/templates/kata/help.html:295
+#: ckanext/kata/theme/templates/kata/help.html:298
 msgid "- User profile"
 msgstr "- Käyttäjäprofiili"
 
-#: ckanext/kata/theme/templates/kata/help.html:298
+#: ckanext/kata/theme/templates/kata/help.html:301
 msgid "- Stats"
 msgstr "- Tilastot"
 
-#: ckanext/kata/theme/templates/kata/help.html:301
+#: ckanext/kata/theme/templates/kata/help.html:304
 msgid "- REMS"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:304
+#: ckanext/kata/theme/templates/kata/help.html:307
 msgid "- Dataset administration"
 msgstr "- Tietoaineiston hallinta"
 
-#: ckanext/kata/theme/templates/kata/help.html:312
+#: ckanext/kata/theme/templates/kata/help.html:315
 msgid "For additional help send email to: "
 msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
 
