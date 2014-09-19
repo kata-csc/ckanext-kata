@@ -232,7 +232,7 @@ def check_through_provider_url(key, data, errors, context):
 def validate_discipline(key, data, errors, context):
     '''
     Validate discipline
-    
+
     :param key: 'discipline'
     '''
     val = data.get(key)
@@ -252,7 +252,7 @@ def validate_discipline(key, data, errors, context):
 def validate_spatial(key, data, errors, context):
     '''
     Validate spatial (aka geographical) coverage
-    
+
     :param key: eg. 'geographical_coverage'
     '''
     val = data.get(key)
@@ -283,7 +283,7 @@ def validate_mimetype(key, data, errors, context):
         if not MIME_REGEX.match(val):
             raise Invalid(_('File type (mimetype) "%s" must be alphanumeric '
                             'characters or symbols: _-+./') % (val))
-    
+
 
 def validate_algorithm(key, data, errors, context):
     '''
@@ -384,12 +384,7 @@ def check_langtitle(key, data, errors, context):
     # import pprint
     # pprint.pprint(data)
     if data.get(('langtitle', 0, 'value'), None) is None:
-        error = 'Missing dataset title'
-        raise Invalid(_(error))
-        # if ('langtitle',) in errors:
-        #     errors[('langtitle',)].append(_(error))
-        # else:
-        #     errors[('langtitle',)] = [_(error)]
+        raise Invalid({'key': 'langtitle', 'value': _('Missing dataset title')})
 
 
 def check_pids(key, data, errors, context):
@@ -397,8 +392,7 @@ def check_pids(key, data, errors, context):
     Check that pids field exists
     '''
     if data.get((u'pids', 0, u'id'), None) is None:
-        error = 'Missing dataset PIDs'
-        raise Invalid(_(error))
+        raise Invalid(_('Missing dataset PIDs'))
 
 
 def check_events(key, data, errors, context):
