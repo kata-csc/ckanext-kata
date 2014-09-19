@@ -56,7 +56,12 @@ def extract_text(resource_url, format):
     except storage_exceptions.FileNotFoundException:
         raise IOError("Unable to extract text from {u} -- is the resource remote?".format(u=resource_url))
 
-    if format != 'txt':
+    mime_type = magic.Magic(mime=True).from_file(original_path)
+
+    if mime_type == 'text/plain':
+        tmp_file = False
+        converted_path = original_path
+    else:
         log.debug("Attempting to extract plain text from {p}".format(p=original_path))
         converted_fd, converted_path = convert_file_to_text(original_path, format)
         if converted_path is not None:
@@ -64,9 +69,6 @@ def extract_text(resource_url, format):
         else:
             log.info("Extracting plain text from {p} failed; unsupported format?".format(p=original_path))
             tmp_file = False
-    else:
-        tmp_file = False
-        converted_path = original_path
 
     if converted_path is not None:
         log.debug("Reading from %s", converted_path)
