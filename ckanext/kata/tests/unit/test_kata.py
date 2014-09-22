@@ -386,6 +386,19 @@ class TestUtils(TestCase):
         assert name
         assert '/' not in name
 
+    def test_get_pids_by_type(self):
+        pids = utils.get_pids_by_type('data', TEST_DATADICT)
+        assert len(pids) == 2
+
+        pids = utils.get_pids_by_type('metadata', TEST_DATADICT)
+        assert len(pids) == 1
+
+        pids = utils.get_pids_by_type('version', TEST_DATADICT)
+        assert len(pids) == 1
+
+        pids = utils.get_pids_by_type('unknown', TEST_DATADICT)
+        assert len(pids) == 0
+
 
 class TestHelpers(TestCase):
     """Unit tests for functions in helpers.py."""

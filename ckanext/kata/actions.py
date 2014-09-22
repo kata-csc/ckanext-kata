@@ -36,7 +36,11 @@ TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
 @side_effect_free
 def package_show(context, data_dict):
-    '''Return the metadata of a dataset (package) and its resources.
+    '''
+    Return the metadata of a dataset (package) and its resources.
+
+    Called before showing the dataset in some interface (browser, API),
+    or when adding package to Solr index (no validation / conversions then).
 
     :param id: the id or name of the dataset
     :type id: string
@@ -47,8 +51,9 @@ def package_show(context, data_dict):
     if data_dict.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_show_package_schema()
 
-    # Called before showing the dataset in some interface (browser, API),
-    # or when adding package to Solr index (no validation / conversions then).
+    if not data_dict.get('id') and not data_dict.get('name'):
+        # Get package by data PIDs
+        data_dict['id'] = utils.get_package_id_by_data_pids(data_dict)
 
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
@@ -191,7 +196,8 @@ def package_update(context, data_dict):
     # Get all resources here since we get only 'dataset' resources from WUI.
     package_context = {'model': model, 'ignore_auth': True, 'validate': True,
                     'extras_as_string': True}
-    package_data = ckan.logic.action.get.package_show(package_context, data_dict)
+    package_data = package_show(package_context, data_dict)
+    # package_data = ckan.logic.action.get.package_show(package_context, data_dict)
 
     # API needs distributor
     distributor = False
@@ -199,7 +205,7 @@ def package_update(context, data_dict):
         if agent.get('role') == 'distributor':
             distributor = True
 
-    if not distributor and package_data.get('agent', None) is not None:
+    if not distributor and package_data.get('agent') is not None:
         # Harvest objects do not have agents
         for agent in package_data.get('agent'):
             if agent.get('role') == 'distributor':
@@ -220,8 +226,8 @@ def package_update(context, data_dict):
     # Get all PIDs (except for package.id and package.name) from database and add new relevant PIDS there
     data_dict['pids'] = package_data.get('pids', [])
 
-    new_version_pid = data_dict.get('new_version_pid', None)
-    if not new_version_pid and data_dict.get('generate_version_pid', None) == 'on':
+    new_version_pid = data_dict.get('new_version_pid')
+    if not new_version_pid and data_dict.get('generate_version_pid') == 'on':
         new_version_pid = utils.generate_pid()
 
     if new_version_pid:
@@ -256,7 +262,7 @@ def package_update(context, data_dict):
     # if data_dict['name'].startswith('FSD'):
     #     context['schema'] = schemas.update_package_schema_ddi()
 
-    if package_data.get('type', None) == 'harvest':
+    if package_data.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_update_package_schema()
 
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)

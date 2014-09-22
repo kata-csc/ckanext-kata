@@ -212,17 +212,45 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['private'] = False
 
-        call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey,
-                                 status=403, **data_dict)
+        call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey, status=403, **data_dict)
 
     def test_create_public_dataset_by_editor(self):
         '''Organization editor can create public dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['private'] = False
 
-        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                 status=200, **data_dict)
+        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey, status=200, **data_dict)
         assert output
+
+
+class TestUpdateDataset(KataApiTestCase):
+    """Tests for (mainly) dataset updating."""
+
+    def test_update_by_data_pid(self):
+        '''Update a dataset by using it's data PID instead of id or name'''
+
+        call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey, status=200, **self.TEST_DATADICT)
+
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['notes'] = "A new description"
+        data_dict['private'] = False
+
+        output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=200, **data_dict)
+
+        output = call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey, status=200, id=output['id'])
+
+        assert output['notes'] == "A new description"
+
+    def test_update_by_data_pid_fail(self):
+        '''Try to update a dataset with wrong PIDs'''
+
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['pids'] = [{'id': unicode(x), 'type': 'data'} for x in range(1, 9)]
+
+        output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=409, **data_dict)
+
+        import pprint
+        pprint.pprint(output)
 
 
 class TestSearchDataset(KataApiTestCase):
@@ -399,8 +427,7 @@ class TestDataReading(KataApiTestCase):
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
 
-        call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey,
-                                 status=403, id=output['id'])
+        call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey, status=403, id=output['id'])
 
     def test_create_update_and_read_dataset(self):
         '''

@@ -11,10 +11,12 @@ import functionally as fn
 from pylons import config
 from lxml import etree
 import re
+from sqlalchemy.sql import select, and_
 from ckan import model as model
+from ckan.lib.dictization import model_dictize
 
 from ckan.lib.email_notifications import send_notification
-from ckan.model import User, Package
+from ckan.model import User, Package, Session, PackageExtra
 from ckan.lib import helpers as h
 from ckanext.kata import settings
 
@@ -276,3 +278,58 @@ def datapid_to_name(string):
     Wrap re.sub to convert a data-PID to package.name
     '''
     return re.sub(*settings.DATAPID_TO_NAME_REGEXES, string=string)
+
+
+def get_pids_by_type(pid_type, data_dict):
+    '''
+    Get all of package PIDs of certain type
+
+    :param pid_type: PID type to get (data, metadata, version)
+    :param data_dict:
+    '''
+    return filter(lambda x: x.get('type') == pid_type, data_dict.get('pids', {}))
+
+
+def get_package_id_by_data_pids(data_dict):
+    '''
+    Try if the provided data PIDs match exactly one dataset.
+
+    :param data_dict:
+    :return: Package id or None if not found.
+    '''
+    data_pids = get_pids_by_type('data', data_dict)
+
+    if len(data_pids) == 0:
+        return None
+
+    pid_list = [pid.get('id') for pid in data_pids]
+    pid_tuple_list = [(pid.get('id'),) for pid in data_pids]
+
+    # Get package ID's with matching PIDS
+    query = Session.query(model.PackageExtra.package_id.distinct()).\
+        filter(model.PackageExtra.value.in_(pid_tuple_list))
+    pkg_ids = query.all()
+
+    if len(pkg_ids) != 1:
+        return None              # Nothing to do if we get many or zero datasets
+
+    # Get extras with the received package ID's
+    query = select(['key', 'value', 'state']).where(
+        and_(model.PackageExtra.package_id.in_(pkg_ids), model.PackageExtra.key.like('pids_%')))
+
+    extras = Session.execute(query)
+
+    # Dictize the results (doesn't combine the results into 'pids' dictionary though)
+    extras = model_dictize.extras_list_dictize(extras, {'model': PackageExtra})
+
+    # Check that matching PIDS are type 'data'.
+    for extra in extras:
+        key = extra['key'].split('_')   # eg. ('pids', '0', 'id')
+
+        if key[2] == 'id' and extra['value'] in pid_list:
+            type_key = '_'.join(key[:2] + ['type'])
+
+            if not filter(lambda x: x['key'] == type_key and x['value'] == 'data', extras):
+                return None      # Found a hit with wrong type of PID
+
+    return pkg_ids[0]    # No problems found, so use this
