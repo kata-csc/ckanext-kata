@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-09-18 10:06+0000\n"
+"POT-Creation-Date: 2014-09-22 13:11+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -164,7 +164,7 @@ msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:808 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:808 ckanext/kata/validators.py:160
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
@@ -223,22 +223,22 @@ msgstr "Omistaja"
 msgid "Producer"
 msgstr ""
 
-#: ckanext/kata/validators.py:57
+#: ckanext/kata/validators.py:58
 #, python-format
 msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 "Tagin \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: \"\n"
 "\"'_.()/#+."
 
-#: ckanext/kata/validators.py:104
+#: ckanext/kata/validators.py:109
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr "Päivämäärän muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
 
-#: ckanext/kata/validators.py:107 ckanext/kata/validators.py:127
+#: ckanext/kata/validators.py:112 ckanext/kata/validators.py:132
 msgid "Invalid date"
 msgstr "Vääränlainen päivämäärä"
 
-#: ckanext/kata/validators.py:124
+#: ckanext/kata/validators.py:129
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: "
 "2001-03-01 or 2001-03"
@@ -247,26 +247,26 @@ msgstr ""
 "\"\n"
 "\"2001-01-01"
 
-#: ckanext/kata/validators.py:165
+#: ckanext/kata/validators.py:170
 msgid "Invalid characters: <> not allowed"
 msgstr "Kiellettyjä merkkejä: <> ei sallittu"
 
-#: ckanext/kata/validators.py:174
+#: ckanext/kata/validators.py:179
 msgid "Value must contain alphanumeric characters"
 msgstr "Arvon täytyy sisältää aakkosnumeerisia merkkejä"
 
-#: ckanext/kata/validators.py:182
+#: ckanext/kata/validators.py:187
 msgid "Invalid telephone number, must be like +13221221"
 msgstr "Vääränmuotoinen puhelinnumero, vaaditaan muotoa +13221221."
 
-#: ckanext/kata/validators.py:244
+#: ckanext/kata/validators.py:249
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
 msgstr ""
 "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: -,"
 
-#: ckanext/kata/validators.py:265
+#: ckanext/kata/validators.py:270
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
@@ -276,7 +276,7 @@ msgstr ""
 "merkeistä (ascii) ja näistä erikoismerkeistä: -'/,:(). Kelpaamattomat "
 "merkkijonot: \"%s\""
 
-#: ckanext/kata/validators.py:284
+#: ckanext/kata/validators.py:289
 #, python-format
 msgid ""
 "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: "
@@ -285,30 +285,40 @@ msgstr ""
 "Tiedostotyypin (mimetyyppi) \"%s\" pitää koostua alfanumeerisita "
 "merkeistä (ascii) ja näistä erikoismerkeistä: _'+./"
 
-#: ckanext/kata/validators.py:296
+#: ckanext/kata/validators.py:301
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 "Algoritmin \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: _-()"
 
-#: ckanext/kata/validators.py:307
+#: ckanext/kata/validators.py:312
 msgid "First title can not be empty"
 msgstr "Ensimmäinen otsikko ei voi olla tyhjä"
 
-#: ckanext/kata/validators.py:321
+#: ckanext/kata/validators.py:326
 msgid "Duplicate titles for a language not permitted"
 msgstr "Et voi syöttää useampia otsikoita samalla kielellä"
 
-#: ckanext/kata/validators.py:353
+#: ckanext/kata/validators.py:358
 msgid "Missing compulsory agent: {0}"
 msgstr "Pakollinen toimija puuttuu: {0}"
 
-#: ckanext/kata/validators.py:365
+#: ckanext/kata/validators.py:370
 msgid "Missing compulsory distributor contact"
 msgstr "Pakollinen jakelijan tieto puuttuu"
 
-#: ckanext/kata/validators.py:416 ckanext/kata/validators.py:452
+#: ckanext/kata/validators.py:392
+#, fuzzy
+msgid "Missing dataset title"
+msgstr "Tietoaineiston otsikko"
+
+#: ckanext/kata/validators.py:400
+#, fuzzy
+msgid "Missing dataset PIDs"
+msgstr "Tämä tietoaineisto on"
+
+#: ckanext/kata/validators.py:415 ckanext/kata/validators.py:451
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr "Puuttuva arvo"
@@ -735,24 +745,27 @@ msgstr "Mitä on metatieto?"
 #: ckanext/kata/theme/templates/home/index.html:38
 msgid ""
 "Metadata is data about data. Metadata describes important features of the"
-" data such as authors, subjects, storage formats and licenses."
+" data such as authors, subjects, the fields of research the data pertains"
+" to, storage formats, and licenses."
 msgstr ""
 "Lyhyesti määriteltynä metatieto on tietoa tiedosta. Metatiedolla "
-"kuvaillaan tiedon ominaisuuksia kuten esimerkiksi tekijöitä, aihetta, "
-"tallennusmuotoa ja käyttöoikeuksia."
+"kuvaillaan tiedon ominaisuuksia kuten esimerkiksi tekijöitä, aihepiirejä,"
+" tutkimuksen alaa, tallennusmuotoa ja käyttöoikeuksia."
 
 #: ckanext/kata/theme/templates/home/index.html:41
 msgid ""
-"The content of metadata varies a lot depending on the data being "
-"described. However, this service provides a common set of metadata fields"
-" tailored for research data. The metadata conforms to the minimum "
+"The content of metadata varies depending on what kind of data is being "
+"described. However, Etsin provides a common ground by employing a common "
+"set of metadata fields tailored for research data. In the interest of "
+"consistency with other services, the metadata conforms to the minimum "
 "metadata model defined by the Finnish National Research Data Initiative "
 "(TTA)."
 msgstr ""
-"Metadatan sisältö riippuu suuresti datasta. Tämä palvelu tarjoaa "
-"kuitenkin yhtenäisen rakenteen tutkimusaineistojen metadatalle: "
-"Tutkimuksen tietoaineistot (TTA) -hankkeen julkaiseman "
-"minimimetatietomallin mukaiset kentät."
+"Metatiedon sisältö riippuu suuresti datasta. Etsin tarjoaa kuitenkin "
+"yhtenäisen rakenteen tutkimusaineistojen metatiedoille. Jotta metatiedot "
+"olisivat yhteneväisiä muiden palveluiden kanssa, Etsin noudattaa "
+"metatiedoissa Tutkimuksen tietoaineistot (TTA) -hankkeen julkaisemaa "
+"minimimetatietomallia."
 
 #: ckanext/kata/theme/templates/home/index.html:44
 msgid "Is this service for me?"
@@ -1079,17 +1092,13 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:46
 msgid ""
-"If this happened, you opened Etsin via an unencrypted connection, that is"
-" http://kata.csc.fi. The identification cookie is only sent via an "
+"This may happen if you have previously logged in to Etsin and then access"
+" Etsin via an unencrypted (HTTP rather than HTTPS) connection. The "
+"identification cookie from your earlier login is only sent via an "
 "encrypted connection and thus you could not be identified. Choosing \"Log"
-" in\" redirected you to use encrypted https connection. At the same time "
-"your identification cookie was sent and you were recognized."
+" in\" redirected you to use an encrypted https connection. At the same "
+"time your identification cookie was sent and you were recognized."
 msgstr ""
-"Tämä tapahtui, koska avasit Etsimen suojaamatonta yhteyttä pitkin, "
-"esimerkiksi osoitetta http://kata.csc.fi käyttäen. Tällöin "
-"kirjautumiskeksiä (cookie) ei lähetetty, koska yhteytesi oli suojaamaton."
-" Kun valitsit Kirjaudu sitään, sinut ohjattiin käyttämään salattua https-"
-"yhteyttä ja tällöin sinut pystyttiin tunnistamaan keksin (cookie) avulla."
 
 #: ckanext/kata/theme/templates/kata/faq.html:78
 msgid ""
@@ -1823,9 +1832,9 @@ msgstr ""
 "Metatietoliitteet ovat erillisiä dokumentteja, jotka jotka näkyvät "
 "aineiston muiden tietojen ohella ja jotka aineiston katselija voi ladata "
 "omalle tietokoneelleen luettaviksi. Aineisto näkyy myös hakutuloksissa "
-"sen metatietoliitteiden sisällön perusteella. Haku toimii monien "
-"yleisten tiedostomuotojen kanssa (esim. muotoilematon teksti, PDF ja "
-"monet toimisto-ohjelmien tallennusmuodot). Kaikkiin tiedostoihin haku ei "
+"sen metatietoliitteiden sisällön perusteella. Haku toimii monien yleisten"
+" tiedostomuotojen kanssa (esim. muotoilematon teksti, PDF ja monet "
+"toimisto-ohjelmien tallennusmuodot). Kaikkiin tiedostoihin haku ei "
 "kuitenkaan välttämättä ulotu."
 
 #: ckanext/kata/theme/templates/kata/help.html:260
