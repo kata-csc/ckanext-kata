@@ -1,4 +1,6 @@
 # coding=utf-8
+#
+# pylint: disable=E1101, E1103, invalid-name
 """
 Utility functions for Kata.
 """
@@ -21,7 +23,7 @@ from ckan.lib import helpers as h
 from ckanext.kata import settings
 
 
-log = logging.getLogger(__name__)     # pylint: disable=invalid-name
+log = logging.getLogger(__name__)
 
 
 def generate_pid():
