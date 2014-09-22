@@ -115,17 +115,6 @@ def package_create(context, data_dict):
         log.debug("Tried to check the package type, but it wasn't present!")
         # TODO: JUHO: Dubious to let pass without checking user.sysadmin
         pass
-    # Remove ONKI generated parameters for tidiness
-    # They won't exist when adding via API
-    try:
-        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs',
-                     'geographic_coverage_field_langs', 'geographic_coverage_field',
-                     'geographic_coverage_tmp',
-                     'discipline_field_langs', 'discipline_field']
-        for key in removable:
-            del data_dict[key]
-    except KeyError:
-        pass
 
     data_dict = utils.dataset_to_resource(data_dict)
 
@@ -182,17 +171,6 @@ def package_update(context, data_dict):
 
     :rtype: dictionary
     '''
-    # Remove ONKI generated parameters for tidiness
-    # They won't exist when adding via API
-    try:
-        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs',
-                     'geographic_coverage_field_langs', 'geographic_coverage_field',
-                     'discipline_field_langs', 'discipline_field']
-        for key in removable:
-            del data_dict[key]
-    except KeyError:
-        pass
-
     # Get all resources here since we get only 'dataset' resources from WUI.
     package_context = {'model': model, 'ignore_auth': True, 'validate': True,
                     'extras_as_string': True}
