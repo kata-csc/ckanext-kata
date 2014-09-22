@@ -30,6 +30,16 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert output
         assert output['id'].startswith('urn:nbn:fi:csc-kata')
 
+    def test_create_dataset_without_tags(self):
+        data = copy.copy(self.TEST_DATADICT)
+        data.pop('tag_string')
+
+        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
+                                 status=409, **data)
+
+        self.assertTrue('__type' in output)
+        self.assertEquals(output['__type'], 'Validation Error')
+
     def test_create_dataset_sysadmin(self):
         output = call_action_api(self.app, 'package_create', apikey=self.user_sysadmin.apikey,
                                  status=200, **self.TEST_DATADICT)
@@ -142,32 +152,29 @@ class TestCreateDatasetAndResources(KataApiTestCase):
                                  status=200, id=res_id)
         if output is not None and '__type' in output:
             assert output['__type'] != 'Validation Error'
-            
+
     def test_create_edit(self):
         '''
         Test and edit dataset via API. Check that immutables stay as they are.
         '''
-        print 'Create dataset'
         output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
                                  status=200, **self.TEST_DATADICT)
-        
+
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        
+
         orig_id = output['id']
         data_dict['id'] = orig_id
         output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=200, **data_dict)
         assert output['id'] == orig_id
-        
+
         data_dict['name'] = 'new-name-123456'
 
-        print 'Update dataset'
-        
         output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=409, **data_dict)
 
         assert output
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
-        
+
     def test_create_dataset_invalid_agents(self):
         '''Test required fields for agents (role, name/organisation/URL)'''
 
@@ -417,7 +424,7 @@ class TestDataReading(KataApiTestCase):
         assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
         assert self._compare_datadicts(self.TEST_DATADICT, output)
-        
+
     def test_secured_fields(self):
         '''
         Test that anonymous user can not read protected data

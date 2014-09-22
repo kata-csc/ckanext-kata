@@ -41,6 +41,14 @@ class Schemas:
 
         :rtype: schema
         """
+        schema = cls._create_package_schema()
+        schema['tag_string'] = [not_missing, not_empty, va.kata_tag_string_convert]
+        return schema
+
+    @classmethod
+    def _create_package_schema(cls):
+        """ Create common schema for dataset create and update.
+        """
         # TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!
         # Note: harvester schemas
 
@@ -159,7 +167,7 @@ class Schemas:
         :rtype: schema
         '''
         # Todo: requires additional testing and planning
-        schema = cls.create_package_schema()
+        schema = cls._create_package_schema()
 
         schema['__extras'] = [ignore]   # This removes orgauth checking
         schema['availability'].insert(0, ignore_missing)
@@ -182,7 +190,7 @@ class Schemas:
 
         :rtype: schema
         '''
-        schema = cls.create_package_schema()
+        schema = cls._create_package_schema()
         schema['discipline'].insert(0, ignore_missing)
         schema['event'] = {'type': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
@@ -203,7 +211,7 @@ class Schemas:
 
         :rtype: schema
         """
-        schema = cls.create_package_schema()
+        schema = cls._create_package_schema()
         # Taken from ckan.logic.schema.default_update_package_schema():
         schema['id'] = [ignore_missing, package_id_not_changed]
         schema['name'] = [ignore_missing, va.package_name_not_changed]
