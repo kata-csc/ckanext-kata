@@ -178,4 +178,4 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
 
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
 
-DATAPID_TO_NAME_REGEXES = [r'[^A-Za-z0-9_:\-\.]', r'_']     # [pattern, replace]
+DATAPID_TO_NAME_REGEXES = [r'[^A-Za-z0-9]', r'-']     # [pattern, replace]
