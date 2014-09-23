@@ -305,11 +305,10 @@ def get_package_id_by_data_pids(data_dict):
         return None
 
     pid_list = [pid.get('id') for pid in data_pids]
-    pid_tuple_list = [(pid.get('id'),) for pid in data_pids]
 
     # Get package ID's with matching PIDS
     query = Session.query(model.PackageExtra.package_id.distinct()).\
-        filter(model.PackageExtra.value.in_(pid_tuple_list))
+        filter(model.PackageExtra.value.in_(pid_list))
     pkg_ids = query.all()
 
     if len(pkg_ids) != 1:
@@ -321,7 +320,7 @@ def get_package_id_by_data_pids(data_dict):
 
     extras = Session.execute(query)
 
-    # Dictize the results (doesn't combine the results into 'pids' dictionary though)
+    # Dictize the results
     extras = model_dictize.extras_list_dictize(extras, {'model': PackageExtra})
 
     # Check that matching PIDS are type 'data'.

@@ -247,10 +247,7 @@ class TestUpdateDataset(KataApiTestCase):
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['pids'] = [{'id': unicode(x), 'type': 'data'} for x in range(1, 9)]
 
-        output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=409, **data_dict)
-
-        import pprint
-        pprint.pprint(output)
+        call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=409, **data_dict)
 
 
 class TestSearchDataset(KataApiTestCase):
