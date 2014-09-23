@@ -249,7 +249,7 @@
         <p>
             {{ _('From the top of the page, from the member list table, you can remove users from their roles in this dataset. Note, that you can not remove the built-in user accounts, like visitor and logged_in, nor yourself.') }}
         </p>
-        <h3 class="help-page"><a id="extra-metadata-docs class=help-h4">{{ _('Metadata supplements') }}</a></h3>
+        <h3 class="help-page"><a id="metadata-supplements" class="help-h4">{{ _('Metadata supplements') }}</a></h3>
         <p>
             {{ _('If you have additional documents that describe your data beyond required and recommended fields, you can provide such extra information in metadata supplements. An example of a useful supplement would be a detailed description of variables in your data.') }}
         </p>
@@ -295,16 +295,19 @@
             <a href="#help-other">{{ _('Additional features') }}</a>
           </li>
           <li>
-            <a href="#user-profile" class="toc-sub">{{ _('- User profile') }}</a>
+            <a href="#user-profile" class="toc-sub">- {{ _('User profile') }}</a>
           </li>
           <li>
-            <a href="#stats" class="toc-sub">{{ _('- Stats') }}</a>
+            <a href="#stats" class="toc-sub">- {{ _('Stats') }}</a>
           </li>
           <li>
-            <a href="#rems" class="toc-sub">{{ _('- REMS') }}</a>
+            <a href="#rems" class="toc-sub">- {{ _('REMS') }}</a>
           </li>
           <li>
-            <a href="#dataset-admin" class="toc-sub">{{ _('- Dataset administration') }}</a>
+            <a href="#dataset-admin" class="toc-sub">- {{ _('Dataset administration') }}</a>
+          </li>
+          <li>
+            <a href="#metadata-supplements" class="toc-sub">- {{ _('Metadata supplements') }}</a>
           </li>
           {#<li>
             <a href="#collections" class="toc-sub">{{ _('- Collections') }}</a>

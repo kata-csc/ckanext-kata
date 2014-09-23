@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-22 13:43+0000\n"
+"POT-Creation-Date: 2014-09-23 07:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -403,6 +403,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:106
 #: ckanext/kata/theme/templates/kata/help.html:232
+#: ckanext/kata/theme/templates/kata/help.html:301
 msgid "Stats"
 msgstr ""
 
@@ -1442,6 +1443,7 @@ msgid "Etsin contains several other features which are shortly covered here."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:228
+#: ckanext/kata/theme/templates/kata/help.html:298
 msgid "User profile"
 msgstr ""
 
@@ -1461,6 +1463,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:236
+#: ckanext/kata/theme/templates/kata/help.html:304
 msgid "REMS"
 msgstr ""
 
@@ -1479,6 +1482,7 @@ msgid "REMS manual"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:245
+#: ckanext/kata/theme/templates/kata/help.html:307
 #: ckanext/kata/theme/templates/package/read_base.html:36
 msgid "Dataset administration"
 msgstr ""
@@ -1505,6 +1509,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:252
+#: ckanext/kata/theme/templates/kata/help.html:310
 #: ckanext/kata/theme/templates/package/snippets/info.html:22
 msgid "Metadata supplements"
 msgstr ""
@@ -1562,23 +1567,7 @@ msgstr ""
 msgid "Table of contents"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:298
-msgid "- User profile"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:301
-msgid "- Stats"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:304
-msgid "- REMS"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:307
-msgid "- Dataset administration"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:315
+#: ckanext/kata/theme/templates/kata/help.html:318
 msgid "For additional help send email to: "
 msgstr ""
 

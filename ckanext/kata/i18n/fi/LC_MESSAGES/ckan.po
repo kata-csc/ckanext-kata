@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-09-22 13:43+0000\n"
+"POT-Creation-Date: 2014-09-23 07:55+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -422,6 +422,7 @@ msgstr "FAQ"
 
 #: ckanext/kata/theme/templates/header.html:106
 #: ckanext/kata/theme/templates/kata/help.html:232
+#: ckanext/kata/theme/templates/kata/help.html:301
 msgid "Stats"
 msgstr "Tilastot"
 
@@ -1100,8 +1101,8 @@ msgid ""
 "connection. At the same time your identification cookie was sent and you "
 "were recognized."
 msgstr ""
-"Näin voi tapahtua, jos olet aiemmin kirjautunut sisään ja avaat "
-"Etsimen suojaamatonta yhteyttä käyttäen, esimerkiksi osoitteella "
+"Näin voi tapahtua, jos olet aiemmin kirjautunut sisään ja avaat Etsimen "
+"suojaamatonta yhteyttä käyttäen, esimerkiksi osoitteella "
 "http://etsin.avointiede.fi. Tällöin kirjautumisevästettä (cookie) ei "
 "lähetetä, koska yhteytesi on suojaamaton. Kun valitsit \"Kirjaudu "
 "sisään\", sinut ohjattiin käyttämään salattua https-yhteyttä ja tällöin "
@@ -1714,6 +1715,7 @@ msgid "Etsin contains several other features which are shortly covered here."
 msgstr "Etsimessä on myös muita ominaisuuksia, joita käydään läpi seuraavaksi."
 
 #: ckanext/kata/theme/templates/kata/help.html:228
+#: ckanext/kata/theme/templates/kata/help.html:298
 msgid "User profile"
 msgstr "Käyttäjäprofiili"
 
@@ -1742,6 +1744,7 @@ msgstr ""
 "Etsimen sisältämistä tietoaineistoista ja käyttäjistä."
 
 #: ckanext/kata/theme/templates/kata/help.html:236
+#: ckanext/kata/theme/templates/kata/help.html:304
 msgid "REMS"
 msgstr ""
 
@@ -1768,6 +1771,7 @@ msgid "REMS manual"
 msgstr "REMS:n käyttöohjeista"
 
 #: ckanext/kata/theme/templates/kata/help.html:245
+#: ckanext/kata/theme/templates/kata/help.html:307
 #: ckanext/kata/theme/templates/package/read_base.html:36
 msgid "Dataset administration"
 msgstr "Tietoaineiston hallinta"
@@ -1811,6 +1815,7 @@ msgstr ""
 "visitor ja logged_in, tai itseäsi."
 
 #: ckanext/kata/theme/templates/kata/help.html:252
+#: ckanext/kata/theme/templates/kata/help.html:310
 #: ckanext/kata/theme/templates/package/snippets/info.html:22
 msgid "Metadata supplements"
 msgstr "Metatietoliitteet"
@@ -1888,23 +1893,7 @@ msgstr ""
 msgid "Table of contents"
 msgstr "Sisällysluettelo"
 
-#: ckanext/kata/theme/templates/kata/help.html:298
-msgid "- User profile"
-msgstr "- Käyttäjäprofiili"
-
-#: ckanext/kata/theme/templates/kata/help.html:301
-msgid "- Stats"
-msgstr "- Tilastot"
-
-#: ckanext/kata/theme/templates/kata/help.html:304
-msgid "- REMS"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:307
-msgid "- Dataset administration"
-msgstr "- Tietoaineiston hallinta"
-
-#: ckanext/kata/theme/templates/kata/help.html:315
+#: ckanext/kata/theme/templates/kata/help.html:318
 msgid "For additional help send email to: "
 msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
 
@@ -5694,4 +5683,3 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
-
