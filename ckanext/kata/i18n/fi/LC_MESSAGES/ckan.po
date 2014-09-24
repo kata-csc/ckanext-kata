@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-09-24 11:53+0000\n"
+"POT-Creation-Date: 2014-09-24 12:52+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -25,57 +25,59 @@ msgstr "Artikkeli"
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
 
-#: ckanext/kata/actions.py:453 ckanext/kata/actions.py:517
+#: ckanext/kata/actions.py:454 ckanext/kata/actions.py:518
 msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
-#: ckanext/kata/actions.py:464 ckanext/kata/actions.py:528
+#: ckanext/kata/actions.py:465 ckanext/kata/actions.py:529
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
-#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:473
+#: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
 #: ckanext/kata/controllers.py:864
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
 
-#: ckanext/kata/actions.py:477
+#: ckanext/kata/actions.py:478
 msgid "No such user and role combination"
 msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
 
-#: ckanext/kata/actions.py:484
+#: ckanext/kata/actions.py:485
 msgid "Built-in users can not be removed"
 msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
 
-#: ckanext/kata/actions.py:488
+#: ckanext/kata/actions.py:489
 msgid "You can not remove yourself"
 msgstr "Et voi poistaa itseäsi"
 
-#: ckanext/kata/actions.py:493
+#: ckanext/kata/actions.py:494
 #, python-format
 msgid "User removed from role %s"
 msgstr "Käyttäjä poistettu roolista %s"
 
-#: ckanext/kata/actions.py:539
+#: ckanext/kata/actions.py:540
 #, python-format
 msgid "User already has %s rights"
 msgstr "Käyttäjällä on jo %s -oikeudet"
 
-#: ckanext/kata/actions.py:545
+#: ckanext/kata/actions.py:546
 msgid "User added"
 msgstr "Käyttäjä lisätty"
 
-#: ckanext/kata/actions.py:594
+#: ckanext/kata/actions.py:595
 msgid "You don't have permission to modify roles for this organization."
 msgstr "Sinulla ei ole oikeuksia muokata tämän organisaation rooleja."
 
-#: ckanext/kata/actions.py:628
+#: ckanext/kata/actions.py:629
 msgid "You don't have permission to remove this user."
 msgstr "Sinulla ei ole oikeuksia poistaa tätä käyttäjää."
 
-#: ckanext/kata/actions.py:659
+#: ckanext/kata/actions.py:660
 msgid "You are not allowed to create public datasets for this organization."
-msgstr "Sinulla ei ole oikeuksia luoda julkisia tietoaineistoja tähän organisaatioon."
+msgstr ""
+"Sinulla ei ole oikeuksia luoda julkisia tietoaineistoja tähän "
+"organisaatioon."
 
 #: ckanext/kata/auth_functions.py:60
 #, python-format
@@ -689,39 +691,25 @@ msgid ""
 "— IT Center for Science Ltd. The service is discipline independent and "
 "free to use. </p> "
 msgstr ""
-"<h2>Tietoa Etsin-palvelusta</h2> <p> Etsin "
-"on palvelu tutkimuksen tietoaineistojen "
-"hakuun. Etsin kerää tutkimusaineistojen "
-"metatietoja useista ulkopuolisista lähteistä, "
-"ja tietoja voi myös syöttää suoraan "
-"palveluun. Tutkimusdataa ei koskaan tallenneta"
-" Etsimeen, vaan se voidaan säilyttää "
-"missä tahansa tallennuspalvelussa. Etsimessä "
-"olevien metatietojen avulla data on "
-"kuitenkin helposti kenen tahansa "
-"löydettävissä. </p> <p> Datan kattava "
-"kuvailu lisää olennaisesti sen näkyvyyttä. "
-"Etsin pyrkii edistämään kuvailujen tasoa "
-"tarjoamalla kaikille tieteenaloille yhteiset "
-"metatietokentät ja tekemällä tietojen "
-"lisäämisen mahdollisimman helpoksi. Osana "
-"yhteisiä metatietokenttiä on myös kentät, "
-"jotka kertovat datan käyttöoikeuksista, "
-"omistajuudesta ja lisenssistä. Tällä pyritään"
-" yhtenäistämään erityisesti käyttöoikeus- ja "
-"lisenssikäytäntöjä. Etsimen monipuolisten "
-"hakuominaisuuksien ansiosta datan löytäminen "
-"on helpompaa. Tämä edistää myös meriitin"
-" syntymistä tutkijoille. Lisäksi aineistoihin "
-"ja tutkimushankkeiden rahoitukseen liittyvät "
-"tiedot tekevät tutkimuksen tuloksista "
-"läpinäkyvämpiä rahoittajille. </p> <p>Etsin-"
-"palvelun omistaa opetus- ja "
-"kulttuuriministeriö ja sitä ylläpitää CSC — Tieteen tietotekniikan keskus Oy. "
-"Palvelu on tieteenalariippumaton ja käyttäjilleen maksuton.</p>"
-" "
-
-
+"<h2>Tietoa Etsin-palvelusta</h2> <p> Etsin on palvelu tutkimuksen "
+"tietoaineistojen hakuun. Etsin kerää tutkimusaineistojen metatietoja "
+"useista ulkopuolisista lähteistä, ja tietoja voi myös syöttää suoraan "
+"palveluun. Tutkimusdataa ei koskaan tallenneta Etsimeen, vaan se voidaan "
+"säilyttää missä tahansa tallennuspalvelussa. Etsimessä olevien "
+"metatietojen avulla data on kuitenkin helposti kenen tahansa "
+"löydettävissä. </p> <p> Datan kattava kuvailu lisää olennaisesti sen "
+"näkyvyyttä. Etsin pyrkii edistämään kuvailujen tasoa tarjoamalla kaikille"
+" tieteenaloille yhteiset metatietokentät ja tekemällä tietojen lisäämisen"
+" mahdollisimman helpoksi. Osana yhteisiä metatietokenttiä on myös kentät,"
+" jotka kertovat datan käyttöoikeuksista, omistajuudesta ja lisenssistä. "
+"Tällä pyritään yhtenäistämään erityisesti käyttöoikeus- ja "
+"lisenssikäytäntöjä. Etsimen monipuolisten hakuominaisuuksien ansiosta "
+"datan löytäminen on helpompaa. Tämä edistää myös meriitin syntymistä "
+"tutkijoille. Lisäksi aineistoihin ja tutkimushankkeiden rahoitukseen "
+"liittyvät tiedot tekevät tutkimuksen tuloksista läpinäkyvämpiä "
+"rahoittajille. </p> <p>Etsin-palvelun omistaa opetus- ja "
+"kulttuuriministeriö ja sitä ylläpitää CSC — Tieteen tietotekniikan keskus"
+" Oy. Palvelu on tieteenalariippumaton ja käyttäjilleen maksuton.</p> "
 
 #: ckanext/kata/theme/templates/home/index.html:3
 msgid "Welcome"
@@ -2401,9 +2389,15 @@ msgstr "Tuo"
 msgid "Edit Dataset"
 msgstr "Muokkaa tietoaineistoa"
 
-#: ckanext/kata/theme/templates/package/snippets/info.html:33
+#: ckanext/kata/theme/templates/package/snippets/info.html:34
 msgid "Add new supplement"
 msgstr "Lisää liite"
+
+#: ckanext/kata/theme/templates/package/snippets/info.html:37
+msgid ""
+"Dataset has invalid information. Please add all required information to "
+"add supplements."
+msgstr "Tietoaineisto sisältää virheellistä tietoa. Lisää kaikki vaaditut tiedot lisääksesi liitteitä."
 
 #: ckanext/kata/theme/templates/package/snippets/languages.html:2
 msgid "Finnish"
