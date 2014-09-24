@@ -1,7 +1,6 @@
 # coding: utf-8
 #
 # pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable
-
 """
 Test classes for Kata CKAN Extension.
 """
@@ -21,6 +20,7 @@ import ckanext.kata.model as kata_model
 import ckanext.kata.actions as actions
 from ckan.logic import get_action, NotAuthorized, ValidationError, NotFound
 from ckanext.harvest.model import setup
+from ckanext.kata.utils import get_package_id_by_data_pids
 
 class TestKataPlugin(TestCase):
     """
@@ -620,3 +620,38 @@ class TestHarvestSource(TestCase):
         data_dict['title'] = 'test update'
         response = get_action('harvest_source_update')(context, data_dict)
 
+
+class TestUtilities(TestCase):
+    @classmethod
+    def setup_class(cls):
+        setup()
+
+    @classmethod
+    def teardown_class(cls):
+        model.repo.rebuild_db()
+
+    def test_get_package_id_by_data_pids(self):
+        model.User(name="pidtest", sysadmin=True).save()
+        organization = get_action('organization_create')({'user': 'pidtest'}, {'name': 'test-organization', 'title': "Test organization"})
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['private'] = False
+
+        data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
+                         'id': u'some_data_pid_1',
+                         'type': u'data'}]
+
+        package_1 = get_action('package_create')({'user': 'pidtest'}, data)
+
+        data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
+                         'id': u'some_data_pid_2',
+                         'type': u'data'}]
+
+        package_2 = get_action('package_create')({'user': 'pidtest'}, data)
+
+        package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_1'}]})
+        self.assertEquals(package_1['id'], package_id[0])
+
+        package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_2'}]})
+        self.assertEquals(package_2['id'], package_id[0])
