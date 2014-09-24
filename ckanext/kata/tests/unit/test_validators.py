@@ -295,6 +295,10 @@ class TestValidators(TestCase):
         dada[('geographic_coverage',)] = u'Uusimaa ([]!)'
         self.assertRaises(Invalid, validate_spatial, ('geographic_coverage',), dada, errors, None)
 
+        # Test DCMI-point
+        dada[('geographic_coverage',)] = u'DCMI-point: name=Paikka X; east=12.3456; north=78.90; elevation=9900;'
+        assert len(errors) == 0
+
     def test_checkbox_to_boolean(self):
         errors = defaultdict(list)
 

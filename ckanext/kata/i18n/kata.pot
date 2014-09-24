@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-23 07:55+0000\n"
+"POT-Creation-Date: 2014-09-24 06:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,63 +17,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:76 ckanext/kata/converters.py:173
+#: ckanext/kata/actions.py:81 ckanext/kata/converters.py:173
 msgid "Paper"
 msgstr ""
 
-#: ckanext/kata/actions.py:107
+#: ckanext/kata/actions.py:112
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:533
+#: ckanext/kata/actions.py:453 ckanext/kata/actions.py:517
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:480 ckanext/kata/actions.py:544
+#: ckanext/kata/actions.py:464 ckanext/kata/actions.py:528
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:485 ckanext/kata/actions.py:489
+#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:473
 #: ckanext/kata/controllers.py:864
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:493
+#: ckanext/kata/actions.py:477
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:500
+#: ckanext/kata/actions.py:484
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:504
+#: ckanext/kata/actions.py:488
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:509
+#: ckanext/kata/actions.py:493
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:555
+#: ckanext/kata/actions.py:539
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:561
+#: ckanext/kata/actions.py:545
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:610
+#: ckanext/kata/actions.py:594
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:644
+#: ckanext/kata/actions.py:628
 msgid "You don't have permission to remove this user."
 msgstr ""
 
-#: ckanext/kata/actions.py:675
+#: ckanext/kata/actions.py:659
 msgid "You are not allowed to create public datasets for this organization."
 msgstr ""
 
@@ -163,7 +163,7 @@ msgstr ""
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:808 ckanext/kata/validators.py:160
+#: ckanext/kata/controllers.py:808 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr ""
 
@@ -222,84 +222,84 @@ msgstr ""
 msgid "Producer"
 msgstr ""
 
-#: ckanext/kata/validators.py:58
+#: ckanext/kata/validators.py:57
 #, python-format
 msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 
-#: ckanext/kata/validators.py:109
+#: ckanext/kata/validators.py:104
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:112 ckanext/kata/validators.py:132
+#: ckanext/kata/validators.py:107 ckanext/kata/validators.py:127
 msgid "Invalid date"
 msgstr ""
 
-#: ckanext/kata/validators.py:129
+#: ckanext/kata/validators.py:124
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: 2001-03-01 "
 "or 2001-03"
 msgstr ""
 
-#: ckanext/kata/validators.py:170
+#: ckanext/kata/validators.py:165
 msgid "Invalid characters: <> not allowed"
 msgstr ""
 
-#: ckanext/kata/validators.py:179
+#: ckanext/kata/validators.py:174
 msgid "Value must contain alphanumeric characters"
 msgstr ""
 
-#: ckanext/kata/validators.py:187
+#: ckanext/kata/validators.py:182
 msgid "Invalid telephone number, must be like +13221221"
 msgstr ""
 
-#: ckanext/kata/validators.py:249
+#: ckanext/kata/validators.py:244
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
 msgstr ""
 
-#: ckanext/kata/validators.py:270
+#: ckanext/kata/validators.py:265
 #, python-format
 msgid ""
-"Spatial coverage \"%s\" must be alphanumeric characters or symbols: -'/,:(). "
-"Mismatching strings: \"%s\""
+"Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
+"-'/,:().;= Mismatching strings: \"%s\""
 msgstr ""
 
-#: ckanext/kata/validators.py:289
+#: ckanext/kata/validators.py:284
 #, python-format
 msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
 msgstr ""
 
-#: ckanext/kata/validators.py:301
+#: ckanext/kata/validators.py:296
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 
-#: ckanext/kata/validators.py:312
+#: ckanext/kata/validators.py:307
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:326
+#: ckanext/kata/validators.py:321
 msgid "Duplicate titles for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:358
+#: ckanext/kata/validators.py:353
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:370
+#: ckanext/kata/validators.py:365
 msgid "Missing compulsory distributor contact"
 msgstr ""
 
-#: ckanext/kata/validators.py:392
+#: ckanext/kata/validators.py:387
 msgid "Missing dataset title"
 msgstr ""
 
-#: ckanext/kata/validators.py:400
+#: ckanext/kata/validators.py:395
 msgid "Missing dataset PIDs"
 msgstr ""
 
-#: ckanext/kata/validators.py:415 ckanext/kata/validators.py:451
+#: ckanext/kata/validators.py:410 ckanext/kata/validators.py:446
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr ""

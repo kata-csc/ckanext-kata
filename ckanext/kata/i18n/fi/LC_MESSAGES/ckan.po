@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-09-23 07:55+0000\n"
+"POT-Creation-Date: 2014-09-24 06:41+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -17,65 +17,65 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:76 ckanext/kata/converters.py:173
+#: ckanext/kata/actions.py:81 ckanext/kata/converters.py:173
 msgid "Paper"
 msgstr "Artikkeli"
 
-#: ckanext/kata/actions.py:107
+#: ckanext/kata/actions.py:112
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
 
-#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:533
+#: ckanext/kata/actions.py:453 ckanext/kata/actions.py:517
 msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
-#: ckanext/kata/actions.py:480 ckanext/kata/actions.py:544
+#: ckanext/kata/actions.py:464 ckanext/kata/actions.py:528
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
-#: ckanext/kata/actions.py:485 ckanext/kata/actions.py:489
+#: ckanext/kata/actions.py:469 ckanext/kata/actions.py:473
 #: ckanext/kata/controllers.py:864
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
 
-#: ckanext/kata/actions.py:493
+#: ckanext/kata/actions.py:477
 msgid "No such user and role combination"
 msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
 
-#: ckanext/kata/actions.py:500
+#: ckanext/kata/actions.py:484
 msgid "Built-in users can not be removed"
 msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
 
-#: ckanext/kata/actions.py:504
+#: ckanext/kata/actions.py:488
 msgid "You can not remove yourself"
 msgstr "Et voi poistaa itseäsi"
 
-#: ckanext/kata/actions.py:509
+#: ckanext/kata/actions.py:493
 #, python-format
 msgid "User removed from role %s"
 msgstr "Käyttäjä poistettu roolista %s"
 
-#: ckanext/kata/actions.py:555
+#: ckanext/kata/actions.py:539
 #, python-format
 msgid "User already has %s rights"
 msgstr "Käyttäjällä on jo %s -oikeudet"
 
-#: ckanext/kata/actions.py:561
+#: ckanext/kata/actions.py:545
 msgid "User added"
 msgstr "Käyttäjä lisätty"
 
-#: ckanext/kata/actions.py:610
+#: ckanext/kata/actions.py:594
 msgid "You don't have permission to modify roles for this organization."
-msgstr ""
+msgstr "Sinulla ei ole oikeuksia muokata tämän organisaation rooleja."
 
-#: ckanext/kata/actions.py:644
+#: ckanext/kata/actions.py:628
 msgid "You don't have permission to remove this user."
-msgstr ""
+msgstr "Sinulla ei ole oikeuksia poistaa tätä käyttäjää."
 
-#: ckanext/kata/actions.py:675
+#: ckanext/kata/actions.py:659
 msgid "You are not allowed to create public datasets for this organization."
-msgstr ""
+msgstr "Sinulla ei ole oikeuksia luoda julkisia tietoaineistoja tähän organisaatioon."
 
 #: ckanext/kata/auth_functions.py:60
 #, python-format
@@ -135,9 +135,8 @@ msgid "Data access request for dataset / Datapyyntö tietoaineistolle %s"
 msgstr ""
 
 #: ckanext/kata/controllers.py:633
-#, fuzzy
 msgid "Dataset not found"
-msgstr "Käyttäjää ei löytynyt"
+msgstr "Tietoaineistoa ei löytynyt"
 
 #: ckanext/kata/controllers.py:642 ckanext/kata/controllers.py:664
 msgid "Already contacted"
@@ -162,15 +161,15 @@ msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
 #: ckanext/kata/controllers.py:806
 msgid "Feature disabled"
-msgstr ""
+msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:808 ckanext/kata/validators.py:160
+#: ckanext/kata/controllers.py:808 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
 #: ckanext/kata/controllers.py:828
 msgid "Bad Captcha. Please try again."
-msgstr ""
+msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
 #: ckanext/kata/converters.py:36
 msgid "Organisation is missing"
@@ -204,7 +203,7 @@ msgstr "Laatija"
 
 #: ckanext/kata/settings.py:51
 msgid "Contributor"
-msgstr ""
+msgstr "Avustaja"
 
 #: ckanext/kata/settings.py:52
 msgid "Distributor/Publisher"
@@ -221,24 +220,24 @@ msgstr "Omistaja"
 
 #: ckanext/kata/settings.py:55
 msgid "Producer"
-msgstr ""
+msgstr "Tuottaja"
 
-#: ckanext/kata/validators.py:58
+#: ckanext/kata/validators.py:57
 #, python-format
 msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 "Tagin \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: \"\n"
 "\"'_.()/#+."
 
-#: ckanext/kata/validators.py:109
+#: ckanext/kata/validators.py:104
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr "Päivämäärän muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
 
-#: ckanext/kata/validators.py:112 ckanext/kata/validators.py:132
+#: ckanext/kata/validators.py:107 ckanext/kata/validators.py:127
 msgid "Invalid date"
 msgstr "Vääränlainen päivämäärä"
 
-#: ckanext/kata/validators.py:129
+#: ckanext/kata/validators.py:124
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: "
 "2001-03-01 or 2001-03"
@@ -247,36 +246,36 @@ msgstr ""
 "\"\n"
 "\"2001-01-01"
 
-#: ckanext/kata/validators.py:170
+#: ckanext/kata/validators.py:165
 msgid "Invalid characters: <> not allowed"
 msgstr "Kiellettyjä merkkejä: <> ei sallittu"
 
-#: ckanext/kata/validators.py:179
+#: ckanext/kata/validators.py:174
 msgid "Value must contain alphanumeric characters"
 msgstr "Arvon täytyy sisältää aakkosnumeerisia merkkejä"
 
-#: ckanext/kata/validators.py:187
+#: ckanext/kata/validators.py:182
 msgid "Invalid telephone number, must be like +13221221"
 msgstr "Vääränmuotoinen puhelinnumero, vaaditaan muotoa +13221221."
 
-#: ckanext/kata/validators.py:249
+#: ckanext/kata/validators.py:244
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
 msgstr ""
 "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: -,"
 
-#: ckanext/kata/validators.py:270
+#: ckanext/kata/validators.py:265
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
-"-'/,:(). Mismatching strings: \"%s\""
+"-'/,:().;= Mismatching strings: \"%s\""
 msgstr ""
 "Maantieteellisen kattavuuden \"%s\" pitää koostua alfanumeerisita "
-"merkeistä (ascii) ja näistä erikoismerkeistä: -'/,:(). Kelpaamattomat "
+"merkeistä (ascii) ja näistä erikoismerkeistä: -'/,:().;= Kelpaamattomat "
 "merkkijonot: \"%s\""
 
-#: ckanext/kata/validators.py:289
+#: ckanext/kata/validators.py:284
 #, python-format
 msgid ""
 "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: "
@@ -285,40 +284,38 @@ msgstr ""
 "Tiedostotyypin (mimetyyppi) \"%s\" pitää koostua alfanumeerisita "
 "merkeistä (ascii) ja näistä erikoismerkeistä: _'+./"
 
-#: ckanext/kata/validators.py:301
+#: ckanext/kata/validators.py:296
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 "Algoritmin \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: _-()"
 
-#: ckanext/kata/validators.py:312
+#: ckanext/kata/validators.py:307
 msgid "First title can not be empty"
 msgstr "Ensimmäinen otsikko ei voi olla tyhjä"
 
-#: ckanext/kata/validators.py:326
+#: ckanext/kata/validators.py:321
 msgid "Duplicate titles for a language not permitted"
 msgstr "Et voi syöttää useampia otsikoita samalla kielellä"
 
-#: ckanext/kata/validators.py:358
+#: ckanext/kata/validators.py:353
 msgid "Missing compulsory agent: {0}"
 msgstr "Pakollinen toimija puuttuu: {0}"
 
-#: ckanext/kata/validators.py:370
+#: ckanext/kata/validators.py:365
 msgid "Missing compulsory distributor contact"
 msgstr "Pakollinen jakelijan tieto puuttuu"
 
-#: ckanext/kata/validators.py:392
-#, fuzzy
+#: ckanext/kata/validators.py:387
 msgid "Missing dataset title"
-msgstr "Tietoaineiston otsikko"
+msgstr "Tietoaineiston otsikko puuttuu"
 
-#: ckanext/kata/validators.py:400
-#, fuzzy
+#: ckanext/kata/validators.py:395
 msgid "Missing dataset PIDs"
-msgstr "Tämä tietoaineisto on"
+msgstr "Tietoaineiston tunnisteita puuttuu"
 
-#: ckanext/kata/validators.py:415 ckanext/kata/validators.py:451
+#: ckanext/kata/validators.py:410 ckanext/kata/validators.py:446
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr "Puuttuva arvo"
@@ -1972,13 +1969,12 @@ msgid "There are currently no organizations for this site"
 msgstr "Sivustolla ei ole parhaillaan organisaatioita"
 
 #: ckanext/kata/theme/templates/organization/members.html:3
-#, fuzzy
 msgid "Members"
-msgstr "Muista minut"
+msgstr "Jäsenet"
 
 #: ckanext/kata/theme/templates/organization/members.html:6
 msgid "Add Member"
-msgstr ""
+msgstr "Lisää jäsen"
 
 #: ckanext/kata/theme/templates/organization/members.html:17
 #: ckanext/kata/theme/templates/package/package_rights.html:22
@@ -5683,3 +5679,4 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
+

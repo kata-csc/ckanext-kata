@@ -257,13 +257,13 @@ def validate_spatial(key, data, errors, context):
     '''
     val = data.get(key)
     # Regexp is specifically for the SUO ontology
-    spatial_match = re.compile('[\w \- \'/,():.]*$', re.UNICODE)
+    spatial_match = re.compile('[\w \- \'/,():.;=]*$', re.UNICODE)
     if val:
         if not spatial_match.match(val):
             mismatch = '|'.join([s for s in val.split(',')
                                  if not spatial_match.match(s)])
             raise Invalid(_("Spatial coverage \"%s\" must be alphanumeric "
-                            "characters or symbols: -'/,:(). "
+                            "characters or symbols: -'/,:().;= "
                             "Mismatching strings: \"%s\"") % (val, mismatch))
     else:
         # With ONKI component, the entire parameter might not exist
