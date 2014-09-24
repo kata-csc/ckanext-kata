@@ -135,10 +135,11 @@ def package_create(context, data_dict):
         user_name = user.display_name
         distributor_names = [agent.get('name') for agent in data_dict['agent'] if agent.get('role') == 'distributor']
 
-        if not user_name in distributor_names:
-            data_dict['agent'].append(
-                {'name': user_name, 'role': 'distributor', 'id': user.id}
-            )
+        if user_name != 'harvest':
+            if not user_name in distributor_names:
+                data_dict['agent'].append(
+                    {'name': user_name, 'role': 'distributor', 'id': user.id}
+                )
 
     if data_dict.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_create_package_schema()
