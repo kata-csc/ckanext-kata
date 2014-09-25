@@ -467,10 +467,6 @@ class TestDataReading(KataApiTestCase):
                    contact['email'] == u'Not authorized to see this information' or \
                    contact['email'] == u'hidden'
 
-        for funder in helpers.get_funders(output):
-            assert 'fundingid' not in funder or \
-                   funder['fundingid'] == u'Not authorized to see this information'
-
     def test_availability_changing(self):
         '''
         Test that changing availability removes unused availability URL's and dataset resource URL
