@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-24 12:52+0000\n"
+"POT-Creation-Date: 2014-09-25 08:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
-#: ckanext/kata/controllers.py:864
+#: ckanext/kata/controllers.py:709
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -111,63 +111,63 @@ msgstr ""
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:514 ckanext/kata/controllers.py:823
+#: ckanext/kata/controllers.py:359 ckanext/kata/controllers.py:668
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:516
+#: ckanext/kata/controllers.py:361
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:518
+#: ckanext/kata/controllers.py:363
 msgid "No owner found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:520 ckanext/kata/controllers.py:572
-#: ckanext/kata/controllers.py:613 ckanext/kata/controllers.py:645
-#: ckanext/kata/controllers.py:667
+#: ckanext/kata/controllers.py:365 ckanext/kata/controllers.py:417
+#: ckanext/kata/controllers.py:458 ckanext/kata/controllers.py:490
+#: ckanext/kata/controllers.py:512
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:610
+#: ckanext/kata/controllers.py:455
 #, python-format
 msgid "Data access request for dataset / Datapyyntö tietoaineistolle %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:633
+#: ckanext/kata/controllers.py:478
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:642 ckanext/kata/controllers.py:664
+#: ckanext/kata/controllers.py:487 ckanext/kata/controllers.py:509
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:705
+#: ckanext/kata/controllers.py:550
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:707
+#: ckanext/kata/controllers.py:552
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:764
+#: ckanext/kata/controllers.py:609
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:786
+#: ckanext/kata/controllers.py:631
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:806
+#: ckanext/kata/controllers.py:651
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:808 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:653 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:828
+#: ckanext/kata/controllers.py:673
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
@@ -310,11 +310,11 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:13
 #: ckanext/kata/theme/templates/footer.html:22
-msgid "http://www.tdata.fi/en/tta-frontpage?param=param"
+msgid "http://openscience.fi"
 msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:13
-msgid "Finnish National Research Data Initiative's (TTA)"
+msgid "Open science and research initiative's (ATT)"
 msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:13
@@ -834,6 +834,14 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:23
 msgid "Geographic coverage"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:26
+msgid "Discipline"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:27
+msgid "All fields"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:3
@@ -4367,11 +4375,10 @@ msgid ""
 "Once you start typing, you will automatically get suggestions for matching "
 "keywords. You can then select the appropriate suggestion with a mouse click, "
 "or you can enter your own keywords. If you make a mistake, you can remove a "
-"keyword by clicking the 'x' next to it.<br /><br />You can change the "
-"language of suggested words from the language menu.<br /><br />The "
-"suggestions are retrieved from the Finto vocabulary service (see "
-"http://finto.fi/en/). Note that you must have JavaScript enabled in your "
-"browser in order for the automatic suggestions to work."
+"keyword by clicking the 'x' next to it.<br /><br />The suggestions are "
+"retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note "
+"that you must have JavaScript enabled in your browser in order for the "
+"automatic suggestions to work."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:87
