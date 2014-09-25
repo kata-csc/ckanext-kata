@@ -16,7 +16,7 @@ import ckan.logic.action.update
 import ckan.logic.action.delete
 from ckan.model import Related, Session, Package, repo
 import ckan.model as model
-from ckan.lib.search import index_for, rebuild
+from ckan.lib.search import rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
@@ -149,11 +149,6 @@ def package_create(context, data_dict):
     # Logging for production use
     _log_action('Package', 'create', context['user'], pkg_dict1['id'])
 
-    context = {'model': model, 'ignore_auth': True, 'validate': False,
-               'extras_as_string': False}
-    pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
-    index = index_for('package')
-    index.index_package(pkg_dict)
     return pkg_dict1
 
 
@@ -249,12 +244,6 @@ def package_update(context, data_dict):
     # Logging for production use
     _log_action('Package', 'update', context['user'], data_dict['id'])
 
-    context = {'model': model, 'ignore_auth': True, 'validate': False,
-               'extras_as_string': True}
-    pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
-    index = index_for('package')
-    # update_dict calls index_package, so it would basically be the same
-    index.update_dict(pkg_dict)
     return pkg_dict1
 
 
@@ -275,8 +264,6 @@ def package_delete(context, data_dict):
     # Logging for production use
     _log_action('Package', 'delete', context['user'], data_dict['id'])
 
-    index = index_for('package')
-    index.remove_dict(data_dict)
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
