@@ -8,6 +8,8 @@ def scan_for_malware(stream):
     Checks for malware in the given stream using a ClamAV daemon.
     Inspired by the example code in pyclamd.
 
+    Scanning consumes the input stream.
+
     :param stream: the input stream to scan
     :type stream: file-like object
     :return: True if the file is clean and False if there is a detection.

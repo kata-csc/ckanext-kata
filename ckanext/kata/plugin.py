@@ -249,6 +249,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 'string_to_list': helpers.string_to_list,
                 'create_loop_index': helpers.create_loop_index,
                 'get_dict_errors': helpers.get_dict_errors,
+                'dataset_is_valid': helpers.dataset_is_valid,
                 }
 
     def get_dict_field_errors(self, errors, field, index, name):
