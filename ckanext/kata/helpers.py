@@ -334,13 +334,18 @@ def get_contacts(data_dict):
 
 
 def get_distributors(data_dict):
-    '''Get a single distributor from agent field in data_dict'''
+    '''Get a all distributors from agent field in data_dict'''
     return filter(lambda x: x.get('role') == u'distributor', data_dict.get('agent', []))
 
 
 def get_distributor(data_dict):
-    '''Get a all distributors from agent field in data_dict'''
+    '''Get a single distributor from agent field in data_dict'''
     return fn.first(get_distributors(data_dict))
+
+
+def get_contributors(data_dict):
+    '''Get a all contributors from agent field in data_dict'''
+    return filter(lambda x: x.get('role') == u'contributor', data_dict.get('agent', []))
 
 
 def get_owners(data_dict):
