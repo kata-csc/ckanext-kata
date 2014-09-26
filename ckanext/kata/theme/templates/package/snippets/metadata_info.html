@@ -48,14 +48,16 @@
 		{% if org %}<th>{{ _('Organisation') }}</th>{% endif %}
 		{% if url %}<th>{{ _('URL') }}</th>{% endif %}
 	</tr>
-	{% for agent in pkg_dict.agent if agent.role != 'funder' %}
-	<tr>
-		<td>{{ _(h.resolve_agent_role(agent.role)) }}</td>
-		{% if nme %}<td>{{ agent.name }}</td>{% endif%}
-		{% if org %}<td>{{ agent.organisation }}</td>{% endif%}
-		{% if url %}<td><a href={{ agent.URL }}>{{ agent.URL }}</a></td>{% endif%}
-	</tr>
-	{% endfor %}
+    {% for group in pkg_dict.agent|groupby('role') %}
+      {% for agent in group.list %}
+        <tr>
+          <td>{{ _(h.resolve_agent_role(agent.role)) }}</td>
+          {% if nme %}<td>{{ agent.name }}</td>{% endif%}
+          {% if org %}<td>{{ agent.organisation }}</td>{% endif%}
+          {% if url %}<td><a href={{ agent.URL }}>{{ agent.URL }}</a></td>{% endif%}
+        </tr>
+      {% endfor %}
+    {% endfor %}
 	</tbody>
 </table>
 <h4>{{ _('Project and funding information') }}</h4>
