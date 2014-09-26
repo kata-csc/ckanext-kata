@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-25 08:51+0000\n"
+"POT-Creation-Date: 2014-09-26 11:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,55 +25,55 @@ msgstr ""
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:454 ckanext/kata/actions.py:518
+#: ckanext/kata/actions.py:441 ckanext/kata/actions.py:505
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:465 ckanext/kata/actions.py:529
+#: ckanext/kata/actions.py:452 ckanext/kata/actions.py:516
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
+#: ckanext/kata/actions.py:457 ckanext/kata/actions.py:461
 #: ckanext/kata/controllers.py:709
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:478
+#: ckanext/kata/actions.py:465
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:485
+#: ckanext/kata/actions.py:472
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:489
+#: ckanext/kata/actions.py:476
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:494
+#: ckanext/kata/actions.py:481
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:540
+#: ckanext/kata/actions.py:527
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:546
+#: ckanext/kata/actions.py:533
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:595
+#: ckanext/kata/actions.py:582
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:629
+#: ckanext/kata/actions.py:616
 msgid "You don't have permission to remove this user."
 msgstr ""
 
-#: ckanext/kata/actions.py:660
+#: ckanext/kata/actions.py:647
 msgid "You are not allowed to create public datasets for this organization."
 msgstr ""
 
@@ -210,6 +210,7 @@ msgid "Distributor/Publisher"
 msgstr ""
 
 #: ckanext/kata/settings.py:53
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:78
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:84
 msgid "Funder"
 msgstr ""
@@ -579,7 +580,8 @@ msgstr ""
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:18
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:7
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:49
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:114
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:79
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:147
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:21
 msgid "URL"
 msgstr ""
@@ -590,7 +592,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:20
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:20
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:66
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:99
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:7
 msgid "Description"
 msgstr ""
@@ -4020,7 +4022,7 @@ msgid "Agents"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:47
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:112
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:145
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:27
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:74
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:26
@@ -4032,164 +4034,176 @@ msgstr ""
 msgid "Organisation"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:50
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:65
+msgid "Project and funding information"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:77
+msgid "Project name"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:80
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:88
 msgid "Funding id"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:72
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:93
+msgid "No funding information is available."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:105
 msgid "No description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:76
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:109
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:87
 msgid "Keywords"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:80
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:113
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:5
 msgid "Usage information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:82
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:115
 msgid "This dataset is"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:116
 msgid " available via an access form in "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:116
 msgid "this link"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:84
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:117
 msgid " available freely "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:84
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:85
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:117
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:118
 msgid "from this address"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:85
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:118
 msgid " available via login "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:87
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:120
 msgid " available by "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:87
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:120
 msgid "contacting the distributor"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:89
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:122
 msgid " available through "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:89
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:122
 msgid "data provider"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:90
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:123
 msgid " available freely or availability is not specified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:92
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:125
 msgid " with license as "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:101
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:134
 msgid "Contact information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:113
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:146
 msgid "E-Mail"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:115
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:148
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:31
 msgid "Phone"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:122
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:155
 msgid "Send a message"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:136
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:169
 msgid "Identification information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:138
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:171
 msgid "Last modification time of data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:141
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:174
 msgid "Last modified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:146
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:179
 msgid "Permanent identifiers"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:149
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:182
 msgid "Primary metadata identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:153
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:186
 msgid "Primary data identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:165
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:198
 msgid "Additional information on dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:169
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:202
 msgid "Geographical areas covered"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:175
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:208
 msgid "Period of time covered"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:176
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:209
 msgid " to "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:181
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:214
 msgid "Publications based on this data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:187
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:220
 msgid "Dataset belongs to collection/series"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:193
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:226
 msgid "Other related datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:199
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:232
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:35
 msgid "Discipline/branch of science"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:205
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:238
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:11
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:244
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:23
 msgid "Checksum"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:215
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:248
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:34
 msgid "Algorithm"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:224
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:257
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr ""
