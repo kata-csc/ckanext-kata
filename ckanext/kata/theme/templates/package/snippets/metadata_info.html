@@ -73,16 +73,16 @@
       <tbody>
       <tr>
         {% if nme %}<th>{{ _('Project name') }}</th>{% endif %}
-		{% if org %}<th>{{ _('Funder') }}</th>{% endif %}
-		{% if url %}<th>{{ _('URL') }}</th>{% endif %}
-		{% if fid %}<th>{{ _('Funding id') }}</th>{% endif %}
+        {% if org %}<th>{{ _('Funder') }}</th>{% endif %}
+        {% if url %}<th>{{ _('URL') }}</th>{% endif %}
+        {% if fid %}<th>{{ _('Funding id') }}</th>{% endif %}
       </tr>
       {% for f in funders %}
         <tr>
-        {% if nme %}<td>{{ f.name }}</td>{% endif%}
-        {% if org %}<td>{{ f.organisation }}</td>{% endif%}
-        {% if url %}<td><a href={{ f.URL }}>{{ f.URL }}</a></td>{% endif%}
-        {% if fid %}<td>{{ f['fundingid'] }}</td>{% endif%}
+          {% if nme %}<td>{{ f.name }}</td>{% endif%}
+          {% if org %}<td>{{ f.organisation }}</td>{% endif%}
+          {% if url %}<td><a href={{ f.URL }}>{{ f.URL }}</a></td>{% endif%}
+          {% if fid %}<td>{{ f['fundingid'] }}</td>{% endif%}
         </tr>
       {% endfor %}
       </tbody>
