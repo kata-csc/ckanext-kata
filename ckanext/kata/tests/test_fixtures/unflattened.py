@@ -126,6 +126,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                          'provider': u'kata',
                          'id': u'kata_data_pid',
                          'type': u'data',
+                         'primary': u'True',
                      },
                      {
                          'provider': u'kata',
