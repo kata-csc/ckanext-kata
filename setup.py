@@ -29,6 +29,7 @@ setup(
         'lxml >= 3.1.2',
         'functionally >= 1.0.1',
         'python-magic >= 0.4.6',
+        'python-ldap >= 2.4.16',
     ],
     package_data={
         'ckan': [
