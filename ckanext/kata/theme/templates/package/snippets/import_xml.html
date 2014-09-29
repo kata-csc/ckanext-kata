@@ -5,9 +5,11 @@
 
 <section class="module module-narrow module-shallow">
   <h2 class="module-heading"><i class="icon-upload-alt"></i> {{ _("Upload XML") }}</h2>
-    <form class="module-content form-vertical" method="post" action="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='new' %}">
+    <form enctype="multipart/form-data" class="module-content form-vertical" method="post" action="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='new' %}">
       {{ form.input('url', label=_('URL'), placeholder=_('http://myurl.to/file.xml'), value='', error=error, classes=['control-full']) }}
-      <div class="controls"{#% if allow_upload %#} data-module="metadata-upload-field"{#% endif %#}>
+      <div class="control-group">
+        <label class="control-label" for="xmlfile">{{ _('File') }}</label>
+        <input id="xmlfile" type="file" placeholder="/path/to/file.xml" value="" name="xmlfile"/>
       </div>
       {{ form.select('format', label=_('Format'), options=[{'value': 'ddi', 'text': 'DDI2'}, {'value': 'oai-pmh', 'text': 'OAI-PMH/OAI DC'}], selected='ddi', error=error, classes=['control-full']) }}
       <button class='btn' name='upload' value='metadata' type='submit'>{{ _("Upload") }}</button>

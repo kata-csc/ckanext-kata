@@ -2,13 +2,13 @@
 """
 Controllers for Kata.
 """
-
+from cgi import FieldStorage
+import functionally as fn
 import json
 import logging
-import string
 import mimetypes
-import functionally as fn
 import re
+import string
 import urllib2
 
 from paste.deploy.converters import asbool
@@ -36,7 +36,7 @@ import ckan.lib.captcha as captcha
 
 _get_or_bust = ckan.logic.get_or_bust
 
-log = logging.getLogger('ckanext.kata.controller')
+log = logging.getLogger(__name__)
 get_action = logic.get_action
 t = plugins.toolkit                         # pylint: disable=invalid-name
 # BUCKET = config.get('ckan.storage.bucket', 'default')
@@ -679,6 +679,7 @@ class KataPackageController(PackageController):
 
         :returns: dictionary with keys results and count
         """
+        # TODO: Clean: Obsolete or move logging code elsewhere
         # parse author search into q
         q_author = c.q_author = request.params.get('q_author', u'')
 
@@ -858,30 +859,46 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
         except t.NotAuthorized:
             t.abort(401, _('Unauthorized to upload metadata'))
 
-        url = t.request.params.get('url', u'')
-        xmltype = t.request.params.get('format', u'')
-        log.debug('upload_xml: Importing from url: {ur}'.format(ur=url))
-        #TODO: validate url (in form by html5?)
+        xmlfile = u''
+        field_storage = request.params.get('xmlfile')
+        if isinstance(field_storage, FieldStorage):
+            bffr = field_storage.file
+            xmlfile = bffr.read()
+        url = request.params.get('url', u'')
+        xmltype = request.params.get('format', u'')
+        log.info('Importing from {src}'.format(
+            src='file: ' + field_storage.filename if field_storage else 'url: ' + url))
         for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
             info = harvester.info()
             if not info or 'name' not in info:
                 log.error('Harvester %r does not provide the harvester name in the info response' % str(harvester))
                 continue
             if xmltype == info['name']:
-                log.debug('upload_xml: Found harvester for import: {nam}'.format(nam=info['name']))
+                log.debug('_upload_xml: Found harvester for import: {nam}'.format(nam=info['name']))
                 try:
-                    # TODO: virus check
-                    pkg_dict = harvester.import_xml(url, context)
+                    # TODO: virus check ??
+                    if xmlfile:
+                        pkg_dict = harvester.parse_xml(xmlfile, context)
+                    elif url:
+                        pkg_dict = harvester.fetch_xml(url, context)
+                    else:
+                        h.flash_error(_('Give upload URL or file.'))
+                        return h.redirect_to(controller='package', action='new')
                     return super(KataPackageController, self).new(pkg_dict, errors, error_summary)
                 except (urllib2.URLError, urllib2.HTTPError):
-                    log.debug('Could not fetch from url {ur}!'.format(ur=url))
+                    log.debug('Could not fetch from url {ur}'.format(ur=url))
+                    h.flash_error(_('Could not fetch from url {ur}'.format(ur=url)))
+                    return h.redirect_to(controller='package', action='new')
+                except ValueError, e:
+                    log.debug(e)
+                    h.flash_error(_('Invalid upload URL'))
                     return h.redirect_to(controller='package', action='new')
 
     def new(self, data=None, errors=None, error_summary=None):
         '''
         Overwrite CKAN method to take uploading xml into sequence.
         '''
-        if t.request.params.get('upload'):
+        if request.params.get('upload'):
             return self._upload_xml(errors, error_summary)
         else:
             return super(KataPackageController, self).new(data, errors, error_summary)
