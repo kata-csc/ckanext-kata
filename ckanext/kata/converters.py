@@ -442,3 +442,19 @@ def flattened_from_extras(key, data, errors, context):
                 data.pop((k[0], k[1], 'key'), None)
                 data.pop((k[0], k[1], 'value'), None)
                 data.pop((k[0], k[1], '__extras'), None)
+
+
+def generate_name_from_id(key, data, errors, context):
+    '''
+    If name not given, generate name from package.id
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+    if not data.get(key):
+        id = data.get(('id',))
+
+        data[key] = utils.datapid_to_name(id)
+

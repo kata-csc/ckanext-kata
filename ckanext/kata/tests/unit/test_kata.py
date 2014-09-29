@@ -19,7 +19,7 @@ from ckan.lib.create_test_data import CreateTestData
 import ckanext.kata.model as kata_model
 import ckanext.kata.actions as actions
 from ckan.logic import get_action, NotAuthorized, ValidationError, NotFound
-from ckanext.harvest.model import setup
+from ckanext.harvest import model as harvest_model
 from ckanext.kata.utils import get_package_id_by_data_pids
 
 class TestKataPlugin(TestCase):
@@ -179,6 +179,37 @@ class TestKataPlugin(TestCase):
         assert 'owner_1' in output
         assert 'author_2' in output
         assert 'distributor_3' in output
+
+
+class TestDatasetHandling(TestCase):
+    """
+    Tests for dataset handling
+    """
+
+    @classmethod
+    def setup_class(cls):
+        kata_model.setup()
+        harvest_model.setup()
+
+        model.User(name="test_sysadmin", sysadmin=True).save()
+
+    @classmethod
+    def teardown_class(cls):
+        model.repo.rebuild_db()
+
+    def test_add_dataset_without_name(self):
+        organization = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['private'] = False
+
+        data['name'] = ''
+
+        pkg = get_action('package_create')({'user': 'test_sysadmin'}, data)
+
+        assert pkg.get('name').startswith('urn')    # Should be generated from package.id
+        assert pkg.get('name').count(':') == 0
 
 
 class TestKataSchemas(TestCase):
@@ -440,7 +471,7 @@ class TestActions(TestCase):
         # Todo: fix. The harvest tables are not generated here
         # so this class can't be run alone
         kata_model.setup()
-        setup()
+        harvest_model.setup()
         CreateTestData.create()
 
     @classmethod
@@ -607,7 +638,7 @@ class TestActions(TestCase):
 class TestHarvestSource(TestCase):
     @classmethod
     def setup_class(cls):
-        setup()
+        harvest_model.setup()
 
     def test_harvest_source_update(self):
         model.User(name='test', sysadmin=True).save()
@@ -624,7 +655,7 @@ class TestHarvestSource(TestCase):
 class TestUtilities(TestCase):
     @classmethod
     def setup_class(cls):
-        setup()
+        harvest_model.setup()
 
     @classmethod
     def teardown_class(cls):
