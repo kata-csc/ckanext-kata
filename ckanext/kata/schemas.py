@@ -86,8 +86,6 @@ class Schemas:
                                'lang': [not_missing, unicode, co.convert_languages]}
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
-        # schema['maintainer'] = [not_empty, unicode, validate_general, contains_alphanumeric]
-        # schema['maintainer_email'] = [not_empty, unicode, validate_email]
         schema['temporal_coverage_begin'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
@@ -108,7 +106,8 @@ class Schemas:
         # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
         schema['__extras'] = [va.check_agent, va.check_langtitle, va.check_contact]
         schema['__junk'] = [va.check_junk]
-        schema['name'] = [ignore_missing, unicode, co.generate_name_from_id, package_name_validator, va.validate_general]
+        schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
+                          va.validate_general]
         schema['access_application_new_form'] = [co.checkbox_to_boolean, co.convert_to_extras_kata,
                                                  co.remove_access_application_new_form]
         schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,

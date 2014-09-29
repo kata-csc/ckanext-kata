@@ -444,7 +444,7 @@ def flattened_from_extras(key, data, errors, context):
                 data.pop((k[0], k[1], '__extras'), None)
 
 
-def generate_name_from_id(key, data, errors, context):
+def default_name_from_id(key, data, errors, context):
     '''
     If name not given, generate name from package.id
 
