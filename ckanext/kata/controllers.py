@@ -12,6 +12,7 @@ import functionally as fn
 import re
 import urllib2
 import sqlalchemy
+from sqlalchemy.sql import select
 
 from lxml import etree
 
@@ -83,35 +84,42 @@ class MetadataController(BaseController):
         records = etree.Element("{" + xmlns + "}records",
                          attrib={"{" + xsi + "}schemaLocation": schemalocation},
                          nsmap={'xsi': xsi, None: xmlns})
-        q = Session.query(Package)
-        q = q.filter(_and_(
-            _or_(Package.id.ilike('urn:nbn:fi:csc-kata%'), Package.name.ilike(utils.datapid_to_name('urn:nbn:fi:csc-ida') + '%')),
-            Package.state.like('active'),
-            Package.private == False,
-        ))
-        pkgs = q.all()
+
+        # Gather all package id's that might contain a Kata/IDA data PID
+        query = Session.query(model.PackageExtra.package_id.distinct()).\
+            filter(model.PackageExtra.value.like('urn:nbn:fi:csc-%'))
+        pkg_ids = query.all()
+
         prot = etree.SubElement(records, locns('protocol-version'))
         prot.text = '3.0'
         datestmp = etree.SubElement(records, locns('datestamp'), attrib={'type': 'modified'})
         now = datetime.datetime.now().isoformat()
         datestmp.text = now
-        for pkg in pkgs:
-            data_dict = get_action('package_show')({}, {'id': pkg.id})
+        for pkg_id in pkg_ids:
 
-            record = etree.SubElement(records, locns('record'))
-            header = etree.SubElement(record, locns('header'))
-            datestmp = etree.SubElement(header, locns('datestamp'), attrib={'type': 'modified'})
-            datestmp.text = now
-            identifier = etree.SubElement(header, locns('identifier'))
-            identifier.text = [pid['id'] for pid in utils.get_pids_by_type('metadata', data_dict) if pid['id'].startswith('urn:nbn:fi:csc-')][0]
-            destinations = etree.SubElement(header, locns('destinations'))
-            destination = etree.SubElement(destinations, locns('destination'), attrib={'status': 'activated'})
-            datestamp = etree.SubElement(destination, locns('datestamp'), attrib={'type': 'activated'})
-            url = etree.SubElement(destination, locns('url'))
-            url.text = "%s%s" % (config.get('ckan.site_url', ''),
-                             helpers.url_for(controller='package',
-                                       action='read',
-                                       id=pkg.name))
+            data_dict = get_action('package_show')({}, {'id': pkg_id})
+
+            # Get primary data PID and make sure we want to display this dataset
+            try:
+                data_pid = utils.get_pids_by_type('data', data_dict, primary=True, use_id_or_name=True)[0].get('id', '')
+            except IndexError:
+                continue
+
+            if data_pid.startswith('urn:nbn:fi:csc-'):
+                record = etree.SubElement(records, locns('record'))
+                header = etree.SubElement(record, locns('header'))
+                datestmp = etree.SubElement(header, locns('datestamp'), attrib={'type': 'modified'})
+                datestmp.text = now
+                identifier = etree.SubElement(header, locns('identifier'))
+                identifier.text = data_pid
+                destinations = etree.SubElement(header, locns('destinations'))
+                destination = etree.SubElement(destinations, locns('destination'), attrib={'status': 'activated'})
+                datestamp = etree.SubElement(destination, locns('datestamp'), attrib={'type': 'activated'})
+                url = etree.SubElement(destination, locns('url'))
+                url.text = "%s%s" % (config.get('ckan.site_url', ''),
+                                 helpers.url_for(controller='package',
+                                           action='read',
+                                           id=data_dict.get('name')))
         return etree.tostring(records)
 
     @beaker_cache(type="dbm", expire=86400)

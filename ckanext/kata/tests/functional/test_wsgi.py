@@ -253,8 +253,9 @@ class TestURNExport(KataWsgiTestCase):
         controllers.MetadataController.urnexport = controllers.MetadataController._urnexport
 
         offset = url_for('/urnexport')
+        res = self.app.get(offset)
 
-        assert '<identifier>' not in self.app.get(offset)   # No datasets to export
+        assert res.body.count('<identifier>') == 0   # No datasets to export
 
         organization = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
 
@@ -262,14 +263,10 @@ class TestURNExport(KataWsgiTestCase):
         data['owner_org'] = organization['name']
         data['private'] = False
 
-        metadata_pid = {'provider': u'kata', 'id': utils.generate_pid(), 'type': u'metadata'}
-        data['pids'].append(metadata_pid)
-
         pkg = get_action('package_create')({'user': 'test_sysadmin'}, data)
 
         res = self.app.get(offset)
         assert res.body.count('<identifier>') == 1    # One dataset should be found
-        assert metadata_pid['id'] in res.body
 
         try:
             etree.XML(res.body)  # Validate that result is XML
