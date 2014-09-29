@@ -418,16 +418,34 @@ class TestUtils(TestCase):
         assert '/' not in name
 
     def test_get_pids_by_type(self):
-        pids = utils.get_pids_by_type('data', TEST_DATADICT)
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict['id'] = 'some_package.id'
+        data_dict['name'] = 'some_package.name'
+
+        pids = utils.get_pids_by_type('data', data_dict)
         assert len(pids) == 2
-
-        pids = utils.get_pids_by_type('metadata', TEST_DATADICT)
+        pids = utils.get_pids_by_type('data', data_dict, primary=True)
+        assert len(pids) == 1
+        pids = utils.get_pids_by_type('data', data_dict, primary=True, use_id_or_name=True)
+        assert len(pids) == 1
+        pids = utils.get_pids_by_type('data', data_dict, primary=False)
         assert len(pids) == 1
 
-        pids = utils.get_pids_by_type('version', TEST_DATADICT)
+        pids = utils.get_pids_by_type('metadata', data_dict)
+        assert len(pids) == 1
+        pids = utils.get_pids_by_type('metadata', data_dict, primary=True)
+        assert len(pids) == 0
+        pids = utils.get_pids_by_type('metadata', data_dict, primary=True, use_id_or_name=True)
         assert len(pids) == 1
 
-        pids = utils.get_pids_by_type('unknown', TEST_DATADICT)
+        pids = utils.get_pids_by_type('version', data_dict)
+        assert len(pids) == 1
+        pids = utils.get_pids_by_type('version', data_dict, primary=True)
+        assert len(pids) == 0
+        pids = utils.get_pids_by_type('version', data_dict, primary=True, use_id_or_name=True)
+        assert len(pids) == 0
+
+        pids = utils.get_pids_by_type('some_unknown_type', data_dict)
         assert len(pids) == 0
 
 

@@ -9,6 +9,7 @@ import logging
 import urllib2
 import socket
 import functionally as fn
+from paste.deploy.converters import asbool
 
 from pylons import config
 from lxml import etree
@@ -278,15 +279,27 @@ def datapid_to_name(string):
     return re.sub(*settings.DATAPID_TO_NAME_REGEXES, string=string)
 
 
-def get_pids_by_type(pid_type, data_dict):
+def get_pids_by_type(pid_type, data_dict, primary=None, use_id_or_name=False):
     '''
     Get all of package PIDs of certain type
 
-    :rtype : list of dicts
+    :param use_id_or_name: Set to True to use package.id and package.name to try to get primary PIDs if none found
+                           from 'pids'
+    :param primary: True to get only primary pids, or False to get all pids without primary='True',
+                    use None to get all pids
     :param pid_type: PID type to get (data, metadata, version)
     :param data_dict:
+    :rtype : list of dicts
     '''
-    return filter(lambda x: x.get('type') == pid_type, data_dict.get('pids', {}))
+    extra = []
+    if primary and use_id_or_name:
+        if pid_type == 'data' and data_dict.get('name'):
+            extra = [{'primary': 'True', 'type': pid_type, 'id': data_dict['name']}]
+        if pid_type == 'metadata' and data_dict.get('id'):
+            extra = [{'primary': 'True', 'type': pid_type, 'id': data_dict['id']}]
+
+    return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
+            (primary is None or asbool(x.get('primary', 'False')) == primary)] or extra
 
 
 def get_package_id_by_data_pids(data_dict):
@@ -331,3 +344,4 @@ def get_package_id_by_data_pids(data_dict):
                 return None      # Found a hit with wrong type of PID
 
     return pkg_ids[0]    # No problems found, so use this
+

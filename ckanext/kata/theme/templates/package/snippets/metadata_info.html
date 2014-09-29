@@ -151,7 +151,7 @@
     </tr>
     <tr>
       <th class="dataset-label">{{ _('Primary data identifier') }}</th>
-      <td class="dataset-details">{{pkg_dict.name}}</td>
+      <td class="dataset-details">{{ h.get_pids_by_type('data', pkg_dict, primary='True', use_id_or_name=True)[0]['id'] }}</td>
     </tr>
     {% for pid in pkg_dict.pids %}
       <tr>

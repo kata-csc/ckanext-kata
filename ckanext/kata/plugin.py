@@ -240,6 +240,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_owners': helpers.get_owners,
             'get_package_ratings': helpers.get_package_ratings,
             'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
+            'get_pids_by_type': utils.get_pids_by_type,
             'get_related_urls': helpers.get_related_urls,
             'get_rdf_extras': helpers.get_rdf_extras,
             'get_rightscategory': helpers.get_rightscategory,
