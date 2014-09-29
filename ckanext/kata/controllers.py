@@ -27,13 +27,15 @@ from ckan.controllers.storage import StorageController
 import ckan.lib.i18n
 from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
+from ckan.lib import captcha, helpers
 from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
 import ckan.model as model
 from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
+
 from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
-from ckan.lib import captcha, helpers
+from ckanext.kata import utils
 
 _get_or_bust = ckan.logic.get_or_bust
 
@@ -83,7 +85,7 @@ class MetadataController(BaseController):
                          nsmap={'xsi': xsi, None: xmlns})
         q = Session.query(Package)
         q = q.filter(_and_(
-            _or_(Package.name.ilike('urn:nbn:fi:csc-kata%'), Package.name.ilike('urn:nbn:fi:csc-ida%')),
+            _or_(Package.id.ilike('urn:nbn:fi:csc-kata%'), Package.name.ilike(utils.datapid_to_name('urn:nbn:fi:csc-ida') + '%')),
             Package.state.like('active'),
             Package.private == False,
         ))
@@ -94,12 +96,14 @@ class MetadataController(BaseController):
         now = datetime.datetime.now().isoformat()
         datestmp.text = now
         for pkg in pkgs:
+            data_dict = get_action('package_show')({}, {'id': pkg.id})
+
             record = etree.SubElement(records, locns('record'))
             header = etree.SubElement(record, locns('header'))
             datestmp = etree.SubElement(header, locns('datestamp'), attrib={'type': 'modified'})
             datestmp.text = now
             identifier = etree.SubElement(header, locns('identifier'))
-            identifier.text = pkg.name
+            identifier.text = [pid['id'] for pid in utils.get_pids_by_type('metadata', data_dict) if pid['id'].startswith('urn:nbn:fi:csc-')][0]
             destinations = etree.SubElement(header, locns('destinations'))
             destination = etree.SubElement(destinations, locns('destination'), attrib={'status': 'activated'})
             datestamp = etree.SubElement(destination, locns('datestamp'), attrib={'type': 'activated'})

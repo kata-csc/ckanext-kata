@@ -282,6 +282,7 @@ def get_pids_by_type(pid_type, data_dict):
     '''
     Get all of package PIDs of certain type
 
+    :rtype : list of dicts
     :param pid_type: PID type to get (data, metadata, version)
     :param data_dict:
     '''

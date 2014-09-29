@@ -4,15 +4,22 @@
 '''
 Test Kata's web user interface with Pylons WSGI application.
 '''
+import copy
 
 import re
+from lxml import etree
+from ckan.logic import get_action
 
 from ckan.tests import url_for
 import ckan.model as model
 from ckan.lib import search
 
-import ckanext.kata.settings as settings
+from ckanext.harvest import model as harvest_model
+import ckanext.kata.model as kata_model
+from ckanext.kata import settings
+from ckanext.kata import utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 
 
 class TestPages(KataWsgiTestCase):
@@ -223,9 +230,24 @@ class TestAuthorisation(KataWsgiTestCase):
         assert 'Are you sure you want to delete this dataset?' in res, \
             'Dataset owner should have the delete button available'
 
+class TestURNExport(KataWsgiTestCase):
+    '''
+    Test urn export
+    '''
+
+    @classmethod
+    def setup_class(cls):
+        kata_model.setup()
+        harvest_model.setup()
+
+        model.User(name="test_sysadmin", sysadmin=True).save()
+
+    @classmethod
+    def teardown_class(cls):
+        model.repo.rebuild_db()
+
     def test_urnexport(self):
         from ckanext.kata import controllers
-        from lxml import etree
 
         # Switch to use uncached urnexport:
         controllers.MetadataController.urnexport = controllers.MetadataController._urnexport
@@ -234,18 +256,20 @@ class TestAuthorisation(KataWsgiTestCase):
 
         assert '<identifier>' not in self.app.get(offset)   # No datasets to export
 
-        revision = model.repo.new_revision()
-        pkg_id = u'annakarenina'
-        pkg = model.Package.get(pkg_id)
-        pkg.private = False
-        pkg.state = 'active'
-        pkg.name = 'urn:nbn:fi:csc-kata:0123456789'
-        model.Session.commit()
-        search.rebuild()
+        organization = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['private'] = False
+
+        metadata_pid = {'provider': u'kata', 'id': utils.generate_pid(), 'type': u'metadata'}
+        data['pids'].append(metadata_pid)
+
+        pkg = get_action('package_create')({'user': 'test_sysadmin'}, data)
 
         res = self.app.get(offset)
         assert res.body.count('<identifier>') == 1    # One dataset should be found
-        assert pkg.name in res
+        assert metadata_pid['id'] in res.body
 
         try:
             etree.XML(res.body)  # Validate that result is XML
