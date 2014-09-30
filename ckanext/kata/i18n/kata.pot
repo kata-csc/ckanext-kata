@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-25 08:51+0000\n"
+"POT-Creation-Date: 2014-09-30 04:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,55 +25,55 @@ msgstr ""
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:454 ckanext/kata/actions.py:518
+#: ckanext/kata/actions.py:441 ckanext/kata/actions.py:505
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:465 ckanext/kata/actions.py:529
+#: ckanext/kata/actions.py:452 ckanext/kata/actions.py:516
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
-#: ckanext/kata/controllers.py:709
+#: ckanext/kata/actions.py:457 ckanext/kata/actions.py:461
+#: ckanext/kata/controllers.py:721
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:478
+#: ckanext/kata/actions.py:465
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:485
+#: ckanext/kata/actions.py:472
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:489
+#: ckanext/kata/actions.py:476
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:494
+#: ckanext/kata/actions.py:481
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:540
+#: ckanext/kata/actions.py:527
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:546
+#: ckanext/kata/actions.py:533
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:595
+#: ckanext/kata/actions.py:582
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:629
+#: ckanext/kata/actions.py:616
 msgid "You don't have permission to remove this user."
 msgstr ""
 
-#: ckanext/kata/actions.py:660
+#: ckanext/kata/actions.py:647
 msgid "You are not allowed to create public datasets for this organization."
 msgstr ""
 
@@ -87,87 +87,87 @@ msgstr ""
 msgid "User %s not authorized to delete package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:248
+#: ckanext/kata/controllers.py:260
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of package"
 " %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:251 ckanext/kata/controllers.py:297
+#: ckanext/kata/controllers.py:263 ckanext/kata/controllers.py:309
 msgid "A request is already pending"
 msgstr ""
 
-#: ckanext/kata/controllers.py:254 ckanext/kata/controllers.py:300
+#: ckanext/kata/controllers.py:266 ckanext/kata/controllers.py:312
 msgid "You must be logged in to request edit access"
 msgstr ""
 
-#: ckanext/kata/controllers.py:274
+#: ckanext/kata/controllers.py:286
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:279
+#: ckanext/kata/controllers.py:291
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:359 ckanext/kata/controllers.py:668
+#: ckanext/kata/controllers.py:371 ckanext/kata/controllers.py:680
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:361
+#: ckanext/kata/controllers.py:373
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:363
+#: ckanext/kata/controllers.py:375
 msgid "No owner found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:365 ckanext/kata/controllers.py:417
-#: ckanext/kata/controllers.py:458 ckanext/kata/controllers.py:490
-#: ckanext/kata/controllers.py:512
+#: ckanext/kata/controllers.py:377 ckanext/kata/controllers.py:429
+#: ckanext/kata/controllers.py:470 ckanext/kata/controllers.py:502
+#: ckanext/kata/controllers.py:524
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:455
+#: ckanext/kata/controllers.py:467
 #, python-format
 msgid "Data access request for dataset / Datapyyntö tietoaineistolle %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:478
+#: ckanext/kata/controllers.py:490
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:487 ckanext/kata/controllers.py:509
+#: ckanext/kata/controllers.py:499 ckanext/kata/controllers.py:521
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:550
+#: ckanext/kata/controllers.py:562
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:552
+#: ckanext/kata/controllers.py:564
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:609
+#: ckanext/kata/controllers.py:621
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:631
+#: ckanext/kata/controllers.py:643
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:651
+#: ckanext/kata/controllers.py:663
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:653 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:665 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:673
+#: ckanext/kata/controllers.py:685
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
@@ -798,6 +798,50 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:115
 msgid "Newest datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:137
+msgid "Integrated metadata sources"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:139
+msgid "Finnish social science data archive"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:142
+msgid "Data Archive and Aila Data Service"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:145
+msgid "../../base/images/img_fsd_logo_en.png"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:146
+msgid "https://services.fsd.uta.fi/index?lang=en"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:147
+msgid "../../base/images/logo_aila_en.png"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:150
+msgid "Other research metadata services in Finland"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:152
+msgid "Language bank of Finland"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:155
+msgid "Browse language resources"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:162
+msgid "About the service"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:166
+msgid "Maintenance window: Fourth monday of a month from 4 pm to 6 pm"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:10

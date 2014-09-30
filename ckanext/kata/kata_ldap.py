@@ -27,12 +27,12 @@ def get_user_from_ldap(uploader):
                 res = ld.search_s(BASEDN, ldap.SCOPE_SUBTREE, filtr, attrs)
                 try:
                     if len(res) != 1:
-                        return
+                        return False
                     else:
                         return res[0][1]['eduPersonPrincipalName'][0]
                 except:
                     log.info('Faulty LDAP result')
-                    return
+                    return False
 
             except ldap.INVALID_CREDENTIALS:
                 log.info('Invalid credentials in LDAP call')

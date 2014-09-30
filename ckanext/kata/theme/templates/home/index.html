@@ -125,18 +125,48 @@
       </div>
     </div>
   </div>
-  {#<div class="main homepage">
+  <div class="main homepage">
     <div class="container">
       {{ self.secondary_content() }}
     </div>
-  </div>#}
+  </div>
 {% endblock %}
 
 {# Add here links to services that provide data to Etsin, as we get them #}
-{#
 {% block secondary_content %}
+        <h1>{{ _('Integrated metadata sources') }}</h1>
+        <section class="module">
+            <h4 class="module-heading-add-dataset">{{ _("Finnish social science data archive") }}</h4>
+            <div class="module-content">
+                <div class="metadata-source">
+                    {{ _('Data Archive and Aila Data Service') }}
+                </div>
+                <a href="http://www.fsd.uta.fi/en/">
+                    <img src="{{ _('../../base/images/img_fsd_logo_en.png') }}"></a>
+                <a href="{{ _('https://services.fsd.uta.fi/index?lang=en') }}">
+                    <img src="{{ _('../../base/images/logo_aila_en.png') }}"></a>
+            </div>
+        </section>
+        <h1>{{ _('Other research metadata services in Finland') }}</h1>
+        <section class="module">
+            <h4 class="module-heading-add-dataset">{{ _("Language bank of Finland") }}</h4>
+            <div class="module-content">
+                <div class="metadata-source">
+                    {{ _('Browse language resources') }}
+                </div>
+                <a href="https://metashare.csc.fi/">
+                    <img src="../../base/images/logo_lb.png"></a>
+            </div>
+        </section>
+        <section class="module">
+            <h4 class="module-heading-add-dataset">{{ _("About the service") }}</h4>
+            <div class="module-content">
 
+                <span class="tta-orange strong">
+                    {{ _('Maintenance window: Fourth monday of a month from 4 pm to 6 pm') }}
+                </span>
+            </div>
+        </section>
 {% endblock %}
-#}
 {% block home_tags %}
 {% endblock %}
