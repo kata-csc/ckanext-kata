@@ -118,6 +118,12 @@ def label_list_yso(tag_url):
                 text = node.text.strip() if node.text else ''
                 if text:
                     labels.append(text)
+
+    for node in xml.xpath('/rdf:RDF/skos:Concept/skos:prefLabel', namespaces=_tagspaces):
+        text = node.text.strip() if node.text else None
+        if text:
+            labels.append(text)
+
     return labels
 
 
