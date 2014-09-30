@@ -6,15 +6,15 @@ test the translation easily, use this file #}
 {% block primary_content %}
 
   {# maintenance break #}
-  
+
   {{ _('There is a maintenance break in service') }}<br />
   {{ _('You can not add or edit data during maintenance break') }}<br />
-  
+
   {# harvested datasets #}
-  
+
   {{ _('Original metadata record') }}<br />
   {{ _('Event automatically created at import.') }}<br />
-  
+
   {# error summary #}
   {{ _('Tag string') }}<br />
   {{ _('Availability') }}<br />
@@ -25,5 +25,16 @@ test the translation easily, use this file #}
   {# search page #}
   {{ _('Discipline') }}<br />
   {{ _('All fields') }}<br />
+
+  {# Translated in 2.2 #}
+  {% trans %}
+    <p>Organizations act like publishing departments for datasets (for
+      example, the Department of Health). This means that datasets can be
+      published by and belong to a department instead of an individual
+      user.</p>
+    <p>Within organizations, admins can assign roles and authorisation its
+      members, giving individual users the right to publish datasets from
+      that particular organisation (e.g. Office of National Statistics).</p>
+  {% endtrans %}
 
 {% endblock %}
