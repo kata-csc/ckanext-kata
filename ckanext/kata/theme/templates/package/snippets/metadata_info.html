@@ -3,28 +3,28 @@
 {% if pkg_dict.language or pkg_dict.langdis %}
 <table class="table table-striped table-bordered table-condensed">
      <tbody>
-	<tr>
-		<th class="dataset-label">{{ _('Language') }}</th>
-		<td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}{{ _('No language') }}{% endif%}</td>
-	</tr>
-	</tbody>
+  <tr>
+    <th class="dataset-label">{{ _('Language') }}</th>
+    <td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}{{ _('No language') }}{% endif%}</td>
+  </tr>
+  </tbody>
 </table>
 {% endif %}
 {% if pkg_dict.langtitle %}
 <h4>{{ _('Titles') }}</h4>
 <table class="table table-striped table-bordered table-condensed">
-	<tbody>
-	<tr>
-		<th>{{ _('Title') }}</th>
-		<th>{{ _('Language') }}</th>
-	</tr>
-	{% for langtitle in pkg_dict.langtitle %}
-	<tr>
-		<td>{{ langtitle.value }}</td>
-		<td>{{ langtitle.lang }}</td>
-	</tr>
-	{% endfor %}
-	</tbody>
+  <tbody>
+  <tr>
+    <th>{{ _('Title') }}</th>
+    <th>{{ _('Language') }}</th>
+  </tr>
+  {% for langtitle in pkg_dict.langtitle %}
+  <tr>
+    <td>{{ langtitle.value }}</td>
+    <td>{{ langtitle.lang }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
 </table>
 {% endif %}
 {% if pkg_dict.agent %}
@@ -41,24 +41,24 @@
     {% if url %}<col width="25%">{% endif %}
     {% if fid %}<col width="25%">{% endif %}
   </colgroup>
-	<tbody>
-	<tr>
-		<th>{{ _('Role') }}</th>
-		{% if nme %}<th>{{ _('Name') }}</th>{% endif %}
-		{% if org %}<th>{{ _('Organisation') }}</th>{% endif %}
-		{% if url %}<th>{{ _('URL') }}</th>{% endif %}
-		{% if fid %}<th>{{ _('Funding id') }}</th>{% endif %}
-	</tr>
-	{% for agent in pkg_dict.agent %}
-	<tr>
-		<td>{{ _(h.resolve_agent_role(agent.role)) }}</td>
-		{% if nme %}<td>{{ agent.name }}</td>{% endif%}
-		{% if org %}<td>{{ agent.organisation }}</td>{% endif%}
-		{% if url %}<td>{{ agent.URL }}</td>{% endif%}
-		{% if fid %}<td>{{ agent['fundingid'] }}</td>{% endif%}
-	</tr>
-	{% endfor %}
-	</tbody>
+  <tbody>
+  <tr>
+    <th>{{ _('Role') }}</th>
+    {% if nme %}<th>{{ _('Name') }}</th>{% endif %}
+    {% if org %}<th>{{ _('Organisation') }}</th>{% endif %}
+    {% if url %}<th>{{ _('URL') }}</th>{% endif %}
+    {% if fid %}<th>{{ _('Funding id') }}</th>{% endif %}
+  </tr>
+  {% for agent in pkg_dict.agent %}
+  <tr>
+    <td>{{ _(h.resolve_agent_role(agent.role)) }}</td>
+    {% if nme %}<td>{{ agent.name }}</td>{% endif%}
+    {% if org %}<td>{{ agent.organisation }}</td>{% endif%}
+    {% if url %}<td>{{ agent.URL }}</td>{% endif%}
+    {% if fid %}<td>{{ agent['fundingid'] }}</td>{% endif%}
+  </tr>
+  {% endfor %}
+  </tbody>
 </table>
 {% endif %}
 </section>
@@ -73,8 +73,8 @@
   {% endif%}
 </section>
 {% block package_tags %}
-	{% if pkg_dict.tags %}<h3 class="module-content">{{ _('Keywords') }}</h3>{% endif %}
-	{% snippet "package/snippets/tags.html", tags=pkg_dict.tags %}
+  {% if pkg_dict.tags %}<h3 class="module-content">{{ _('Keywords') }}</h3>{% endif %}
+  {% snippet "package/snippets/tags.html", tags=pkg_dict.tags %}
 {% endblock %}
 <section class="module-content additional-info">
 <h3>{{ _('Usage information') }}</h3>
@@ -166,54 +166,54 @@
 <table class="table table-striped table-bordered table-condensed">
 {% if pkg_dict.geographic_coverage %}
 <tr>
-	<th class="dataset-label">{{ _('Geographical areas covered') }}</th>
-	<td class="dataset-details">{{pkg_dict.geographic_coverage}}</td>
+  <th class="dataset-label">{{ _('Geographical areas covered') }}</th>
+  <td class="dataset-details">{{pkg_dict.geographic_coverage}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.temporal_coverage_begin and pkg_dict.temporal_coverage_end %}
 <tr>
-	<th class="dataset-label">{{ _('Period of time covered') }}</th>
-	<td class="dataset-details">{{pkg_dict.temporal_coverage_begin}}{{_(' to ') }}{{pkg_dict.temporal_coverage_end}}</td>
+  <th class="dataset-label">{{ _('Period of time covered') }}</th>
+  <td class="dataset-details">{{pkg_dict.temporal_coverage_begin}}{{_(' to ') }}{{pkg_dict.temporal_coverage_end}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.publications %}
 <tr>
-	<td>{{ _('Publications based on this data') }}</td>
-	<td>{{pkg_dict.publications}}</td>
+  <td>{{ _('Publications based on this data') }}</td>
+  <td>{{pkg_dict.publications}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.collections %}
 <tr>
-	<th class="dataset-label">{{ _('Dataset belongs to collection/series') }}</th>
-	<td class="dataset-details">{{pkg_dict.collections}}</td>
+  <th class="dataset-label">{{ _('Dataset belongs to collection/series') }}</th>
+  <td class="dataset-details">{{pkg_dict.collections}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.erelated %}
 <tr>
-	<th class="dataset-label">{{ _('Other related datasets') }}</th>
-	<td class="dataset-details">{{pkg_dict.erelated}}</td>
+  <th class="dataset-label">{{ _('Other related datasets') }}</th>
+  <td class="dataset-details">{{pkg_dict.erelated}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.discipline %}
 <tr>
-	<th class="dataset-label">{{ _('Discipline/branch of science') }}</th>
-	<td class="dataset-details">{{pkg_dict.discipline}}</td>
+  <th class="dataset-label">{{ _('Discipline/branch of science') }}</th>
+  <td class="dataset-details">{{pkg_dict.discipline}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.mimetype %}
 <tr>
-	<th class="dataset-label">{{ _('File format') }}</th>
-	<td class="dataset-details">{{pkg_dict.mimetype}}</td>
+  <th class="dataset-label">{{ _('File format') }}</th>
+  <td class="dataset-details">{{pkg_dict.mimetype}}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.algorithm and pkg_dict.checksum %}
 <tr>
-	<th class="dataset-label">{{ _('Checksum') }}</th>
-	<td class="dataset-details">{{pkg_dict.checksum}}</td>
+  <th class="dataset-label">{{ _('Checksum') }}</th>
+  <td class="dataset-details">{{pkg_dict.checksum}}</td>
 </tr>
 <tr>
-	<th class="dataset-label">{{ _('Algorithm') }}</th>
-	<td class="dataset-details">{{pkg_dict.algorithm}}</td>
+  <th class="dataset-label">{{ _('Algorithm') }}</th>
+  <td class="dataset-details">{{pkg_dict.algorithm}}</td>
 </tr>
 {% endif %}
 
@@ -233,8 +233,8 @@
         <tr>
           <td class="dataset-details">{{ _(ev.get('type', ' ')) }}</td>
           <td class="dataset-details">{{ ev.get('who', ' ') }}</td>
-		  <td class="dataset-details">{{ ev.get('when', ' ') }}</td>
-		  <td class="dataset-details">{{ _(ev.get('descr', ' ')) }}</td>
+          <td class="dataset-details">{{ ev.get('when', ' ') }}</td>
+          <td class="dataset-details">{{ _(ev.get('descr', ' ')) }}</td>
         </tr>
       {% endfor %}
       </table>
