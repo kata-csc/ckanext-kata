@@ -36,19 +36,22 @@
 <table class="table table-striped table-bordered table-condensed">
   {# IE9 needs colgroup #}
   <colgroup>
+    <col width="25%">
     {% if nme %}<col width="25%">{% endif %}
     {% if org %}<col width="25%">{% endif %}
     {% if url %}<col width="25%">{% endif %}
-    {% if fid %}<col width="25%">{% endif %}
+    {% if fid %}<col width="15%">{% endif %}
   </colgroup>
+  <thead>
+    <tr>
+      <th>{{ _('Role') }}</th>
+      {% if nme %}<th>{{ _('Name') }}</th>{% endif %}
+      {% if org %}<th>{{ _('Organisation') }}</th>{% endif %}
+      {% if url %}<th>{{ _('URL') }}</th>{% endif %}
+      {% if fid %}<th>{{ _('Funding id') }}</th>{% endif %}
+    </tr>
+  </thead>
   <tbody>
-  <tr>
-    <th>{{ _('Role') }}</th>
-    {% if nme %}<th>{{ _('Name') }}</th>{% endif %}
-    {% if org %}<th>{{ _('Organisation') }}</th>{% endif %}
-    {% if url %}<th>{{ _('URL') }}</th>{% endif %}
-    {% if fid %}<th>{{ _('Funding id') }}</th>{% endif %}
-  </tr>
   {% for agent in pkg_dict.agent %}
   <tr>
     <td>{{ _(h.resolve_agent_role(agent.role)) }}</td>
