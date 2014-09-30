@@ -429,3 +429,16 @@ def dataset_is_valid(package):
     package_plugin = plugins.lookup_package_plugin(package['type'])
     _, errors = validate(package, package_plugin.update_package_schema(), {'model': model, 'session': model.Session, 'user': c.user})
     return not bool(errors)
+
+def filter_system_users(users):
+    """
+    Filters system users ('logged_in', 'visitor', 'harvest') out of the
+    given iterable of users.
+    :param users: an iterable of user data dicts
+    :return: a new list with system users omitted
+    :rtype: list
+    """
+
+    system_user_names = ['logged_in', 'visitor', 'harvest']
+    return filter(lambda x: x.get('user') not in system_user_names, users)
+

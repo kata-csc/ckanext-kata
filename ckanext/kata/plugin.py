@@ -252,6 +252,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'string_to_list': helpers.string_to_list,
+            'filter_system_users': helpers.filter_system_users,
         }
 
     def get_dict_field_errors(self, errors, field, index, name):
