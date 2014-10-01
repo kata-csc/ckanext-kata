@@ -41,6 +41,14 @@ class Schemas:
 
         :rtype: schema
         """
+        schema = cls._create_package_schema()
+        schema['tag_string'] = [not_missing, not_empty, va.kata_tag_string_convert]
+        return schema
+
+    @classmethod
+    def _create_package_schema(cls):
+        """ Create common schema for dataset create and update.
+        """
         # TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!
         # Note: harvester schemas
 
@@ -78,15 +86,14 @@ class Schemas:
                                'lang': [not_missing, unicode, co.convert_languages]}
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
-        # schema['maintainer'] = [not_empty, unicode, validate_general, contains_alphanumeric]
-        # schema['maintainer_email'] = [not_empty, unicode, validate_email]
         schema['temporal_coverage_begin'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['pids'] = {'provider': [not_missing, unicode, co.flattened_to_extras],
                           'id': [not_missing, va.validate_general, unicode, co.flattened_to_extras],
-                          'type': [not_missing, unicode, co.flattened_to_extras]}
+                          'type': [not_missing, unicode, co.flattened_to_extras],
+                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
@@ -99,7 +106,8 @@ class Schemas:
         # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
         schema['__extras'] = [va.check_agent, va.check_langtitle, va.check_contact]
         schema['__junk'] = [va.check_junk]
-        schema['name'] = [ignore_missing, unicode, co.update_pid, package_name_validator, va.validate_general]
+        schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
+                          va.validate_general]
         schema['access_application_new_form'] = [co.checkbox_to_boolean, co.convert_to_extras_kata,
                                                  co.remove_access_application_new_form]
         schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,
@@ -120,6 +128,36 @@ class Schemas:
         return schema
 
     @classmethod
+    def create_package_schema_oai_dc_ida(cls):
+        """
+        Mofidified schema for oai_dc using IDA. See `create_package_schema_oai_dc`.
+
+        :rtype: dictionary
+        """
+        schema = cls.create_package_schema_oai_dc()
+        for _key, value in schema['contact'].iteritems():
+            value.insert(0, va.ignore_empty_data)
+
+        schema['contact'] = {'name': [ignore_missing,  unicode, co.flattened_to_extras],
+                             'email': [ignore_missing, unicode, co.flattened_to_extras],
+                             'URL': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                             'phone': [ignore_missing, unicode, co.flattened_to_extras]}
+
+        schema['agent'] = {'role': [not_empty, va.check_agent_fields, va.validate_general, unicode, co.flattened_to_extras],
+                           'name': [ignore_missing, ignore_empty, unicode, va.contains_alphanumeric, co.flattened_to_extras],
+                           'id': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                           'organisation': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                           'URL': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                           'fundingid': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras]}
+
+        schema['language'] = \
+            [ignore_missing, co.convert_to_extras_kata, unicode]
+
+        schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
+        schema['version'] = [ignore_missing, unicode]
+        return schema
+
+    @classmethod
     def create_package_schema_oai_dc(cls):
         '''
         Modified schema for datasets imported with oai_dc reader.
@@ -129,7 +167,7 @@ class Schemas:
         :rtype: schema
         '''
         # Todo: requires additional testing and planning
-        schema = cls.create_package_schema()
+        schema = cls._create_package_schema()
 
         schema['__extras'] = [ignore]   # This removes orgauth checking
         schema['availability'].insert(0, ignore_missing)
@@ -137,10 +175,10 @@ class Schemas:
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
         schema['maintainer'] = [ignore_missing, unicode, va.validate_general]
-    #    schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
-    #                         'email': [ignore_missing, unicode, va.validate_email, co.flattened_to_extras],
-    #                         'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
-    #                         'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
+        schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
+                             'email': [ignore_missing, unicode, va.validate_email, co.flattened_to_extras],
+                             'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
+                             'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
         return schema
 
@@ -152,7 +190,7 @@ class Schemas:
 
         :rtype: schema
         '''
-        schema = cls.create_package_schema()
+        schema = cls._create_package_schema()
         schema['discipline'].insert(0, ignore_missing)
         schema['event'] = {'type': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
@@ -173,11 +211,25 @@ class Schemas:
 
         :rtype: schema
         """
-        schema = cls.create_package_schema()
+        schema = cls._create_package_schema()
         # Taken from ckan.logic.schema.default_update_package_schema():
         schema['id'] = [ignore_missing, package_id_not_changed]
         schema['name'] = [ignore_missing, va.package_name_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
+        return schema
+
+    @classmethod
+    def update_package_schema_oai_dc_ida(cls):
+        '''
+        Oai_dc reader schema for IDA. See `update_package_schema_oai_dc`.
+
+        :rtype: dict
+        '''
+        schema = cls.create_package_schema_oai_dc_ida()
+
+        schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
+
         return schema
 
     @classmethod
@@ -232,3 +284,23 @@ class Schemas:
         #schema['resources']['resource_type'] = [from_resource]
 
         return schema
+
+    @staticmethod
+    def _harvest_non_unique_url(schema):
+        schema['url'] = [not_empty, unicode, url_validator]
+        return schema
+
+    @classmethod
+    def harvest_source_create_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_create_package_schema
+        return cls._harvest_non_unique_url(harvest_source_create_package_schema())
+
+    @classmethod
+    def harvest_source_update_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_update_package_schema
+        return cls._harvest_non_unique_url(harvest_source_update_package_schema())
+
+    @classmethod
+    def harvest_source_show_package_schema(cls):
+        from ckanext.harvest.logic.schema import harvest_source_show_package_schema
+        return cls._harvest_non_unique_url(harvest_source_show_package_schema())

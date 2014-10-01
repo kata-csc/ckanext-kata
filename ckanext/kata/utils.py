@@ -1,4 +1,6 @@
 # coding=utf-8
+#
+# pylint: disable=E1101, E1103, invalid-name
 """
 Utility functions for Kata.
 """
@@ -7,18 +9,22 @@ import logging
 import urllib2
 import socket
 import functionally as fn
+from paste.deploy.converters import asbool
 
 from pylons import config
 from lxml import etree
+import re
+from sqlalchemy.sql import select, and_
 from ckan import model as model
+from ckan.lib.dictization import model_dictize
 
 from ckan.lib.email_notifications import send_notification
-from ckan.model import User, Package
+from ckan.model import User, Package, Session, PackageExtra
 from ckan.lib import helpers as h
 from ckanext.kata import settings
 
 
-log = logging.getLogger(__name__)     # pylint: disable=invalid-name
+log = logging.getLogger(__name__)
 
 
 def generate_pid():
@@ -204,10 +210,6 @@ def hide_sensitive_fields(pkg_dict1):
     '''
 
     # pkg_dict1['maintainer_email'] = _('Not authorized to see this information')
-    # pkg_dict1['project_funding'] = _('Not authorized to see this information')
-    funders = get_funders(pkg_dict1)
-    for fun in funders:
-        fun.pop('fundingid', None)
 
     for con in pkg_dict1.get('contact', []):
         # String 'hidden' triggers the link for contact form, see metadata_info.html
@@ -268,3 +270,78 @@ def get_funders(data_dict):
     return filter(lambda x: x.get('role') == u'funder' and
                   (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
                   data_dict.get('agent', []))
+
+
+def datapid_to_name(string):
+    '''
+    Wrap re.sub to convert a data-PID to package.name
+    '''
+    return re.sub(*settings.DATAPID_TO_NAME_REGEXES, string=string)
+
+
+def get_pids_by_type(pid_type, data_dict, primary=None, use_id_or_name=False):
+    '''
+    Get all of package PIDs of certain type
+
+    :param use_id_or_name: Set to True to use package.id and package.name to try to get primary PIDs if none found
+                           from 'pids'
+    :param primary: True to get only primary pids, or False to get all pids without primary='True',
+                    use None to get all pids
+    :param pid_type: PID type to get (data, metadata, version)
+    :param data_dict:
+    :rtype : list of dicts
+    '''
+    extra = []
+    if primary and use_id_or_name:
+        if pid_type == 'data' and data_dict.get('name'):
+            extra = [{'primary': 'True', 'type': pid_type, 'id': data_dict['name']}]
+        if pid_type == 'metadata' and data_dict.get('id'):
+            extra = [{'primary': 'True', 'type': pid_type, 'id': data_dict['id']}]
+
+    return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
+            (primary is None or asbool(x.get('primary', 'False')) == primary)] or extra
+
+
+def get_package_id_by_data_pids(data_dict):
+    '''
+    Try if the provided data PIDs match exactly one dataset.
+
+    :param data_dict:
+    :return: Package id or None if not found.
+    '''
+    data_pids = get_pids_by_type('data', data_dict)
+
+    if len(data_pids) == 0:
+        return None
+
+    pid_list = [pid.get('id') for pid in data_pids]
+
+    # Get package ID's with matching PIDS
+    query = Session.query(model.PackageExtra.package_id.distinct()).\
+        filter(model.PackageExtra.value.in_(pid_list))
+    pkg_ids = query.all()
+
+    if len(pkg_ids) != 1:
+        return None              # Nothing to do if we get many or zero datasets
+
+    # Get extras with the received package ID's
+    query = select(['key', 'value', 'state']).where(
+        and_(model.PackageExtra.package_id.in_(pkg_ids), model.PackageExtra.key.like('pids_%')))
+
+    extras = Session.execute(query)
+
+    # Dictize the results
+    extras = model_dictize.extras_list_dictize(extras, {'model': PackageExtra})
+
+    # Check that matching PIDS are type 'data'.
+    for extra in extras:
+        key = extra['key'].split('_')   # eg. ('pids', '0', 'id')
+
+        if key[2] == 'id' and extra['value'] in pid_list:
+            type_key = '_'.join(key[:2] + ['type'])
+
+            if not filter(lambda x: x['key'] == type_key and x['value'] == 'data', extras):
+                return None      # Found a hit with wrong type of PID
+
+    return pkg_ids[0]    # No problems found, so use this
+

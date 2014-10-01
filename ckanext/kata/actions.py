@@ -16,13 +16,14 @@ import ckan.logic.action.update
 import ckan.logic.action.delete
 from ckan.model import Related, Session, Package, repo
 import ckan.model as model
-from ckan.lib.search import index_for, rebuild
+from ckan.lib.search import rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
-from ckan.logic import check_access, NotAuthorized, side_effect_free
+from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
 from ckanext.kata import utils, settings
 from ckan.logic import get_action
 import ckan.new_authz
+from ckanext.kata.schemas import Schemas
 
 
 _get_or_bust = ckan.logic.get_or_bust
@@ -35,7 +36,11 @@ TITLE_MATCH = re.compile(r'^(title_)?\d?$')
 
 @side_effect_free
 def package_show(context, data_dict):
-    '''Return the metadata of a dataset (package) and its resources.
+    '''
+    Return the metadata of a dataset (package) and its resources.
+
+    Called before showing the dataset in some interface (browser, API),
+    or when adding package to Solr index (no validation / conversions then).
 
     :param id: the id or name of the dataset
     :type id: string
@@ -43,8 +48,12 @@ def package_show(context, data_dict):
     :rtype: dictionary
     '''
 
-    # Called before showing the dataset in some interface (browser, API),
-    # or when adding package to Solr index (no validation / conversions then).
+    if data_dict.get('type') == 'harvest':
+        context['schema'] = Schemas.harvest_source_show_package_schema()
+
+    if not data_dict.get('id') and not data_dict.get('name'):
+        # Get package by data PIDs
+        data_dict['id'] = utils.get_package_id_by_data_pids(data_dict)
 
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
@@ -87,7 +96,7 @@ def package_show(context, data_dict):
 def package_create(context, data_dict):
     """
     Creates a new dataset.
-    
+
     Extends ckan's similar method to instantly reindex the SOLR index, 
     so that this newly added package emerges in search results instantly instead of 
     during the next timed reindexing.
@@ -101,21 +110,10 @@ def package_create(context, data_dict):
     try:
         if data_dict['type'] == 'harvest' and not user.sysadmin:
             ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
-            
+
     except KeyError:
         log.debug("Tried to check the package type, but it wasn't present!")
         # TODO: JUHO: Dubious to let pass without checking user.sysadmin
-        pass
-    # Remove ONKI generated parameters for tidiness
-    # They won't exist when adding via API
-    try:
-        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs',
-                     'geographic_coverage_field_langs', 'geographic_coverage_field',
-                     'geographic_coverage_tmp',
-                     'discipline_field_langs', 'discipline_field']
-        for key in removable:
-            del data_dict[key]
-    except KeyError:
         pass
 
     data_dict = utils.dataset_to_resource(data_dict)
@@ -137,21 +135,20 @@ def package_create(context, data_dict):
         user_name = user.display_name
         distributor_names = [agent.get('name') for agent in data_dict['agent'] if agent.get('role') == 'distributor']
 
-        if not user_name in distributor_names:
-            data_dict['agent'].append(
-                {'name': user_name, 'role': 'distributor', 'id': user.id}
-            )
+        if user_name != 'harvest':
+            if not user_name in distributor_names:
+                data_dict['agent'].append(
+                    {'name': user_name, 'role': 'distributor', 'id': user.id}
+                )
+
+    if data_dict.get('type') == 'harvest':
+        context['schema'] = Schemas.harvest_source_create_package_schema()
 
     pkg_dict1 = ckan.logic.action.create.package_create(context, data_dict)
 
     # Logging for production use
     _log_action('Package', 'create', context['user'], pkg_dict1['id'])
 
-    context = {'model': model, 'ignore_auth': True, 'validate': False,
-               'extras_as_string': False}
-    pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
-    index = index_for('package')
-    index.index_package(pkg_dict)
     return pkg_dict1
 
 
@@ -170,23 +167,30 @@ def package_update(context, data_dict):
 
     :rtype: dictionary
     '''
-    # Remove ONKI generated parameters for tidiness
-    # They won't exist when adding via API
-    try:
-        removable = ['field-tags', 'tag_string_tmp', 'field-tags_langs',
-                     'geographic_coverage_field_langs', 'geographic_coverage_field',
-                     'discipline_field_langs', 'discipline_field']
-        for key in removable:
-            del data_dict[key]
-    except KeyError:
-        pass
-
     # Get all resources here since we get only 'dataset' resources from WUI.
-    temp_context = {'model': model, 'ignore_auth': True, 'validate': True,
+    package_context = {'model': model, 'ignore_auth': True, 'validate': True,
                     'extras_as_string': True}
-    temp_pkg_dict = ckan.logic.action.get.package_show(temp_context, data_dict)
+    package_data = package_show(package_context, data_dict)
+    # package_data = ckan.logic.action.get.package_show(package_context, data_dict)
 
-    old_resources = temp_pkg_dict.get('resources', [])
+    # API needs distributor
+    distributor = False
+    for agent in data_dict.get('agent', []):
+        if agent.get('role') == 'distributor':
+            distributor = True
+
+    if not distributor and package_data.get('agent') is not None:
+        # Harvest objects do not have agents
+        for agent in package_data.get('agent'):
+            if agent.get('role') == 'distributor':
+                data_dict['agent'].append({'name': agent.get('name', u''),
+                                           'role': u'distributor',
+                                           'id': agent.get('id', u''),
+                                           'fundingid': agent.get('fundingid', u''),
+                                           'organisation': agent.get('organisation', u''),
+                                           'URL': agent.get('URL', u'')})
+
+    old_resources = package_data.get('resources', [])
 
     if not 'resources' in data_dict:
         # When this is reached, we are updating a dataset, not creating a new resource
@@ -194,12 +198,12 @@ def package_update(context, data_dict):
         data_dict = utils.dataset_to_resource(data_dict)
 
     # Get all PIDs (except for package.id and package.name) from database and add new relevant PIDS there
-    data_dict['pids'] = temp_pkg_dict.get('pids', [])
+    data_dict['pids'] = package_data.get('pids', [])
 
-    new_version_pid = data_dict.get('new_version_pid', None)
-    if not new_version_pid and data_dict.get('generate_version_pid', None) == 'on':
+    new_version_pid = data_dict.get('new_version_pid')
+    if not new_version_pid and data_dict.get('generate_version_pid') == 'on':
         new_version_pid = utils.generate_pid()
-        
+
     if new_version_pid:
         data_dict['pids'] += [{'id': new_version_pid,
                               'type': 'version',
@@ -232,24 +236,21 @@ def package_update(context, data_dict):
     # if data_dict['name'].startswith('FSD'):
     #     context['schema'] = schemas.update_package_schema_ddi()
 
+    if package_data.get('type') == 'harvest':
+        context['schema'] = Schemas.harvest_source_update_package_schema()
+
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
 
     # Logging for production use
     _log_action('Package', 'update', context['user'], data_dict['id'])
 
-    context = {'model': model, 'ignore_auth': True, 'validate': False,
-               'extras_as_string': True}
-    pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
-    index = index_for('package')
-    # update_dict calls index_package, so it would basically be the same
-    index.update_dict(pkg_dict)
     return pkg_dict1
 
 
 def package_delete(context, data_dict):
     '''
     Deletes a package
-    
+
     Extends ckan's similar method to instantly re-index the SOLR index. 
     Otherwise the changes would only be added during a re-index (a rebuild of search index,
     to be specific).
@@ -263,8 +264,6 @@ def package_delete(context, data_dict):
     # Logging for production use
     _log_action('Package', 'delete', context['user'], data_dict['id'])
 
-    index = index_for('package')
-    index.remove_dict(data_dict)
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
@@ -431,7 +430,7 @@ def dataset_editor_delete(context, data_dict):
     :param role: editor, admin or reader
     :type role: string
 
-    :rtype: message dict with `success` and `msg`
+    :rtype: message string
     '''
     pkg = model.Package.get(data_dict.get('name', None))
     user = model.User.get(context.get('user', None))
@@ -440,7 +439,7 @@ def dataset_editor_delete(context, data_dict):
 
     if not (pkg and user and role):
         msg = _('Required information missing')
-        return {'success': False, 'msg': msg}
+        raise ValidationError(msg)
 
     pkg_dict = get_action('package_show')(context, {'id': pkg.id})
     pkg_dict['domain_object'] = pkg_dict.get('id')
@@ -448,33 +447,40 @@ def dataset_editor_delete(context, data_dict):
     # This could be simpler, as domain_object_ref is pkg.id
     domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
 
-    # Todo: use check_access instead? It is not this detailed, though
+    # These are detailed checks to inform the user of the flaw
     if not username:
         msg = _('User not found')
-        return {'success': False, 'msg': msg}
+        raise NotFound(msg)
 
-    if not (_authz.user_has_role(user, role, domain_object) or
-            _authz.user_has_role(user, 'admin', domain_object) or
-            role == 'reader' or user.sysadmin == True):
+    if not ((_authz.user_has_role(user, 'admin', domain_object) or
+             user.sysadmin)) and role == 'admin':
         msg = _('No sufficient privileges to remove user from role %s.') % role
-        return {'success': False, 'msg': msg}
+        raise NotAuthorized(msg)
+
+    if not (check_access('package_update', context)):
+        msg = _('No sufficient privileges to remove user from role %s.') % role
+        raise NotAuthorized(msg)
 
     if not _authz.user_has_role(username, role, pkg):
         msg = _('No such user and role combination')
-        return {'success': False, 'msg': msg}
+        # Validation error is not the correct answer here, but it does the job
+        raise ValidationError(msg)
 
-    if username.name == 'visitor' or username.name == 'logged_in':
+    if username.name == model.PSEUDO_USER__VISITOR or \
+            username.name == model.PSEUDO_USER__LOGGED_IN or \
+            username.name == 'harvest':
         msg = _('Built-in users can not be removed')
-        return {'success': False, 'msg': msg}
+        raise ValidationError(msg)
 
     if user.id == username.id:
         msg = _('You can not remove yourself')
-        return {'success': False, 'msg': msg}
+        raise ValidationError(msg)
 
     _authz.remove_user_from_role(username, role, pkg)
+
     msg = _('User removed from role %s') % role
 
-    return {'success': True, 'msg': msg}
+    return msg
 
 
 def dataset_editor_add(context, data_dict):
@@ -488,7 +494,7 @@ def dataset_editor_add(context, data_dict):
     :param username: user to be added
     :type username: string
 
-    :rtype: message dict with 'success' and 'msg'
+    :rtype: message string
     '''
     pkg = model.Package.get(data_dict.get('name', None))
     user = model.User.get(context.get('user', None))
@@ -497,7 +503,7 @@ def dataset_editor_add(context, data_dict):
 
     if not (pkg and user and role):
         msg = _('Required information missing')
-        return {'success': False, 'msg': msg}
+        raise ValidationError(msg)
 
     pkg_dict = get_action('package_show')(context, {'id': pkg.id})
     pkg_dict['domain_object'] = pkg_dict.get('id')
@@ -505,30 +511,28 @@ def dataset_editor_add(context, data_dict):
     domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
     domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
 
-    # Todo: use check_access instead? It is not this detailed, though
+    # These are detailed checks to inform the user of the flaw
     if not username:
         msg = _('User not found')
-        return {'success': False, 'msg': msg}
+        raise NotFound(msg)
 
-    if not (_authz.user_has_role(user, role, domain_object) or
-            _authz.user_has_role(user, 'admin', domain_object) or
-            role == 'reader' or user.sysadmin == True):
-        msg = _('No sufficient privileges to add a user to role %s.') % role
-        return {'success': False, 'msg': msg}
+    if not ((_authz.user_has_role(user, 'admin', domain_object) or
+             user.sysadmin)) and role == 'admin':
+        raise NotAuthorized
+
+    if not (check_access('package_update', context)):
+        raise NotAuthorized
 
     if _authz.user_has_role(username, role, domain_object):
         msg = _('User already has %s rights') % role
-        return {'success': False, 'msg': msg}
-
-    if user.id == username.id:
-        msg = _('You can not add yourself')
-        return {'success': False, 'msg': msg}
+        raise ValidationError(msg)
 
     model.add_user_to_role(username, role, pkg)
     model.meta.Session.commit()
+
     msg = _('User added')
 
-    return {'success': True, 'msg': msg}
+    return msg
 
 
 @side_effect_free

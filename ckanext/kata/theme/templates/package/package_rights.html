@@ -1,9 +1,7 @@
-{% extends "package/base.html" %}
+{% extends "package/read_base.html" %}
 {% import 'macros/form.html' as form %}
 
-{% block breadcrumb_content %}
-   <li>{% link_for _('Datasets'), controller='ckanext.kata.controllers:KataPackageController', action='package_administration', pkg=pkg%}</li>
-{% endblock %}
+{% block head_extras %}{% endblock %}
 
 {% block content_primary_nav %}
   {{ h.build_nav_icon('dataset_read', _('Dataset'), id=c.pkg.name) }}
@@ -14,7 +12,8 @@
 {% block primary_content_inner %}
     {% block subtitle %}{{ _('Dataset title') }}: {{ c.pkg.title }}{% endblock %}
 
-  <h3 class="page-heading">{{ _('{0} named roles').format(c.members|length) }}</h3>
+  {% set filtered_members = h.filter_system_users(c.members) %}
+  <h3 class="page-heading">{{ _('{0} named roles').format(filtered_members|length) }}</h3>
   <table class="table table-header table-hover table-bordered">
     <col width="70" />
     <col width="40" />
@@ -27,14 +26,13 @@
       </tr>
     </thead>
     <tbody>
-      {% for usr in c.members %}
+      {% for usr in filtered_members %}
       <tr>
         <td class="media">
           {{ h.linked_user(usr.user_id, maxlength=20) }}
         </td>
         <td>{{ usr.role }}</td>
         <td>
-        {% if usr.user != 'visitor' and usr.user != 'logged_in' %}
           {% set locale = h.dump_json({'content': _('Are you sure you want to delete this member?')}) %}
           <div class="btn-group pull-right">
             {#<a class="btn btn-small" href="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='package_editor_new', pkg=c.pkg.id, user=usr.user_id %}" title="{{ _('Edit') }}">
@@ -42,7 +40,6 @@
             </a>#}
             <a class="btn btn-danger btn-small" href="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_delete', name=c.pkg.id, username=usr.user_id, role=usr.role %}" data-module="confirm-action" data-module-i18n="{{ locale }}" title="{{ _('Delete') }}">{% block delete_button_text %}<i class="icon-remove"></i>{% endblock %}</a>
           </div>
-          {% endif %}
         </td>
       </tr>
       {% endfor %}
@@ -67,14 +64,14 @@
   </form>
   <form class="dataset-form form-horizontal" method='post'>
     <h1>{{ _('Send invitation') }}</h1>
-    <p>{{ _('Did not find the user you were searching for? Send her or him an email invitation to log in to Kata service.') }}</p>
+    <p>{{ _('Did not find the user you were searching for? Send her or him an email invitation to log in to Etsin.') }}</p>
     <p>{{ _('If you want to, you can add your own message to be sent to the person.') }}
     {{ _('After the person has logged in to the service, she or he can be added to a role.') }}</p>
     {{ form.input('email', id='field-email', label=_('Email address'), placeholder=_('john.doe@example.com'), value='', error='', classes=['control-medium'], type='email') }}
     {{ form.textarea('mail_message', id='field-emailmsg', label=_('Your message'), value='', error='', classes=['control-medium']) }}
     {% if g.recaptcha_publickey %}
       <div class="control-group">
-        <div class="controls">
+        <div class="controls kata-captcha-fix">
           <script type="text/javascript" src="https://www.google.com/recaptcha/api/challenge?k={{g.recaptcha_publickey}}"></script>
           <noscript>
             <iframe src="http://www.google.com/recaptcha/api/noscript?k={{g.recaptcha_publickey}}"

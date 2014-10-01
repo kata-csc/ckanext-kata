@@ -44,12 +44,21 @@
     </py:for>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <dct:creator  py:if="agent.get('role', None)=='author'">
+      <dct:creator py:if="agent.get('role', None)=='author'">
         <rdf:Description>
           <foaf:name py:if="agent.get('name', None)">${ agent.get('name', None) }</foaf:name>
           <foaf:organization py:if="agent.get('organisation', None)">${ agent.get('organisation', None) }</foaf:organization>
         </rdf:Description>
       </dct:creator>
+    </py:for>
+
+    <py:for each="agent in c.pkg_dict.get('agent', None)">
+      <dct:contributor py:if="agent.get('role', None)=='contributor'">
+        <rdf:Description>
+          <foaf:name py:if="agent.get('name', None)">${ agent.get('name', None) }</foaf:name>
+          <foaf:organization py:if="agent.get('organisation', None)">${ agent.get('organisation', None) }</foaf:organization>
+        </rdf:Description>
+      </dct:contributor>
     </py:for>
 
     <py:for each="contact in c.pkg_dict.get('contact', None)">

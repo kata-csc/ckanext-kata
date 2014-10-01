@@ -8,11 +8,12 @@ from itertools import count
 
 import iso8601
 import re
+import urlparse
 from pylons.i18n import _
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
-from ckan.lib.navl.dictization_functions import StopOnError, Invalid
+from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
 from ckan.logic.validators import tag_length_validator, url_validator
 from ckan.model import Package
 from ckanext.kata import utils, converters, settings
@@ -203,7 +204,7 @@ def check_direct_download_url(key, data, errors, context):
     Validate dataset's direct download URL.
     '''
     if data.get(('availability',)) == 'direct_download':
-        not_empty(key, data, errors, context)
+        url_not_empty(key, data, errors, context)
 
 
 def check_access_request_url(key, data, errors, context):
@@ -231,7 +232,7 @@ def check_through_provider_url(key, data, errors, context):
 def validate_discipline(key, data, errors, context):
     '''
     Validate discipline
-    
+
     :param key: 'discipline'
     '''
     val = data.get(key)
@@ -251,18 +252,18 @@ def validate_discipline(key, data, errors, context):
 def validate_spatial(key, data, errors, context):
     '''
     Validate spatial (aka geographical) coverage
-    
+
     :param key: eg. 'geographical_coverage'
     '''
     val = data.get(key)
     # Regexp is specifically for the SUO ontology
-    spatial_match = re.compile('[\w \- \'/,():.]*$', re.UNICODE)
+    spatial_match = re.compile('[\w \- \'/,():.;=]*$', re.UNICODE)
     if val:
         if not spatial_match.match(val):
             mismatch = '|'.join([s for s in val.split(',')
                                  if not spatial_match.match(s)])
             raise Invalid(_("Spatial coverage \"%s\" must be alphanumeric "
-                            "characters or symbols: -'/,:(). "
+                            "characters or symbols: -'/,:().;= "
                             "Mismatching strings: \"%s\"") % (val, mismatch))
     else:
         # With ONKI component, the entire parameter might not exist
@@ -282,7 +283,7 @@ def validate_mimetype(key, data, errors, context):
         if not MIME_REGEX.match(val):
             raise Invalid(_('File type (mimetype) "%s" must be alphanumeric '
                             'characters or symbols: _-+./') % (val))
-    
+
 
 def validate_algorithm(key, data, errors, context):
     '''
@@ -312,8 +313,10 @@ def validate_title_duplicates(key, data, errors, context):
     '''
     langs = []
     for k in data.keys():
-        if k[0] == 'langtitle' and k[2] == 'lang':
-            langs.append(data[k])
+        if k[0] == 'langtitle' and k[2] == 'lang' and \
+                ('langtitle', k[1], 'value',) in data and \
+                len(data.get(('langtitle', k[1], 'value',))) > 0:
+                langs.append(data[k])
     if len(set(langs)) != len(langs):
         raise Invalid(_('Duplicate titles for a language not permitted'))
 
@@ -381,12 +384,7 @@ def check_langtitle(key, data, errors, context):
     # import pprint
     # pprint.pprint(data)
     if data.get(('langtitle', 0, 'value'), None) is None:
-        error = 'Missing dataset title'
-        raise Invalid(_(error))
-        # if ('langtitle',) in errors:
-        #     errors[('langtitle',)].append(_(error))
-        # else:
-        #     errors[('langtitle',)] = [_(error)]
+        raise Invalid({'key': 'langtitle', 'value': _('Missing dataset title')})
 
 
 def check_pids(key, data, errors, context):
@@ -394,8 +392,7 @@ def check_pids(key, data, errors, context):
     Check that pids field exists
     '''
     if data.get((u'pids', 0, u'id'), None) is None:
-        error = 'Missing dataset PIDs'
-        raise Invalid(_(error))
+        raise Invalid(_('Missing dataset PIDs'))
 
 
 def check_events(key, data, errors, context):
@@ -414,3 +411,36 @@ def check_events(key, data, errors, context):
     else:
         data.pop(key, None)
         raise StopOnError
+
+
+def ignore_empty_data(key, data, errors, context):
+    ''' Ignore empty data, example '-' or whitespace.
+
+    :raises ckan.lib.navl.dictization_functions.StopOnError: if ``data[key]``
+        is :py:data:`ckan.lib.navl.dictization_functions.missing` or ``None``
+
+    :returns: ``None``
+
+    '''
+    value = data.get(key)
+
+    if value is missing or value is None or re.match('^\s*-{0,1}\s*$', value):
+        data.pop(key, None)
+        raise StopOnError
+
+
+def url_not_empty(key, data, errors, context):
+    '''
+    Check that the data value is non-empty and contains both a URL scheme and a hostname.
+
+    :raises ckan.lib.navl.dictization_functions.Invalid: if data[key] is empty, missing, or
+                                                         omits either URL scheme or hostname
+    :returns: None
+    '''
+    value = data.get(key)
+    if value and value is not missing:
+        url_components = urlparse.urlparse(value)
+        if all([url_components.scheme, url_components.netloc]):
+            return
+
+    raise Invalid(_('Missing value'))

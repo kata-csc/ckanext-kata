@@ -14,37 +14,46 @@
             {% block home_primary %}
               <header>
                 {% if g.site_intro_text %}
-                  {{ h.render_markdown(g.site_intro_text) }}
-                {% else %}
+                  <div class=index-additional-info">
+                    {{ h.render_markdown(g.site_intro_text) }}
+                  </div>
+                {% endif %}
                   {% block home_primary_content %}
                     {% block home_primary_heading %}
                     {% endblock %}
                     {% block home_primary_text %}
                       <h3>
-                        {{ _('What is Kata metadata catalogue?') }}
+                        {{ _('What is Etsin?') }}
                       </h3>
                       <p>
-                        {{ _('Kata metadata catalogue contains metadata of research data. Here you can search and find research data for your needs or even add you own data for others to reuse.') }}
+                        {{ _('Etsin is a service for gathering and finding data from various fields of research. It allows you to search for data according to your needs and to provide your own datasets for others to find and reuse.') }}
+                      </p>
+                      <p>
+                        {{ _('The research data itself is not stored in Etsin. Rather, Etsin allows you to search for and browse datasets based on their metadata.') }}
                       </p>
                       <h3>
                         {{ _('What is metadata?') }}
                       </h3>
                       <p>
-                        {{ _('Shortly explained metadata is data of data. Metadata describes important features of data which can be for example authors, subject, format and license.') }}
-                        {{ _('The content of metadata varies a lot depending on the data, but this service will provide a uniform set of metadata fields tailored for research data, the metadata information defined by the minimum metadata model by TTA.') }}
+                        {{ _('Metadata is data about data. Metadata describes important features of the data such as authors, subjects, the fields of research the data pertains to, storage formats, and licenses.') }}
+                      </p>
+                      <p>
+                        {{ _('The content of metadata varies depending on what kind of data is being described. However, Etsin provides a common ground by employing a common set of metadata fields tailored for research data. In the interest of consistency with other services, the metadata conforms to the minimum metadata model defined by the Finnish National Research Data Initiative (TTA).') }}
                       </p>
                       <h3>
                         {{ _('Is this service for me?') }}
                       </h3>
                       <p>
-                        {{ _('Kata service aims to collect data from various places and from various branches of science to be a single point of access to all kinds of research data.') }}
-                        {{ _('To search for data doesn\'t require you to be a professional scientist or researcher - useful data can be generated and reused anywhere and by anyone.') }}
+                        {{ _('Etsin aims to collect datasets from various sources and from various branches of science and to be a single point of access to all kinds of research data.') }}
+                      </p>
+                      <p>
+                        {{ _('You do not have to be a professional scientist or researcher in order to search for data. Useful data can be generated and reused anywhere and by anyone.') }}
                       </p>
                       <h3>
-                        {{ _('Is all data open?') }}
+                        {{ _('Is all of the data open?') }}
                       </h3>
                       <p>
-                        {{ _('Almost all metadata is open, but it is for the author to decide how the data is accessed and by who. Nevertheless, providing your data openly is recommended.') }}
+                        {{ _('Almost all of the metadata is open, but it is for the author to decide how the data itself can be accessed and by whom. Nevertheless, providing your data openly is recommended.') }}
                       </p>
                       <h3>
                         {{ _('Terms of use') }}
@@ -57,7 +66,7 @@
                       </p>
                     {% endblock %}
                   {% endblock %}
-                {% endif %}
+
               </header>
             {% endblock %}
 
@@ -69,11 +78,11 @@
               <h4 class="module-heading-add-dataset">{{ _('Tools and additional information') }}</h4>
               <div class="module-content"> 
                 <p>
-                  {{ _('The minimum metadata model recommends a common set of metadata fields. Explore the minimum metadata model:') }}<br /><br />
+                  {{ _('The minimum metadata model recommends a common set of metadata fields. Explore the minimum metadata model (in Finnish):') }}<br /><br />
                   <a href="{{ _('http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli/c90929e4-3b7e-42a2-8419-a6481decb67d') }}"><span class="format-label" data-format="pdf" property="dc:format"></span> {{ _('Minimum metadata model') }}</a> {{ _('(In Finnish)') }}
                 </p>
                 <p>
-                  {{ _('The preferred license recommended by TTA is Creative Commons 3.0 family. Learn more about licenses from:') }}<br /><br />
+                  {{ _('The preferred license recommended by TTA is the Creative Commons 3.0 family. Learn more about the licenses at Creative Commons:') }}<br /><br />
                 <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/3.0/88x31.png"></a>
                 </p>
               </div>   
@@ -116,18 +125,48 @@
       </div>
     </div>
   </div>
-  {#<div class="main homepage">
+  <div class="main homepage">
     <div class="container">
       {{ self.secondary_content() }}
     </div>
-  </div>#}
+  </div>
 {% endblock %}
 
-{# Add here links to services that provide data to Kata, as we get them #}
-{#
+{# Add here links to services that provide data to Etsin, as we get them #}
 {% block secondary_content %}
+        <h1>{{ _('Integrated metadata sources') }}</h1>
+        <section class="module">
+            <h4 class="module-heading-add-dataset">{{ _("Finnish social science data archive") }}</h4>
+            <div class="module-content">
+                <div class="metadata-source">
+                    {{ _('Data Archive and Aila Data Service') }}
+                </div>
+                <a href="http://www.fsd.uta.fi/en/">
+                    <img src="{{ _('../../base/images/img_fsd_logo_en.png') }}"></a>
+                <a href="{{ _('https://services.fsd.uta.fi/index?lang=en') }}">
+                    <img src="{{ _('../../base/images/logo_aila_en.png') }}"></a>
+            </div>
+        </section>
+        <h1>{{ _('Other research metadata services in Finland') }}</h1>
+        <section class="module">
+            <h4 class="module-heading-add-dataset">{{ _("Language bank of Finland") }}</h4>
+            <div class="module-content">
+                <div class="metadata-source">
+                    {{ _('Browse language resources') }}
+                </div>
+                <a href="https://metashare.csc.fi/">
+                    <img src="../../base/images/logo_lb.png"></a>
+            </div>
+        </section>
+        <section class="module">
+            <h4 class="module-heading-add-dataset">{{ _("About the service") }}</h4>
+            <div class="module-content">
 
+                <span class="tta-orange strong">
+                    {{ _('Maintenance window: Fourth monday of a month from 4 pm to 6 pm') }}
+                </span>
+            </div>
+        </section>
 {% endblock %}
-#}
 {% block home_tags %}
 {% endblock %}

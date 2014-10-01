@@ -30,6 +30,16 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert output
         assert output['id'].startswith('urn:nbn:fi:csc-kata')
 
+    def test_create_dataset_without_tags(self):
+        data = copy.copy(self.TEST_DATADICT)
+        data.pop('tag_string')
+
+        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
+                                 status=409, **data)
+
+        self.assertTrue('__type' in output)
+        self.assertEquals(output['__type'], 'Validation Error')
+
     def test_create_dataset_sysadmin(self):
         output = call_action_api(self.app, 'package_create', apikey=self.user_sysadmin.apikey,
                                  status=200, **self.TEST_DATADICT)
@@ -142,32 +152,29 @@ class TestCreateDatasetAndResources(KataApiTestCase):
                                  status=200, id=res_id)
         if output is not None and '__type' in output:
             assert output['__type'] != 'Validation Error'
-            
+
     def test_create_edit(self):
         '''
         Test and edit dataset via API. Check that immutables stay as they are.
         '''
-        print 'Create dataset'
         output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
                                  status=200, **self.TEST_DATADICT)
-        
+
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        
+
         orig_id = output['id']
         data_dict['id'] = orig_id
         output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=200, **data_dict)
         assert output['id'] == orig_id
-        
+
         data_dict['name'] = 'new-name-123456'
 
-        print 'Update dataset'
-        
         output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=409, **data_dict)
 
         assert output
         assert '__type' in output
         assert output['__type'] == 'Validation Error'
-        
+
     def test_create_dataset_invalid_agents(self):
         '''Test required fields for agents (role, name/organisation/URL)'''
 
@@ -205,17 +212,42 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['private'] = False
 
-        call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey,
-                                 status=403, **data_dict)
+        call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey, status=403, **data_dict)
 
     def test_create_public_dataset_by_editor(self):
         '''Organization editor can create public dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['private'] = False
 
-        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                 status=200, **data_dict)
+        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey, status=200, **data_dict)
         assert output
+
+
+class TestUpdateDataset(KataApiTestCase):
+    """Tests for (mainly) dataset updating."""
+
+    def test_update_by_data_pid(self):
+        '''Update a dataset by using it's data PID instead of id or name'''
+
+        call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey, status=200, **self.TEST_DATADICT)
+
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['notes'] = "A new description"
+        data_dict['private'] = False
+
+        output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=200, **data_dict)
+
+        output = call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey, status=200, id=output['id'])
+
+        assert output['notes'] == "A new description"
+
+    def test_update_by_data_pid_fail(self):
+        '''Try to update a dataset with wrong PIDs'''
+
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['pids'] = [{'id': unicode(x), 'type': 'data'} for x in range(1, 9)]
+
+        call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey, status=409, **data_dict)
 
 
 class TestSearchDataset(KataApiTestCase):
@@ -392,8 +424,7 @@ class TestDataReading(KataApiTestCase):
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
 
-        call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey,
-                                 status=403, id=output['id'])
+        call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey, status=403, id=output['id'])
 
     def test_create_update_and_read_dataset(self):
         '''
@@ -417,7 +448,7 @@ class TestDataReading(KataApiTestCase):
         assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
         assert self._compare_datadicts(self.TEST_DATADICT, output)
-        
+
     def test_secured_fields(self):
         '''
         Test that anonymous user can not read protected data
@@ -435,10 +466,6 @@ class TestDataReading(KataApiTestCase):
             assert 'email' not in contact or \
                    contact['email'] == u'Not authorized to see this information' or \
                    contact['email'] == u'hidden'
-
-        for funder in helpers.get_funders(output):
-            assert 'fundingid' not in funder or \
-                   funder['fundingid'] == u'Not authorized to see this information'
 
     def test_availability_changing(self):
         '''

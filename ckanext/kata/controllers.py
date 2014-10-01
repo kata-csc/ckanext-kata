@@ -3,6 +3,7 @@
 Controllers for Kata.
 """
 from cgi import FieldStorage
+import datetime
 import functionally as fn
 import json
 import logging
@@ -10,9 +11,13 @@ import mimetypes
 import re
 import string
 import urllib2
+import sqlalchemy
+from sqlalchemy.sql import select
+
+from lxml import etree
 
 from paste.deploy.converters import asbool
-from pylons import response, config, request, session, g
+from pylons import config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
 
@@ -23,22 +28,25 @@ from ckan.controllers.storage import StorageController
 import ckan.lib.i18n
 from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
+from ckan.lib import captcha, helpers
+from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
 import ckan.logic as logic
 import ckan.model as model
-from ckan.model import Package, User, meta
+from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
+
 import ckan.plugins as plugins
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 from ckanext.kata.urnhelper import URNHelper
 import ckanext.kata.clamd_wrapper as clamd_wrapper
-import ckan.lib.captcha as captcha
+from ckanext.kata import utils
 
 _get_or_bust = ckan.logic.get_or_bust
 
 log = logging.getLogger(__name__)
-get_action = logic.get_action
-t = plugins.toolkit                         # pylint: disable=invalid-name
+#get_action = logic.get_action
+#t = plugins.toolkit                         # pylint: disable=invalid-name
 # BUCKET = config.get('ckan.storage.bucket', 'default')
 
 
@@ -63,20 +71,72 @@ def get_package_owner(package):
 class MetadataController(BaseController):
     '''
     URN export
-
-
     '''
+
+    def _urnexport(self):
+        '''
+        Uncached urnexport, needed for testing.
+        '''
+        _or_ = sqlalchemy.or_
+        _and_ = sqlalchemy.and_
+
+        xmlns = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping"
+        def locns(loc):
+            return "{%s}%s" % (xmlns, loc)
+        xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        schemalocation = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping " \
+                         "http://urn.kb.se/resolve?urn=urn:nbn:se:uu:ub:epc-schema:rs-location-mapping&godirectly"
+        records = etree.Element("{" + xmlns + "}records",
+                         attrib={"{" + xsi + "}schemaLocation": schemalocation},
+                         nsmap={'xsi': xsi, None: xmlns})
+
+        # Gather all package id's that might contain a Kata/IDA data PID
+        query = Session.query(model.PackageExtra.package_id.distinct()).\
+            filter(model.PackageExtra.value.like('urn:nbn:fi:csc-%'))
+        pkg_ids = query.all()
+
+        prot = etree.SubElement(records, locns('protocol-version'))
+        prot.text = '3.0'
+        datestmp = etree.SubElement(records, locns('datestamp'), attrib={'type': 'modified'})
+        now = datetime.datetime.now().isoformat()
+        datestmp.text = now
+        for pkg_id in pkg_ids:
+
+            data_dict = get_action('package_show')({}, {'id': pkg_id})
+
+            # Get primary data PID and make sure we want to display this dataset
+            try:
+                data_pid = utils.get_pids_by_type('data', data_dict, primary=True, use_id_or_name=True)[0].get('id', '')
+            except IndexError:
+                continue
+
+            if data_pid.startswith('urn:nbn:fi:csc-'):
+                record = etree.SubElement(records, locns('record'))
+                header = etree.SubElement(record, locns('header'))
+                datestmp = etree.SubElement(header, locns('datestamp'), attrib={'type': 'modified'})
+                datestmp.text = now
+                identifier = etree.SubElement(header, locns('identifier'))
+                identifier.text = data_pid
+                destinations = etree.SubElement(header, locns('destinations'))
+                destination = etree.SubElement(destinations, locns('destination'), attrib={'status': 'activated'})
+                datestamp = etree.SubElement(destination, locns('datestamp'), attrib={'type': 'activated'})
+                url = etree.SubElement(destination, locns('url'))
+                url.text = "%s%s" % (config.get('ckan.site_url', ''),
+                                 helpers.url_for(controller='package',
+                                           action='read',
+                                           id=data_dict.get('name')))
+        return etree.tostring(records)
 
     @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
         '''
-        The urnexport page
+        Generate an XML listing of packages, which have Kata or Ida URN as data PID.
+        Used by a third party service.
 
-        :returns: the packages with service generated urns
-        :rtype: string
+        :returns: An XML listing of packages and their URNs
+        :rtype: string (xml)
         '''
-        response.headers['Content-type'] = 'text/xml'
-        return URNHelper.list_packages()
+        return self._urnexport()
 
 
 class KATAApiController(ApiController):
@@ -257,161 +317,6 @@ class AccessRequestController(BaseController):
             h.flash_error(_("You must be logged in to request edit access"))
             redirect(url)
 
-##############################################################################
-#DataMiningController is here for reference, some stuff like the file parsing might be useful#
-# class DataMiningController(BaseController):
-#     '''
-#     Controller for scraping metadata content from files.
-#     '''
-#
-#     def read_data(self, id, resource_id):
-#         """
-#         Scrape all words from a file and save it to extras.
-#         """
-#         res = Resource.get(resource_id)
-#         pkg = Package.get(id)
-#         c.pkg_dict = pkg.as_dict()
-#         c.package = pkg
-#         c.resource = get_action('resource_show')({'model': model},
-#                                                      {'id': resource_id})
-#         label = res.url.split(config.get('ckan.site_url') + '/storage/f/')[-1]
-#         label = urllib2.unquote(label)
-#         ofs = get_ofs()
-#
-#         try:
-#             # Get file location
-#             furl = ofs.get_url(BUCKET, label).split('file://')[-1]
-#         except FileNotFoundException:
-#             h.flash_error(_('Cannot do data mining on remote resource!'))
-#             url = h.url_for(controller='package', action='resource_read',
-#                             id=id, resource_id=resource_id)
-#             return redirect(url)
-#
-#         wordstats = {}
-#         ret = {}
-#
-#         if res.format in ('TXT', 'txt'):
-#             wdsf, wdspath = tempfile.mkstemp()
-#             os.write(wdsf, "%s\nmetadata description title information" % furl)
-#
-#             with os.fdopen(wdsf, 'r') as wordfile:
-#                 preproc = orngText.Preprocess()
-#                 table = orngText.loadFromListWithCategories(wdspath)
-#                 data = orngText.bagOfWords(table, preprocessor=preproc)
-#                 words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
-#
-#             for i in range(len(words)):
-#                 d = words[i]
-#                 wordstats = d.get_metas(str)
-#
-#             for k, v in wordstats.items():
-#                 if v.value > 10.0:
-#                     ret[unicode(k, 'utf8')] = v.value
-#
-#             c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
-#             os.remove(wdspath)
-#
-#             for i in range(len(data)):
-#                     d = words[i]
-#                     wordstats = d.get_metas(str)
-#
-#             words = []
-#             for k, v in wordstats.items():
-#                 words.append(k)
-#
-#             # Save scraped words to extras.
-#
-#             model.repo.new_revision()
-#             if not 'autoextracted_description' in pkg.extras:
-#                 pkg.extras['autoextracted_description'] = ' '.join(words)
-#
-#             pkg.save()
-#
-#             return render('datamining/read.html')
-#
-#         elif res.format in ('odt', 'doc', 'xls', 'ods', 'odp', 'ppt', 'doc', 'html'):
-#
-#             textfd, textpath = convert_to_text(res, furl)
-#
-#             if not textpath:
-#                 h.flash_error(_('This file could not be mined for any data!'))
-#                 os.close(textfd)
-#                 return render('datamining/read.html')
-#             else:
-#                 wdsf, wdspath = tempfile.mkstemp()
-#                 os.write(wdsf, "%s\nmetadata description title information" % textpath)
-#                 preproc = orngText.Preprocess()
-#                 table = orngText.loadFromListWithCategories(wdspath)
-#                 data = orngText.bagOfWords(table, preprocessor=preproc)
-#                 words = orngText.extractWordNGram(data, threshold=10.0, measure='MI')
-#
-#                 for i in range(len(words)):
-#                     d = words[i]
-#                     wordstats = d.get_metas(str)
-#
-#                 for k, v in wordstats.items():
-#                     if v.value > 10.0:
-#                         ret[unicode(k, 'utf8')] = v.value
-#
-#                 c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]
-#                 os.close(textfd)
-#                 os.close(wdsf)
-#                 os.remove(wdspath)
-#                 os.remove(textpath)
-#
-#                 for i in range(len(data)):
-#                     d = words[i]
-#                     wordstats = d.get_metas(str)
-#
-#                 words = []
-#
-#                 for k, v in wordstats.items():
-#                     log.debug(k)
-#                     words.append(substitute_ascii_equivalents(k))
-#
-#                 model.repo.new_revision()
-#
-#                 if not 'autoextracted_description' in pkg.extras:
-#                     pkg.extras['autoextracted_description'] = ' '.join(words)
-#
-#                 pkg.save()
-#
-#                 return render('datamining/read.html')
-#         else:
-#             h.flash_error(_('This metadata document is not in proper format for data mining!'))
-#             url = h.url_for(controller='package', action='resource_read',
-#                             id=id, resource_id=resource_id)
-#             return redirect(url)
-#
-#     def save(self):
-#         if not c.user:
-#             return
-#
-#         model.repo.new_revision()
-#         data = clean_dict(unflatten(tuplize_dict(parse_params(request.params))))
-#         package = Package.get(data['pkgid'])
-#         keywords = []
-#         context = {'model': model, 'session': model.Session,
-#                    'user': c.user}
-#
-#         if check_access('package_update', context, data_dict={"id": data['pkgid']}):
-#
-#             for k, v in data.items():
-#                 if k.startswith('kw'):
-#                     keywords.append(v)
-#
-#             tags = package.get_tags()
-#
-#             for kw in keywords:
-#                 if not kw in tags:
-#                     package.add_tag_by_name(kw)
-#
-#             package.save()
-#             url = h.url_for(controller='package', action='read', id=data['pkgid'])
-#             redirect(url)
-#         else:
-#             redirect('/')
-
 
 class ContactController(BaseController):
     """
@@ -564,7 +469,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
-            subject = _("Data access request for dataset / Datapyynto tietoaineistolle %s" % package_title)
+            subject = _("Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title)
             self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
         else:
             h.flash_error(_("Please login"))
@@ -585,6 +490,10 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         """
 
         c.package = Package.get(pkg_id)
+
+        if not c.package:
+            abort(404, _("Dataset not found"))
+
         url = h.url_for(controller='package',
                         action="read",
                         id=c.package.id)
@@ -730,13 +639,19 @@ class KataPackageController(PackageController):
         if username:
             data_dict['role'] = role
             data_dict['username'] = username
-            ret = get_action('dataset_editor_add')(context, data_dict)
-            if not ret.get('success', None):
-                h.flash_error(ret.get('msg'))
-            else:
-                h.flash_success(ret.get('msg'))
+            try:
+                ret = get_action('dataset_editor_add')(context, data_dict)
+                h.flash_success(ret)
+            except ValidationError as e:
+                h.flash_error(e.error_dict.get('message', ''))
+            except NotAuthorized as e:
+                error_message = _('No sufficient privileges to add a user to role %s.') % role
+                h.flash_error(error_message)
+            except NotFound as e:
+                h.flash_error(e)
 
         if email:
+
             EMAIL_REGEX = re.compile(
     r"""
     ^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~]
@@ -748,23 +663,27 @@ class KataPackageController(PackageController):
     """,
             re.VERBOSE)
             if isinstance(email, basestring) and email:
-                if not EMAIL_REGEX.match(email):
-                    error_msg = _(u'Invalid email address')
+                if not EMAIL_REGEX.match(email) or not(asbool(config.get('kata.invitations', True))):
+                    if not (asbool(config.get('kata.invitations', True))):
+                        error_msg = _(u'Feature disabled')
+                    else:
+                        error_msg = _(u'Invalid email address')
                     h.flash_error(error_msg)
                 else:
                     try:
                         captcha.check_recaptcha(request)
                         try:
-                            subject = u'Invitation to use Kata metadata catalogue - kutsu käyttämään Kata-metadatakatalogia'
-                            body = u'\n\n%s would like to add you to editors for dataset "%s" \
-in Kata metadata catalogue service. To enable this, please log in to the service: %s.\n\n' % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
+                            subject = u'Invitation to use the Etsin - kutsu käyttämään Etsin-palvelua'
+                            body = u'\n\n%s would like to add you as an editor for dataset "%s" \
+in the Etsin data search service. To enable this, please log in to the service: %s.\n\n' % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
                             body += u'\n\n%s haluaisi lisätä sinut muokkaajaksi tietoaineistoon "%s" \
-Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: %s.\n\n' \
+Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: %s.\n\n' \
                                     % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
                             body += u'\n------------\nLähettäjän viesti / Sender\'s message:\n\n%s\n------------\n' % (request.params.get('mail_message', ''))
 
                             ckan.lib.mailer.mail_recipient(email, email, subject, body)
                             h.flash_success(_('Message sent'))
+                            log.info("Invitation sent by %s to %s\n" % (c.userobj.name, email))
                         except ckan.lib.mailer.MailerException:
                             raise
                     except captcha.CaptchaError:
@@ -797,12 +716,17 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
         data_dict['username'] = request.params.get('username', None)
         data_dict['role'] = request.params.get('role', None)
 
-        ret = ckan.logic.get_action('dataset_editor_delete')(context, data_dict)
+        try:
+            ret = ckan.logic.get_action('dataset_editor_delete')(context, data_dict)
+            h.flash_success(ret)
 
-        if not ret.get('success', None):
-            h.flash_error(ret.get('msg'))
-        else:
-            h.flash_success(ret.get('msg'))
+        except ValidationError as e:
+            h.flash_error(e.error_dict.get('message', ''))
+        except NotAuthorized as e:
+            error_message = _('No sufficient privileges to remove user from role %s.') % role
+            h.flash_error(error_message)
+        except NotFound as e:
+            h.flash_error(e)
 
         h.redirect_to(h.url_for(controller='ckanext.kata.controllers:KataPackageController',
                                 action='dataset_editor_manage', name=name))
@@ -845,6 +769,7 @@ Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaud
 
             c.members.append({'user_id': role['user_id'], 'user': q.name, 'role': role['role']})
         c.pkg = Package.get(data_dict['id'])
+        c.pkg_dict = get_action('package_show')(context, data_dict)
 
         return render('package/package_rights.html')
 
@@ -923,13 +848,13 @@ class KataInfoController(BaseController):
         return render('kata/faq.html')
 
 
-class CheckedStorageController(StorageController):
+class MalwareScanningStorageController(StorageController):
     '''
-    CheckedStorageController extends the standard CKAN StorageController
-    class by adding a malware check on file uploads.
+    MalwareScanningStorageController extends the standard CKAN StorageController
+    class by adding an optional malware check on file uploads.
 
-    Malware scanning is enabled by default but can be disabled by setting
-    the configuration option kata.storage.malware_scan to false.
+    Malware scanning is disabled by default but can be enabled by setting
+    the configuration option kata.storage.malware_scan to true.
     When scanning is enabled, not having a ClamAV daemon running
     will cause uploads to be rejected.
     '''
@@ -939,7 +864,7 @@ class CheckedStorageController(StorageController):
         field_storage = params.get('file')
         buffer = field_storage.file
 
-        do_scan = config.get('kata.storage.malware_scan', True)
+        do_scan = config.get('kata.storage.malware_scan', False)
 
         if not do_scan:
             passed = True

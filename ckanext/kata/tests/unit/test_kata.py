@@ -1,7 +1,6 @@
 # coding: utf-8
 #
 # pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable
-
 """
 Test classes for Kata CKAN Extension.
 """
@@ -19,6 +18,9 @@ import ckan.model as model
 from ckan.lib.create_test_data import CreateTestData
 import ckanext.kata.model as kata_model
 import ckanext.kata.actions as actions
+from ckan.logic import get_action, NotAuthorized, ValidationError, NotFound
+from ckanext.harvest import model as harvest_model
+from ckanext.kata.utils import get_package_id_by_data_pids
 
 class TestKataPlugin(TestCase):
     """
@@ -170,13 +172,44 @@ class TestKataPlugin(TestCase):
                      'agent_3_role': u'distributor',
                      'data_dict': '{"dada": "dudu"}'}
 
-        #output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))
+        # output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))
         output = self.kata_plugin.before_index(pkg_dict)
 
         assert 'funder_0' in output
         assert 'owner_1' in output
         assert 'author_2' in output
         assert 'distributor_3' in output
+
+
+class TestDatasetHandling(TestCase):
+    """
+    Tests for dataset handling
+    """
+
+    @classmethod
+    def setup_class(cls):
+        kata_model.setup()
+        harvest_model.setup()
+
+        model.User(name="test_sysadmin", sysadmin=True).save()
+
+    @classmethod
+    def teardown_class(cls):
+        model.repo.rebuild_db()
+
+    def test_add_dataset_without_name(self):
+        organization = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['private'] = False
+
+        data['name'] = ''
+
+        pkg = get_action('package_create')({'user': 'test_sysadmin'}, data)
+
+        assert pkg.get('name').startswith('urn')    # Should be generated from package.id
+        assert pkg.get('name').count(':') == 0
 
 
 class TestKataSchemas(TestCase):
@@ -379,6 +412,42 @@ class TestUtils(TestCase):
 
         assert translator(_FIELD_TITLES['tags']) == title
 
+    def test_datapid_to_name(self):
+        name = utils.datapid_to_name('http://example.com/some/thing?good=true')
+        assert name
+        assert '/' not in name
+
+    def test_get_pids_by_type(self):
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict['id'] = 'some_package.id'
+        data_dict['name'] = 'some_package.name'
+
+        pids = utils.get_pids_by_type('data', data_dict)
+        assert len(pids) == 2
+        pids = utils.get_pids_by_type('data', data_dict, primary=True)
+        assert len(pids) == 1
+        pids = utils.get_pids_by_type('data', data_dict, primary=True, use_id_or_name=True)
+        assert len(pids) == 1
+        pids = utils.get_pids_by_type('data', data_dict, primary=False)
+        assert len(pids) == 1
+
+        pids = utils.get_pids_by_type('metadata', data_dict)
+        assert len(pids) == 1
+        pids = utils.get_pids_by_type('metadata', data_dict, primary=True)
+        assert len(pids) == 0
+        pids = utils.get_pids_by_type('metadata', data_dict, primary=True, use_id_or_name=True)
+        assert len(pids) == 1
+
+        pids = utils.get_pids_by_type('version', data_dict)
+        assert len(pids) == 1
+        pids = utils.get_pids_by_type('version', data_dict, primary=True)
+        assert len(pids) == 0
+        pids = utils.get_pids_by_type('version', data_dict, primary=True, use_id_or_name=True)
+        assert len(pids) == 0
+
+        pids = utils.get_pids_by_type('some_unknown_type', data_dict)
+        assert len(pids) == 0
+
 
 class TestHelpers(TestCase):
     """Unit tests for functions in helpers.py."""
@@ -420,6 +489,7 @@ class TestActions(TestCase):
         # Todo: fix. The harvest tables are not generated here
         # so this class can't be run alone
         kata_model.setup()
+        harvest_model.setup()
         CreateTestData.create()
 
     @classmethod
@@ -438,7 +508,7 @@ class TestActions(TestCase):
         data_dict = {}
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'bogus'
-        assert actions.dataset_editor_add(context, data_dict).get('msg') == 'Required information missing'
+        self.assertRaises(ValidationError, actions.dataset_editor_add, context, data_dict)
 
     def test_add_member_2_fails(self):
         '''
@@ -450,34 +520,31 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'bogus'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
-        assert msg == 'User not found', msg
+        self.assertRaises(NotFound, actions.dataset_editor_add, context, data_dict)
 
     def test_add_member_3_fails(self):
         '''
         Test add member to dataset
-        Result: no sufficient privileges
+        Result: NotAuthorized
         '''
         context = self._build_context(user='tester')
         data_dict = {}
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
-        assert msg == 'No sufficient privileges to add a user to role editor.', msg
+        self.assertRaises(NotAuthorized, actions.dataset_editor_add, context, data_dict)
 
     def test_add_member_4_fails(self):
         '''
         Test add member to dataset
-        Result: can't add thyself
+        Result: NotAuthorized
         '''
-        context = self._build_context(user='testsysadmin')
+        context = self._build_context(user='tester')
         data_dict = {}
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'testsysadmin'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
-        assert msg == 'You can not add yourself', msg
+        self.assertRaises(NotAuthorized, actions.dataset_editor_add, context, data_dict)
 
     def test_add_member_5_success(self):
         '''
@@ -489,7 +556,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
+        msg = actions.dataset_editor_add(context, data_dict)
         assert msg == 'User added', msg
 
     def test_add_member_6_fails(self):
@@ -502,8 +569,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_add(context, data_dict).get('msg')
-        assert msg == 'User already has editor rights', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_add, context, data_dict)
 
     def test_delete_member_1_fails(self):
         '''
@@ -514,8 +580,7 @@ class TestActions(TestCase):
         data_dict = {}
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'Required information missing', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_2_fails(self):
         '''
@@ -527,8 +592,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'bogus'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'User not found', msg
+        self.assertRaises(NotFound, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_3_fails(self):
         '''
@@ -540,8 +604,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'testsysadmin'
         data_dict['role'] = u'admin'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'No sufficient privileges to remove user from role admin.', msg
+        self.assertRaises(NotAuthorized, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_4_fails(self):
         '''
@@ -553,12 +616,10 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'You can not remove yourself', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_delete, context, data_dict)
         data_dict['username'] = u'visitor'
         data_dict['role'] = u'reader'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'Built-in users can not be removed', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_5_fails(self):
         '''
@@ -570,8 +631,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'admin'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
-        assert msg == 'No such user and role combination', msg
+        self.assertRaises(ValidationError, actions.dataset_editor_delete, context, data_dict)
 
     def test_delete_member_6_success(self):
         '''
@@ -583,7 +643,7 @@ class TestActions(TestCase):
         data_dict['name'] = u'annakarenina'
         data_dict['username'] = u'tester'
         data_dict['role'] = u'editor'
-        msg = actions.dataset_editor_delete(context, data_dict).get('msg')
+        msg = actions.dataset_editor_delete(context, data_dict)
         assert msg == 'User removed from role editor', msg
 
     def _build_context(self, user=None):
@@ -593,4 +653,54 @@ class TestActions(TestCase):
 
         return ctx
 
+class TestHarvestSource(TestCase):
+    @classmethod
+    def setup_class(cls):
+        harvest_model.setup()
 
+    def test_harvest_source_update(self):
+        model.User(name='test', sysadmin=True).save()
+        get_action('organization_create')({'user': 'test'}, {'name': 'test'})
+        context = {'user': 'test'}
+        data_dict = {'url': "http://example.com/test", 'name': 'test', 'owner_org': 'test', 'source_type': 'oai-pmh', 'title': 'test'}
+        response = get_action('harvest_source_create')(context, data_dict)
+        self.assertEquals(response.get('name', None), 'test')
+        data_dict['id'] = response['id']
+        data_dict['title'] = 'test update'
+        response = get_action('harvest_source_update')(context, data_dict)
+
+
+class TestUtilities(TestCase):
+    @classmethod
+    def setup_class(cls):
+        harvest_model.setup()
+
+    @classmethod
+    def teardown_class(cls):
+        model.repo.rebuild_db()
+
+    def test_get_package_id_by_data_pids(self):
+        model.User(name="pidtest", sysadmin=True).save()
+        organization = get_action('organization_create')({'user': 'pidtest'}, {'name': 'test-organization', 'title': "Test organization"})
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['private'] = False
+
+        data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
+                         'id': u'some_data_pid_1',
+                         'type': u'data'}]
+
+        package_1 = get_action('package_create')({'user': 'pidtest'}, data)
+
+        data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
+                         'id': u'some_data_pid_2',
+                         'type': u'data'}]
+
+        package_2 = get_action('package_create')({'user': 'pidtest'}, data)
+
+        package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_1'}]})
+        self.assertEquals(package_1['id'], package_id[0])
+
+        package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_2'}]})
+        self.assertEquals(package_2['id'], package_id[0])

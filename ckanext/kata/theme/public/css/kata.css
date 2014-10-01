@@ -25,6 +25,14 @@
 	font-size: 12px;
     line-height: 1.2;
 }
+.metadata-source {
+    font-weight: bold;
+    padding: 0px 0px 30px 0px;
+    font-size: 18px;
+}
+.strong {
+    font-weight: bold;
+}
 
 /* header */
 
@@ -71,10 +79,86 @@
 	margin-bottom: 10px !important;
 	width: 15px !important;
 }
+.main.homepage {
+    border-top: 1px solid #000 !important;
+}
 
 /* footer */
 
+.site-footer {
+	background-color: #ebebec;
+	background-image: none;
+	padding: 20px 0;
+	background-image:-webkit-linear-gradient(bottom, #ebebec, #ebebec);
+	background-image:-moz-linear-gradient(bottom, #ebebec, #ebebec);
+	background-image:-o-linear-gradient(bottom, #ebebec, #ebebec);
+	background-image:-ms-linear-gradient(bottom, #ebebec, #ebebec);
+	background-repeat:repeat no-repeat;
+	min-height: 75px;
+	height: auto;
+	margin-bottom: 0px;
+}
+.site-footer a {
+	color: #0c8bbe !important;
+}
+.site-footer a:hover, .site-footer a:focus {
+	color: #09688e !important;
+}
+.site-footer {
+	font-size: 90%;
+}
+.site-footer p {
+	color: black;
+}
+.site-footer h1 {
+	font-size: 14px;
+}
+.footer-data {
+	display: block;
+}
+.footer-data a {
+	color: #0c8bbe;
+}
+.footer-first {
+	margin: 0px;
+	float: left;
+	background-image: none;
+	background-position: 0 0;
+	background-repeat: no-repeat no-repeat;
+	padding-left: 80px;
+	background: none;
+}
+.footer-second {
+	margin: 0px;
+	float: left;
+	padding-top: 20px;
+	background-image: none;
+	background-position: 0 0;
+	background-repeat: no-repeat no-repeat;
+	padding-left: 55px;
+	background: none;
+}
+.footer-third {
+	margin: 0px;
+	float: right;
+	background-image: none !important;
+	background-position: 0 0;
+	background-repeat: no-repeat no-repeat;
+ 	padding-left: 20px;
+	background: none;
+}
+.footer-third img {
+	height: 80px;
+}
+.site-footer {
+	filter: 0 !important;
+}
+
 /* widgets */
+
+.kata-captcha-fix table {
+	table-layout: initial !important;
+}
 
 /* other-stuff */
 .role-select {
@@ -496,71 +580,6 @@ a.tag:hover {
 	box-shadow: none !important;
 	-moz-box-shadow: none !important;
 }
-.site-footer {
-	background-color: #ebebec;
-	background-image: none;
-	padding: 20px 0;
-	background-image:-webkit-linear-gradient(bottom, #ebebec, #ebebec);
-	background-image:-moz-linear-gradient(bottom, #ebebec, #ebebec);
-	background-image:-o-linear-gradient(bottom, #ebebec, #ebebec);
-	background-image:-ms-linear-gradient(bottom, #ebebec, #ebebec);
-	background-repeat:repeat no-repeat;
-	min-height: 75px;
-	height: auto;
-	margin-bottom: 0px;
-}
-.site-footer a {
-	color: #0c8bbe !important;
-}
-.site-footer a:hover, .site-footer a:focus {
-	color: #09688e !important;
-}
-.site-footer {
-	font-size: 90%;
-}
-.site-footer p {
-	color: black;
-}
-.site-footer h1 {
-	font-size: 14px;
-}
-.footer-data {
-	display: block;
-}
-.footer-data a {
-	color: #0c8bbe;
-}
-.footer-first {
-	margin: 0px;
-	float: left;
-	background-image: none;
-	background-position: 0 0;
-	background-repeat: no-repeat no-repeat;
-	padding-left: 100px;
-	background: none;
-}
-.footer-second {
-	margin: 0px;
-	float: left;
-	padding-top: 20px;
-	background-image: none;
-	background-position: 0 0;
-	background-repeat: no-repeat no-repeat;
-	padding-left: 55px;
-	background: none;
-}
-.footer-third {
-	margin: 0px;
-	float: right;
-	background-image: none !important;
-	background-position: 0 0;
-	background-repeat: no-repeat no-repeat;
- 	padding-left: 55px;
-	background: none;
-}
-.footer-third img {
-	height: 80px;
-}
 .index-additional-info {
 	padding: 10px;
 	margin-top: 20px;
@@ -730,9 +749,6 @@ input, button, select, textarea {
 }
 #language-wrapper select {
 	width: 150px;
-}
-.site-footer {
-	filter: 0 !important;
 }
 header.masthead {
 	filter: 0 !important;
@@ -1013,4 +1029,18 @@ input, button, select, textarea {
     color: #ababab;
     margin-left: 20px;
     float: right;
+}
+
+/* Disable tab selection effects on the resource type selector / upload link */
+.dataset-form-resource-types input[type=radio]:checked + label:after {
+  background-image: none !important;
+}
+
+/* Make the text in the resource type selector / upload link always bold */
+.dataset-form-resource-types label {
+  font-weight: normal !important;
+}
+
+#resource-upload-btn {
+  padding-bottom: 8px;
 }

@@ -89,9 +89,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     create_package_schema = Schemas.create_package_schema
     create_package_schema_oai_dc = Schemas.create_package_schema_oai_dc
+    create_package_schema_oai_dc_ida = Schemas.create_package_schema_oai_dc_ida
     create_package_schema_ddi = Schemas.create_package_schema_ddi
     update_package_schema = Schemas.update_package_schema
     update_package_schema_oai_dc = Schemas.update_package_schema_oai_dc
+    update_package_schema_oai_dc_ida = Schemas.update_package_schema_oai_dc_ida
     show_package_schema = Schemas.show_package_schema
     tags_schema = Schemas.tags_schema
 
@@ -105,8 +107,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Full stops from harvested objects screw up the read method
         # when using the default ckan route
         map.connect('/dataset/{id:.*?}.{format:rdf}',
-                  controller="ckan.controllers.package:PackageController", 
-                  action='read')
+                    controller="ckan.controllers.package:PackageController",
+                    action='read')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
@@ -175,7 +177,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="dataset_editor_delete")
         map.connect('/storage/upload_handle',
-                    controller="ckanext.kata.controllers:CheckedStorageController",
+                    controller="ckanext.kata.controllers:MalwareScanningStorageController",
                     action='upload_handle')
         map.connect('add dataset with upload_xml',
                     '/dataset/new',
@@ -197,60 +199,64 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_actions(self):
         """ Register actions. """
         return {
-            'package_show': actions.package_show,
-            'package_create': actions.package_create,
-            'package_update': actions.package_update,
-            'package_delete': actions.package_delete,
-            'package_search': actions.package_search,
-            'resource_create': actions.resource_create,
-            'resource_update': actions.resource_update,
-            'resource_delete': actions.resource_delete,
-            # 'group_list': actions.group_list,
+            'dataset_editor_add': actions.dataset_editor_add,
+            'dataset_editor_delete': actions.dataset_editor_delete,
             'group_create': actions.group_create,
+            # 'group_list': actions.group_list,
             'group_update': actions.group_update,
             'group_delete': actions.group_delete,
-            'related_create': actions.related_create,
-            'related_update': actions.related_update,
-            'related_delete': actions.related_delete,
             'member_create': actions.member_create,
             'member_delete': actions.member_delete,
-            'package_owner_org_update': actions.package_owner_org_update,
             'organization_create': actions.organization_create,
-            'organization_update': actions.organization_update,
             'organization_delete': actions.organization_delete,
             'organization_list_for_user': actions.organization_list_for_user,
             'organization_member_create': actions.organization_member_create,
-            'dataset_editor_delete': actions.dataset_editor_delete,
-            'dataset_editor_add': actions.dataset_editor_add,
+            'organization_update': actions.organization_update,
+            'package_create': actions.package_create,
+            'package_delete': actions.package_delete,
+            'package_owner_org_update': actions.package_owner_org_update,
+            'package_search': actions.package_search,
+            'package_show': actions.package_show,
+            'package_update': actions.package_update,
+            'related_create': actions.related_create,
+            'related_delete': actions.related_delete,
+            'related_update': actions.related_update,
+            'resource_create': actions.resource_create,
+            'resource_delete': actions.resource_delete,
+            'resource_update': actions.resource_update,
         }
 
     def get_helpers(self):
         """ Register helpers """
-        return {'get_authors': helpers.get_authors,
-                'get_contacts': helpers.get_contacts,
-                'get_dict_field_errors': helpers.get_dict_field_errors,
-                'get_distributor': helpers.get_distributor,
-                'get_funder': helpers.get_funder,
-                'get_funders': helpers.get_funders,
-                'get_owners': helpers.get_owners,
-                'get_package_ratings': helpers.get_package_ratings,
-                'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
-                'get_related_urls': helpers.get_related_urls,
-                'get_rdf_extras': helpers.get_rdf_extras,
-                'get_if_url': helpers.get_if_url,
-                'get_first_admin': helpers.get_first_admin,
-                'get_rightscategory': helpers.get_rightscategory,
-                'get_visibility_options': helpers.get_visibility_options,
-                'has_agents_field': helpers.has_agents_field,
-                'has_contacts_field': helpers.has_contacts_field,
-                'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
-                'kata_sorted_extras': helpers.kata_sorted_extras,
-                'reference_update': helpers.reference_update,
-                'resolve_agent_role': helpers.resolve_agent_role,
-                'string_to_list': helpers.string_to_list,
-                'create_loop_index': helpers.create_loop_index,
-                'get_dict_errors': helpers.get_dict_errors,
-                }
+        return {
+            'create_loop_index': helpers.create_loop_index,
+            'dataset_is_valid': helpers.dataset_is_valid,
+            'get_authors': helpers.get_authors,
+            'get_contacts': helpers.get_contacts,
+            'get_dict_errors': helpers.get_dict_errors,
+            'get_dict_field_errors': helpers.get_dict_field_errors,
+            'get_distributor': helpers.get_distributor,
+            'get_first_admin': helpers.get_first_admin,
+            'get_funder': helpers.get_funder,
+            'get_funders': helpers.get_funders,
+            'get_if_url': helpers.get_if_url,
+            'get_owners': helpers.get_owners,
+            'get_package_ratings': helpers.get_package_ratings,
+            'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
+            'get_pids_by_type': utils.get_pids_by_type,
+            'get_related_urls': helpers.get_related_urls,
+            'get_rdf_extras': helpers.get_rdf_extras,
+            'get_rightscategory': helpers.get_rightscategory,
+            'get_visibility_options': helpers.get_visibility_options,
+            'has_agents_field': helpers.has_agents_field,
+            'has_contacts_field': helpers.has_contacts_field,
+            'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
+            'kata_sorted_extras': helpers.kata_sorted_extras,
+            'reference_update': helpers.reference_update,
+            'resolve_agent_role': helpers.resolve_agent_role,
+            'string_to_list': helpers.string_to_list,
+            'filter_system_users': helpers.filter_system_users,
+        }
 
     def get_dict_field_errors(self, errors, field, index, name):
         '''Get errors correctly for fields that are represented as nested dict fields in data_dict.
@@ -316,21 +322,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 key.startswith('author_') and\
                 key.startswith('organization_'):
                 continue
-            
+
             if  key.startswith('title_') or\
                 key.startswith('lang_title_') or\
                 key == 'harvest_object_id' or\
                 key == 'harvest_source_id' or\
                 key == 'harvest_source_title':
                 continue
-            
+
             found = False
             for _key in g.package_hide_extras:
                 if extra['key'].startswith(_key):
                     found = True
             if found:
                 continue
-            
+
             if isinstance(val, (list, tuple)):
                 val = ", ".join(map(unicode, val))
             output.append((key, val))
@@ -630,9 +636,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     log.debug(str(ioe))
                     text = ""
                 if text:
-                    all_text = pkg_dict.get('res_contents', '')
+                    all_text = pkg_dict.get('res_text_contents', '')
                     all_text += (text + '\n')
-                    pkg_dict['res_contents'] = all_text
+                    pkg_dict['res_text_contents'] = all_text
 
         # Separate agent roles for Solr indexing
 
@@ -655,22 +661,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 new_items['agent_name_' + tokens[1]] = agent_name
                 new_items['agent_name_' + tokens[1] + '_org'] = agent_org
                 new_items['agent_name_' + tokens[1] + '_id'] = agent_id
-            
+
             # hide sensitive data
             if EMAIL.match(key):
                 pkg_dict[key] = u''
 
         pkg_dict.update(new_items)
-        
+
         # hide sensitive data
         for item in data.get('extras', []):
             if EMAIL.match(item['key']):
                 item['value'] = u''
 
         pkg_dict['data_dict'] = json.dumps(data)
-
-        # from pprint import pformat
-        # log.debug("*** pkg_dict at the end of before_index:")
-        # log.debug(pformat(pkg_dict))
 
         return pkg_dict

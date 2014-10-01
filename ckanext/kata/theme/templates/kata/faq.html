@@ -1,6 +1,6 @@
 {% extends "page.html" %}
 
-{% block subtitle %}{{ _("Kata FAQ") }}{% endblock %}
+{% block subtitle %}{{ _("Etsin FAQ") }}{% endblock %}
 
 {% block breadcrumb_content %}
   <li class="active">{{ h.nav_link(_('FAQ'), controller='ckanext.kata.controllers:KataInfoController', action='render_faq', highlight_actions = 'new
@@ -9,12 +9,12 @@
 
 {% block primary_content %}
   <section class="faq" id="kata_faq">
-   <section class="module"><h2 class="module-heading"><a id="faq-kata-metadata">{{ _('Kata and metadata') }}</a></h2>
+   <section class="module"><h2 class="module-heading"><a id="faq-kata-metadata">{{ _('Etsin and metadata') }}</a></h2>
      <div class="module-content">
-      <h3 class="question">{{ _('What is Kata?') }}</h3>
-      <p>{{ _('Kata is a metadata catalogue service of TTA (Finnish National Research Data Initiative). TTA is a data effort of Ministry of Education and Culture.') }}</p>
-      <h3 class="question">{{ _('What kind of data does Kata contain?') }}</h3>
-      <p>{{ _('Kata contains metadata of research data, from various branches of science. Kata does not contain the actual data itself, but the metadata catalogue allows you to browse and search for available data and lets you know how and where to gain access to it.') }}</p>
+      <h3 class="question">{{ _('What is Etsin?') }}</h3>
+      <p>{{ _('Etsin is a database and search service for research data. The service is produced as part of the Finnish National Research Data Initiative (TTA), an effort by the Ministry of Education and Culture.') }}</p>
+      <h3 class="question">{{ _('What kind of data does Etsin contain?') }}</h3>
+      <p>{{ _('Etsin contains metadata of research data, from various branches of science. Etsin does not contain the actual data itself, but the service allows you to browse and search for available data and lets you know how and where to gain access to it.') }}</p>
      </div>
    </section>
    <section class="module"><h2 class="module-heading"><a id="faq-add-dataset">{{ _('Adding and modifying metadata') }}</a></h2>
@@ -22,11 +22,11 @@
        <h3 class="question">{{ _('Why can\'t I add any keywords?') }}</h3>
        <p>{{ _('Most likely the script files haven\'t loaded because of your browsers security features. The script files are loaded via an unencrypted connection which causes a warning. You must permit this content from your browser. Usually you can do this temporarily from a button in the address bar or from a tab on the bottom of the page, depending on the browser you are using.') }}</p>
        <h3 class="question">{{ _('I added extra fields for titles/authors I do not want to fill. How do I remove these?') }}</h3>
-       <p>{{ _('You don\'t need to remove them. Leave them empty and Kata will ignore them.') }}
-       <h3 class="question">{{ _('How can I remove a dataset from the catalogue?') }}</h3>
+       <p>{{ _('You don\'t need to remove them. Leave them empty and Etsin will ignore them.') }}
+       <h3 class="question">{{ _('How can I remove a dataset from Etsin?') }}</h3>
        <p>{{ _('Open the dataset for editing. There is a button for removing the entire metadata record at the bottom of the page. You must have modification privileges to the dataset in order to remove it.') }}</p>
        <h3 class="question">{{ _('What does creating a new access application form mean?') }}</h3>
-       <p>{{ _('It means that Kata creates automatically a default workflow to REMS (Resource Entitlement Management System). REMS is a service for managing access rights to research data. With it you can specify that a user must send an application in the REMS service to you to gain access to your data. Find out more from: ') }}<a href="https://confluence.csc.fi/display/REMS/Home">{{ _('REMS.')  }}</a></p>
+       <p>{{ _('It means that Etsin creates automatically a default workflow to REMS (Resource Entitlement Management System). REMS is a service for managing access rights to research data. With it you can specify that a user must send an application in the REMS service to you to gain access to your data. Find out more from: ') }}<a href="https://confluence.csc.fi/display/REMS/Home">{{ _('REMS.')  }}</a></p>
        <h3 class="question">{{ _('I\'m trying to accept an application in REMS but the link to the form received by email is empty.') }}</h3>
        <p>{{ _('Most likely the distributor\'s email address isn\'t bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the person accepting the application. To fix this, log in to reetta.csc.fi with identity bound to the email address or change the dataset\'s distributor\'s email address to a valid one.') }}</p>
      </div>
@@ -42,8 +42,8 @@
    </section>
    <section class="module"><h2 class="module-heading"><a id="faq-user">{{ _('User related features') }}</a></h2>
        <div class="module-content">
-           <h3 class="question">{{ _('I opened Kata and chose log in, then I was suddenly already logged in.') }}</h3>
-           <p>{{ _('If this happened, you opened Kata via an unencrypted connection, that is http://kata.csc.fi. The identification cookie is only sent via an encrypted connection and thus you could not be identified. Choosing "Log in" redirected you to use encrypted https connection. At the same time your identification cookie was sent and you were recognized.') }}
+           <h3 class="question">{{ _('I opened Etsin and chose log in, then I was suddenly already logged in.') }}</h3>
+           <p>{{ _('This may happen if you have previously logged in and then access Etsin via an unencrypted connection, e.g. using the address http://etsin.avointiede.fi. The identification cookie from your earlier login is only sent via an encrypted connection and thus you could not be identified. Choosing "Log in" redirected you to use an encrypted https connection. At the same time your identification cookie was sent and you were recognized.') }}
            </p>
        </div>
    </section>
@@ -60,7 +60,7 @@
       <div class="faq-toc">
         <ul>
         <li>
-            <a href="#faq-kata-metadata">{{ _('Kata and metadata') }}</a>
+            <a href="#faq-kata-metadata">{{ _('Etsin and metadata') }}</a>
         </li>
         <li>
             <a href="#faq-add-dataset">{{ _('Adding and modifying metadata') }}</a>
