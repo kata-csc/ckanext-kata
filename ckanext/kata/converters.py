@@ -396,6 +396,11 @@ def flattened_to_extras(key, data, errors, context):
        The key-value pairs to convert are before CKAN's flattening in format
        pids: [{ id: 'some pid', type: 'data', ...},{ id: 'other pid', type: 'data', ...}]
 
+    .. note::
+       From WUI this may create gaps in indexing as those indexes with empty contents are not being sent from the
+       HTML form. For example, you may end up having indexes 0, 1, 3, 4, 6 in DB. This will be padded in
+       flattened_from_extras by creating empty dicts for those indexes.
+
     :param key: key, for example `(pids, 0, provider)`
     :param data: data
     :param errors: validation errors
