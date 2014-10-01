@@ -2,14 +2,14 @@
 """
 Controllers for Kata.
 """
-
+from cgi import FieldStorage
 import datetime
+import functionally as fn
 import json
 import logging
-import string
 import mimetypes
-import functionally as fn
 import re
+import string
 import urllib2
 import sqlalchemy
 from sqlalchemy.sql import select
@@ -30,18 +30,22 @@ from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
 from ckan.lib import captcha, helpers
 from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
+import ckan.logic as logic
 import ckan.model as model
 from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
+import ckan.plugins as plugins
 
+import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
 from ckanext.kata import utils
 
 _get_or_bust = ckan.logic.get_or_bust
 
-log = logging.getLogger('ckanext.kata.controller')
-
+log = logging.getLogger(__name__)
+#get_action = logic.get_action
+t = plugins.toolkit                         # pylint: disable=invalid-name
 # BUCKET = config.get('ckan.storage.bucket', 'default')
 
 
@@ -531,8 +535,7 @@ class KataUserController(UserController):
     """
 
     def logged_in(self):
-        """
-        Minor rewrite to redirect the user to the own profile page instead of
+        """Minor rewrite to redirect the user to the own profile page instead of
         the dashboard.
         """
         # we need to set the language via a redirect
@@ -584,6 +587,7 @@ class KataPackageController(PackageController):
 
         :returns: dictionary with keys results and count
         """
+        # TODO: Clean: Obsolete or move logging code elsewhere
         # parse author search into q
         q_author = c.q_author = request.params.get('q_author', u'')
 
@@ -718,7 +722,7 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         except ValidationError as e:
             h.flash_error(e.error_dict.get('message', ''))
         except NotAuthorized as e:
-            error_message = _('No sufficient privileges to remove user from role %s.') % role
+            error_message = _('No sufficient privileges to remove user from role %s.') % data_dict['role']
             h.flash_error(error_message)
         except NotFound as e:
             h.flash_error(e)
@@ -767,6 +771,61 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         c.pkg_dict = get_action('package_show')(context, data_dict)
 
         return render('package/package_rights.html')
+
+    def _upload_xml(self, errors=None, error_summary=None):
+        '''
+        Allow filling dataset form by parsing a user uploaded metadata file.
+        '''
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author}
+        try:
+            t.check_access('package_create', context)
+        except t.NotAuthorized:
+            t.abort(401, _('Unauthorized to upload metadata'))
+
+        xmlfile = u''
+        field_storage = request.params.get('xmlfile')
+        if isinstance(field_storage, FieldStorage):
+            bffr = field_storage.file
+            xmlfile = bffr.read()
+        url = request.params.get('url', u'')
+        xmltype = request.params.get('format', u'')
+        log.info('Importing from {src}'.format(
+            src='file: ' + field_storage.filename if field_storage else 'url: ' + url))
+        for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
+            info = harvester.info()
+            if not info or 'name' not in info:
+                log.error('Harvester %r does not provide the harvester name in the info response' % str(harvester))
+                continue
+            if xmltype == info['name']:
+                log.debug('_upload_xml: Found harvester for import: {nam}'.format(nam=info['name']))
+                try:
+                    # TODO: virus check ??
+                    if xmlfile:
+                        pkg_dict = harvester.parse_xml(xmlfile, context)
+                    elif url:
+                        pkg_dict = harvester.fetch_xml(url, context)
+                    else:
+                        h.flash_error(_('Give upload URL or file.'))
+                        return h.redirect_to(controller='package', action='new')
+                    return super(KataPackageController, self).new(pkg_dict, errors, error_summary)
+                except (urllib2.URLError, urllib2.HTTPError):
+                    log.debug('Could not fetch from url {ur}'.format(ur=url))
+                    h.flash_error(_('Could not fetch from url {ur}'.format(ur=url)))
+                    return h.redirect_to(controller='package', action='new')
+                except ValueError, e:
+                    log.debug(e)
+                    h.flash_error(_('Invalid upload URL'))
+                    return h.redirect_to(controller='package', action='new')
+
+    def new(self, data=None, errors=None, error_summary=None):
+        '''
+        Overwrite CKAN method to take uploading xml into sequence.
+        '''
+        if request.params.get('upload'):
+            return self._upload_xml(errors, error_summary)
+        else:
+            return super(KataPackageController, self).new(data, errors, error_summary)
 
 
 class KataInfoController(BaseController):

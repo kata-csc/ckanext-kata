@@ -179,7 +179,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/storage/upload_handle',
                     controller="ckanext.kata.controllers:MalwareScanningStorageController",
                     action='upload_handle')
-
+        map.connect('add dataset with upload_xml',
+                    '/dataset/new',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="new")
         return map
 
     def get_auth_functions(self):
@@ -252,6 +255,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'string_to_list': helpers.string_to_list,
+            'filter_system_users': helpers.filter_system_users,
         }
 
     def get_dict_field_errors(self, errors, field, index, name):
