@@ -34,11 +34,10 @@ import ckan.logic as logic
 import ckan.model as model
 from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
-
 import ckan.plugins as plugins
+
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
-from ckanext.kata.urnhelper import URNHelper
 import ckanext.kata.clamd_wrapper as clamd_wrapper
 from ckanext.kata import utils
 
@@ -46,7 +45,7 @@ _get_or_bust = ckan.logic.get_or_bust
 
 log = logging.getLogger(__name__)
 #get_action = logic.get_action
-#t = plugins.toolkit                         # pylint: disable=invalid-name
+t = plugins.toolkit                         # pylint: disable=invalid-name
 # BUCKET = config.get('ckan.storage.bucket', 'default')
 
 
@@ -723,7 +722,7 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         except ValidationError as e:
             h.flash_error(e.error_dict.get('message', ''))
         except NotAuthorized as e:
-            error_message = _('No sufficient privileges to remove user from role %s.') % role
+            error_message = _('No sufficient privileges to remove user from role %s.') % data_dict['role']
             h.flash_error(error_message)
         except NotFound as e:
             h.flash_error(e)
