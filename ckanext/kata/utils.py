@@ -272,7 +272,6 @@ def get_funders(data_dict):
     '''
     Get all funders from agent field in data_dict
     '''
-    # TODO: Fix validators to not create empty agents
     return filter(lambda x: x.get('role') == u'funder' and
                   (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
                   data_dict.get('agent', []))

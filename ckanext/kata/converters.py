@@ -419,6 +419,9 @@ def flattened_from_extras(key, data, errors, context):
     Convert a whole bunch of flattened key-value pairs from extras to a list of dicts in data_dict.
     Format in extras must be like `key[0]_index_innerkey`. For example: `pids_02_provider`.
 
+    .. note::
+       The list of dicts is padded to the largest index found with empty dicts. WUI may cause gaps in indexing.
+
     :param key: The key to convert as tuple, for example `('pids',)`
     :param data: data
     :param errors: validation errors
