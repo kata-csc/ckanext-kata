@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 1.0.1\n"
+"Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-01 07:25+0000\n"
+"POT-Creation-Date: 2014-10-02 13:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -438,18 +438,18 @@ msgid "Datasets"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:119
-#: ckanext/kata/theme/templates/organization/index.html:3
-#: ckanext/kata/theme/templates/organization/index.html:6
-#: ckanext/kata/theme/templates/organization/index.html:18
-msgid "Organizations"
-msgstr ""
-
-#: ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/kata/help.html:124
 #: ckanext/kata/theme/templates/kata/help.html:292
 #: ckanext/kata/theme/templates/package/search.html:15
 #: ckanext/kata/theme/templates/user/read.html:14
 msgid "Add Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/header.html:120
+#: ckanext/kata/theme/templates/organization/index.html:3
+#: ckanext/kata/theme/templates/organization/index.html:6
+#: ckanext/kata/theme/templates/organization/index.html:18
+msgid "Organizations"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:121
@@ -907,6 +907,10 @@ msgid "All fields"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:30
+msgid "Owner org"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:33
 msgid ""
 " <p>Organizations act like publishing departments for datasets (for example, "
 "the Department of Health). This means that datasets can be published by and "
