@@ -49,9 +49,9 @@ class KataApiTestCase(unittest.TestCase):
     @classmethod
     def setup_class(cls):
         """Setup for all tests."""
-
         kata_model.setup()
         CreateTestData.create()
+
         cls.user_sysadmin = model.User.get('testsysadmin')  # Org admin
         cls.user_normal = model.User.get('tester')          # Org editor
         cls.user_anna = model.User.get('annafan')
@@ -70,11 +70,7 @@ class KataApiTestCase(unittest.TestCase):
         except AppError:
             print 'Failed to create a common organization. Perhaps it exists already.'
 
-
-
     @classmethod
     def teardown_class(cls):
         """Get away from testing environment."""
         model.repo.rebuild_db()
-
-
