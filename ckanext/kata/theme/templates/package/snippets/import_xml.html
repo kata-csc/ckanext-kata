@@ -1,11 +1,17 @@
 {#
   Displays a file name field and a import-button.
 #}
-<form class="module module-narrow" action="{% url_for controller='ckanext.harvest.controllers.view:ViewController', action='import_xml' %}">
-  <h2 class="module-heading"><i class="icon-copy"></i> {{ _("Import XML") }}</h2>
-  <ul class="unstyled">
-  <li><label>{{ _("URL") }}</label>
-    <input name="xml-url" type="text" class="input-medium" placeholder="http://myxml.com/file.xml"/></li>
-  <li><button class='btn' type='submit'>{{ _("Import") }}</button></li>
-  </ul>
-</form>
+{% import 'macros/form.html' as form %}
+
+<section class="module module-narrow module-shallow">
+  <h2 class="module-heading"><i class="icon-upload-alt"></i> {{ _("Upload XML") }}</h2>
+    <form enctype="multipart/form-data" class="module-content form-vertical" method="post" action="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='new' %}">
+      {{ form.input('url', label=_('URL'), placeholder=_('http://myurl.to/file.xml'), value='', error=error, classes=['control-full']) }}
+      <div class="control-group">
+        <label class="control-label" for="xmlfile">{{ _('File') }}</label>
+        <input id="xmlfile" type="file" placeholder="/path/to/file.xml" value="" name="xmlfile"/>
+      </div>
+      {{ form.select('format', label=_('Format'), options=[{'value': 'ddi', 'text': 'DDI2'}, {'value': 'oai-pmh', 'text': 'OAI-PMH/OAI DC'}], selected='ddi', error=error, classes=['control-full']) }}
+      <button class='btn' name='upload' value='metadata' type='submit'>{{ _("Upload") }}</button>
+    </form>
+</section>

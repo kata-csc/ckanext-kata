@@ -118,6 +118,12 @@ def label_list_yso(tag_url):
                 text = node.text.strip() if node.text else ''
                 if text:
                     labels.append(text)
+
+    for node in xml.xpath('/rdf:RDF/skos:Concept/skos:prefLabel', namespaces=_tagspaces):
+        text = node.text.strip() if node.text else None
+        if text:
+            labels.append(text)
+
     return labels
 
 
@@ -266,7 +272,6 @@ def get_funders(data_dict):
     '''
     Get all funders from agent field in data_dict
     '''
-    # TODO: Fix validators to not create empty agents
     return filter(lambda x: x.get('role') == u'funder' and
                   (x.get('name') or x.get('id') or x.get('URL') or x.get('organisation')),
                   data_dict.get('agent', []))

@@ -179,7 +179,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/storage/upload_handle',
                     controller="ckanext.kata.controllers:MalwareScanningStorageController",
                     action='upload_handle')
-
+        map.connect('add dataset with upload_xml',
+                    '/dataset/new',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="new")
         return map
 
     def get_auth_functions(self):
