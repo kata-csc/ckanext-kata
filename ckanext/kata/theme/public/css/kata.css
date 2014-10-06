@@ -157,7 +157,7 @@
 /* widgets */
 
 .kata-captcha-fix table {
-	table-layout: initial !important;
+	table-layout: auto !important;
 }
 
 /* other-stuff */
