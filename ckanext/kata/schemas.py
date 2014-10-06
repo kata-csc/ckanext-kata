@@ -143,8 +143,8 @@ class Schemas:
                              'URL': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
                              'phone': [ignore_missing, unicode, co.flattened_to_extras]}
 
-        schema['agent'] = {'role': [not_empty, va.check_agent_fields, va.validate_general, unicode, co.flattened_to_extras],
-                           'name': [ignore_missing, ignore_empty, unicode, va.contains_alphanumeric, co.flattened_to_extras],
+        schema['agent'] = {'role': [not_empty, va.check_agent_fields, unicode, co.flattened_to_extras],
+                           'name': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
                            'id': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
                            'organisation': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
                            'URL': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
