@@ -231,6 +231,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {
             'create_loop_index': helpers.create_loop_index,
             'dataset_is_valid': helpers.dataset_is_valid,
+            'filter_system_users': helpers.filter_system_users,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
             'get_dict_errors': helpers.get_dict_errors,
@@ -244,6 +245,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_package_ratings': helpers.get_package_ratings,
             'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
             'get_pids_by_type': utils.get_pids_by_type,
+            'get_pid_types': helpers.get_pid_types,
             'get_related_urls': helpers.get_related_urls,
             'get_rdf_extras': helpers.get_rdf_extras,
             'get_rightscategory': helpers.get_rightscategory,
@@ -255,7 +257,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'string_to_list': helpers.string_to_list,
-            'filter_system_users': helpers.filter_system_users,
         }
 
     def get_dict_field_errors(self, errors, field, index, name):

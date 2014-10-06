@@ -422,6 +422,7 @@ def get_dict_errors(errors, errors_key, field_key):
 
     return result
 
+
 def dataset_is_valid(package):
     """ Check if given dataset is valid. Uses schema from plugin.
         Return true if dataset is valid.
@@ -429,6 +430,7 @@ def dataset_is_valid(package):
     package_plugin = plugins.lookup_package_plugin(package['type'])
     _, errors = validate(package, package_plugin.update_package_schema(), {'model': model, 'session': model.Session, 'user': c.user})
     return not bool(errors)
+
 
 def filter_system_users(users):
     """
@@ -441,4 +443,11 @@ def filter_system_users(users):
 
     system_user_names = ['logged_in', 'visitor', 'harvest']
     return filter(lambda x: x.get('user') not in system_user_names, users)
+
+
+def get_pid_types():
+    '''
+    :return: PID types defined in settings.py
+    '''
+    return settings.PID_TYPES
 

@@ -101,7 +101,7 @@ class Schemas:
         schema['availability'] = [not_missing, co.convert_to_extras_kata]
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
         # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
-        schema['__extras'] = [va.check_agent, va.check_langtitle, va.check_contact]
+        schema['__extras'] = [va.check_agent, va.check_langtitle, va.check_contact, va.check_pids]
         schema['__junk'] = [va.check_junk]
         schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
                           va.validate_general]
