@@ -17,7 +17,7 @@ from sqlalchemy.sql import select
 from lxml import etree
 
 from paste.deploy.converters import asbool
-from pylons import config, request, session, g
+from pylons import config, request, session, g, response
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
 
@@ -90,19 +90,17 @@ class MetadataController(BaseController):
                          nsmap={'xsi': xsi, None: xmlns})
 
         # Gather all package id's that might contain a Kata/IDA data PID
-        query = Session.query(model.PackageExtra.package_id.distinct()).\
-            filter(model.PackageExtra.value.like('urn:nbn:fi:csc-%'))
-        pkg_ids = query.all()
+        query = model.Session.query(model.PackageExtra).filter(model.PackageExtra.key.like('pids_%_id')). \
+            filter(model.PackageExtra.value.like('urn:nbn:fi:csc-%')). \
+            join(model.Package).filter(model.Package.private == False).values('package_id')
 
         prot = etree.SubElement(records, locns('protocol-version'))
         prot.text = '3.0'
         datestmp = etree.SubElement(records, locns('datestamp'), attrib={'type': 'modified'})
         now = datetime.datetime.now().isoformat()
         datestmp.text = now
-        for pkg_id in pkg_ids:
-
+        for pkg_id, in query:
             data_dict = get_action('package_show')({}, {'id': pkg_id})
-
             # Get primary data PID and make sure we want to display this dataset
             try:
                 data_pid = utils.get_pids_by_type('data', data_dict, primary=True, use_id_or_name=True)[0].get('id', '')
@@ -124,7 +122,8 @@ class MetadataController(BaseController):
                                  helpers.url_for(controller='package',
                                            action='read',
                                            id=data_dict.get('name')))
-        return etree.tostring(records)
+        response.content_type = 'application/xml; charset=utf-8'
+        return etree.tostring(records, encoding="UTF-8")
 
     @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):

@@ -259,16 +259,19 @@ class TestURNExport(KataWsgiTestCase):
 
         organization = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
 
-        data = copy.deepcopy(TEST_DATADICT)
-        data['owner_org'] = organization['name']
-        data['private'] = False
 
-        pkg = get_action('package_create')({'user': 'test_sysadmin'}, data)
+        for count, private in (1, False), (1, True), (2, False):
+            data = copy.deepcopy(TEST_DATADICT)
+            data['owner_org'] = organization['name']
+            data['private'] = private
 
-        res = self.app.get(offset)
-        assert res.body.count('<identifier>') == 1    # One dataset should be found
+            get_action('package_create')({'user': 'test_sysadmin'}, data)
 
-        try:
-            etree.XML(res.body)  # Validate that result is XML
-        except etree.LxmlError:
-            self.fail('Unexpected XML parsing error')
+            res = self.app.get(offset)
+            self.assertEquals(res.body.count('<identifier>'), count)
+
+            try:
+                etree.XML(res.body)  # Validate that result is XML
+            except etree.LxmlError:
+                self.fail('Unexpected XML parsing error')
+
