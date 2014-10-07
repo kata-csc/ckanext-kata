@@ -26,7 +26,7 @@ from ckan.plugins import (implements,
                           ITemplateHelpers,
                           SingletonPlugin)
 
-from ckan.plugins.core import load_all
+from ckan.plugins.core import unload
 
 from ckanext.kata.schemas import Schemas
 
@@ -361,7 +361,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
 
-        load_all(config)
+        try:
+            # This controls the operation of the CKAN search indexing. If you don't define this option
+            # then indexing is on. You will want to turn this off if you have a non-synchronous search
+            # index extension installed.
+            unload('synchronous_search')
+            log.debug("Disabled synchronous search")
+            # Note: in CKAN 2.2, disabling this plugin causes other plugins to be reloaded
+        except:
+            log.debug("Failed to disable synchronous search!")
 
     def package_types(self):
         '''
