@@ -10,7 +10,7 @@ import json
 import re
 import datetime
 
-from ckan.lib.base import g, c
+from ckan.lib.base import g, c, _
 from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
@@ -445,6 +445,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # facets_dict.update(kata_facet_titles)
         facets_dict = kata_facet_titles
+        return facets_dict
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        facets_dict['organization'] = _('Organizations')
         return facets_dict
 
     def extract_search_params(self, data_dict):
