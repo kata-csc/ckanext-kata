@@ -361,7 +361,7 @@ curl http://etsin.avointiede.fi/api/3/action/package_create -d '{
     "owner_org": "<b>{{ _('Organization, see organizations in Etsin web user interface.') }}</b>",
     "private": "<b>{{ _('True or false, private datasets are not added to the search index.') }}</b>"
 }'
--H "Authorization: <b>YOUR-API-KEY</b>"
+-H "Authorization: <b>{{ _('YOUR-API-KEY') }}</b>"
             </pre>
         </div>
       </div>
