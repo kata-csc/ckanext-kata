@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-08 11:03+0000\n"
+"POT-Creation-Date: 2014-10-08 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -801,8 +801,8 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:85
 msgid ""
-"The preferred license recommended by TTA is the Creative Commons 3.0 family. "
-"Learn more about the licenses at Creative Commons:"
+"The preferred license is the Creative Commons 4.0 family. Learn more about "
+"the licenses at Creative Commons:"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:86
@@ -4784,7 +4784,7 @@ msgid ""
 "can be accessed only by directly contacting the distributor, choose the last "
 "option. In this case data requests are sent by email to the address you "
 "provided in distributor section.<br /><br />Choose a license from the "
-"selection. TTA's recommendation is CC 3.0 or in future CC 4.0 family."
+"selection."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:14

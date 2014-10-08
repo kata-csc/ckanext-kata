@@ -11,20 +11,7 @@
     "status": "active", 
     "title": "Creative Commons Attribution", 
     "url": "http://www.opendefinition.org/licenses/cc-by"
-  }, 
-  "cc-by-4.0": {
-    "domain_content": true, 
-    "domain_data": true, 
-    "domain_software": false, 
-    "family": "", 
-    "id": "cc-by-4.0", 
-    "is_okd_compliant": true, 
-    "is_osi_compliant": false, 
-    "maintainer": "", 
-    "status": "active", 
-    "title": "Creative Commons Attribution (4.0)", 
-    "url": "http://www.opendefinition.org/licenses/cc-by"
-  }, 
+  },
   "cc-zero": {
     "domain_content": true, 
     "domain_data": true, 
