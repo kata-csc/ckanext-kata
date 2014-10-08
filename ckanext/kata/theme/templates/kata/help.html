@@ -235,7 +235,7 @@
         </p>
         <h3 class="help-page"><a id="rems" class="help-h4">{{ _('REMS') }}</a></h3>
         <p>
-            {{ _('Etsin is integrated to TTA\'s REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: ') }}
+            {{ _('Etsin is integrated to a REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: ') }}
             <a href="https://confluence.csc.fi/display/REMS/REMS+Manual">{{ _('REMS manual') }}</a>
         </p>
         {#<h3 class="help-page"><a id="collections" class="help-h4">{{ _('Collections') }}</a></h3>
@@ -268,6 +268,102 @@
               <li>{{ _('Finally, be sure to confirm adding the supplement to your dataset by clicking "Add" at the bottom of the form.') }}</li>
             </ol>
         </p>
+            <h3 class="help-page"><a id="api-reference" class="help-h4">{{ _('API') }}</a></h3>
+        <p>
+            {{ _('Etsin supports standard')}}
+            <a href="http://docs.ckan.org/en/ckan-2.1.2/api.html">CKAN API</a>
+            {{ _('commands. In addition, Etsin supports addition and deletion of dataset editors with dataset_editor_add and dataset_editor_delete, respectively. ') }}
+            {{ _('To add a dataset editor, provide also attributes: name (dataset\'s name), role (usually editor) and username (user login to add) ') }}
+        </p>
+        <p>
+            {{ _('The metadata model of Etsin is more complex than the default model in CKAN. An example of a dataset that can be created in Etsin, using Curl: ') }}
+        </p>
+
+        <div class="example">
+            {# Manually written example mostly because pre doesn't work together with trans #}
+            <pre>
+curl http://etsin.avointiede.fi/api/3/action/package_create -d '{
+    "agent": [
+        {
+            "URL": "<b>http://url</b>",
+            "fundingid": "<b>{{ _('Funding id') }}</b>",
+            "name": "<b>{{ _('Funder') }}</b>",
+            "organisation": "<b>{{ _('Project name') }}</b>",
+            "role": "funder"
+        },
+        {
+              "name": "<b>{{ _('Owner') }}</b>",
+              "role": "owner"
+        },
+        {
+              "name": "<b>{{ _('Author') }}</b>",
+              "organisation": "<b>{{ _('Organization') }}</b>",
+              "role": "author"
+        }
+    ],
+    "algorithm": "<b>{{ _('Algorithm') }}</b>",
+    "availability": "<b>access_request</b>",
+    "checksum": "<b>{{ _('Checksum') }}</b>",
+    "contact": [
+        {
+              "URL": "<b>http://url</b>",
+              "email": "<b>email@domain.com</b>",
+              "name": "<b>{{ _('Contact name') }}</b>",
+              "phone": "<b>{{ _('Phone') }}</b>"
+        }
+    ],
+    "direct_download_URL": "",
+    "access_application_URL": "",
+    "access_request_URL": "<b>http://url</b>",
+    "discipline": "<b>{{ _('Discipline') }}</b>",
+    "event": [
+        {
+              "descr": "<b>{{ _('Description') }}</b>",
+              "type": "<b>{{ _('Eg. collection') }}</b>",
+              "when": "<b>{{ _('Date in ISO 8601 format') }}</b>",
+              "who": "<b>{{ _('Eg. person') }}</b>"
+        }
+    ],
+    "geographic_coverage": "<b>{{ _('Geographic coverage') }}</b>",
+    "langtitle": [
+        {
+              "lang": "<b>{{ _('Title language, eg. fin') }}</b>",
+              "value": "<b>{{ _('Title') }}</b>"
+        },
+        {
+              "lang": "<b>{{ _('Title language, eg. fin') }}</b>",
+              "value": "<b>{{ _('Title') }}</b>"
+        }
+     ],
+    "language": "<b>{{ _('Dataset\'s language(s), eg. eng,fin') }}</b>",
+    "license_id": "<b>{{ _('Eg. cc-by') }}</b>",
+    "mimetype": "<b>{{ _('MIME type') }}</b>",
+    "name": "<b>{{ _('Automatically generated, if left empty') }}</b>",
+    "pids": [
+        {
+              "id": "<b>PID</b>",
+              "provider": "<b>{{ _('Provider of the identifier') }}</b>",
+              "type": "<b>{{ _('Eg. data') }}</b>",
+              "primary": "<b>{{ _('True, if primary data identifier') }}</b>"
+        },
+        {
+              "id": "<b>PID</b>",
+              "provider": "<b>{{ _('Provider of the identifier') }}</b>",
+              "type": "<b>{{ _('Eg. version') }}</b>"
+        }
+     ],
+    "notes": "<b>{{ _('Description') }}</b>",
+    "projdis": "<b>True</b>",
+    "tag_string": "<b>{{ _('Subjects as a comma separated string') }}</b>",
+    "temporal_coverage_begin": "<b>{{ _('Time in ISO8601 format, eg. 2000-01-01T00:00:01') }}</b>",
+    "temporal_coverage_end": "<b>{{ _('Time in ISO8601 format, eg. 2000-01-01T00:00:01') }}</b>",
+    "version": "<b>{{ _('ISO8601 format, eg. 2014-06-06T07:07:07') }}</b>",
+    "owner_org": "<b>{{ _('Organization, see organizations in Etsin web user interface.') }}</b>",
+    "private": "<b>{{ _('True or false, private datasets are not added to the search index.') }}</b>"
+}'
+-H "Authorization: <b>YOUR-API-KEY</b>"
+            </pre>
+        </div>
       </div>
     </section>
   </section>
@@ -309,13 +405,16 @@
           <li>
             <a href="#metadata-supplements" class="toc-sub">- {{ _('Metadata supplements') }}</a>
           </li>
+          <li>
+              <a href="#api-reference" class="toc-sub">- {{ _('API') }}</a>
+          </li>
           {#<li>
             <a href="#collections" class="toc-sub">{{ _('- Collections') }}</a>
           </li>#}
         </ul>
       </div>
       <div class="faq-helpdesk">
-        <p>{{ _('For additional help send email to: ')}}<br /><b><i>kata-help at postit.csc.fi</i></b></p>
+        <p>{{ _('For additional help send email to: ')}}<br /><b><i>etsin at postit.csc.fi</i></b></p>
       </div>
     </div>
   </section>
