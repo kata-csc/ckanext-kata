@@ -1,15 +1,23 @@
 <section class="module-content additional-info">
+
+{% set urn_url = h.get_urn_fi_address(pkg_dict) %}
 <h3>{{ _('General information') }}</h3>
+
+{%- if urn_url -%}
+<p><a href="{{ urn_url }}">{{ urn_url }}</a></p>
+{%- endif -%}
+
 {% if pkg_dict.language or pkg_dict.langdis %}
 <table class="table table-striped table-bordered table-condensed">
-     <tbody>
-  <tr>
-    <th class="dataset-label">{{ _('Language') }}</th>
-    <td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}{{ _('No language') }}{% endif%}</td>
-  </tr>
+  <tbody>
+    <tr>
+      <th class="dataset-label">{{ _('Language') }}</th>
+      <td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}{{ _('No language') }}{% endif%}</td>
+    </tr>
   </tbody>
 </table>
 {% endif %}
+
 {% if pkg_dict.langtitle %}
 <h4>{{ _('Titles') }}</h4>
 <table class="table table-striped table-bordered table-condensed">
@@ -27,8 +35,11 @@
   </tbody>
 </table>
 {% endif %}
+
 {% if pkg_dict.agent %}
+
 <h4>{{ _('Agents') }}</h4>
+
 {% set nme = true if h.has_agents_field(pkg_dict, 'name') %}
 {% set org = true if h.has_agents_field(pkg_dict, 'organisation') %}
 {% set url = true if h.has_agents_field(pkg_dict, 'URL') %}
@@ -41,13 +52,13 @@
     {% if org %}<col width="25%">{% endif %}
     {% if url %}<col width="30%">{% endif %}
   </colgroup>
-	<tbody>
-	<tr>
-		<th>{{ _('Role') }}</th>
-		{% if nme %}<th>{{ _('Name') }}</th>{% endif %}
-		{% if org %}<th>{{ _('Organisation') }}</th>{% endif %}
-		{% if url %}<th>{{ _('URL') }}</th>{% endif %}
-	</tr>
+  <tbody>
+    <tr>
+        <th>{{ _('Role') }}</th>
+        {% if nme %}<th>{{ _('Name') }}</th>{% endif %}
+        {% if org %}<th>{{ _('Organisation') }}</th>{% endif %}
+        {% if url %}<th>{{ _('URL') }}</th>{% endif %}
+    </tr>
     {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
       {% for agent in role.list %}
       <tr>
@@ -60,8 +71,9 @@
       </tr>
       {% endfor %}
     {% endfor %}
-	</tbody>
+  </tbody>
 </table>
+
 <h4>{{ _('Project and funding information') }}</h4>
   {% set funders = h.get_funders(pkg_dict) %}
   {% if funders %}
@@ -96,6 +108,7 @@
 {% endif %}
 </section>
 <section class="module-content">
+
 <h3>{{ _('Description') }}</h3>
   {% if not pkg_notes_formatted == '' %}
     <div class="notes embedded-content">
