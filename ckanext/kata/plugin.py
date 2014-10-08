@@ -256,6 +256,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'resolve_agent_role': helpers.resolve_agent_role,
             'string_to_list': helpers.string_to_list,
             'filter_system_users': helpers.filter_system_users,
+            'get_contributors': helpers.get_contributors,
         }
 
     def get_dict_field_errors(self, errors, field, index, name):
