@@ -5,6 +5,7 @@ Template helpers for Kata CKAN extension.
 
 from pylons import config
 import functionally as fn
+import logging
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -13,6 +14,8 @@ from ckan.logic import get_action, ValidationError
 from ckanext.kata import settings, utils
 from ckan.lib.navl.dictization_functions import validate
 from ckan.lib import plugins
+
+log = logging.getLogger(__name__)
 
 
 class LoopIndex(object):
@@ -400,10 +403,11 @@ def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
 def get_visibility_options(group_id, user_id):
     '''Get possible dataset visibility options for this group and user'''
 
-    if (not group_id or not user_id) or utils.get_member_role(group_id, user_id) == 'member':
-        return [(True, 'Private')]
-    else:
-        return [(True, 'Private'), (False, 'Public')]
+    # if (not group_id or not user_id) or utils.get_member_role(group_id, user_id) == 'member':
+    #     return [(True, 'Private')]
+    # else:
+    #     return [(True, 'Private'), (False, 'Public')]
+    return [(True, 'Private'), (False, 'Public')]
 
 
 def create_loop_index():
@@ -442,3 +446,14 @@ def filter_system_users(users):
     system_user_names = ['logged_in', 'visitor', 'harvest']
     return filter(lambda x: x.get('user') not in system_user_names, users)
 
+def list_organisations(user):
+    '''
+
+    :return:
+    '''
+    context = dict()
+    context['model'] = model
+    context['user'] = user.get('name')
+    data_dict = dict()
+    data_dict['all_fields'] = True
+    return get_action('organization_list')(context, data_dict)

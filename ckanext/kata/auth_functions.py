@@ -10,6 +10,8 @@ import ckan.new_authz as new_authz
 from ckan.logic.auth import get_package_object, update
 from ckan.model import User, Package
 import ckanext.kata.settings as settings
+import ckan.logic as logic
+import ckan.logic.auth as logic_auth
 
 
 log = logging.getLogger(__name__)
@@ -85,3 +87,43 @@ def package_delete(context, data_dict):
             return {'success': False, 'msg': _('User %s not authorized to delete package %s') % (str(user), package.id)}
         else:
             return {'success': True}
+
+
+def package_create(context, data_dict=None):
+    '''
+    Modified from CKAN's original check. Any logged in user can add
+    a dataset to any organisation with status private = true.
+    Packages owner check is done when adding a resource.
+
+    :param context: context
+    :param data_dict: data_dict
+    :return: dictionary with 'success': True|False
+    '''
+
+    user = context['user']
+
+    if user and ((data_dict and (data_dict.get('private', False) == u'True' or data_dict.get('private', False)))
+                 or data_dict is None):
+        return {'success': True}
+    if context.get('package', False):
+        return is_owner(context, context.get('package').get('id'))
+
+    return logic_auth.create.package_create(context, data_dict)
+
+
+def package_show(context, data_dict):
+    '''
+    Modified from CKAN's original check. Package's owner
+    can see the dataset no matter in what organization it lies in.
+
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    is_ownr = is_owner(context, data_dict)
+
+    if is_ownr.get('success') == False:
+        return logic_auth.get.package_show(context, data_dict)
+    else:
+        return is_ownr

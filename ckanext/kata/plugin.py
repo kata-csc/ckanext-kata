@@ -194,6 +194,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_delete': auth_functions.package_delete,
             'package_update': auth_functions.is_owner,
             'resource_update': auth_functions.edit_resource,
+            'package_create': auth_functions.package_create,
+            'package_show': auth_functions.package_show,
         }
 
     def get_actions(self):
@@ -252,6 +254,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'has_contacts_field': helpers.has_contacts_field,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'kata_sorted_extras': helpers.kata_sorted_extras,
+            'list_organisations': helpers.list_organisations,
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'string_to_list': helpers.string_to_list,

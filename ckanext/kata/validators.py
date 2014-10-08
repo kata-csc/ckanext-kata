@@ -15,8 +15,10 @@ import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
 from ckan.logic.validators import tag_length_validator, url_validator
-from ckan.model import Package
+from ckan.model import Package, User
 from ckanext.kata import utils, converters, settings
+import ckan.lib.navl.dictization_functions as df
+import ckan.new_authz as new_authz
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -444,3 +446,55 @@ def url_not_empty(key, data, errors, context):
             return
 
     raise Invalid(_('Missing value'))
+
+
+def kata_owner_org_validator(key, data, errors, context):
+    '''
+    Modified version of CKAN's owner_org_validator. Anyone
+    can add a private dataset to an organisation
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    :return: nothing. Raise invalid if organisation is not given or it doesn't exist
+    '''
+
+    value = data.get(key)
+
+    if value is missing or not value:
+        if not new_authz.check_config_permission('create_unowned_dataset'):
+            raise Invalid(_('An organization must be supplied'))
+        data.pop(key, None)
+        raise df.StopOnError
+
+    model = context['model']
+    group = model.Group.get(value)
+    if not group:
+        raise Invalid(_('Organization does not exist'))
+    group_id = group.id
+    data[key] = group_id
+
+
+def check_private(key, data, errors, context):
+    '''
+    Changes to owner_org_validator requires checking of private value.
+
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    :return: nothing. Raise invalid if not organisation editor and private == False
+    '''
+
+    value = data.get(key)
+    is_editor = False
+    if not value or value == u'False':
+        user = context.get('user', False)
+        if user:
+            if utils.get_member_role(data.get((u'owner_org',)), User.get(user).id) in ('admin', 'editor'):
+                is_editor = True
+        if not is_editor:
+            raise Invalid(_('Only organization\'s editors and admins can create a public dataset'))
+

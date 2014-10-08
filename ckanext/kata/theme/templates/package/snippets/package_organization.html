@@ -13,7 +13,7 @@
 
     {% set dataset_is_draft = data.get('state', 'draft').startswith('draft') or data.get('state', 'none') ==  'none' %}
     {% set dataset_has_organization = data.owner_org or data.group_id %}
-    {% set organizations_available = h.organizations_available('create_dataset') %}
+    {% set organizations_available = h.list_organisations(user) %}
     {% set user_is_sysadmin = h.check_access('sysadmin') %}
 
     <div data-module="dataset-visibility">
@@ -44,13 +44,14 @@
     {% endif %}
 
     <div class="control-group">
-      <label for="field-private" class="control-label">{{ _('Visibility') }}</label>
+      <label for="field-kata-pr" class="control-label">{{ _('Visibility') }}</label>
       <div class="controls">
-        <select id="field-private" name="private">
+        <select id="field-kata-pr" name="private">
           {% for option in h.get_visibility_options( current_org, user.id ) %}
           <option value="{{ option[0] }}" {% if option[0] == data.private %}selected="selected"{% endif %}>{{ _(option[1]) }}</option>
           {% endfor %}
         </select>
+          {% if errors and errors.private and errors.private is iterable %}<span class="error-block">{{ errors.private|join('') }}</span>{% endif %}
       </div>
     </div>
 
