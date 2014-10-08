@@ -3,9 +3,11 @@
 
 <section class="module">
   <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
+
   <div class="module-content">
-    <div class="kata-multi-input">
-      <span class="kata-multi-heading">{{ _('Titles') }}</span><br />
+    <h3 class="module-heading-add-dataset">{{ _('Titles') }}</h3>
+
+    <div class="module-content">
       {% set titles = [] %}
       {% if data.langtitle %}
         {% set titles = data.langtitle %}
@@ -44,8 +46,8 @@
       </div>
     </div>
 
-    <div class="kata-multi-input">
-      <span class="kata-multi-heading">{{ _('Authors and organizations') }}</span><br />
+    <h3 class="module-heading-add-dataset">{{ _('Authors and organizations') }}</h3>
+    <div class="module-content">
       {% set authors = h.get_authors(data) %}
       {% if authors|length == 0 %}
         {% do authors.append(dict(role='author',)) %}
@@ -76,10 +78,47 @@
       </div>
     </div>
 
+    <h3 class="module-heading-add-dataset optional">{{ _('Contributors') }}</h3>
+    <div class="module-content optional">
+      {% set contributors = h.get_contributors(data) %}
+
+      {% if contributors|length == 0 %}
+        {% do contributors.append(dict(role='contributor',)) %}
+      {% endif %}
+
+      <div data-module="custom-fields-kata" data-module-id="contributors" data-module-numfields="{{ contributors|length }}" data-module-index="agent-index" id="contributors">
+        {% set contributor_errors = h.get_dict_errors(errors, '__extras', 'contributors') %}
+
+        {% for agent in contributors %}
+          <div class="control-group control-custom{{ " error" if owner_errors }}">
+            {% set index = agent_index.increase() %}
+            {% set agent_prefix = "agent__" ~ index ~ "__" %}
+
+              {% call form.input('agent__' ~ index ~ '__name', label=_('Name'), id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname, Firstname and/or http://orcid.org/'), value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+                {% if loop.index0 == 0 %}
+                  {{ kata_form.tooltip(tooltip=_("Field is not compulsory.<br /><br />Name of the contributor.")) }}
+                {% endif %}
+              {% endcall %}
+
+              {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation'), id='agent__' ~ index ~ '__organisation_id', placeholder=_('University. Faculty. Department.'), value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+                {% if loop.index0 == 0 %}
+                  {{ kata_form.plusbutton(id="contributors_add", onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+                {% endif %}
+              {% endcall %}
+
+              <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="contributor" />
+              <input style="display: none;" type="checkbox" id="obtn__{{ index }}__value_id" name="obtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+          </div>
+        {% endfor %}
+        {% if owner_errors and owner_errors is iterable %}<span class="error-block-kata">{{ contributor_errors|join('. ') }}</span>{% endif %}
+      </div>
+    </div>
+
     {# Autocomplete for keywords #}
 
-    <div class="kata-multi-input">
-      <span class="kata-multi-heading">{{ _('Subject') }}</span><br />
+    <h3 class="module-heading-add-dataset">{{ _('Subject') }}</h3>
+
+    <div class="module-content">
       {{ _('Search keywords from KOKO ontology, select keywords with enter or mouse click.') }}
       <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords (tags) that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
       <span class="kata-btn-span tta-orange">?</span></button><br /><br />

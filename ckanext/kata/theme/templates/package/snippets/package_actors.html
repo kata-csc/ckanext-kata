@@ -100,7 +100,7 @@
         {% if funder_errors and funder_errors is iterable %}<span class="error-block-kata">{{ funder_errors|join('. ') }}</span>{% endif %}
       </div>
     </div>
-    <h3 class="module-heading-add-dataset">{{ _('Owner information')}}</h3>
+    <h3 class="module-heading-add-dataset">{{ _('Owner information') }}</h3>
     <div class="module-content">
       {% set owners = h.get_owners(data) %}
 
