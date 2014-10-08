@@ -257,6 +257,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'string_to_list': helpers.string_to_list,
             'filter_system_users': helpers.filter_system_users,
             'get_contributors': helpers.get_contributors,
+            'get_urn_fi_address': helpers.get_urn_fi_address,
         }
 
     def get_dict_field_errors(self, errors, field, index, name):
