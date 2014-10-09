@@ -218,7 +218,7 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@id='contact_owner']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@name='agent__2__name']")
+            field = browser.find_element_by_xpath("//input[@name='agent__3__name']")
             field.send_keys('Selenium')
 
             #field = browser.find_element_by_xpath("//input[@id='licenseURL']")
