@@ -544,12 +544,12 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_name, 'agent__0__organisation', [u'CSC Oy'], None),
 
             (browser.find_element_by_id, 'authors_add', [WebElement.click], add_wait),
-            (browser.find_element_by_name, 'agent__3__name', [u'Åke Author'], None),
-            (browser.find_element_by_name, 'agent__3__organisation', [u'Organization 2'], None),
+            (browser.find_element_by_name, 'agent__4__name', [u'Åke Author'], None),
+            (browser.find_element_by_name, 'agent__4__organisation', [u'Organization 2'], None),
 
             (browser.find_element_by_id, 'authors_add', [WebElement.click], add_wait),
-            (browser.find_element_by_name, 'agent__4__name', [u'прстуфхцчшчьыъэюя Author'], None),
-            (browser.find_element_by_name, 'agent__4__organisation', [u'Organization 3'], None),
+            (browser.find_element_by_name, 'agent__5__name', [u'прстуфхцчшчьыъэюя Author'], None),
+            (browser.find_element_by_name, 'agent__5__organisation', [u'Organization 3'], None),
 
             # keywords
             (browser.find_element_by_xpath, "//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input", ['Selenium', Keys.RETURN, 'Keyword2', Keys.RETURN], None),
@@ -571,15 +571,15 @@ class TestKataWithUser(TestCase):
 
             (browser.find_element_by_name, 'projdis', [WebElement.click], None),
 
-            (browser.find_element_by_name, 'agent__1__organisation', [u'Selenium Project'], None),
-            (browser.find_element_by_name, 'agent__1__name', [u'Selenium Funder'], None),
-            (browser.find_element_by_name, 'agent__1__fundingid', [u'Selenium Funding'], None),
-            (browser.find_element_by_name, 'agent__1__URL', [u'https://localhost/'], None),
+            (browser.find_element_by_name, 'agent__2__organisation', [u'Selenium Project'], None),
+            (browser.find_element_by_name, 'agent__2__name', [u'Selenium Funder'], None),
+            (browser.find_element_by_name, 'agent__2__fundingid', [u'Selenium Funding'], None),
+            (browser.find_element_by_name, 'agent__2__URL', [u'https://localhost/'], None),
 
             (browser.find_element_by_id, 'funders_add', [WebElement.click], add_wait),
-            (browser.find_element_by_name, 'agent__5__organisation', [u'Selenium Project 2'], None),
+            (browser.find_element_by_name, 'agent__6__organisation', [u'Selenium Project 2'], None),
             #(browser.find_element_by_name, 'agent__5__name', [u'Selenium Funder 2'], None),
-            (browser.find_element_by_name, 'agent__5__fundingid', [u'Selenium Funding 2'], None),
+            (browser.find_element_by_name, 'agent__6__fundingid', [u'Selenium Funding 2'], None),
             #(browser.find_element_by_name, 'agent__5__URL', [u'https://localhost/'], None),
 
             # (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
@@ -587,9 +587,9 @@ class TestKataWithUser(TestCase):
             # (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
             # (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
             #
-            (browser.find_element_by_name, 'agent__2__name', [u'прстуфхцчшчьыъэюя'], None),
+            (browser.find_element_by_name, 'agent__3__name', [u'прстуфхцчшчьыъэюя'], None),
             (browser.find_element_by_id, 'owners_add', [WebElement.click], add_wait),
-            (browser.find_element_by_name, 'agent__6__name', [u'прстуфхцчшчьыъэюя 2'], None),
+            (browser.find_element_by_name, 'agent__7__name', [u'прстуфхцчшчьыъэюя 2'], None),
 
             (browser.find_element_by_id, 'name-pid', [u'pid' + str(int(time.time() * 100))], None),
             (browser.find_element_by_name, 'new_version_pid', [u'pid' + str(int(time.time() * 100))], None),
