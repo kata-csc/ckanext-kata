@@ -347,6 +347,11 @@ class ContactController(BaseController):
         full_msg = u"{a}{b}{c}".format(a=prologue, b=msg, c=epilogue)
         email_dict = {"subject": subject,
                       "body": full_msg}
+
+        if not recipient:
+            # fall back to using the email address as the name of the recipient
+            recipient = email
+
         recipient_dict = {'display_name': recipient, 'email': email}
 
         if c.user:
@@ -398,9 +403,7 @@ käytä yllä olevaa sähköpostiosoitetta.'
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
             email = utils.get_package_contact_email(pkg_id)
-
-            # consequently, this now prints "Dear email@address.com", should be contact_0_name instead
-            recipient = email
+            recipient = utils.get_package_contact_name(pkg_id)
 
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
@@ -446,7 +449,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
             log.info("Attempting to send email (access request); user id = {u}, package = {p}".format(u=c.userobj.id, p=pkg_id))
 
             email = utils.get_package_contact_email(pkg_id)
-            recipient = email
+            recipient = utils.get_package_contact_name(pkg_id)
 
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
