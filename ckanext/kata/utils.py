@@ -350,3 +350,38 @@ def get_package_id_by_data_pids(data_dict):
 
     return pkg_ids[0]    # No problems found, so use this
 
+
+def get_package_contact_email(pkg_id):
+    """
+    Returns the email address of the first distributor/publisher contact
+    for the dataset with the given id.
+
+    :param pkg_id: the id of the package whose contact information to get
+    :return: the email address
+    :rtype: str or unicode
+    """
+    package = Package.get(pkg_id)
+
+    # Todo: this should take the specific contact address, not just the first contact email
+    email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
+
+    emails = [con[1] for con in email_tuples]
+    return fn.first(emails)
+
+
+def get_package_contact_name(pkg_id):
+    """
+    Returns the name of the first distributor/publisher contact
+    for the dataset with the given id.
+
+    :param pkg_id: the id of the package whose contact information to get
+    :return: the name of the contact
+    :rtype: str or unicode
+    """
+    package = Package.get(pkg_id)
+
+    # Todo: this should take the specific contact name, not just the first contact name
+    name_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_name'), package.extras.iteritems())
+
+    names = [con[1] for con in name_tuples]
+    return fn.first(names)
