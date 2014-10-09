@@ -476,13 +476,6 @@ class TestKataWithUser(TestCase):
             browser.quit()
             raise
 
-        try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/div/a[.='Hide/show']")))
-        except TimeoutException:
-            browser.get_screenshot_as_file('_add_dataset_advanced.png')
-            browser.quit()
-            raise
-
         assert "Kata" in browser.title, "Dataset creation failed somehow"
 
         return browser.current_url
@@ -600,7 +593,6 @@ class TestKataWithUser(TestCase):
             #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
             (browser.find_element_by_id, 'field-private', [u'Public'], None),
 
-            (browser.find_element_by_xpath, "//section[@id='recmod']/h2", [WebElement.click], None),
             # recommended info
 
             (browser.find_element_by_xpath, "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input", [u'Espoo, Finland', Keys.RETURN], None),

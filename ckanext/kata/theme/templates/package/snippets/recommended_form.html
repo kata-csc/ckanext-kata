@@ -5,13 +5,13 @@
 {% set errors = errors or {} %}
 {% set lastevent = 1 %}
 
-<section class="module module-grey" id="recmod">
-  <h2 class="module-heading-add-dataset tta-orange accordion-toggle" onclick="$('#recommended').toggle()">{{ _('Recommended information') }}&nbsp;&nbsp;
-    <i class="icon-chevron-down tta-orange"></i>
-    &nbsp;&nbsp;<span class="module-link">
-    {{ _('Click to show/hide recommended fields') }}</span>
+<section class="module module-grey">
+  <h2 class="module-heading-add-dataset"><span class="tta-orange">{{ _('Recommended information') }}</span>&nbsp;&nbsp;
   </h2>
-  <div class="module-content" style="display: none;" id="recommended">
+  <div class="module-content" id="recommended">
+      <div class="module-content">
+          {{ _('Metadata in this section is not compulsory, but can provide important information and help others to find your data.') }}
+      </div>
     {% snippet 'package/snippets/recommended_coverage.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
     {% snippet 'package/snippets/recommended_relations.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
     {% snippet 'package/snippets/recommended_file_information.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
