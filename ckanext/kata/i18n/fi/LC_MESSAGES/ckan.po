@@ -503,8 +503,7 @@ msgid ""
 "request access to the material."
 msgstr ""
 "Tältä sivulta voit lähettää viestin tietoaineiston omistajalle "
-"saadaksesi\"\n"
-"\" datan käyttöösi."
+"saadaksesi datan käyttöösi."
 
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:5
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:9
