@@ -438,8 +438,8 @@ def dataset_editor_delete(context, data_dict):
 
     :param username: user name to delete
     :type username: string
-    :param id: dataset id
-    :type id: string
+    :param name: dataset name or id
+    :type name: string
     :param role: editor, admin or reader
     :type role: string
 
@@ -500,7 +500,7 @@ def dataset_editor_add(context, data_dict):
     '''
     Adds a user and role to dataset
 
-    :param name: dataset name
+    :param name: dataset name or id
     :type name: string
     :param role: admin, editor or reader
     :type role: string
