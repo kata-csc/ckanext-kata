@@ -5482,7 +5482,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:34
 msgid "eg. MD5"
-msgstr "Esim. MD5, SHA-2"
+msgstr "esim. MD5, SHA-2"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid ""
@@ -5498,7 +5498,7 @@ msgstr ""
 msgid ""
 "Metadata in this section is not compulsory, but can provide important "
 "information and help others to find your data."
-msgstr ""
+msgstr "Tässä osiossa olevia metatietokenttiä ei ole pakko täyttää. Ne tarjoavat kuitenkin tärkeää kuvailutietoa datastasi ja edesauttavat sen löytämistä."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:8
 msgid "event"
