@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-09 09:10+0000\n"
+"POT-Creation-Date: 2014-10-09 09:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -441,9 +441,7 @@ msgid "Add Dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:121
-#: ckanext/kata/theme/templates/group/read_base.html:19
-#: ckanext/kata/theme/templates/user/edit_user_form.html:29
-msgid "About"
+msgid "About Etsin"
 msgstr ""
 
 #: ckanext/kata/theme/templates/privacypolicy.html:2
@@ -579,6 +577,11 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/package_rights.html:8
 #: ckanext/kata/theme/templates/user/read.html:31
 msgid "Activity Stream"
+msgstr ""
+
+#: ckanext/kata/theme/templates/group/read_base.html:19
+#: ckanext/kata/theme/templates/user/edit_user_form.html:29
+msgid "About"
 msgstr ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:10

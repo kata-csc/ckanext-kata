@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-09 09:10+0000\n"
+"POT-Creation-Date: 2014-10-09 09:14+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -459,10 +459,8 @@ msgid "Add Dataset"
 msgstr "Lisää tietoaineisto"
 
 #: ckanext/kata/theme/templates/header.html:121
-#: ckanext/kata/theme/templates/group/read_base.html:19
-#: ckanext/kata/theme/templates/user/edit_user_form.html:29
-msgid "About"
-msgstr "Tietoa"
+msgid "About Etsin"
+msgstr "Tietoa Etsimestä"
 
 #: ckanext/kata/theme/templates/privacypolicy.html:2
 msgid "Tietosuojaseloste / Privacy Policy"
@@ -605,6 +603,11 @@ msgstr "Muokkaa"
 #: ckanext/kata/theme/templates/user/read.html:31
 msgid "Activity Stream"
 msgstr "Uutisvirta"
+
+#: ckanext/kata/theme/templates/group/read_base.html:19
+#: ckanext/kata/theme/templates/user/edit_user_form.html:29
+msgid "About"
+msgstr "Tietoa"
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:10
 #: ckanext/kata/theme/templates/kata/help.html:332
