@@ -5,7 +5,7 @@ Kata form element extensions.
 {#
 Create a tooltip for input element.
 
-tooltip		- Tooltip help text to be displayed on the question mark icon.
+tooltip - Tooltip help text to be displayed on the question mark icon.
 #}
 
 {% macro tooltip(id='', tooltip='', attrs={}) %}
@@ -14,7 +14,7 @@ tooltip		- Tooltip help text to be displayed on the question mark icon.
 {#
 Create a warning tooltip for input element.
 
-tooltip		- Tooltip help text to be displayed on the exclamation mark icon.
+tooltip - Tooltip help text to be displayed on the exclamation mark icon.
 #}
 
 {% macro warning_tooltip(id='', tooltip='', attrs={}) %}
@@ -80,3 +80,7 @@ Example:
     </div>
   {% endif %}
 {% endmacro %}
+
+{% macro optional() -%}
+    <span>{{ _("Optional") }}</span>
+{%- endmacro %}

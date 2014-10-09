@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-09 09:36+0000\n"
+"POT-Creation-Date: 2014-10-09 12:17+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -34,7 +34,7 @@ msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
 #: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
-#: ckanext/kata/controllers.py:724
+#: ckanext/kata/controllers.py:726
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
@@ -113,7 +113,7 @@ msgstr "Käyttäjällä %s on nyt muokkausoikeudet tietoaineistoon %s"
 msgid "No such request found!"
 msgstr "Pyyntöä ei löytynyt."
 
-#: ckanext/kata/controllers.py:374 ckanext/kata/controllers.py:683
+#: ckanext/kata/controllers.py:374 ckanext/kata/controllers.py:685
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
@@ -126,66 +126,61 @@ msgid "No owner found"
 msgstr "Omistajaa ei löydetty"
 
 #: ckanext/kata/controllers.py:380 ckanext/kata/controllers.py:432
-#: ckanext/kata/controllers.py:473 ckanext/kata/controllers.py:505
-#: ckanext/kata/controllers.py:527
+#: ckanext/kata/controllers.py:475 ckanext/kata/controllers.py:507
+#: ckanext/kata/controllers.py:529
 msgid "Please login"
 msgstr "Kirjaudu sisään"
 
-#: ckanext/kata/controllers.py:470
-#, python-format
-msgid "Data access request for dataset / Datapyyntö tietoaineistolle %s"
-msgstr ""
-
-#: ckanext/kata/controllers.py:493
+#: ckanext/kata/controllers.py:495
 msgid "Dataset not found"
 msgstr "Tietoaineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:502 ckanext/kata/controllers.py:524
+#: ckanext/kata/controllers.py:504 ckanext/kata/controllers.py:526
 msgid "Already contacted"
 msgstr "Olet ottanut yhteyttä jo aiemmin"
 
-#: ckanext/kata/controllers.py:564
+#: ckanext/kata/controllers.py:566
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:566
+#: ckanext/kata/controllers.py:568
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr " (Tai jos käytät OpenID:tä, sitä ei ole liitetty käyttäjätiliisi.)"
 
-#: ckanext/kata/controllers.py:624
+#: ckanext/kata/controllers.py:626
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:646
+#: ckanext/kata/controllers.py:648
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
-#: ckanext/kata/controllers.py:666
+#: ckanext/kata/controllers.py:668
 msgid "Feature disabled"
 msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:668 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:670 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
-#: ckanext/kata/controllers.py:688
+#: ckanext/kata/controllers.py:690
 msgid "Bad Captcha. Please try again."
 msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
-#: ckanext/kata/controllers.py:783
+#: ckanext/kata/controllers.py:785
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:808
+#: ckanext/kata/controllers.py:810
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:813
+#: ckanext/kata/controllers.py:815
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:817
+#: ckanext/kata/controllers.py:819
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
@@ -502,8 +497,8 @@ msgid ""
 "On this page you can send a message to the owner of the dataset to "
 "request access to the material."
 msgstr ""
-"Tältä sivulta voit lähettää viestin tietoaineiston omistajalle "
-"saadaksesi datan käyttöösi."
+"Tältä sivulta voit lähettää viestin tietoaineiston omistajalle saadaksesi"
+" datan käyttöösi."
 
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:5
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:9
@@ -1564,7 +1559,6 @@ msgstr ""
 "täyttöohje nappulasta, joka on merkitty kysymysmerkillä, \"?\"."
 
 #: ckanext/kata/theme/templates/kata/help.html:130
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:10
 msgid "Required information"
 msgstr "Pakolliset tiedot"
 
@@ -1718,7 +1712,7 @@ msgstr ""
 "voi käyttää dataasi ja mahdollisesti miten he voivat sitä käyttää."
 
 #: ckanext/kata/theme/templates/kata/help.html:181
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:9
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:10
 msgid "Recommended information"
 msgstr "Suositellut tiedot"
 
@@ -2239,6 +2233,10 @@ msgstr ""
 "Virheen tarkemmat tiedot löydät kyseisen kentän kohdalta. Huomaa, että "
 "resurssiin liittyvät virheet saattavat olla käyttötietojen lisäksi "
 "suositeltavissa tiedoissa, esimerkiksi tiedostotyypissä ja algoritmissa."
+
+#: ckanext/kata/theme/templates/macros/kata_form.html:85
+msgid "Optional"
+msgstr "Valinnainen"
 
 #: ckanext/kata/theme/templates/organization/index.html:13
 msgid "Add Organization"
@@ -4804,7 +4802,7 @@ msgid "Other related datasets"
 msgstr "Muut liittyvät tietoaineistot"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:245
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:34
 msgid "Discipline/branch of science"
 msgstr "Tieteenala"
 
@@ -5335,11 +5333,11 @@ msgstr "Metadatan vienti"
 msgid "Coverage"
 msgstr "Kattavuudet"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:12
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:11
 msgid "Spatial coverage"
 msgstr "Maantieteellinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:14
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:13
 msgid ""
 "Search location from location name database, select locations with enter "
 "or mouse click."
@@ -5347,7 +5345,7 @@ msgstr ""
 "Etsi paikkaa paikannimirekisteristä, valitse paikat näppäimistön enter-"
 "painikkeella tai hiiren klikkauksella"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:15
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:14
 msgid ""
 "Specify the geographical areas or locations that your dataset pertains "
 "to. This could be for example the location where the data has been "
@@ -5373,23 +5371,23 @@ msgstr ""
 " haetaan Finto-sanastopalvelusta (http://finto.fi). JavaScript-tuen on "
 "oltava käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:18
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:17
 msgid "Locations"
 msgstr "Paikat"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:18
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:17
 msgid "eg. Finland"
 msgstr "esim. Suomi"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:22
 msgid "Temporal coverage"
 msgstr "Ajallinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:28
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:26
 msgid "Begin"
 msgstr "Alku"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:31
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:29
 msgid ""
 "Temporal coverage - begin - can be filled to include the starting time of"
 " the time period during which your data was collected or for example to "
@@ -5407,11 +5405,11 @@ msgstr ""
 "vastaa UTC-vyöhykettä.<br /><br />Huomaa, että työkalu vaatii toimiakseen"
 " JavaScriptin."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:36
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:34
 msgid "End"
 msgstr "Loppu"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:39
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:37
 msgid ""
 "Temporal coverage - end - can be filled to include the ending time of the"
 " time period during which your data was collected or for example to tell "
@@ -5604,7 +5602,7 @@ msgstr ""
 msgid "Relations"
 msgstr "Relaatiot"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:37
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
 msgid ""
 "Search keywords from okm-tieteenala ontology, select keywords with enter "
 "or mouse click. Note that the disciplines are provided only in Finnish "
@@ -5614,7 +5612,7 @@ msgstr ""
 "painikkeella tai hiirenklikkauksella. Huomaa, että tieteenalat ovat tällä"
 " hetkellä saatavilla vain suomeksi."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:38
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:37
 msgid ""
 "Enter the academic discipline or disciplines to which your dataset "
 "belongs.<br /><br />Type the name of the discipline in the search box "
@@ -5637,11 +5635,11 @@ msgstr ""
 "Finto-sanastopalvelusta (http://finto.fi). JavaScript-tuen on oltava "
 "käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:42
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:41
 msgid "Disciplines"
 msgstr "Tieteenalat"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:42
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:41
 msgid "eg. Matematiikka"
 msgstr "esim. Matematiikka"
 
@@ -5970,4 +5968,7 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
+
+#~ msgid "Data access request for dataset / Datapyyntö tietoaineistolle %s"
+#~ msgstr ""
 

@@ -4,7 +4,7 @@
 {# Todo: File information errors must be handled in helpers. This blind call to resource data's index won't necessarily work later on #}
 
 <section class="module">
-  <h2 class="module-heading-add-dataset">{{ _('File information') }}</h2>
+  <h2 class="module-heading-add-dataset optional">{{ _('File information') }} {{ kata_form.optional() }}</h2>
   <div class="module-content">
     <div class="kata-autocomplete">
       {% set mimetype_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/media_type_autocomplete?incomplete=?'} %}

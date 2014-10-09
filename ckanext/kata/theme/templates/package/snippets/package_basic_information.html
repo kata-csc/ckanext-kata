@@ -5,7 +5,7 @@
   <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
 
   <div class="module-content">
-    <h3 class="module-heading-add-dataset">{{ _('Titles') }}</h3>
+    <h3 class="module-heading-add-dataset required">{{ _('Titles') }}</h3>
 
     <div class="module-content">
       {% set titles = [] %}
@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <h3 class="module-heading-add-dataset optional">{{ _('Contributors') }}</h3>
+    <h3 class="module-heading-add-dataset optional">{{ _('Contributors') }}{{ kata_form.optional() }}</h3>
     <div class="module-content optional">
       {% set contributors = h.get_contributors(data) %}
 

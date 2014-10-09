@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-09 09:36+0000\n"
+"POT-Creation-Date: 2014-10-09 12:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
-#: ckanext/kata/controllers.py:724
+#: ckanext/kata/controllers.py:726
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -111,7 +111,7 @@ msgstr ""
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:374 ckanext/kata/controllers.py:683
+#: ckanext/kata/controllers.py:374 ckanext/kata/controllers.py:685
 msgid "Message sent"
 msgstr ""
 
@@ -124,66 +124,61 @@ msgid "No owner found"
 msgstr ""
 
 #: ckanext/kata/controllers.py:380 ckanext/kata/controllers.py:432
-#: ckanext/kata/controllers.py:473 ckanext/kata/controllers.py:505
-#: ckanext/kata/controllers.py:527
+#: ckanext/kata/controllers.py:475 ckanext/kata/controllers.py:507
+#: ckanext/kata/controllers.py:529
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:470
-#, python-format
-msgid "Data access request for dataset / Datapyyntö tietoaineistolle %s"
-msgstr ""
-
-#: ckanext/kata/controllers.py:493
+#: ckanext/kata/controllers.py:495
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:502 ckanext/kata/controllers.py:524
+#: ckanext/kata/controllers.py:504 ckanext/kata/controllers.py:526
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:564
+#: ckanext/kata/controllers.py:566
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:566
+#: ckanext/kata/controllers.py:568
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:624
+#: ckanext/kata/controllers.py:626
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:646
+#: ckanext/kata/controllers.py:648
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:666
+#: ckanext/kata/controllers.py:668
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:668 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:670 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:688
+#: ckanext/kata/controllers.py:690
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:783
+#: ckanext/kata/controllers.py:785
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:808
+#: ckanext/kata/controllers.py:810
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:813
+#: ckanext/kata/controllers.py:815
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:817
+#: ckanext/kata/controllers.py:819
 msgid "Invalid upload URL"
 msgstr ""
 
@@ -1352,7 +1347,6 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:130
-#: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:10
 msgid "Required information"
 msgstr ""
 
@@ -1467,7 +1461,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:181
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:9
+#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:10
 msgid "Recommended information"
 msgstr ""
 
@@ -1883,6 +1877,10 @@ msgid ""
 "See further information about the error(s) from the field in question. Note, "
 "that errors in resource url may be in resource related data, like file type "
 "and algorithm."
+msgstr ""
+
+#: ckanext/kata/theme/templates/macros/kata_form.html:85
+msgid "Optional"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/index.html:13
@@ -4425,7 +4423,7 @@ msgid "Other related datasets"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:245
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:34
 msgid "Discipline/branch of science"
 msgstr ""
 
@@ -4866,17 +4864,17 @@ msgstr ""
 msgid "Coverage"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:12
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:11
 msgid "Spatial coverage"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:14
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:13
 msgid ""
 "Search location from location name database, select locations with enter or "
 "mouse click."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:15
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:14
 msgid ""
 "Specify the geographical areas or locations that your dataset pertains to. "
 "This could be for example the location where the data has been collected or "
@@ -4891,23 +4889,23 @@ msgid ""
 "your browser in order for the automatic suggestions to work."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:18
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:17
 msgid "Locations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:18
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:17
 msgid "eg. Finland"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:22
 msgid "Temporal coverage"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:28
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:26
 msgid "Begin"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:31
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:29
 msgid ""
 "Temporal coverage - begin - can be filled to include the starting time of the"
 " time period during which your data was collected or for example to tell what"
@@ -4918,11 +4916,11 @@ msgid ""
 "/><br />Note that this tool requires JavaScript to be enabled in the browser."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:36
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:34
 msgid "End"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:39
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:37
 msgid ""
 "Temporal coverage - end - can be filled to include the ending time of the "
 "time period during which your data was collected or for example to tell what "
@@ -5088,13 +5086,13 @@ msgstr ""
 msgid "Relations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:37
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
 msgid ""
 "Search keywords from okm-tieteenala ontology, select keywords with enter or "
 "mouse click. Note that the disciplines are provided only in Finnish for now."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:38
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:37
 msgid ""
 "Enter the academic discipline or disciplines to which your dataset "
 "belongs.<br /><br />Type the name of the discipline in the search box below. "
@@ -5109,11 +5107,11 @@ msgid ""
 " work."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:42
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:41
 msgid "Disciplines"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:42
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:41
 msgid "eg. Matematiikka"
 msgstr ""
 

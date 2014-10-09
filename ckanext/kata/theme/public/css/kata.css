@@ -211,7 +211,7 @@ ul.kata {
 }
 .kata-warning-btn {
     margin-left: 4px !important;
-    background: yellow !important;
+    background: white !important;
     color: red !important;
 }
 .kata-btn-warn-span {
@@ -1046,8 +1046,17 @@ input, button, select, textarea {
   padding-bottom: 8px;
 }
 
-h3.optional {
-    background-color: #777777;
+h2.optional, h3.optional {
+    background-color: #efefef;
     background-image: none;
+    color: black;
 }
 
+h2.optional span, h3.optional span {
+    float: right;
+    font-size: 75%;
+}
+
+h3.optional {
+    margin-bottom: 6px;
+}

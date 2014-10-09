@@ -2,7 +2,7 @@
 {% import 'macros/kata_form.html' as kata_form %}
 
 <section class="module">
-  <h2 class="module-heading-add-dataset">{{ _('Dataset lifecycle events') }}</h2>
+  <h2 class="module-heading-add-dataset optional">{{ _('Dataset lifecycle events') }} {{ kata_form.optional() }}</h2>
   <div class="module-content">
     <div data-module="custom-fields-kata" data-module-id="lifecycle" id="lifecycle">
       <label class="control-label katalabel1"><span>{{ _('event') }}</span></label>
