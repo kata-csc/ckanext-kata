@@ -1046,12 +1046,6 @@ input, button, select, textarea {
   padding-bottom: 8px;
 }
 
-.dataset-form {
-  margin-left: -10px;
-  margin-right: -10px;
-  margin-top: -25px;
-}
-
 h3.optional {
     background-color: #777777;
     background-image: none;
