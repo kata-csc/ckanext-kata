@@ -190,7 +190,6 @@ li.kata label {
     width: 145px !important;
     float: left;
     text-align: center !important;
-
 }
 .form-horizontal .katalabel::after {
     content: '' !important;
@@ -255,6 +254,9 @@ ul.kata {
 }
 .module-link {
     float: right;
+}
+input[id="xmlfile"] {
+    width: 190px !important;
 }
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
