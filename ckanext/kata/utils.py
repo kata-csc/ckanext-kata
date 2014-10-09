@@ -350,3 +350,12 @@ def get_package_id_by_data_pids(data_dict):
 
     return pkg_ids[0]    # No problems found, so use this
 
+
+def get_package_contact_email(pkg_id):
+    package = Package.get(pkg_id)
+
+    # Todo: this should take the specific contact address, not just the first contact email
+    email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
+
+    emails = [con[1] for con in email_tuples]
+    return fn.first(emails)

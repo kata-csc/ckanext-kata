@@ -324,17 +324,7 @@ class ContactController(BaseController):
     The feature provides a form for message sending, and the message is sent via email.
     """
 
-    def _send_message(self, recipient, email, email_dict):
-        ''' Send message to given email '''
-        import ckan.lib.mailer
-
-        try:
-            ckan.lib.mailer.mail_recipient(recipient, email,
-                                           email_dict['subject'], email_dict['body'])
-        except ckan.lib.mailer.MailerException:
-            raise
-
-    def _send_if_allowed(self, pkg_id, subject, msg, prologue=None, epilogue=None, recipient=None, email=None):
+    def _send_if_allowed(self, pkg_id, subject, recipient, email, msg, epilogue=None, prologue=None):
         """
         Send a contact e-mail if allowed.
 
@@ -342,11 +332,11 @@ class ContactController(BaseController):
 
         :param pkg_id: package id
         :param subject: email's subject
+        :param recipient: name of the recipient
+        :param email: email address where the message is to be sent
         :param msg: the message to be sent
-        :param prologue: message's prologue (optional)
-        :param epilogue: message's epilogue (optional)
-        :param recipient: recipient (optional)
-        :param email: email address where the message is to be sent (optional)
+        :param prologue: message's prologue to be included before the user's message (optional)
+        :param epilogue: message's epilogue to be included after the user's message (optional)
         """
 
         package = Package.get(pkg_id)
@@ -357,30 +347,22 @@ class ContactController(BaseController):
         full_msg = u"{a}{b}{c}".format(a=prologue, b=msg, c=epilogue)
         email_dict = {"subject": subject,
                       "body": full_msg}
+        recipient_dict = {'display_name': recipient, 'email': email}
 
         if c.user:
-            owner_id = get_package_owner(package)
-            if owner_id:
-                owner = User.get(owner_id)
-                owner_dict = owner.as_dict()
-                owner_dict['name'] = owner.fullname if owner.fullname else owner.name
-                if msg:
-                    model.repo.new_revision()
-                    if recipient == None:
-                        send_notification(owner_dict, email_dict)
-                    else:
-                        self._send_message(recipient, email, email_dict)
-                    self._mark_owner_as_contacted(c.userobj, pkg_id)
-                    h.flash_notice(_("Message sent"))
-                else:
-                    h.flash_error(_("No message"))
+            if msg:
+                send_notification(recipient_dict, email_dict)
+                self._mark_package_as_contacted(c.userobj, pkg_id)
+                h.flash_notice(_("Message sent"))
             else:
-                h.flash_error(_("No owner found"))
+                h.flash_error(_("No message"))
         else:
             h.flash_error(_("Please login"))
 
-    def _mark_owner_as_contacted(self, userobj, pkg_id):
-        """Mark this user as having already contacted the package owner"""
+    def _mark_package_as_contacted(self, userobj, pkg_id):
+        """Mark this user as having already emailed the contact person of the package."""
+
+        model.repo.new_revision()
 
         if "contacted" not in userobj.extras:
             userobj.extras['contacted'] = []
@@ -414,12 +396,9 @@ käytä yllä olevaa sähköpostiosoitetta.'
         package_title = package.title if package.title else package.name
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
-            # Todo: this should take the specific contact address, not just the first contact email
-            email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
-            
-            emails = [con[1] for con in email_tuples]
-            email = fn.first(emails)
-            
+
+            email = utils.get_package_contact_email(pkg_id)
+
             # consequently, this now prints "Dear email@address.com", should be contact_0_name instead
             recipient = email
 
@@ -427,7 +406,7 @@ käytä yllä olevaa sähköpostiosoitetta.'
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
             subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
-            self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue, recipient, email)
+            self._send_if_allowed(pkg_id, subject, recipient, email, user_msg, epilogue, prologue)
         else:
             h.flash_error(_("Please login"))
 
@@ -466,11 +445,14 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
 
             log.info("Attempting to send email (access request); user id = {u}, package = {p}".format(u=c.userobj.id, p=pkg_id))
 
+            email = utils.get_package_contact_email(pkg_id)
+            recipient = email
+
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
             subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
-            self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
+            self._send_if_allowed(pkg_id, subject, recipient, email, user_msg, epilogue, prologue)
         else:
             h.flash_error(_("Please login"))
 
