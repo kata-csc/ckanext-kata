@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-09 09:14+0000\n"
+"POT-Creation-Date: 2014-10-09 09:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5091,7 +5091,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:37
 msgid ""
 "Search keywords from okm-tieteenala ontology, select keywords with enter or "
-"mouse click. Note that the disciplines are provided in Finnish only."
+"mouse click. Note that the disciplines are provided only in Finnish for now."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:38
