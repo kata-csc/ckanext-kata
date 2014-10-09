@@ -464,10 +464,12 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
+            log.info("Attempting to send email (access request); user id = {u}, package = {p}".format(u=c.userobj.id, p=pkg_id))
+
             user_msg = request.params.get('msg', '')
             prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
-            subject = _("Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title)
+            subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
             self._send_if_allowed(pkg_id, subject, user_msg, prologue, epilogue)
         else:
             h.flash_error(_("Please login"))
