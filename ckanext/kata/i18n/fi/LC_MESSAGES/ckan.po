@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-09 09:00+0000\n"
+"POT-Creation-Date: 2014-10-09 09:10+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -908,39 +908,39 @@ msgstr "Palveluun tuotujen metatietojen lähteet"
 msgid "Finnish social science data archive"
 msgstr "Yhteiskuntatieteellinen tietoarkisto"
 
-#: ckanext/kata/theme/templates/home/index.html:142
+#: ckanext/kata/theme/templates/home/index.html:139
 msgid "Data Archive and Aila Data Service"
 msgstr "Tietoarkisto ja Palveluportaali Aila"
 
-#: ckanext/kata/theme/templates/home/index.html:145
+#: ckanext/kata/theme/templates/home/index.html:142
 msgid "../../base/images/img_fsd_logo_en.png"
 msgstr "../../base/images/img_fsd_logo_fi.png"
 
-#: ckanext/kata/theme/templates/home/index.html:146
+#: ckanext/kata/theme/templates/home/index.html:143
 msgid "https://services.fsd.uta.fi/index?lang=en"
 msgstr "https://services.fsd.uta.fi"
 
-#: ckanext/kata/theme/templates/home/index.html:147
+#: ckanext/kata/theme/templates/home/index.html:144
 msgid "../../base/images/logo_aila_en.png"
 msgstr "../../base/images/logo_aila_fi.png"
 
-#: ckanext/kata/theme/templates/home/index.html:150
+#: ckanext/kata/theme/templates/home/index.html:147
 msgid "Other research metadata services in Finland"
 msgstr "Muut tutkimuksen metatietopalvelut Suomessa"
 
-#: ckanext/kata/theme/templates/home/index.html:152
+#: ckanext/kata/theme/templates/home/index.html:149
 msgid "Language bank of Finland"
 msgstr "Kielipankki"
 
-#: ckanext/kata/theme/templates/home/index.html:155
+#: ckanext/kata/theme/templates/home/index.html:149
 msgid "Browse language resources"
 msgstr "Kielitieteen aineistot"
 
-#: ckanext/kata/theme/templates/home/index.html:162
+#: ckanext/kata/theme/templates/home/index.html:156
 msgid "About the service"
 msgstr "Tietoa palvelusta"
 
-#: ckanext/kata/theme/templates/home/index.html:166
+#: ckanext/kata/theme/templates/home/index.html:160
 msgid "Maintenance window: Every fourth monday of each month from 4 pm to 6 pm"
 msgstr "Huoltoikkuna: kuukauden neljäs maanantai kello 16.00-18.00"
 
@@ -991,10 +991,14 @@ msgid "All fields"
 msgstr "Kaikki kentät"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:30
+msgid "Start typing…"
+msgstr "Kirjoita tähän…"
+
+#: ckanext/kata/theme/templates/kata/dummy.html:33
 msgid "Owner org"
 msgstr "Organisaatio"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:33
+#: ckanext/kata/theme/templates/kata/dummy.html:36
 msgid ""
 " <p>Organizations act like publishing departments for datasets (for "
 "example, the Department of Health). This means that datasets can be "
