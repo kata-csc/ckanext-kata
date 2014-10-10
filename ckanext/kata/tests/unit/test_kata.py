@@ -478,6 +478,9 @@ class TestHelpers(TestCase):
     def test_get_authors(self):
         assert helpers.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
 
+    def test_get_urn_fi_address(self):
+        package = copy.deepcopy(TEST_DATADICT)
+        self.assertTrue(helpers.get_urn_fi_address(package).startswith('http://urn.fi/urn:nbn:fi:csc-kata'))
 
 class TestActions(TestCase):
     '''

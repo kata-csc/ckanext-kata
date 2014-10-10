@@ -9,12 +9,14 @@
 
 {% block primary_content %}
   <section class="faq" id="kata_faq">
-   <section class="module"><h2 class="module-heading"><a id="faq-kata-metadata">{{ _('Etsin and metadata') }}</a></h2>
+   <section class="module"><h2 class="module-heading"><a id="faq-kata-metadata">{{ _('Basic information of Etsin') }}</a></h2>
      <div class="module-content">
       <h3 class="question">{{ _('What is Etsin?') }}</h3>
-      <p>{{ _('Etsin is a database and search service for research data. The service is produced as part of the Finnish National Research Data Initiative (TTA), an effort by the Ministry of Education and Culture.') }}</p>
+      <p>{{ _('Etsin is a research data finder. The service is produced by the Finnish Ministry of Education and Culture and maintained by CSC - IT Center for Science Ltd.') }}</p>
       <h3 class="question">{{ _('What kind of data does Etsin contain?') }}</h3>
       <p>{{ _('Etsin contains metadata of research data, from various branches of science. Etsin does not contain the actual data itself, but the service allows you to browse and search for available data and lets you know how and where to gain access to it.') }}</p>
+      <h3 class="question">{{ _('Which browsers does Etsin support?') }}</h3>
+      <p>{{ _('Etsin supports most of the popular modern browsers, like Mozilla Firefox, Google Chrome, Safari and Internet Explorer. Old versions of these browsers aren\'t necessarily supported.') }}</p>
      </div>
    </section>
    <section class="module"><h2 class="module-heading"><a id="faq-add-dataset">{{ _('Adding and modifying metadata') }}</a></h2>
@@ -29,6 +31,8 @@
        <p>{{ _('It means that Etsin creates automatically a default workflow to REMS (Resource Entitlement Management System). REMS is a service for managing access rights to research data. With it you can specify that a user must send an application in the REMS service to you to gain access to your data. Find out more from: ') }}<a href="https://confluence.csc.fi/display/REMS/Home">{{ _('REMS.')  }}</a></p>
        <h3 class="question">{{ _('I\'m trying to accept an application in REMS but the link to the form received by email is empty.') }}</h3>
        <p>{{ _('Most likely the distributor\'s email address isn\'t bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the person accepting the application. To fix this, log in to reetta.csc.fi with identity bound to the email address or change the dataset\'s distributor\'s email address to a valid one.') }}</p>
+       <h3 class="question">{{ _('I want to add a URL instead of plain text in author/keyword/actor field. Is it resolved?') }}</h3>
+       <p>{{ _('Currently URLs are not resolved so for instance an ORCID will be displayed in its given format in dataset and search pages.') }}</p>
      </div>
    </section>
    <section class="module"><h2 class="module-heading"><a id="faq-search">{{ _('Search: page and features') }}</a></h2>
@@ -38,6 +42,8 @@
        <h3 class="question">{{ _('I can\'t make a search query I want from advanced search.') }}</h3>
        <p>{{ _('You can make more complex search queries by using Solr query syntax. See more in: ') }}</p>
        <a href="http://lucene.apache.org/core/2_9_4/queryparsersyntax.html">{{ _('Solr query syntax') }}</a>
+       <h3 class="question">{{ _('My search page is in English, why are the facet choices in Finnish?') }}</h3>
+       <p>{{ _('Facets are generated from the existing datasets in the search engine. If certain types of words are a majority in datasets, they will take the leading positions in facets too. Thus the facets may contain words in some specific language or from specific fields of science because they are so much more popular than others.') }}</p>
      </div>
    </section>
    <section class="module"><h2 class="module-heading"><a id="faq-user">{{ _('User related features') }}</a></h2>
@@ -76,7 +82,7 @@
       <div class="faq-helpdesk">
         <p>
           {{ _('Didn\'t find the question and answer you were looking for? You can submit additional questions to: ') }}<br />
-          <b><i>kata-help at postit.csc.fi</i></b>
+          <b><i>etsin (at) postit.csc.fi</i></b>
         </p>
       </div>
     </div>

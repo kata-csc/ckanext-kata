@@ -10,7 +10,7 @@ import json
 import re
 import datetime
 
-from ckan.lib.base import g, c
+from ckan.lib.base import g, c, _
 from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
@@ -234,6 +234,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'filter_system_users': helpers.filter_system_users,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
+            'get_contributors': helpers.get_contributors,
             'get_dict_errors': helpers.get_dict_errors,
             'get_dict_field_errors': helpers.get_dict_field_errors,
             'get_distributor': helpers.get_distributor,
@@ -249,11 +250,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_related_urls': helpers.get_related_urls,
             'get_rdf_extras': helpers.get_rdf_extras,
             'get_rightscategory': helpers.get_rightscategory,
+            'get_urn_fi_address': helpers.get_urn_fi_address,
             'get_visibility_options': helpers.get_visibility_options,
             'has_agents_field': helpers.has_agents_field,
             'has_contacts_field': helpers.has_contacts_field,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'kata_sorted_extras': helpers.kata_sorted_extras,
+            'modify_error_summary': helpers.modify_error_summary,
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'string_to_list': helpers.string_to_list,
@@ -446,6 +449,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # facets_dict.update(kata_facet_titles)
         facets_dict = kata_facet_titles
+        return facets_dict
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        facets_dict['organization'] = _('Organizations')
         return facets_dict
 
     def extract_search_params(self, data_dict):

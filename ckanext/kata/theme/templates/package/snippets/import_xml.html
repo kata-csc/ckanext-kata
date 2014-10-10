@@ -12,6 +12,6 @@
         <input id="xmlfile" type="file" placeholder="/path/to/file.xml" value="" name="xmlfile"/>
       </div>
       {{ form.select('format', label=_('Format'), options=[{'value': 'ddi', 'text': 'DDI2'}, {'value': 'oai-pmh', 'text': 'OAI-PMH/OAI DC'}], selected='ddi', error=error, classes=['control-full']) }}
-      <button class='btn' name='upload' value='metadata' type='submit'>{{ _("Upload") }}</button>
+      <button class='btn' name='upload' value='metadata' type='submit' onclick="window.onbeforeunload = null; return true;">{{ _("Upload") }}</button>
     </form>
 </section>

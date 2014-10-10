@@ -26,8 +26,11 @@ test the translation easily, use this file #}
   {{ _('Discipline') }}<br />
   {{ _('All fields') }}<br />
 
-{# Error message for missing organization #}
-{{ _('Owner org') }}
+  {# overwriting CKAN spelling error #}
+  {{ _('Start typing…') }}<br />
+
+  {# Error message for missing organization #}
+  {{ _('Owner org') }}
 
   {# Translated in 2.2 #}
   {% trans %}

@@ -26,7 +26,7 @@
                         {{ _('What is Etsin?') }}
                       </h3>
                       <p>
-                        {{ _('Etsin is a service for gathering and finding data from various fields of research. It allows you to search for data according to your needs and to provide your own datasets for others to find and reuse.') }}
+                        {{ _('Etsin is a research data finder. The service gathers data from various fields of research to be searched and reused. Etsin allows you to search for data according to your needs and to provide your own datasets for others to find and reuse.') }}
                       </p>
                       <p>
                         {{ _('The research data itself is not stored in Etsin. Rather, Etsin allows you to search for and browse datasets based on their metadata.') }}
@@ -35,16 +35,16 @@
                         {{ _('What is metadata?') }}
                       </h3>
                       <p>
-                        {{ _('Metadata is data about data. Metadata describes important features of the data such as authors, subjects, the fields of research the data pertains to, storage formats, and licenses.') }}
+                        {{ _('Metadata is data about data. This is a record that provides information describing the data and how to access it. Firstly, metadata describes important features of the data such as authors, subjects, the fields of research the data pertains to, storage formats, and licenses.') }}
                       </p>
                       <p>
-                        {{ _('The content of metadata varies depending on what kind of data is being described. However, Etsin provides a common ground by employing a common set of metadata fields tailored for research data. In the interest of consistency with other services, the metadata conforms to the minimum metadata model defined by the Finnish National Research Data Initiative (TTA).') }}
+                        {{ _('However, the content of metadata varies depending on what kind of data is being described. The Etsin provides a common ground by employing a common set of metadata fields tailored for research data. In the interest of consistency with other services, the metadata conforms to the minimum metadata model defined by the Finnish National Research Data Initiative (TTA).') }}
                       </p>
                       <h3>
                         {{ _('Is this service for me?') }}
                       </h3>
                       <p>
-                        {{ _('Etsin aims to collect datasets from various sources and from various branches of science and to be a single point of access to all kinds of research data.') }}
+                        {{ _('Etsin aims to collect datasets from various sources and from various fields of science and to be a single point of access to all kinds of research data.') }}
                       </p>
                       <p>
                         {{ _('You do not have to be a professional scientist or researcher in order to search for data. Useful data can be generated and reused anywhere and by anyone.') }}
@@ -82,8 +82,8 @@
                   <a href="{{ _('http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli/c90929e4-3b7e-42a2-8419-a6481decb67d') }}"><span class="format-label" data-format="pdf" property="dc:format"></span> {{ _('Minimum metadata model') }}</a> {{ _('(In Finnish)') }}
                 </p>
                 <p>
-                  {{ _('The preferred license recommended by TTA is the Creative Commons 3.0 family. Learn more about the licenses at Creative Commons:') }}<br /><br />
-                <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/3.0/88x31.png"></a>
+                  {{ _('The preferred license is the Creative Commons 4.0 family. Learn more about the licenses at Creative Commons:') }}<br /><br />
+                <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/4.0/88x31.png"></a>
                 </p>
               </div>   
             </div>
@@ -136,11 +136,8 @@
 {% block secondary_content %}
         <h1>{{ _('Integrated metadata sources') }}</h1>
         <section class="module">
-            <h4 class="module-heading-add-dataset">{{ _("Finnish social science data archive") }}</h4>
+            <h4 class="module-heading-add-dataset">{{ _("Finnish social science data archive") }} - {{ _('Data Archive and Aila Data Service') }}</h4>
             <div class="module-content">
-                <div class="metadata-source">
-                    {{ _('Data Archive and Aila Data Service') }}
-                </div>
                 <a href="http://www.fsd.uta.fi/en/">
                     <img src="{{ _('../../base/images/img_fsd_logo_en.png') }}"></a>
                 <a href="{{ _('https://services.fsd.uta.fi/index?lang=en') }}">
@@ -149,11 +146,8 @@
         </section>
         <h1>{{ _('Other research metadata services in Finland') }}</h1>
         <section class="module">
-            <h4 class="module-heading-add-dataset">{{ _("Language bank of Finland") }}</h4>
+            <h4 class="module-heading-add-dataset">{{ _("Language bank of Finland") }} - {{ _('Browse language resources') }}</h4>
             <div class="module-content">
-                <div class="metadata-source">
-                    {{ _('Browse language resources') }}
-                </div>
                 <a href="https://metashare.csc.fi/">
                     <img src="../../base/images/logo_lb.png"></a>
             </div>
@@ -163,7 +157,7 @@
             <div class="module-content">
 
                 <span class="tta-orange strong">
-                    {{ _('Maintenance window: Fourth monday of a month from 4 pm to 6 pm') }}
+                    {{ _('Maintenance window: Every fourth monday of each month from 4 pm to 6 pm') }}
                 </span>
             </div>
         </section>
