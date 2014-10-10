@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-10 05:35+0000\n"
+"POT-Creation-Date: 2014-10-10 05:51+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -5064,11 +5064,17 @@ msgid "Subject"
 msgstr "Aihe"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:122
-msgid ""
-"Search keywords from KOKO ontology, select keywords with enter or mouse "
-"click."
+msgid "Search keywords from"
+msgstr "Etsi avainsanoja"
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:122
+msgid "http://finto.fi/koko/en/"
+msgstr "http://finto.fi/koko/fi/"
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:122
+msgid " ontology, select keywords with enter or mouse click."
 msgstr ""
-"Etsi avainsanoja (tageja) KOKO-ontologiasta. Valitse valittu avainsana "
+"-ontologiasta. Valitse valittu avainsana "
 "näppäimistösi enter-painikkeella tai hiiren klikkauksella."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:123
@@ -5640,12 +5646,23 @@ msgid "Relations"
 msgstr "Relaatiot"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
+msgid "Search words from"
+msgstr "Etsi sanoja"
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
+msgid "http://finto.fi/okm-tieteenala/en/"
+msgstr "http://finto.fi/okm-tieteenala/fi/"
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
+msgid "okm-tieteenala"
+msgstr "OKM:n tieteenalaluokituksesta"
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
 msgid ""
-"Search keywords from okm-tieteenala ontology, select keywords with enter "
-"or mouse click. Note that the disciplines are provided only in Finnish "
-"for now."
+"ontology, select keywords with enter or mouse click. Note that the "
+"disciplines are provided only in Finnish for now."
 msgstr ""
-"Etsi tieteenala OKM:n tieteenalaluokituksesta. Valitse oikea sana enter-"
+". Valitse oikea sana enter-"
 "painikkeella tai hiirenklikkauksella. Huomaa, että tieteenalat ovat tällä"
 " hetkellä saatavilla vain suomeksi."
 
@@ -6005,7 +6022,4 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
-
-#~ msgid "File information"
-#~ msgstr "Tiedoston tietoja"
 
