@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-10 05:51+0000\n"
+"POT-Creation-Date: 2014-10-10 07:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -200,7 +200,7 @@ msgstr ""
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
 
-#: ckanext/kata/plugin.py:453 ckanext/kata/theme/templates/header.html:120
+#: ckanext/kata/plugin.py:454 ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/organization/index.html:3
 #: ckanext/kata/theme/templates/organization/index.html:6
 #: ckanext/kata/theme/templates/organization/index.html:18
@@ -239,7 +239,7 @@ msgstr ""
 
 #: ckanext/kata/validators.py:57
 #, python-format
-msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
+msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 
 #: ckanext/kata/validators.py:104
@@ -1872,35 +1872,18 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:56
-msgid "Pids"
-msgstr ""
-
 #: ckanext/kata/theme/templates/macros/kata_form.html:57
-#: ckanext/kata/theme/templates/package/snippets/additional_info.html:53
-msgid "PID"
-msgstr ""
-
-#: ckanext/kata/theme/templates/macros/kata_form.html:58
-msgid "Langtitle"
-msgstr ""
-
-#: ckanext/kata/theme/templates/macros/kata_form.html:59
-msgid "Title + language"
-msgstr ""
-
-#: ckanext/kata/theme/templates/macros/kata_form.html:60
 msgid " extras"
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:79
+#: ckanext/kata/theme/templates/macros/kata_form.html:76
 msgid ""
 "See further information about the error(s) from the field in question. Note, "
 "that errors in resource url may be in resource related data, like file type "
 "and algorithm."
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:85
+#: ckanext/kata/theme/templates/macros/kata_form.html:82
 msgid "Optional"
 msgstr ""
 
@@ -2292,6 +2275,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:46
 msgid "Version"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/additional_info.html:53
+msgid "PID"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:60
@@ -4652,8 +4639,8 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:123
 msgid ""
-"Field is compulsory.<br /><br />Add keywords (tags) that describe your data. "
-"Once you start typing, you will automatically get suggestions for matching "
+"Field is compulsory.<br /><br />Add keywords that describe your data. Once "
+"you start typing, you will automatically get suggestions for matching "
 "keywords. You can then select the appropriate suggestion with a mouse click, "
 "or you can enter your own keywords. If you make a mistake, you can remove a "
 "keyword by clicking the 'x' next to it.<br /><br />The suggestions are "
@@ -5123,7 +5110,7 @@ msgid "Search words from"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
-msgid "http://finto.fi/okm-tieteenala/en"
+msgid "http://finto.fi/okm-tieteenala/en/"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36

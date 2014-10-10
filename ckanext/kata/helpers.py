@@ -452,3 +452,25 @@ def get_urn_fi_address(package):
         template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
         return template % {'pid': pid}
     return ''
+
+def modify_error_summary(errors):
+    '''
+    Modifies error_summary keys. Otherwise the keys in database are printed, which leads
+    to strings like "Lantitle", "Tag string" etc.
+
+    :param errors: error summary dictionary
+    :return: errors: keys as specified in settings.ERRORS are changed
+
+    '''
+    # Saw an effect, where Tag string and Tags both were displayed and they were identical
+    if (errors.get('Tag string', False) and errors.get('Tags', False)) and \
+       (errors.get('Tag string') == errors.get('Tags')):
+        errors.pop('Tag string')
+
+    for (key, value) in settings.ERRORS.items():
+        if errors and errors.get(key, False):
+            errors[value] = errors.get(key)
+            errors.pop(key)
+
+    return errors
+

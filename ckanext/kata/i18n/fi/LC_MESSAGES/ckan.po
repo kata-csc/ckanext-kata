@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-10 05:51+0000\n"
+"POT-Creation-Date: 2014-10-10 07:28+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -202,7 +202,7 @@ msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/plugin.py:453 ckanext/kata/theme/templates/header.html:120
+#: ckanext/kata/plugin.py:454 ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/organization/index.html:3
 #: ckanext/kata/theme/templates/organization/index.html:6
 #: ckanext/kata/theme/templates/organization/index.html:18
@@ -241,9 +241,10 @@ msgstr "Tuottaja"
 
 #: ckanext/kata/validators.py:57
 #, python-format
-msgid "Tag \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
+msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
-"Tagin \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: \"\n"
+"Avainsanan \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: "
+"\"\n"
 "\"'_.()/#+."
 
 #: ckanext/kata/validators.py:104
@@ -1634,10 +1635,10 @@ msgid ""
 "are chosen from suggestions or you can also provide your own word if "
 "suitable is not available."
 msgstr ""
-"Avainsanat (tagit): avainsanoissa on käytössä JavaScript-valitsin, joka "
-"hakee ehdotuksia sanoiksi KOKO-ontologiasta, kts. http://finto.fi/. "
-"Avainsanat valitaan ehdotuksista, mutta voit valita myös oman sanan jos "
-"sopivaa ei löydy."
+"Avainsanat: avainsanoissa on käytössä JavaScript-valitsin, joka hakee "
+"ehdotuksia sanoiksi KOKO-ontologiasta, kts. http://finto.fi/. Avainsanat "
+"valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei "
+"löydy."
 
 #: ckanext/kata/theme/templates/kata/help.html:146
 msgid ""
@@ -2237,28 +2238,11 @@ msgstr "Lomakkeella on virheellisiä syötteitä:"
 msgid "Add"
 msgstr "Lisää"
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:56
-msgid "Pids"
-msgstr "PID:t"
-
 #: ckanext/kata/theme/templates/macros/kata_form.html:57
-#: ckanext/kata/theme/templates/package/snippets/additional_info.html:53
-msgid "PID"
-msgstr ""
-
-#: ckanext/kata/theme/templates/macros/kata_form.html:58
-msgid "Langtitle"
-msgstr "Otsikko + kieli"
-
-#: ckanext/kata/theme/templates/macros/kata_form.html:59
-msgid "Title + language"
-msgstr "Otsikko + kieli"
-
-#: ckanext/kata/theme/templates/macros/kata_form.html:60
 msgid " extras"
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:79
+#: ckanext/kata/theme/templates/macros/kata_form.html:76
 msgid ""
 "See further information about the error(s) from the field in question. "
 "Note, that errors in resource url may be in resource related data, like "
@@ -2268,7 +2252,7 @@ msgstr ""
 "resurssiin liittyvät virheet saattavat olla käyttötietojen lisäksi "
 "suositeltavissa tiedoissa, esimerkiksi tiedostotyypissä ja algoritmissa."
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:85
+#: ckanext/kata/theme/templates/macros/kata_form.html:82
 msgid "Optional"
 msgstr "Valinnainen"
 
@@ -2683,6 +2667,10 @@ msgstr "Ylläpitäjä"
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:46
 msgid "Version"
 msgstr "Versio"
+
+#: ckanext/kata/theme/templates/package/snippets/additional_info.html:53
+msgid "PID"
+msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:60
 msgid "State"
@@ -5074,13 +5062,13 @@ msgstr "http://finto.fi/koko/fi/"
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:122
 msgid " ontology, select keywords with enter or mouse click."
 msgstr ""
-"-ontologiasta. Valitse valittu avainsana "
-"näppäimistösi enter-painikkeella tai hiiren klikkauksella."
+"-ontologiasta. Valitse valittu avainsana näppäimistösi enter-painikkeella"
+" tai hiiren klikkauksella."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:123
 msgid ""
-"Field is compulsory.<br /><br />Add keywords (tags) that describe your "
-"data. Once you start typing, you will automatically get suggestions for "
+"Field is compulsory.<br /><br />Add keywords that describe your data. "
+"Once you start typing, you will automatically get suggestions for "
 "matching keywords. You can then select the appropriate suggestion with a "
 "mouse click, or you can enter your own keywords. If you make a mistake, "
 "you can remove a keyword by clicking the 'x' next to it.<br /><br />The "
@@ -5088,8 +5076,8 @@ msgid ""
 "http://finto.fi/en/). Note that you must have JavaScript enabled in your "
 "browser in order for the automatic suggestions to work."
 msgstr ""
-"Kenttä on pakollinen.<br /><br />Lisää avainsanoja (tag) jotka kuvailevat"
-" dataasi. Kun alat kirjoittaa sanaa, saat automaattisesti ehdotuksia "
+"Kenttä on pakollinen.<br /><br />Lisää avainsanoja jotka kuvailevat "
+"dataasi. Kun alat kirjoittaa sanaa, saat automaattisesti ehdotuksia "
 "avainsanoiksi. Voit valita ehdotuksista sopivan klikkaamalla sitä "
 "hiirellä. Voit myös kirjoittaa oman sanasi, jos ehdotetuista "
 "vaihtoehdoista ei löydy sopivaa. Voit poistaa jo syöttämäsi avainsanan "
@@ -5662,9 +5650,8 @@ msgid ""
 "ontology, select keywords with enter or mouse click. Note that the "
 "disciplines are provided only in Finnish for now."
 msgstr ""
-". Valitse oikea sana enter-"
-"painikkeella tai hiirenklikkauksella. Huomaa, että tieteenalat ovat tällä"
-" hetkellä saatavilla vain suomeksi."
+". Valitse oikea sana enter-painikkeella tai hiirenklikkauksella. Huomaa, "
+"että tieteenalat ovat tällä hetkellä saatavilla vain suomeksi."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:37
 msgid ""

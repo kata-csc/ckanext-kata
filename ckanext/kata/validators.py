@@ -54,7 +54,7 @@ def kata_tag_name_validator(value, context):
 
     tagname_match = re.compile('[\w \-.()/#+:]*$', re.UNICODE)
     if not tagname_match.match(value):
-        raise Invalid(_('Tag "%s" must be alphanumeric '
+        raise Invalid(_('Keyword "%s" must be alphanumeric '
                         'characters or symbols: -_.()/#+:') % (value))
     return value
 
