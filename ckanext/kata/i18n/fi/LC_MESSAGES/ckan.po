@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-10 05:14+0000\n"
+"POT-Creation-Date: 2014-10-10 05:35+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -1163,13 +1163,18 @@ msgstr ""
 msgid ""
 "I want to add a URL instead of plain text in author/keyword/actor field. "
 "Is it resolved?"
-msgstr "Haluaisin lisätä URL:n tavallisen merkkijonon sijaan tekijä-, asiasana- tai toimijakenttään. Resolvoidaanko URL?"
+msgstr ""
+"Haluaisin lisätä URL:n tavallisen merkkijonon sijaan tekijä-, asiasana- "
+"tai toimijakenttään. Resolvoidaanko URL?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:35
 msgid ""
 "Currently URLs are not resolved so for instance an ORCID will be "
 "displayed in its given format in dataset and search pages."
-msgstr "Tällä hetkellä URL:ja ei vielä resolvoida. Täten esimerkiksi ORCID näytetään alkuperäisessä muodossaan muun muassa tietoaineiston sivulla sekä hakunäkymässä."
+msgstr ""
+"Tällä hetkellä URL:ja ei vielä resolvoida. Täten esimerkiksi ORCID "
+"näytetään alkuperäisessä muodossaan muun muassa tietoaineiston sivulla "
+"sekä hakunäkymässä."
 
 #: ckanext/kata/theme/templates/kata/faq.html:38
 #: ckanext/kata/theme/templates/kata/faq.html:75
@@ -1207,7 +1212,9 @@ msgstr "Solr-hakujen syntaksi"
 
 #: ckanext/kata/theme/templates/kata/faq.html:45
 msgid "My search page is in English, why are the facet choices in Finnish?"
-msgstr "Minkä vuoksi hakusivuni voi olla englanninkielinen kun taas tarjotut fasetit ovatkin eri kielellä?"
+msgstr ""
+"Minkä vuoksi hakusivuni voi olla englanninkielinen kun taas tarjotut "
+"fasetit ovatkin eri kielellä?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:46
 msgid ""
@@ -1216,7 +1223,13 @@ msgid ""
 "leading positions in facets too. Thus the facets may contain words in "
 "some specific language or from specific fields of science because they "
 "are so much more popular than others."
-msgstr "Fasetit generoidaan hakukoneessa olevien tietoaineistojen metadatoista. Tällöin tietyn tyyppiset ja tietyn kieliset hakusanat ottavat faseteissa kärkisijat. Tyypillisesti esimerkiksi massanoudetut metadatat ovat tietyltä tieteenalalta ja sisältävät sen alan asiasanoja ja tieteenaloja. Tällöin helposti niitä ilmaantuu hakukoneen indeksiin suuria määriä, mikä vaikuttaa myös fasettien sisältöön."
+msgstr ""
+"Fasetit generoidaan hakukoneessa olevien tietoaineistojen metadatoista. "
+"Tällöin tietyn tyyppiset ja tietyn kieliset hakusanat ottavat faseteissa "
+"kärkisijat. Tyypillisesti esimerkiksi massanoudetut metadatat ovat "
+"tietyltä tieteenalalta ja sisältävät sen alan asiasanoja ja tieteenaloja."
+" Tällöin helposti niitä ilmaantuu hakukoneen indeksiin suuria määriä, "
+"mikä vaikuttaa myös fasettien sisältöön."
 
 #: ckanext/kata/theme/templates/kata/faq.html:49
 #: ckanext/kata/theme/templates/kata/faq.html:78
@@ -2080,7 +2093,6 @@ msgstr "Projektin nimi"
 
 #: ckanext/kata/theme/templates/kata/help.html:301
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:5
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:24
 #: ckanext/kata/theme/templates/user/edit_user_form.html:21
 #: ckanext/kata/theme/templates/user/read.html:107
 msgid "Organization"
@@ -2088,13 +2100,13 @@ msgstr "Organisaatio"
 
 #: ckanext/kata/theme/templates/kata/help.html:305
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:261
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:34
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Algorithm"
 msgstr "Algoritmi"
 
 #: ckanext/kata/theme/templates/kata/help.html:307
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:257
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:23
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Checksum"
 msgstr "Tarkistussumma"
 
@@ -2134,6 +2146,7 @@ msgid "Eg. cc-by"
 msgstr "Esim. cc-by"
 
 #: ckanext/kata/theme/templates/kata/help.html:341
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:11
 msgid "MIME type"
 msgstr "MIME-tyyppi"
 
@@ -4828,7 +4841,6 @@ msgid "Discipline/branch of science"
 msgstr "Tieteenala"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:251
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:11
 msgid "File format"
 msgstr "Tiedoston muoto"
 
@@ -5250,6 +5262,10 @@ msgstr ""
 "joka vastaa UTC-aikavyöhykettä.<br /><br />Huomaa, että kalenteri vaatii "
 "toimiakseen JavaScriptin selaimeen."
 
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:24
+msgid "Choose an organization"
+msgstr "Valitse organisaatio"
+
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:27
 msgid "No organization"
 msgstr "Ei organisaatiota"
@@ -5465,8 +5481,8 @@ msgstr ""
 " muotoilla sitä käyttäen Markdown-muotoilua."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:7
-msgid "File information"
-msgstr "Tiedoston tietoja"
+msgid "Technical details of the data file"
+msgstr "Tiedoston tekniset tiedot"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:11
 msgid "MIME. eg. application/pdf, application/txt"
@@ -5482,11 +5498,11 @@ msgstr ""
 "oikea MIME-tyyppi. MIME-tyyppejä ovat esimerkiksi: application/octet-"
 "stream, application/pdf ja text/plain."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:23
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "hex string from eg. MD5, SHA-1"
 msgstr "tarkistussumma (MD5, SHA-2) hexamuodossa"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
 msgid ""
 "The checksum of the data file can be provided here. This can be for "
 "example a fixed length hex string taken from the data generated with a "
@@ -5498,11 +5514,11 @@ msgstr ""
 "merkkijono.<br /><br />Tarkistussummat ovat hyvä tapa varmistaa, että "
 "sisältö on pysynyt samana ja että tiedosto on aito."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:34
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "eg. MD5"
 msgstr "esim. MD5, SHA-2"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid ""
 "If the checksum is provided above, the algorithm used for generating the "
 "hash should be provided here. There are many different hash algorithms "
@@ -5990,6 +6006,6 @@ msgstr "Jäsen lähtien:"
 msgid "API Key"
 msgstr "API-avain"
 
-#~ msgid "No owner found"
-#~ msgstr "Omistajaa ei löydetty"
+#~ msgid "File information"
+#~ msgstr "Tiedoston tietoja"
 
