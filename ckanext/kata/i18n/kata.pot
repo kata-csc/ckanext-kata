@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-09 12:17+0000\n"
+"POT-Creation-Date: 2014-10-10 05:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
-#: ckanext/kata/controllers.py:726
+#: ckanext/kata/controllers.py:711
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -111,74 +111,70 @@ msgstr ""
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:374 ckanext/kata/controllers.py:685
+#: ckanext/kata/controllers.py:361 ckanext/kata/controllers.py:670
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:376
+#: ckanext/kata/controllers.py:363
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:378
-msgid "No owner found"
-msgstr ""
-
-#: ckanext/kata/controllers.py:380 ckanext/kata/controllers.py:432
-#: ckanext/kata/controllers.py:475 ckanext/kata/controllers.py:507
-#: ckanext/kata/controllers.py:529
+#: ckanext/kata/controllers.py:365 ckanext/kata/controllers.py:414
+#: ckanext/kata/controllers.py:460 ckanext/kata/controllers.py:492
+#: ckanext/kata/controllers.py:514
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:495
+#: ckanext/kata/controllers.py:480
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:504 ckanext/kata/controllers.py:526
+#: ckanext/kata/controllers.py:489 ckanext/kata/controllers.py:511
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:566
+#: ckanext/kata/controllers.py:551
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:568
+#: ckanext/kata/controllers.py:553
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:626
+#: ckanext/kata/controllers.py:611
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:648
+#: ckanext/kata/controllers.py:633
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:668
+#: ckanext/kata/controllers.py:653
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:670 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:655 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:690
+#: ckanext/kata/controllers.py:675
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:785
+#: ckanext/kata/controllers.py:770
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:810
+#: ckanext/kata/controllers.py:795
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:815
+#: ckanext/kata/controllers.py:800
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:819
+#: ckanext/kata/controllers.py:804
 msgid "Invalid upload URL"
 msgstr ""
 
@@ -417,7 +413,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:101
 #: ckanext/kata/theme/templates/kata/faq.html:6
-#: ckanext/kata/theme/templates/kata/faq.html:58
+#: ckanext/kata/theme/templates/kata/faq.html:62
 msgid "FAQ"
 msgstr ""
 
@@ -970,7 +966,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:22
-#: ckanext/kata/theme/templates/kata/faq.html:68
+#: ckanext/kata/theme/templates/kata/faq.html:72
 msgid "Adding and modifying metadata"
 msgstr ""
 
@@ -1040,45 +1036,70 @@ msgid ""
 "dataset's distributor's email address to a valid one."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:36
-#: ckanext/kata/theme/templates/kata/faq.html:71
-msgid "Search: page and features"
+#: ckanext/kata/theme/templates/kata/faq.html:34
+msgid ""
+"I want to add a URL instead of plain text in author/keyword/actor field. Is "
+"it resolved?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:35
+msgid ""
+"Currently URLs are not resolved so for instance an ORCID will be displayed in"
+" its given format in dataset and search pages."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:38
+#: ckanext/kata/theme/templates/kata/faq.html:75
+msgid "Search: page and features"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:40
 msgid "There are two search fields, why?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:39
+#: ckanext/kata/theme/templates/kata/faq.html:41
 msgid ""
 "The search field in the upmost part makes it easier to search for data from "
 "anywhere in the site. You can use any search field you prefer."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:40
+#: ckanext/kata/theme/templates/kata/faq.html:42
 msgid "I can't make a search query I want from advanced search."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:41
+#: ckanext/kata/theme/templates/kata/faq.html:43
 msgid ""
 "You can make more complex search queries by using Solr query syntax. See more"
 " in: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:42
+#: ckanext/kata/theme/templates/kata/faq.html:44
 msgid "Solr query syntax"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:45
-#: ckanext/kata/theme/templates/kata/faq.html:74
+msgid "My search page is in English, why are the facet choices in Finnish?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:46
+msgid ""
+"Facets are generated from the existing datasets in the search engine. If "
+"certain types of words are a majority in datasets, they will take the leading"
+" positions in facets too. Thus the facets may contain words in some specific "
+"language or from specific fields of science because they are so much more "
+"popular than others."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/faq.html:49
+#: ckanext/kata/theme/templates/kata/faq.html:78
 msgid "User related features"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:47
+#: ckanext/kata/theme/templates/kata/faq.html:51
 msgid "I opened Etsin and chose log in, then I was suddenly already logged in."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:48
+#: ckanext/kata/theme/templates/kata/faq.html:52
 msgid ""
 "This may happen if you have previously logged in and then access Etsin via an"
 " unencrypted connection, e.g. using the address http://etsin.avointiede.fi. "
@@ -1088,11 +1109,11 @@ msgid ""
 "your identification cookie was sent and you were recognized."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:65
+#: ckanext/kata/theme/templates/kata/faq.html:69
 msgid "Etsin and metadata"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:80
+#: ckanext/kata/theme/templates/kata/faq.html:84
 msgid ""
 "Didn't find the question and answer you were looking for? You can submit "
 "additional questions to: "

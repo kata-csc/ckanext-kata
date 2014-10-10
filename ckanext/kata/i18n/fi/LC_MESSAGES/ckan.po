@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-09 12:17+0000\n"
+"POT-Creation-Date: 2014-10-10 05:14+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -34,7 +34,7 @@ msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
 #: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
-#: ckanext/kata/controllers.py:726
+#: ckanext/kata/controllers.py:711
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
@@ -113,74 +113,70 @@ msgstr "Käyttäjällä %s on nyt muokkausoikeudet tietoaineistoon %s"
 msgid "No such request found!"
 msgstr "Pyyntöä ei löytynyt."
 
-#: ckanext/kata/controllers.py:374 ckanext/kata/controllers.py:685
+#: ckanext/kata/controllers.py:361 ckanext/kata/controllers.py:670
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
-#: ckanext/kata/controllers.py:376
+#: ckanext/kata/controllers.py:363
 msgid "No message"
 msgstr "Viesti on tyhjä"
 
-#: ckanext/kata/controllers.py:378
-msgid "No owner found"
-msgstr "Omistajaa ei löydetty"
-
-#: ckanext/kata/controllers.py:380 ckanext/kata/controllers.py:432
-#: ckanext/kata/controllers.py:475 ckanext/kata/controllers.py:507
-#: ckanext/kata/controllers.py:529
+#: ckanext/kata/controllers.py:365 ckanext/kata/controllers.py:414
+#: ckanext/kata/controllers.py:460 ckanext/kata/controllers.py:492
+#: ckanext/kata/controllers.py:514
 msgid "Please login"
 msgstr "Kirjaudu sisään"
 
-#: ckanext/kata/controllers.py:495
+#: ckanext/kata/controllers.py:480
 msgid "Dataset not found"
 msgstr "Tietoaineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:504 ckanext/kata/controllers.py:526
+#: ckanext/kata/controllers.py:489 ckanext/kata/controllers.py:511
 msgid "Already contacted"
 msgstr "Olet ottanut yhteyttä jo aiemmin"
 
-#: ckanext/kata/controllers.py:566
+#: ckanext/kata/controllers.py:551
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:568
+#: ckanext/kata/controllers.py:553
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr " (Tai jos käytät OpenID:tä, sitä ei ole liitetty käyttäjätiliisi.)"
 
-#: ckanext/kata/controllers.py:626
+#: ckanext/kata/controllers.py:611
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:648
+#: ckanext/kata/controllers.py:633
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
-#: ckanext/kata/controllers.py:668
+#: ckanext/kata/controllers.py:653
 msgid "Feature disabled"
 msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:670 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:655 ckanext/kata/validators.py:155
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
-#: ckanext/kata/controllers.py:690
+#: ckanext/kata/controllers.py:675
 msgid "Bad Captcha. Please try again."
 msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
-#: ckanext/kata/controllers.py:785
+#: ckanext/kata/controllers.py:770
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:810
+#: ckanext/kata/controllers.py:795
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:815
+#: ckanext/kata/controllers.py:800
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:819
+#: ckanext/kata/controllers.py:804
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
@@ -435,7 +431,7 @@ msgstr "Ohjeet"
 
 #: ckanext/kata/theme/templates/header.html:101
 #: ckanext/kata/theme/templates/kata/faq.html:6
-#: ckanext/kata/theme/templates/kata/faq.html:58
+#: ckanext/kata/theme/templates/kata/faq.html:62
 msgid "FAQ"
 msgstr "FAQ"
 
@@ -1063,7 +1059,7 @@ msgstr ""
 "selainversioita ei välttämättä tueta."
 
 #: ckanext/kata/theme/templates/kata/faq.html:22
-#: ckanext/kata/theme/templates/kata/faq.html:68
+#: ckanext/kata/theme/templates/kata/faq.html:72
 msgid "Adding and modifying metadata"
 msgstr "Metatietojen lisääminen ja muokkaaminen"
 
@@ -1163,16 +1159,28 @@ msgstr ""
 " identiteetillä, johon sähköposti on sidottu tai muuta tietoaineiston "
 "jakelijan sähköpostiosoite Hakan tunnistamaksi."
 
-#: ckanext/kata/theme/templates/kata/faq.html:36
-#: ckanext/kata/theme/templates/kata/faq.html:71
+#: ckanext/kata/theme/templates/kata/faq.html:34
+msgid ""
+"I want to add a URL instead of plain text in author/keyword/actor field. "
+"Is it resolved?"
+msgstr "Haluaisin lisätä URL:n tavallisen merkkijonon sijaan tekijä-, asiasana- tai toimijakenttään. Resolvoidaanko URL?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:35
+msgid ""
+"Currently URLs are not resolved so for instance an ORCID will be "
+"displayed in its given format in dataset and search pages."
+msgstr "Tällä hetkellä URL:ja ei vielä resolvoida. Täten esimerkiksi ORCID näytetään alkuperäisessä muodossaan muun muassa tietoaineiston sivulla sekä hakunäkymässä."
+
+#: ckanext/kata/theme/templates/kata/faq.html:38
+#: ckanext/kata/theme/templates/kata/faq.html:75
 msgid "Search: page and features"
 msgstr "Haku: sivu ja ominaisuudet"
 
-#: ckanext/kata/theme/templates/kata/faq.html:38
+#: ckanext/kata/theme/templates/kata/faq.html:40
 msgid "There are two search fields, why?"
 msgstr "Sivustolla on kaksi hakukenttää, miksi?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:39
+#: ckanext/kata/theme/templates/kata/faq.html:41
 msgid ""
 "The search field in the upmost part makes it easier to search for data "
 "from anywhere in the site. You can use any search field you prefer."
@@ -1181,11 +1189,11 @@ msgstr ""
 "sinun on helppo hakea dataa riippumatta missä päin palvelua olet. Voit "
 "vapaasti käyttää mitä hakukenttää haluat."
 
-#: ckanext/kata/theme/templates/kata/faq.html:40
+#: ckanext/kata/theme/templates/kata/faq.html:42
 msgid "I can't make a search query I want from advanced search."
 msgstr "Tarkennettu haku ei mahdollista haluamani haun tekemistä."
 
-#: ckanext/kata/theme/templates/kata/faq.html:41
+#: ckanext/kata/theme/templates/kata/faq.html:43
 msgid ""
 "You can make more complex search queries by using Solr query syntax. See "
 "more in: "
@@ -1193,22 +1201,35 @@ msgstr ""
 "Voit tehdä monimuotoisempia hakuja käyttäen Solr-hakukoneen syntaksia. "
 "Lue lisää osoitteesta: "
 
-#: ckanext/kata/theme/templates/kata/faq.html:42
+#: ckanext/kata/theme/templates/kata/faq.html:44
 msgid "Solr query syntax"
 msgstr "Solr-hakujen syntaksi"
 
 #: ckanext/kata/theme/templates/kata/faq.html:45
-#: ckanext/kata/theme/templates/kata/faq.html:74
+msgid "My search page is in English, why are the facet choices in Finnish?"
+msgstr "Minkä vuoksi hakusivuni voi olla englanninkielinen kun taas tarjotut fasetit ovatkin eri kielellä?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:46
+msgid ""
+"Facets are generated from the existing datasets in the search engine. If "
+"certain types of words are a majority in datasets, they will take the "
+"leading positions in facets too. Thus the facets may contain words in "
+"some specific language or from specific fields of science because they "
+"are so much more popular than others."
+msgstr "Fasetit generoidaan hakukoneessa olevien tietoaineistojen metadatoista. Tällöin tietyn tyyppiset ja tietyn kieliset hakusanat ottavat faseteissa kärkisijat. Tyypillisesti esimerkiksi massanoudetut metadatat ovat tietyltä tieteenalalta ja sisältävät sen alan asiasanoja ja tieteenaloja. Tällöin helposti niitä ilmaantuu hakukoneen indeksiin suuria määriä, mikä vaikuttaa myös fasettien sisältöön."
+
+#: ckanext/kata/theme/templates/kata/faq.html:49
+#: ckanext/kata/theme/templates/kata/faq.html:78
 msgid "User related features"
 msgstr "Käyttäjiin liittyvät ominaisuudet"
 
-#: ckanext/kata/theme/templates/kata/faq.html:47
+#: ckanext/kata/theme/templates/kata/faq.html:51
 msgid "I opened Etsin and chose log in, then I was suddenly already logged in."
 msgstr ""
 "Avasin Etsimen ja valitsin Kirjaudu sisään, mutta yhtäkkiä olinkin jo "
 "kirjautunut sisään."
 
-#: ckanext/kata/theme/templates/kata/faq.html:48
+#: ckanext/kata/theme/templates/kata/faq.html:52
 msgid ""
 "This may happen if you have previously logged in and then access Etsin "
 "via an unencrypted connection, e.g. using the address "
@@ -1225,11 +1246,11 @@ msgstr ""
 "sisään\", sinut ohjattiin käyttämään salattua https-yhteyttä ja tällöin "
 "sinut pystyttiin tunnistamaan evästeen (cookie) avulla."
 
-#: ckanext/kata/theme/templates/kata/faq.html:65
+#: ckanext/kata/theme/templates/kata/faq.html:69
 msgid "Etsin and metadata"
 msgstr "Etsin ja metadata"
 
-#: ckanext/kata/theme/templates/kata/faq.html:80
+#: ckanext/kata/theme/templates/kata/faq.html:84
 msgid ""
 "Didn't find the question and answer you were looking for? You can submit "
 "additional questions to: "
@@ -5969,6 +5990,6 @@ msgstr "Jäsen lähtien:"
 msgid "API Key"
 msgstr "API-avain"
 
-#~ msgid "Data access request for dataset / Datapyyntö tietoaineistolle %s"
-#~ msgstr ""
+#~ msgid "No owner found"
+#~ msgstr "Omistajaa ei löydetty"
 
