@@ -199,6 +199,24 @@ def validate_access_application_url(key, data, errors, context):
         raise StopOnError
 
 
+def validate_access_application_download_url(key, data, errors, context):
+    '''
+    Validate the access_application_download_URL field of a dataset.
+    The field is used for expressing the URL at which the actual data
+    can be downloaded after entitlement through the access application
+    server has been given.
+    '''
+
+    if data.get(('availability',)) == 'access_application':
+        value = data.get(key)
+        log.debug("*** Value: %s" % value)
+        # if value:
+        #     url_not_empty(value)
+    else:
+        data.pop(key, None)
+        raise StopOnError
+
+
 def check_direct_download_url(key, data, errors, context):
     '''
     Validate dataset's direct download URL.
