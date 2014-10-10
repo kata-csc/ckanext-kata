@@ -87,7 +87,7 @@ class Schemas:
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
-        schema['pids'] = {'provider': [not_missing, unicode, co.flattened_to_extras],
+        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
                           'id': [not_missing, va.validate_general, unicode, co.flattened_to_extras],
                           'type': [not_missing, unicode, co.flattened_to_extras],
                           'primary': [ignore_missing, unicode, co.flattened_to_extras]}
@@ -266,6 +266,7 @@ class Schemas:
         for key in settings.KATA_FIELDS:
             schema[key] = [co.convert_from_extras_kata, ignore_missing, unicode]
 
+        schema['__after'] = [co.check_primary_pids]
         schema['agent'] = [co.flattened_from_extras, ignore_missing]
         schema['contact'] = [co.flattened_from_extras, ignore_missing]
         schema['access_application_new_form'] = [unicode],

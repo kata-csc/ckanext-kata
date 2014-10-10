@@ -202,15 +202,18 @@ def package_update(context, data_dict):
         data_dict['resources'] = old_resources
         data_dict = utils.dataset_to_resource(data_dict)
 
-    # Get all PIDs (except for package.id and package.name) from database and add new relevant PIDS there
-    data_dict['pids'] = package_data.get('pids', [])
+    # If no PIDs, generate primary data PID
+    pids = data_dict.get('pids', [{}])
+    if not ''.join([pid.get('id', '') for pid in pids]):
+        data_dict['pids'] += [{'id': utils.generate_pid(),
+                              'type': 'data',
+                              'primary': 'True',
+                              'provider': 'kata',
+                              }]
 
-    new_version_pid = data_dict.get('new_version_pid')
-    if not new_version_pid and data_dict.get('generate_version_pid') == 'on':
-        new_version_pid = utils.generate_pid()
 
-    if new_version_pid:
-        data_dict['pids'] += [{'id': new_version_pid,
+    if data_dict.get('generate_version_pid') == 'on':
+        data_dict['pids'] += [{'id': utils.generate_pid(),
                               'type': 'version',
                               'provider': 'kata',
                               }]
