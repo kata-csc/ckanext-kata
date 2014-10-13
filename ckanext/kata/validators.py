@@ -392,6 +392,8 @@ def check_pids(key, data, errors, context):
     '''
     Check that compulsory PIDs exist.
     '''
+
+    # Empty PIDs are removed in actions, so this check should do
     if data.get((u'pids', 0, u'id'), None) is None:
         raise Invalid({'key': 'pids', 'value': _('Missing dataset PIDs')})
 
