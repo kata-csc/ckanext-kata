@@ -284,12 +284,11 @@ def datapid_to_name(string):
     return re.sub(*settings.DATAPID_TO_NAME_REGEXES, string=string)
 
 
-def get_pids_by_type(pid_type, data_dict, primary=None, use_id_or_name=False):
+def get_pids_by_type(pid_type, data_dict, primary=None, use_package_id=False):
     '''
     Get all of package PIDs of certain type
 
-    :param use_id_or_name: Set to True to use package.id and package.name to try to get primary PIDs if none found
-                           from 'pids'
+    :param use_package_id: Set to True to get package.id as primary metadata PID
     :param primary: True to get only primary pids, or False to get all pids without primary='True',
                     use None to get all pids
     :param pid_type: PID type to get (data, metadata, version)
@@ -297,14 +296,12 @@ def get_pids_by_type(pid_type, data_dict, primary=None, use_id_or_name=False):
     :rtype : list of dicts
     '''
     extra = []
-    if primary and use_id_or_name:
-        if pid_type == 'data' and data_dict.get('name'):
-            extra = [{'primary': 'True', 'type': pid_type, 'id': data_dict['name']}]
+    if use_package_id:
         if pid_type == 'metadata' and data_dict.get('id'):
-            extra = [{'primary': 'True', 'type': pid_type, 'id': data_dict['id']}]
+            extra = [{'primary': u'True', 'type': pid_type, 'id': data_dict['id']}]
 
     return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
-            (primary is None or asbool(x.get('primary', 'False')) == primary)] or extra
+            (primary is None or asbool(x.get('primary', 'False')) == primary)] + extra
 
 
 def get_package_id_by_data_pids(data_dict):

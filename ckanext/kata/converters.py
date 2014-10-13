@@ -466,3 +466,18 @@ def default_name_from_id(key, data, errors, context):
 
         data[key] = utils.datapid_to_name(id)
 
+
+def check_primary_pids(key, data, errors, context):
+    '''
+    Check that primary pids exist, if not, get them from package.id and package.name
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    data_pids = utils.get_pids_by_type('data', {'pids': data.get(('pids',))}, primary=True)
+
+    if not data_pids:
+        data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})

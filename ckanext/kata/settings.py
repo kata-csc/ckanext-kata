@@ -2,6 +2,9 @@
 
 from ckan.common import OrderedDict
 from pylons.i18n.translation import gettext_noop as N_
+
+PID_TYPES = ['data', 'metadata', 'version']
+
 # Overridden CKAN role permissions
 ROLE_PERMISSIONS = OrderedDict([
     ('admin', ['admin']),

@@ -93,6 +93,47 @@ def package_show(context, data_dict):
     return pkg_dict1
 
 
+def _handle_pids(context, data_dict):
+    '''
+    Do some PID modifications to data_dict
+    '''
+    if not 'pids' in data_dict:
+        data_dict['pids'] = []
+    else:
+        # Clean up empty PIDs
+        non_empty = []
+
+        for pid in data_dict['pids']:
+            if pid.get('id'):
+                non_empty.append(pid)
+
+        data_dict['pids'] = non_empty
+
+    if data_dict.get('generate_version_pid') == 'on':
+        data_dict['pids'] += [{'id': utils.generate_pid(),
+                               'type': 'version',
+                               'provider': 'Etsin',
+                               }]
+
+    # If no primary data PID, generate one if this is a new dataset
+    if not utils.get_pids_by_type('data', data_dict, primary=True):
+        model = context["model"]
+        session = context["session"]
+
+        if data_dict.get('id'):
+            query = session.query(model.Package.id).filter_by(name=data_dict['id'])  # id contains name !
+            result = query.first()
+
+            if result:
+                return  # Existing dataset, don't generate new data PID
+
+        data_dict['pids'].insert(0, {'id': utils.generate_pid(),
+                                     'type': 'data',
+                                     'primary': 'True',
+                                     'provider': 'Etsin',
+                                     })
+
+
 def package_create(context, data_dict):
     """
     Creates a new dataset.
@@ -118,14 +159,7 @@ def package_create(context, data_dict):
 
     data_dict = utils.dataset_to_resource(data_dict)
 
-    # Get version PID (or generate a new one?)
-    new_version_pid = data_dict.get('new_version_pid')
-
-    if not new_version_pid and data_dict.get('generate_version_pid', None) == 'on':
-        new_version_pid = utils.generate_pid()
-
-    if new_version_pid:
-        data_dict['pids'] = data_dict.get('pids', []) + [{'id': new_version_pid, 'type': 'version', 'provider': 'kata'}]
+    _handle_pids(context, data_dict)
 
     # Add current user as a distributor if not already present.
     if user:
@@ -202,18 +236,7 @@ def package_update(context, data_dict):
         data_dict['resources'] = old_resources
         data_dict = utils.dataset_to_resource(data_dict)
 
-    # Get all PIDs (except for package.id and package.name) from database and add new relevant PIDS there
-    data_dict['pids'] = package_data.get('pids', [])
-
-    new_version_pid = data_dict.get('new_version_pid')
-    if not new_version_pid and data_dict.get('generate_version_pid') == 'on':
-        new_version_pid = utils.generate_pid()
-
-    if new_version_pid:
-        data_dict['pids'] += [{'id': new_version_pid,
-                              'type': 'version',
-                              'provider': 'kata',
-                              }]
+    _handle_pids(context, data_dict)
 
     # # Check if data version has changed and if so, generate a new version_PID
     # if not data_dict['version'] == temp_pkg_dict['version']:
