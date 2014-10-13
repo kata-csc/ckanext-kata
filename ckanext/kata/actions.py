@@ -124,6 +124,36 @@ def _handle_pids(context, data_dict):
                                }]
 
 
+def _add_ida_download_url(context, data_dict):
+    '''
+    Generate a download URL for actual data if no download URL has been specified,
+    an access application is to be used for availability,
+    and the dataset appears to be from IDA.
+
+    TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
+    '''
+
+    availability = data_dict.get('availability')
+    create_new_form = data_dict.get('access_application_new_form')
+
+    if availability == 'access_application' and create_new_form in [u'True', u'on']:
+        log.debug("Dataset wants a new access application")
+
+        url = data_dict.get('access_application_download_URL')
+
+        data_pid = utils.get_primary_pid('data', data_dict)
+
+        if data_pid:
+            if not url:
+                log.debug("Checking for dataset IDAiness through data PID: {p}".format(p=data_pid))
+                if utils.is_ida_pid(data_pid):
+                    new_url = utils.generate_ida_download_url(data_pid)
+                    log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))
+                    data_dict['access_application_download_URL'] = new_url
+        else:
+            log.warn("Failed to get primary data PID for dataset")
+
+
 def package_create(context, data_dict):
     """
     Creates a new dataset.
@@ -150,6 +180,8 @@ def package_create(context, data_dict):
     data_dict = utils.dataset_to_resource(data_dict)
 
     _handle_pids(context, data_dict)
+
+    _add_ida_download_url(context, data_dict)
 
     # Add current user as a distributor if not already present.
     if user:
@@ -227,6 +259,8 @@ def package_update(context, data_dict):
         data_dict = utils.dataset_to_resource(data_dict)
 
     _handle_pids(context, data_dict)
+
+    _add_ida_download_url(context, data_dict)
 
     # # Check if data version has changed and if so, generate a new version_PID
     # if not data_dict['version'] == temp_pkg_dict['version']:

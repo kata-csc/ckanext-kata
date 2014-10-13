@@ -303,9 +303,9 @@ def get_pids_by_type(pid_type, data_dict, primary=None, use_package_id=False):
     return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
             (primary is None or asbool(x.get('primary', 'False')) == primary)] + extra
 
-def get_primary_pid(pid_type, data_dict, use_id_or_name=False):
+def get_primary_pid(pid_type, data_dict, use_package_id=False):
     '''
-    Returns the first primary PID of the given type for a package.
+    Returns the primary PID of the given type for a package.
     This is a convenience function that returns the first primary PID
     returned by get_pids_by_type.
 
@@ -313,11 +313,12 @@ def get_primary_pid(pid_type, data_dict, use_id_or_name=False):
 
     :param pid_type: PID type to get (data, metadata, version)
     :param data_dict:
+    :param use_package_id: Set to True to get package.id as primary metadata PID
     :return: the primary PID of the given type
     :rtype: str or unicode
     '''
 
-    pids = get_pids_by_type(pid_type=pid_type, data_dict=data_dict, primary=True, use_id_or_name=use_id_or_name)
+    pids = get_pids_by_type(pid_type=pid_type, data_dict=data_dict, primary=True, use_package_id=use_package_id)
     if pids:
         return pids[0]['id']
     else:

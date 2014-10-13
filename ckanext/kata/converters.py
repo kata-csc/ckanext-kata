@@ -467,27 +467,6 @@ def default_name_from_id(key, data, errors, context):
         data[key] = utils.datapid_to_name(id)
 
 
-def add_ida_download_url(key, data, errors, context):
-    '''
-    Generate a download URL for actual data if no download URL has been specified,
-    an access application is to be used, and the dataset appears to be from IDA.
-
-    TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
-    '''
-
-    availability = data.get(('availability',))
-    create_new_form = data.get(('access_application_new_form',))
-
-    if availability == 'access_application' and create_new_form in [u'True', u'on']:
-            url = data.get(key)
-            if not url or url is missing:
-                data_pid = utils.get_primary_pid(pid_type="data", data_dict=data, use_id_or_name=True)
-                if utils.is_ida_pid(data_pid):
-                    new_url = utils.generate_ida_download_url(data_pid)
-                    log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))
-                    data[key] = new_url
-
-
 def check_primary_pids(key, data, errors, context):
     '''
     Check that primary pids exist, if not, get them from package.id and package.name

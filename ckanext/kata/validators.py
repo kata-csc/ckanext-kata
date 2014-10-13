@@ -210,9 +210,8 @@ def validate_access_application_download_url(key, data, errors, context):
 
     if data.get(('availability',)) == 'access_application':
         value = data.get(key)
-        log.debug("*** Value: %s" % value)
-        # if value:
-        #     url_not_empty(value)
+        if value:
+            url_not_empty(key, data, errors, context)
     else:
         data.pop(key, None)
         raise StopOnError
