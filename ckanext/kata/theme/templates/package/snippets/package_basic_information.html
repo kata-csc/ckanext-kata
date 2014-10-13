@@ -61,7 +61,7 @@
 
             {% call form.input('agent__' ~ index ~ '__name', label=_('Author'), id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname, Firstname and/or http://orcid.org/'), value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
               {% if loop.index0 == 0 %}
-                {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter either the author\'s name or an identifier URI, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
+                {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields, one author per a field pair. You can add more fields for additional authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded, but note that the first author/organisation field pair must have values.<br /><br />You can enter the author\'s name or ID, such as an ORCID identifier. If you choose to enter a name, please use format "familyname, firstname".')) }}
               {% endif %}
             {% endcall %}
 
@@ -96,7 +96,7 @@
 
               {% call form.input('agent__' ~ index ~ '__name', label=_('Name'), id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname, Firstname and/or http://orcid.org/'), value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
                 {% if loop.index0 == 0 %}
-                  {{ kata_form.tooltip(tooltip=_("Field is not compulsory.<br /><br />Name of the contributor.")) }}
+                  {{ kata_form.tooltip(tooltip=_("Field is not compulsory.<br /><br />Contributor is a person or an organisation who, in addition to the author, has contributed significantly to the dataset.<br /><br />Type names of contributors and organisations to the corresponding fields, one contributor per a field pair. You can add more fields for additional contributors by pressing the \'+\' button. If you leave an added contributor field empty, it is discarded.<br /><br />You can enter the contributor's name or ID such as an ORCID identifier.")) }}
                 {% endif %}
               {% endcall %}
 

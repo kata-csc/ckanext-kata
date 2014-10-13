@@ -49,7 +49,7 @@ ORGANIZATION_MEMBER_PERMISSIONS = {
 AGENT_ROLES = {
     'author': N_('Author'),
     'contributor': N_('Contributor'),
-    'distributor': N_('Distributor/Publisher'),
+    'distributor': N_('Distributor'),
     'funder': N_('Funder'),
     'owner': N_('Owner'),
     'producer': N_('Producer'),
@@ -187,4 +187,5 @@ ERRORS = {
     u'Langtitle': u'Title + language',
     u'Tag string': u'Keywords',
     u'Tags': u'Keywords',
+    u'Owner org': u'Owner organization',
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-10 07:28+0000\n"
+"POT-Creation-Date: 2014-10-13 13:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/settings.py:50 ckanext/kata/theme/templates/kata/help.html:300
+#: ckanext/kata/settings.py:50 ckanext/kata/theme/templates/kata/help.html:303
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:22
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:27
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:62
@@ -220,16 +220,17 @@ msgid "Contributor"
 msgstr ""
 
 #: ckanext/kata/settings.py:52
-msgid "Distributor/Publisher"
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:13
+msgid "Distributor"
 msgstr ""
 
-#: ckanext/kata/settings.py:53 ckanext/kata/theme/templates/kata/help.html:291
+#: ckanext/kata/settings.py:53 ckanext/kata/theme/templates/kata/help.html:294
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:90
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:84
 msgid "Funder"
 msgstr ""
 
-#: ckanext/kata/settings.py:54 ckanext/kata/theme/templates/kata/help.html:296
+#: ckanext/kata/settings.py:54 ckanext/kata/theme/templates/kata/help.html:299
 msgid "Owner"
 msgstr ""
 
@@ -418,14 +419,14 @@ msgid "FAQ"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:106
-#: ckanext/kata/theme/templates/kata/help.html:233
-#: ckanext/kata/theme/templates/kata/help.html:398
+#: ckanext/kata/theme/templates/kata/help.html:236
+#: ckanext/kata/theme/templates/kata/help.html:401
 msgid "Stats"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:119
 #: ckanext/kata/theme/templates/kata/help.html:125
-#: ckanext/kata/theme/templates/kata/help.html:389
+#: ckanext/kata/theme/templates/kata/help.html:392
 #: ckanext/kata/theme/templates/package/search.html:15
 #: ckanext/kata/theme/templates/user/read.html:14
 msgid "Add Dataset"
@@ -576,8 +577,8 @@ msgid "About"
 msgstr ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:10
-#: ckanext/kata/theme/templates/kata/help.html:332
-#: ckanext/kata/theme/templates/kata/help.html:336
+#: ckanext/kata/theme/templates/kata/help.html:335
+#: ckanext/kata/theme/templates/kata/help.html:339
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:10
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:26
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:24
@@ -603,8 +604,8 @@ msgid "my-group"
 msgstr ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:20
-#: ckanext/kata/theme/templates/kata/help.html:322
-#: ckanext/kata/theme/templates/kata/help.html:356
+#: ckanext/kata/theme/templates/kata/help.html:325
+#: ckanext/kata/theme/templates/kata/help.html:359
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:20
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:112
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:7
@@ -896,12 +897,12 @@ msgid "Event"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:23
-#: ckanext/kata/theme/templates/kata/help.html:328
+#: ckanext/kata/theme/templates/kata/help.html:331
 msgid "Geographic coverage"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:26
-#: ckanext/kata/theme/templates/kata/help.html:319
+#: ckanext/kata/theme/templates/kata/help.html:322
 msgid "Discipline"
 msgstr ""
 
@@ -1124,7 +1125,7 @@ msgid "Etsin instructions"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:14
-#: ckanext/kata/theme/templates/kata/help.html:380
+#: ckanext/kata/theme/templates/kata/help.html:383
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:4
 msgid "General information"
 msgstr ""
@@ -1151,7 +1152,7 @@ msgid "Dataset: a single set of metadata (of data)"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:30
-#: ckanext/kata/theme/templates/kata/help.html:383
+#: ckanext/kata/theme/templates/kata/help.html:386
 msgid "Search (Datasets)"
 msgstr ""
 
@@ -1316,7 +1317,7 @@ msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:108
-#: ckanext/kata/theme/templates/kata/help.html:386
+#: ckanext/kata/theme/templates/kata/help.html:389
 #: ckanext/kata/theme/templates/package/package_rights.html:7
 msgid "Dataset"
 msgstr ""
@@ -1373,10 +1374,11 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:131
 msgid ""
-"The upper part of the page contains the data fields that are the compulsory "
-"minimum for every dataset. Language and project information can be skipped by"
-" checking the checkbox in the section in question. The fields are shortly "
-"explained here."
+"The upper part of the page mostly contains the data fields that are the "
+"compulsory minimum for every dataset. Language and project information can be"
+" skipped by checking the checkbox in the section in question. The fields are "
+"shortly explained here, the popup marked with '?' sign will provide more "
+"information on add dataset page."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:134
@@ -1397,31 +1399,36 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:143
 msgid ""
+"Contributors: Contributor and contributors's organisation. Multiple "
+"author/organisation pairs can be given."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:146
+msgid ""
 "Keywords: Keywords use KOKO ontology from http://finto.fi/. The keywords are "
 "chosen from suggestions or you can also provide your own word if suitable is "
 "not available."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:146
+#: ckanext/kata/theme/templates/kata/help.html:149
 msgid ""
 "Languages: List of languages the data contains, in ISO 639-3 format. If there"
 " is no language, you can check the checkbox."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:149
-msgid ""
-"Distributor / publisher contact information: Provide a name, phone number, "
-"valid email address and a homepage so that others can contact the publisher /"
-" distributor about the data. This can be you as well. The email address will "
-"be hidden from others than dataset editors and a messaging tool is provided "
-"for others instead."
-msgstr ""
-
 #: ckanext/kata/theme/templates/kata/help.html:152
-msgid "Agents and roles:"
+msgid ""
+"Distributor: Provide a name, phone number, valid email address and a homepage"
+" so that others can contact the distributor about the data. This can be you "
+"as well. The email address will be hidden from others than dataset editors "
+"and a messaging tool is provided for others instead."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:155
+msgid "Agents and roles:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/help.html:158
 msgid ""
 "Project that produced this dataset: This information can be skipped by "
 "checking the checkbox. If the information is given, all four fields must be "
@@ -1429,17 +1436,17 @@ msgid ""
 " hidden to non-editors) and project's homepage."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:158
+#: ckanext/kata/theme/templates/kata/help.html:161
 msgid ""
 "Owner information: Data's owner's information, for example a name or an "
 "identification URL."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:161
+#: ckanext/kata/theme/templates/kata/help.html:164
 msgid "Identification information of data:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:164
+#: ckanext/kata/theme/templates/kata/help.html:167
 msgid ""
 "Permanent identifier: The permanent identifier is the data's unique "
 "identifier. If none is provided, Etsin will give it an URN identifier from "
@@ -1447,7 +1454,7 @@ msgid ""
 "to Etsin. This field can NOT be changed afterwards."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:167
+#: ckanext/kata/theme/templates/kata/help.html:170
 msgid ""
 "Version identifier: The version PID can be given or if left empty is "
 "generated by Etsin. Automatically generated identifiers will be URNs from the"
@@ -1455,19 +1462,19 @@ msgid ""
 "Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:170
+#: ckanext/kata/theme/templates/kata/help.html:173
 msgid ""
 "Modification date: Choose a modification date from the calendar tool. The "
 "default value is this moment."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:173
+#: ckanext/kata/theme/templates/kata/help.html:176
 msgid ""
 "Usage information tells where the data is located and/or how it can be "
 "accessed:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:176
+#: ckanext/kata/theme/templates/kata/help.html:179
 msgid ""
 "Dataset is available for use: Choose a suitable option for your data. Provide"
 " also the URL's required, the URL fields are displayed according to your "
@@ -1475,18 +1482,18 @@ msgid ""
 " distributor\"."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:179
+#: ckanext/kata/theme/templates/kata/help.html:182
 msgid ""
 "License: Choose a license from the popup menu. This will define who can use "
 "your data and possibly how they can use it."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:181
+#: ckanext/kata/theme/templates/kata/help.html:184
 #: ckanext/kata/theme/templates/package/snippets/recommended_form.html:10
 msgid "Recommended information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:183
+#: ckanext/kata/theme/templates/kata/help.html:186
 msgid ""
 "Beneath the required information are the recommended data fields that are by "
 "default hidden but can be toggled visible. It is useful to describe your data"
@@ -1494,28 +1501,28 @@ msgid ""
 "to your data, please fill them. Here are short explanations of the fields:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:186
+#: ckanext/kata/theme/templates/kata/help.html:189
 msgid "Coverage provides fields for spatial and temporal coverage:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:189
+#: ckanext/kata/theme/templates/kata/help.html:192
 msgid ""
 "Spatial coverage: Location names are retrieved the location name database at "
 "http://finto.fi/. Choose the locations covered in your data from the "
 "suggestions. You can also add your own location by typing and accepting it."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:192
+#: ckanext/kata/theme/templates/kata/help.html:195
 msgid ""
 "Temporal coverage: Choose a time period covered in your data using the date "
 "selector."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:195
+#: ckanext/kata/theme/templates/kata/help.html:198
 msgid "Relations:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:198
+#: ckanext/kata/theme/templates/kata/help.html:201
 msgid ""
 "Discipline/branch of science: The disciplines are chosen from the OKM-"
 "TIETEENALA ontology, from http://finto.fi/. The disciplines are provided only"
@@ -1523,27 +1530,27 @@ msgid ""
 "searching of the data."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:201
+#: ckanext/kata/theme/templates/kata/help.html:204
 msgid "File information is especially technical information about your data:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:204
+#: ckanext/kata/theme/templates/kata/help.html:207
 msgid ""
-"File format: The mimetype of the file, see http://www.iana.org/assignments"
+"MIME type: The mimetype of the file, see http://www.iana.org/assignments"
 "/media-types for a complete list."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:207
+#: ckanext/kata/theme/templates/kata/help.html:210
 msgid ""
 "Checksum and Algorithm: Checksum and the algorithm it was taken with, "
 "especially to verify that the file has not changed."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:210
+#: ckanext/kata/theme/templates/kata/help.html:213
 msgid "Dataset lifecycle events:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:213
+#: ckanext/kata/theme/templates/kata/help.html:216
 msgid ""
 "In case there are events in this dataset, fill all four (event, by whom, "
 "when, description) fields. Choose the event type from the list and provide "
@@ -1552,32 +1559,32 @@ msgid ""
 "adding one."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:216
+#: ckanext/kata/theme/templates/kata/help.html:219
 msgid "Free description:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:219
+#: ckanext/kata/theme/templates/kata/help.html:222
 msgid ""
 "Description: The description field can contain almost anything. Note, that "
 "the contents of the description field are visible in the search results, so "
 "giving a good description may bring more attention to your dataset."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:224
-#: ckanext/kata/theme/templates/kata/help.html:392
+#: ckanext/kata/theme/templates/kata/help.html:227
+#: ckanext/kata/theme/templates/kata/help.html:395
 msgid "Additional features"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:227
+#: ckanext/kata/theme/templates/kata/help.html:230
 msgid "Etsin contains several other features which are shortly covered here."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:229
-#: ckanext/kata/theme/templates/kata/help.html:395
+#: ckanext/kata/theme/templates/kata/help.html:232
+#: ckanext/kata/theme/templates/kata/help.html:398
 msgid "User profile"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:231
+#: ckanext/kata/theme/templates/kata/help.html:234
 msgid ""
 "User profile provides basic information about you, your dataset and actions. "
 "The user profile can be accessed from the upper right corner. The upper right"
@@ -1586,18 +1593,18 @@ msgid ""
 "Etsin: the changes must be done by your home organisation."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:235
+#: ckanext/kata/theme/templates/kata/help.html:238
 msgid ""
 "The Stats link will take you to the statistics page. The page will show you "
 "some general information about Etsin, its datasets and users."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:237
-#: ckanext/kata/theme/templates/kata/help.html:401
+#: ckanext/kata/theme/templates/kata/help.html:240
+#: ckanext/kata/theme/templates/kata/help.html:404
 msgid "REMS"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:239
+#: ckanext/kata/theme/templates/kata/help.html:242
 msgid ""
 "Etsin is integrated to a REMS service, Reetta. This means that you can define"
 " your data to be accessible only after an application form is filled and sent"
@@ -1607,17 +1614,17 @@ msgid ""
 "more from: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:240
+#: ckanext/kata/theme/templates/kata/help.html:243
 msgid "REMS manual"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:246
-#: ckanext/kata/theme/templates/kata/help.html:404
+#: ckanext/kata/theme/templates/kata/help.html:249
+#: ckanext/kata/theme/templates/kata/help.html:407
 #: ckanext/kata/theme/templates/package/read_base.html:36
 msgid "Dataset administration"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:248
+#: ckanext/kata/theme/templates/kata/help.html:251
 msgid ""
 "From the dataset view page you can choose a link to administer dataset rights"
 " if you have sufficient privileges to do so. From the administration page, "
@@ -1631,20 +1638,20 @@ msgid ""
 "CAPTCHA to get a new string from its reload button."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:251
+#: ckanext/kata/theme/templates/kata/help.html:254
 msgid ""
 "From the top of the page, from the member list table, you can remove users "
 "from their roles in this dataset. Note, that you can not remove the built-in "
 "user accounts, like visitor and logged_in, nor yourself."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:253
-#: ckanext/kata/theme/templates/kata/help.html:407
+#: ckanext/kata/theme/templates/kata/help.html:256
+#: ckanext/kata/theme/templates/kata/help.html:410
 #: ckanext/kata/theme/templates/package/snippets/info.html:22
 msgid "Metadata supplements"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:255
+#: ckanext/kata/theme/templates/kata/help.html:258
 msgid ""
 "If you have additional documents that describe your data beyond required and "
 "recommended fields, you can provide such extra information in metadata "
@@ -1652,7 +1659,7 @@ msgid ""
 "description of variables in your data."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:258
+#: ckanext/kata/theme/templates/kata/help.html:261
 msgid ""
 "Metadata supplements are separate documents that appear to viewers of the "
 "dataset as downloadable resources. In many cases the dataset will also appear"
@@ -1661,187 +1668,187 @@ msgid ""
 "office document formats) but is not guaranteed to work for all files."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:261
+#: ckanext/kata/theme/templates/kata/help.html:264
 msgid ""
 "Adding supplements to the metadata requires that you have editor privileges "
 "to the dataset."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:264
+#: ckanext/kata/theme/templates/kata/help.html:267
 msgid "To add metadata supplements for a dataset, follow these steps:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:266
+#: ckanext/kata/theme/templates/kata/help.html:269
 msgid ""
 "Open the dataset for editing and find the \"Add new supplement\" button on "
 "the left."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:267
+#: ckanext/kata/theme/templates/kata/help.html:270
 msgid ""
 "In the following form, click the button to upload the supplementary document "
 "from your computer to Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:268
+#: ckanext/kata/theme/templates/kata/help.html:271
 msgid "Enter a name and, optionally, a description for the supplement."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:269
+#: ckanext/kata/theme/templates/kata/help.html:272
 msgid ""
 "Finally, be sure to confirm adding the supplement to your dataset by clicking"
 " \"Add\" at the bottom of the form."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:272
-#: ckanext/kata/theme/templates/kata/help.html:410
+#: ckanext/kata/theme/templates/kata/help.html:275
+#: ckanext/kata/theme/templates/kata/help.html:413
 #: ckanext/kata/theme/templates/package/search.html:260
 msgid "API"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:274
+#: ckanext/kata/theme/templates/kata/help.html:277
 msgid "Etsin supports standard"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:276
+#: ckanext/kata/theme/templates/kata/help.html:279
 msgid ""
 "commands. In addition, Etsin supports addition and deletion of dataset "
 "editors with dataset_editor_add and dataset_editor_delete, respectively. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:277
+#: ckanext/kata/theme/templates/kata/help.html:280
 msgid ""
 "To add a dataset editor, provide also attributes: name (dataset's name), role"
 " (usually editor) and username (user login to add) "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:280
+#: ckanext/kata/theme/templates/kata/help.html:283
 msgid ""
 "The metadata model of Etsin is more complex than the default model in CKAN. "
 "An example of a dataset that can be created in Etsin, using Curl: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:290
+#: ckanext/kata/theme/templates/kata/help.html:293
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:92
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:88
 msgid "Funding id"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:292
+#: ckanext/kata/theme/templates/kata/help.html:295
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:89
 msgid "Project name"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:301
+#: ckanext/kata/theme/templates/kata/help.html:304
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:5
 #: ckanext/kata/theme/templates/user/edit_user_form.html:21
 #: ckanext/kata/theme/templates/user/read.html:107
 msgid "Organization"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:305
+#: ckanext/kata/theme/templates/kata/help.html:308
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:261
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Algorithm"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:307
+#: ckanext/kata/theme/templates/kata/help.html:310
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:257
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Checksum"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:312
+#: ckanext/kata/theme/templates/kata/help.html:315
 msgid "Contact name"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:313
+#: ckanext/kata/theme/templates/kata/help.html:316
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:161
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:31
 msgid "Phone"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:323
+#: ckanext/kata/theme/templates/kata/help.html:326
 msgid "Eg. collection"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:324
+#: ckanext/kata/theme/templates/kata/help.html:327
 msgid "Date in ISO 8601 format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:325
+#: ckanext/kata/theme/templates/kata/help.html:328
 msgid "Eg. person"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:331
-#: ckanext/kata/theme/templates/kata/help.html:335
+#: ckanext/kata/theme/templates/kata/help.html:334
+#: ckanext/kata/theme/templates/kata/help.html:338
 msgid "Title language, eg. fin"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:339
+#: ckanext/kata/theme/templates/kata/help.html:342
 msgid "Dataset's language(s), eg. eng,fin"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:340
+#: ckanext/kata/theme/templates/kata/help.html:343
 msgid "Eg. cc-by"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:341
+#: ckanext/kata/theme/templates/kata/help.html:344
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:11
 msgid "MIME type"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:342
+#: ckanext/kata/theme/templates/kata/help.html:345
 msgid "Automatically generated, if left empty"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:346
-#: ckanext/kata/theme/templates/kata/help.html:352
+#: ckanext/kata/theme/templates/kata/help.html:349
+#: ckanext/kata/theme/templates/kata/help.html:355
 msgid "Provider of the identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:347
+#: ckanext/kata/theme/templates/kata/help.html:350
 msgid "Eg. data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:348
+#: ckanext/kata/theme/templates/kata/help.html:351
 msgid "True, if primary data identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:353
+#: ckanext/kata/theme/templates/kata/help.html:356
 msgid "Eg. version"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:358
+#: ckanext/kata/theme/templates/kata/help.html:361
 msgid "Subjects as a comma separated string"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:359
-#: ckanext/kata/theme/templates/kata/help.html:360
+#: ckanext/kata/theme/templates/kata/help.html:362
+#: ckanext/kata/theme/templates/kata/help.html:363
 msgid "Time in ISO8601 format, eg. 2000-01-01T00:00:01"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:361
+#: ckanext/kata/theme/templates/kata/help.html:364
 msgid "ISO8601 format, eg. 2014-06-06T07:07:07"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:362
+#: ckanext/kata/theme/templates/kata/help.html:365
 msgid "Organization, see organizations in Etsin web user interface."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:363
+#: ckanext/kata/theme/templates/kata/help.html:366
 msgid "True or false, private datasets are not added to the search index."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:365
+#: ckanext/kata/theme/templates/kata/help.html:368
 msgid "YOUR-API-KEY"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:375
+#: ckanext/kata/theme/templates/kata/help.html:378
 msgid "Table of contents"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:418
+#: ckanext/kata/theme/templates/kata/help.html:421
 msgid "For additional help send email to: "
 msgstr ""
 
@@ -4448,20 +4455,17 @@ msgstr ""
 msgid "Agents and roles"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:13
-msgid "Distributor / publisher contact information"
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:27
 msgid "John Doe"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:28
 msgid ""
-"Field is compulsory.<br /><br />Type the name of the publisher. Publisher is "
-"someone or something that can be contacted if more information about the data"
-" is required or the person or organisation responsible for the data needs to "
-"be contacted."
+"Field is compulsory.<br /><br />Type the name of the distributor. Distributor"
+" is a person or an organisation who has the right to distribute the dataset "
+"or has published the dataset.<br /><br />You can add multiple distributors "
+"but the first one is treated as the primary contact to email based contacts "
+"by this service."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:31
@@ -4549,8 +4553,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:89
 msgid ""
 "Field is compulsory if checkbox 'This dataset was produced in a project.' is "
-"checked.<br /><br />Type the project's funding id. The funding id is not "
-"shown publicly."
+"checked.<br /><br />Type the project's funding id."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:103
@@ -4562,13 +4565,14 @@ msgid "Owner identity"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:121
-msgid "identification URL or name"
+msgid "name or ID such as ORCID"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:123
 msgid ""
-"Field is compulsory.<br /><br />Type the dataset owner's name or an "
-"identifier, for example an ORCID identifier."
+"Field is compulsory.<br /><br />Owner is a person or an organisation who "
+"decides upon the use of the dataset.<br /><br />Type the owner's name or ID, "
+"such as an ORCID identifier."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:5
@@ -4599,13 +4603,14 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:64
 msgid ""
-"Field is compulsory.<br /><br />Type names of authors and organisations to "
+"Field is compulsory.<br /><br />Author is a person or an organisation who has"
+" authored the dataset.<br /><br />Type names of authors and organisations to "
 "the corresponding fields, one author per a field pair. You can add more "
 "fields for additional authors by pressing the '+' button. If you leave an "
 "added author field empty, it is discarded, but note that the first "
-"author/organisation field pair must have values.<br /><br />You can enter "
-"either the author's name or an identifier URI, such as an ORCID identifier. "
-"If you choose to enter a name, please use format \"familyname, firstname\"."
+"author/organisation field pair must have values.<br /><br />You can enter the"
+" author's name or ID, such as an ORCID identifier. If you choose to enter a "
+"name, please use format \"familyname, firstname\"."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:68
@@ -4618,7 +4623,14 @@ msgid "Contributors"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:99
-msgid "Field is not compulsory.<br /><br />Name of the contributor."
+msgid ""
+"Field is not compulsory.<br /><br />Contributor is a person or an "
+"organisation who, in addition to the author, has contributed significantly to"
+" the dataset.<br /><br />Type names of contributors and organisations to the "
+"corresponding fields, one contributor per a field pair. You can add more "
+"fields for additional contributors by pressing the '+' button. If you leave "
+"an added contributor field empty, it is discarded.<br /><br />You can enter "
+"the contributor's name or ID such as an ORCID identifier."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:119

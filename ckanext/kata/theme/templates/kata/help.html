@@ -128,7 +128,7 @@
           {{ _('If you are logged in you will find "Add Dataset" button for example from the Datasets and Dashboard pages. This button brings you to the Add Dataset form. The Add Dataset page encourages and guides you to fill in the metadata as well as possible to ensure that metadata is of good quality and your data is as well described as possible. The fields are accompanied with a tooltip, "?", which will give instructions for that specific field.') }}
       </p>
       <h3 class="help-page">{{ _('Required information') }}</h3>
-          {{ _('The upper part of the page contains the data fields that are the compulsory minimum for every dataset. Language and project information can be skipped by checking the checkbox in the section in question. The fields are shortly explained here.') }}
+          {{ _('The upper part of the page mostly contains the data fields that are the compulsory minimum for every dataset. Language and project information can be skipped by checking the checkbox in the section in question. The fields are shortly explained here, the popup marked with \'?\' sign will provide more information on add dataset page.') }}
       <br /><br />
       <p>
           {{ _('Basic information about the dataset:') }}
@@ -140,13 +140,16 @@
           {{ _('Authors: Author and author\'s organisation. Multiple author/organisation pairs can be given.') }}
       </div>
       <div class="example">
+          {{ _('Contributors: Contributor and contributors\'s organisation. Multiple author/organisation pairs can be given.') }}
+      </div>
+      <div class="example">
           {{ _('Keywords: Keywords use KOKO ontology from http://finto.fi/. The keywords are chosen from suggestions or you can also provide your own word if suitable is not available.') }}
       </div>
       <div class="example">
           {{ _('Languages: List of languages the data contains, in ISO 639-3 format. If there is no language, you can check the checkbox.') }}
       </div>
       <div class="example">
-          {{ _('Distributor / publisher contact information: Provide a name, phone number, valid email address and a homepage so that others can contact the publisher / distributor about the data. This can be you as well. The email address will be hidden from others than dataset editors and a messaging tool is provided for others instead.') }}
+          {{ _('Distributor: Provide a name, phone number, valid email address and a homepage so that others can contact the distributor about the data. This can be you as well. The email address will be hidden from others than dataset editors and a messaging tool is provided for others instead.') }}
       </div>
       <p>
           {{ _('Agents and roles:') }}
@@ -201,7 +204,7 @@
           {{ _('File information is especially technical information about your data:') }}
       </p>
       <div class="example">
-          {{ _('File format: The mimetype of the file, see http://www.iana.org/assignments/media-types for a complete list.') }}
+          {{ _('MIME type: The mimetype of the file, see http://www.iana.org/assignments/media-types for a complete list.') }}
       </div>
       <div class="example">
           {{ _('Checksum and Algorithm: Checksum and the algorithm it was taken with, especially to verify that the file has not changed.') }}
