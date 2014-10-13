@@ -5,11 +5,12 @@ Validators for user inputs.
 """
 import logging
 from itertools import count
-
 import iso8601
 import re
 import urlparse
+
 from pylons.i18n import _
+from paste.deploy.converters import asbool
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
@@ -54,7 +55,7 @@ def kata_tag_name_validator(value, context):
 
     tagname_match = re.compile('[\w \-.()/#+:]*$', re.UNICODE)
     if not tagname_match.match(value):
-        raise Invalid(_('Tag "%s" must be alphanumeric '
+        raise Invalid(_('Keyword "%s" must be alphanumeric '
                         'characters or symbols: -_.()/#+:') % (value))
     return value
 
@@ -407,10 +408,23 @@ def check_langtitle(key, data, errors, context):
 
 def check_pids(key, data, errors, context):
     '''
-    Check that pids field exists
+    Check that compulsory PIDs exist.
     '''
+
+    # Empty PIDs are removed in actions, so this check should do
     if data.get((u'pids', 0, u'id'), None) is None:
-        raise Invalid(_('Missing dataset PIDs'))
+        raise Invalid({'key': 'pids', 'value': _('Missing dataset PIDs')})
+
+    primary_data_pid_found = False
+
+    primary_keys = [k for k in data.keys() if k[0] == 'pids' and k[2] == 'primary']
+
+    for k in primary_keys:
+        if asbool(data[k]) and data[(k[0], k[1], 'type')] == 'data' and data[(k[0], k[1], 'id')]:
+            primary_data_pid_found = True
+
+    if not primary_data_pid_found:
+        raise Invalid({'key': 'pids', 'value': _("Missing primary data PID")})
 
 
 def check_events(key, data, errors, context):

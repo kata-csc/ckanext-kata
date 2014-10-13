@@ -103,7 +103,7 @@ class MetadataController(BaseController):
             data_dict = get_action('package_show')({}, {'id': pkg_id})
             # Get primary data PID and make sure we want to display this dataset
             try:
-                data_pid = utils.get_pids_by_type('data', data_dict, primary=True, use_id_or_name=True)[0].get('id', '')
+                data_pid = utils.get_pids_by_type('data', data_dict, primary=True)[0].get('id', '')
             except IndexError:
                 continue
 

@@ -486,3 +486,19 @@ def add_ida_download_url(key, data, errors, context):
                     new_url = utils.generate_ida_download_url(data_pid)
                     log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))
                     data[key] = new_url
+
+
+def check_primary_pids(key, data, errors, context):
+    '''
+    Check that primary pids exist, if not, get them from package.id and package.name
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    data_pids = utils.get_pids_by_type('data', {'pids': data.get(('pids',))}, primary=True)
+
+    if not data_pids:
+        data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})

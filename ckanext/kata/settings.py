@@ -2,6 +2,9 @@
 
 from ckan.common import OrderedDict
 from pylons.i18n.translation import gettext_noop as N_
+
+PID_TYPES = ['data', 'metadata', 'version']
+
 # Overridden CKAN role permissions
 ROLE_PERMISSIONS = OrderedDict([
     ('admin', ['admin']),
@@ -179,3 +182,12 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
 
 DATAPID_TO_NAME_REGEXES = [r'[^A-Za-z0-9]', r'-']     # [pattern, replace]
+
+
+# Change misleading or bad error summary names to more sane ones
+ERRORS = {
+    u'Pids': u'PID',
+    u'Langtitle': u'Title + language',
+    u'Tag string': u'Keywords',
+    u'Tags': u'Keywords',
+}
