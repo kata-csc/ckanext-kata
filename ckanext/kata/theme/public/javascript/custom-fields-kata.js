@@ -24,7 +24,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
 
         var delegated = '#' + this.el[0].id + ' input:first';
         //this.el.on('change', delegated, this._onChange);
-        this.el.on('change', ':checkbox', this._onChange);
+        this.el.on('change', ':checkbox.icon-plus-sign', this._onChange);
 
         // Style the remove checkbox like a button.
         //this.$('.checkbox').addClass("btn btn-danger icon-remove");
@@ -43,7 +43,15 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      * Returns nothing.
      */
     newField: function (element) {
-      this.el.append(this.cloneField(element));
+      var fields = this.cloneField(element);
+
+      // Do some adjusting for copied PID fields
+      fields.find('.pid').removeProp('readonly')
+      fields.find('.pid').removeClass (function (index, css) {
+        return (css.match (/(^|\s)pids_\S+/g) || []).join(' ');
+      });
+
+      this.el.append(fields);
     },
 
     /* Clone the provided element and use resetField() on it.

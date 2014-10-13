@@ -109,19 +109,29 @@ def _handle_pids(context, data_dict):
 
         data_dict['pids'] = non_empty
 
-    # If no primary data PID, generate one
-    if not utils.get_pids_by_type('data', data_dict, primary=True):
-        data_dict['pids'].insert(0, {'id': utils.generate_pid(),
-                                     'type': 'data',
-                                     'primary': 'True',
-                                     'provider': 'Etsin',
-                                     })
-
     if data_dict.get('generate_version_pid') == 'on':
         data_dict['pids'] += [{'id': utils.generate_pid(),
                                'type': 'version',
                                'provider': 'Etsin',
                                }]
+
+    # If no primary data PID, generate one if this is a new dataset
+    if not utils.get_pids_by_type('data', data_dict, primary=True):
+        model = context["model"]
+        session = context["session"]
+
+        if data_dict.get('id'):
+            query = session.query(model.Package.id).filter_by(name=data_dict['id'])  # id contains name !
+            result = query.first()
+
+            if result:
+                return  # Existing dataset, don't generate new data PID
+
+        data_dict['pids'].insert(0, {'id': utils.generate_pid(),
+                                     'type': 'data',
+                                     'primary': 'True',
+                                     'provider': 'Etsin',
+                                     })
 
 
 def package_create(context, data_dict):

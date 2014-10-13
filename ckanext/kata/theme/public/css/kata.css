@@ -175,7 +175,7 @@
 }
 .kata-pid-input-wide {
 	margin-left: 10px;
-	width: 290px !important;
+	width: 393px !important;
 }
 .events {
     font-style: bold;
@@ -211,15 +211,15 @@ li.kata label {
 	content: '' !important;
 }
 .form-horizontal .katalabel-pid2 {
-	width: 45px !important;
-	text-align: center;
+	width: 75px !important;
+	text-align: right;
 	float: left;
 }
 .form-horizontal .katalabel-pid2::after {
 	content: '' !important;
 }
 .form-horizontal .katalabel-pid-wide {
-	width: 335px !important;
+	width: 380px !important;
 	float: left;
 	text-align: center !important;
 

@@ -199,13 +199,13 @@
       <th class="dataset-label">{{ _('Primary data identifier') }}</th>
       <td class="dataset-details">{{ h.get_pids_by_type('data', pkg_dict, primary=True)[0]['id'] }}</td>
     </tr>
-    {% for pid in pkg_dict.pids %}
-      {% if not h.asbool(pid.primary) %}
-      <tr>
-        <th class="dataset-label">{{ _(pid.get('type').capitalize() + ' identifier') }}</th>
-        <td class="dataset-details">{{pid.id}}</td>
-      </tr>
-      {% endif %}
+    {% for pid_type in h.get_pid_types() %}
+      {% for pid in h.get_pids_by_type(pid_type, pkg_dict, primary=False) %}
+        <tr>
+          <th class="dataset-label">{{ _(pid.get('type', '').capitalize() + ' identifier') }}</th>
+          <td class="dataset-details">{{pid.id}}</td>
+        </tr>
+      {% endfor %}
     {% endfor %}
   </table>
 </section>

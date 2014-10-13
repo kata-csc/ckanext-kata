@@ -584,8 +584,15 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_id, 'owners_add', [WebElement.click], add_wait),
             (browser.find_element_by_name, 'agent__7__name', [u'прстуфхцчшчьыъэюя 2'], None),
 
-            (browser.find_element_by_id, 'name-pid', [u'pid' + str(int(time.time() * 100))], None),
-            (browser.find_element_by_name, 'new_version_pid', [u'pid' + str(int(time.time() * 100))], None),
+            (browser.find_element_by_id, 'pids__0__id', [u'data-pid-' + str(int(time.time() * 100))], None),
+            # (browser.find_element_by_id, 'pids__0__provider', [u'Selenium'], None),
+            (browser.find_element_by_name, 'pids__1__type', [u'Metadata'], None),
+            (browser.find_element_by_name, 'pids__1__id', [u'metadata-pid-' + str(int(time.time() * 100))], None),
+            # (browser.find_element_by_id, 'pids__1__provider', [u'Selenium'], None),
+            (browser.find_element_by_id, 'pids_add', [WebElement.click], add_wait),
+            (browser.find_element_by_name, 'pids__2__type', [u'Version'], None),
+            (browser.find_element_by_name, 'pids__2__id', [u'version-pid-' + str(int(time.time() * 100))], None),
+            # (browser.find_element_by_id, 'pids__2__provider', [u'Selenium'], None),
 
             (browser.find_element_by_id, 'direct_download', [Keys.SPACE], None),
             (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),

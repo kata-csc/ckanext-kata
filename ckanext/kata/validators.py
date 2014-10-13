@@ -402,7 +402,7 @@ def check_pids(key, data, errors, context):
     primary_keys = [k for k in data.keys() if k[0] == 'pids' and k[2] == 'primary']
 
     for k in primary_keys:
-        if asbool(data[k]) and data[(k[0], k[1], 'type')] == 'data' and data[(k[0], k[1], 'id')]:
+        if asbool(data[k] or False) and data[(k[0], k[1], 'type')] == 'data' and data[(k[0], k[1], 'id')]:
             primary_data_pid_found = True
 
     if not primary_data_pid_found:
