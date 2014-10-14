@@ -192,13 +192,11 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert output.get('__type') == 'Validation Error'
 
     def test_create_dataset_no_org(self):
-        '''A user without organization cannot create test dataset'''
+        '''A user can not create a dataset with no organisation'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['owner_org'] = ''
         output = call_action_api(self.app, 'package_create', apikey=self.user_anna.apikey,
-                        status=409, **data_dict)
-        assert output
-        assert output.get('__type') == 'Validation Error'
+                        status=403, **data_dict)
 
     def test_create_dataset_no_org_2(self):
         '''A user with organization cannot create organizationless dataset'''
@@ -212,13 +210,19 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert output.get('__type') == 'Validation Error'
 
     def test_create_public_dataset_by_member(self):
-        '''Organization member cannot create public dataset'''
+        '''Organization member can create public dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['private'] = False
 
-        output = call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey, status=409, **data_dict)
-        assert output
-        assert output.get('__type') == 'Validation Error'
+        call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey, status=200, **data_dict)
+
+    def test_create_public_dataset_by_nonmember(self):
+        '''
+        Anyone can create a public dataset to an organization
+        '''
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['private'] = False
+        call_action_api(self.app, 'package_create', apikey=self.user_anna.apikey, status=200, **data_dict)
 
     def test_create_public_dataset_by_editor(self):
         '''Organization editor can create public dataset'''
@@ -970,5 +974,5 @@ class TestOrganizationAdmin(KataApiTestCase):
         data_dict2['private'] = u'False'
 
         # TRY TO MOVE DATASET TO ORGANIZATION 2 AS NON MEMBER
-        call_action_api(self.app, 'package_update', apikey=self.user_joe.apikey, status=409, **data_dict2)
+        call_action_api(self.app, 'package_update', apikey=self.user_joe.apikey, status=200, **data_dict2)
 

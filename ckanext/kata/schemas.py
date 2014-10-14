@@ -117,7 +117,6 @@ class Schemas:
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
         schema['license_URL'] = [ignore_missing, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['owner_org'] = [ignore_missing, va.kata_owner_org_validator, unicode]
-        schema['private'] = [ignore_missing, va.check_private, unicode]
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_direct_download_url,
                                       unicode, va.validate_general]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()

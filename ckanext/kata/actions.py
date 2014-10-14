@@ -679,7 +679,4 @@ def package_owner_org_update(context, data_dict):
 
     pkg = model.Package.get(data_dict['id'])
 
-    if not pkg.private and user_role == 'member':
-        raise ckan.logic.NotAuthorized(_("You are not allowed to create public datasets for this organization."))
-
     return ckan.logic.action.update.package_owner_org_update(context, data_dict)

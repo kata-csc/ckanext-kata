@@ -402,7 +402,11 @@ def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
 
 
 def get_visibility_options(group_id, user_id):
-    '''Get possible dataset visibility options for this group and user'''
+    '''
+    Get possible dataset visibility options for this group and user
+    For now the specs say that everyone can add public/private datasets
+    to any organisation, thus the simple list to return
+    '''
 
     # if (not group_id or not user_id) or utils.get_member_role(group_id, user_id) == 'member':
     #     return [(True, 'Private')]
@@ -489,8 +493,10 @@ def get_pid_types():
 
 def list_organisations(user):
     '''
+    Lists all organisations
 
-    :return:
+    :param user: the logged in user
+    :return: organization_list
     '''
     context = dict()
     context['model'] = model

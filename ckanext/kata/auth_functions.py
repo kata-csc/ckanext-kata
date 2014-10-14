@@ -10,7 +10,6 @@ import ckan.new_authz as new_authz
 from ckan.logic.auth import get_package_object, update
 from ckan.model import User, Package
 import ckanext.kata.settings as settings
-import ckan.logic as logic
 import ckan.logic.auth as logic_auth
 
 
@@ -92,7 +91,7 @@ def package_delete(context, data_dict):
 def package_create(context, data_dict=None):
     '''
     Modified from CKAN's original check. Any logged in user can add
-    a dataset to any organisation with status private = true.
+    a dataset to any organisation.
     Packages owner check is done when adding a resource.
 
     :param context: context
@@ -102,11 +101,18 @@ def package_create(context, data_dict=None):
 
     user = context['user']
 
-    if user and ((data_dict and (data_dict.get('private', False) == u'True' or data_dict.get('private', False)))
-                 or data_dict is None):
-        return {'success': True}
+    # Needed in metadata supplements
     if context.get('package', False):
         return is_owner(context, context.get('package').get('id'))
+
+    # If an organization is given are we able to add a dataset to it?
+    data_dict = data_dict or {}
+    org_id = data_dict.get('owner_org', False)
+    if org_id and not kata_has_user_permission_for_org(
+            org_id, user, 'create_dataset'):
+        return {'success': False, 'msg': _('User %s not authorized to add a dataset') % user}
+    elif org_id and kata_has_user_permission_for_org(org_id, user, 'create_dataset'):
+        return {'success': True}
 
     return logic_auth.create.package_create(context, data_dict)
 
@@ -116,9 +122,11 @@ def package_show(context, data_dict):
     Modified from CKAN's original check. Package's owner
     can see the dataset no matter in what organization it lies in.
 
-    :param context:
-    :param data_dict:
-    :return:
+    :param context: context
+    :type context: dictionary
+    :param data_dict: package data
+    :type data_dict: dictionary
+    :rtype: dictionary with 'success': True|False
     '''
 
     is_ownr = is_owner(context, data_dict)
@@ -127,3 +135,15 @@ def package_show(context, data_dict):
         return logic_auth.get.package_show(context, data_dict)
     else:
         return is_ownr
+
+def kata_has_user_permission_for_org(org_id, user_name, permission):
+    '''
+    Used by auth function package create: everyone has a right to add a dataset to any organisation
+
+    :param user_name:
+    :param permission:
+    :return: True, as everyone has a right to add a dataset to an organisation
+    '''
+    if org_id and user_name and permission:
+        return True
+    return False
