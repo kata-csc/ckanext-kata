@@ -598,7 +598,7 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),
 
             #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
-            (browser.find_element_by_id, 'field-private', [u'Public'], None),
+            (browser.find_element_by_id, 'field-kata-pr', [u'Public'], None),
 
             # recommended info
 
