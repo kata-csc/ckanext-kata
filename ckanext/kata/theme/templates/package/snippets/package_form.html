@@ -16,7 +16,7 @@ then itself be extended to add/remove blocks of functionality. #}
   <input type="hidden" name="_ckan_phase" value="" />
   {# pkg_name used in 3 stage edit #}
   <input type="hidden" name="pkg_name" value="{{ data.id }}" />
-  {% block errors %}{{ kataform.kataerrors(error_summary) }}{% endblock %}
+  {% block errors %}{{ kataform.kataerrors(error_summary, h) }}{% endblock %}
 
   {% block basic_fields %}
     {% snippet 'package/snippets/package_basic_fields.html', data=data, errors=errors, licences=c.licences, groups_available=c.groups_available, roles=c.roles, version_PID=c.version_PID, lastmod=c.lastmod, user=c.userobj %}

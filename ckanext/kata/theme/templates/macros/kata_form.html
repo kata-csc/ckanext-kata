@@ -5,7 +5,7 @@ Kata form element extensions.
 {#
 Create a tooltip for input element.
 
-tooltip		- Tooltip help text to be displayed on the question mark icon.
+tooltip - Tooltip help text to be displayed on the question mark icon.
 #}
 
 {% macro tooltip(id='', tooltip='', attrs={}) %}
@@ -14,7 +14,7 @@ tooltip		- Tooltip help text to be displayed on the question mark icon.
 {#
 Create a warning tooltip for input element.
 
-tooltip		- Tooltip help text to be displayed on the exclamation mark icon.
+tooltip - Tooltip help text to be displayed on the exclamation mark icon.
 #}
 
 {% macro warning_tooltip(id='', tooltip='', attrs={}) %}
@@ -44,7 +44,7 @@ Example:
   {{ form.errors(error_summary, type="warning") }}
 
 #}
-{% macro kataerrors(errors={}, type="error", classes=[]) %}
+{% macro kataerrors(errors={}, h=False, type="error", classes=[]) %}
   {% if errors %}
     <div class="error-explanation alert alert-{{ type }}{{ " " ~ classes | join(' ') }}">
       <p>{{ _('The form contains invalid entries:') }}</p>
@@ -52,12 +52,9 @@ Example:
         {# Awful hack for error messages. 'errors' is a summary and has only
            one (first) error message for 'error'. So showing different Agents
            is not possible. #}
+        {% set errors = h.modify_error_summary(errors) %}
         {% for key, error in errors.items() %}
-          {% if key == _("Pids") %}
-              <li data-field-label="{{ key }}">{% if key %}{{ _('PID') }}{% endif %}</li>
-          {% elif key == _("Langtitle") %}
-              <li data-field-label="{{ key }}">{% if key %}{{ _('Title + language') }}{% endif %}</li>
-          {% elif key == _("  extras") %}
+          {% if key == _("  extras") %}
               {% if not error.index %}
                   {% set error = [error] %}
               {% endif %}
@@ -80,3 +77,7 @@ Example:
     </div>
   {% endif %}
 {% endmacro %}
+
+{% macro optional() -%}
+    <span>{{ _("Optional") }}</span>
+{%- endmacro %}

@@ -218,7 +218,7 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@id='contact_owner']")
             field.click()
 
-            field = browser.find_element_by_xpath("//input[@name='agent__2__name']")
+            field = browser.find_element_by_xpath("//input[@name='agent__3__name']")
             field.send_keys('Selenium')
 
             #field = browser.find_element_by_xpath("//input[@id='licenseURL']")
@@ -476,13 +476,6 @@ class TestKataWithUser(TestCase):
             browser.quit()
             raise
 
-        try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//article/div/a[.='Hide/show']")))
-        except TimeoutException:
-            browser.get_screenshot_as_file('_add_dataset_advanced.png')
-            browser.quit()
-            raise
-
         assert "Kata" in browser.title, "Dataset creation failed somehow"
 
         return browser.current_url
@@ -544,12 +537,12 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_name, 'agent__0__organisation', [u'CSC Oy'], None),
 
             (browser.find_element_by_id, 'authors_add', [WebElement.click], add_wait),
-            (browser.find_element_by_name, 'agent__3__name', [u'Åke Author'], None),
-            (browser.find_element_by_name, 'agent__3__organisation', [u'Organization 2'], None),
+            (browser.find_element_by_name, 'agent__4__name', [u'Åke Author'], None),
+            (browser.find_element_by_name, 'agent__4__organisation', [u'Organization 2'], None),
 
             (browser.find_element_by_id, 'authors_add', [WebElement.click], add_wait),
-            (browser.find_element_by_name, 'agent__4__name', [u'прстуфхцчшчьыъэюя Author'], None),
-            (browser.find_element_by_name, 'agent__4__organisation', [u'Organization 3'], None),
+            (browser.find_element_by_name, 'agent__5__name', [u'прстуфхцчшчьыъэюя Author'], None),
+            (browser.find_element_by_name, 'agent__5__organisation', [u'Organization 3'], None),
 
             # keywords
             (browser.find_element_by_xpath, "//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input", ['Selenium', Keys.RETURN, 'Keyword2', Keys.RETURN], None),
@@ -571,15 +564,15 @@ class TestKataWithUser(TestCase):
 
             (browser.find_element_by_name, 'projdis', [WebElement.click], None),
 
-            (browser.find_element_by_name, 'agent__1__organisation', [u'Selenium Project'], None),
-            (browser.find_element_by_name, 'agent__1__name', [u'Selenium Funder'], None),
-            (browser.find_element_by_name, 'agent__1__fundingid', [u'Selenium Funding'], None),
-            (browser.find_element_by_name, 'agent__1__URL', [u'https://localhost/'], None),
+            (browser.find_element_by_name, 'agent__2__organisation', [u'Selenium Project'], None),
+            (browser.find_element_by_name, 'agent__2__name', [u'Selenium Funder'], None),
+            (browser.find_element_by_name, 'agent__2__fundingid', [u'Selenium Funding'], None),
+            (browser.find_element_by_name, 'agent__2__URL', [u'https://localhost/'], None),
 
             (browser.find_element_by_id, 'funders_add', [WebElement.click], add_wait),
-            (browser.find_element_by_name, 'agent__5__organisation', [u'Selenium Project 2'], None),
+            (browser.find_element_by_name, 'agent__6__organisation', [u'Selenium Project 2'], None),
             #(browser.find_element_by_name, 'agent__5__name', [u'Selenium Funder 2'], None),
-            (browser.find_element_by_name, 'agent__5__fundingid', [u'Selenium Funding 2'], None),
+            (browser.find_element_by_name, 'agent__6__fundingid', [u'Selenium Funding 2'], None),
             #(browser.find_element_by_name, 'agent__5__URL', [u'https://localhost/'], None),
 
             # (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
@@ -587,12 +580,19 @@ class TestKataWithUser(TestCase):
             # (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
             # (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
             #
-            (browser.find_element_by_name, 'agent__2__name', [u'прстуфхцчшчьыъэюя'], None),
+            (browser.find_element_by_name, 'agent__3__name', [u'прстуфхцчшчьыъэюя'], None),
             (browser.find_element_by_id, 'owners_add', [WebElement.click], add_wait),
-            (browser.find_element_by_name, 'agent__6__name', [u'прстуфхцчшчьыъэюя 2'], None),
+            (browser.find_element_by_name, 'agent__7__name', [u'прстуфхцчшчьыъэюя 2'], None),
 
-            (browser.find_element_by_id, 'name-pid', [u'pid' + str(int(time.time() * 100))], None),
-            (browser.find_element_by_name, 'new_version_pid', [u'pid' + str(int(time.time() * 100))], None),
+            (browser.find_element_by_id, 'pids__0__id', [u'data-pid-' + str(int(time.time() * 100))], None),
+            # (browser.find_element_by_id, 'pids__0__provider', [u'Selenium'], None),
+            (browser.find_element_by_name, 'pids__1__type', [u'Metadata'], None),
+            (browser.find_element_by_name, 'pids__1__id', [u'metadata-pid-' + str(int(time.time() * 100))], None),
+            # (browser.find_element_by_id, 'pids__1__provider', [u'Selenium'], None),
+            (browser.find_element_by_id, 'pids_add', [WebElement.click], add_wait),
+            (browser.find_element_by_name, 'pids__2__type', [u'Version'], None),
+            (browser.find_element_by_name, 'pids__2__id', [u'version-pid-' + str(int(time.time() * 100))], None),
+            # (browser.find_element_by_id, 'pids__2__provider', [u'Selenium'], None),
 
             (browser.find_element_by_id, 'direct_download', [Keys.SPACE], None),
             (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),
@@ -600,7 +600,6 @@ class TestKataWithUser(TestCase):
             #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
             (browser.find_element_by_id, 'field-private', [u'Public'], None),
 
-            (browser.find_element_by_xpath, "//section[@id='recmod']/h2", [WebElement.click], None),
             # recommended info
 
             (browser.find_element_by_xpath, "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input", [u'Espoo, Finland', Keys.RETURN], None),

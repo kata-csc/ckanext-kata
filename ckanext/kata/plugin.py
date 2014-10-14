@@ -10,7 +10,7 @@ import json
 import re
 import datetime
 
-from ckan.lib.base import g, c
+from ckan.lib.base import g, c, _
 from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
@@ -26,7 +26,7 @@ from ckan.plugins import (implements,
                           ITemplateHelpers,
                           SingletonPlugin)
 
-from ckan.plugins.core import load_all
+from ckan.plugins.core import unload
 
 from ckanext.kata.schemas import Schemas
 
@@ -233,8 +233,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {
             'create_loop_index': helpers.create_loop_index,
             'dataset_is_valid': helpers.dataset_is_valid,
+            'filter_system_users': helpers.filter_system_users,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
+            'get_contributors': helpers.get_contributors,
             'get_dict_errors': helpers.get_dict_errors,
             'get_dict_field_errors': helpers.get_dict_field_errors,
             'get_distributor': helpers.get_distributor,
@@ -246,19 +248,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_package_ratings': helpers.get_package_ratings,
             'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
             'get_pids_by_type': utils.get_pids_by_type,
+            'get_pid_types': helpers.get_pid_types,
             'get_related_urls': helpers.get_related_urls,
             'get_rdf_extras': helpers.get_rdf_extras,
             'get_rightscategory': helpers.get_rightscategory,
+            'get_urn_fi_address': helpers.get_urn_fi_address,
             'get_visibility_options': helpers.get_visibility_options,
             'has_agents_field': helpers.has_agents_field,
             'has_contacts_field': helpers.has_contacts_field,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'kata_sorted_extras': helpers.kata_sorted_extras,
+            'modify_error_summary': helpers.modify_error_summary,
             'list_organisations': helpers.list_organisations,
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'string_to_list': helpers.string_to_list,
-            'filter_system_users': helpers.filter_system_users,
         }
 
     def get_dict_field_errors(self, errors, field, index, name):
@@ -364,7 +368,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         self.roles = roles
         self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
 
-        load_all(config)
+        try:
+            # This controls the operation of the CKAN search indexing. If you don't define this option
+            # then indexing is on. You will want to turn this off if you have a non-synchronous search
+            # index extension installed.
+            unload('synchronous_search')
+            log.debug("Disabled synchronous search")
+            # Note: in CKAN 2.2, disabling this plugin causes other plugins to be reloaded
+        except:
+            log.debug("Failed to disable synchronous search!")
 
     def package_types(self):
         '''
@@ -440,6 +452,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # facets_dict.update(kata_facet_titles)
         facets_dict = kata_facet_titles
+        return facets_dict
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        facets_dict['organization'] = _('Organizations')
         return facets_dict
 
     def extract_search_params(self, data_dict):

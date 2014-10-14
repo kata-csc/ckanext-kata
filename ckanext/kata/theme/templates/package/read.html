@@ -23,7 +23,7 @@
     </h1>
     {# FIXME why is this here? seems wrong #}
     <span class="insert-comment-thread"></span>
-    
+
     {% set (rating, stars)=h.get_package_ratings(pkg) %}
     <div class="rating-container">
       {{ _('Metadata score:') }}
@@ -31,7 +31,7 @@
     </div>
 
     <h2 class="module-content">{{pkg.title}}</h2>
-    
+
   {% endblock %}
 
   {% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj, pkg_notes_formatted=c.pkg_notes_formatted %}

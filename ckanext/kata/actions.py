@@ -16,7 +16,7 @@ import ckan.logic.action.update
 import ckan.logic.action.delete
 from ckan.model import Related, Session, Package, repo
 import ckan.model as model
-from ckan.lib.search import rebuild
+from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
@@ -93,6 +93,47 @@ def package_show(context, data_dict):
     return pkg_dict1
 
 
+def _handle_pids(context, data_dict):
+    '''
+    Do some PID modifications to data_dict
+    '''
+    if not 'pids' in data_dict:
+        data_dict['pids'] = []
+    else:
+        # Clean up empty PIDs
+        non_empty = []
+
+        for pid in data_dict['pids']:
+            if pid.get('id'):
+                non_empty.append(pid)
+
+        data_dict['pids'] = non_empty
+
+    if data_dict.get('generate_version_pid') == 'on':
+        data_dict['pids'] += [{'id': utils.generate_pid(),
+                               'type': 'version',
+                               'provider': 'Etsin',
+                               }]
+
+    # If no primary data PID, generate one if this is a new dataset
+    if not utils.get_pids_by_type('data', data_dict, primary=True):
+        model = context["model"]
+        session = context["session"]
+
+        if data_dict.get('id'):
+            query = session.query(model.Package.id).filter_by(name=data_dict['id'])  # id contains name !
+            result = query.first()
+
+            if result:
+                return  # Existing dataset, don't generate new data PID
+
+        data_dict['pids'].insert(0, {'id': utils.generate_pid(),
+                                     'type': 'data',
+                                     'primary': 'True',
+                                     'provider': 'Etsin',
+                                     })
+
+
 def package_create(context, data_dict):
     """
     Creates a new dataset.
@@ -118,14 +159,7 @@ def package_create(context, data_dict):
 
     data_dict = utils.dataset_to_resource(data_dict)
 
-    # Get version PID (or generate a new one?)
-    new_version_pid = data_dict.get('new_version_pid')
-
-    if not new_version_pid and data_dict.get('generate_version_pid', None) == 'on':
-        new_version_pid = utils.generate_pid()
-
-    if new_version_pid:
-        data_dict['pids'] = data_dict.get('pids', []) + [{'id': new_version_pid, 'type': 'version', 'provider': 'kata'}]
+    _handle_pids(context, data_dict)
 
     # Add current user as a distributor if not already present.
     if user:
@@ -149,6 +183,11 @@ def package_create(context, data_dict):
     # Logging for production use
     _log_action('Package', 'create', context['user'], pkg_dict1['id'])
 
+    context = {'model': model, 'ignore_auth': True, 'validate': False,
+               'extras_as_string': False}
+    pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
+    index = index_for('package')
+    index.index_package(pkg_dict)
     return pkg_dict1
 
 
@@ -197,18 +236,7 @@ def package_update(context, data_dict):
         data_dict['resources'] = old_resources
         data_dict = utils.dataset_to_resource(data_dict)
 
-    # Get all PIDs (except for package.id and package.name) from database and add new relevant PIDS there
-    data_dict['pids'] = package_data.get('pids', [])
-
-    new_version_pid = data_dict.get('new_version_pid')
-    if not new_version_pid and data_dict.get('generate_version_pid') == 'on':
-        new_version_pid = utils.generate_pid()
-
-    if new_version_pid:
-        data_dict['pids'] += [{'id': new_version_pid,
-                              'type': 'version',
-                              'provider': 'kata',
-                              }]
+    _handle_pids(context, data_dict)
 
     # # Check if data version has changed and if so, generate a new version_PID
     # if not data_dict['version'] == temp_pkg_dict['version']:
@@ -244,6 +272,12 @@ def package_update(context, data_dict):
     # Logging for production use
     _log_action('Package', 'update', context['user'], data_dict['id'])
 
+    context = {'model': model, 'ignore_auth': True, 'validate': False,
+               'extras_as_string': True}
+    pkg_dict = ckan.logic.action.get.package_show(context, pkg_dict1)
+    index = index_for('package')
+    # update_dict calls index_package, so it would basically be the same
+    index.update_dict(pkg_dict)
     return pkg_dict1
 
 
@@ -264,6 +298,8 @@ def package_delete(context, data_dict):
     # Logging for production use
     _log_action('Package', 'delete', context['user'], data_dict['id'])
 
+    index = index_for('package')
+    index.remove_dict(data_dict)
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
@@ -425,8 +461,8 @@ def dataset_editor_delete(context, data_dict):
 
     :param username: user name to delete
     :type username: string
-    :param id: dataset id
-    :type id: string
+    :param name: dataset name or id
+    :type name: string
     :param role: editor, admin or reader
     :type role: string
 
@@ -487,7 +523,7 @@ def dataset_editor_add(context, data_dict):
     '''
     Adds a user and role to dataset
 
-    :param name: dataset name
+    :param name: dataset name or id
     :type name: string
     :param role: admin, editor or reader
     :type role: string

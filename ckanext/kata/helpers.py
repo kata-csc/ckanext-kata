@@ -14,6 +14,7 @@ from ckan.logic import get_action, ValidationError
 from ckanext.kata import settings, utils
 from ckan.lib.navl.dictization_functions import validate
 from ckan.lib import plugins
+from ckanext.kata.utils import get_pids_by_type
 
 log = logging.getLogger(__name__)
 
@@ -426,6 +427,7 @@ def get_dict_errors(errors, errors_key, field_key):
 
     return result
 
+
 def dataset_is_valid(package):
     """ Check if given dataset is valid. Uses schema from plugin.
         Return true if dataset is valid.
@@ -433,6 +435,7 @@ def dataset_is_valid(package):
     package_plugin = plugins.lookup_package_plugin(package['type'])
     _, errors = validate(package, package_plugin.update_package_schema(), {'model': model, 'session': model.Session, 'user': c.user})
     return not bool(errors)
+
 
 def filter_system_users(users):
     """
@@ -445,6 +448,44 @@ def filter_system_users(users):
 
     system_user_names = ['logged_in', 'visitor', 'harvest']
     return filter(lambda x: x.get('user') not in system_user_names, users)
+
+def is_urn(name):
+    return name and name.startswith('urn:nbn:fi:')
+
+def get_urn_fi_address(package):
+    pid = get_pids_by_type('data', package, primary=True)[0].get('id', None)
+    if is_urn(pid):
+        template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
+        return template % {'pid': pid}
+    return ''
+
+def modify_error_summary(errors):
+    '''
+    Modifies error_summary keys. Otherwise the keys in database are printed, which leads
+    to strings like "Lantitle", "Tag string" etc.
+
+    :param errors: error summary dictionary
+    :return: errors: keys as specified in settings.ERRORS are changed
+
+    '''
+    # Saw an effect, where Tag string and Tags both were displayed and they were identical
+    if (errors.get('Tag string', False) and errors.get('Tags', False)) and \
+       (errors.get('Tag string') == errors.get('Tags')):
+        errors.pop('Tag string')
+
+    for (key, value) in settings.ERRORS.items():
+        if errors and errors.get(key, False):
+            errors[value] = errors.get(key)
+            errors.pop(key)
+
+    return errors
+
+
+def get_pid_types():
+    '''
+    :return: PID types defined in settings.py
+    '''
+    return settings.PID_TYPES
 
 def list_organisations(user):
     '''

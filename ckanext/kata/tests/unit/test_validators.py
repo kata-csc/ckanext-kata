@@ -15,7 +15,7 @@ from ckanext.kata.validators import validate_kata_date, \
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
-    validate_title_duplicates, validate_title, check_direct_download_url
+    validate_title_duplicates, validate_title, check_direct_download_url, check_pids
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict, StopOnError
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
     flattened_to_extras, flattened_from_extras
@@ -342,6 +342,24 @@ class TestValidators(TestCase):
         dada[('langtitle', 0, 'lang')] = u''
         dada[('langtitle', 0, 'value')] = u''
         self.assertRaises(Invalid, validate_title, ('langtitle', 0, 'lang'), dada, errors, None)
+
+    def test_check_pids(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+
+        check_pids(None, dada, errors, None)
+        assert len(errors) == 0
+
+        dada[('pids', 0, 'primary')] = u'False'
+        dada[('pids', 1, 'primary')] = u'True'
+        self.assertRaises(Invalid, check_pids, None, dada, errors, None)
+
+        dada[('pids', 2, 'primary')] = u'True'
+
+        check_pids(None, dada, errors, None)
+        assert len(errors) == 0
+
+
 
 class TestResourceValidators(TestCase):
     '''

@@ -2,7 +2,7 @@
 {% import 'macros/kata_form.html' as kata_form %} 
  
 <section class="module">
-  <h2 class="module-heading-add-dataset">{{ _('Relations') }}</h2>
+  <h2 class="module-heading-add-dataset optional">{{ _('Relations') }} {{ kata_form.optional() }}</h2>
   <div class="module-content">
 
     {% if data.groups and 'title' in data.groups.0 %}
@@ -16,25 +16,24 @@
                 {{ group.title }}
               </label>
               {% endif %}
-  	        {% endfor %}
-  	      </div>
-  	  </div>
+            {% endfor %}
+          </div>
+      </div>
     {% endif %}
 {#
   {% set group_name = 'groups__%s__name' % data.groups|length %}
   {% set group_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/group/autocomplete?q=?', 'class': "kata-medium-input"} %}
         {% call form.input(group_name, label=_('Dataset belongs to collection/series'), id="field-group", value=data[group_name], classes=['control-medium'], label_classes=['kata-input-comp'], attrs=group_attrs) %}
-  	      {{ kata_form.tooltip(tooltip=_('You can add your dataset to an existing group in this service by typing the group name and accepting it with the enter key. When you start typing the group, the service will search existing groups and will give suggestions of existing ones. Pick a group of your choice by clicking it or selecting it and then pressing the enter key.')) }}
+          {{ kata_form.tooltip(tooltip=_('You can add your dataset to an existing group in this service by typing the group name and accepting it with the enter key. When you start typing the group, the service will search existing groups and will give suggestions of existing ones. Pick a group of your choice by clicking it or selecting it and then pressing the enter key.')) }}
         {% endcall %}
 #}
-        
+
     {# Autocomplete for discipline/branch of science #}
 
-    <div class="kata-multi-input kata-autocomplete">
-      <span class="kata-multi-heading">
-        {{ _('Discipline/branch of science') }}
-      </span><br />
-      {{ _('Search keywords from okm-tieteenala ontology, select keywords with enter or mouse click. Note that the disciplines are provided in Finnish only.') }}
+    <div class="kata-autocomplete">
+      <h3 class="module-heading-add-dataset optional">{{ _('Discipline/branch of science') }}</h3>
+
+      {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click. Note that the disciplines are provided only in Finnish for now.') }}
       <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). The vocabulary is only available in Finnish at this time. Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
       <span class="kata-btn-span tta-orange">?</span></button><br /><br />
 

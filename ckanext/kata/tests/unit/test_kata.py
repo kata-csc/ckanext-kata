@@ -426,7 +426,7 @@ class TestUtils(TestCase):
         assert len(pids) == 2
         pids = utils.get_pids_by_type('data', data_dict, primary=True)
         assert len(pids) == 1
-        pids = utils.get_pids_by_type('data', data_dict, primary=True, use_id_or_name=True)
+        pids = utils.get_pids_by_type('data', data_dict, primary=True, use_package_id=True)
         assert len(pids) == 1
         pids = utils.get_pids_by_type('data', data_dict, primary=False)
         assert len(pids) == 1
@@ -435,14 +435,16 @@ class TestUtils(TestCase):
         assert len(pids) == 1
         pids = utils.get_pids_by_type('metadata', data_dict, primary=True)
         assert len(pids) == 0
-        pids = utils.get_pids_by_type('metadata', data_dict, primary=True, use_id_or_name=True)
+        pids = utils.get_pids_by_type('metadata', data_dict, primary=True, use_package_id=True)
         assert len(pids) == 1
+        pids = utils.get_pids_by_type('metadata', data_dict, use_package_id=True)
+        assert len(pids) == 2
 
         pids = utils.get_pids_by_type('version', data_dict)
         assert len(pids) == 1
         pids = utils.get_pids_by_type('version', data_dict, primary=True)
         assert len(pids) == 0
-        pids = utils.get_pids_by_type('version', data_dict, primary=True, use_id_or_name=True)
+        pids = utils.get_pids_by_type('version', data_dict, primary=True, use_package_id=True)
         assert len(pids) == 0
 
         pids = utils.get_pids_by_type('some_unknown_type', data_dict)
@@ -478,6 +480,9 @@ class TestHelpers(TestCase):
     def test_get_authors(self):
         assert helpers.get_authors(TEST_DATADICT)[0]['name'] == u'T. Tekijä'
 
+    def test_get_urn_fi_address(self):
+        package = copy.deepcopy(TEST_DATADICT)
+        self.assertTrue(helpers.get_urn_fi_address(package).startswith('http://urn.fi/urn:nbn:fi:csc-kata'))
 
 class TestActions(TestCase):
     '''
@@ -689,12 +694,14 @@ class TestUtilities(TestCase):
 
         data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
                          'id': u'some_data_pid_1',
+                         'primary': u'True',
                          'type': u'data'}]
 
         package_1 = get_action('package_create')({'user': 'pidtest'}, data)
 
         data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
                          'id': u'some_data_pid_2',
+                         'primary': u'True',
                          'type': u'data'}]
 
         package_2 = get_action('package_create')({'user': 'pidtest'}, data)
