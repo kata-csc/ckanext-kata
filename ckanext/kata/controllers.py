@@ -125,7 +125,7 @@ class MetadataController(BaseController):
         response.content_type = 'application/xml; charset=utf-8'
         return etree.tostring(records, encoding="UTF-8")
 
-    #@beaker_cache(type="dbm", expire=86400)
+    @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
         '''
         Generate an XML listing of packages, which have Kata or Ida URN as data PID.
