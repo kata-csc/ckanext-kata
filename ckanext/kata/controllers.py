@@ -99,14 +99,13 @@ class MetadataController(BaseController):
         datestmp = etree.SubElement(records, locns('datestamp'), attrib={'type': 'modified'})
         now = datetime.datetime.now().isoformat()
         datestmp.text = now
-        for pkg_id, in query:
+        for pkg_id, in set(query):
             data_dict = get_action('package_show')({}, {'id': pkg_id})
             # Get primary data PID and make sure we want to display this dataset
             try:
                 data_pid = utils.get_pids_by_type('data', data_dict, primary=True)[0].get('id', '')
             except IndexError:
                 continue
-
             if data_pid.startswith('urn:nbn:fi:csc-'):
                 record = etree.SubElement(records, locns('record'))
                 header = etree.SubElement(record, locns('header'))
