@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-13 13:45+0000\n"
+"POT-Creation-Date: 2014-10-15 04:51+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -21,162 +21,161 @@ msgstr ""
 msgid "Paper"
 msgstr "Artikkeli"
 
-#: ckanext/kata/actions.py:112
+#: ckanext/kata/actions.py:153
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
 
-#: ckanext/kata/actions.py:454 ckanext/kata/actions.py:518
+#: ckanext/kata/actions.py:446 ckanext/kata/actions.py:510
 msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
-#: ckanext/kata/actions.py:465 ckanext/kata/actions.py:529
+#: ckanext/kata/actions.py:457 ckanext/kata/actions.py:521
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
-#: ckanext/kata/actions.py:470 ckanext/kata/actions.py:474
-#: ckanext/kata/controllers.py:711
+#: ckanext/kata/actions.py:462 ckanext/kata/actions.py:466
+#: ckanext/kata/controllers.py:710
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
 
-#: ckanext/kata/actions.py:478
+#: ckanext/kata/actions.py:470
 msgid "No such user and role combination"
 msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
 
-#: ckanext/kata/actions.py:485
+#: ckanext/kata/actions.py:477
 msgid "Built-in users can not be removed"
 msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
 
-#: ckanext/kata/actions.py:489
+#: ckanext/kata/actions.py:481
 msgid "You can not remove yourself"
 msgstr "Et voi poistaa itseäsi"
 
-#: ckanext/kata/actions.py:494
+#: ckanext/kata/actions.py:486
 #, python-format
 msgid "User removed from role %s"
 msgstr "Käyttäjä poistettu roolista %s"
 
-#: ckanext/kata/actions.py:540
+#: ckanext/kata/actions.py:532
 #, python-format
 msgid "User already has %s rights"
 msgstr "Käyttäjällä on jo %s -oikeudet"
 
-#: ckanext/kata/actions.py:546
+#: ckanext/kata/actions.py:538
 msgid "User added"
 msgstr "Käyttäjä lisätty"
 
-#: ckanext/kata/actions.py:595
+#: ckanext/kata/actions.py:587
 msgid "You don't have permission to modify roles for this organization."
 msgstr "Sinulla ei ole oikeuksia muokata tämän organisaation rooleja."
 
-#: ckanext/kata/actions.py:629
+#: ckanext/kata/actions.py:621
 msgid "You don't have permission to remove this user."
 msgstr "Sinulla ei ole oikeuksia poistaa tätä käyttäjää."
 
-#: ckanext/kata/actions.py:660
-msgid "You are not allowed to create public datasets for this organization."
-msgstr ""
-"Sinulla ei ole oikeuksia luoda julkisia tietoaineistoja tähän "
-"organisaatioon."
-
-#: ckanext/kata/auth_functions.py:60
+#: ckanext/kata/auth_functions.py:61
 #, python-format
 msgid "Resource %s not editable"
 msgstr "Resurssia %s ei voi muokata"
 
-#: ckanext/kata/auth_functions.py:85
+#: ckanext/kata/auth_functions.py:86
 #, python-format
 msgid "User %s not authorized to delete package %s"
 msgstr "Käyttäjällä %s ei ole oikeuksia poistaa tietoaineistoa %s"
 
-#: ckanext/kata/controllers.py:263
+#: ckanext/kata/auth_functions.py:113
+#, python-format
+msgid "User %s not authorized to add a dataset"
+msgstr "Käyttäjällä %s ei ole oikeuksia lisätä tietoaineistoa"
+
+#: ckanext/kata/controllers.py:262
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of "
 "package %s"
 msgstr "Pyyntö muokkausoikeuksien saamiseksi lähetetään aineiston %s ylläpitäjälle"
 
-#: ckanext/kata/controllers.py:266 ckanext/kata/controllers.py:312
+#: ckanext/kata/controllers.py:265 ckanext/kata/controllers.py:311
 msgid "A request is already pending"
 msgstr "Pyyntö on jo jonossa"
 
-#: ckanext/kata/controllers.py:269 ckanext/kata/controllers.py:315
+#: ckanext/kata/controllers.py:268 ckanext/kata/controllers.py:314
 msgid "You must be logged in to request edit access"
 msgstr "Sinun täytyy olla kirjautunut pyytääksesi muokkausoikeuksia"
 
-#: ckanext/kata/controllers.py:289
+#: ckanext/kata/controllers.py:288
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr "Käyttäjällä %s on nyt muokkausoikeudet tietoaineistoon %s"
 
-#: ckanext/kata/controllers.py:294
+#: ckanext/kata/controllers.py:293
 msgid "No such request found!"
 msgstr "Pyyntöä ei löytynyt."
 
-#: ckanext/kata/controllers.py:361 ckanext/kata/controllers.py:670
+#: ckanext/kata/controllers.py:360 ckanext/kata/controllers.py:669
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
-#: ckanext/kata/controllers.py:363
+#: ckanext/kata/controllers.py:362
 msgid "No message"
 msgstr "Viesti on tyhjä"
 
-#: ckanext/kata/controllers.py:365 ckanext/kata/controllers.py:414
-#: ckanext/kata/controllers.py:460 ckanext/kata/controllers.py:492
-#: ckanext/kata/controllers.py:514
+#: ckanext/kata/controllers.py:364 ckanext/kata/controllers.py:413
+#: ckanext/kata/controllers.py:459 ckanext/kata/controllers.py:491
+#: ckanext/kata/controllers.py:513
 msgid "Please login"
 msgstr "Kirjaudu sisään"
 
-#: ckanext/kata/controllers.py:480
+#: ckanext/kata/controllers.py:479
 msgid "Dataset not found"
 msgstr "Tietoaineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:489 ckanext/kata/controllers.py:511
+#: ckanext/kata/controllers.py:488 ckanext/kata/controllers.py:510
 msgid "Already contacted"
 msgstr "Olet ottanut yhteyttä jo aiemmin"
 
-#: ckanext/kata/controllers.py:551
+#: ckanext/kata/controllers.py:550
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:553
+#: ckanext/kata/controllers.py:552
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr " (Tai jos käytät OpenID:tä, sitä ei ole liitetty käyttäjätiliisi.)"
 
-#: ckanext/kata/controllers.py:611
+#: ckanext/kata/controllers.py:610
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:633
+#: ckanext/kata/controllers.py:632
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
-#: ckanext/kata/controllers.py:653
+#: ckanext/kata/controllers.py:652
 msgid "Feature disabled"
 msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:655 ckanext/kata/validators.py:155
+#: ckanext/kata/controllers.py:654 ckanext/kata/validators.py:158
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
-#: ckanext/kata/controllers.py:675
+#: ckanext/kata/controllers.py:674
 msgid "Bad Captcha. Please try again."
 msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
-#: ckanext/kata/controllers.py:770
+#: ckanext/kata/controllers.py:769
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:795
+#: ckanext/kata/controllers.py:794
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:800
+#: ckanext/kata/controllers.py:799
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:804
+#: ckanext/kata/controllers.py:803
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
@@ -202,14 +201,14 @@ msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/plugin.py:454 ckanext/kata/theme/templates/header.html:120
+#: ckanext/kata/plugin.py:458 ckanext/kata/theme/templates/header.html:120
 #: ckanext/kata/theme/templates/organization/index.html:3
 #: ckanext/kata/theme/templates/organization/index.html:6
 #: ckanext/kata/theme/templates/organization/index.html:18
 msgid "Organizations"
 msgstr "Organisaatiot"
 
-#: ckanext/kata/settings.py:50 ckanext/kata/theme/templates/kata/help.html:303
+#: ckanext/kata/settings.py:53 ckanext/kata/theme/templates/kata/help.html:303
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:22
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:27
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:62
@@ -217,30 +216,30 @@ msgstr "Organisaatiot"
 msgid "Author"
 msgstr "Laatija"
 
-#: ckanext/kata/settings.py:51
+#: ckanext/kata/settings.py:54
 msgid "Contributor"
 msgstr "Avustaja"
 
-#: ckanext/kata/settings.py:52
+#: ckanext/kata/settings.py:55
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:13
 msgid "Distributor"
 msgstr "Jakelija"
 
-#: ckanext/kata/settings.py:53 ckanext/kata/theme/templates/kata/help.html:294
+#: ckanext/kata/settings.py:56 ckanext/kata/theme/templates/kata/help.html:294
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:90
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:84
 msgid "Funder"
 msgstr "Rahoittaja"
 
-#: ckanext/kata/settings.py:54 ckanext/kata/theme/templates/kata/help.html:299
+#: ckanext/kata/settings.py:57 ckanext/kata/theme/templates/kata/help.html:299
 msgid "Owner"
 msgstr "Omistaja"
 
-#: ckanext/kata/settings.py:55
+#: ckanext/kata/settings.py:58
 msgid "Producer"
 msgstr "Tuottaja"
 
-#: ckanext/kata/validators.py:57
+#: ckanext/kata/validators.py:60
 #, python-format
 msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
@@ -248,15 +247,15 @@ msgstr ""
 "\"\n"
 "\"'_.()/#+."
 
-#: ckanext/kata/validators.py:104
+#: ckanext/kata/validators.py:107
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr "Päivämäärän muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
 
-#: ckanext/kata/validators.py:107 ckanext/kata/validators.py:127
+#: ckanext/kata/validators.py:110 ckanext/kata/validators.py:130
 msgid "Invalid date"
 msgstr "Vääränlainen päivämäärä"
 
-#: ckanext/kata/validators.py:124
+#: ckanext/kata/validators.py:127
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: "
 "2001-03-01 or 2001-03"
@@ -265,26 +264,26 @@ msgstr ""
 "\"\n"
 "\"2001-01-01"
 
-#: ckanext/kata/validators.py:165
+#: ckanext/kata/validators.py:168
 msgid "Invalid characters: <> not allowed"
 msgstr "Kiellettyjä merkkejä: <> ei sallittu"
 
-#: ckanext/kata/validators.py:174
+#: ckanext/kata/validators.py:177
 msgid "Value must contain alphanumeric characters"
 msgstr "Arvon täytyy sisältää aakkosnumeerisia merkkejä"
 
-#: ckanext/kata/validators.py:182
+#: ckanext/kata/validators.py:185
 msgid "Invalid telephone number, must be like +13221221"
 msgstr "Vääränmuotoinen puhelinnumero, vaaditaan muotoa +13221221."
 
-#: ckanext/kata/validators.py:244
+#: ckanext/kata/validators.py:247
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
 msgstr ""
 "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: -,"
 
-#: ckanext/kata/validators.py:265
+#: ckanext/kata/validators.py:268
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
@@ -294,7 +293,7 @@ msgstr ""
 "merkeistä (ascii) ja näistä erikoismerkeistä: -'/,:().;= Kelpaamattomat "
 "merkkijonot: \"%s\""
 
-#: ckanext/kata/validators.py:284
+#: ckanext/kata/validators.py:287
 #, python-format
 msgid ""
 "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: "
@@ -303,18 +302,18 @@ msgstr ""
 "Tiedostotyypin (mimetyyppi) \"%s\" pitää koostua alfanumeerisita "
 "merkeistä (ascii) ja näistä erikoismerkeistä: _'+./"
 
-#: ckanext/kata/validators.py:296
+#: ckanext/kata/validators.py:299
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 "Algoritmin \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: _-()"
 
-#: ckanext/kata/validators.py:307
+#: ckanext/kata/validators.py:310
 msgid "First title can not be empty"
 msgstr "Ensimmäinen otsikko ei voi olla tyhjä"
 
-#: ckanext/kata/validators.py:321
+#: ckanext/kata/validators.py:324
 msgid "Duplicate titles for a language not permitted"
 msgstr "Et voi syöttää useampia otsikoita samalla kielellä"
 
@@ -323,21 +322,37 @@ msgid "Missing compulsory agent: {0}"
 msgstr "Pakollinen toimija puuttuu: {0}"
 
 #: ckanext/kata/validators.py:365
-msgid "Missing compulsory distributor contact"
+msgid "Missing compulsory distributor information"
 msgstr "Pakollinen jakelijan tieto puuttuu"
 
 #: ckanext/kata/validators.py:387
 msgid "Missing dataset title"
 msgstr "Tietoaineiston otsikko puuttuu"
 
-#: ckanext/kata/validators.py:395
+#: ckanext/kata/validators.py:397
 msgid "Missing dataset PIDs"
 msgstr "Tietoaineiston tunnisteita puuttuu"
 
-#: ckanext/kata/validators.py:410 ckanext/kata/validators.py:446
+#: ckanext/kata/validators.py:408
+msgid "Missing primary data PID"
+msgstr "Primääri datan tunniste puuttuu"
+
+#: ckanext/kata/validators.py:423 ckanext/kata/validators.py:459
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr "Puuttuva arvo"
+
+#: ckanext/kata/validators.py:478
+msgid "An organization must be supplied"
+msgstr "Organisaatio vaaditaan"
+
+#: ckanext/kata/validators.py:485
+msgid "Organization does not exist"
+msgstr "Organisaatiota ei löydy"
+
+#: ckanext/kata/validators.py:510
+msgid "Only organization's editors and admins can create a public dataset"
+msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:13
 msgid "Etsin is part of the "
@@ -586,6 +601,7 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/package/read_base.html:5
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
 #: ckanext/kata/theme/templates/package/resource_read.html:21
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:24
 #: ckanext/kata/theme/templates/user/read.html:8
 msgid "Edit"
 msgstr "Muokkaa"
@@ -2111,13 +2127,13 @@ msgid "Organization"
 msgstr "Organisaatio"
 
 #: ckanext/kata/theme/templates/kata/help.html:308
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:261
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:263
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Algorithm"
 msgstr "Algoritmi"
 
 #: ckanext/kata/theme/templates/kata/help.html:310
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:257
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:259
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Checksum"
 msgstr "Tarkistussumma"
@@ -4806,44 +4822,44 @@ msgstr "Ensisijainen metadatan tunniste"
 msgid "Primary data identifier"
 msgstr "Ensisijainen datan tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:213
 msgid "Additional information on dataset"
 msgstr "Lisätietoja tietoaineistosta"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:215
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:217
 msgid "Geographical areas covered"
 msgstr "Maantieteellinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:221
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:223
 msgid "Period of time covered"
 msgstr "Ajallinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:222
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:224
 msgid " to "
 msgstr " - "
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:227
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:229
 msgid "Publications based on this data"
 msgstr "Dataan perustuvat julkaisut"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:233
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:235
 msgid "Dataset belongs to collection/series"
 msgstr "Tietoaineisto kuuluu kokoelmaan/sarjaan"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:239
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:241
 msgid "Other related datasets"
 msgstr "Muut liittyvät tietoaineistot"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:245
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:247
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:34
 msgid "Discipline/branch of science"
 msgstr "Tieteenala"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:251
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:253
 msgid "File format"
 msgstr "Tiedoston muoto"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:270
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:272
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr "Tietoaineiston elinkaaren tapahtumat:"
@@ -5163,110 +5179,72 @@ msgstr "Peruuta"
 msgid "Save"
 msgstr "Tallenna"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:5
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:18
 msgid "Identification information of data"
 msgstr "Aineiston tunnistetiedot"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:9
-msgid "Permanent Identifier"
-msgstr "Pysyvä tunniste"
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:21
+msgid "PID type"
+msgstr "PID:n tyyppi"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:12
-msgid "Permanent identifier was already given. It can't be changed."
-msgstr "Pysyvä tunniste on jo annettu. Sitä ei voi muokata."
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:22
+msgid "Identifier"
+msgstr "Tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:16
-msgid "Permanent Identifier for data"
-msgstr "Pysyvä tunniste datalle"
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:36
+msgid "Primary data"
+msgstr "Ensisij. data"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:16
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:33
-msgid "will be automatically generated if empty"
-msgstr "jos tyhjä, generoidaan automaattisesti"
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:17
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:63
 msgid ""
-"Field is compulsory but automatically generated if left empty.<br /><br "
-"/>PID is a permanent, unique, identifier, preferably a URI. You can add "
-"your own identifier or use one generated by the service. <br /><br />The "
-"automatically generated PID is a URN identifier from the national library"
-" of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit "
-"http://www.nationallibrary.fi/ for more information."
+"PIDs are compulsory. An automatically generated primary data PID is "
+"provided if left empty.<br /><br />PID is a permanent identifier, "
+"preferably an HTTP URI. Note that the first PID is used as primary data "
+"PID. <br /><br />The automatically generated PID is a URN identifier "
+"provided by the national library of Finland, of form \"urn:nbn:fi:csc-"
+"kata[unique number]\". Visit http://www.nationallibrary.fi/ for more "
+"information."
 msgstr ""
-"Kenttä on pakollinen, mutta generoidaan automaattisesti jos jätetty "
-"tyhjäksi.<br /><br />PID on pysyvä, uniikki datan tunniste. Voit lisätä "
-"oman tunnisteesi tai käyttää palvelun generoimaa tunnistetta<br /><br "
-"/>Automaattisesti generoitu PID on URN-tunniste Kansalliskirjaston "
-"nimiavaruudesta, muotoa \"urn:nbn:fi:csc-kata[numerosarja]\". Lisää "
-"tietoa osoitteessa http://www.kansalliskirjasto.fi/."
+"Tunnisteet (PID) ovat pakollisia. Ensisijainen datan tunniste luodaan "
+"automaattisesti, jos kenttä on jätetty tyhjäksi.<br /><br />PID on pysyvä, "
+"uniikki datan tunniste, mieluiten HTTP URI. Huomaa, että ensimmäinen "
+"tunniste on ensisijainen tunniste.<br /><br />Automaattisesti generoitu PID "
+"on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi"
+":csc-kata[numerosarja]\". Lisää tietoa osoitteessa "
+"http://www.kansalliskirjasto.fi/."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:18
-msgid "Note that the PID can NOT be edited after saving the dataset."
-msgstr ""
-"Huomaa, että tunnistetta EI voi muokata sen jälkeen kun tietoaineisto on "
-"tallennettu."
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:80
+msgid "Generate new version identifier"
+msgstr "Luo uusi versiotunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:30
-msgid "Permanent Identifier for data version"
-msgstr "Pysyvä tunniste datan versiolle"
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:34
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:39
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:81
 msgid "Check to automatically generate a permanent identifier."
 msgstr "Ruksimalla ruudun palvelu generoi pysyvän tunnisteen automaattisesti."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:35
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:82
 msgid ""
-"Field is compulsory but automatically generated if left empty with the "
-"checkbox checked.<br /><br />PID is a permanent, unique, identifier, "
-"preferably a URI. This specific PID is for the current data version. You "
-"can add your own identifier or use one generated by the service by "
-"leaving the text field empty and checking the checkbox next to the field."
-" <br /><br />The automatically generated PID is a URN identifier from the"
-" national library of Finland, of form \"urn:nbn:fi:csc-kata[unique "
-"number]\". Visit http://www.nationallibrary.fi for more information."
+"Generate a new permanent identifier (PID) for a version of the data.<br "
+"/><br />PID is a permanent, unique, identifier, preferably a URI. This "
+"specific PID is for the current data version. You can add your own "
+"identifier or use one generated by the service by leaving the text field "
+"empty and checking the checkbox next to the field. <br /><br />The "
+"automatically generated PID is a URN identifier from the national library"
+" of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit "
+"http://www.nationallibrary.fi for more information."
 msgstr ""
-"Kenttä on pakollinen, mutta generoidaan automaattisesti jos kenttä on "
-"jätetty tyhjäksi ja valintaruutu on valittu.<br /><br />PID on pysyvä, "
+"Luo uusi pysyvä tunniste (PID) datan versiolle<br /><br />PID on pysyvä, "
 "uniikki datan tunniste. Voit lisätä oman tunnisteesi tai käyttää palvelun"
-" generoimaa tunnistetta<br /><br />Automaattisesti generoitu PID on URN-"
-"tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi:csc-"
-"kata[numerosarja]\". Lisää tietoa osoitteessa "
+" generoimaa tunnistetta, joka luodaan automaattisesti jos valitset "
+"valintaruudun.<br /><br />Automaattisesti generoitu PID "
+"on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi"
+":csc-kata[numerosarja]\". Lisää tietoa osoitteessa "
 "http://www.kansalliskirjasto.fi/."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:36
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:41
-msgid ""
-"Note that the version identifier can NOT be edited after saving the "
-"dataset, but you can add new version identifiers."
-msgstr ""
-"Huomaa että versiotunnistetta EI voi muokata tallennuksen jälkeen, mutta "
-"voit lisätä uusia versiotunnisteita."
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:38
-msgid "insert new identifier or leave empty"
-msgstr "lisää uusi tunniste tai jätä tyhjäksi"
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:40
-msgid ""
-"Field is not compulsory, a version identifier is already given.<br /><br "
-"/>PID is a permanent, unique, identifier, preferably a URI. This specific"
-" PID is for the current data version. You can add a new one by typing it "
-"to the text field or by leaving the text field empty and checking the "
-"checkbox to automatically generate a new identifier."
-msgstr ""
-"Kenttä ei ole pakollinen, koska versiotunniste on jo annettu.<br /><br "
-"/>PID on pysyvä, uniikki datan tunniste, mieluiten URI. Tämä "
-"pysyväistunniste on tarkoitettu datan versiolle. Voit antaa uuden "
-"versiotunnisteen kirjoittamalla sen tekstikenttään tai jättämällä "
-"tekstikentän tyhjäksi ja ruksittamalla valintaruudun, jolloin palvelin "
-"generoi URN-tunnisteen automaattisesti."
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:47
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:85
 msgid "Modification date"
 msgstr "Muokkauspvm"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:51
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:89
 msgid ""
 "Field is compulsory but an automatically generated date is provided.<br "
 "/><br />The modification date tells when the data has last been modified."
@@ -5292,7 +5270,7 @@ msgstr "Valitse organisaatio"
 msgid "No organization"
 msgstr "Ei organisaatiota"
 
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:47
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:48
 msgid "Visibility"
 msgstr "Näkyvyys"
 
