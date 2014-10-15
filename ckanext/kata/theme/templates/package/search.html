@@ -52,27 +52,31 @@
         {%- endif %}
       </div>
       <div id="dataset-search-ext"></div>
+        <div>
+          <a href="{{ h.url('search') }}"><button id="clear-search" class="btn btn-primary" type="button">{{ _('Clear search') }}</button></a>
 
-        {% set sorting = [
-          (_('Relevance'), 'score desc, metadata_modified desc'),
-          (_('Name Ascending'), 'title_string asc'),
-          (_('Name Descending'), 'title_string desc'),
-          (_('Last Modified'), 'metadata_modified desc'),
-          (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
-        %}
-        {% if sorting %}
-          <div class="form-select control-group control-order-by">
-            <label for="field-order-by">{{ _('Order by') }}</label>
-            <select id="field-order-by" name="sort">
-              {% for label, value in sorting %}
-                {% if label and value %}
-                  <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-            <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
-          </div>
-        {% endif %}
+
+          {% set sorting = [
+            (_('Relevance'), 'score desc, metadata_modified desc'),
+            (_('Name Ascending'), 'title_string asc'),
+            (_('Name Descending'), 'title_string desc'),
+            (_('Last Modified'), 'metadata_modified desc'),
+            (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
+          %}
+          {% if sorting %}
+            <div class="form-select control-group control-order-by">
+              <label for="field-order-by">{{ _('Order by') }}</label>
+              <select id="field-order-by" name="sort">
+                {% for label, value in sorting %}
+                  {% if label and value %}
+                    <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
+            </div>
+          {% endif %}
+        </div>
     </form>
   </div>
 
@@ -166,28 +170,31 @@
         </span>
           <button id="advanced_search_submit" class="btn btn-primary kata-search-button" type="submit" value="{{ _('Search') }}">{{ _('Search') }}</button>
         </div>
+        <div>
+          <a href="{{ h.url('search') }}"><button id="clear-search" class="btn btn-primary" type="button">{{ _('Clear search') }}</button></a>
 
 
-        {% set sorting = [
-            (_('Relevance'), 'score desc, metadata_modified desc'),
-            (_('Name Ascending'), 'title_string asc'),
-            (_('Name Descending'), 'title_string desc'),
-            (_('Last Modified'), 'metadata_modified desc'),
-            (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
-        %}
-        {% if sorting %}
-          <div class="form-select control-group control-order-by">
-            <label for="field-order-by">{{ _('Order by') }}</label>
-            <select id="field-order-by" name="sort">
-              {% for label, value in sorting %}
-                {% if label and value %}
-                  <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-            <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
-          </div>
-        {% endif %}
+          {% set sorting = [
+              (_('Relevance'), 'score desc, metadata_modified desc'),
+              (_('Name Ascending'), 'title_string asc'),
+              (_('Name Descending'), 'title_string desc'),
+              (_('Last Modified'), 'metadata_modified desc'),
+              (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
+          %}
+          {% if sorting %}
+            <div class="form-select control-group control-order-by">
+              <label for="field-order-by">{{ _('Order by') }}</label>
+              <select id="field-order-by" name="sort">
+                {% for label, value in sorting %}
+                  {% if label and value %}
+                    <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
+            </div>
+          {% endif %}
+        </div>
 
         {% if c.fields -%}
         <span>
