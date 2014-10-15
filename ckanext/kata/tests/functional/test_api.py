@@ -401,9 +401,6 @@ class TestDataReading(KataApiTestCase):
         output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
                                  status=200, id=output['id'])
 
-        # Make sure user is added as distributor
-        assert [agent.get('name') for agent in output['agent']].count('tester') == 1
-
         assert self._compare_datadicts(self.TEST_DATADICT, output)
 
     def test_create_and_read_dataset_2(self):
@@ -453,9 +450,6 @@ class TestDataReading(KataApiTestCase):
 
         output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
                                  status=200, id=output['id'])
-
-        # Make sure CKAN user is still present as distributor
-        assert [agent.get('name') for agent in output['agent']].count('tester') == 1
 
         assert self._compare_datadicts(self.TEST_DATADICT, output)
 

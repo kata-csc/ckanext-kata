@@ -342,17 +342,14 @@ def check_agent(key, data, errors, context):
     Check that compulsory agents exist.
     '''
     author_found = False
-    distributor_found = False
     roles = [data[k] for k in data.keys() if k[0] == 'agent' and k[2] == 'role']
 
     for role in roles:
         if role == 'author':
             author_found = True
-        if role == 'distributor':
-            distributor_found = True
 
-    if not (author_found and distributor_found):
-        missing_role = 'author' if distributor_found else 'distributor'
+    if not author_found:
+        missing_role = 'author'
         error = {'key': missing_role, 'value': _("Missing compulsory agent: {0}").format(_(settings.AGENT_ROLES[missing_role]))}
         raise Invalid(error)
 
@@ -365,7 +362,7 @@ def check_contact(key, data, errors, context):
     # Simplified check to see that we get at least one contact (4 compulsory fields).
     # Further validation done in contact validators.
     if not [k[0] for k in data.keys()].count('contact') >= 1:
-        raise Invalid({'value': _('Missing compulsory distributor contact'), 'key': 'contact'})
+        raise Invalid({'value': _('Missing compulsory distributor information'), 'key': 'contact'})
 
 
 def check_agent_fields(key, data, errors, context):

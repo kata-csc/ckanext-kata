@@ -161,20 +161,6 @@ def package_create(context, data_dict):
 
     _handle_pids(context, data_dict)
 
-    # Add current user as a distributor if not already present.
-    if user:
-        if not 'agent' in data_dict:
-            data_dict['agent'] = []
-
-        user_name = user.display_name
-        distributor_names = [agent.get('name') for agent in data_dict['agent'] if agent.get('role') == 'distributor']
-
-        if user_name != 'harvest':
-            if not user_name in distributor_names:
-                data_dict['agent'].append(
-                    {'name': user_name, 'role': 'distributor', 'id': user.id}
-                )
-
     if data_dict.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_create_package_schema()
 
@@ -211,23 +197,6 @@ def package_update(context, data_dict):
                     'extras_as_string': True}
     package_data = package_show(package_context, data_dict)
     # package_data = ckan.logic.action.get.package_show(package_context, data_dict)
-
-    # API needs distributor
-    distributor = False
-    for agent in data_dict.get('agent', []):
-        if agent.get('role') == 'distributor':
-            distributor = True
-
-    if not distributor and package_data.get('agent') is not None:
-        # Harvest objects do not have agents
-        for agent in package_data.get('agent'):
-            if agent.get('role') == 'distributor':
-                data_dict['agent'].append({'name': agent.get('name', u''),
-                                           'role': u'distributor',
-                                           'id': agent.get('id', u''),
-                                           'fundingid': agent.get('fundingid', u''),
-                                           'organisation': agent.get('organisation', u''),
-                                           'URL': agent.get('URL', u'')})
 
     old_resources = package_data.get('resources', [])
 

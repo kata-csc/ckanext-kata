@@ -7,7 +7,7 @@
     {% set distributor = h.get_distributor(data) %}
     {% if distributor or data.id %}
       <input type="hidden" name="agent__999__role" value="distributor" />
-      <input type="hidden" name="agent__999__name" value="{{ distributor.name or user.display_name }}" />
+      <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
       <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation or '' }}" />
     {% endif %}
     <h3 class="module-heading-add-dataset">{{ _('Distributor') }}</h3>
