@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-15 04:51+0000\n"
+"POT-Creation-Date: 2014-10-15 10:27+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -185,7 +185,7 @@ msgstr "Organisaatio puuttuu"
 
 #: ckanext/kata/converters.py:39
 msgid "Author is missing"
-msgstr "Laatija puuttuu"
+msgstr "Tekijä puuttuu"
 
 #: ckanext/kata/converters.py:218
 msgid "No language given"
@@ -214,7 +214,7 @@ msgstr "Organisaatiot"
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:62
 #: ckanext/kata/theme/templates/revision/read.html:50
 msgid "Author"
-msgstr "Laatija"
+msgstr "Tekijä"
 
 #: ckanext/kata/settings.py:54
 msgid "Contributor"
@@ -437,7 +437,7 @@ msgstr "Etsi tietoaineistoja"
 #: ckanext/kata/theme/templates/header.html:89
 #: ckanext/kata/theme/templates/home/index.html:107
 #: ckanext/kata/theme/templates/package/search.html:23
-#: ckanext/kata/theme/templates/package/search.html:167
+#: ckanext/kata/theme/templates/package/search.html:171
 msgid "Search"
 msgstr "Etsi"
 
@@ -1006,10 +1006,22 @@ msgid "Start typing…"
 msgstr "Kirjoita tähän…"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:33
+msgid "Data identifier"
+msgstr "Datan tunniste"
+
+#: ckanext/kata/theme/templates/kata/dummy.html:34
+msgid "Version identifier"
+msgstr "Versiotunniste"
+
+#: ckanext/kata/theme/templates/kata/dummy.html:35
+msgid "Metadata identifier"
+msgstr "Metadatan tunniste"
+
+#: ckanext/kata/theme/templates/kata/dummy.html:38
 msgid "Owner org"
 msgstr "Organisaatio"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:36
+#: ckanext/kata/theme/templates/kata/dummy.html:41
 msgid ""
 " <p>Organizations act like publishing departments for datasets (for "
 "example, the Department of Health). This means that datasets can be "
@@ -1106,7 +1118,7 @@ msgid ""
 "I added extra fields for titles/authors I do not want to fill. How do I "
 "remove these?"
 msgstr ""
-"Lisäsin ylimääräisiä kenttiä otsikoille/laatijoille, mutta en halua "
+"Lisäsin ylimääräisiä kenttiä otsikoille/tekijöille, mutta en halua "
 "täyttää niihin mitään. Miten poistan ne?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:27
@@ -1646,8 +1658,8 @@ msgid ""
 "Authors: Author and author's organisation. Multiple author/organisation "
 "pairs can be given."
 msgstr ""
-"Laatijat: laatija ja laatijan organisaatio. Metadataan voidaan syöttää "
-"useampia laatija-organisaatio -pareja."
+"Tekijätt: tekijä ja tekijän organisaatio. Metadataan voidaan syöttää "
+"useampia tekijä-organisaatio -pareja."
 
 #: ckanext/kata/theme/templates/kata/help.html:143
 msgid ""
@@ -2073,7 +2085,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:275
 #: ckanext/kata/theme/templates/kata/help.html:413
-#: ckanext/kata/theme/templates/package/search.html:260
+#: ckanext/kata/theme/templates/package/search.html:267
 msgid "API"
 msgstr "API"
 
@@ -2245,8 +2257,8 @@ msgstr ""
 "target=\"_blank\">Markdown</a> -muotoilua"
 
 #: ckanext/kata/theme/templates/macros/form.html:226
-#: ckanext/kata/theme/templates/package/search.html:133
-#: ckanext/kata/theme/templates/package/search.html:236
+#: ckanext/kata/theme/templates/package/search.html:137
+#: ckanext/kata/theme/templates/package/search.html:243
 msgid "Remove"
 msgstr "Poista"
 
@@ -2261,7 +2273,7 @@ msgstr "Lomakkeella on virheellisiä syötteitä:"
 
 #: ckanext/kata/theme/templates/macros/kata_form.html:31
 #: ckanext/kata/theme/templates/package/package_rights.html:61
-#: ckanext/kata/theme/templates/package/search.html:135
+#: ckanext/kata/theme/templates/package/search.html:139
 msgid "Add"
 msgstr "Lisää"
 
@@ -2561,7 +2573,7 @@ msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
 #: ckanext/kata/theme/templates/package/search.html:39
-#: ckanext/kata/theme/templates/package/search.html:131
+#: ckanext/kata/theme/templates/package/search.html:135
 msgid "Search..."
 msgstr "Haku..."
 
@@ -2569,55 +2581,60 @@ msgstr "Haku..."
 msgid "Submit"
 msgstr "Lähetä"
 
-#: ckanext/kata/theme/templates/package/search.html:57
-#: ckanext/kata/theme/templates/package/search.html:172
+#: ckanext/kata/theme/templates/package/search.html:56
+#: ckanext/kata/theme/templates/package/search.html:174
+msgid "Clear search"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:60
+#: ckanext/kata/theme/templates/package/search.html:178
 msgid "Relevance"
 msgstr "Relevanssi"
 
-#: ckanext/kata/theme/templates/package/search.html:58
-#: ckanext/kata/theme/templates/package/search.html:173
+#: ckanext/kata/theme/templates/package/search.html:61
+#: ckanext/kata/theme/templates/package/search.html:179
 msgid "Name Ascending"
 msgstr "Nimi (A-Ö)"
 
-#: ckanext/kata/theme/templates/package/search.html:59
-#: ckanext/kata/theme/templates/package/search.html:174
+#: ckanext/kata/theme/templates/package/search.html:62
+#: ckanext/kata/theme/templates/package/search.html:180
 msgid "Name Descending"
 msgstr "Nimi (Ö-A)"
 
-#: ckanext/kata/theme/templates/package/search.html:60
-#: ckanext/kata/theme/templates/package/search.html:175
+#: ckanext/kata/theme/templates/package/search.html:63
+#: ckanext/kata/theme/templates/package/search.html:181
 msgid "Last Modified"
 msgstr "Viimeksi muokattu"
 
-#: ckanext/kata/theme/templates/package/search.html:61
-#: ckanext/kata/theme/templates/package/search.html:176
+#: ckanext/kata/theme/templates/package/search.html:64
+#: ckanext/kata/theme/templates/package/search.html:182
 msgid "Popular"
 msgstr "Suosittu"
 
-#: ckanext/kata/theme/templates/package/search.html:65
-#: ckanext/kata/theme/templates/package/search.html:180
+#: ckanext/kata/theme/templates/package/search.html:68
+#: ckanext/kata/theme/templates/package/search.html:186
 msgid "Order by"
 msgstr "Järjestä"
 
-#: ckanext/kata/theme/templates/package/search.html:73
-#: ckanext/kata/theme/templates/package/search.html:188
+#: ckanext/kata/theme/templates/package/search.html:76
+#: ckanext/kata/theme/templates/package/search.html:194
 #: ckanext/kata/theme/templates/snippets/language_selector.html:12
 msgid "Go"
 msgstr "Mene"
 
-#: ckanext/kata/theme/templates/package/search.html:111
+#: ckanext/kata/theme/templates/package/search.html:115
 msgid "AND"
 msgstr "AND"
 
-#: ckanext/kata/theme/templates/package/search.html:112
+#: ckanext/kata/theme/templates/package/search.html:116
 msgid "OR"
 msgstr "OR"
 
-#: ckanext/kata/theme/templates/package/search.html:113
+#: ckanext/kata/theme/templates/package/search.html:117
 msgid "NOT"
 msgstr "NOT"
 
-#: ckanext/kata/theme/templates/package/search.html:137
+#: ckanext/kata/theme/templates/package/search.html:141
 msgid ""
 "Multiple search terms are bind together with ANDs and grouped with ORs. "
 "Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)"
@@ -2626,37 +2643,37 @@ msgstr ""
 "OR-operaattorilla. Esimerkiksi (term1 AND term2) OR (term3) OR (term4 NOT"
 " term5)"
 
-#: ckanext/kata/theme/templates/package/search.html:148
+#: ckanext/kata/theme/templates/package/search.html:152
 msgid "Year"
 msgstr "Vuosi"
 
-#: ckanext/kata/theme/templates/package/search.html:153
+#: ckanext/kata/theme/templates/package/search.html:157
 msgid "Start year"
 msgstr "Aloitusvuosi"
 
-#: ckanext/kata/theme/templates/package/search.html:158
+#: ckanext/kata/theme/templates/package/search.html:162
 msgid "End year"
 msgstr "Lopetusvuosi"
 
-#: ckanext/kata/theme/templates/package/search.html:165
+#: ckanext/kata/theme/templates/package/search.html:169
 msgid "Use wildcard to search with various spellings, for example: cat*"
 msgstr "Käytä jokerimerkkiä hakeaksesi eri kirjoitusasuilla, esimerkiksi kissa*"
 
-#: ckanext/kata/theme/templates/package/search.html:246
+#: ckanext/kata/theme/templates/package/search.html:253
 msgid ""
 " <p><strong>There was an error while searching.</strong> Please try "
 "again.</p> "
 msgstr "<p><strong>Haussa tapahtui virhe.</strong> Ole hyvä ja yritä uudelleen</p>"
 
-#: ckanext/kata/theme/templates/package/search.html:261
+#: ckanext/kata/theme/templates/package/search.html:268
 msgid "API Docs"
 msgstr "API dokumentaatio"
 
-#: ckanext/kata/theme/templates/package/search.html:263
+#: ckanext/kata/theme/templates/package/search.html:270
 msgid "full {format} dump"
 msgstr "täysi {format} tuloste"
 
-#: ckanext/kata/theme/templates/package/search.html:264
+#: ckanext/kata/theme/templates/package/search.html:271
 #, python-format
 msgid ""
 " You can also access this registry using the %(api_link)s (see "
@@ -2665,7 +2682,7 @@ msgstr ""
 "Palvelun data on saatavilla myös %(api_link)s:n kautta (katso "
 "%(api_doc_link)s) tai ladattavissa linkistä %(dump_link)s."
 
-#: ckanext/kata/theme/templates/package/search.html:268
+#: ckanext/kata/theme/templates/package/search.html:275
 #, python-format
 msgid ""
 " You can also access this registry using the %(api_link)s (see "
@@ -5035,7 +5052,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:49
 msgid "Authors and organizations"
-msgstr "Laatijat ja organisaatiot"
+msgstr "Tekijät ja organisaatiot"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:62
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:97
@@ -5206,11 +5223,11 @@ msgid ""
 "information."
 msgstr ""
 "Tunnisteet (PID) ovat pakollisia. Ensisijainen datan tunniste luodaan "
-"automaattisesti, jos kenttä on jätetty tyhjäksi.<br /><br />PID on pysyvä, "
-"uniikki datan tunniste, mieluiten HTTP URI. Huomaa, että ensimmäinen "
-"tunniste on ensisijainen tunniste.<br /><br />Automaattisesti generoitu PID "
-"on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi"
-":csc-kata[numerosarja]\". Lisää tietoa osoitteessa "
+"automaattisesti, jos kenttä on jätetty tyhjäksi.<br /><br />PID on "
+"pysyvä, uniikki datan tunniste, mieluiten HTTP URI. Huomaa, että "
+"ensimmäinen tunniste on ensisijainen tunniste.<br /><br />Automaattisesti"
+" generoitu PID on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa"
+" \"urn:nbn:fi:csc-kata[numerosarja]\". Lisää tietoa osoitteessa "
 "http://www.kansalliskirjasto.fi/."
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:80
@@ -5235,9 +5252,9 @@ msgstr ""
 "Luo uusi pysyvä tunniste (PID) datan versiolle<br /><br />PID on pysyvä, "
 "uniikki datan tunniste. Voit lisätä oman tunnisteesi tai käyttää palvelun"
 " generoimaa tunnistetta, joka luodaan automaattisesti jos valitset "
-"valintaruudun.<br /><br />Automaattisesti generoitu PID "
-"on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi"
-":csc-kata[numerosarja]\". Lisää tietoa osoitteessa "
+"valintaruudun.<br /><br />Automaattisesti generoitu PID on URN-tunniste "
+"Kansalliskirjaston nimiavaruudesta, muotoa \"urn:nbn:fi:csc-"
+"kata[numerosarja]\". Lisää tietoa osoitteessa "
 "http://www.kansalliskirjasto.fi/."
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:85

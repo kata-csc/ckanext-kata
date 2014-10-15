@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-15 04:51+0000\n"
+"POT-Creation-Date: 2014-10-15 10:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -420,7 +420,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/header.html:89
 #: ckanext/kata/theme/templates/home/index.html:107
 #: ckanext/kata/theme/templates/package/search.html:23
-#: ckanext/kata/theme/templates/package/search.html:167
+#: ckanext/kata/theme/templates/package/search.html:171
 msgid "Search"
 msgstr ""
 
@@ -933,10 +933,22 @@ msgid "Start typing…"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:33
+msgid "Data identifier"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:34
+msgid "Version identifier"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:35
+msgid "Metadata identifier"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:38
 msgid "Owner org"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:36
+#: ckanext/kata/theme/templates/kata/dummy.html:41
 msgid ""
 " <p>Organizations act like publishing departments for datasets (for example, "
 "the Department of Health). This means that datasets can be published by and "
@@ -1720,7 +1732,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:275
 #: ckanext/kata/theme/templates/kata/help.html:413
-#: ckanext/kata/theme/templates/package/search.html:260
+#: ckanext/kata/theme/templates/package/search.html:267
 msgid "API"
 msgstr ""
 
@@ -1877,8 +1889,8 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/macros/form.html:226
-#: ckanext/kata/theme/templates/package/search.html:133
-#: ckanext/kata/theme/templates/package/search.html:236
+#: ckanext/kata/theme/templates/package/search.html:137
+#: ckanext/kata/theme/templates/package/search.html:243
 msgid "Remove"
 msgstr ""
 
@@ -1893,7 +1905,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/macros/kata_form.html:31
 #: ckanext/kata/theme/templates/package/package_rights.html:61
-#: ckanext/kata/theme/templates/package/search.html:135
+#: ckanext/kata/theme/templates/package/search.html:139
 msgid "Add"
 msgstr ""
 
@@ -2175,7 +2187,7 @@ msgid "Advanced search"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:39
-#: ckanext/kata/theme/templates/package/search.html:131
+#: ckanext/kata/theme/templates/package/search.html:135
 msgid "Search..."
 msgstr ""
 
@@ -2183,98 +2195,103 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:57
-#: ckanext/kata/theme/templates/package/search.html:172
-msgid "Relevance"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/search.html:58
-#: ckanext/kata/theme/templates/package/search.html:173
-msgid "Name Ascending"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/search.html:59
+#: ckanext/kata/theme/templates/package/search.html:56
 #: ckanext/kata/theme/templates/package/search.html:174
-msgid "Name Descending"
+msgid "Clear search"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:60
-#: ckanext/kata/theme/templates/package/search.html:175
-msgid "Last Modified"
+#: ckanext/kata/theme/templates/package/search.html:178
+msgid "Relevance"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:61
-#: ckanext/kata/theme/templates/package/search.html:176
+#: ckanext/kata/theme/templates/package/search.html:179
+msgid "Name Ascending"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:62
+#: ckanext/kata/theme/templates/package/search.html:180
+msgid "Name Descending"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:63
+#: ckanext/kata/theme/templates/package/search.html:181
+msgid "Last Modified"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:64
+#: ckanext/kata/theme/templates/package/search.html:182
 msgid "Popular"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:65
-#: ckanext/kata/theme/templates/package/search.html:180
+#: ckanext/kata/theme/templates/package/search.html:68
+#: ckanext/kata/theme/templates/package/search.html:186
 msgid "Order by"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:73
-#: ckanext/kata/theme/templates/package/search.html:188
+#: ckanext/kata/theme/templates/package/search.html:76
+#: ckanext/kata/theme/templates/package/search.html:194
 #: ckanext/kata/theme/templates/snippets/language_selector.html:12
 msgid "Go"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:111
+#: ckanext/kata/theme/templates/package/search.html:115
 msgid "AND"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:112
+#: ckanext/kata/theme/templates/package/search.html:116
 msgid "OR"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:113
+#: ckanext/kata/theme/templates/package/search.html:117
 msgid "NOT"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:137
+#: ckanext/kata/theme/templates/package/search.html:141
 msgid ""
 "Multiple search terms are bind together with ANDs and grouped with ORs. "
 "Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:148
+#: ckanext/kata/theme/templates/package/search.html:152
 msgid "Year"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:153
+#: ckanext/kata/theme/templates/package/search.html:157
 msgid "Start year"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:158
+#: ckanext/kata/theme/templates/package/search.html:162
 msgid "End year"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:165
+#: ckanext/kata/theme/templates/package/search.html:169
 msgid "Use wildcard to search with various spellings, for example: cat*"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:246
+#: ckanext/kata/theme/templates/package/search.html:253
 msgid ""
 " <p><strong>There was an error while searching.</strong> Please try "
 "again.</p> "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:261
+#: ckanext/kata/theme/templates/package/search.html:268
 msgid "API Docs"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:263
+#: ckanext/kata/theme/templates/package/search.html:270
 msgid "full {format} dump"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:264
+#: ckanext/kata/theme/templates/package/search.html:271
 #, python-format
 msgid ""
 " You can also access this registry using the %(api_link)s (see "
 "%(api_doc_link)s) or download a %(dump_link)s. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:268
+#: ckanext/kata/theme/templates/package/search.html:275
 #, python-format
 msgid ""
 " You can also access this registry using the %(api_link)s (see "
