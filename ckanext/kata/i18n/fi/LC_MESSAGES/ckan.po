@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-15 10:27+0000\n"
+"POT-Creation-Date: 2014-10-15 10:30+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -4804,8 +4804,8 @@ msgid " with license as "
 msgstr " lisenssillä "
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:147
-msgid "Contact information"
-msgstr "Yhteystiedot"
+msgid "Distributors"
+msgstr "Jakelijat"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:159
 msgid "E-Mail"
@@ -6032,4 +6032,7 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
+
+#~ msgid "Contact information"
+#~ msgstr "Yhteystiedot"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-15 10:27+0000\n"
+"POT-Creation-Date: 2014-10-15 10:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4409,7 +4409,7 @@ msgid " with license as "
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:147
-msgid "Contact information"
+msgid "Distributors"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:159
