@@ -432,6 +432,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """Return location of the main package page"""
         return 'package/new_package_form.html'
 
+    def _get_common_facets(self):
+        titles = utils.get_field_titles(toolkit._)
+        return  OrderedDict((field, titles[field]) for field in settings.FACETS)
+
     def dataset_facets(self, facets_dict, package_type):
         '''
         Update the dictionary mapping facet names to facet titles.
@@ -443,20 +447,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param package_type: eg. `dataset`
         :returns: the modified facets_dict
         '''
-        titles = utils.get_field_titles(toolkit._)
-        kata_facet_titles = OrderedDict((field, titles[field]) for field in settings.FACETS)
-
-        # Replace the facet dictionary with Kata facets.
-        # CKAN adds 'Groups' and 'Formats' there which we don't want.
         # /harvest page has a 'Frequency' facet which we lose also when replacing the dict here.
-
-        # facets_dict.update(kata_facet_titles)
-        facets_dict = kata_facet_titles
-        return facets_dict
+        return self._get_common_facets()
 
     def organization_facets(self, facets_dict, organization_type, package_type):
-        facets_dict['organization'] = _('Organizations')
-        return facets_dict
+        """ See :meth:`ckan.plugins.IFacets.organization_facets`. """
+        return self._get_common_facets()
 
     def extract_search_params(self, data_dict):
         """
