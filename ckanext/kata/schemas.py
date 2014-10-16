@@ -105,6 +105,8 @@ class Schemas:
         schema['__junk'] = [va.check_junk]
         schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
                           va.validate_general]
+        schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
+                                                     unicode, va.validate_general, co.convert_to_extras_kata]
         schema['access_application_new_form'] = [co.checkbox_to_boolean, co.convert_to_extras_kata,
                                                  co.remove_access_application_new_form]
         schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,

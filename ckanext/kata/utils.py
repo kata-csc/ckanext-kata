@@ -303,6 +303,26 @@ def get_pids_by_type(pid_type, data_dict, primary=None, use_package_id=False):
     return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
             (primary is None or asbool(x.get('primary', 'False')) == primary)] + extra
 
+def get_primary_pid(pid_type, data_dict, use_package_id=False):
+    '''
+    Returns the primary PID of the given type for a package.
+    This is a convenience function that returns the first primary PID
+    returned by get_pids_by_type.
+
+    If no primary PID can be found, this function returns None.
+
+    :param pid_type: PID type to get (data, metadata, version)
+    :param data_dict:
+    :param use_package_id: Set to True to get package.id as primary metadata PID
+    :return: the primary PID of the given type
+    :rtype: str or unicode
+    '''
+
+    pids = get_pids_by_type(pid_type=pid_type, data_dict=data_dict, primary=True, use_package_id=use_package_id)
+    if pids:
+        return pids[0]['id']
+    else:
+        return None
 
 def get_package_id_by_data_pids(data_dict):
     '''
@@ -382,3 +402,29 @@ def get_package_contact_name(pkg_id):
 
     names = [con[1] for con in name_tuples]
     return fn.first(names)
+
+
+def is_ida_pid(pid):
+    '''
+    Determines whether the given string seems to be a PID from the IDA namespace.
+    :param pid:
+    :return:
+    :rtype: bool
+    '''
+
+    ida_pid_regex = 'urn:nbn:fi:csc-ida\w+'
+    return pid and re.match(ida_pid_regex, pid)
+
+
+def generate_ida_download_url(data_pid):
+    '''
+    Returns an assumed download URL for the data based on the given data PID.
+
+    TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
+
+    :param data_pid: the PID of the IDA dataset (should be actual data PID, not metadata PID)
+    :return: a download URL for an IDA dataset
+    '''
+
+    ida_download_url_template = "http://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
+    return ida_download_url_template.format(p=data_pid)
