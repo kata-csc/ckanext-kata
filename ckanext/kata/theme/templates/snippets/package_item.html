@@ -13,6 +13,7 @@ Example:
   {% snippet 'snippets/package_item.html', package=c.datasets[0] %}
 
 #}
+
 {% set truncate = truncate or 180 %}
 {% set truncate_title = truncate_title or 80 %}
 {% set title = package.title or package.name %}
@@ -22,7 +23,9 @@ Example:
   {% block package_item_content %}
   <div class="dataset-content">
     {% set (rating, stars)=h.get_package_ratings_for_data_dict(package) %}
+    {% if not small %}
     <span class="rating-text" title="{{ _("Metadata completeness score") }}">{{ _('Metadata: {rating}/5').format(rating=rating) }}</span>
+    {% endif %}
 
     <h3 class="dataset-heading">
       {{ h.link_to(h.truncate(title, truncate_title), h.url_for(controller='package', action='read', id=package.name)) }}
@@ -43,6 +46,7 @@ Example:
         <p class="empty">{{ _("This dataset has no description") }}</p>
       {% endif %}
     </div>
+
     {% if package.resources and not hide_resources %}
       <ul class="dataset-resources unstyled">
         {% for resource in h.dict_list_reduce(package.resources, 'format') %}
@@ -51,6 +55,15 @@ Example:
           </li>
         {% endfor %}
       </ul>
+    {% endif %}
+
+    {% if small %}
+      <div class="rating-bottom">
+        <span class="rating-text" title="{{ _("Metadata completeness score") }}">
+          {{ _("Metadata completeness score") ~ ": {rating}/5".format(rating=rating) }}
+        </span>
+        <div class="rating-clear"></div>
+      </div>
     {% endif %}
   {% endblock %}
 </li>

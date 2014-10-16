@@ -1093,3 +1093,11 @@ h2.optional span, h3.optional span {
 h3.optional {
     margin-bottom: 6px;
 }
+
+.rating-bottom .rating-text {
+    margin-top: 5px;
+}
+
+.rating-bottom .rating-clear {
+    height: 0.8em;
+}
