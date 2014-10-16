@@ -47,6 +47,12 @@ Example:
       {% endif %}
     </div>
 
+    {% if small %}
+      <p class="rating-bottom" title="{{ _("Metadata completeness score") }}">
+        {{ _("Metadata completeness score") ~ ": {rating}/5".format(rating=rating) }}
+      </p>
+    {% endif %}
+
     {% if package.resources and not hide_resources %}
       <ul class="dataset-resources unstyled">
         {% for resource in h.dict_list_reduce(package.resources, 'format') %}
@@ -57,13 +63,5 @@ Example:
       </ul>
     {% endif %}
 
-    {% if small %}
-      <div class="rating-bottom">
-        <span class="rating-text" title="{{ _("Metadata completeness score") }}">
-          {{ _("Metadata completeness score") ~ ": {rating}/5".format(rating=rating) }}
-        </span>
-        <div class="rating-clear"></div>
-      </div>
-    {% endif %}
   {% endblock %}
 </li>

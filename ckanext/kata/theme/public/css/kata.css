@@ -996,10 +996,11 @@ input, button, select, textarea {
 }
 .new-dataset {
     border: none !important;
-    padding: 20px !important;
+    padding: 15px !important;
     background-color: #5a5a5c !important;
     color: white !important;
-    margin-bottom: 20px !important;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -1065,6 +1066,12 @@ input, button, select, textarea {
     float: right;
 }
 
+.rating-bottom {
+    font-size: small;
+    color: #ababab;
+    margin-top: 10px;
+}
+
 /* Disable tab selection effects on the resource type selector / upload link */
 .dataset-form-resource-types input[type=radio]:checked + label:after {
   background-image: none !important;
@@ -1092,12 +1099,4 @@ h2.optional span, h3.optional span {
 
 h3.optional {
     margin-bottom: 6px;
-}
-
-.rating-bottom .rating-text {
-    margin-top: 5px;
-}
-
-.rating-bottom .rating-clear {
-    height: 0.8em;
 }
