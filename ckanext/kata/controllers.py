@@ -628,11 +628,11 @@ class KataPackageController(PackageController):
                 h.flash_success(ret)
             except ValidationError as e:
                 h.flash_error(e.error_dict.get('message', ''))
-            except NotAuthorized as e:
+            except NotAuthorized:
                 error_message = _('No sufficient privileges to add a user to role %s.') % role
                 h.flash_error(error_message)
-            except NotFound as e:
-                h.flash_error(e)
+            except NotFound:
+                h.flash_error(_('User not found'))
 
         if email:
 
@@ -706,11 +706,11 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
 
         except ValidationError as e:
             h.flash_error(e.error_dict.get('message', ''))
-        except NotAuthorized as e:
+        except NotAuthorized:
             error_message = _('No sufficient privileges to remove user from role %s.') % data_dict['role']
             h.flash_error(error_message)
-        except NotFound as e:
-            h.flash_error(e)
+        except NotFound:
+            h.flash_error(_('User not found'))
 
         h.redirect_to(h.url_for(controller='ckanext.kata.controllers:KataPackageController',
                                 action='dataset_editor_manage', name=name))
