@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-17 07:58+0000\n"
+"POT-Creation-Date: 2014-10-17 12:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -789,15 +789,15 @@ msgid "Terms of use"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:62
-msgid "http://www.tdata.fi/kayttoehdot"
+msgid "http://avointiede.fi/documents/10864/17332/Etsin+kayttoehdot"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:65
-msgid "http://www.tdata.fi/henkilorekisteriseloste"
+msgid "http://avointiede.fi/documents/10864/17332/Etsin+tietosuojaseloste"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:65
-msgid "Privacy policy for personal information"
+msgid "Privacy policy of Etsin"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:78
