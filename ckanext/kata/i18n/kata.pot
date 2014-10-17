@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 1.1.0\n"
+"Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-17 07:15+0000\n"
+"POT-Creation-Date: 2014-10-17 07:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -751,8 +751,8 @@ msgid ""
 "being described. The Etsin provides a common ground by employing a common set"
 " of metadata fields tailored for research data. In the interest of "
 "consistency with other services, the metadata conforms to the minimum "
-"metadata model defined by the Finnish National Research Data Initiative "
-"(TTA)."
+"metadata model which can be downloaded from this page. Currently, the minimum"
+" metadata model is only provided in Finnish."
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:44
