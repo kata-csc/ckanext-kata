@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-16 13:05+0000\n"
+"POT-Creation-Date: 2014-10-17 07:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,6 +30,7 @@ msgid "Required information missing"
 msgstr ""
 
 #: ckanext/kata/actions.py:490 ckanext/kata/actions.py:554
+#: ckanext/kata/controllers.py:635 ckanext/kata/controllers.py:713
 msgid "User not found"
 msgstr ""
 
@@ -856,6 +857,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:139
 msgid "Data Archive and Aila Data Service"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:141
+msgid "http://www.fsd.uta.fi/en/"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:142
