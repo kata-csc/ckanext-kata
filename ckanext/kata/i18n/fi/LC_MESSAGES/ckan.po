@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-17 12:53+0000\n"
+"POT-Creation-Date: 2014-10-20 11:26+0300\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -6046,9 +6046,24 @@ msgstr "Jäsen lähtien:"
 msgid "API Key"
 msgstr "API-avain"
 
-#~ msgid "http://www.tdata.fi/kayttoehdot"
-#~ msgstr ""
+msgid "Go to API"
+msgstr "Siirry ohjelmointirajapintaan"
 
-#~ msgid "http://www.tdata.fi/henkilorekisteriseloste"
-#~ msgstr ""
+msgid "Go to Application"
+msgstr "Siirry sovellukseen"
+
+msgid "Go to Idea"
+msgstr "Siirry ideaan"
+
+msgid "Go to News Article"
+msgstr "Siirry uutisartikkeliin"
+
+msgid "Go to Paper"
+msgstr "Siirry artikkeliin"
+
+msgid "Go to Post"
+msgstr "Siirry kirjoitukseen"
+
+msgid "Go to Visualization"
+msgstr "Siirry visualisointiin"
 
