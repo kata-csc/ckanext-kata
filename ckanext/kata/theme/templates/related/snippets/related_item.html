@@ -30,7 +30,7 @@ Example:
       {%- elif related.type == 'visualization' -%}
         viz
       {%- else -%}
-        {{ related.type | replace('news_', '') }}
+        {{ related.type | replace('_article', '') }}
       {%- endif -%}
     </span>
   </a>
