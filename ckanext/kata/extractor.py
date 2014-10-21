@@ -129,6 +129,12 @@ def convert_file_to_text(resource_file_path, format):
             command.append(prog['output'])
 
         log.debug("Subprocess command line array: {c}".format(c=command))
-        process = subprocess.Popen(command, stdout=converted_fd)
-        process.communicate()
-        return converted_fd, converted_path
+
+        try:
+            process = subprocess.Popen(command, stdout=converted_fd)
+            process.communicate()
+            converted = converted_fd, converted_path
+        except OSError:
+            log.warn("File converter not found: {f}".format(f=prog['exec']))
+            converted = None, None
+        return converted
