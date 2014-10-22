@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-22 05:59+0000\n"
+"POT-Creation-Date: 2014-10-22 13:59+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -202,11 +202,11 @@ msgstr ""
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
 
-#: ckanext/kata/helpers.py:416 ckanext/kata/theme/templates/package/read.html:13
+#: ckanext/kata/helpers.py:412 ckanext/kata/theme/templates/package/read.html:13
 msgid "Unpublished"
 msgstr ""
 
-#: ckanext/kata/helpers.py:416
+#: ckanext/kata/helpers.py:412
 msgid "Published"
 msgstr ""
 
@@ -239,6 +239,34 @@ msgstr ""
 
 #: ckanext/kata/settings.py:58
 msgid "Producer"
+msgstr ""
+
+#: ckanext/kata/settings.py:196
+msgid "Go to API"
+msgstr ""
+
+#: ckanext/kata/settings.py:197
+msgid "Go to Application"
+msgstr ""
+
+#: ckanext/kata/settings.py:198
+msgid "Go to Idea"
+msgstr ""
+
+#: ckanext/kata/settings.py:199
+msgid "Go to News Article"
+msgstr ""
+
+#: ckanext/kata/settings.py:200
+msgid "Go to Paper"
+msgstr ""
+
+#: ckanext/kata/settings.py:201
+msgid "Go to Post"
+msgstr ""
+
+#: ckanext/kata/settings.py:202
+msgid "Go to Visualization"
 msgstr ""
 
 #: ckanext/kata/validators.py:60
@@ -4820,7 +4848,7 @@ msgstr ""
 msgid "No organization"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:48
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:43
 msgid "Visibility"
 msgstr ""
 
