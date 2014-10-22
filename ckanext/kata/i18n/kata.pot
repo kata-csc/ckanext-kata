@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-22 13:59+0300\n"
+"POT-Creation-Date: 2014-10-22 11:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5173,9 +5173,7 @@ msgid "okm-tieteenala"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
-msgid ""
-"ontology, select keywords with enter or mouse click. Note that the "
-"disciplines are provided only in Finnish for now."
+msgid "ontology, select keywords with enter or mouse click."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:37
@@ -5187,10 +5185,9 @@ msgid ""
 "suggestions. You can select the appropropriate discipline from the list of "
 "suggestions with a mouse click. If you make a mistake, you can remove a "
 "discipline by clicking the 'x' next to it.<br /><br />The suggestions are "
-"retrieved from the Finto vocabulary service (http://finto.fi/en/). The "
-"vocabulary is only available in Finnish at this time. Note that you must have"
-" JavaScript enabled in your browser in order for the automatic suggestions to"
-" work."
+"retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that "
+"you must have JavaScript enabled in your browser in order for the automatic "
+"suggestions to work."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:41
