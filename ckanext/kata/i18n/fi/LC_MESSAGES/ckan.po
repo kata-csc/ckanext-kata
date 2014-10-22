@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-22 05:59+0000\n"
+"POT-Creation-Date: 2014-10-22 13:59+0300\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -202,12 +202,12 @@ msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/helpers.py:416
+#: ckanext/kata/helpers.py:412
 #: ckanext/kata/theme/templates/package/read.html:13
 msgid "Unpublished"
 msgstr "Julkaisematon"
 
-#: ckanext/kata/helpers.py:416
+#: ckanext/kata/helpers.py:412
 msgid "Published"
 msgstr "Julkaistu"
 
@@ -241,6 +241,34 @@ msgstr "Omistaja"
 #: ckanext/kata/settings.py:58
 msgid "Producer"
 msgstr "Tuottaja"
+
+#: ckanext/kata/settings.py:196
+msgid "Go to API"
+msgstr "Siirry ohjelmointirajapintaan"
+
+#: ckanext/kata/settings.py:197
+msgid "Go to Application"
+msgstr "Siirry sovellukseen"
+
+#: ckanext/kata/settings.py:198
+msgid "Go to Idea"
+msgstr "Siirry ideaan"
+
+#: ckanext/kata/settings.py:199
+msgid "Go to News Article"
+msgstr "Siirry uutisartikkeliin"
+
+#: ckanext/kata/settings.py:200
+msgid "Go to Paper"
+msgstr "Siirry artikkeliin"
+
+#: ckanext/kata/settings.py:201
+msgid "Go to Post"
+msgstr "Siirry kirjoitukseen"
+
+#: ckanext/kata/settings.py:202
+msgid "Go to Visualization"
+msgstr "Siirry visualisointiin"
 
 #: ckanext/kata/validators.py:60
 #, python-format
@@ -5298,7 +5326,7 @@ msgstr "Valitse organisaatio"
 msgid "No organization"
 msgstr "Ei organisaatiota"
 
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:48
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:43
 msgid "Visibility"
 msgstr "Näkyvyys"
 
@@ -6050,25 +6078,4 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
-
-#~ msgid "Go to API"
-#~ msgstr "Siirry ohjelmointirajapintaan"
-
-#~ msgid "Go to Application"
-#~ msgstr "Siirry sovellukseen"
-
-#~ msgid "Go to Idea"
-#~ msgstr "Siirry ideaan"
-
-#~ msgid "Go to News Article"
-#~ msgstr "Siirry uutisartikkeliin"
-
-#~ msgid "Go to Paper"
-#~ msgstr "Siirry artikkeliin"
-
-#~ msgid "Go to Post"
-#~ msgstr "Siirry kirjoitukseen"
-
-#~ msgid "Go to Visualization"
-#~ msgstr "Siirry visualisointiin"
 
