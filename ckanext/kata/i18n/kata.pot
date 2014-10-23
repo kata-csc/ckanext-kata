@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-22 11:10+0000\n"
+"POT-Creation-Date: 2014-10-23 13:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,7 +156,7 @@ msgstr ""
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:654 ckanext/kata/validators.py:158
+#: ckanext/kata/controllers.py:654 ckanext/kata/validators.py:138
 msgid "Invalid email address"
 msgstr ""
 
@@ -269,101 +269,105 @@ msgstr ""
 msgid "Go to Visualization"
 msgstr ""
 
-#: ckanext/kata/validators.py:60
+#: ckanext/kata/validators.py:61
 #, python-format
 msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 
-#: ckanext/kata/validators.py:107
+#: ckanext/kata/validators.py:98
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:110 ckanext/kata/validators.py:130
+#: ckanext/kata/validators.py:101 ckanext/kata/validators.py:121
 msgid "Invalid date"
 msgstr ""
 
-#: ckanext/kata/validators.py:127
+#: ckanext/kata/validators.py:118
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: 2001-03-01 "
 "or 2001-03"
 msgstr ""
 
-#: ckanext/kata/validators.py:168
+#: ckanext/kata/validators.py:148
 msgid "Invalid characters: <> not allowed"
 msgstr ""
 
-#: ckanext/kata/validators.py:177
+#: ckanext/kata/validators.py:157
 msgid "Value must contain alphanumeric characters"
 msgstr ""
 
-#: ckanext/kata/validators.py:185
+#: ckanext/kata/validators.py:165
 msgid "Invalid telephone number, must be like +13221221"
 msgstr ""
 
-#: ckanext/kata/validators.py:264
+#: ckanext/kata/validators.py:244
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
 msgstr ""
 
-#: ckanext/kata/validators.py:285
+#: ckanext/kata/validators.py:265
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
 "-'/,:().;= Mismatching strings: \"%s\""
 msgstr ""
 
-#: ckanext/kata/validators.py:304
+#: ckanext/kata/validators.py:284
 #, python-format
 msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
 msgstr ""
 
-#: ckanext/kata/validators.py:316
+#: ckanext/kata/validators.py:296
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 
-#: ckanext/kata/validators.py:327
+#: ckanext/kata/validators.py:307
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:341
+#: ckanext/kata/validators.py:321
 msgid "Duplicate titles for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:370
+#: ckanext/kata/validators.py:350
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:382
+#: ckanext/kata/validators.py:362
 msgid "Missing compulsory distributor information"
 msgstr ""
 
-#: ckanext/kata/validators.py:404
+#: ckanext/kata/validators.py:384
 msgid "Missing dataset title"
 msgstr ""
 
-#: ckanext/kata/validators.py:414
+#: ckanext/kata/validators.py:394
 msgid "Missing dataset PIDs"
 msgstr ""
 
-#: ckanext/kata/validators.py:425
+#: ckanext/kata/validators.py:407
 msgid "Missing primary data PID"
 msgstr ""
 
-#: ckanext/kata/validators.py:440 ckanext/kata/validators.py:476
+#: ckanext/kata/validators.py:415
+msgid "Primary data PID can not be modified"
+msgstr ""
+
+#: ckanext/kata/validators.py:433 ckanext/kata/validators.py:469
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr ""
 
-#: ckanext/kata/validators.py:495
+#: ckanext/kata/validators.py:488
 msgid "An organization must be supplied"
 msgstr ""
 
-#: ckanext/kata/validators.py:502
+#: ckanext/kata/validators.py:495
 msgid "Organization does not exist"
 msgstr ""
 
-#: ckanext/kata/validators.py:527
+#: ckanext/kata/validators.py:520
 msgid "Only organization's editors and admins can create a public dataset"
 msgstr ""
 
@@ -649,8 +653,8 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:9
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:60
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:91
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:160
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:21
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:159
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:22
 msgid "URL"
 msgstr ""
 
@@ -662,7 +666,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/help.html:325
 #: ckanext/kata/theme/templates/kata/help.html:359
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:20
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:112
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:111
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:7
 msgid "Description"
 msgstr ""
@@ -960,36 +964,40 @@ msgstr ""
 msgid "Geographic coverage"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:26
+#: ckanext/kata/theme/templates/kata/dummy.html:24
+msgid "Title + language"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:27
 #: ckanext/kata/theme/templates/kata/help.html:322
 msgid "Discipline"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:27
+#: ckanext/kata/theme/templates/kata/dummy.html:28
 msgid "All fields"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:30
+#: ckanext/kata/theme/templates/kata/dummy.html:31
 msgid "Start typing…"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:33
+#: ckanext/kata/theme/templates/kata/dummy.html:34
 msgid "Data identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:34
+#: ckanext/kata/theme/templates/kata/dummy.html:35
 msgid "Version identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:35
+#: ckanext/kata/theme/templates/kata/dummy.html:36
 msgid "Metadata identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:38
+#: ckanext/kata/theme/templates/kata/dummy.html:39
 msgid "Owner org"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:41
+#: ckanext/kata/theme/templates/kata/dummy.html:42
 msgid ""
 " <p>Organizations act like publishing departments for datasets (for example, "
 "the Department of Health). This means that datasets can be published by and "
@@ -1778,7 +1786,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:275
 #: ckanext/kata/theme/templates/kata/help.html:413
-#: ckanext/kata/theme/templates/package/search.html:267
+#: ckanext/kata/theme/templates/package/search.html:268
 msgid "API"
 msgstr ""
 
@@ -1823,13 +1831,13 @@ msgid "Organization"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:308
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:263
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:262
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Algorithm"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:310
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:259
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:258
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Checksum"
 msgstr ""
@@ -1839,7 +1847,7 @@ msgid "Contact name"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:316
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:161
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:160
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:31
 msgid "Phone"
 msgstr ""
@@ -1936,7 +1944,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/macros/form.html:226
 #: ckanext/kata/theme/templates/package/search.html:137
-#: ckanext/kata/theme/templates/package/search.html:243
+#: ckanext/kata/theme/templates/package/search.html:244
 msgid "Remove"
 msgstr ""
 
@@ -2234,42 +2242,42 @@ msgid "Submit"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:56
-#: ckanext/kata/theme/templates/package/search.html:174
+#: ckanext/kata/theme/templates/package/search.html:175
 msgid "Clear search"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:60
-#: ckanext/kata/theme/templates/package/search.html:178
+#: ckanext/kata/theme/templates/package/search.html:179
 msgid "Relevance"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:61
-#: ckanext/kata/theme/templates/package/search.html:179
+#: ckanext/kata/theme/templates/package/search.html:180
 msgid "Name Ascending"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:62
-#: ckanext/kata/theme/templates/package/search.html:180
+#: ckanext/kata/theme/templates/package/search.html:181
 msgid "Name Descending"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:63
-#: ckanext/kata/theme/templates/package/search.html:181
+#: ckanext/kata/theme/templates/package/search.html:182
 msgid "Last Modified"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:64
-#: ckanext/kata/theme/templates/package/search.html:182
+#: ckanext/kata/theme/templates/package/search.html:183
 msgid "Popular"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:68
-#: ckanext/kata/theme/templates/package/search.html:186
+#: ckanext/kata/theme/templates/package/search.html:187
 msgid "Order by"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:76
-#: ckanext/kata/theme/templates/package/search.html:194
+#: ckanext/kata/theme/templates/package/search.html:195
 #: ckanext/kata/theme/templates/snippets/language_selector.html:12
 msgid "Go"
 msgstr ""
@@ -2308,28 +2316,28 @@ msgstr ""
 msgid "Use wildcard to search with various spellings, for example: cat*"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:253
+#: ckanext/kata/theme/templates/package/search.html:254
 msgid ""
 " <p><strong>There was an error while searching.</strong> Please try "
 "again.</p> "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:268
+#: ckanext/kata/theme/templates/package/search.html:269
 msgid "API Docs"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:270
+#: ckanext/kata/theme/templates/package/search.html:271
 msgid "full {format} dump"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:271
+#: ckanext/kata/theme/templates/package/search.html:272
 #, python-format
 msgid ""
 " You can also access this registry using the %(api_link)s (see "
 "%(api_doc_link)s) or download a %(dump_link)s. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:275
+#: ckanext/kata/theme/templates/package/search.html:276
 #, python-format
 msgid ""
 " You can also access this registry using the %(api_link)s (see "
@@ -4361,11 +4369,11 @@ msgid "Agents"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:58
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:158
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:157
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:27
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:74
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:97
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:26
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:27
 msgid "Name"
 msgstr ""
 
@@ -4383,143 +4391,143 @@ msgstr ""
 msgid "No funding information is available."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:118
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:117
 msgid "No description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:122
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:121
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:126
 msgid "Keywords"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:126
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:125
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:5
 msgid "Usage information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:128
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:127
 msgid "This dataset is"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:129
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:128
 msgid " available via an access form in "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:129
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:128
 msgid "this link"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:130
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:129
 msgid " available freely "
 msgstr ""
 
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:129
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:130
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:131
 msgid "from this address"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:131
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:130
 msgid " available via login "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:133
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:132
 msgid " available by "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:133
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:132
 msgid "contacting the distributor"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:135
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:134
 msgid " available through "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:135
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:134
 msgid "data provider"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:136
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:135
 msgid " available freely or availability is not specified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:138
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:137
 msgid " with license as "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:147
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:146
 msgid "Distributors"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:159
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:158
 msgid "E-Mail"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:168
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:167
 msgid "Send a message"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:182
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:181
 msgid "Identification information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:184
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:183
 msgid "Last modification time of data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:187
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:186
 msgid "Last modified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:192
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:191
 msgid "Permanent identifiers"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:195
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:194
 msgid "Primary metadata identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:199
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:198
 msgid "Primary data identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:213
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:212
 msgid "Additional information on dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:217
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:216
 msgid "Geographical areas covered"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:223
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:222
 msgid "Period of time covered"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:224
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:223
 msgid " to "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:229
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:228
 msgid "Publications based on this data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:235
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:234
 msgid "Dataset belongs to collection/series"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:241
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:240
 msgid "Other related datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:247
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:246
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:34
 msgid "Discipline/branch of science"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:253
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:252
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:272
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:271
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr ""
@@ -4793,6 +4801,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:36
 msgid "Primary data"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:56
+msgid "Check this to correct errors in an existing PID "
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:63
@@ -5206,11 +5218,11 @@ msgstr ""
 msgid "You must be logged in to upload a file."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:21
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:22
 msgid "Automatically generated"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:26
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:27
 msgid "eg. Description of variables"
 msgstr ""
 
