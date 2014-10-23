@@ -86,16 +86,6 @@ def kata_tag_string_convert(key, data, errors, context):
         kata_tag_name_validator(tag, context)
 
 
-# def check_project(key, data, errors, context):
-#     '''
-#     Check if user is trying to send project data when project is disabled.
-#     '''
-#     if data[('project_name',)] or data[('project_funder',)] or\
-#         data[('project_funding',)] or data[('project_homepage',)]:
-#         if data[('projdis',)] != 'False':
-#             errors[key].append(_('Project data received even if no project is associated.'))
-#
-
 def validate_kata_date(key, data, errors, context):
     '''
     Validate a date string. Empty strings also pass.
@@ -136,17 +126,6 @@ def check_junk(key, data, errors, context):
     '''
     if key in data:
         log.debug('Junk: %r' % (data[key]))
-
-
-def check_last_and_update_pid(key, data, errors, context):
-    '''
-    Generates a pid (URN) for package if `package.extras.version` has changed.
-    '''
-    if key == ('version',):
-        pkg = Package.get(data[('name',)])
-        if pkg:
-            if not data[key] == pkg.as_dict()['version']:
-                data[('version_PID',)] = utils.generate_pid()
 
 
 def validate_email(key, data, errors, context):
