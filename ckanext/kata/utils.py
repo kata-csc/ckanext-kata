@@ -388,6 +388,33 @@ def get_package_id_by_data_pids(data_dict):
     return pkg_ids[0]    # No problems found, so use this
 
 
+def get_package_contacts(pkg_id):
+    """
+    Returns contact information for the dataset with the given id.
+
+    :param pkg_id: the id of the package whose contact information to get
+    :return: a list of contact information dicts
+    :rtype: list of dicts
+    """
+
+    package = Package.get(pkg_id)
+    extras = package.extras
+
+    contacts_regex = '^(contact_)(\d+)(_.+)$'
+
+    contact_matches = map(lambda k: re.match(contacts_regex, k), extras.keys())
+    contact_indexes = set([ match.group(2) for match in contact_matches if match is not None ])
+
+    contacts = []
+    for index in sorted(contact_indexes, key=lambda x: int(x)):
+        contact = {'index': index}
+        for detail in ['name', 'email', 'url', 'phone']:
+            contact[detail] = extras.get('contact_{i}_{d}'.format(i=index, d=detail))
+        contacts.append(contact)
+
+    return contacts
+
+
 def get_package_contact_email(pkg_id):
     """
     Returns the email address of the first distributor/publisher contact

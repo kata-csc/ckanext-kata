@@ -387,8 +387,7 @@ class ContactController(BaseController):
         :param pkg_id: package id
         :type pkg_id: string
         '''
-        # Todo: replan and fix when we have multiple distributor emails available
-        # This only works because we have only one contact
+
         prologue_template = u'{a} ({b}) has sent you a message regarding the following dataset:\
 \n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
 \n\n{c} (Tunniste: {d})\n\nViesti:\n\n    ---'
@@ -401,17 +400,32 @@ käytä yllä olevaa sähköpostiosoitetta.'
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
+
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
-            email = utils.get_package_contact_email(pkg_id)
-            recipient = utils.get_package_contact_name(pkg_id)
-
             user_msg = request.params.get('msg', '')
-            prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
+            recipient_index = request.params.get('recipient', '')
 
-            subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
-            self._send_if_allowed(pkg_id, subject, recipient, email, user_msg, epilogue, prologue)
+            recipient = None
+            for contact in utils.get_package_contacts(pkg_id):
+                if contact.get('index') == recipient_index:
+                    recipient = contact
+                    break
+
+            if recipient and 'email' in recipient.keys():
+                recipient_email = recipient.get('email')
+                recipient_name = recipient.get('name')
+
+                prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
+
+                subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
+                self._send_if_allowed(pkg_id, subject, recipient_name, recipient_email, user_msg, epilogue, prologue)
+
+            else:
+                log.warn("No email address found for recipient; contacts updated before sending?")
+                log.warn("Intended recipient: {r} (index: {i})".format(r=str(recipient), i=recipient_index))
+                h.flash_error(_("Sending the message failed. Please try again."))
         else:
             h.flash_error(_("Please login"))
 
@@ -478,6 +492,9 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
 
         c.package = Package.get(pkg_id)
 
+        contacts = sorted(utils.get_package_contacts(pkg_id), key=lambda x: x['name'])
+        c.recipient_options = [ {'text': contact['name'], 'value': contact['index']} for contact in contacts ]
+
         if not c.package:
             abort(404, _("Dataset not found"))
 
@@ -503,6 +520,10 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         """
 
         c.package = Package.get(pkg_id)
+
+        contacts = sorted(utils.get_package_contacts(pkg_id), key=lambda x: x['name'])
+        c.recipient_options = [ {'text': contact['name'], 'value': contact['index']} for contact in contacts ]
+
         url = h.url_for(controller='package',
                         action="read",
                         id=c.package.id)
