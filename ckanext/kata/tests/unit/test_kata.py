@@ -20,7 +20,8 @@ import ckanext.kata.model as kata_model
 import ckanext.kata.actions as actions
 from ckan.logic import get_action, NotAuthorized, ValidationError, NotFound
 from ckanext.harvest import model as harvest_model
-from ckanext.kata.utils import get_package_id_by_data_pids
+from ckanext.kata.utils import get_package_id_by_data_pids, get_package_id_by_pid
+
 
 class TestKataPlugin(TestCase):
     """
@@ -371,6 +372,67 @@ class TestResouceConverters(TestCase):
 class TestUtils(TestCase):
     """Unit tests for functions in utils.py."""
 
+    @classmethod
+    def setUpClass(cls):
+        harvest_model.setup()
+        kata_model.setup()
+
+    def tearDown(self):
+        model.repo.rebuild_db()
+
+    def _create_datasets(self):
+        model.User(name="pidtest", sysadmin=True).save()
+        organization = get_action('organization_create')({'user': 'pidtest'}, {'name': 'test-organization', 'title': "Test organization"})
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['private'] = False
+
+        data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
+                         'id': u'some_data_pid_1',
+                         'primary': u'True',
+                         'type': u'data'},
+                        {'provider': u'http://helda.helsinki.fi/oai/request',
+                         'id': u'some_metadata_pid_1',
+                         'primary': u'True',
+                         'type': u'metadata'}]
+
+        package_1 = get_action('package_create')({'user': 'pidtest'}, data)
+
+        data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
+                         'id': u'some_data_pid_2',
+                         'primary': u'True',
+                         'type': u'data'},
+                        {'provider': u'http://helda.helsinki.fi/oai/request',
+                         'id': u'some_version_pid_2',
+                         'primary': u'True',
+                         'type': u'version'}]
+
+        package_2 = get_action('package_create')({'user': 'pidtest'}, data)
+
+        return package_1['id'], package_2['id']
+
+    def test_get_package_id_by_pid(self):
+        package_1_id, package_2_id = self._create_datasets()
+        self.assertEquals(get_package_id_by_pid('some_data_pid_1', 'data'), package_1_id)
+        self.assertEquals(get_package_id_by_pid('some_metadata_pid_1', 'metadata'), package_1_id)
+        self.assertEquals(get_package_id_by_pid('some_data_pid_1', 'metadata'), None)
+
+        self.assertEquals(get_package_id_by_pid('some_data_pid_2', 'data'), package_2_id)
+        self.assertEquals(get_package_id_by_pid('some_version_pid_2', 'version'), package_2_id)
+        self.assertEquals(get_package_id_by_pid('some_version_pid_2', 'data'), None)
+        self.assertEquals(get_package_id_by_pid('invalid', 'version'), None)
+
+    def test_get_package_id_by_data_pids(self):
+        package_1_id, package_2_id = self._create_datasets()
+
+        package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_1'}]})
+        self.assertEquals(package_1_id, package_id[0])
+
+        package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_2'}]})
+        self.assertEquals(package_2_id, package_id[0])
+
+
     def test_generate_pid(self):
         pid = utils.generate_pid()
         assert pid.startswith('urn')
@@ -673,41 +735,3 @@ class TestHarvestSource(TestCase):
         data_dict['id'] = response['id']
         data_dict['title'] = 'test update'
         response = get_action('harvest_source_update')(context, data_dict)
-
-
-class TestUtilities(TestCase):
-    @classmethod
-    def setup_class(cls):
-        harvest_model.setup()
-
-    @classmethod
-    def teardown_class(cls):
-        model.repo.rebuild_db()
-
-    def test_get_package_id_by_data_pids(self):
-        model.User(name="pidtest", sysadmin=True).save()
-        organization = get_action('organization_create')({'user': 'pidtest'}, {'name': 'test-organization', 'title': "Test organization"})
-
-        data = copy.deepcopy(TEST_DATADICT)
-        data['owner_org'] = organization['name']
-        data['private'] = False
-
-        data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
-                         'id': u'some_data_pid_1',
-                         'primary': u'True',
-                         'type': u'data'}]
-
-        package_1 = get_action('package_create')({'user': 'pidtest'}, data)
-
-        data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
-                         'id': u'some_data_pid_2',
-                         'primary': u'True',
-                         'type': u'data'}]
-
-        package_2 = get_action('package_create')({'user': 'pidtest'}, data)
-
-        package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_1'}]})
-        self.assertEquals(package_1['id'], package_id[0])
-
-        package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_2'}]})
-        self.assertEquals(package_2['id'], package_id[0])

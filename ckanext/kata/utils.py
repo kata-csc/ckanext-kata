@@ -19,6 +19,7 @@ from ckan import model as model
 from ckan.lib.dictization import model_dictize
 
 from ckan.lib.email_notifications import send_notification
+from ckan.logic import get_action
 from ckan.model import User, Package, Session, PackageExtra
 from ckan.lib import helpers as h
 from ckanext.kata import settings
@@ -323,6 +324,25 @@ def get_primary_pid(pid_type, data_dict, use_package_id=False):
         return pids[0]['id']
     else:
         return None
+
+def get_package_id_by_pid(pid, pid_type):
+    """ Find pid by id and type.
+
+    :param pid: id of the pid
+    :param pid_type: type of the pid
+    :return: id of the package
+    """
+    query = select(['key', 'package_id']).where(and_(model.PackageExtra.value == pid, model.PackageExtra.key.like('pids_%_id'),
+                                                     model.PackageExtra.state == 'active'))
+
+    for key, package_id in [('pids_%s_type' % key.split('_')[1], package_id) for key, package_id in Session.execute(query)]:
+        query = select(['package_id']).where(and_(model.PackageExtra.value == pid_type, model.PackageExtra.key == key,
+                                                  model.PackageExtra.state == 'active', model.PackageExtra.package_id == package_id))
+        for package_id, in Session.execute(query):
+            return package_id
+
+    return None
+
 
 def get_package_id_by_data_pids(data_dict):
     '''
