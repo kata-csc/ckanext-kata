@@ -20,6 +20,7 @@ from ckan.model import Package, User
 from ckanext.kata import utils, converters, settings
 import ckan.lib.navl.dictization_functions as df
 import ckan.new_authz as new_authz
+import ckan.logic as logic
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -385,7 +386,7 @@ def check_langtitle(key, data, errors, context):
 
 def check_pids(key, data, errors, context):
     '''
-    Check that compulsory PIDs exist.
+    Check that compulsory PIDs exist. Also check that primary data PID is not modified in any way.
     '''
 
     # Empty PIDs are removed in actions, so this check should do
@@ -393,15 +394,28 @@ def check_pids(key, data, errors, context):
         raise Invalid({'key': 'pids', 'value': _('Missing dataset PIDs')})
 
     primary_data_pid_found = False
+    primary_pid = None
 
     primary_keys = [k for k in data.keys() if k[0] == 'pids' and k[2] == 'primary']
 
     for k in primary_keys:
         if asbool(data[k] or False) and data[(k[0], k[1], 'type')] == 'data' and data[(k[0], k[1], 'id')]:
             primary_data_pid_found = True
+            primary_pid = data[(k[0], k[1], 'id')]
 
     if not primary_data_pid_found:
         raise Invalid({'key': 'pids', 'value': _("Missing primary data PID")})
+
+    # Check constancy of primary data PID
+
+    try:
+        data_dict = logic.get_action('package_show')({}, {'id': data[('id',)]})
+        old_primary_pid = utils.get_pids_by_type('data', data_dict, primary=True)[0].get('id')
+        if old_primary_pid and old_primary_pid != primary_pid:
+            raise Invalid({'key': 'pids', 'value': _("Primary data PID can not be modified")})
+    except (logic.NotFound, KeyError):
+        # New dataset, all is well
+        pass
 
 
 def check_events(key, data, errors, context):
