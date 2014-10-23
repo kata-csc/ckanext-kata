@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-23 13:06+0000\n"
+"POT-Creation-Date: 2014-10-23 13:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4804,7 +4804,7 @@ msgid "Primary data"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:56
-msgid "Check this to correct errors in an existing PID "
+msgid "Check this to correct errors in an existing PID"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:63

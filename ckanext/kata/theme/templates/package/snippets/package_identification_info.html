@@ -53,7 +53,7 @@
               <div class="input-prepend">
                 {# <input class="pid kata-pid-input pids_{{ index }}" {{ 'readonly' if pid.id }} type="text" id="pids__{{ index }}__provider" name="pids__{{ index }}__provider" value="{{ pid.provider }}" /> #}
                 {% if pid.id and not h.asbool(pid.get('primary')) %}
-                  &nbsp;<input style="width: 30px; top: 0px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID ') }}"
+                  &nbsp;<input style="width: 30px; top: 0px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}"
                   onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
                 {% endif %}
               </div>

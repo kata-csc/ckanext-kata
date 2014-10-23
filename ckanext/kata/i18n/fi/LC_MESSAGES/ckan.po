@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-10-23 13:06+0000\n"
+"POT-Creation-Date: 2014-10-23 13:12+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -5260,8 +5260,8 @@ msgid "Primary data"
 msgstr "Ensisij. data"
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:56
-msgid "Check this to correct errors in an existing PID "
-msgstr ""
+msgid "Check this to correct errors in an existing PID"
+msgstr "Valitse ruutu korjataksesi virheen tunnisteessa"
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:63
 msgid ""
@@ -6087,4 +6087,7 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
+
+#~ msgid "Check this to correct errors in an existing PID "
+#~ msgstr ""
 
