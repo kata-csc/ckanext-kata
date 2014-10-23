@@ -55,7 +55,7 @@ def get_package_owner(package):
        an arbitrary one is returned.
 
        :param package: package data
-       :type package: dictionary
+       :type package: Package object
        :returns: userid
        :rtype: string
     """
