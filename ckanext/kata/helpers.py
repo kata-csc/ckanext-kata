@@ -15,6 +15,7 @@ from ckanext.kata import settings, utils
 from ckan.lib.navl.dictization_functions import validate
 from ckan.lib import plugins
 from ckanext.kata.utils import get_pids_by_type
+from pylons.i18n.translation import gettext_noop as N_
 
 log = logging.getLogger(__name__)
 
@@ -412,7 +413,7 @@ def get_visibility_options(group_id, user_id):
     #     return [(True, 'Private')]
     # else:
     #     return [(True, 'Private'), (False, 'Public')]
-    return [(True, 'Private'), (False, 'Public')]
+    return [(True, N_('Unpublished')), (False, N_('Published'))]
 
 
 def create_loop_index():

@@ -65,6 +65,10 @@
     padding: 20px;
 }
 
+.search-results-facet {
+    margin-bottom: 10px;
+}
+
 .kata-package-editor {
     border-bottom: 1px solid !important;
     padding-bottom: 25px !important;
