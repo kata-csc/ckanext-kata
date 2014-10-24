@@ -39,6 +39,7 @@ import ckan.plugins as plugins
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
+import ckanext.kata.exceptions as kata_exceptions
 from ckanext.kata import utils
 
 _get_or_bust = ckan.logic.get_or_bust
@@ -326,7 +327,7 @@ class ContactController(BaseController):
     The feature provides a form for message sending, and the message is sent via email.
     """
 
-    def _send_if_allowed(self, pkg_id, subject, recipient, email, msg, epilogue=None, prologue=None):
+    def _send_if_allowed(self, subject, recipient, email, msg, epilogue=None, prologue=None):
         """
         Send a contact e-mail if allowed.
 
@@ -340,8 +341,6 @@ class ContactController(BaseController):
         :param prologue: message's prologue to be included before the user's message (optional)
         :param epilogue: message's epilogue to be included after the user's message (optional)
         """
-
-        package = Package.get(pkg_id)
 
         prologue = prologue + "\n\n\n" if prologue else ""
         epilogue = "\n\n\n" + epilogue if epilogue else ""
@@ -359,12 +358,10 @@ class ContactController(BaseController):
         if c.user:
             if msg:
                 send_notification(recipient_dict, email_dict)
-                self._mark_package_as_contacted(c.userobj, pkg_id)
-                h.flash_notice(_("Message sent"))
             else:
-                h.flash_error(_("No message"))
+                raise kata_exceptions.MailingException(_("No message"))
         else:
-            h.flash_error(_("Please login"))
+            raise kata_exceptions.MailingException(_("Please login"))
 
     def _mark_package_as_contacted(self, userobj, pkg_id):
         """Mark this user as having already emailed the contact person of the package."""
@@ -420,7 +417,12 @@ käytä yllä olevaa sähköpostiosoitetta.'
                 prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
 
                 subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
-                self._send_if_allowed(pkg_id, subject, recipient_name, recipient_email, user_msg, epilogue, prologue)
+                try:
+                    self._send_if_allowed(pkg_id, subject, recipient_name, recipient_email, user_msg, epilogue, prologue)
+                    self._mark_package_as_contacted(c.userobj, pkg_id)
+                    h.flash_notice(_("Message sent"))
+                except kata_exceptions.MailingException as me:
+                    h.flash_error(me.message)
 
             else:
                 log.warn("No email address found for recipient; contacts updated before sending?")
@@ -459,19 +461,37 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
+
         if c.userobj:
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
-            log.info("Attempting to send email (access request); user id = {u}, package = {p}".format(u=c.userobj.id, p=pkg_id))
-
-            email = utils.get_package_contact_email(pkg_id)
-            recipient = utils.get_package_contact_name(pkg_id)
-
             user_msg = request.params.get('msg', '')
-            prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
+            recipient_index = request.params.get('recipient', '')
 
-            subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
-            self._send_if_allowed(pkg_id, subject, recipient, email, user_msg, epilogue, prologue)
+            recipient = None
+            for contact in utils.get_package_contacts(pkg_id):
+                if contact.get('index') == recipient_index:
+                    recipient = contact
+                    break
+
+            if recipient and 'email' in recipient.keys():
+                recipient_email = recipient.get('email')
+                recipient_name = recipient.get('name')
+
+                prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
+
+                subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
+                try:
+                    self._send_if_allowed(pkg_id, subject, recipient_name, recipient_email, user_msg, epilogue, prologue)
+                    self._mark_package_as_contacted(c.userobj, pkg_id)
+                    h.flash_notice(_("Message sent"))
+                except kata_exceptions.MailingException as me:
+                    h.flash_error(me.message)
+
+            else:
+                log.warn("No email address found for recipient; contacts updated before sending?")
+                log.warn("Intended recipient: {r} (index: {i})".format(r=str(recipient), i=recipient_index))
+                h.flash_error(_("Sending the message failed. Please try again."))
         else:
             h.flash_error(_("Please login"))
 
