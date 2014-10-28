@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Selenium tests for Kata.
+Selenium tests for Kata (Etsin).
 
 Requirements:
     - Firefox installed
@@ -23,13 +23,14 @@ To run from pyenv:
     xvfb-run nosetests ckanext-kata/ckanext/kata/testselenium/test_selenium.py
 or
     ./ckanext-kata/nose.sh selenium
-
 """
 
+from functools import partial
 import pexpect
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
@@ -41,7 +42,7 @@ import time
 from unittest import TestCase
 
 
-class TestKataBasics(TestCase):
+class TestBasics(TestCase):
     """Some basic Selenium tests for Kata's user interface without logged in user."""
 
     @classmethod
@@ -54,13 +55,11 @@ class TestKataBasics(TestCase):
         """Uninitialize tests."""
         cls.browser.quit()
 
-
     def test_front_page_loads(self):
         """Test that Selenium can access the front page."""
 
         self.browser.get("https://localhost/")
         assert "Kata" in self.browser.title
-
 
     def test_navigation(self):
         """
@@ -69,7 +68,6 @@ class TestKataBasics(TestCase):
         # These tests are very clumsy and should be made more sane in the future
 
         self.browser.get("https://localhost/")
-        #assert "Kata" in self.browser.title
         try:
             search = self.browser.find_element_by_xpath("//a[contains(@href, '/dataset')]")
         except NoSuchElementException:
@@ -96,10 +94,8 @@ class TestKataBasics(TestCase):
             assert 0, 'Log in link not found for anonymous user'
 
 
-
-
-class TestKataWithUser(TestCase):
-    """Some basic Selenium tests for Kata's user interface with a logged in user."""
+class TestWithUser(TestCase):
+    """Some basic Selenium tests for user interface with a logged in user."""
 
     @classmethod
     def setup_class(cls):
@@ -171,9 +167,7 @@ class TestKataWithUser(TestCase):
             reg_browser.quit()
             assert 0, "User registration didn't finish"
 
-
-
-    def _add_dataset(self, browser):
+    def _add_dataset(self, browser, organization):
         """
         Add a simple dataset. Return dataset address.
         """
@@ -192,16 +186,13 @@ class TestKataWithUser(TestCase):
             field.send_keys('CSC Oy')
 
             # Keywords -- the actual autocomplete field lacks the id attribute, so find it through an ancestor's sibling
-            field = browser.find_element_by_xpath("//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input")
+            field = browser.find_element_by_xpath(
+                "//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input")
             field.send_keys('Selenium')
             field.send_keys(Keys.RETURN)
 
             field = browser.find_element_by_xpath("//input[@name='langdis']")
             field.click()
-
-            #field = test_browser.find_elements_by_class_name('select2-input')[2]  # hopefully distributor name
-            #field.send_keys('Selenium')
-            #field.send_keys(Keys.RETURN)
 
             field = browser.find_element_by_xpath("//input[@id='contact__0__name']")
             field.send_keys('Selenium contact')
@@ -212,18 +203,27 @@ class TestKataWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@id='contact__0__phone']")
             field.send_keys('+35891234567')
 
-            # field = browser.find_element_by_xpath("//input[@name='projdis']")
-            # field.click()
-            #
             field = browser.find_element_by_xpath("//input[@id='contact_owner']")
             field.click()
 
             field = browser.find_element_by_xpath("//input[@name='agent__3__name']")
             field.send_keys('Selenium')
 
-            #field = browser.find_element_by_xpath("//input[@id='licenseURL']")
-            #field.send_keys('Shareware')
-            #field.send_keys(Keys.ENTER)
+            # field = browser.find_element_by_xpath("//select[@id='field-kata-pr']/option[@value='False']")
+            # field.click()
+            # field.send_keys('Published')
+
+            field = browser.find_element_by_xpath(
+                "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")  # CKAN Generated field
+
+            ac = ActionChains(browser)
+            ac.move_to_element_with_offset(field, 0.1, 0.1).click().perform()
+
+            browser.implicitly_wait(2)
+            for o in list(organization) + [Keys.RETURN]:
+                ac.send_keys(o).perform()
+                browser.implicitly_wait(2)
+
             browser.find_element_by_xpath("//button[@name='save']").click()
 
         except NoSuchElementException:
@@ -237,7 +237,10 @@ class TestKataWithUser(TestCase):
             browser.quit()
             assert 0, "Dataset creation didn't finish"
 
-        assert "Kata" in browser.title, "Dataset creation failed somehow"
+        if not "Selenium Dataset" in browser.title:
+            browser.get_screenshot_as_file('_add_dataset.png')
+            browser.quit()
+            assert 0, "Dataset creation failed somehow"
 
         return ''.join(browser.current_url)
 
@@ -258,7 +261,6 @@ class TestKataWithUser(TestCase):
             driver.find_element_by_id("field-password").clear()
             driver.find_element_by_id("field-password").send_keys(self.sysadmin_pwd)
             driver.find_element_by_css_selector("button.btn.btn-primary").click()
-            # driver.find_element_by_link_text("Organizations").click()
 
             WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//i[contains(@class, 'icon-signout')]")))
             driver.get("https://localhost/en/organization/new")
@@ -308,7 +310,6 @@ class TestKataWithUser(TestCase):
 
         driver.quit()
 
-
     def test_register_user_fullname_utf8(self):
         """
         Test for user registration with special characters.
@@ -316,7 +317,6 @@ class TestKataWithUser(TestCase):
         browser = webdriver.Firefox()
         self._register_user(browser, username=u'selenium_unicode_user' + str(int(time.time()*100)), fullname=u'АБВГДЕЁЖЗИЙ κόσμε...')
         browser.quit()
-
 
     def test_add_dataset_and_contact_form(self):
         """Test that user can go back from contact form and still go forward to send it."""
@@ -328,7 +328,7 @@ class TestKataWithUser(TestCase):
         org_name = 'seleniumtesting' + str(int(time.time()*100))
         self._create_organization(org_name, username, 'editor')
 
-        dataset_url = self._add_dataset(browser)
+        dataset_url = self._add_dataset(browser, org_name)
         browser.quit()
 
         browser = webdriver.Firefox()  # Get a new session
@@ -369,7 +369,6 @@ class TestKataWithUser(TestCase):
             assert 0, "Sending contact form didn't finish"
 
         browser.quit()
-
 
     def test_navigation(self):
         """
@@ -419,7 +418,6 @@ class TestKataWithUser(TestCase):
 
         browser.quit()
 
-
     def test_logout(self):
         """
         Test logout for Selenium user.
@@ -438,12 +436,9 @@ class TestKataWithUser(TestCase):
 
         browser.quit()
 
-
     def _add_dataset_advanced(self, browser, dataset_list):
         """
         Create a dataset with values from argument dataset_list.
-
-        Also test that advanced search can find the dataset.
 
         dataset_list element format:
         (element_search_function, function_parameter, keyboard_input_to_element (or WebElement.click), wait_for)
@@ -468,21 +463,26 @@ class TestKataWithUser(TestCase):
                     else:
                         field.send_keys(value)
                     if wait_for:
-                        browser.implicitly_wait(wait_for)
-                        #WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located(wait_for))
+                        wait_for()
 
         except (NoSuchElementException, ElementNotVisibleException):
             browser.get_screenshot_as_file('_add_dataset_advanced.png')
             browser.quit()
             raise
 
-        assert "Kata" in browser.title, "Dataset creation failed somehow"
+        if not "Selenium Dataset" in browser.title:
+            browser.get_screenshot_as_file('_add_dataset_advanced.png')
+            browser.quit()
+            assert 0, "Dataset creation failed somehow"
 
         return browser.current_url
 
-
     def test_add_dataset_all_fields(self):
-        """Create a dataset with all fields filled."""
+        """
+        Create a dataset with all fields filled.
+
+        Also test that advanced search can find the dataset.
+        """
 
         browser = webdriver.Firefox()
 
@@ -492,36 +492,29 @@ class TestKataWithUser(TestCase):
         org_name = 'seleniumtesting' + str(int(time.time()*100))
         self._create_organization(org_name, username, 'editor')
 
-        # def find_select2_inputs(id):
-        #     """
-        #     Finds 'select2-input's
-        #     """
-        #     elements = browser.find_elements_by_class_name('select2-input')
-        #     return elements[id]
-        #
-        # def find_select2_choice_inputs(id):
-        #     """
-        #     Finds 'select2-choice's
-        #     """
-        #     elements = browser.find_elements_by_class_name('select2-choice')
-        #     return elements[id]
-        #
-        # def find_plus_buttons(id):
-        #     """
-        #     Finds '?' and '+' buttons
-        #     """
-        #     all_elements = browser.find_elements_by_class_name('kata-plus-btn')
-        #     visible_elements = filter(lambda elem: elem.is_displayed(), all_elements)
-        #     return visible_elements[id]
+        def _choose_organization(organization):
+            '''
+            Choose an organization from popup dropdown
+            '''
+            element = browser.find_element_by_xpath(
+                "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")  # CKAN Generated field
+
+            ac = ActionChains(browser)
+            ac.move_to_element_with_offset(element, 0.1, 0.1).click().perform()
+
+            browser.implicitly_wait(2)
+            for o in list(organization) + [Keys.RETURN]:
+                ac.send_keys(o).perform()
+                browser.implicitly_wait(2)
+
+        def wait_for_element(wait_for):
+            '''Wrap WebDriverWait with element as parameter to wait for'''
+            return partial(WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located(wait_for)))
 
         # TODO: Use all fields.
-        add_wait = 8
 
         dataset_to_add = [
             # Add titles
-            #(find_plus_buttons, 1, [Keys.SPACE], None),
-            #(find_plus_buttons, 1, [Keys.SPACE], None),
-
             (browser.find_element_by_id, 'langtitle__0__value_id', [u'Advanced Selenium Dataset'], None),
             (browser.find_element_by_name, 'langtitle__0__lang', [u'en'], None),
             # (browser.find_element_by_id, 'title__1__value_id', [u'Selenium-tietoaineisto'], None),
@@ -536,16 +529,22 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_name, 'agent__0__name', [u'Ascii Author'], None),
             (browser.find_element_by_name, 'agent__0__organisation', [u'CSC Oy'], None),
 
-            (browser.find_element_by_id, 'authors_add', [WebElement.click], add_wait),
+            (browser.find_element_by_id, 'authors_add', [WebElement.click],
+             # wait_for_element((By.NAME, 'agent__4__name'))),
+             browser.implicitly_wait(10)),
             (browser.find_element_by_name, 'agent__4__name', [u'Åke Author'], None),
             (browser.find_element_by_name, 'agent__4__organisation', [u'Organization 2'], None),
 
-            (browser.find_element_by_id, 'authors_add', [WebElement.click], add_wait),
+            (browser.find_element_by_id, 'authors_add', [WebElement.click],
+             # wait_for_element((By.NAME, 'agent__5__name'))),
+             browser.implicitly_wait(10)),
             (browser.find_element_by_name, 'agent__5__name', [u'прстуфхцчшчьыъэюя Author'], None),
             (browser.find_element_by_name, 'agent__5__organisation', [u'Organization 3'], None),
 
             # keywords
-            (browser.find_element_by_xpath, "//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input", ['Selenium', Keys.RETURN, 'Keyword2', Keys.RETURN], None),
+            (browser.find_element_by_xpath,
+             "//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input",
+             ['Selenium', Keys.RETURN, 'Keyword2', Keys.RETURN], None),
 
             (browser.find_element_by_id, 'language', [u'eng, fin, swe, tlh'], None),
 
@@ -554,13 +553,14 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_id, 'contact__0__email', [u'kata.selenium@gmail.com'], None),
             (browser.find_element_by_id, 'contact__0__URL', [u'https://localhost/'], None),
 
-            (browser.find_element_by_id, 'contacts_add', [WebElement.click], add_wait),
+            (browser.find_element_by_id, 'contacts_add', [WebElement.click],
+             # wait_for_element((By.NAME, 'contact__1__name'))),
+             browser.implicitly_wait(10)),
 
             (browser.find_element_by_id, 'contact__1__name', [u'Selenium 2'], None),
             (browser.find_element_by_id, 'contact__1__phone', [u'+35881234567'], None),
             (browser.find_element_by_id, 'contact__1__email', [u'kata.selenium@gmail.com'], None),
             (browser.find_element_by_id, 'contact__1__URL', [u'https://localhost/test2'], None),
-
 
             (browser.find_element_by_name, 'projdis', [WebElement.click], None),
 
@@ -569,7 +569,9 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_name, 'agent__2__fundingid', [u'Selenium Funding'], None),
             (browser.find_element_by_name, 'agent__2__URL', [u'https://localhost/'], None),
 
-            (browser.find_element_by_id, 'funders_add', [WebElement.click], add_wait),
+            (browser.find_element_by_id, 'funders_add', [WebElement.click],
+             browser.implicitly_wait(10)),
+             # wait_for_element((By.NAME, 'agent__6__organisation'))),
             (browser.find_element_by_name, 'agent__6__organisation', [u'Selenium Project 2'], None),
             #(browser.find_element_by_name, 'agent__5__name', [u'Selenium Funder 2'], None),
             (browser.find_element_by_name, 'agent__6__fundingid', [u'Selenium Funding 2'], None),
@@ -581,7 +583,9 @@ class TestKataWithUser(TestCase):
             # (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
             #
             (browser.find_element_by_name, 'agent__3__name', [u'прстуфхцчшчьыъэюя'], None),
-            (browser.find_element_by_id, 'owners_add', [WebElement.click], add_wait),
+            (browser.find_element_by_id, 'owners_add', [WebElement.click],
+             browser.implicitly_wait(10)),
+             # wait_for_element((By.NAME, 'agent__7__name'))),
             (browser.find_element_by_name, 'agent__7__name', [u'прстуфхцчшчьыъэюя 2'], None),
 
             (browser.find_element_by_id, 'pids__0__id', [u'data-pid-' + str(int(time.time() * 100))], None),
@@ -589,7 +593,9 @@ class TestKataWithUser(TestCase):
             (browser.find_element_by_name, 'pids__1__type', [u'Metadata'], None),
             (browser.find_element_by_name, 'pids__1__id', [u'metadata-pid-' + str(int(time.time() * 100))], None),
             # (browser.find_element_by_id, 'pids__1__provider', [u'Selenium'], None),
-            (browser.find_element_by_id, 'pids_add', [WebElement.click], add_wait),
+            (browser.find_element_by_id, 'pids_add', [WebElement.click],
+             browser.implicitly_wait(10)),
+             # wait_for_element((By.NAME, 'pids__2__type'))),
             (browser.find_element_by_name, 'pids__2__type', [u'Version'], None),
             (browser.find_element_by_name, 'pids__2__id', [u'version-pid-' + str(int(time.time() * 100))], None),
             # (browser.find_element_by_id, 'pids__2__provider', [u'Selenium'], None),
@@ -602,27 +608,34 @@ class TestKataWithUser(TestCase):
 
             # recommended info
 
-            (browser.find_element_by_xpath, "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input", [u'Espoo, Finland', Keys.RETURN], None),
+            (browser.find_element_by_xpath,
+             "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input",
+             [u'Espoo, Finland', Keys.RETURN], None),
             # (browser.find_element_by_id, 'geographic_coverage_field', [u'Espoo, Finland', Keys.RETURN], None),
 
             #(find_select2_choice_inputs, 2, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
             #(find_select2_choice_inputs, 2, ['Selenium discipline', Keys.RETURN], None),  # discipline
 
-            (browser.find_element_by_xpath, "//input[@id='discipline_field']/../div[@class='select2-container select2-container-multi']//input", [u'Matematiikka', Keys.RETURN], None),
+            (browser.find_element_by_xpath,
+             "//input[@id='discipline_field']/../div[@class='select2-container select2-container-multi']//input",
+             [u'Matematiikka', Keys.RETURN], None),
             # (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.RETURN], None),
 
-            (browser.find_element_by_xpath, "//input[@id='mimetype']/../div[@class='select2-container select2-container-multi']//input", [u'application/pdf', Keys.RETURN], None),
+            (browser.find_element_by_xpath,
+             "//input[@id='mimetype']/../div[@class='select2-container select2-container-multi']//input",
+             [u'application/pdf', Keys.RETURN], None),
             (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
             (browser.find_element_by_id, 'algorithm', [u'md5'], None),
 
             (browser.find_element_by_id, 'field-notes', [u'Some description about this dataset'], None),
 
+            (_choose_organization, org_name, [], None),
             (browser.find_element_by_xpath, "//button[@name='save']", [WebElement.click], None)
         ]
 
         dataset_url = self._add_dataset_advanced(browser, dataset_to_add)
 
-        # Use search to test that dataset is found from index.
+        # Use search to test that the new dataset (or some other similar dataset...) is found from index.
 
         browser.get("https://localhost/en/dataset")
 

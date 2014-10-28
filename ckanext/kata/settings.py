@@ -183,7 +183,6 @@ KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
 
 DATAPID_TO_NAME_REGEXES = [r'[^A-Za-z0-9]', r'-']     # [pattern, replace]
 
-
 # Change misleading or bad error summary names to more sane ones
 ERRORS = {
     u'Pids': u'PID',
@@ -192,3 +191,13 @@ ERRORS = {
     u'Tags': u'Keywords',
     u'Owner org': u'Owner organization',
 }
+
+TRANSLATION_DUMMIES = [  # Dynamically created strings that should be translated
+    N_('Go to API'),
+    N_('Go to Application'),
+    N_('Go to Idea'),
+    N_('Go to News Article'),
+    N_('Go to Paper'),
+    N_('Go to Post'),
+    N_('Go to Visualization'),
+]
