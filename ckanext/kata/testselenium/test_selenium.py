@@ -494,7 +494,7 @@ class TestWithUser(TestCase):
 
         def _choose_organization(organization):
             '''
-            Choose an organization from popup dropdown
+            Choose an organization from dropdown menu
             '''
             element = browser.find_element_by_xpath(
                 "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")  # CKAN Generated field
@@ -508,8 +508,10 @@ class TestWithUser(TestCase):
                 browser.implicitly_wait(2)
 
         def wait_for_element(wait_for):
-            '''Wrap WebDriverWait with element as parameter to wait for'''
-            return partial(WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located(wait_for)))
+            '''Wrap WebDriverWait
+            :param wait_for: tuple containing locator strategy and element name, for example (By.NAME, 'agent__4__name')
+            '''
+            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located(wait_for))
 
         # TODO: Use all fields.
 
@@ -523,21 +525,16 @@ class TestWithUser(TestCase):
             # (browser.find_element_by_name, 'title__2__lang', [u'sv'], None),
 
             # Add authors
-            #(find_plus_buttons, 3, [WebElement.click], None),
-            #(find_plus_buttons, 3, [WebElement.click], None),
-
             (browser.find_element_by_name, 'agent__0__name', [u'Ascii Author'], None),
             (browser.find_element_by_name, 'agent__0__organisation', [u'CSC Oy'], None),
 
             (browser.find_element_by_id, 'authors_add', [WebElement.click],
-             # wait_for_element((By.NAME, 'agent__4__name'))),
-             browser.implicitly_wait(10)),
+             partial(wait_for_element, (By.NAME, 'agent__4__name'))),
             (browser.find_element_by_name, 'agent__4__name', [u'Åke Author'], None),
             (browser.find_element_by_name, 'agent__4__organisation', [u'Organization 2'], None),
 
             (browser.find_element_by_id, 'authors_add', [WebElement.click],
-             # wait_for_element((By.NAME, 'agent__5__name'))),
-             browser.implicitly_wait(10)),
+             partial(wait_for_element, (By.NAME, 'agent__5__name'))),
             (browser.find_element_by_name, 'agent__5__name', [u'прстуфхцчшчьыъэюя Author'], None),
             (browser.find_element_by_name, 'agent__5__organisation', [u'Organization 3'], None),
 
@@ -554,8 +551,7 @@ class TestWithUser(TestCase):
             (browser.find_element_by_id, 'contact__0__URL', [u'https://localhost/'], None),
 
             (browser.find_element_by_id, 'contacts_add', [WebElement.click],
-             # wait_for_element((By.NAME, 'contact__1__name'))),
-             browser.implicitly_wait(10)),
+             partial(wait_for_element, (By.NAME, 'contact__1__name'))),
 
             (browser.find_element_by_id, 'contact__1__name', [u'Selenium 2'], None),
             (browser.find_element_by_id, 'contact__1__phone', [u'+35881234567'], None),
@@ -570,22 +566,13 @@ class TestWithUser(TestCase):
             (browser.find_element_by_name, 'agent__2__URL', [u'https://localhost/'], None),
 
             (browser.find_element_by_id, 'funders_add', [WebElement.click],
-             browser.implicitly_wait(10)),
-             # wait_for_element((By.NAME, 'agent__6__organisation'))),
+             partial(wait_for_element, (By.NAME, 'agent__6__organisation'))),
             (browser.find_element_by_name, 'agent__6__organisation', [u'Selenium Project 2'], None),
-            #(browser.find_element_by_name, 'agent__5__name', [u'Selenium Funder 2'], None),
             (browser.find_element_by_name, 'agent__6__fundingid', [u'Selenium Funding 2'], None),
-            #(browser.find_element_by_name, 'agent__5__URL', [u'https://localhost/'], None),
 
-            # (browser.find_element_by_id, 'project_name', [u'Selenium Project'], None),
-            # (browser.find_element_by_id, 'project_funder', [u'Selenium Funder'], None),
-            # (browser.find_element_by_id, 'project_funding', [u'Selenium Funding'], None),
-            # (browser.find_element_by_id, 'project_homepage', [u'https://localhost/'], None),
-            #
             (browser.find_element_by_name, 'agent__3__name', [u'прстуфхцчшчьыъэюя'], None),
             (browser.find_element_by_id, 'owners_add', [WebElement.click],
-             browser.implicitly_wait(10)),
-             # wait_for_element((By.NAME, 'agent__7__name'))),
+             partial(wait_for_element, (By.NAME, 'agent__7__name'))),
             (browser.find_element_by_name, 'agent__7__name', [u'прстуфхцчшчьыъэюя 2'], None),
 
             (browser.find_element_by_id, 'pids__0__id', [u'data-pid-' + str(int(time.time() * 100))], None),
@@ -594,8 +581,7 @@ class TestWithUser(TestCase):
             (browser.find_element_by_name, 'pids__1__id', [u'metadata-pid-' + str(int(time.time() * 100))], None),
             # (browser.find_element_by_id, 'pids__1__provider', [u'Selenium'], None),
             (browser.find_element_by_id, 'pids_add', [WebElement.click],
-             browser.implicitly_wait(10)),
-             # wait_for_element((By.NAME, 'pids__2__type'))),
+             partial(wait_for_element, (By.NAME, 'pids__2__type'))),
             (browser.find_element_by_name, 'pids__2__type', [u'Version'], None),
             (browser.find_element_by_name, 'pids__2__id', [u'version-pid-' + str(int(time.time() * 100))], None),
             # (browser.find_element_by_id, 'pids__2__provider', [u'Selenium'], None),
