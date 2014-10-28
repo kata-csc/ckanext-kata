@@ -92,7 +92,10 @@ class MetadataController(BaseController):
         # Gather all package id's that might contain a Kata/IDA data PID
         query = model.Session.query(model.PackageExtra).filter(model.PackageExtra.key.like('pids_%_id')). \
             filter(model.PackageExtra.value.like('urn:nbn:fi:csc-%')). \
-            join(model.Package).filter(model.Package.private == False).values('package_id')
+            join(model.Package).filter(model.Package.private == False).filter(model.Package.state == 'active'). \
+            values('package_id')
+
+        base_url = config.get('ckan.site_url', '').strip("/")
 
         prot = etree.SubElement(records, locns('protocol-version'))
         prot.text = '3.0'
@@ -117,7 +120,7 @@ class MetadataController(BaseController):
                 destination = etree.SubElement(destinations, locns('destination'), attrib={'status': 'activated'})
                 datestamp = etree.SubElement(destination, locns('datestamp'), attrib={'type': 'activated'})
                 url = etree.SubElement(destination, locns('url'))
-                url.text = "%s%s" % (config.get('ckan.site_url', ''),
+                url.text = "%s%s" % (base_url,
                                  helpers.url_for(controller='package',
                                            action='read',
                                            id=data_dict.get('name')))
