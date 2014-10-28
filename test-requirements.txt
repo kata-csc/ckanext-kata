@@ -1,5 +1,6 @@
 selenium==2.39.0
-nose>=1.2.1
+nose>=1.3.0
 coverage>=2.85
-pylint>=0.28.0
+nosexcover>=1.0.10
+pylint>=1.3.1
 testfixtures>=3.0.1

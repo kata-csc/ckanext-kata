@@ -432,7 +432,6 @@ class TestUtils(TestCase):
         package_id = get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_2'}]})
         self.assertEquals(package_2_id, package_id[0])
 
-
     def test_generate_pid(self):
         pid = utils.generate_pid()
         assert pid.startswith('urn')
@@ -553,8 +552,6 @@ class TestActions(TestCase):
     @classmethod
     def setup_class(cls):
         '''Set up testing environment.'''
-        # Todo: fix. The harvest tables are not generated here
-        # so this class can't be run alone
         kata_model.setup()
         harvest_model.setup()
         CreateTestData.create()
