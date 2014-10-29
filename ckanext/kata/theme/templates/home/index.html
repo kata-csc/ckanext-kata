@@ -38,7 +38,7 @@
                         {{ _('Metadata is data about data. This is a record that provides information describing the data and how to access it. Firstly, metadata describes important features of the data such as authors, subjects, the fields of research the data pertains to, storage formats, and licenses.') }}
                       </p>
                       <p>
-                        {{ _('However, the content of metadata varies depending on what kind of data is being described. The Etsin provides a common ground by employing a common set of metadata fields tailored for research data. In the interest of consistency with other services, the metadata conforms to the minimum metadata model defined by the Finnish National Research Data Initiative (TTA).') }}
+                        {{ _('However, the content of metadata varies depending on what kind of data is being described. The Etsin provides a common ground by employing a common set of metadata fields tailored for research data. In the interest of consistency with other services, the metadata conforms to the minimum metadata model which can be downloaded from this page. Currently, the minimum metadata model is only provided in Finnish.') }}
                       </p>
                       <h3>
                         {{ _('Is this service for me?') }}
@@ -59,10 +59,10 @@
                         {{ _('Terms of use') }}
                       </h3>
                       <p>
-                        <a href="{{ _('http://www.tdata.fi/kayttoehdot') }}">{{ _('Terms of use') }}</a>
+                        <a href="{{ _('http://avointiede.fi/documents/10864/17332/Etsin+kayttoehdot') }}">{{ _('Terms of use') }}</a>
                       </p>
                       <p>
-                        <a href="{{ _('http://www.tdata.fi/henkilorekisteriseloste') }}">{{ _('Privacy policy for personal information') }}</a>
+                        <a href="{{ _('http://avointiede.fi/documents/10864/17332/Etsin+tietosuojaseloste') }}">{{ _('Privacy policy of Etsin') }}</a>
                       </p>
                     {% endblock %}
                   {% endblock %}
@@ -138,7 +138,7 @@
         <section class="module">
             <h4 class="module-heading-add-dataset">{{ _("Finnish social science data archive") }} - {{ _('Data Archive and Aila Data Service') }}</h4>
             <div class="module-content">
-                <a href="http://www.fsd.uta.fi/en/">
+                <a href="{{ _('http://www.fsd.uta.fi/en/') }}">
                     <img src="{{ _('../../base/images/img_fsd_logo_en.png') }}"></a>
                 <a href="{{ _('https://services.fsd.uta.fi/index?lang=en') }}">
                     <img src="{{ _('../../base/images/logo_aila_en.png') }}"></a>

@@ -27,7 +27,7 @@
           <option value="" {% if not selected_org and data.id %} selected="selected" {% endif %}>{{ _('No organization') }}</option>
           {% for organization in organizations_available %}
             {# get out first org from users list only if there is not an existing org #}
-            {% set selected_org = (existing_org and existing_org == organization.id) or (not existing_org and not data.id and organization.id == organizations_available[0].id) %}
+            {% set selected_org = (existing_org and existing_org == organization.id) %}
             {% if selected_org %}
               {% set current_org = organization %}
             {% endif %}
@@ -38,17 +38,12 @@
       </div>
     </div>
 
-    {% if not current_org and organizations_available %}
-      {% set current_org = organizations_available[0].id %}
-    {% else %}
-      {% set current_org = None %}
-    {% endif %}
 
     <div class="control-group">
       <label for="field-kata-pr" class="control-label">{{ _('Visibility') }}</label>
       <div class="controls">
         <select id="field-kata-pr" name="private">
-          {% for option in h.get_visibility_options( current_org, user.id ) %}
+          {% for option in h.get_visibility_options() %}
           <option value="{{ option[0] }}" {% if option[0] == data.private %}selected="selected"{% endif %}>{{ _(option[1]) }}</option>
           {% endfor %}
         </select>
