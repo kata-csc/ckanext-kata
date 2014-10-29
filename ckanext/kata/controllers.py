@@ -611,7 +611,7 @@ class KataPackageController(PackageController):
 
         if not h.check_access('package_update', {'id': name }):
             h.flash_error(_('Not authorized to see this page'))
-            h.redirect_to(h.url_for(controller='package', action='read', id=name))
+            h.redirect_to(controller='package', action='read', id=name)
 
         data_dict = {}
         data_dict['name'] = name
@@ -715,8 +715,8 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         except NotFound:
             h.flash_error(_('User not found'))
 
-        h.redirect_to(h.url_for(controller='ckanext.kata.controllers:KataPackageController',
-                                action='dataset_editor_manage', name=name))
+        h.redirect_to(controller='ckanext.kata.controllers:KataPackageController',
+                                action='dataset_editor_manage', name=name)
 
     def _roles_list(self, userobj, domain_object):
         '''
