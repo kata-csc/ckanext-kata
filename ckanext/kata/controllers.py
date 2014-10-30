@@ -512,11 +512,11 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
 
         c.package = Package.get(pkg_id)
 
-        contacts = sorted(utils.get_package_contacts(pkg_id), key=lambda x: x['name'])
-        c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
-
         if not c.package:
             abort(404, _("Dataset not found"))
+
+        contacts = sorted(utils.get_package_contacts(pkg_id), key=lambda x: x['name'])
+        c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
 
         url = h.url_for(controller='package',
                         action="read",
