@@ -418,7 +418,7 @@ käytä yllä olevaa sähköpostiosoitetta.'
 
                 subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
                 try:
-                    self._send_if_allowed(pkg_id, subject, recipient_name, recipient_email, user_msg, epilogue, prologue)
+                    self._send_if_allowed(subject, recipient_name, recipient_email, user_msg, epilogue, prologue)
                     self._mark_package_as_contacted(c.userobj, pkg_id)
                     h.flash_notice(_("Message sent"))
                 except kata_exceptions.MailingException as me:
@@ -482,7 +482,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
 
                 subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
                 try:
-                    self._send_if_allowed(pkg_id, subject, recipient_name, recipient_email, user_msg, epilogue, prologue)
+                    self._send_if_allowed(subject, recipient_name, recipient_email, user_msg, epilogue, prologue)
                     self._mark_package_as_contacted(c.userobj, pkg_id)
                     h.flash_notice(_("Message sent"))
                 except kata_exceptions.MailingException as me:
