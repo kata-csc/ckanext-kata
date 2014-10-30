@@ -4,7 +4,7 @@
 Functions to convert dataset form fields from or to db fields.
 """
 import json
-import pycountry
+from iso639 import languages
 
 from pylons import h
 
@@ -116,6 +116,7 @@ def ltitle_to_extras(key, data, errors, context):
                        'value': lval
                        })
 
+
 def ltitle_from_extras(key, data, errors, context):
     '''
     Convert all title & language pairs from db format to dataset form format.
@@ -159,6 +160,7 @@ def ltitle_from_extras(key, data, errors, context):
         langtitle.update({'lang': lang['lang']})
         if not langtitle in langtitles:
             langtitles.append(langtitle)
+
 
 def export_as_related(key, data, errors, context):
     '''
@@ -336,26 +338,25 @@ def convert_languages(key, data, errors, context):
     if not isinstance(value, basestring):
         return
 
-    langs = value.split(',')
-    new_langs = []
+    new_languages = []
 
-    for lang in langs:
-        lang = lang.strip()
+    for lang in value.split(','):
+        lang = lang.strip().lower()
         if lang:
             try:
-                pycountry.languages.get(terminology=lang)
-                new_langs.append(lang)
+                languages.get(alpha3=lang)
+                new_languages.append(lang)
             except KeyError:
                 try:
                     # Convert two character language codes
-                    lang_object = pycountry.languages.get(alpha2=lang)
-                    new_langs.append(lang_object.terminology)
+                    lang_object = languages.get(alpha2=lang)
+                    new_languages.append(lang_object.terminology)
                 except KeyError as ke:
                     errors[key].append(_('Language %s not in ISO 639-2 T format') % lang)
                     # We could still try to convert from ISO 639-2 B if it shows up somewhere
 
-    if new_langs:
-        data[key] = ', '.join(new_langs)
+    if new_languages:
+        data[key] = ', '.join(new_languages)
 
 
 def from_extras_json(key, data, errors, context):
