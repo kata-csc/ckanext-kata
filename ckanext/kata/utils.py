@@ -397,22 +397,40 @@ def get_package_contacts(pkg_id):
     :rtype: list of dicts
     """
 
-    package = Package.get(pkg_id)
-    extras = package.extras
+    contacts_regex = '^(contact)_(\d+)_(.+)$'
 
-    contacts_regex = '^(contact_)(\d+)(_.+)$'
+    query = select(['id', 'key', 'value', 'state']).where(
+        and_(
+            model.PackageExtra.package_id == pkg_id,
+            model.PackageExtra.key.like('contact_%_%'),
+            model.PackageExtra.state == 'active'
+        )
+    )
 
-    contact_matches = map(lambda k: re.match(contacts_regex, k), extras.keys())
-    contact_indexes = set([ match.group(2) for match in contact_matches if match is not None ])
+    extras = Session.execute(query)
+    extras = model_dictize.extras_list_dictize(extras, {'model': PackageExtra})
 
-    contacts = []
-    for index in sorted(contact_indexes, key=lambda x: int(x)):
-        contact = {'index': index}
-        for detail in ['name', 'email', 'url', 'phone']:
-            contact[detail] = extras.get('contact_{i}_{d}'.format(i=index, d=detail))
-        contacts.append(contact)
+    contacts_by_index = {}
+    for extra in extras:
+        key = extra['key']
+        value = extra['value']
 
-    return contacts
+        match = re.match(contacts_regex, key)
+        if match:
+            index = match.group(2)
+            type = match.group(3)
+
+            contact = contacts_by_index.get(index, {})
+            contact[u'index'] = index
+            contact[type] = value
+
+            if type == 'email':
+                contact[u'id'] = extra['id']
+
+            contacts_by_index[index] = contact
+
+    contacts = [ c for c in contacts_by_index.values() ]
+    return sorted(contacts, key=lambda c: int(c['index']))
 
 
 def get_package_contact_email(pkg_id):

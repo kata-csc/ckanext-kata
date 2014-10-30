@@ -402,11 +402,11 @@ käytä yllä olevaa sähköpostiosoitetta.'
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
             user_msg = request.params.get('msg', '')
-            recipient_index = request.params.get('recipient', '')
+            recipient_id = request.params.get('recipient', '')
 
             recipient = None
             for contact in utils.get_package_contacts(pkg_id):
-                if contact.get('index') == recipient_index:
+                if contact.get('id') == recipient_id:
                     recipient = contact
                     break
 
@@ -426,7 +426,7 @@ käytä yllä olevaa sähköpostiosoitetta.'
 
             else:
                 log.warn("No email address found for recipient; contacts updated before sending?")
-                log.warn("Intended recipient: {r} (index: {i})".format(r=str(recipient), i=recipient_index))
+                log.warn("Intended recipient: {r} (id: {i})".format(r=str(recipient), i=recipient_id))
                 h.flash_error(_("Sending the message failed. Please try again."))
         else:
             h.flash_error(_("Please login"))
@@ -466,11 +466,11 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
             user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
             user_msg = request.params.get('msg', '')
-            recipient_index = request.params.get('recipient', '')
+            recipient_id = request.params.get('recipient', '')
 
             recipient = None
             for contact in utils.get_package_contacts(pkg_id):
-                if contact.get('index') == recipient_index:
+                if contact.get('id') == recipient_id:
                     recipient = contact
                     break
 
@@ -490,7 +490,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
 
             else:
                 log.warn("No email address found for recipient; contacts updated before sending?")
-                log.warn("Intended recipient: {r} (index: {i})".format(r=str(recipient), i=recipient_index))
+                log.warn("Intended recipient: {r} (id: {i})".format(r=str(recipient), i=recipient_id))
                 h.flash_error(_("Sending the message failed. Please try again."))
         else:
             h.flash_error(_("Please login"))
@@ -513,7 +513,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         c.package = Package.get(pkg_id)
 
         contacts = sorted(utils.get_package_contacts(pkg_id), key=lambda x: x['name'])
-        c.recipient_options = [ {'text': contact['name'], 'value': contact['index']} for contact in contacts ]
+        c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
 
         if not c.package:
             abort(404, _("Dataset not found"))
@@ -542,7 +542,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         c.package = Package.get(pkg_id)
 
         contacts = sorted(utils.get_package_contacts(pkg_id), key=lambda x: x['name'])
-        c.recipient_options = [ {'text': contact['name'], 'value': contact['index']} for contact in contacts ]
+        c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
 
         url = h.url_for(controller='package',
                         action="read",
