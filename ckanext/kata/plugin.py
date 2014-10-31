@@ -156,9 +156,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # map.connect('/dataset/import_xml/',
         #             controller="ckanext.harvest.controllers.view:ViewController",
         #             action="import_xml")
+
         map.connect('/user/logged_in',
                     controller="ckanext.kata.controllers:KataUserController",
                     action="logged_in")
+        map.connect('/user/logged_out_redirect',
+                    controller="ckanext.kata.controllers:KataUserController",
+                    action='logged_out_page')
+
         map.connect('/dataset/',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="advanced_search")

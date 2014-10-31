@@ -534,7 +534,7 @@ class KataUserController(UserController):
         # we need to set the language explicitly here or the flash
         # messages will not be translated.
         ckan.lib.i18n.set_lang(lang)
-        
+
         if h.url_is_local(came_from):
             return h.redirect_to(str(came_from))
 
@@ -560,6 +560,12 @@ class KataUserController(UserController):
                               action='login', came_from=came_from)
             else:
                 return self.login(error=err)
+
+    def logged_out_page(self):
+        """ Redirect user to front page and inform user. """
+        if not c.user:
+            h.flash_notice(_("Successfully logged out."))
+        h.redirect_to(controller='home', action='index')
 
 
 class KataPackageController(PackageController):
