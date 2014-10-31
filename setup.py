@@ -32,7 +32,7 @@ setup(
         'iso639',
     ],
     dependency_links=[
-        "git+https://github.com/kata-csc/iso639.git#egg=iso639"
+        "git+https://github.com/noumar/iso639.git#egg=iso639"
     ],
     package_data={
         'ckan': [
