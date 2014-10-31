@@ -143,16 +143,16 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     action="render_edit_request")
         map.connect('/request_dataset/send/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="send_request")
+                    action="send_request_message")
         map.connect('/request_dataset/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="render_request")
+                    action="render_request_form")
         map.connect('/contact/send/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="send_contact")
+                    action="send_contact_message")
         map.connect('/contact/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="render_contact")
+                    action="render_contact_form")
         # map.connect('/dataset/import_xml/',
         #             controller="ckanext.harvest.controllers.view:ViewController",
         #             action="import_xml")
