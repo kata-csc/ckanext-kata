@@ -451,7 +451,9 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
             recipient = utils.get_package_contact_name(pkg_id)
 
             user_msg = request.params.get('msg', '')
-            prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
+            prologue = prologue_template.format(
+                a=user_name, b=c.userobj.email, c=package_title,
+                d=utils.get_primary_data_pid_from_package(package))
 
             subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
             self._send_if_allowed(pkg_id, subject, recipient, email, user_msg, epilogue, prologue)
