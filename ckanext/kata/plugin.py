@@ -1,5 +1,3 @@
-# pylint: disable=unused-argument
-
 """
 Main plugin file for Kata CKAN extension. Compatible with CKAN 2.1 and 2.2.
 """
@@ -75,8 +73,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
     Kata functionality and UI plugin.
     """
-    # pylint: disable=no-init, no-self-use
-
     implements(IDatasetForm, inherit=True)
     implements(IConfigurer, inherit=True)
     implements(IConfigurable, inherit=True)

@@ -1,5 +1,4 @@
-# pylint: disable=unused-argument
-
+# coding=utf8
 """
 Functions to convert dataset form fields from or to db fields.
 """

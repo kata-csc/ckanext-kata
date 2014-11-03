@@ -1,6 +1,4 @@
 # coding: utf-8
-# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable
-
 '''
 Test Kata's web user interface with Pylons WSGI application.
 '''

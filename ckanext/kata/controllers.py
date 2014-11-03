@@ -44,7 +44,7 @@ from ckanext.kata import utils
 _get_or_bust = ckan.logic.get_or_bust
 
 log = logging.getLogger(__name__)
-t = plugins.toolkit                         # pylint: disable=invalid-name
+t = plugins.toolkit
 
 
 def get_package_owner(package):

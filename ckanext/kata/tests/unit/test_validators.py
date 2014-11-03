@@ -1,7 +1,4 @@
 # coding: utf-8
-#
-# pylint: disable=no-self-use, missing-docstring, too-many-public-methods
-
 """
 Test classes for Kata's validators.
 """

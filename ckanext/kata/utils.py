@@ -1,6 +1,4 @@
 # coding=utf-8
-#
-# pylint: disable=E1101, E1103, invalid-name
 """
 Utility functions for Kata.
 """

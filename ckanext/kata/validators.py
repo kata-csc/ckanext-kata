@@ -1,5 +1,4 @@
-# pylint: disable=unused-argument
-
+# coding=utf-8
 """
 Validators for user inputs.
 """
