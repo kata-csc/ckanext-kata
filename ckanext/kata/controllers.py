@@ -253,6 +253,9 @@ class AccessRequestController(BaseController):
         url = h.url_for(controller='package', action='read', id=pkg_id)
 
         pkg = Package.get(pkg_id)
+        if not pkg:
+            abort(404, _("Dataset not found"))
+
         pkg_title = pkg.title if pkg.title else pkg.name
 
         user = c.userobj if c.userobj else None
@@ -302,6 +305,9 @@ class AccessRequestController(BaseController):
         url = h.url_for(controller='package', action='read', id=pkg_id)
 
         c.package = Package.get(pkg_id)
+        if not c.package:
+            abort(404, _("Dataset not found"))
+
         c.package_owner = get_package_owner(c.package)
         user = c.userobj if c.userobj else None
 
