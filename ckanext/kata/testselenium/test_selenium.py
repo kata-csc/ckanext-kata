@@ -429,7 +429,8 @@ class TestWithUser(TestCase):
         browser.get("https://localhost/en/user/_logout")
 
         try:
-            search = browser.find_element_by_xpath("//p[.='You are now logged out.']")
+
+            assert browser.current_url, "https://localhost/"
         except NoSuchElementException:
             browser.get_screenshot_as_file('test_9_test_logout.png')
             assert 0, "Error logging out"
