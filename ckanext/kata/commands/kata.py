@@ -23,9 +23,8 @@ class Kata(CkanCommand):
     max_args = 6
     min_args = 0
 
-    def __init__(self,name):
-
-        super(Kata,self).__init__(name)
+    def __init__(self, name):
+        super(Kata, self).__init__(name)
 
     def command(self):
         self._load_config()
@@ -41,6 +40,8 @@ class Kata(CkanCommand):
             self.harvest_sources()
         elif cmd == 'send_request_emails':
             self.send_emails()
+        elif cmd == 'sphinx':
+            self.sphinx()
         else:
             print 'Command %s not recognized' % cmd
 
@@ -84,3 +85,9 @@ class Kata(CkanCommand):
                     model.Session.flush()
             except Exception, me:
                 print "Couldn't send email! Details:\n%s" % me
+
+    def sphinx(self):
+        import sphinx
+        from pkg_resources import load_entry_point
+        cmd = load_entry_point('Sphinx', 'console_scripts', 'sphinx-build')
+        cmd(['sphinx-build', '-b', 'html', '-d', self.args[1], self.args[2], self.args[3]])
