@@ -288,11 +288,10 @@ def get_pids_by_type(pid_type, data_dict, primary=None, use_package_id=False):
     Get all of package PIDs of certain type
 
     :param use_package_id: Set to True to get package.id as primary metadata PID
-    :param primary: True to get only primary pids, or False to get all pids without primary='True',
-                    use None to get all pids
+    :param primary: True to get only primary pids, or False to get all pids without primary='True', use None to get all pids.
     :param pid_type: PID type to get (data, metadata, version)
     :param data_dict:
-    :rtype : list of dicts
+    :rtype: list of dicts
     '''
     extra = []
     if use_package_id:

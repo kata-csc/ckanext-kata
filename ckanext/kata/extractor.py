@@ -21,7 +21,7 @@ from ckan.common import _
 log = logging.getLogger(__name__)
 
 BUCKET = config.get('ckan.storage.bucket', 'default')
-STORAGE_BASE_URL = config.get('ckan.site_url') + '/storage/f/'
+STORAGE_BASE_URL = config.get('ckan.site_url', "http://localhost") + '/storage/f/'
 
 def extract_text(resource_url, format):
     """
