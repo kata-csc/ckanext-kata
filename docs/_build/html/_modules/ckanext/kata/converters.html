@@ -55,9 +55,9 @@
 <span class="sd">Functions to convert dataset form fields from or to db fields.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">pycountry</span>
+<span class="kn">from</span> <span class="nn">iso639</span> <span class="kn">import</span> <span class="n">languages</span>
 
-<span class="kn">from</span> <span class="nn">pylons</span> <span class="kn">import</span> <span class="n">h</span>
+<span class="kn">from</span> <span class="nn">ckan.lib</span> <span class="kn">import</span> <span class="n">helpers</span> <span class="k">as</span> <span class="n">h</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -166,6 +166,7 @@
         <span class="n">extras</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;lang_title_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
                        <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">lval</span>
                        <span class="p">})</span>
+
 </div>
 <div class="viewcode-block" id="ltitle_from_extras"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.converters.ltitle_from_extras">[docs]</a><span class="k">def</span> <span class="nf">ltitle_from_extras</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -210,6 +211,7 @@
         <span class="n">langtitle</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;lang&#39;</span><span class="p">:</span> <span class="n">lang</span><span class="p">[</span><span class="s">&#39;lang&#39;</span><span class="p">]})</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">langtitle</span> <span class="ow">in</span> <span class="n">langtitles</span><span class="p">:</span>
             <span class="n">langtitles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">langtitle</span><span class="p">)</span>
+
 </div>
 <div class="viewcode-block" id="export_as_related"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.converters.export_as_related">[docs]</a><span class="k">def</span> <span class="nf">export_as_related</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -387,26 +389,25 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
         <span class="k">return</span>
 
-    <span class="n">langs</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
-    <span class="n">new_langs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">new_languages</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">langs</span><span class="p">:</span>
-        <span class="n">lang</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">):</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">lang</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">pycountry</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">terminology</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
-                <span class="n">new_langs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
+                <span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">alpha3</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
+                <span class="n">new_languages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c"># Convert two character language codes</span>
-                    <span class="n">lang_object</span> <span class="o">=</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">alpha2</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
-                    <span class="n">new_langs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lang_object</span><span class="o">.</span><span class="n">terminology</span><span class="p">)</span>
+                    <span class="n">lang_object</span> <span class="o">=</span> <span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">alpha2</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
+                    <span class="n">new_languages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lang_object</span><span class="o">.</span><span class="n">terminology</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">ke</span><span class="p">:</span>
                     <span class="n">errors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Language </span><span class="si">%s</span><span class="s"> not in ISO 639-2 T format&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">lang</span><span class="p">)</span>
                     <span class="c"># We could still try to convert from ISO 639-2 B if it shows up somewhere</span>
 
-    <span class="k">if</span> <span class="n">new_langs</span><span class="p">:</span>
-        <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_langs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">new_languages</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_languages</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="from_extras_json"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.converters.from_extras_json">[docs]</a><span class="k">def</span> <span class="nf">from_extras_json</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
@@ -447,6 +448,11 @@
 <span class="sd">       The key-value pairs to convert are before CKAN&#39;s flattening in format</span>
 <span class="sd">       pids: [{ id: &#39;some pid&#39;, type: &#39;data&#39;, ...},{ id: &#39;other pid&#39;, type: &#39;data&#39;, ...}]</span>
 
+<span class="sd">    .. note::</span>
+<span class="sd">       From WUI this may create gaps in indexing as those indexes with empty contents are not being sent from the</span>
+<span class="sd">       HTML form. For example, you may end up having indexes 0, 1, 3, 4, 6 in DB. This will be padded in</span>
+<span class="sd">       flattened_from_extras by creating empty dicts for those indexes.</span>
+
 <span class="sd">    :param key: key, for example `(pids, 0, provider)`</span>
 <span class="sd">    :param data: data</span>
 <span class="sd">    :param errors: validation errors</span>
@@ -464,6 +470,9 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Convert a whole bunch of flattened key-value pairs from extras to a list of dicts in data_dict.</span>
 <span class="sd">    Format in extras must be like `key[0]_index_innerkey`. For example: `pids_02_provider`.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">       The list of dicts is padded to the largest index found with empty dicts. WUI may cause gaps in indexing.</span>
 
 <span class="sd">    :param key: The key to convert as tuple, for example `(&#39;pids&#39;,)`</span>
 <span class="sd">    :param data: data</span>
@@ -492,7 +501,38 @@
 
                 <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">((</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;key&#39;</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span>
                 <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">((</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;value&#39;</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">((</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;__extras&#39;</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span></div>
+                <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">((</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;__extras&#39;</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="default_name_from_id"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.converters.default_name_from_id">[docs]</a><span class="k">def</span> <span class="nf">default_name_from_id</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    If name not given, generate name from package.id</span>
+
+<span class="sd">    :param key: key</span>
+<span class="sd">    :param data: data</span>
+<span class="sd">    :param errors: validation errors</span>
+<span class="sd">    :param context: context</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">&#39;id&#39;</span><span class="p">,))</span>
+
+        <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">datapid_to_name</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="check_primary_pids"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.converters.check_primary_pids">[docs]</a><span class="k">def</span> <span class="nf">check_primary_pids</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Check that primary pids exist, if not, get them from package.id and package.name</span>
+
+<span class="sd">    :param key: key</span>
+<span class="sd">    :param data: data</span>
+<span class="sd">    :param errors: validation errors</span>
+<span class="sd">    :param context: context</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">data_pids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pids_by_type</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;pids&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">&#39;pids&#39;</span><span class="p">,))},</span> <span class="n">primary</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data_pids</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">[(</span><span class="s">&#39;pids&#39;</span><span class="p">,)]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;primary&#39;</span><span class="p">:</span> <span class="s">u&#39;True&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,)]})</span></div>
 </pre></div>
 
           </div>
@@ -532,7 +572,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

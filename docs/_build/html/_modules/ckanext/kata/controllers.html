@@ -53,39 +53,49 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Controllers for Kata.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">from</span> <span class="nn">cgi</span> <span class="kn">import</span> <span class="n">FieldStorage</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">functionally</span> <span class="kn">as</span> <span class="nn">fn</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
-<span class="kn">import</span> <span class="nn">functionally</span> <span class="kn">as</span> <span class="nn">fn</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql</span> <span class="kn">import</span> <span class="n">select</span>
+
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
 
 <span class="kn">from</span> <span class="nn">paste.deploy.converters</span> <span class="kn">import</span> <span class="n">asbool</span>
-<span class="kn">from</span> <span class="nn">pylons</span> <span class="kn">import</span> <span class="n">response</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">g</span>
+<span class="kn">from</span> <span class="nn">pylons</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">response</span>
 <span class="kn">from</span> <span class="nn">pylons.decorators.cache</span> <span class="kn">import</span> <span class="n">beaker_cache</span>
 <span class="kn">from</span> <span class="nn">pylons.i18n</span> <span class="kn">import</span> <span class="n">_</span>
 
 <span class="kn">from</span> <span class="nn">ckan.controllers.api</span> <span class="kn">import</span> <span class="n">ApiController</span>
 <span class="kn">from</span> <span class="nn">ckan.controllers.package</span> <span class="kn">import</span> <span class="n">PackageController</span>
 <span class="kn">from</span> <span class="nn">ckan.controllers.user</span> <span class="kn">import</span> <span class="n">UserController</span>
+<span class="kn">from</span> <span class="nn">ckan.controllers.storage</span> <span class="kn">import</span> <span class="n">StorageController</span>
 <span class="kn">import</span> <span class="nn">ckan.lib.i18n</span>
-<span class="kn">from</span> <span class="nn">ckan.lib.base</span> <span class="kn">import</span> <span class="n">BaseController</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">ckan.lib.base</span> <span class="kn">import</span> <span class="n">BaseController</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span><span class="p">,</span> <span class="n">abort</span>
 <span class="kn">from</span> <span class="nn">ckan.lib.email_notifications</span> <span class="kn">import</span> <span class="n">send_notification</span>
-<span class="kn">from</span> <span class="nn">ckan.logic</span> <span class="kn">import</span> <span class="n">get_action</span>
+<span class="kn">from</span> <span class="nn">ckan.lib</span> <span class="kn">import</span> <span class="n">captcha</span><span class="p">,</span> <span class="n">helpers</span>
+<span class="kn">from</span> <span class="nn">ckan.logic</span> <span class="kn">import</span> <span class="n">get_action</span><span class="p">,</span> <span class="n">NotAuthorized</span><span class="p">,</span> <span class="n">NotFound</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">import</span> <span class="nn">ckan.logic</span> <span class="kn">as</span> <span class="nn">logic</span>
 <span class="kn">import</span> <span class="nn">ckan.model</span> <span class="kn">as</span> <span class="nn">model</span>
-<span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">Package</span><span class="p">,</span> <span class="n">User</span><span class="p">,</span> <span class="n">meta</span>
+<span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">Package</span><span class="p">,</span> <span class="n">User</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span> <span class="n">Session</span>
 <span class="kn">from</span> <span class="nn">ckan.model.authz</span> <span class="kn">import</span> <span class="n">add_user_to_role</span>
+<span class="kn">import</span> <span class="nn">ckan.plugins</span> <span class="kn">as</span> <span class="nn">plugins</span>
+
+<span class="kn">import</span> <span class="nn">ckanext.harvest.interfaces</span> <span class="kn">as</span> <span class="nn">h_interfaces</span>
 <span class="kn">from</span> <span class="nn">ckanext.kata.model</span> <span class="kn">import</span> <span class="n">KataAccessRequest</span>
-<span class="kn">from</span> <span class="nn">ckanext.kata.urnhelper</span> <span class="kn">import</span> <span class="n">URNHelper</span>
-<span class="kn">import</span> <span class="nn">ckan.lib.captcha</span> <span class="kn">as</span> <span class="nn">captcha</span>
+<span class="kn">import</span> <span class="nn">ckanext.kata.clamd_wrapper</span> <span class="kn">as</span> <span class="nn">clamd_wrapper</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">utils</span>
 
 <span class="n">_get_or_bust</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">get_or_bust</span>
 
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;ckanext.kata.controller&#39;</span><span class="p">)</span>
-
-<span class="c"># BUCKET = config.get(&#39;ckan.storage.bucket&#39;, &#39;default&#39;)</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">plugins</span><span class="o">.</span><span class="n">toolkit</span>                         <span class="c"># pylint: disable=invalid-name</span>
 
 
 <div class="viewcode-block" id="get_package_owner"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.get_package_owner">[docs]</a><span class="k">def</span> <span class="nf">get_package_owner</span><span class="p">(</span><span class="n">package</span><span class="p">):</span>
@@ -109,20 +119,73 @@
 <div class="viewcode-block" id="MetadataController"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.MetadataController">[docs]</a><span class="k">class</span> <span class="nc">MetadataController</span><span class="p">(</span><span class="n">BaseController</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    URN export</span>
-
-
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_urnexport</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Uncached urnexport, needed for testing.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">_or_</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">or_</span>
+        <span class="n">_and_</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">and_</span>
+
+        <span class="n">xmlns</span> <span class="o">=</span> <span class="s">&quot;urn:nbn:se:uu:ub:epc-schema:rs-location-mapping&quot;</span>
+        <span class="k">def</span> <span class="nf">locns</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">&quot;{</span><span class="si">%s</span><span class="s">}</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">xmlns</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+        <span class="n">xsi</span> <span class="o">=</span> <span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+        <span class="n">schemalocation</span> <span class="o">=</span> <span class="s">&quot;urn:nbn:se:uu:ub:epc-schema:rs-location-mapping &quot;</span> \
+                         <span class="s">&quot;http://urn.kb.se/resolve?urn=urn:nbn:se:uu:ub:epc-schema:rs-location-mapping&amp;godirectly&quot;</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;{&quot;</span> <span class="o">+</span> <span class="n">xmlns</span> <span class="o">+</span> <span class="s">&quot;}records&quot;</span><span class="p">,</span>
+                         <span class="n">attrib</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;{&quot;</span> <span class="o">+</span> <span class="n">xsi</span> <span class="o">+</span> <span class="s">&quot;}schemaLocation&quot;</span><span class="p">:</span> <span class="n">schemalocation</span><span class="p">},</span>
+                         <span class="n">nsmap</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;xsi&#39;</span><span class="p">:</span> <span class="n">xsi</span><span class="p">,</span> <span class="bp">None</span><span class="p">:</span> <span class="n">xmlns</span><span class="p">})</span>
+
+        <span class="c"># Gather all package id&#39;s that might contain a Kata/IDA data PID</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;pids_%_id&#39;</span><span class="p">))</span><span class="o">.</span> \
+            <span class="nb">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;urn:nbn:fi:csc-%&#39;</span><span class="p">))</span><span class="o">.</span> \
+            <span class="n">join</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Package</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">private</span> <span class="o">==</span> <span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s">&#39;active&#39;</span><span class="p">)</span><span class="o">.</span> \
+            <span class="n">values</span><span class="p">(</span><span class="s">&#39;package_id&#39;</span><span class="p">)</span>
+
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ckan.site_url&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+
+        <span class="n">prot</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;protocol-version&#39;</span><span class="p">))</span>
+        <span class="n">prot</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&#39;3.0&#39;</span>
+        <span class="n">datestmp</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;datestamp&#39;</span><span class="p">),</span> <span class="n">attrib</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;modified&#39;</span><span class="p">})</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="n">datestmp</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">now</span>
+        <span class="k">for</span> <span class="n">pkg_id</span><span class="p">,</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+            <span class="n">data_dict</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="s">&#39;package_show&#39;</span><span class="p">)({},</span> <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">pkg_id</span><span class="p">})</span>
+            <span class="c"># Get primary data PID and make sure we want to display this dataset</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data_pid</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pids_by_type</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">primary</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">data_pid</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;urn:nbn:fi:csc-&#39;</span><span class="p">):</span>
+                <span class="n">record</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;record&#39;</span><span class="p">))</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;header&#39;</span><span class="p">))</span>
+                <span class="n">datestmp</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;datestamp&#39;</span><span class="p">),</span> <span class="n">attrib</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;modified&#39;</span><span class="p">})</span>
+                <span class="n">datestmp</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">now</span>
+                <span class="n">identifier</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;identifier&#39;</span><span class="p">))</span>
+                <span class="n">identifier</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">data_pid</span>
+                <span class="n">destinations</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;destinations&#39;</span><span class="p">))</span>
+                <span class="n">destination</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">destinations</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;destination&#39;</span><span class="p">),</span> <span class="n">attrib</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="s">&#39;activated&#39;</span><span class="p">})</span>
+                <span class="n">datestamp</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;datestamp&#39;</span><span class="p">),</span> <span class="n">attrib</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;activated&#39;</span><span class="p">})</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">locns</span><span class="p">(</span><span class="s">&#39;url&#39;</span><span class="p">))</span>
+                <span class="n">url</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">base_url</span><span class="p">,</span>
+                                 <span class="n">helpers</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span>
+                                           <span class="n">action</span><span class="o">=</span><span class="s">&#39;read&#39;</span><span class="p">,</span>
+                                           <span class="nb">id</span><span class="o">=</span><span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)))</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="s">&#39;application/xml; charset=utf-8&#39;</span>
+        <span class="k">return</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">)</span>
 
     <span class="nd">@beaker_cache</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&quot;dbm&quot;</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="mi">86400</span><span class="p">)</span>
 <div class="viewcode-block" id="MetadataController.urnexport"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.MetadataController.urnexport">[docs]</a>    <span class="k">def</span> <span class="nf">urnexport</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The urnexport page</span>
+<span class="sd">        Generate an XML listing of packages, which have Kata or Ida URN as data PID.</span>
+<span class="sd">        Used by a third party service.</span>
 
-<span class="sd">        :returns: the packages with service generated urns</span>
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: An XML listing of packages and their URNs</span>
+<span class="sd">        :rtype: string (xml)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;Content-type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;text/xml&#39;</span>
-        <span class="k">return</span> <span class="n">URNHelper</span><span class="o">.</span><span class="n">list_packages</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_urnexport</span><span class="p">()</span>
 
 </div></div>
 <div class="viewcode-block" id="KATAApiController"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.KATAApiController">[docs]</a><span class="k">class</span> <span class="nc">KATAApiController</span><span class="p">(</span><span class="n">ApiController</span><span class="p">):</span>
@@ -139,6 +202,7 @@
         <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;incomplete&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
         <span class="n">known_types</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mimetypes</span><span class="o">.</span><span class="n">types_map</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span> <span class="n">type_label</span> <span class="k">for</span> <span class="n">type_label</span> <span class="ow">in</span> <span class="n">known_types</span> <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">type_label</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="p">]</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
         <span class="n">result_set</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s">&#39;ResultSet&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s">&#39;Result&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s">&#39;Name&#39;</span><span class="p">:</span> <span class="n">label</span><span class="p">}</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">]</span>
@@ -240,6 +304,9 @@
         <span class="n">url</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;read&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">pkg_id</span><span class="p">)</span>
 
         <span class="n">pkg</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pkg</span><span class="p">:</span>
+            <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Dataset not found&quot;</span><span class="p">))</span>
+
         <span class="n">pkg_title</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">title</span> <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">title</span> <span class="k">else</span> <span class="n">pkg</span><span class="o">.</span><span class="n">name</span>
 
         <span class="n">user</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span> <span class="k">else</span> <span class="bp">None</span>
@@ -273,7 +340,7 @@
             <span class="n">pkg_title</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">title</span> <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">title</span> <span class="k">else</span> <span class="n">pkg</span><span class="o">.</span><span class="n">name</span>
             <span class="n">add_user_to_role</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s">&#39;editor&#39;</span><span class="p">,</span> <span class="n">pkg</span><span class="p">)</span>
             <span class="n">url</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;read&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">req</span><span class="o">.</span><span class="n">pkg_id</span><span class="p">)</span>
-            <span class="n">h</span><span class="o">.</span><span class="n">flash_success</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> now has editor rights to package </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pkg_title</span><span class="p">)))</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">flash_success</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> now has editor rights to package </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pkg_title</span><span class="p">))</span>
             <span class="n">req</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
             <span class="n">meta</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
             <span class="n">redirect</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
@@ -289,6 +356,9 @@
         <span class="n">url</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;read&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">pkg_id</span><span class="p">)</span>
 
         <span class="n">c</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">package</span><span class="p">:</span>
+            <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Dataset not found&quot;</span><span class="p">))</span>
+
         <span class="n">c</span><span class="o">.</span><span class="n">package_owner</span> <span class="o">=</span> <span class="n">get_package_owner</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">package</span><span class="p">)</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span> <span class="k">else</span> <span class="bp">None</span>
 
@@ -302,161 +372,6 @@
             <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;You must be logged in to request edit access&quot;</span><span class="p">))</span>
             <span class="n">redirect</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="c">##############################################################################</span>
-<span class="c">#DataMiningController is here for reference, some stuff like the file parsing might be useful#</span>
-<span class="c"># class DataMiningController(BaseController):</span>
-<span class="c">#     &#39;&#39;&#39;</span>
-<span class="c">#     Controller for scraping metadata content from files.</span>
-<span class="c">#     &#39;&#39;&#39;</span>
-<span class="c">#</span>
-<span class="c">#     def read_data(self, id, resource_id):</span>
-<span class="c">#         &quot;&quot;&quot;</span>
-<span class="c">#         Scrape all words from a file and save it to extras.</span>
-<span class="c">#         &quot;&quot;&quot;</span>
-<span class="c">#         res = Resource.get(resource_id)</span>
-<span class="c">#         pkg = Package.get(id)</span>
-<span class="c">#         c.pkg_dict = pkg.as_dict()</span>
-<span class="c">#         c.package = pkg</span>
-<span class="c">#         c.resource = get_action(&#39;resource_show&#39;)({&#39;model&#39;: model},</span>
-<span class="c">#                                                      {&#39;id&#39;: resource_id})</span>
-<span class="c">#         label = res.url.split(config.get(&#39;ckan.site_url&#39;) + &#39;/storage/f/&#39;)[-1]</span>
-<span class="c">#         label = urllib2.unquote(label)</span>
-<span class="c">#         ofs = get_ofs()</span>
-<span class="c">#</span>
-<span class="c">#         try:</span>
-<span class="c">#             # Get file location</span>
-<span class="c">#             furl = ofs.get_url(BUCKET, label).split(&#39;file://&#39;)[-1]</span>
-<span class="c">#         except FileNotFoundException:</span>
-<span class="c">#             h.flash_error(_(&#39;Cannot do data mining on remote resource!&#39;))</span>
-<span class="c">#             url = h.url_for(controller=&#39;package&#39;, action=&#39;resource_read&#39;,</span>
-<span class="c">#                             id=id, resource_id=resource_id)</span>
-<span class="c">#             return redirect(url)</span>
-<span class="c">#</span>
-<span class="c">#         wordstats = {}</span>
-<span class="c">#         ret = {}</span>
-<span class="c">#</span>
-<span class="c">#         if res.format in (&#39;TXT&#39;, &#39;txt&#39;):</span>
-<span class="c">#             wdsf, wdspath = tempfile.mkstemp()</span>
-<span class="c">#             os.write(wdsf, &quot;%s\nmetadata description title information&quot; % furl)</span>
-<span class="c">#</span>
-<span class="c">#             with os.fdopen(wdsf, &#39;r&#39;) as wordfile:</span>
-<span class="c">#                 preproc = orngText.Preprocess()</span>
-<span class="c">#                 table = orngText.loadFromListWithCategories(wdspath)</span>
-<span class="c">#                 data = orngText.bagOfWords(table, preprocessor=preproc)</span>
-<span class="c">#                 words = orngText.extractWordNGram(data, threshold=10.0, measure=&#39;MI&#39;)</span>
-<span class="c">#</span>
-<span class="c">#             for i in range(len(words)):</span>
-<span class="c">#                 d = words[i]</span>
-<span class="c">#                 wordstats = d.get_metas(str)</span>
-<span class="c">#</span>
-<span class="c">#             for k, v in wordstats.items():</span>
-<span class="c">#                 if v.value &gt; 10.0:</span>
-<span class="c">#                     ret[unicode(k, &#39;utf8&#39;)] = v.value</span>
-<span class="c">#</span>
-<span class="c">#             c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]</span>
-<span class="c">#             os.remove(wdspath)</span>
-<span class="c">#</span>
-<span class="c">#             for i in range(len(data)):</span>
-<span class="c">#                     d = words[i]</span>
-<span class="c">#                     wordstats = d.get_metas(str)</span>
-<span class="c">#</span>
-<span class="c">#             words = []</span>
-<span class="c">#             for k, v in wordstats.items():</span>
-<span class="c">#                 words.append(k)</span>
-<span class="c">#</span>
-<span class="c">#             # Save scraped words to extras.</span>
-<span class="c">#</span>
-<span class="c">#             model.repo.new_revision()</span>
-<span class="c">#             if not &#39;autoextracted_description&#39; in pkg.extras:</span>
-<span class="c">#                 pkg.extras[&#39;autoextracted_description&#39;] = &#39; &#39;.join(words)</span>
-<span class="c">#</span>
-<span class="c">#             pkg.save()</span>
-<span class="c">#</span>
-<span class="c">#             return render(&#39;datamining/read.html&#39;)</span>
-<span class="c">#</span>
-<span class="c">#         elif res.format in (&#39;odt&#39;, &#39;doc&#39;, &#39;xls&#39;, &#39;ods&#39;, &#39;odp&#39;, &#39;ppt&#39;, &#39;doc&#39;, &#39;html&#39;):</span>
-<span class="c">#</span>
-<span class="c">#             textfd, textpath = convert_to_text(res, furl)</span>
-<span class="c">#</span>
-<span class="c">#             if not textpath:</span>
-<span class="c">#                 h.flash_error(_(&#39;This file could not be mined for any data!&#39;))</span>
-<span class="c">#                 os.close(textfd)</span>
-<span class="c">#                 return render(&#39;datamining/read.html&#39;)</span>
-<span class="c">#             else:</span>
-<span class="c">#                 wdsf, wdspath = tempfile.mkstemp()</span>
-<span class="c">#                 os.write(wdsf, &quot;%s\nmetadata description title information&quot; % textpath)</span>
-<span class="c">#                 preproc = orngText.Preprocess()</span>
-<span class="c">#                 table = orngText.loadFromListWithCategories(wdspath)</span>
-<span class="c">#                 data = orngText.bagOfWords(table, preprocessor=preproc)</span>
-<span class="c">#                 words = orngText.extractWordNGram(data, threshold=10.0, measure=&#39;MI&#39;)</span>
-<span class="c">#</span>
-<span class="c">#                 for i in range(len(words)):</span>
-<span class="c">#                     d = words[i]</span>
-<span class="c">#                     wordstats = d.get_metas(str)</span>
-<span class="c">#</span>
-<span class="c">#                 for k, v in wordstats.items():</span>
-<span class="c">#                     if v.value &gt; 10.0:</span>
-<span class="c">#                         ret[unicode(k, &#39;utf8&#39;)] = v.value</span>
-<span class="c">#</span>
-<span class="c">#                 c.data_tags = sorted(ret.iteritems(), key=itemgetter(1), reverse=True)[:30]</span>
-<span class="c">#                 os.close(textfd)</span>
-<span class="c">#                 os.close(wdsf)</span>
-<span class="c">#                 os.remove(wdspath)</span>
-<span class="c">#                 os.remove(textpath)</span>
-<span class="c">#</span>
-<span class="c">#                 for i in range(len(data)):</span>
-<span class="c">#                     d = words[i]</span>
-<span class="c">#                     wordstats = d.get_metas(str)</span>
-<span class="c">#</span>
-<span class="c">#                 words = []</span>
-<span class="c">#</span>
-<span class="c">#                 for k, v in wordstats.items():</span>
-<span class="c">#                     log.debug(k)</span>
-<span class="c">#                     words.append(substitute_ascii_equivalents(k))</span>
-<span class="c">#</span>
-<span class="c">#                 model.repo.new_revision()</span>
-<span class="c">#</span>
-<span class="c">#                 if not &#39;autoextracted_description&#39; in pkg.extras:</span>
-<span class="c">#                     pkg.extras[&#39;autoextracted_description&#39;] = &#39; &#39;.join(words)</span>
-<span class="c">#</span>
-<span class="c">#                 pkg.save()</span>
-<span class="c">#</span>
-<span class="c">#                 return render(&#39;datamining/read.html&#39;)</span>
-<span class="c">#         else:</span>
-<span class="c">#             h.flash_error(_(&#39;This metadata document is not in proper format for data mining!&#39;))</span>
-<span class="c">#             url = h.url_for(controller=&#39;package&#39;, action=&#39;resource_read&#39;,</span>
-<span class="c">#                             id=id, resource_id=resource_id)</span>
-<span class="c">#             return redirect(url)</span>
-<span class="c">#</span>
-<span class="c">#     def save(self):</span>
-<span class="c">#         if not c.user:</span>
-<span class="c">#             return</span>
-<span class="c">#</span>
-<span class="c">#         model.repo.new_revision()</span>
-<span class="c">#         data = clean_dict(unflatten(tuplize_dict(parse_params(request.params))))</span>
-<span class="c">#         package = Package.get(data[&#39;pkgid&#39;])</span>
-<span class="c">#         keywords = []</span>
-<span class="c">#         context = {&#39;model&#39;: model, &#39;session&#39;: model.Session,</span>
-<span class="c">#                    &#39;user&#39;: c.user}</span>
-<span class="c">#</span>
-<span class="c">#         if check_access(&#39;package_update&#39;, context, data_dict={&quot;id&quot;: data[&#39;pkgid&#39;]}):</span>
-<span class="c">#</span>
-<span class="c">#             for k, v in data.items():</span>
-<span class="c">#                 if k.startswith(&#39;kw&#39;):</span>
-<span class="c">#                     keywords.append(v)</span>
-<span class="c">#</span>
-<span class="c">#             tags = package.get_tags()</span>
-<span class="c">#</span>
-<span class="c">#             for kw in keywords:</span>
-<span class="c">#                 if not kw in tags:</span>
-<span class="c">#                     package.add_tag_by_name(kw)</span>
-<span class="c">#</span>
-<span class="c">#             package.save()</span>
-<span class="c">#             url = h.url_for(controller=&#39;package&#39;, action=&#39;read&#39;, id=data[&#39;pkgid&#39;])</span>
-<span class="c">#             redirect(url)</span>
-<span class="c">#         else:</span>
-<span class="c">#             redirect(&#39;/&#39;)</span>
-
 </div></div>
 <div class="viewcode-block" id="ContactController"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.ContactController">[docs]</a><span class="k">class</span> <span class="nc">ContactController</span><span class="p">(</span><span class="n">BaseController</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -466,17 +381,7 @@
 <span class="sd">    The feature provides a form for message sending, and the message is sent via email.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recipient</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">email_dict</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Send message to given email &#39;&#39;&#39;</span>
-        <span class="kn">import</span> <span class="nn">ckan.lib.mailer</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">ckan</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">mailer</span><span class="o">.</span><span class="n">mail_recipient</span><span class="p">(</span><span class="n">recipient</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span>
-                                           <span class="n">email_dict</span><span class="p">[</span><span class="s">&#39;subject&#39;</span><span class="p">],</span> <span class="n">email_dict</span><span class="p">[</span><span class="s">&#39;body&#39;</span><span class="p">])</span>
-        <span class="k">except</span> <span class="n">ckan</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">mailer</span><span class="o">.</span><span class="n">MailerException</span><span class="p">:</span>
-            <span class="k">raise</span>
-
-    <span class="k">def</span> <span class="nf">_send_if_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkg_id</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">prologue</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">epilogue</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">recipient</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_send_if_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkg_id</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">recipient</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">epilogue</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">prologue</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a contact e-mail if allowed.</span>
 
@@ -484,11 +389,11 @@
 
 <span class="sd">        :param pkg_id: package id</span>
 <span class="sd">        :param subject: email&#39;s subject</span>
+<span class="sd">        :param recipient: name of the recipient</span>
+<span class="sd">        :param email: email address where the message is to be sent</span>
 <span class="sd">        :param msg: the message to be sent</span>
-<span class="sd">        :param prologue: message&#39;s prologue (optional)</span>
-<span class="sd">        :param epilogue: message&#39;s epilogue (optional)</span>
-<span class="sd">        :param recipient: recipient (optional)</span>
-<span class="sd">        :param email: email address where the message is to be sent (optional)</span>
+<span class="sd">        :param prologue: message&#39;s prologue to be included before the user&#39;s message (optional)</span>
+<span class="sd">        :param epilogue: message&#39;s epilogue to be included after the user&#39;s message (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">package</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
@@ -500,29 +405,26 @@
         <span class="n">email_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;subject&quot;</span><span class="p">:</span> <span class="n">subject</span><span class="p">,</span>
                       <span class="s">&quot;body&quot;</span><span class="p">:</span> <span class="n">full_msg</span><span class="p">}</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">recipient</span><span class="p">:</span>
+            <span class="c"># fall back to using the email address as the name of the recipient</span>
+            <span class="n">recipient</span> <span class="o">=</span> <span class="n">email</span>
+
+        <span class="n">recipient_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;display_name&#39;</span><span class="p">:</span> <span class="n">recipient</span><span class="p">,</span> <span class="s">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">}</span>
+
         <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
-            <span class="n">owner_id</span> <span class="o">=</span> <span class="n">get_package_owner</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">owner_id</span><span class="p">:</span>
-                <span class="n">owner</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">owner_id</span><span class="p">)</span>
-                <span class="n">owner_dict</span> <span class="o">=</span> <span class="n">owner</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
-                <span class="n">owner_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">owner</span><span class="o">.</span><span class="n">fullname</span> <span class="k">if</span> <span class="n">owner</span><span class="o">.</span><span class="n">fullname</span> <span class="k">else</span> <span class="n">owner</span><span class="o">.</span><span class="n">name</span>
-                <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
-                    <span class="n">model</span><span class="o">.</span><span class="n">repo</span><span class="o">.</span><span class="n">new_revision</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">recipient</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                        <span class="n">send_notification</span><span class="p">(</span><span class="n">owner_dict</span><span class="p">,</span> <span class="n">email_dict</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_send_message</span><span class="p">(</span><span class="n">recipient</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">email_dict</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_mark_owner_as_contacted</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="p">,</span> <span class="n">pkg_id</span><span class="p">)</span>
-                    <span class="n">h</span><span class="o">.</span><span class="n">flash_notice</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Message sent&quot;</span><span class="p">))</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;No message&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+                <span class="n">send_notification</span><span class="p">(</span><span class="n">recipient_dict</span><span class="p">,</span> <span class="n">email_dict</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_mark_package_as_contacted</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="p">,</span> <span class="n">pkg_id</span><span class="p">)</span>
+                <span class="n">h</span><span class="o">.</span><span class="n">flash_notice</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Message sent&quot;</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;No owner found&quot;</span><span class="p">))</span>
+                <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;No message&quot;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Please login&quot;</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">_mark_owner_as_contacted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userobj</span><span class="p">,</span> <span class="n">pkg_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Mark this user as having already contacted the package owner&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_mark_package_as_contacted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userobj</span><span class="p">,</span> <span class="n">pkg_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Mark this user as having already emailed the contact person of the package.&quot;&quot;&quot;</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">repo</span><span class="o">.</span><span class="n">new_revision</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="s">&quot;contacted&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">userobj</span><span class="o">.</span><span class="n">extras</span><span class="p">:</span>
             <span class="n">userobj</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="s">&#39;contacted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -556,20 +458,15 @@
         <span class="n">package_title</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="n">title</span> <span class="k">if</span> <span class="n">package</span><span class="o">.</span><span class="n">title</span> <span class="k">else</span> <span class="n">package</span><span class="o">.</span><span class="n">name</span>
         <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="p">:</span>
             <span class="n">user_name</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">fullname</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">fullname</span> <span class="k">else</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">name</span>
-            <span class="c"># Todo: this should take the specific contact address, not just the first contact email</span>
-            <span class="n">email_tuples</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;contact_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;_email&#39;</span><span class="p">),</span> <span class="n">package</span><span class="o">.</span><span class="n">extras</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
-            
-            <span class="n">emails</span> <span class="o">=</span> <span class="p">[</span><span class="n">con</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="n">email_tuples</span><span class="p">]</span>
-            <span class="n">email</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">emails</span><span class="p">)</span>
-            
-            <span class="c"># consequently, this now prints &quot;Dear email@address.com&quot;, should be contact_0_name instead</span>
-            <span class="n">recipient</span> <span class="o">=</span> <span class="n">email</span>
+
+            <span class="n">email</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_package_contact_email</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+            <span class="n">recipient</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_package_contact_name</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
 
             <span class="n">user_msg</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
             <span class="n">prologue</span> <span class="o">=</span> <span class="n">prologue_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">user_name</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">package_title</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">package</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
             <span class="n">subject</span> <span class="o">=</span> <span class="s">&quot;Message regarding dataset / Viesti koskien tietoaineistoa </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">package_title</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_send_if_allowed</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">user_msg</span><span class="p">,</span> <span class="n">prologue</span><span class="p">,</span> <span class="n">epilogue</span><span class="p">,</span> <span class="n">recipient</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_send_if_allowed</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">recipient</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">user_msg</span><span class="p">,</span> <span class="n">epilogue</span><span class="p">,</span> <span class="n">prologue</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Please login&quot;</span><span class="p">))</span>
 
@@ -606,11 +503,16 @@
         <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="p">:</span>
             <span class="n">user_name</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">fullname</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">fullname</span> <span class="k">else</span> <span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">name</span>
 
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Attempting to send email (access request); user id = {u}, package = {p}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">pkg_id</span><span class="p">))</span>
+
+            <span class="n">email</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_package_contact_email</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+            <span class="n">recipient</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_package_contact_name</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+
             <span class="n">user_msg</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
             <span class="n">prologue</span> <span class="o">=</span> <span class="n">prologue_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">user_name</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">package_title</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">package</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-            <span class="n">subject</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Data access request for dataset / Datapyynto tietoaineistolle </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">package_title</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_send_if_allowed</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">user_msg</span><span class="p">,</span> <span class="n">prologue</span><span class="p">,</span> <span class="n">epilogue</span><span class="p">)</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="s">u&quot;Data access request for dataset / Datapyyntö tietoaineistolle </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">package_title</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_send_if_allowed</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">recipient</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">user_msg</span><span class="p">,</span> <span class="n">epilogue</span><span class="p">,</span> <span class="n">prologue</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Please login&quot;</span><span class="p">))</span>
 
@@ -630,6 +532,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">c</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">package</span><span class="p">:</span>
+            <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Dataset not found&quot;</span><span class="p">))</span>
+
         <span class="n">url</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span>
                         <span class="n">action</span><span class="o">=</span><span class="s">&quot;read&quot;</span><span class="p">,</span>
                         <span class="nb">id</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
@@ -672,8 +578,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="KataUserController.logged_in"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.KataUserController.logged_in">[docs]</a>    <span class="k">def</span> <span class="nf">logged_in</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Minor rewrite to redirect the user to the own profile page instead of</span>
+        <span class="sd">&quot;&quot;&quot;Minor rewrite to redirect the user to the own profile page instead of</span>
 <span class="sd">        the dashboard.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># we need to set the language via a redirect</span>
@@ -684,7 +589,7 @@
         <span class="c"># we need to set the language explicitly here or the flash</span>
         <span class="c"># messages will not be translated.</span>
         <span class="n">ckan</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">i18n</span><span class="o">.</span><span class="n">set_lang</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
-        
+
         <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">url_is_local</span><span class="p">(</span><span class="n">came_from</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">came_from</span><span class="p">))</span>
 
@@ -710,6 +615,12 @@
                               <span class="n">action</span><span class="o">=</span><span class="s">&#39;login&#39;</span><span class="p">,</span> <span class="n">came_from</span><span class="o">=</span><span class="n">came_from</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">err</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="KataUserController.logged_out_page"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.KataUserController.logged_out_page">[docs]</a>    <span class="k">def</span> <span class="nf">logged_out_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Redirect user to front page and inform user. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">flash_notice</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Successfully logged out.&quot;</span><span class="p">))</span>
+        <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;index&#39;</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="KataPackageController"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.KataPackageController">[docs]</a><span class="k">class</span> <span class="nc">KataPackageController</span><span class="p">(</span><span class="n">PackageController</span><span class="p">):</span>
@@ -725,6 +636,7 @@
 
 <span class="sd">        :returns: dictionary with keys results and count</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># TODO: Clean: Obsolete or move logging code elsewhere</span>
         <span class="c"># parse author search into q</span>
         <span class="n">q_author</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">q_author</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;q_author&#39;</span><span class="p">,</span> <span class="s">u&#39;&#39;</span><span class="p">)</span>
 
@@ -760,7 +672,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">h</span><span class="o">.</span><span class="n">check_access</span><span class="p">(</span><span class="s">&#39;package_update&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">name</span> <span class="p">}):</span>
             <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Not authorized to see this page&#39;</span><span class="p">))</span>
-            <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;read&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;read&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
@@ -775,13 +687,19 @@
         <span class="k">if</span> <span class="n">username</span><span class="p">:</span>
             <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">role</span>
             <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">username</span>
-            <span class="n">ret</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="s">&#39;dataset_editor_add&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;success&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
-                <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">h</span><span class="o">.</span><span class="n">flash_success</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="s">&#39;dataset_editor_add&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+                <span class="n">h</span><span class="o">.</span><span class="n">flash_success</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">error_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;message&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">NotAuthorized</span><span class="p">:</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;No sufficient privileges to add a user to role </span><span class="si">%s</span><span class="s">.&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">role</span>
+                <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+                <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;User not found&#39;</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">email</span><span class="p">:</span>
+
             <span class="n">EMAIL_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
     <span class="sd">r&quot;&quot;&quot;</span>
 <span class="sd">    ^[\w\d!#$%&amp;\&#39;\*\+\-/=\?\^`{\|\}~]</span>
@@ -793,23 +711,27 @@
 <span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
             <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">)</span> <span class="ow">and</span> <span class="n">email</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">EMAIL_REGEX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
-                    <span class="n">error_msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;Invalid email address&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">EMAIL_REGEX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">email</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span><span class="p">(</span><span class="n">asbool</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;kata.invitations&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">))):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">asbool</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;kata.invitations&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">))):</span>
+                        <span class="n">error_msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;Feature disabled&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">error_msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;Invalid email address&#39;</span><span class="p">)</span>
                     <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">captcha</span><span class="o">.</span><span class="n">check_recaptcha</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
                         <span class="k">try</span><span class="p">:</span>
-                            <span class="n">subject</span> <span class="o">=</span> <span class="s">u&#39;Invitation to use Kata metadata catalogue - kutsu käyttämään Kata-metadatakatalogia&#39;</span>
-                            <span class="n">body</span> <span class="o">=</span> <span class="s">u&#39;</span><span class="se">\n\n</span><span class="si">%s</span><span class="s"> would like to add you to editors for dataset &quot;</span><span class="si">%s</span><span class="s">&quot; </span><span class="se">\</span>
-<span class="s">in Kata metadata catalogue service. To enable this, please log in to the service: </span><span class="si">%s</span><span class="s">.</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">site_url</span><span class="p">)</span>
+                            <span class="n">subject</span> <span class="o">=</span> <span class="s">u&#39;Invitation to use the Etsin - kutsu käyttämään Etsin-palvelua&#39;</span>
+                            <span class="n">body</span> <span class="o">=</span> <span class="s">u&#39;</span><span class="se">\n\n</span><span class="si">%s</span><span class="s"> would like to add you as an editor for dataset &quot;</span><span class="si">%s</span><span class="s">&quot; </span><span class="se">\</span>
+<span class="s">in the Etsin data search service. To enable this, please log in to the service: </span><span class="si">%s</span><span class="s">.</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">site_url</span><span class="p">)</span>
                             <span class="n">body</span> <span class="o">+=</span> <span class="s">u&#39;</span><span class="se">\n\n</span><span class="si">%s</span><span class="s"> haluaisi lisätä sinut muokkaajaksi tietoaineistoon &quot;</span><span class="si">%s</span><span class="s">&quot; </span><span class="se">\</span>
-<span class="s">Kata-metadatakatalogipalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: </span><span class="si">%s</span><span class="s">.</span><span class="se">\n\n</span><span class="s">&#39;</span> \
+<span class="s">Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: </span><span class="si">%s</span><span class="s">.</span><span class="se">\n\n</span><span class="s">&#39;</span> \
                                     <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">site_url</span><span class="p">)</span>
                             <span class="n">body</span> <span class="o">+=</span> <span class="s">u&#39;</span><span class="se">\n</span><span class="s">------------</span><span class="se">\n</span><span class="s">Lähettäjän viesti / Sender</span><span class="se">\&#39;</span><span class="s">s message:</span><span class="se">\n\n</span><span class="si">%s</span><span class="se">\n</span><span class="s">------------</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;mail_message&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
 
                             <span class="n">ckan</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">mailer</span><span class="o">.</span><span class="n">mail_recipient</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
                             <span class="n">h</span><span class="o">.</span><span class="n">flash_success</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Message sent&#39;</span><span class="p">))</span>
+                            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Invitation sent by </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">userobj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">))</span>
                         <span class="k">except</span> <span class="n">ckan</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">mailer</span><span class="o">.</span><span class="n">MailerException</span><span class="p">:</span>
                             <span class="k">raise</span>
                     <span class="k">except</span> <span class="n">captcha</span><span class="o">.</span><span class="n">CaptchaError</span><span class="p">:</span>
@@ -842,15 +764,20 @@
         <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">get_action</span><span class="p">(</span><span class="s">&#39;dataset_editor_delete&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">get_action</span><span class="p">(</span><span class="s">&#39;dataset_editor_delete&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">flash_success</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;success&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
-            <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">h</span><span class="o">.</span><span class="n">flash_success</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;msg&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">error_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;message&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">NotAuthorized</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;No sufficient privileges to remove user from role </span><span class="si">%s</span><span class="s">.&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;User not found&#39;</span><span class="p">))</span>
 
-        <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;ckanext.kata.controllers:KataPackageController&#39;</span><span class="p">,</span>
-                                <span class="n">action</span><span class="o">=</span><span class="s">&#39;dataset_editor_manage&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;ckanext.kata.controllers:KataPackageController&#39;</span><span class="p">,</span>
+                                <span class="n">action</span><span class="o">=</span><span class="s">&#39;dataset_editor_manage&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">_roles_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userobj</span><span class="p">,</span> <span class="n">domain_object</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -890,10 +817,66 @@
 
             <span class="n">c</span><span class="o">.</span><span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">role</span><span class="p">[</span><span class="s">&#39;user_id&#39;</span><span class="p">],</span> <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">q</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="n">role</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]})</span>
         <span class="n">c</span><span class="o">.</span><span class="n">pkg</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">pkg_dict</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="s">&#39;package_show&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="s">&#39;package/package_rights.html&#39;</span><span class="p">)</span>
 
-</div>
+    <span class="k">def</span> <span class="nf">_upload_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">error_summary</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Allow filling dataset form by parsing a user uploaded metadata file.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s">&#39;session&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">Session</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">user</span> <span class="ow">or</span> <span class="n">c</span><span class="o">.</span><span class="n">author</span><span class="p">}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">check_access</span><span class="p">(</span><span class="s">&#39;package_create&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">t</span><span class="o">.</span><span class="n">NotAuthorized</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">abort</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Unauthorized to upload metadata&#39;</span><span class="p">))</span>
+
+        <span class="n">xmlfile</span> <span class="o">=</span> <span class="s">u&#39;&#39;</span>
+        <span class="n">field_storage</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;xmlfile&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_storage</span><span class="p">,</span> <span class="n">FieldStorage</span><span class="p">):</span>
+            <span class="n">bffr</span> <span class="o">=</span> <span class="n">field_storage</span><span class="o">.</span><span class="n">file</span>
+            <span class="n">xmlfile</span> <span class="o">=</span> <span class="n">bffr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;url&#39;</span><span class="p">,</span> <span class="s">u&#39;&#39;</span><span class="p">)</span>
+        <span class="n">xmltype</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;format&#39;</span><span class="p">,</span> <span class="s">u&#39;&#39;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Importing from {src}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">src</span><span class="o">=</span><span class="s">&#39;file: &#39;</span> <span class="o">+</span> <span class="n">field_storage</span><span class="o">.</span><span class="n">filename</span> <span class="k">if</span> <span class="n">field_storage</span> <span class="k">else</span> <span class="s">&#39;url: &#39;</span> <span class="o">+</span> <span class="n">url</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">harvester</span> <span class="ow">in</span> <span class="n">plugins</span><span class="o">.</span><span class="n">PluginImplementations</span><span class="p">(</span><span class="n">h_interfaces</span><span class="o">.</span><span class="n">IHarvester</span><span class="p">):</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="n">harvester</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">info</span> <span class="ow">or</span> <span class="s">&#39;name&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Harvester </span><span class="si">%r</span><span class="s"> does not provide the harvester name in the info response&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">harvester</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">xmltype</span> <span class="o">==</span> <span class="n">info</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;_upload_xml: Found harvester for import: {nam}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nam</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]))</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c"># TODO: virus check ??</span>
+                    <span class="k">if</span> <span class="n">xmlfile</span><span class="p">:</span>
+                        <span class="n">pkg_dict</span> <span class="o">=</span> <span class="n">harvester</span><span class="o">.</span><span class="n">parse_xml</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">url</span><span class="p">:</span>
+                        <span class="n">pkg_dict</span> <span class="o">=</span> <span class="n">harvester</span><span class="o">.</span><span class="n">fetch_xml</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Give upload URL or file.&#39;</span><span class="p">))</span>
+                        <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;new&#39;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">KataPackageController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pkg_dict</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">error_summary</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span><span class="p">,</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Could not fetch from url {ur}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ur</span><span class="o">=</span><span class="n">url</span><span class="p">))</span>
+                    <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Could not fetch from url {ur}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ur</span><span class="o">=</span><span class="n">url</span><span class="p">)))</span>
+                    <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;new&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="n">h</span><span class="o">.</span><span class="n">flash_error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Invalid upload URL&#39;</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">redirect_to</span><span class="p">(</span><span class="n">controller</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;new&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="KataPackageController.new"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.KataPackageController.new">[docs]</a>    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">error_summary</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Overwrite CKAN method to take uploading xml into sequence.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;upload&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upload_xml</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">error_summary</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">KataPackageController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">error_summary</span><span class="p">)</span>
+
+</div></div>
 <div class="viewcode-block" id="KataInfoController"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.KataInfoController">[docs]</a><span class="k">class</span> <span class="nc">KataInfoController</span><span class="p">(</span><span class="n">BaseController</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    KataInfoController provides info pages, which</span>
@@ -911,6 +894,42 @@
 <span class="sd">        Provides the FAQ page</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="s">&#39;kata/faq.html&#39;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="MalwareScanningStorageController"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.MalwareScanningStorageController">[docs]</a><span class="k">class</span> <span class="nc">MalwareScanningStorageController</span><span class="p">(</span><span class="n">StorageController</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    MalwareScanningStorageController extends the standard CKAN StorageController</span>
+<span class="sd">    class by adding an optional malware check on file uploads.</span>
+
+<span class="sd">    Malware scanning is disabled by default but can be enabled by setting</span>
+<span class="sd">    the configuration option kata.storage.malware_scan to true.</span>
+<span class="sd">    When scanning is enabled, not having a ClamAV daemon running</span>
+<span class="sd">    will cause uploads to be rejected.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="MalwareScanningStorageController.upload_handle"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.controllers.MalwareScanningStorageController.upload_handle">[docs]</a>    <span class="k">def</span> <span class="nf">upload_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">field_storage</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;file&#39;</span><span class="p">)</span>
+        <span class="nb">buffer</span> <span class="o">=</span> <span class="n">field_storage</span><span class="o">.</span><span class="n">file</span>
+
+        <span class="n">do_scan</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;kata.storage.malware_scan&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">do_scan</span><span class="p">:</span>
+            <span class="n">passed</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">passed</span> <span class="o">=</span> <span class="n">clamd_wrapper</span><span class="o">.</span><span class="n">scan_for_malware</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+                <span class="c"># reset the stream so that the data can be properly read again</span>
+                <span class="nb">buffer</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">clamd_wrapper</span><span class="o">.</span><span class="n">MalwareCheckError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="n">passed</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">passed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">StorageController</span><span class="o">.</span><span class="n">upload_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># TODO: produce a meaningful error message through javascript?</span>
+            <span class="n">abort</span><span class="p">(</span><span class="mi">403</span><span class="p">)</span>
 </pre></div></div></div>
 
           </div>
@@ -950,7 +969,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

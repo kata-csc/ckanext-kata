@@ -8,7 +8,6 @@ Subpackages
 
     ckanext.kata.commands
     ckanext.kata.i18n
-    ckanext.kata.tests
 
 Submodules
 ----------
@@ -29,6 +28,14 @@ ckanext.kata.auth_functions module
     :undoc-members:
     :show-inheritance:
 
+ckanext.kata.clamd_wrapper module
+---------------------------------
+
+.. automodule:: ckanext.kata.clamd_wrapper
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 ckanext.kata.controllers module
 -------------------------------
 
@@ -45,10 +52,26 @@ ckanext.kata.converters module
     :undoc-members:
     :show-inheritance:
 
+ckanext.kata.extractor module
+-----------------------------
+
+.. automodule:: ckanext.kata.extractor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 ckanext.kata.helpers module
 ---------------------------
 
 .. automodule:: ckanext.kata.helpers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+ckanext.kata.kata_ldap module
+-----------------------------
+
+.. automodule:: ckanext.kata.kata_ldap
     :members:
     :undoc-members:
     :show-inheritance:
@@ -81,22 +104,6 @@ ckanext.kata.settings module
 ----------------------------
 
 .. automodule:: ckanext.kata.settings
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-ckanext.kata.tieteet module
----------------------------
-
-.. automodule:: ckanext.kata.tieteet
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-ckanext.kata.urnhelper module
------------------------------
-
-.. automodule:: ckanext.kata.urnhelper
     :members:
     :undoc-members:
     :show-inheritance:

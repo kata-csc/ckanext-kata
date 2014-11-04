@@ -55,10 +55,8 @@
 
 <span class="kn">from</span> <span class="nn">ckan.lib.cli</span> <span class="kn">import</span> <span class="n">CkanCommand</span>
 <span class="kn">import</span> <span class="nn">ckan.model</span> <span class="kn">as</span> <span class="nn">model</span>
-<span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">Group</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">Member</span>
 <span class="kn">from</span> <span class="nn">ckanext.harvest.model</span> <span class="kn">import</span> <span class="n">HarvestSource</span>
 <span class="kn">from</span> <span class="nn">ckanext.kata.model</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">KataAccessRequest</span>
-<span class="kn">import</span> <span class="nn">ckanext.kata.tieteet</span> <span class="kn">as</span> <span class="nn">tieteet</span>
 <span class="kn">from</span> <span class="nn">ckanext.kata.utils</span> <span class="kn">import</span> <span class="n">send_email</span>
 
 <div class="viewcode-block" id="Kata"><a class="viewcode-back" href="../../../../ckanext.kata.commands.html#ckanext.kata.commands.kata.Kata">[docs]</a><span class="k">class</span> <span class="nc">Kata</span><span class="p">(</span><span class="n">CkanCommand</span><span class="p">):</span>
@@ -76,9 +74,8 @@
     <span class="n">max_args</span> <span class="o">=</span> <span class="mi">6</span>
     <span class="n">min_args</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">Kata</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Kata</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Kata.command"><a class="viewcode-back" href="../../../../ckanext.kata.commands.html#ckanext.kata.commands.kata.Kata.command">[docs]</a>    <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_load_config</span><span class="p">()</span>
@@ -94,6 +91,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">harvest_sources</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s">&#39;send_request_emails&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_emails</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s">&#39;sphinx&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sphinx</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">print</span> <span class="s">&#39;Command </span><span class="si">%s</span><span class="s"> not recognized&#39;</span> <span class="o">%</span> <span class="n">cmd</span>
 </div>
@@ -136,7 +135,13 @@
                     <span class="n">req</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
                     <span class="n">model</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">me</span><span class="p">:</span>
-                <span class="k">print</span> <span class="s">&quot;Couldn&#39;t send email! Details:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">me</span></div></div>
+                <span class="k">print</span> <span class="s">&quot;Couldn&#39;t send email! Details:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">me</span>
+</div>
+<div class="viewcode-block" id="Kata.sphinx"><a class="viewcode-back" href="../../../../ckanext.kata.commands.html#ckanext.kata.commands.kata.Kata.sphinx">[docs]</a>    <span class="k">def</span> <span class="nf">sphinx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">sphinx</span>
+        <span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">load_entry_point</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">load_entry_point</span><span class="p">(</span><span class="s">&#39;Sphinx&#39;</span><span class="p">,</span> <span class="s">&#39;console_scripts&#39;</span><span class="p">,</span> <span class="s">&#39;sphinx-build&#39;</span><span class="p">)</span>
+        <span class="n">cmd</span><span class="p">([</span><span class="s">&#39;sphinx-build&#39;</span><span class="p">,</span> <span class="s">&#39;-b&#39;</span><span class="p">,</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;-d&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span></div></div>
 </pre></div>
 
           </div>
@@ -176,7 +181,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

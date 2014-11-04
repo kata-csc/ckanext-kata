@@ -56,17 +56,22 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">count</span>
-
 <span class="kn">import</span> <span class="nn">iso8601</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">urlparse</span>
+
 <span class="kn">from</span> <span class="nn">pylons.i18n</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">paste.deploy.converters</span> <span class="kn">import</span> <span class="n">asbool</span>
 
 <span class="kn">import</span> <span class="nn">ckan.lib.helpers</span> <span class="kn">as</span> <span class="nn">h</span>
 <span class="kn">from</span> <span class="nn">ckan.lib.navl.validators</span> <span class="kn">import</span> <span class="n">not_empty</span>
-<span class="kn">from</span> <span class="nn">ckan.lib.navl.dictization_functions</span> <span class="kn">import</span> <span class="n">StopOnError</span><span class="p">,</span> <span class="n">Invalid</span>
+<span class="kn">from</span> <span class="nn">ckan.lib.navl.dictization_functions</span> <span class="kn">import</span> <span class="n">StopOnError</span><span class="p">,</span> <span class="n">Invalid</span><span class="p">,</span> <span class="n">missing</span>
 <span class="kn">from</span> <span class="nn">ckan.logic.validators</span> <span class="kn">import</span> <span class="n">tag_length_validator</span><span class="p">,</span> <span class="n">url_validator</span>
-<span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">Package</span>
+<span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">Package</span><span class="p">,</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">utils</span><span class="p">,</span> <span class="n">converters</span><span class="p">,</span> <span class="n">settings</span>
+<span class="kn">import</span> <span class="nn">ckan.lib.navl.dictization_functions</span> <span class="kn">as</span> <span class="nn">df</span>
+<span class="kn">import</span> <span class="nn">ckan.new_authz</span> <span class="kn">as</span> <span class="nn">new_authz</span>
+<span class="kn">import</span> <span class="nn">ckan.logic</span> <span class="kn">as</span> <span class="nn">logic</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;ckanext.kata.validators&#39;</span><span class="p">)</span>
 
@@ -104,7 +109,7 @@
 
     <span class="n">tagname_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;[\w \-.()/#+:]*$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tagname_match</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Tag &quot;</span><span class="si">%s</span><span class="s">&quot; must be alphanumeric &#39;</span>
+        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Keyword &quot;</span><span class="si">%s</span><span class="s">&quot; must be alphanumeric &#39;</span>
                         <span class="s">&#39;characters or symbols: -_.()/#+:&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">value</span>
 
@@ -132,16 +137,6 @@
         <span class="n">tag_length_validator</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
         <span class="n">kata_tag_name_validator</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
 
-
-<span class="c"># def check_project(key, data, errors, context):</span>
-<span class="c">#     &#39;&#39;&#39;</span>
-<span class="c">#     Check if user is trying to send project data when project is disabled.</span>
-<span class="c">#     &#39;&#39;&#39;</span>
-<span class="c">#     if data[(&#39;project_name&#39;,)] or data[(&#39;project_funder&#39;,)] or\</span>
-<span class="c">#         data[(&#39;project_funding&#39;,)] or data[(&#39;project_homepage&#39;,)]:</span>
-<span class="c">#         if data[(&#39;projdis&#39;,)] != &#39;False&#39;:</span>
-<span class="c">#             errors[key].append(_(&#39;Project data received even if no project is associated.&#39;))</span>
-<span class="c">#</span>
 </div>
 <div class="viewcode-block" id="validate_kata_date"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.validate_kata_date">[docs]</a><span class="k">def</span> <span class="nf">validate_kata_date</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -183,17 +178,6 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Junk: </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
-
-</div>
-<div class="viewcode-block" id="check_last_and_update_pid"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.check_last_and_update_pid">[docs]</a><span class="k">def</span> <span class="nf">check_last_and_update_pid</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Generates a pid (URN) for package if `package.extras.version` has changed.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="p">(</span><span class="s">&#39;version&#39;</span><span class="p">,):</span>
-        <span class="n">pkg</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data</span><span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,)])</span>
-        <span class="k">if</span> <span class="n">pkg</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="n">pkg</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()[</span><span class="s">&#39;version&#39;</span><span class="p">]:</span>
-                <span class="n">data</span><span class="p">[(</span><span class="s">&#39;version_PID&#39;</span><span class="p">,)]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_pid</span><span class="p">()</span>
 
 </div>
 <div class="viewcode-block" id="validate_email"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.validate_email">[docs]</a><span class="k">def</span> <span class="nf">validate_email</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
@@ -249,15 +233,29 @@
         <span class="k">raise</span> <span class="n">StopOnError</span>
 
 </div>
+<div class="viewcode-block" id="validate_access_application_download_url"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.validate_access_application_download_url">[docs]</a><span class="k">def</span> <span class="nf">validate_access_application_download_url</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Validate the access_application_download_URL field of a dataset.</span>
+<span class="sd">    The field is used for expressing the URL at which the actual data</span>
+<span class="sd">    can be downloaded after entitlement through the access application</span>
+<span class="sd">    server has been given.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">&#39;availability&#39;</span><span class="p">,))</span> <span class="o">==</span> <span class="s">&#39;access_application&#39;</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">url_not_empty</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">StopOnError</span>
+
+</div>
 <div class="viewcode-block" id="check_direct_download_url"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.check_direct_download_url">[docs]</a><span class="k">def</span> <span class="nf">check_direct_download_url</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Validate dataset&#39;s direct download URL (`resource.url`).</span>
+<span class="sd">    Validate dataset&#39;s direct download URL.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">&#39;availability&#39;</span><span class="p">,))</span> <span class="o">==</span> <span class="s">&#39;direct_download&#39;</span><span class="p">:</span>
-        <span class="n">not_empty</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c"># data.pop(key, None)</span>
-        <span class="k">raise</span> <span class="n">StopOnError</span>
+        <span class="n">url_not_empty</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="check_access_request_url"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.check_access_request_url">[docs]</a><span class="k">def</span> <span class="nf">check_access_request_url</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
@@ -285,7 +283,7 @@
 <div class="viewcode-block" id="validate_discipline"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.validate_discipline">[docs]</a><span class="k">def</span> <span class="nf">validate_discipline</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Validate discipline</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param key: &#39;discipline&#39;</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -305,18 +303,18 @@
 <div class="viewcode-block" id="validate_spatial"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.validate_spatial">[docs]</a><span class="k">def</span> <span class="nf">validate_spatial</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Validate spatial (aka geographical) coverage</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param key: eg. &#39;geographical_coverage&#39;</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="c"># Regexp is specifically for the SUO ontology</span>
-    <span class="n">spatial_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;[\w \- </span><span class="se">\&#39;</span><span class="s">/,():.]*$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+    <span class="n">spatial_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;[\w \- </span><span class="se">\&#39;</span><span class="s">/,():.;=]*$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">val</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">spatial_match</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
             <span class="n">mismatch</span> <span class="o">=</span> <span class="s">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
                                  <span class="k">if</span> <span class="ow">not</span> <span class="n">spatial_match</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">s</span><span class="p">)])</span>
             <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Spatial coverage </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> must be alphanumeric &quot;</span>
-                            <span class="s">&quot;characters or symbols: -&#39;/,:(). &quot;</span>
+                            <span class="s">&quot;characters or symbols: -&#39;/,:().;= &quot;</span>
                             <span class="s">&quot;Mismatching strings: </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">mismatch</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c"># With ONKI component, the entire parameter might not exist</span>
@@ -336,7 +334,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MIME_REGEX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;File type (mimetype) &quot;</span><span class="si">%s</span><span class="s">&quot; must be alphanumeric &#39;</span>
                             <span class="s">&#39;characters or symbols: _-+./&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">val</span><span class="p">))</span>
-    
+
 </div>
 <div class="viewcode-block" id="validate_algorithm"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.validate_algorithm">[docs]</a><span class="k">def</span> <span class="nf">validate_algorithm</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -366,8 +364,10 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">langs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;langtitle&#39;</span> <span class="ow">and</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;lang&#39;</span><span class="p">:</span>
-            <span class="n">langs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;langtitle&#39;</span> <span class="ow">and</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;lang&#39;</span> <span class="ow">and</span> \
+                <span class="p">(</span><span class="s">&#39;langtitle&#39;</span><span class="p">,</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;value&#39;</span><span class="p">,)</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> \
+                <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">&#39;langtitle&#39;</span><span class="p">,</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;value&#39;</span><span class="p">,)))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">langs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">langs</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">langs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Duplicate titles for a language not permitted&#39;</span><span class="p">))</span>
 
@@ -390,24 +390,16 @@
 <span class="sd">    Check that compulsory agents exist.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">author_found</span> <span class="o">=</span> <span class="bp">False</span>
-    <span class="n">distributor_found</span> <span class="o">=</span> <span class="bp">False</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;agent&#39;</span> <span class="ow">and</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;role&#39;</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">roles</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s">&#39;author&#39;</span><span class="p">:</span>
             <span class="n">author_found</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s">&#39;distributor&#39;</span><span class="p">:</span>
-            <span class="n">distributor_found</span> <span class="o">=</span> <span class="bp">True</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">author_found</span> <span class="ow">and</span> <span class="n">distributor_found</span><span class="p">):</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Missing compulsory agent: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span>
-           <span class="n">settings</span><span class="o">.</span><span class="n">AGENT_ROLES</span><span class="p">[</span><span class="s">&#39;author&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">distributor_found</span> <span class="k">else</span>
-           <span class="n">settings</span><span class="o">.</span><span class="n">AGENT_ROLES</span><span class="p">[</span><span class="s">&#39;distributor&#39;</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">author_found</span><span class="p">:</span>
+        <span class="n">missing_role</span> <span class="o">=</span> <span class="s">&#39;author&#39;</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="n">missing_role</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Missing compulsory agent: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">AGENT_ROLES</span><span class="p">[</span><span class="n">missing_role</span><span class="p">]))}</span>
         <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-        <span class="c"># if (&#39;agent&#39;,) in errors:</span>
-        <span class="c">#     errors[(&#39;agent&#39;,)].append(_(error))</span>
-        <span class="c"># else:</span>
-        <span class="c">#     errors[(&#39;agent&#39;,)] = [_(error)]</span>
 
 </div>
 <div class="viewcode-block" id="check_contact"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.check_contact">[docs]</a><span class="k">def</span> <span class="nf">check_contact</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
@@ -418,7 +410,7 @@
     <span class="c"># Simplified check to see that we get at least one contact (4 compulsory fields).</span>
     <span class="c"># Further validation done in contact validators.</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">[</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Missing compulsory distributor contact&#39;</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">({</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Missing compulsory distributor information&#39;</span><span class="p">),</span> <span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;contact&#39;</span><span class="p">})</span>
 
 </div>
 <div class="viewcode-block" id="check_agent_fields"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.check_agent_fields">[docs]</a><span class="k">def</span> <span class="nf">check_agent_fields</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
@@ -440,21 +432,41 @@
     <span class="c"># import pprint</span>
     <span class="c"># pprint.pprint(data)</span>
     <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">&#39;langtitle&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="s">&#39;Missing dataset title&#39;</span>
-        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
-        <span class="c"># if (&#39;langtitle&#39;,) in errors:</span>
-        <span class="c">#     errors[(&#39;langtitle&#39;,)].append(_(error))</span>
-        <span class="c"># else:</span>
-        <span class="c">#     errors[(&#39;langtitle&#39;,)] = [_(error)]</span>
+        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;langtitle&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Missing dataset title&#39;</span><span class="p">)})</span>
 
 </div>
 <div class="viewcode-block" id="check_pids"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.check_pids">[docs]</a><span class="k">def</span> <span class="nf">check_pids</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Check that pids field exists</span>
+<span class="sd">    Check that compulsory PIDs exist. Also check that primary data PID is not modified in any way.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c"># Empty PIDs are removed in actions, so this check should do</span>
     <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">u&#39;pids&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">u&#39;id&#39;</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="s">&#39;Missing dataset PIDs&#39;</span>
-        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;pids&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Missing dataset PIDs&#39;</span><span class="p">)})</span>
+
+    <span class="n">primary_data_pid_found</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">primary_pid</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">primary_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;pids&#39;</span> <span class="ow">and</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;primary&#39;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">primary_keys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">asbool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">False</span><span class="p">)</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;type&#39;</span><span class="p">)]</span> <span class="o">==</span> <span class="s">&#39;data&#39;</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;id&#39;</span><span class="p">)]:</span>
+            <span class="n">primary_data_pid_found</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">primary_pid</span> <span class="o">=</span> <span class="n">data</span><span class="p">[(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;id&#39;</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">primary_data_pid_found</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;pids&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Missing primary data PID&quot;</span><span class="p">)})</span>
+
+    <span class="c"># Check constancy of primary data PID</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">logic</span><span class="o">.</span><span class="n">get_action</span><span class="p">(</span><span class="s">&#39;package_show&#39;</span><span class="p">)({},</span> <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[(</span><span class="s">&#39;id&#39;</span><span class="p">,)]})</span>
+        <span class="n">old_primary_pid</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pids_by_type</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">primary</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">old_primary_pid</span> <span class="ow">and</span> <span class="n">old_primary_pid</span> <span class="o">!=</span> <span class="n">primary_pid</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Invalid</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;pids&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Primary data PID can not be modified&quot;</span><span class="p">)})</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">logic</span><span class="o">.</span><span class="n">NotFound</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+        <span class="c"># New dataset, all is well</span>
+        <span class="k">pass</span>
 
 </div>
 <div class="viewcode-block" id="check_events"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.check_events">[docs]</a><span class="k">def</span> <span class="nf">check_events</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
@@ -472,8 +484,92 @@
             <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Missing value&#39;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="n">StopOnError</span></div>
-</pre></div>
+        <span class="k">raise</span> <span class="n">StopOnError</span>
+
+</div>
+<div class="viewcode-block" id="ignore_empty_data"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.ignore_empty_data">[docs]</a><span class="k">def</span> <span class="nf">ignore_empty_data</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Ignore empty data, example &#39;-&#39; or whitespace.</span>
+
+<span class="sd">    :raises ckan.lib.navl.dictization_functions.StopOnError: if ``data[key]``</span>
+<span class="sd">        is :py:data:`ckan.lib.navl.dictization_functions.missing` or ``None``</span>
+
+<span class="sd">    :returns: ``None``</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">missing</span> <span class="ow">or</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39;^\s*-{0,1}\s*$&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">StopOnError</span>
+
+</div>
+<div class="viewcode-block" id="url_not_empty"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.url_not_empty">[docs]</a><span class="k">def</span> <span class="nf">url_not_empty</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Check that the data value is non-empty and contains both a URL scheme and a hostname.</span>
+
+<span class="sd">    :raises ckan.lib.navl.dictization_functions.Invalid: if data[key] is empty, missing, or</span>
+<span class="sd">                                                         omits either URL scheme or hostname</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">missing</span><span class="p">:</span>
+        <span class="n">url_components</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">url_components</span><span class="o">.</span><span class="n">scheme</span><span class="p">,</span> <span class="n">url_components</span><span class="o">.</span><span class="n">netloc</span><span class="p">]):</span>
+            <span class="k">return</span>
+
+    <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Missing value&#39;</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="kata_owner_org_validator"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.kata_owner_org_validator">[docs]</a><span class="k">def</span> <span class="nf">kata_owner_org_validator</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Modified version of CKAN&#39;s owner_org_validator. Anyone</span>
+<span class="sd">    can add a private dataset to an organisation</span>
+
+<span class="sd">    :param key: key</span>
+<span class="sd">    :param data: data</span>
+<span class="sd">    :param errors: errors</span>
+<span class="sd">    :param context: context</span>
+<span class="sd">    :return: nothing. Raise invalid if organisation is not given or it doesn&#39;t exist</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">missing</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new_authz</span><span class="o">.</span><span class="n">check_config_permission</span><span class="p">(</span><span class="s">&#39;create_unowned_dataset&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;An organization must be supplied&#39;</span><span class="p">))</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">df</span><span class="o">.</span><span class="n">StopOnError</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;model&#39;</span><span class="p">]</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">group</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Organization does not exist&#39;</span><span class="p">))</span>
+    <span class="n">group_id</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">id</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">group_id</span>
+
+</div>
+<div class="viewcode-block" id="check_private"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.validators.check_private">[docs]</a><span class="k">def</span> <span class="nf">check_private</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Changes to owner_org_validator requires checking of private value.</span>
+
+
+<span class="sd">    :param key: key</span>
+<span class="sd">    :param data: data</span>
+<span class="sd">    :param errors: errors</span>
+<span class="sd">    :param context: context</span>
+<span class="sd">    :return: nothing. Raise invalid if not organisation editor and private == False</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">is_editor</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">==</span> <span class="s">u&#39;False&#39;</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_member_role</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">u&#39;owner_org&#39;</span><span class="p">,)),</span> <span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;admin&#39;</span><span class="p">,</span> <span class="s">&#39;editor&#39;</span><span class="p">):</span>
+                <span class="n">is_editor</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_editor</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Only organization</span><span class="se">\&#39;</span><span class="s">s editors and admins can create a public dataset&#39;</span><span class="p">))</span>
+</pre></div></div>
 
           </div>
         </div>
@@ -512,7 +608,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

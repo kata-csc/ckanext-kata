@@ -61,7 +61,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="kn">from</span> <span class="nn">ckan.lib.base</span> <span class="kn">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">c</span>
+<span class="kn">from</span> <span class="nn">ckan.lib.base</span> <span class="kn">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">_</span>
 <span class="kn">from</span> <span class="nn">ckan.common</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">ckan.lib.plugins</span> <span class="kn">import</span> <span class="n">DefaultDatasetForm</span>
 <span class="kn">from</span> <span class="nn">ckan.plugins</span> <span class="kn">import</span> <span class="p">(</span><span class="n">implements</span><span class="p">,</span>
@@ -76,30 +76,27 @@
                           <span class="n">IFacets</span><span class="p">,</span>
                           <span class="n">ITemplateHelpers</span><span class="p">,</span>
                           <span class="n">SingletonPlugin</span><span class="p">)</span>
-                              
+
 <span class="kn">from</span> <span class="nn">ckan.plugins.core</span> <span class="kn">import</span> <span class="n">unload</span>
 
 <span class="kn">from</span> <span class="nn">ckanext.kata.schemas</span> <span class="kn">import</span> <span class="n">Schemas</span>
 
 <span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">actions</span><span class="p">,</span> <span class="n">auth_functions</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">utils</span><span class="p">,</span> <span class="n">helpers</span>
 
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;ckanext.kata&#39;</span><span class="p">)</span>     <span class="c"># pylint: disable=invalid-name</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">toolkit</span>                                 <span class="c"># pylint: disable=invalid-name</span>
+<span class="kn">import</span> <span class="nn">ckanext.kata.extractor</span> <span class="kn">as</span> <span class="nn">extractor</span>
 
-<span class="c">###### Monkey patch for repoze.who ######</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;ckanext.kata&#39;</span><span class="p">)</span>
+
+<span class="c">###### MONKEY PATCH FOR REPOZE.WHO ######</span>
 <span class="c"># Enables secure setting for cookies</span>
 <span class="c"># Part of repoze.who since version 2.0a4</span>
-
 <span class="kn">from</span> <span class="nn">repoze.who.plugins.auth_tkt</span> <span class="kn">import</span> <span class="n">AuthTktCookiePlugin</span>
-
-<span class="k">def</span> <span class="nf">_now</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">_get_monkeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     
     <span class="k">if</span> <span class="n">max_age</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">max_age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_age</span><span class="p">)</span>
-        <span class="n">later</span> <span class="o">=</span> <span class="n">_now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">max_age</span><span class="p">)</span>
+        <span class="n">later</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">max_age</span><span class="p">)</span>
         <span class="c"># Wdy, DD-Mon-YY HH:MM:SS GMT</span>
         <span class="n">expires</span> <span class="o">=</span> <span class="n">later</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%a, </span><span class="si">%d</span><span class="s"> %b %Y %H:%M:%S&#39;</span><span class="p">)</span>
         <span class="c"># the Expires header is *required* at least for IE7 (IE7 does</span>
@@ -115,18 +112,15 @@
     <span class="n">cur_domain</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;HTTP_HOST&#39;</span><span class="p">,</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;SERVER_NAME&#39;</span><span class="p">))</span>
     <span class="n">wild_domain</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="n">cur_domain</span>
     <span class="n">cookies</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s">&#39;Set-Cookie&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">=&quot;</span><span class="si">%s</span><span class="s">&quot;; Path=/</span><span class="si">%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cookie_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">max_age</span><span class="p">,</span> <span class="n">secure</span><span class="p">)),</span>
-        <span class="p">(</span><span class="s">&#39;Set-Cookie&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">=&quot;</span><span class="si">%s</span><span class="s">&quot;; Path=/; Domain=</span><span class="si">%s%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cookie_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">cur_domain</span><span class="p">,</span> <span class="n">max_age</span><span class="p">,</span> <span class="n">secure</span><span class="p">)),</span>
-        <span class="p">(</span><span class="s">&#39;Set-Cookie&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">=&quot;</span><span class="si">%s</span><span class="s">&quot;; Path=/; Domain=</span><span class="si">%s%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cookie_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">wild_domain</span><span class="p">,</span> <span class="n">max_age</span><span class="p">,</span> <span class="n">secure</span><span class="p">))</span>
-        <span class="p">]</span>
+        <span class="p">(</span><span class="s">&#39;Set-Cookie&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">=&quot;</span><span class="si">%s</span><span class="s">&quot;; Path=/</span><span class="si">%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cookie_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">max_age</span><span class="p">,</span> <span class="n">secure</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;Set-Cookie&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">=&quot;</span><span class="si">%s</span><span class="s">&quot;; Path=/; Domain=</span><span class="si">%s%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cookie_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">cur_domain</span><span class="p">,</span> <span class="n">max_age</span><span class="p">,</span> <span class="n">secure</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;Set-Cookie&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">=&quot;</span><span class="si">%s</span><span class="s">&quot;; Path=/; Domain=</span><span class="si">%s%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cookie_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">wild_domain</span><span class="p">,</span> <span class="n">max_age</span><span class="p">,</span> <span class="n">secure</span><span class="p">))</span>
+    <span class="p">]</span>
     <span class="k">return</span> <span class="n">cookies</span>
 
 <span class="n">AuthTktCookiePlugin</span><span class="o">.</span><span class="n">_get_cookies</span> <span class="o">=</span> <span class="n">_get_monkeys</span>
+<span class="c">###### END OF MONKEY PATCH ######</span>
 
-<span class="c">###### End of Monkey patch ######</span>
 
 <div class="viewcode-block" id="KataPlugin"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.plugin.KataPlugin">[docs]</a><span class="k">class</span> <span class="nc">KataPlugin</span><span class="p">(</span><span class="n">SingletonPlugin</span><span class="p">,</span> <span class="n">DefaultDatasetForm</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -143,12 +137,14 @@
     <span class="n">implements</span><span class="p">(</span><span class="n">IAuthFunctions</span><span class="p">,</span> <span class="n">inherit</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">implements</span><span class="p">(</span><span class="n">IFacets</span><span class="p">,</span> <span class="n">inherit</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">implements</span><span class="p">(</span><span class="n">IRoutes</span><span class="p">,</span> <span class="n">inherit</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    
+
     <span class="n">create_package_schema</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">create_package_schema</span>
     <span class="n">create_package_schema_oai_dc</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">create_package_schema_oai_dc</span>
+    <span class="n">create_package_schema_oai_dc_ida</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">create_package_schema_oai_dc_ida</span>
     <span class="n">create_package_schema_ddi</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">create_package_schema_ddi</span>
     <span class="n">update_package_schema</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">update_package_schema</span>
     <span class="n">update_package_schema_oai_dc</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">update_package_schema_oai_dc</span>
+    <span class="n">update_package_schema_oai_dc_ida</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">update_package_schema_oai_dc_ida</span>
     <span class="n">show_package_schema</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">show_package_schema</span>
     <span class="n">tags_schema</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">tags_schema</span>
 
@@ -162,8 +158,8 @@
         <span class="c"># Full stops from harvested objects screw up the read method</span>
         <span class="c"># when using the default ckan route</span>
         <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;/dataset/{id:.*?}.{format:rdf}&#39;</span><span class="p">,</span>
-                  <span class="n">controller</span><span class="o">=</span><span class="s">&quot;ckan.controllers.package:PackageController&quot;</span><span class="p">,</span> 
-                  <span class="n">action</span><span class="o">=</span><span class="s">&#39;read&#39;</span><span class="p">)</span>
+                    <span class="n">controller</span><span class="o">=</span><span class="s">&quot;ckan.controllers.package:PackageController&quot;</span><span class="p">,</span>
+                    <span class="n">action</span><span class="o">=</span><span class="s">&#39;read&#39;</span><span class="p">)</span>
         <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;/urnexport&#39;</span><span class="p">,</span>
                     <span class="n">controller</span><span class="o">=</span><span class="n">controller</span><span class="p">,</span>
                     <span class="n">action</span><span class="o">=</span><span class="s">&#39;urnexport&#39;</span><span class="p">)</span>
@@ -211,9 +207,14 @@
         <span class="c"># map.connect(&#39;/dataset/import_xml/&#39;,</span>
         <span class="c">#             controller=&quot;ckanext.harvest.controllers.view:ViewController&quot;,</span>
         <span class="c">#             action=&quot;import_xml&quot;)</span>
+
         <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;/user/logged_in&#39;</span><span class="p">,</span>
                     <span class="n">controller</span><span class="o">=</span><span class="s">&quot;ckanext.kata.controllers:KataUserController&quot;</span><span class="p">,</span>
                     <span class="n">action</span><span class="o">=</span><span class="s">&quot;logged_in&quot;</span><span class="p">)</span>
+        <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;/user/logged_out_redirect&#39;</span><span class="p">,</span>
+                    <span class="n">controller</span><span class="o">=</span><span class="s">&quot;ckanext.kata.controllers:KataUserController&quot;</span><span class="p">,</span>
+                    <span class="n">action</span><span class="o">=</span><span class="s">&#39;logged_out_page&#39;</span><span class="p">)</span>
+
         <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;/dataset/&#39;</span><span class="p">,</span>
                     <span class="n">controller</span><span class="o">=</span><span class="s">&quot;ckanext.kata.controllers:KataPackageController&quot;</span><span class="p">,</span>
                     <span class="n">action</span><span class="o">=</span><span class="s">&quot;advanced_search&quot;</span><span class="p">)</span>
@@ -231,6 +232,13 @@
         <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;/dataset_editor_delete/{name}&#39;</span><span class="p">,</span>
                     <span class="n">controller</span><span class="o">=</span><span class="s">&quot;ckanext.kata.controllers:KataPackageController&quot;</span><span class="p">,</span>
                     <span class="n">action</span><span class="o">=</span><span class="s">&quot;dataset_editor_delete&quot;</span><span class="p">)</span>
+        <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;/storage/upload_handle&#39;</span><span class="p">,</span>
+                    <span class="n">controller</span><span class="o">=</span><span class="s">&quot;ckanext.kata.controllers:MalwareScanningStorageController&quot;</span><span class="p">,</span>
+                    <span class="n">action</span><span class="o">=</span><span class="s">&#39;upload_handle&#39;</span><span class="p">)</span>
+        <span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;add dataset with upload_xml&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;/dataset/new&#39;</span><span class="p">,</span>
+                    <span class="n">controller</span><span class="o">=</span><span class="s">&quot;ckanext.kata.controllers:KataPackageController&quot;</span><span class="p">,</span>
+                    <span class="n">action</span><span class="o">=</span><span class="s">&quot;new&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">map</span>
 </div>
 <div class="viewcode-block" id="KataPlugin.get_auth_functions"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.plugin.KataPlugin.get_auth_functions">[docs]</a>    <span class="k">def</span> <span class="nf">get_auth_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -238,60 +246,80 @@
 <span class="sd">        Returns a dict of all the authorization functions which the</span>
 <span class="sd">        implementation overrides</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;package_update&#39;</span><span class="p">:</span> <span class="n">auth_functions</span><span class="o">.</span><span class="n">is_owner</span><span class="p">,</span>
-                <span class="s">&#39;resource_update&#39;</span><span class="p">:</span> <span class="n">auth_functions</span><span class="o">.</span><span class="n">edit_resource</span><span class="p">,</span>
-                <span class="s">&#39;package_delete&#39;</span><span class="p">:</span> <span class="n">auth_functions</span><span class="o">.</span><span class="n">package_delete</span><span class="p">,</span>
-                <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s">&#39;package_delete&#39;</span><span class="p">:</span> <span class="n">auth_functions</span><span class="o">.</span><span class="n">package_delete</span><span class="p">,</span>
+            <span class="s">&#39;package_update&#39;</span><span class="p">:</span> <span class="n">auth_functions</span><span class="o">.</span><span class="n">is_owner</span><span class="p">,</span>
+            <span class="s">&#39;resource_update&#39;</span><span class="p">:</span> <span class="n">auth_functions</span><span class="o">.</span><span class="n">edit_resource</span><span class="p">,</span>
+            <span class="s">&#39;package_create&#39;</span><span class="p">:</span> <span class="n">auth_functions</span><span class="o">.</span><span class="n">package_create</span><span class="p">,</span>
+            <span class="s">&#39;package_show&#39;</span><span class="p">:</span> <span class="n">auth_functions</span><span class="o">.</span><span class="n">package_show</span><span class="p">,</span>
+        <span class="p">}</span>
 </div>
 <div class="viewcode-block" id="KataPlugin.get_actions"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.plugin.KataPlugin.get_actions">[docs]</a>    <span class="k">def</span> <span class="nf">get_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Register actions. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;package_show&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_show</span><span class="p">,</span>
-                <span class="s">&#39;package_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_create</span><span class="p">,</span>
-                <span class="s">&#39;package_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_update</span><span class="p">,</span>
-                <span class="s">&#39;package_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_delete</span><span class="p">,</span>
-                <span class="s">&#39;package_search&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_search</span><span class="p">,</span>
-                <span class="s">&#39;resource_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">resource_create</span><span class="p">,</span>
-                <span class="s">&#39;resource_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">resource_update</span><span class="p">,</span>
-                <span class="s">&#39;resource_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">resource_delete</span><span class="p">,</span>
-                <span class="s">&#39;group_list&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">group_list</span><span class="p">,</span>
-                <span class="s">&#39;group_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">group_create</span><span class="p">,</span>
-                <span class="s">&#39;group_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">group_update</span><span class="p">,</span>
-                <span class="s">&#39;group_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">group_delete</span><span class="p">,</span>
-                <span class="s">&#39;related_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">related_create</span><span class="p">,</span>
-                <span class="s">&#39;related_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">related_update</span><span class="p">,</span>
-                <span class="s">&#39;related_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">related_delete</span><span class="p">,</span>
-                <span class="s">&#39;member_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">member_create</span><span class="p">,</span>
-                <span class="s">&#39;member_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">member_delete</span><span class="p">,</span>
-                <span class="s">&#39;organization_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">organization_create</span><span class="p">,</span>
-                <span class="s">&#39;organization_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">organization_update</span><span class="p">,</span>
-                <span class="s">&#39;organization_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">organization_delete</span><span class="p">,</span>
-                <span class="s">&#39;dataset_editor_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">,</span>
-                <span class="s">&#39;dataset_editor_add&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_add</span><span class="p">,</span>
-                <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s">&#39;dataset_editor_add&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_add</span><span class="p">,</span>
+            <span class="s">&#39;dataset_editor_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">dataset_editor_delete</span><span class="p">,</span>
+            <span class="s">&#39;group_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">group_create</span><span class="p">,</span>
+            <span class="c"># &#39;group_list&#39;: actions.group_list,</span>
+            <span class="s">&#39;group_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">group_update</span><span class="p">,</span>
+            <span class="s">&#39;group_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">group_delete</span><span class="p">,</span>
+            <span class="s">&#39;member_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">member_create</span><span class="p">,</span>
+            <span class="s">&#39;member_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">member_delete</span><span class="p">,</span>
+            <span class="s">&#39;organization_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">organization_create</span><span class="p">,</span>
+            <span class="s">&#39;organization_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">organization_delete</span><span class="p">,</span>
+            <span class="s">&#39;organization_list_for_user&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">organization_list_for_user</span><span class="p">,</span>
+            <span class="s">&#39;organization_member_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">organization_member_create</span><span class="p">,</span>
+            <span class="s">&#39;organization_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">organization_update</span><span class="p">,</span>
+            <span class="s">&#39;package_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_create</span><span class="p">,</span>
+            <span class="s">&#39;package_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_delete</span><span class="p">,</span>
+            <span class="s">&#39;package_owner_org_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_owner_org_update</span><span class="p">,</span>
+            <span class="s">&#39;package_search&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_search</span><span class="p">,</span>
+            <span class="s">&#39;package_show&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_show</span><span class="p">,</span>
+            <span class="s">&#39;package_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">package_update</span><span class="p">,</span>
+            <span class="s">&#39;related_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">related_create</span><span class="p">,</span>
+            <span class="s">&#39;related_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">related_delete</span><span class="p">,</span>
+            <span class="s">&#39;related_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">related_update</span><span class="p">,</span>
+            <span class="s">&#39;resource_create&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">resource_create</span><span class="p">,</span>
+            <span class="s">&#39;resource_delete&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">resource_delete</span><span class="p">,</span>
+            <span class="s">&#39;resource_update&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="o">.</span><span class="n">resource_update</span><span class="p">,</span>
+        <span class="p">}</span>
 </div>
 <div class="viewcode-block" id="KataPlugin.get_helpers"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.plugin.KataPlugin.get_helpers">[docs]</a>    <span class="k">def</span> <span class="nf">get_helpers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Register helpers &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;get_authors&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_authors</span><span class="p">,</span>
-                <span class="s">&#39;get_contact&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_contact</span><span class="p">,</span>
-                <span class="s">&#39;get_dict_field_errors&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_dict_field_errors</span><span class="p">,</span>
-                <span class="s">&#39;get_distributor&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_distributor</span><span class="p">,</span>
-                <span class="s">&#39;get_funder&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_funder</span><span class="p">,</span>
-                <span class="s">&#39;get_funders&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_funders</span><span class="p">,</span>
-                <span class="s">&#39;get_owner&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_owner</span><span class="p">,</span>
-                <span class="s">&#39;get_package_ratings&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_package_ratings</span><span class="p">,</span>
-                <span class="s">&#39;get_package_ratings_for_data_dict&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_package_ratings_for_data_dict</span><span class="p">,</span>
-                <span class="s">&#39;has_agents_field&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">has_agents_field</span><span class="p">,</span>
-                <span class="s">&#39;has_contacts_field&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">has_contacts_field</span><span class="p">,</span>
-                <span class="s">&#39;kata_sorted_extras&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">kata_sorted_extras</span><span class="p">,</span>
-                <span class="s">&#39;reference_update&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">reference_update</span><span class="p">,</span>
-                <span class="s">&#39;resolve_agent_role&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">resolve_agent_role</span><span class="p">,</span>
-                <span class="s">&#39;get_related_urls&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_related_urls</span><span class="p">,</span>
-                <span class="s">&#39;get_rdf_extras&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_rdf_extras</span><span class="p">,</span>
-                <span class="s">&#39;get_if_url&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_if_url</span><span class="p">,</span>
-                <span class="s">&#39;string_to_list&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">string_to_list</span><span class="p">,</span>
-                <span class="s">&#39;get_first_admin&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_first_admin</span><span class="p">,</span>
-                <span class="s">&#39;get_rightscategory&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_rightscategory</span><span class="p">,</span>
-                <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s">&#39;create_loop_index&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">create_loop_index</span><span class="p">,</span>
+            <span class="s">&#39;dataset_is_valid&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">dataset_is_valid</span><span class="p">,</span>
+            <span class="s">&#39;filter_system_users&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">filter_system_users</span><span class="p">,</span>
+            <span class="s">&#39;get_authors&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_authors</span><span class="p">,</span>
+            <span class="s">&#39;get_contacts&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_contacts</span><span class="p">,</span>
+            <span class="s">&#39;get_contributors&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_contributors</span><span class="p">,</span>
+            <span class="s">&#39;get_dict_errors&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_dict_errors</span><span class="p">,</span>
+            <span class="s">&#39;get_dict_field_errors&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_dict_field_errors</span><span class="p">,</span>
+            <span class="s">&#39;get_distributor&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_distributor</span><span class="p">,</span>
+            <span class="s">&#39;get_first_admin&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_first_admin</span><span class="p">,</span>
+            <span class="s">&#39;get_funder&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_funder</span><span class="p">,</span>
+            <span class="s">&#39;get_funders&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_funders</span><span class="p">,</span>
+            <span class="s">&#39;get_if_url&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_if_url</span><span class="p">,</span>
+            <span class="s">&#39;get_owners&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_owners</span><span class="p">,</span>
+            <span class="s">&#39;get_package_ratings&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_package_ratings</span><span class="p">,</span>
+            <span class="s">&#39;get_package_ratings_for_data_dict&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_package_ratings_for_data_dict</span><span class="p">,</span>
+            <span class="s">&#39;get_pids_by_type&#39;</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pids_by_type</span><span class="p">,</span>
+            <span class="s">&#39;get_pid_types&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_pid_types</span><span class="p">,</span>
+            <span class="s">&#39;get_related_urls&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_related_urls</span><span class="p">,</span>
+            <span class="s">&#39;get_rdf_extras&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_rdf_extras</span><span class="p">,</span>
+            <span class="s">&#39;get_rightscategory&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_rightscategory</span><span class="p">,</span>
+            <span class="s">&#39;get_urn_fi_address&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_urn_fi_address</span><span class="p">,</span>
+            <span class="s">&#39;get_visibility_options&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_visibility_options</span><span class="p">,</span>
+            <span class="s">&#39;has_agents_field&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">has_agents_field</span><span class="p">,</span>
+            <span class="s">&#39;has_contacts_field&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">has_contacts_field</span><span class="p">,</span>
+            <span class="s">&#39;is_allowed_org_member_edit&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">is_allowed_org_member_edit</span><span class="p">,</span>
+            <span class="s">&#39;kata_sorted_extras&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">kata_sorted_extras</span><span class="p">,</span>
+            <span class="s">&#39;modify_error_summary&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">modify_error_summary</span><span class="p">,</span>
+            <span class="s">&#39;list_organisations&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">list_organisations</span><span class="p">,</span>
+            <span class="s">&#39;reference_update&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">reference_update</span><span class="p">,</span>
+            <span class="s">&#39;resolve_agent_role&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">resolve_agent_role</span><span class="p">,</span>
+            <span class="s">&#39;string_to_list&#39;</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">string_to_list</span><span class="p">,</span>
+        <span class="p">}</span>
 </div>
 <div class="viewcode-block" id="KataPlugin.get_dict_field_errors"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.plugin.KataPlugin.get_dict_field_errors">[docs]</a>    <span class="k">def</span> <span class="nf">get_dict_field_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Get errors correctly for fields that are represented as nested dict fields in data_dict.</span>
@@ -357,21 +385,21 @@
                 <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;author_&#39;</span><span class="p">)</span> <span class="ow">and</span>\
                 <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;organization_&#39;</span><span class="p">):</span>
                 <span class="k">continue</span>
-            
+
             <span class="k">if</span>  <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;title_&#39;</span><span class="p">)</span> <span class="ow">or</span>\
                 <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;lang_title_&#39;</span><span class="p">)</span> <span class="ow">or</span>\
                 <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;harvest_object_id&#39;</span> <span class="ow">or</span>\
                 <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;harvest_source_id&#39;</span> <span class="ow">or</span>\
                 <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;harvest_source_title&#39;</span><span class="p">:</span>
                 <span class="k">continue</span>
-            
+
             <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">for</span> <span class="n">_key</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">package_hide_extras</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">extra</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">_key</span><span class="p">):</span>
                     <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
                 <span class="k">continue</span>
-            
+
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
                 <span class="n">val</span> <span class="o">=</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">unicode</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
             <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
@@ -460,6 +488,10 @@
         <span class="sd">&quot;&quot;&quot;Return location of the main package page&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s">&#39;package/new_package_form.html&#39;</span>
 </div>
+    <span class="k">def</span> <span class="nf">_get_common_facets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_field_titles</span><span class="p">(</span><span class="n">toolkit</span><span class="o">.</span><span class="n">_</span><span class="p">)</span>
+        <span class="k">return</span>  <span class="n">OrderedDict</span><span class="p">((</span><span class="n">field</span><span class="p">,</span> <span class="n">titles</span><span class="p">[</span><span class="n">field</span><span class="p">])</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">FACETS</span><span class="p">)</span>
+
 <div class="viewcode-block" id="KataPlugin.dataset_facets"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.plugin.KataPlugin.dataset_facets">[docs]</a>    <span class="k">def</span> <span class="nf">dataset_facets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">facets_dict</span><span class="p">,</span> <span class="n">package_type</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Update the dictionary mapping facet names to facet titles.</span>
@@ -471,16 +503,12 @@
 <span class="sd">        :param package_type: eg. `dataset`</span>
 <span class="sd">        :returns: the modified facets_dict</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">titles</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_field_titles</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">_</span><span class="p">)</span>
-        <span class="n">kata_facet_titles</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">((</span><span class="n">field</span><span class="p">,</span> <span class="n">titles</span><span class="p">[</span><span class="n">field</span><span class="p">])</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">FACETS</span><span class="p">)</span>
-
-        <span class="c"># Replace the facet dictionary with Kata facets.</span>
-        <span class="c"># CKAN adds &#39;Groups&#39; and &#39;Formats&#39; there which we don&#39;t want.</span>
         <span class="c"># /harvest page has a &#39;Frequency&#39; facet which we lose also when replacing the dict here.</span>
-
-        <span class="c"># facets_dict.update(kata_facet_titles)</span>
-        <span class="n">facets_dict</span> <span class="o">=</span> <span class="n">kata_facet_titles</span>
-        <span class="k">return</span> <span class="n">facets_dict</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_common_facets</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="KataPlugin.organization_facets"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.plugin.KataPlugin.organization_facets">[docs]</a>    <span class="k">def</span> <span class="nf">organization_facets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">facets_dict</span><span class="p">,</span> <span class="n">organization_type</span><span class="p">,</span> <span class="n">package_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; See :meth:`ckan.plugins.IFacets.organization_facets`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_common_facets</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="KataPlugin.extract_search_params"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.plugin.KataPlugin.extract_search_params">[docs]</a>    <span class="k">def</span> <span class="nf">extract_search_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -653,6 +681,7 @@
         <span class="c"># Add res_mimetype to pkg_dict. Can be removed after res_mimetype is</span>
         <span class="c"># added to CKAN&#39;s index function.</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pkg_dict</span><span class="p">[</span><span class="s">&#39;data_dict&#39;</span><span class="p">])</span>
+
         <span class="n">res_mimetype</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;resources&#39;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="k">if</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;mimetype&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
@@ -660,6 +689,19 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">res_mimetype</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s">&#39;mimetype&#39;</span><span class="p">])</span>
         <span class="n">pkg_dict</span><span class="p">[</span><span class="s">&#39;res_mimetype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_mimetype</span>
+
+        <span class="c"># Extract plain text from resources and add to the data dict for indexing</span>
+        <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;resources&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">if</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;resource_type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;file&#39;</span><span class="p">,</span> <span class="s">&#39;file.upload&#39;</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_text</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s">&#39;url&#39;</span><span class="p">],</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;format&#39;</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">ioe</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ioe</span><span class="p">))</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+                <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+                    <span class="n">all_text</span> <span class="o">=</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;res_text_contents&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+                    <span class="n">all_text</span> <span class="o">+=</span> <span class="p">(</span><span class="n">text</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                    <span class="n">pkg_dict</span><span class="p">[</span><span class="s">&#39;res_text_contents&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_text</span>
 
         <span class="c"># Separate agent roles for Solr indexing</span>
 
@@ -682,13 +724,13 @@
                 <span class="n">new_items</span><span class="p">[</span><span class="s">&#39;agent_name_&#39;</span> <span class="o">+</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">agent_name</span>
                 <span class="n">new_items</span><span class="p">[</span><span class="s">&#39;agent_name_&#39;</span> <span class="o">+</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;_org&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">agent_org</span>
                 <span class="n">new_items</span><span class="p">[</span><span class="s">&#39;agent_name_&#39;</span> <span class="o">+</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">agent_id</span>
-            
+
             <span class="c"># hide sensitive data</span>
             <span class="k">if</span> <span class="n">EMAIL</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
                 <span class="n">pkg_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;&#39;</span>
 
         <span class="n">pkg_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_items</span><span class="p">)</span>
-        
+
         <span class="c"># hide sensitive data</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;extras&#39;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="k">if</span> <span class="n">EMAIL</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]):</span>
@@ -736,7 +778,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

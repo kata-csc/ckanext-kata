@@ -56,14 +56,40 @@
 
 <span class="kn">from</span> <span class="nn">pylons</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">import</span> <span class="nn">functionally</span> <span class="kn">as</span> <span class="nn">fn</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">ckan.model</span> <span class="kn">as</span> <span class="nn">model</span>
 <span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">Related</span><span class="p">,</span> <span class="n">Package</span><span class="p">,</span> <span class="n">User</span>
-<span class="kn">from</span> <span class="nn">ckan.lib.base</span> <span class="kn">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span>
+<span class="kn">from</span> <span class="nn">ckan.lib.base</span> <span class="kn">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">c</span>
 <span class="kn">from</span> <span class="nn">ckan.logic</span> <span class="kn">import</span> <span class="n">get_action</span><span class="p">,</span> <span class="n">ValidationError</span>
-<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">settings</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">ckan.lib.navl.dictization_functions</span> <span class="kn">import</span> <span class="n">validate</span>
+<span class="kn">from</span> <span class="nn">ckan.lib</span> <span class="kn">import</span> <span class="n">plugins</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata.utils</span> <span class="kn">import</span> <span class="n">get_pids_by_type</span>
+<span class="kn">from</span> <span class="nn">pylons.i18n.translation</span> <span class="kn">import</span> <span class="n">gettext_noop</span> <span class="k">as</span> <span class="n">N_</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="LoopIndex"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.LoopIndex">[docs]</a><span class="k">class</span> <span class="nc">LoopIndex</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Simple index object for Jinja2 templates. Avoids problem with Jinja2 variable scope. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; New index with value 0 &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LoopIndex</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="LoopIndex.increase"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.LoopIndex.increase">[docs]</a>    <span class="k">def</span> <span class="nf">increase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Increase index value by one and return previous value &quot;&quot;&quot;</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">current</span>
+</div>
+<div class="viewcode-block" id="LoopIndex.next"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.LoopIndex.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns next index number, but does not increase value. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+
+</div></div>
 <div class="viewcode-block" id="has_agents_field"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.has_agents_field">[docs]</a><span class="k">def</span> <span class="nf">has_agents_field</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Return true if some of the data dict&#39;s agents has attribute given in field.&#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="p">[]</span> <span class="o">!=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
@@ -215,7 +241,7 @@
 
     <span class="c"># MAX 40</span>
 
-    <span class="k">if</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">con</span><span class="p">:</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;URL&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;phone&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">con</span><span class="p">:</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;URL&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">con</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;phone&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">,</span> <span class="p">[])):</span>
         <span class="n">score</span> <span class="o">+=</span> <span class="mi">4</span>
 
     <span class="c"># MAX 44</span>
@@ -358,19 +384,29 @@
     <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;author&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
 
 </div>
-<div class="viewcode-block" id="get_contact"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_contact">[docs]</a><span class="k">def</span> <span class="nf">get_contact</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Get one contact from data_dict&#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+<div class="viewcode-block" id="get_contacts"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_contacts">[docs]</a><span class="k">def</span> <span class="nf">get_contacts</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get all contacts from data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+</div>
+<div class="viewcode-block" id="get_distributors"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_distributors">[docs]</a><span class="k">def</span> <span class="nf">get_distributors</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get a all distributors from agent field in data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;distributor&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
 
 </div>
 <div class="viewcode-block" id="get_distributor"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_distributor">[docs]</a><span class="k">def</span> <span class="nf">get_distributor</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Get a single distributor from agent field in data_dict&#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;distributor&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[])))</span>
+    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">get_distributors</span><span class="p">(</span><span class="n">data_dict</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="get_owner"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_owner">[docs]</a><span class="k">def</span> <span class="nf">get_owner</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Get a single owner from agent field in data_dict&#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;owner&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[])))</span>
+<div class="viewcode-block" id="get_contributors"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_contributors">[docs]</a><span class="k">def</span> <span class="nf">get_contributors</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get a all contributors from agent field in data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;contributor&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+
+</div>
+<div class="viewcode-block" id="get_owners"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_owners">[docs]</a><span class="k">def</span> <span class="nf">get_owners</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get a all owners from agent field in data_dict&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;owner&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
 
 </div>
 <div class="viewcode-block" id="resolve_agent_role"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.resolve_agent_role">[docs]</a><span class="k">def</span> <span class="nf">resolve_agent_role</span><span class="p">(</span><span class="n">role</span><span class="p">):</span>
@@ -387,11 +423,135 @@
 </div>
 <div class="viewcode-block" id="get_funders"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_funders">[docs]</a><span class="k">def</span> <span class="nf">get_funders</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Get all funders from agent field in data_dict&#39;&#39;&#39;</span>
-    <span class="c"># return filter(lambda x: x.get(&#39;role&#39;) == u&#39;funder&#39;, data_dict.get(&#39;agent&#39;, []))</span>
-    <span class="c"># TODO: Fix validators to not create empty agents</span>
-    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;funder&#39;</span> <span class="ow">and</span> \
-                            <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;URL&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;organisation&#39;</span><span class="p">)),</span>
-                  <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span></div>
+    <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_funders</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="is_allowed_org_member_edit"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.is_allowed_org_member_edit">[docs]</a><span class="k">def</span> <span class="nf">is_allowed_org_member_edit</span><span class="p">(</span><span class="n">group_dict</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target_id</span><span class="p">,</span> <span class="n">target_role</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Check if the user is allowed to edit an organization member</span>
+
+<span class="sd">    :param group_dict: dict of all groups (organizations)</span>
+<span class="sd">    :param user_id: user id</span>
+<span class="sd">    :param target_id: target user id</span>
+<span class="sd">    :param target_role: target&#39;s current role</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">group_dict</span><span class="p">[</span><span class="s">&#39;users&#39;</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="n">user_role</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;capacity&#39;</span><span class="p">)</span>
+    <span class="n">target_role</span> <span class="o">=</span> <span class="n">target_role</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sysadmin&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">for</span> <span class="n">possible_role</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;admin&#39;</span><span class="p">,</span> <span class="s">&#39;editor&#39;</span><span class="p">,</span> <span class="s">&#39;member&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">ORGANIZATION_MEMBER_PERMISSIONS</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">user_role</span><span class="p">,</span> <span class="n">target_role</span><span class="p">,</span> <span class="n">possible_role</span><span class="p">,</span> <span class="n">user_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="get_visibility_options"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_visibility_options">[docs]</a><span class="k">def</span> <span class="nf">get_visibility_options</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get possible dataset visibility options for this group and user</span>
+<span class="sd">    For now the specs say that everyone can add public/private datasets</span>
+<span class="sd">    to any organisation, thus the simple list to return</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="p">[(</span><span class="bp">True</span><span class="p">,</span> <span class="n">N_</span><span class="p">(</span><span class="s">&#39;Unpublished&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="n">N_</span><span class="p">(</span><span class="s">&#39;Published&#39;</span><span class="p">))]</span>
+
+</div>
+<div class="viewcode-block" id="create_loop_index"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.create_loop_index">[docs]</a><span class="k">def</span> <span class="nf">create_loop_index</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Create and return LoopIndex object &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">LoopIndex</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="get_dict_errors"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_dict_errors">[docs]</a><span class="k">def</span> <span class="nf">get_dict_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">errors_key</span><span class="p">,</span> <span class="n">field_key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return dictionary error values from errors dictionary &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">errors_key</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="o">==</span> <span class="n">field_key</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="s">&quot;Internal error&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="dataset_is_valid"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.dataset_is_valid">[docs]</a><span class="k">def</span> <span class="nf">dataset_is_valid</span><span class="p">(</span><span class="n">package</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Check if given dataset is valid. Uses schema from plugin.</span>
+<span class="sd">        Return true if dataset is valid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">package_plugin</span> <span class="o">=</span> <span class="n">plugins</span><span class="o">.</span><span class="n">lookup_package_plugin</span><span class="p">(</span><span class="n">package</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">])</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="n">package_plugin</span><span class="o">.</span><span class="n">update_package_schema</span><span class="p">(),</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s">&#39;session&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">Session</span><span class="p">,</span> <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">user</span><span class="p">})</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="filter_system_users"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.filter_system_users">[docs]</a><span class="k">def</span> <span class="nf">filter_system_users</span><span class="p">(</span><span class="n">users</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filters system users (&#39;logged_in&#39;, &#39;visitor&#39;, &#39;harvest&#39;) out of the</span>
+<span class="sd">    given iterable of users.</span>
+<span class="sd">    :param users: an iterable of user data dicts</span>
+<span class="sd">    :return: a new list with system users omitted</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">system_user_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;logged_in&#39;</span><span class="p">,</span> <span class="s">&#39;visitor&#39;</span><span class="p">,</span> <span class="s">&#39;harvest&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">system_user_names</span><span class="p">,</span> <span class="n">users</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="is_urn"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.is_urn">[docs]</a><span class="k">def</span> <span class="nf">is_urn</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;urn:nbn:fi:&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="get_urn_fi_address"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_urn_fi_address">[docs]</a><span class="k">def</span> <span class="nf">get_urn_fi_address</span><span class="p">(</span><span class="n">package</span><span class="p">):</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">get_pids_by_type</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="n">package</span><span class="p">,</span> <span class="n">primary</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_urn</span><span class="p">(</span><span class="n">pid</span><span class="p">):</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ckanext.kata.urn_address_template&#39;</span><span class="p">,</span> <span class="s">&quot;http://urn.fi/</span><span class="si">%(pid)s</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span> <span class="o">%</span> <span class="p">{</span><span class="s">&#39;pid&#39;</span><span class="p">:</span> <span class="n">pid</span><span class="p">}</span>
+    <span class="k">return</span> <span class="s">&#39;&#39;</span>
+</div>
+<div class="viewcode-block" id="modify_error_summary"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.modify_error_summary">[docs]</a><span class="k">def</span> <span class="nf">modify_error_summary</span><span class="p">(</span><span class="n">errors</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Modifies error_summary keys. Otherwise the keys in database are printed, which leads</span>
+<span class="sd">    to strings like &quot;Lantitle&quot;, &quot;Tag string&quot; etc.</span>
+
+<span class="sd">    :param errors: error summary dictionary</span>
+<span class="sd">    :return: errors: keys as specified in settings.ERRORS are changed</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c"># Saw an effect, where Tag string and Tags both were displayed and they were identical</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Tag string&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span> <span class="ow">and</span> <span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Tags&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span> <span class="ow">and</span> \
+       <span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Tag string&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Tags&#39;</span><span class="p">)):</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;Tag string&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">ERRORS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">errors</span> <span class="ow">and</span> <span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">errors</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">errors</span>
+
+</div>
+<div class="viewcode-block" id="get_pid_types"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.get_pid_types">[docs]</a><span class="k">def</span> <span class="nf">get_pid_types</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :return: PID types defined in settings.py</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">settings</span><span class="o">.</span><span class="n">PID_TYPES</span>
+</div>
+<div class="viewcode-block" id="list_organisations"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.helpers.list_organisations">[docs]</a><span class="k">def</span> <span class="nf">list_organisations</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Lists all organisations</span>
+
+<span class="sd">    :param user: the logged in user</span>
+<span class="sd">    :return: organization_list</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">context</span><span class="p">[</span><span class="s">&#39;model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">data_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;all_fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="n">get_action</span><span class="p">(</span><span class="s">&#39;organization_list&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -431,7 +591,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

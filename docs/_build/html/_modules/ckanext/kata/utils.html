@@ -50,26 +50,33 @@
             
   <h1>Source code for ckanext.kata.utils</h1><div class="highlight"><pre>
 <span class="c"># coding=utf-8</span>
+<span class="c">#</span>
+<span class="c"># pylint: disable=E1101, E1103, invalid-name</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Utility functions for Kata.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">urllib2</span>
 <span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">functionally</span> <span class="kn">as</span> <span class="nn">fn</span>
+<span class="kn">from</span> <span class="nn">paste.deploy.converters</span> <span class="kn">import</span> <span class="n">asbool</span>
 
 <span class="kn">from</span> <span class="nn">pylons</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql</span> <span class="kn">import</span> <span class="n">select</span><span class="p">,</span> <span class="n">and_</span>
+<span class="kn">from</span> <span class="nn">ckan</span> <span class="kn">import</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span>
+<span class="kn">from</span> <span class="nn">ckan.lib.dictization</span> <span class="kn">import</span> <span class="n">model_dictize</span>
 
 <span class="kn">from</span> <span class="nn">ckan.lib.email_notifications</span> <span class="kn">import</span> <span class="n">send_notification</span>
-<span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Package</span>
+<span class="kn">from</span> <span class="nn">ckan.logic</span> <span class="kn">import</span> <span class="n">get_action</span>
+<span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Package</span><span class="p">,</span> <span class="n">Session</span><span class="p">,</span> <span class="n">PackageExtra</span>
 <span class="kn">from</span> <span class="nn">ckan.lib</span> <span class="kn">import</span> <span class="n">helpers</span> <span class="k">as</span> <span class="n">h</span>
-<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">settings</span><span class="p">,</span> <span class="n">helpers</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">settings</span>
 
 
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>     <span class="c"># pylint: disable=invalid-name</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="generate_pid"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.generate_pid">[docs]</a><span class="k">def</span> <span class="nf">generate_pid</span><span class="p">():</span>
@@ -119,23 +126,6 @@
     <span class="n">send_notification</span><span class="p">(</span><span class="n">admin_dict</span><span class="p">,</span> <span class="n">email_dict</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="convert_to_text"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.convert_to_text">[docs]</a><span class="k">def</span> <span class="nf">convert_to_text</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">resource_fname</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert structured documents to pure text.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fmt</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="n">prog</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">TEXTOUTPUTPROGS</span><span class="p">[</span><span class="n">fmt</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">fmt</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">TEXTOUTPUTPROGS</span> <span class="ow">and</span>
-                                             <span class="n">fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;txt&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">prog</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">convert_fd</span><span class="p">,</span> <span class="n">convert_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">()</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">resource_fname</span><span class="p">)</span>
-        <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">prog</span><span class="p">,</span> <span class="n">resource_fname</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">convert_fd</span><span class="p">)</span>
-        <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">convert_fd</span><span class="p">,</span> <span class="n">convert_path</span>
-
-</div>
 <div class="viewcode-block" id="label_list_yso"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.label_list_yso">[docs]</a><span class="k">def</span> <span class="nf">label_list_yso</span><span class="p">(</span><span class="n">tag_url</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes tag keyword URL and fetches the labels that link to it.</span>
@@ -180,6 +170,12 @@
                 <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
                 <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
                     <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">xml</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">&#39;/rdf:RDF/skos:Concept/skos:prefLabel&#39;</span><span class="p">,</span> <span class="n">namespaces</span><span class="o">=</span><span class="n">_tagspaces</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">labels</span>
 
 </div>
@@ -272,10 +268,6 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c"># pkg_dict1[&#39;maintainer_email&#39;] = _(&#39;Not authorized to see this information&#39;)</span>
-    <span class="c"># pkg_dict1[&#39;project_funding&#39;] = _(&#39;Not authorized to see this information&#39;)</span>
-    <span class="n">funders</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_funders</span><span class="p">(</span><span class="n">pkg_dict1</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">fun</span> <span class="ow">in</span> <span class="n">funders</span><span class="p">:</span>
-        <span class="n">fun</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;fundingid&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="n">pkg_dict1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">,</span> <span class="p">[]):</span>
         <span class="c"># String &#39;hidden&#39; triggers the link for contact form, see metadata_info.html</span>
@@ -308,7 +300,204 @@
 <span class="sd">    :returns: dict of titles for fields</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">_FIELD_TITLES</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">_FIELD_TITLES</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+</div>
+<div class="viewcode-block" id="get_member_role"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_member_role">[docs]</a><span class="k">def</span> <span class="nf">get_member_role</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the user&#39;s role for this group.</span>
+
+<span class="sd">    :param group_id: Group ID</span>
+<span class="sd">    :param user_id: User ID</span>
+<span class="sd">    :rtype: list of strings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Member</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Member</span><span class="o">.</span><span class="n">group_id</span> <span class="o">==</span> <span class="n">group_id</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Member</span><span class="o">.</span><span class="n">table_name</span> <span class="o">==</span> <span class="s">&#39;user&#39;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Member</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s">&#39;active&#39;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Member</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">([</span><span class="n">group</span><span class="o">.</span><span class="n">capacity</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()])</span>
+
+</div>
+<div class="viewcode-block" id="get_funders"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_funders">[docs]</a><span class="k">def</span> <span class="nf">get_funders</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get all funders from agent field in data_dict</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">u&#39;funder&#39;</span> <span class="ow">and</span>
+                  <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;URL&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;organisation&#39;</span><span class="p">)),</span>
+                  <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+
+</div>
+<div class="viewcode-block" id="datapid_to_name"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.datapid_to_name">[docs]</a><span class="k">def</span> <span class="nf">datapid_to_name</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Wrap re.sub to convert a data-PID to package.name</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="o">*</span><span class="n">settings</span><span class="o">.</span><span class="n">DATAPID_TO_NAME_REGEXES</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">string</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_pids_by_type"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_pids_by_type">[docs]</a><span class="k">def</span> <span class="nf">get_pids_by_type</span><span class="p">(</span><span class="n">pid_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">primary</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">use_package_id</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get all of package PIDs of certain type</span>
+
+<span class="sd">    :param use_package_id: Set to True to get package.id as primary metadata PID</span>
+<span class="sd">    :param primary: True to get only primary pids, or False to get all pids without primary=&#39;True&#39;, use None to get all pids.</span>
+<span class="sd">    :param pid_type: PID type to get (data, metadata, version)</span>
+<span class="sd">    :param data_dict:</span>
+<span class="sd">    :rtype: list of dicts</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">use_package_id</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pid_type</span> <span class="o">==</span> <span class="s">&#39;metadata&#39;</span> <span class="ow">and</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">):</span>
+            <span class="n">extra</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;primary&#39;</span><span class="p">:</span> <span class="s">u&#39;True&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">pid_type</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]}]</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pids&#39;</span><span class="p">,</span> <span class="p">{})</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">pid_type</span> <span class="ow">and</span>
+            <span class="p">(</span><span class="n">primary</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">asbool</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;primary&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="n">primary</span><span class="p">)]</span> <span class="o">+</span> <span class="n">extra</span>
+</div>
+<div class="viewcode-block" id="get_primary_pid"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_primary_pid">[docs]</a><span class="k">def</span> <span class="nf">get_primary_pid</span><span class="p">(</span><span class="n">pid_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_package_id</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns the primary PID of the given type for a package.</span>
+<span class="sd">    This is a convenience function that returns the first primary PID</span>
+<span class="sd">    returned by get_pids_by_type.</span>
+
+<span class="sd">    If no primary PID can be found, this function returns None.</span>
+
+<span class="sd">    :param pid_type: PID type to get (data, metadata, version)</span>
+<span class="sd">    :param data_dict:</span>
+<span class="sd">    :param use_package_id: Set to True to get package.id as primary metadata PID</span>
+<span class="sd">    :return: the primary PID of the given type</span>
+<span class="sd">    :rtype: str or unicode</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">pids</span> <span class="o">=</span> <span class="n">get_pids_by_type</span><span class="p">(</span><span class="n">pid_type</span><span class="o">=</span><span class="n">pid_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">=</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">primary</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_package_id</span><span class="o">=</span><span class="n">use_package_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pids</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pids</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="get_package_id_by_pid"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_package_id_by_pid">[docs]</a><span class="k">def</span> <span class="nf">get_package_id_by_pid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">pid_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Find pid by id and type.</span>
+
+<span class="sd">    :param pid: id of the pid</span>
+<span class="sd">    :param pid_type: type of the pid</span>
+<span class="sd">    :return: id of the package</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="s">&#39;package_id&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">pid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;pids_%_id&#39;</span><span class="p">),</span>
+                                                     <span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s">&#39;active&#39;</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">package_id</span> <span class="ow">in</span> <span class="p">[(</span><span class="s">&#39;pids_</span><span class="si">%s</span><span class="s">_type&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="n">package_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">package_id</span> <span class="ow">in</span> <span class="n">Session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)]:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span><span class="s">&#39;package_id&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">pid_type</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">key</span><span class="p">,</span>
+                                                  <span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s">&#39;active&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">package_id</span> <span class="o">==</span> <span class="n">package_id</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">package_id</span><span class="p">,</span> <span class="ow">in</span> <span class="n">Session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">package_id</span>
+
+    <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="get_package_id_by_data_pids"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_package_id_by_data_pids">[docs]</a><span class="k">def</span> <span class="nf">get_package_id_by_data_pids</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Try if the provided data PIDs match exactly one dataset.</span>
+
+<span class="sd">    :param data_dict:</span>
+<span class="sd">    :return: Package id or None if not found.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">data_pids</span> <span class="o">=</span> <span class="n">get_pids_by_type</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_pids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="n">pid_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">data_pids</span><span class="p">]</span>
+
+    <span class="c"># Get package ID&#39;s with matching PIDS</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">package_id</span><span class="o">.</span><span class="n">distinct</span><span class="p">())</span><span class="o">.</span>\
+        <span class="nb">filter</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span><span class="n">pid_list</span><span class="p">))</span>
+    <span class="n">pkg_ids</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pkg_ids</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>              <span class="c"># Nothing to do if we get many or zero datasets</span>
+
+    <span class="c"># Get extras with the received package ID&#39;s</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="s">&#39;state&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">and_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">package_id</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span><span class="n">pkg_ids</span><span class="p">),</span> <span class="n">model</span><span class="o">.</span><span class="n">PackageExtra</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;pids_%&#39;</span><span class="p">)))</span>
+
+    <span class="n">extras</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+    <span class="c"># Dictize the results</span>
+    <span class="n">extras</span> <span class="o">=</span> <span class="n">model_dictize</span><span class="o">.</span><span class="n">extras_list_dictize</span><span class="p">(</span><span class="n">extras</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">PackageExtra</span><span class="p">})</span>
+
+    <span class="c"># Check that matching PIDS are type &#39;data&#39;.</span>
+    <span class="k">for</span> <span class="n">extra</span> <span class="ow">in</span> <span class="n">extras</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">extra</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">)</span>   <span class="c"># eg. (&#39;pids&#39;, &#39;0&#39;, &#39;id&#39;)</span>
+
+        <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;id&#39;</span> <span class="ow">and</span> <span class="n">extra</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">pid_list</span><span class="p">:</span>
+            <span class="n">type_key</span> <span class="o">=</span> <span class="s">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">type_key</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="n">extras</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">None</span>      <span class="c"># Found a hit with wrong type of PID</span>
+
+    <span class="k">return</span> <span class="n">pkg_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    <span class="c"># No problems found, so use this</span>
+
+</div>
+<div class="viewcode-block" id="get_package_contact_email"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_package_contact_email">[docs]</a><span class="k">def</span> <span class="nf">get_package_contact_email</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the email address of the first distributor/publisher contact</span>
+<span class="sd">    for the dataset with the given id.</span>
+
+<span class="sd">    :param pkg_id: the id of the package whose contact information to get</span>
+<span class="sd">    :return: the email address</span>
+<span class="sd">    :rtype: str or unicode</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">package</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+
+    <span class="c"># Todo: this should take the specific contact address, not just the first contact email</span>
+    <span class="n">email_tuples</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;contact_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;_email&#39;</span><span class="p">),</span> <span class="n">package</span><span class="o">.</span><span class="n">extras</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+
+    <span class="n">emails</span> <span class="o">=</span> <span class="p">[</span><span class="n">con</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="n">email_tuples</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">emails</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_package_contact_name"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_package_contact_name">[docs]</a><span class="k">def</span> <span class="nf">get_package_contact_name</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the name of the first distributor/publisher contact</span>
+<span class="sd">    for the dataset with the given id.</span>
+
+<span class="sd">    :param pkg_id: the id of the package whose contact information to get</span>
+<span class="sd">    :return: the name of the contact</span>
+<span class="sd">    :rtype: str or unicode</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">package</span> <span class="o">=</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+
+    <span class="c"># Todo: this should take the specific contact name, not just the first contact name</span>
+    <span class="n">name_tuples</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;contact_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;_name&#39;</span><span class="p">),</span> <span class="n">package</span><span class="o">.</span><span class="n">extras</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">con</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="n">name_tuples</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">fn</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="is_ida_pid"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.is_ida_pid">[docs]</a><span class="k">def</span> <span class="nf">is_ida_pid</span><span class="p">(</span><span class="n">pid</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Determines whether the given string seems to be a PID from the IDA namespace.</span>
+<span class="sd">    :param pid:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">ida_pid_regex</span> <span class="o">=</span> <span class="s">&#39;urn:nbn:fi:csc-ida\w+&#39;</span>
+    <span class="k">return</span> <span class="n">pid</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">ida_pid_regex</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="generate_ida_download_url"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.generate_ida_download_url">[docs]</a><span class="k">def</span> <span class="nf">generate_ida_download_url</span><span class="p">(</span><span class="n">data_pid</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns an assumed download URL for the data based on the given data PID.</span>
+
+<span class="sd">    TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters</span>
+
+<span class="sd">    :param data_pid: the PID of the IDA dataset (should be actual data PID, not metadata PID)</span>
+<span class="sd">    :return: a download URL for an IDA dataset</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">ida_download_url_template</span> <span class="o">=</span> <span class="s">&quot;http://avaa.tdata.fi/remsida/dl.jsp?pid={p}&quot;</span>
+    <span class="k">return</span> <span class="n">ida_download_url_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">data_pid</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -348,7 +537,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>
