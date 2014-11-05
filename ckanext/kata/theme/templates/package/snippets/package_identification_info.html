@@ -33,10 +33,10 @@
               <div class="input-prepend">
                 {% if h.asbool(pid.get('primary')) %}
                   <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
-                  <input style="width: 82px;" id="pids_dummy" name="pids_dummy" type="text" disabled value="{{ _('Primary data') }}">
+                  <input style="width: 90px;" id="pids_dummy" name="pids_dummy" type="text" disabled value="{{ _('Data, primary') }}">
                   <input type="hidden" id="pids__{{ index }}__type" name="pids__{{ index }}__type" value="data" />
                 {% else %}
-                  <select name="pids__{{ index }}__type" class="pid pids_{{ index }}" {# 'readonly' if pid.id #} style="width: 96px;">
+                  <select name="pids__{{ index }}__type" class="pid pids_{{ index }}" {# 'readonly' if pid.id #} style="width: 104px;">
                     {% for pid_type in h.get_pid_types() %}
                       <option value="{{ pid_type }}" {{ 'selected' if pid.type == pid_type else '' }}>{{ _(pid_type | capitalize) }}</option>
                     {% endfor %}
