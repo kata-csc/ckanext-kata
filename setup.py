@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-version = '1.1.0'
+version = '1.2'
 
 setup(
     name='ckanext-kata',
@@ -24,12 +24,15 @@ setup(
         'rdflib >= 3.4.0',
         'iso8601 >= 0.1.5',
         'pexpect >= 3.3',
-        'pycountry >= 1.8',
         'pyClamd >= 0.3.10',
         'lxml >= 3.1.2',
         'functionally >= 1.0.1',
         'python-magic >= 0.4.6',
         'python-ldap >= 2.4.16',
+        'iso639',
+    ],
+    dependency_links=[
+        "git+https://github.com/kata-csc/iso639.git#egg=iso639"
     ],
     package_data={
         'ckan': [

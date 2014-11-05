@@ -402,17 +402,13 @@ def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
     return False
 
 
-def get_visibility_options(group_id, user_id):
+def get_visibility_options():
     '''
     Get possible dataset visibility options for this group and user
     For now the specs say that everyone can add public/private datasets
     to any organisation, thus the simple list to return
     '''
 
-    # if (not group_id or not user_id) or utils.get_member_role(group_id, user_id) == 'member':
-    #     return [(True, 'Private')]
-    # else:
-    #     return [(True, 'Private'), (False, 'Public')]
     return [(True, N_('Unpublished')), (False, N_('Published'))]
 
 
