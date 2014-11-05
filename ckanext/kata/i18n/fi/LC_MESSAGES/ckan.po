@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-11-05 11:34+0000\n"
+"POT-Creation-Date: 2014-11-05 14:05+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -17,60 +17,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:80 ckanext/kata/converters.py:174
+#: ckanext/kata/actions.py:82 ckanext/kata/converters.py:174
 msgid "Paper"
 msgstr "Artikkeli"
 
-#: ckanext/kata/actions.py:182
+#: ckanext/kata/actions.py:184
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
 
-#: ckanext/kata/actions.py:478 ckanext/kata/actions.py:542
+#: ckanext/kata/actions.py:480 ckanext/kata/actions.py:544
 msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
-#: ckanext/kata/actions.py:489 ckanext/kata/actions.py:553
-#: ckanext/kata/controllers.py:650 ckanext/kata/controllers.py:728
+#: ckanext/kata/actions.py:491 ckanext/kata/actions.py:555
+#: ckanext/kata/controllers.py:654 ckanext/kata/controllers.py:732
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
-#: ckanext/kata/actions.py:494 ckanext/kata/actions.py:498
-#: ckanext/kata/controllers.py:725
+#: ckanext/kata/actions.py:496 ckanext/kata/actions.py:500
+#: ckanext/kata/controllers.py:729
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
 
-#: ckanext/kata/actions.py:502
+#: ckanext/kata/actions.py:504
 msgid "No such user and role combination"
 msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
 
-#: ckanext/kata/actions.py:509
+#: ckanext/kata/actions.py:511
 msgid "Built-in users can not be removed"
 msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
 
-#: ckanext/kata/actions.py:513
+#: ckanext/kata/actions.py:515
 msgid "You can not remove yourself"
 msgstr "Et voi poistaa itseäsi"
 
-#: ckanext/kata/actions.py:518
+#: ckanext/kata/actions.py:520
 #, python-format
 msgid "User removed from role %s"
 msgstr "Käyttäjä poistettu roolista %s"
 
-#: ckanext/kata/actions.py:564
+#: ckanext/kata/actions.py:566
 #, python-format
 msgid "User already has %s rights"
 msgstr "Käyttäjällä on jo %s -oikeudet"
 
-#: ckanext/kata/actions.py:570
+#: ckanext/kata/actions.py:572
 msgid "User added"
 msgstr "Käyttäjä lisätty"
 
-#: ckanext/kata/actions.py:619
+#: ckanext/kata/actions.py:621
 msgid "You don't have permission to modify roles for this organization."
 msgstr "Sinulla ei ole oikeuksia muokata tämän organisaation rooleja."
 
-#: ckanext/kata/actions.py:653
+#: ckanext/kata/actions.py:655
 msgid "You don't have permission to remove this user."
 msgstr "Sinulla ei ole oikeuksia poistaa tätä käyttäjää."
 
@@ -89,99 +89,100 @@ msgstr "Käyttäjällä %s ei ole oikeuksia poistaa tietoaineistoa %s"
 msgid "User %s not authorized to add a dataset"
 msgstr "Käyttäjällä %s ei ole oikeuksia lisätä tietoaineistoa"
 
-#: ckanext/kata/controllers.py:257 ckanext/kata/controllers.py:309
-#: ckanext/kata/controllers.py:488
+#: ckanext/kata/controllers.py:259 ckanext/kata/controllers.py:311
+#: ckanext/kata/controllers.py:484 ckanext/kata/controllers.py:512
 msgid "Dataset not found"
 msgstr "Tietoaineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:266
+#: ckanext/kata/controllers.py:268
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of "
 "package %s"
 msgstr "Pyyntö muokkausoikeuksien saamiseksi lähetetään aineiston %s ylläpitäjälle"
 
-#: ckanext/kata/controllers.py:269 ckanext/kata/controllers.py:318
+#: ckanext/kata/controllers.py:271 ckanext/kata/controllers.py:320
 msgid "A request is already pending"
 msgstr "Pyyntö on jo jonossa"
 
-#: ckanext/kata/controllers.py:272 ckanext/kata/controllers.py:321
+#: ckanext/kata/controllers.py:274 ckanext/kata/controllers.py:323
 msgid "You must be logged in to request edit access"
 msgstr "Sinun täytyy olla kirjautunut pyytääksesi muokkausoikeuksia"
 
-#: ckanext/kata/controllers.py:292
+#: ckanext/kata/controllers.py:294
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr "Käyttäjällä %s on nyt muokkausoikeudet tietoaineistoon %s"
 
-#: ckanext/kata/controllers.py:297
+#: ckanext/kata/controllers.py:299
 msgid "No such request found!"
 msgstr "Pyyntöä ei löytynyt."
 
-#: ckanext/kata/controllers.py:367 ckanext/kata/controllers.py:684
+#: ckanext/kata/controllers.py:416 ckanext/kata/controllers.py:461
+#: ckanext/kata/controllers.py:688
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
-#: ckanext/kata/controllers.py:369
-msgid "No message"
-msgstr "Viesti on tyhjä"
-
-#: ckanext/kata/controllers.py:371 ckanext/kata/controllers.py:420
-#: ckanext/kata/controllers.py:468 ckanext/kata/controllers.py:500
-#: ckanext/kata/controllers.py:522
-msgid "Please login"
-msgstr "Kirjaudu sisään"
-
-#: ckanext/kata/controllers.py:497 ckanext/kata/controllers.py:519
+#: ckanext/kata/controllers.py:418 ckanext/kata/controllers.py:463
+#: ckanext/kata/controllers.py:495 ckanext/kata/controllers.py:523
 msgid "Already contacted"
 msgstr "Olet ottanut yhteyttä jo aiemmin"
 
-#: ckanext/kata/controllers.py:559
+#: ckanext/kata/controllers.py:420 ckanext/kata/controllers.py:465
+msgid "No message"
+msgstr "Viesti on tyhjä"
+
+#: ckanext/kata/controllers.py:422 ckanext/kata/controllers.py:467
+#: ckanext/kata/controllers.py:498 ckanext/kata/controllers.py:526
+msgid "Please login"
+msgstr "Kirjaudu sisään"
+
+#: ckanext/kata/controllers.py:563
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:561
+#: ckanext/kata/controllers.py:565
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr " (Tai jos käytät OpenID:tä, sitä ei ole liitetty käyttäjätiliisi.)"
 
-#: ckanext/kata/controllers.py:573
+#: ckanext/kata/controllers.py:577
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:625
+#: ckanext/kata/controllers.py:629
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:647
+#: ckanext/kata/controllers.py:651
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
-#: ckanext/kata/controllers.py:667
+#: ckanext/kata/controllers.py:671
 msgid "Feature disabled"
 msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:669 ckanext/kata/validators.py:137
+#: ckanext/kata/controllers.py:673 ckanext/kata/validators.py:137
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
-#: ckanext/kata/controllers.py:689
+#: ckanext/kata/controllers.py:693
 msgid "Bad Captcha. Please try again."
 msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
-#: ckanext/kata/controllers.py:784
+#: ckanext/kata/controllers.py:788
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:809
+#: ckanext/kata/controllers.py:813
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:814
+#: ckanext/kata/controllers.py:818
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:818
+#: ckanext/kata/controllers.py:822
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
@@ -216,7 +217,7 @@ msgstr "Julkaisematon"
 msgid "Published"
 msgstr "Julkaistu"
 
-#: ckanext/kata/settings.py:53 ckanext/kata/theme/templates/kata/help.html:303
+#: ckanext/kata/settings.py:54 ckanext/kata/theme/templates/kata/help.html:303
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:22
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:27
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:62
@@ -224,54 +225,54 @@ msgstr "Julkaistu"
 msgid "Author"
 msgstr "Tekijä"
 
-#: ckanext/kata/settings.py:54
+#: ckanext/kata/settings.py:55
 msgid "Contributor"
 msgstr "Avustaja"
 
-#: ckanext/kata/settings.py:55
+#: ckanext/kata/settings.py:56
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:13
 msgid "Distributor"
 msgstr "Jakelija"
 
-#: ckanext/kata/settings.py:56 ckanext/kata/theme/templates/kata/help.html:294
+#: ckanext/kata/settings.py:57 ckanext/kata/theme/templates/kata/help.html:294
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:90
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:84
 msgid "Funder"
 msgstr "Rahoittaja"
 
-#: ckanext/kata/settings.py:57 ckanext/kata/theme/templates/kata/help.html:299
+#: ckanext/kata/settings.py:58 ckanext/kata/theme/templates/kata/help.html:299
 msgid "Owner"
 msgstr "Omistaja"
 
-#: ckanext/kata/settings.py:58
+#: ckanext/kata/settings.py:59
 msgid "Producer"
 msgstr "Tuottaja"
 
-#: ckanext/kata/settings.py:196
+#: ckanext/kata/settings.py:197
 msgid "Go to API"
 msgstr "Siirry ohjelmointirajapintaan"
 
-#: ckanext/kata/settings.py:197
+#: ckanext/kata/settings.py:198
 msgid "Go to Application"
 msgstr "Siirry sovellukseen"
 
-#: ckanext/kata/settings.py:198
+#: ckanext/kata/settings.py:199
 msgid "Go to Idea"
 msgstr "Siirry ideaan"
 
-#: ckanext/kata/settings.py:199
+#: ckanext/kata/settings.py:200
 msgid "Go to News Article"
 msgstr "Siirry uutisartikkeliin"
 
-#: ckanext/kata/settings.py:200
+#: ckanext/kata/settings.py:201
 msgid "Go to Paper"
 msgstr "Siirry artikkeliin"
 
-#: ckanext/kata/settings.py:201
+#: ckanext/kata/settings.py:202
 msgid "Go to Post"
 msgstr "Siirry kirjoitukseen"
 
-#: ckanext/kata/settings.py:202
+#: ckanext/kata/settings.py:203
 msgid "Go to Visualization"
 msgstr "Siirry visualisointiin"
 
@@ -375,7 +376,7 @@ msgstr "Primääri datan tunniste puuttuu"
 
 #: ckanext/kata/validators.py:414
 msgid "Primary data PID can not be modified"
-msgstr "Ensisijaista datan tunnistetta ei voi muutta"
+msgstr "Ensisijaista datan tunnistetta ei voi muuttaa"
 
 #: ckanext/kata/validators.py:432 ckanext/kata/validators.py:468
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
@@ -521,7 +522,7 @@ msgstr "Tietoa Etsimestä"
 msgid "Tietosuojaseloste / Privacy Policy"
 msgstr ""
 
-#: ckanext/kata/theme/templates/contact/contact_form.html:3
+#: ckanext/kata/theme/templates/contact/contact_form.html:4
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:3
 #: ckanext/kata/theme/templates/datamining/read.html:7
 #: ckanext/kata/theme/templates/group/read_base.html:17
@@ -533,20 +534,25 @@ msgstr ""
 msgid "Datasets"
 msgstr "Tietoaineistot"
 
-#: ckanext/kata/theme/templates/contact/contact_form.html:5
+#: ckanext/kata/theme/templates/contact/contact_form.html:6
 msgid "Contact"
 msgstr "Yhteydenotto"
 
-#: ckanext/kata/theme/templates/contact/contact_form.html:9
+#: ckanext/kata/theme/templates/contact/contact_form.html:10
 msgid "Contact distributor"
 msgstr "Ota yhteyttä jakelijaan"
 
-#: ckanext/kata/theme/templates/contact/contact_form.html:15
+#: ckanext/kata/theme/templates/contact/contact_form.html:18
 #: ckanext/kata/theme/templates/contact/dataset_request_form.html:6
+msgid "Recipient"
+msgstr "Vastaanottaja"
+
+#: ckanext/kata/theme/templates/contact/contact_form.html:26
+#: ckanext/kata/theme/templates/contact/dataset_request_form.html:14
 msgid "Message"
 msgstr "Viesti"
 
-#: ckanext/kata/theme/templates/contact/contact_form.html:18
+#: ckanext/kata/theme/templates/contact/contact_form.html:29
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:19
 #: ckanext/kata/theme/templates/package/package_rights.html:88
 msgid "Send"
@@ -2199,13 +2205,13 @@ msgid "Organization"
 msgstr "Organisaatio"
 
 #: ckanext/kata/theme/templates/kata/help.html:308
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:262
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:265
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Algorithm"
 msgstr "Algoritmi"
 
 #: ckanext/kata/theme/templates/kata/help.html:310
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:258
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:261
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Checksum"
 msgstr "Tarkistussumma"
@@ -4863,72 +4869,72 @@ msgstr "Jakelijat"
 msgid "E-Mail"
 msgstr "Sähköposti"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:167
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:170
 msgid "Send a message"
 msgstr "Lähetä viesti"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:181
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:184
 msgid "Identification information"
 msgstr "Tunnistetiedot"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:183
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:186
 msgid "Last modification time of data"
 msgstr "Datan viimeisin muokkausaika"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:186
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:189
 msgid "Last modified"
 msgstr "Viimeksi muokattu"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:191
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:194
 msgid "Permanent identifiers"
 msgstr "Pysyvät tunnisteet"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:194
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:197
 msgid "Primary metadata identifier"
 msgstr "Ensisijainen metadatan tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:198
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:201
 msgid "Primary data identifier"
 msgstr "Ensisijainen datan tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:212
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:215
 msgid "Additional information on dataset"
 msgstr "Lisätietoja tietoaineistosta"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:216
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:219
 msgid "Geographical areas covered"
 msgstr "Maantieteellinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:222
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:225
 msgid "Period of time covered"
 msgstr "Ajallinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:223
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:226
 msgid " to "
 msgstr " - "
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:228
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:231
 msgid "Publications based on this data"
 msgstr "Dataan perustuvat julkaisut"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:234
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:237
 msgid "Dataset belongs to collection/series"
 msgstr "Tietoaineisto kuuluu kokoelmaan/sarjaan"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:240
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:243
 msgid "Other related datasets"
 msgstr "Muut liittyvät tietoaineistot"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:246
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:249
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:34
 msgid "Discipline/branch of science"
 msgstr "Tieteenala"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:252
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:255
 msgid "File format"
 msgstr "Tiedoston muoto"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:271
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:274
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr "Tietoaineiston elinkaaren tapahtumat:"
@@ -6094,7 +6100,4 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
-
-#~ msgid "Primary data"
-#~ msgstr "Ensisij. data"
 
