@@ -501,3 +501,13 @@ def list_organisations(user):
     data_dict = dict()
     data_dict['all_fields'] = True
     return get_action('organization_list')(context, data_dict)
+
+def get_contacts_for_package(pkg_id):
+    '''
+    Returns a list of contact information dicts.
+    :param pkg_id:  id of the package for which to get contact information
+    :return:
+    :rtype: list of dicts
+    '''
+
+    return utils.get_package_contacts(pkg_id)

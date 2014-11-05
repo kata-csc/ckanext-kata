@@ -236,6 +236,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'filter_system_users': helpers.filter_system_users,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
+            'get_contacts_for_package': helpers.get_contacts_for_package,
             'get_contributors': helpers.get_contributors,
             'get_dict_errors': helpers.get_dict_errors,
             'get_dict_field_errors': helpers.get_dict_field_errors,

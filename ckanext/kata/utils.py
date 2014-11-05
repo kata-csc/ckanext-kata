@@ -424,6 +424,7 @@ def get_package_contacts(pkg_id):
             contact[u'index'] = index
             contact[type] = value
 
+            # use the id of the email address field as the id for the whole contact
             if type == 'email':
                 contact[u'id'] = extra['id']
 
