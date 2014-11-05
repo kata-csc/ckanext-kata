@@ -322,6 +322,29 @@ def get_primary_pid(pid_type, data_dict, use_package_id=False):
     else:
         return None
 
+def get_primary_data_pid_from_package(package):
+    '''
+    Returns the primary data PID for a _package_.
+
+    :param package: dataset to query
+    :type package: model.Package
+    :return: the primary data PID
+    :rtype: str or unicode
+    '''
+
+    pid_id = u'pids_{idx}_id'
+    pid_type = u'pids_{idx}_type'
+    pids = [(k, v) for k, v in package.extras.iteritems() if k.startswith('pids')]
+    primary_pid = None
+    for key, value in pids:
+        if 'primary' in key and value == u'True':  # Note string type!
+            idx = key.split('_')[1]
+            if package.extras[pid_type.format(idx=idx)] == 'data':
+                primary_pid = package.extras[pid_id.format(idx=idx)]
+
+    return primary_pid
+
+
 def get_package_id_by_pid(pid, pid_type):
     """ Find pid by id and type.
 
