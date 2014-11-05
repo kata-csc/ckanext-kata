@@ -1,12 +1,11 @@
-# pylint: disable=unused-argument
-
+# coding=utf8
 """
 Functions to convert dataset form fields from or to db fields.
 """
 import json
 from iso639 import languages
 
-from pylons import h
+from ckan.lib import helpers as h
 
 import re
 import logging

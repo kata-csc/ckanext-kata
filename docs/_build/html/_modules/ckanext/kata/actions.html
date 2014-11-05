@@ -70,21 +70,28 @@
 <span class="kn">from</span> <span class="nn">ckan.lib.search</span> <span class="kn">import</span> <span class="n">index_for</span><span class="p">,</span> <span class="n">rebuild</span>
 <span class="kn">from</span> <span class="nn">ckan.lib.navl.validators</span> <span class="kn">import</span> <span class="n">ignore_missing</span><span class="p">,</span> <span class="n">ignore</span><span class="p">,</span> <span class="n">not_empty</span>
 <span class="kn">from</span> <span class="nn">ckan.logic.validators</span> <span class="kn">import</span> <span class="n">url_validator</span>
-<span class="kn">from</span> <span class="nn">ckan.logic</span> <span class="kn">import</span> <span class="n">check_access</span><span class="p">,</span> <span class="n">NotAuthorized</span><span class="p">,</span> <span class="n">side_effect_free</span><span class="p">,</span> <span class="n">ValidationError</span>
-<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">ckan.logic</span> <span class="kn">import</span> <span class="n">check_access</span><span class="p">,</span> <span class="n">NotAuthorized</span><span class="p">,</span> <span class="n">side_effect_free</span><span class="p">,</span> <span class="n">NotFound</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata</span> <span class="kn">import</span> <span class="n">utils</span><span class="p">,</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">ckan.logic</span> <span class="kn">import</span> <span class="n">get_action</span>
+<span class="kn">import</span> <span class="nn">ckan.new_authz</span>
+<span class="kn">from</span> <span class="nn">ckanext.kata.schemas</span> <span class="kn">import</span> <span class="n">Schemas</span>
+
+
 <span class="n">_get_or_bust</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">get_or_bust</span>
 <span class="n">_authz</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">authz</span>
 
-
-
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>     <span class="c"># pylint: disable=invalid-name</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 <span class="n">TITLE_MATCH</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^(title_)?\d?$&#39;</span><span class="p">)</span>
 
+
 <span class="nd">@side_effect_free</span>
 <div class="viewcode-block" id="package_show"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.package_show">[docs]</a><span class="k">def</span> <span class="nf">package_show</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Return the metadata of a dataset (package) and its resources.</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the metadata of a dataset (package) and its resources.</span>
+
+<span class="sd">    Called before showing the dataset in some interface (browser, API),</span>
+<span class="sd">    or when adding package to Solr index (no validation / conversions then).</span>
 
 <span class="sd">    :param id: the id or name of the dataset</span>
 <span class="sd">    :type id: string</span>
@@ -92,8 +99,12 @@
 <span class="sd">    :rtype: dictionary</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="c"># Called before showing the dataset in some interface (browser, API),</span>
-    <span class="c"># or when adding package to Solr index (no validation / conversions then).</span>
+    <span class="k">if</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;harvest&#39;</span><span class="p">:</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">harvest_source_show_package_schema</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">):</span>
+        <span class="c"># Get package by data PIDs</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_package_id_by_data_pids</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
 
     <span class="n">pkg_dict1</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">package_show</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
     <span class="n">pkg_dict1</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">resource_to_dataset</span><span class="p">(</span><span class="n">pkg_dict1</span><span class="p">)</span>
@@ -133,10 +144,81 @@
     <span class="k">return</span> <span class="n">pkg_dict1</span>
 
 </div>
+<span class="k">def</span> <span class="nf">_handle_pids</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Do some PID modifications to data_dict</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;pids&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">:</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Clean up empty PIDs</span>
+        <span class="n">non_empty</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">pid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">):</span>
+                <span class="n">non_empty</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">non_empty</span>
+
+    <span class="k">if</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;generate_version_pid&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;on&#39;</span><span class="p">:</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_pid</span><span class="p">(),</span>
+                               <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;version&#39;</span><span class="p">,</span>
+                               <span class="s">&#39;provider&#39;</span><span class="p">:</span> <span class="s">&#39;Etsin&#39;</span><span class="p">,</span>
+                               <span class="p">}]</span>
+
+    <span class="c"># If no primary data PID, generate one if this is a new dataset</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pids_by_type</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">primary</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;model&quot;</span><span class="p">]</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;session&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">):</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>  <span class="c"># id contains name !</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">return</span>  <span class="c"># Existing dataset, don&#39;t generate new data PID</span>
+
+        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_pid</span><span class="p">(),</span>
+                                     <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;data&#39;</span><span class="p">,</span>
+                                     <span class="s">&#39;primary&#39;</span><span class="p">:</span> <span class="s">&#39;True&#39;</span><span class="p">,</span>
+                                     <span class="s">&#39;provider&#39;</span><span class="p">:</span> <span class="s">&#39;Etsin&#39;</span><span class="p">,</span>
+                                     <span class="p">})</span>
+
+
+<span class="k">def</span> <span class="nf">_add_ida_download_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generate a download URL for actual data if no download URL has been specified,</span>
+<span class="sd">    an access application is to be used for availability,</span>
+<span class="sd">    and the dataset appears to be from IDA.</span>
+
+<span class="sd">    TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">availability</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;availability&#39;</span><span class="p">)</span>
+    <span class="n">create_new_form</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;access_application_new_form&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">availability</span> <span class="o">==</span> <span class="s">&#39;access_application&#39;</span> <span class="ow">and</span> <span class="n">create_new_form</span> <span class="ow">in</span> <span class="p">[</span><span class="s">u&#39;True&#39;</span><span class="p">,</span> <span class="s">u&#39;on&#39;</span><span class="p">]:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Dataset wants a new access application&quot;</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;access_application_download_URL&#39;</span><span class="p">)</span>
+
+        <span class="n">data_pid</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_primary_pid</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data_pid</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Checking for dataset IDAiness through data PID: {p}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">data_pid</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">is_ida_pid</span><span class="p">(</span><span class="n">data_pid</span><span class="p">):</span>
+                    <span class="n">new_url</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_ida_download_url</span><span class="p">(</span><span class="n">data_pid</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Adding download URL for IDA dataset: {u}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">new_url</span><span class="p">))</span>
+                    <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;access_application_download_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_url</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Failed to get primary data PID for dataset&quot;</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="package_create"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.package_create">[docs]</a><span class="k">def</span> <span class="nf">package_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a new dataset.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Extends ckan&#39;s similar method to instantly reindex the SOLR index, </span>
 <span class="sd">    so that this newly added package emerges in search results instantly instead of </span>
 <span class="sd">    during the next timed reindexing.</span>
@@ -150,57 +232,24 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;harvest&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">sysadmin</span><span class="p">:</span>
             <span class="n">ckan</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">abort</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Unauthorized to add a harvest source&#39;</span><span class="p">))</span>
-            
+
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Tried to check the package type, but it wasn&#39;t present!&quot;</span><span class="p">)</span>
         <span class="c"># TODO: JUHO: Dubious to let pass without checking user.sysadmin</span>
         <span class="k">pass</span>
-    <span class="c"># Remove ONKI generated parameters for tidiness</span>
-    <span class="c"># They won&#39;t exist when adding via API</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">removable</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;field-tags&#39;</span><span class="p">,</span> <span class="s">&#39;tag_string_tmp&#39;</span><span class="p">,</span> <span class="s">&#39;field-tags_langs&#39;</span><span class="p">,</span>
-                     <span class="s">&#39;geographic_coverage_field_langs&#39;</span><span class="p">,</span> <span class="s">&#39;geographic_coverage_field&#39;</span><span class="p">,</span>
-                     <span class="s">&#39;geographic_coverage_tmp&#39;</span><span class="p">,</span>
-                     <span class="s">&#39;discipline_field_langs&#39;</span><span class="p">,</span> <span class="s">&#39;discipline_field&#39;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">removable</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="k">pass</span>
 
     <span class="n">data_dict</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dataset_to_resource</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
 
-    <span class="c"># Get version PID (or generate a new one?)</span>
-    <span class="n">new_version_pid</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;new_version_pid&#39;</span><span class="p">)</span>
+    <span class="n">_handle_pids</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">new_version_pid</span> <span class="ow">and</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;generate_version_pid&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;on&#39;</span><span class="p">:</span>
-        <span class="n">new_version_pid</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_pid</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">new_version_pid</span><span class="p">:</span>
-        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pids&#39;</span><span class="p">,</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">new_version_pid</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;version&#39;</span><span class="p">,</span> <span class="s">&#39;provider&#39;</span><span class="p">:</span> <span class="s">&#39;kata&#39;</span><span class="p">}]</span>
-
-    <span class="c"># Add current user as a distributor if not already present.</span>
-    <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;agent&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">:</span>
-            <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="n">user_name</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">display_name</span>
-        <span class="n">distributor_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;agent&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;role&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;distributor&#39;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">user_name</span> <span class="ow">in</span> <span class="n">distributor_names</span><span class="p">:</span>
-            <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;agent&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">user_name</span><span class="p">,</span> <span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="s">&#39;distributor&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
-            <span class="p">)</span>
+    <span class="n">_add_ida_download_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;harvest&#39;</span><span class="p">:</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">harvest_source_create_package_schema</span><span class="p">()</span>
 
     <span class="n">pkg_dict1</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">package_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
 
     <span class="c"># Logging for production use</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">log_str</span> <span class="o">=</span> <span class="s">&#39;[&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
-        <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39;]&#39;</span> <span class="o">+</span> <span class="s">&#39; Package created &#39;</span> <span class="o">+</span> <span class="s">&#39;by: &#39;</span> <span class="o">+</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
-        <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; target: &#39;</span> <span class="o">+</span> <span class="n">pkg_dict1</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_str</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">pass</span>
+    <span class="n">_log_action</span><span class="p">(</span><span class="s">&#39;Package&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">],</span> <span class="n">pkg_dict1</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s">&#39;ignore_auth&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;validate&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
                <span class="s">&#39;extras_as_string&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
@@ -225,41 +274,22 @@
 
 <span class="sd">    :rtype: dictionary</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="c"># Remove ONKI generated parameters for tidiness</span>
-    <span class="c"># They won&#39;t exist when adding via API</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">removable</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;field-tags&#39;</span><span class="p">,</span> <span class="s">&#39;tag_string_tmp&#39;</span><span class="p">,</span> <span class="s">&#39;field-tags_langs&#39;</span><span class="p">,</span>
-                     <span class="s">&#39;geographic_coverage_field_langs&#39;</span><span class="p">,</span> <span class="s">&#39;geographic_coverage_field&#39;</span><span class="p">,</span>
-                     <span class="s">&#39;discipline_field_langs&#39;</span><span class="p">,</span> <span class="s">&#39;discipline_field&#39;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">removable</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="k">pass</span>
-
     <span class="c"># Get all resources here since we get only &#39;dataset&#39; resources from WUI.</span>
-    <span class="n">temp_context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s">&#39;ignore_auth&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;validate&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="n">package_context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s">&#39;ignore_auth&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;validate&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
                     <span class="s">&#39;extras_as_string&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
-    <span class="n">temp_pkg_dict</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">package_show</span><span class="p">(</span><span class="n">temp_context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+    <span class="n">package_data</span> <span class="o">=</span> <span class="n">package_show</span><span class="p">(</span><span class="n">package_context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+    <span class="c"># package_data = ckan.logic.action.get.package_show(package_context, data_dict)</span>
 
-    <span class="n">old_resources</span> <span class="o">=</span> <span class="n">temp_pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;resources&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">old_resources</span> <span class="o">=</span> <span class="n">package_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;resources&#39;</span><span class="p">,</span> <span class="p">[])</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;resources&#39;</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">:</span>
         <span class="c"># When this is reached, we are updating a dataset, not creating a new resource</span>
         <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;resources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">old_resources</span>
         <span class="n">data_dict</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dataset_to_resource</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
 
-    <span class="c"># Get all PIDs (except for package.id and package.name) from database and add new relevant PIDS there</span>
-    <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pids&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">_handle_pids</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
 
-    <span class="n">new_version_pid</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;new_version_pid&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">new_version_pid</span> <span class="ow">and</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;generate_version_pid&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;on&#39;</span><span class="p">:</span>
-        <span class="n">new_version_pid</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">generate_pid</span><span class="p">()</span>
-        
-    <span class="k">if</span> <span class="n">new_version_pid</span><span class="p">:</span>
-        <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;pids&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">new_version_pid</span><span class="p">,</span>
-                              <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;version&#39;</span><span class="p">,</span>
-                              <span class="s">&#39;provider&#39;</span><span class="p">:</span> <span class="s">&#39;kata&#39;</span><span class="p">,</span>
-                              <span class="p">}]</span>
+    <span class="n">_add_ida_download_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
 
     <span class="c"># # Check if data version has changed and if so, generate a new version_PID</span>
     <span class="c"># if not data_dict[&#39;version&#39;] == temp_pkg_dict[&#39;version&#39;]:</span>
@@ -287,16 +317,13 @@
     <span class="c"># if data_dict[&#39;name&#39;].startswith(&#39;FSD&#39;):</span>
     <span class="c">#     context[&#39;schema&#39;] = schemas.update_package_schema_ddi()</span>
 
+    <span class="k">if</span> <span class="n">package_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;harvest&#39;</span><span class="p">:</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Schemas</span><span class="o">.</span><span class="n">harvest_source_update_package_schema</span><span class="p">()</span>
+
     <span class="n">pkg_dict1</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">package_update</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
 
     <span class="c"># Logging for production use</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">log_str</span> <span class="o">=</span> <span class="s">&#39;[&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
-        <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39;]&#39;</span> <span class="o">+</span> <span class="s">&#39; Package updated &#39;</span> <span class="o">+</span> <span class="s">&#39;by: &#39;</span> <span class="o">+</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
-        <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; target: &#39;</span> <span class="o">+</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_str</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">pass</span>
+    <span class="n">_log_action</span><span class="p">(</span><span class="s">&#39;Package&#39;</span><span class="p">,</span> <span class="s">&#39;update&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">],</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s">&#39;ignore_auth&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;validate&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
                <span class="s">&#39;extras_as_string&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
@@ -310,7 +337,7 @@
 <div class="viewcode-block" id="package_delete"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.package_delete">[docs]</a><span class="k">def</span> <span class="nf">package_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Deletes a package</span>
-<span class="sd">    </span>
+
 <span class="sd">    Extends ckan&#39;s similar method to instantly re-index the SOLR index. </span>
 <span class="sd">    Otherwise the changes would only be added during a re-index (a rebuild of search index,</span>
 <span class="sd">    to be specific).</span>
@@ -322,40 +349,34 @@
 
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="c"># Logging for production use</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">log_str</span> <span class="o">=</span> <span class="s">&#39;[&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
-        <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39;]&#39;</span> <span class="o">+</span> <span class="s">&#39; Package deleted &#39;</span> <span class="o">+</span> <span class="s">&#39;by: &#39;</span> <span class="o">+</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
-        <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; target: &#39;</span> <span class="o">+</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_str</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">pass</span>
+    <span class="n">_log_action</span><span class="p">(</span><span class="s">&#39;Package&#39;</span><span class="p">,</span> <span class="s">&#39;delete&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">],</span> <span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
 
     <span class="n">index</span> <span class="o">=</span> <span class="n">index_for</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">)</span>
     <span class="n">index</span><span class="o">.</span><span class="n">remove_dict</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">package_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ret</span>
 
-<span class="c"># Log should show who did what and when</span></div>
-<span class="k">def</span> <span class="nf">_decorate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">actiontype</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+</div>
+<span class="k">def</span> <span class="nf">_log_action</span><span class="p">(</span><span class="n">target_type</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">who</span><span class="p">,</span> <span class="n">target_id</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">log_str</span> <span class="o">=</span> <span class="s">&#39;[ &#39;</span> <span class="o">+</span> <span class="n">target_type</span> <span class="o">+</span> <span class="s">&#39; ] [ &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; ] &#39;</span> <span class="o">+</span> <span class="n">target_type</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="n">action</span> <span class="o">+</span> <span class="s">&#39;d by: &#39;</span> <span class="o">+</span> <span class="n">who</span>
+        <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; target: &#39;</span> <span class="o">+</span> <span class="n">target_id</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_str</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Debug failed! Action not logged&#39;</span><span class="p">)</span>
+
+
+<span class="c"># Log should show who did what and when</span>
+<span class="k">def</span> <span class="nf">_decorate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">target_type</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">log_str</span> <span class="o">=</span> <span class="s">&#39;[ &#39;</span> <span class="o">+</span> <span class="n">actiontype</span> <span class="o">+</span> <span class="s">&#39; ] [ &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">action</span> <span class="ow">is</span> <span class="s">&#39;delete&#39;</span><span class="p">:</span>
             <span class="c"># log id before we delete the data</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; ] &#39;</span> <span class="o">+</span> <span class="n">actiontype</span> <span class="o">+</span> <span class="s">&#39; deleted by: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
-                <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; target: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_str</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Debug failed! Action not logged&#39;</span><span class="p">)</span>
+            <span class="n">_log_action</span><span class="p">(</span><span class="n">target_type</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;user&#39;</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
 
         <span class="n">ret</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">action</span> <span class="ow">is</span> <span class="s">&#39;create&#39;</span> <span class="ow">or</span> <span class="n">action</span> <span class="ow">is</span> <span class="s">&#39;update&#39;</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; ] &#39;</span> <span class="o">+</span> <span class="n">actiontype</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="n">action</span> <span class="o">+</span> <span class="s">&#39;d by: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
-                <span class="n">log_str</span> <span class="o">+=</span> <span class="s">&#39; target: &#39;</span> <span class="o">+</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_str</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Debug failed! Action not logged&#39;</span><span class="p">)</span>
+            <span class="n">_log_action</span><span class="p">(</span><span class="n">target_type</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;user&#39;</span><span class="p">],</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">ret</span>
 
@@ -366,11 +387,11 @@
 <span class="n">resource_update</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">resource_update</span><span class="p">,</span> <span class="s">&#39;resource&#39;</span><span class="p">,</span> <span class="s">&#39;update&#39;</span><span class="p">)</span>
 <span class="n">resource_delete</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">resource_delete</span><span class="p">,</span> <span class="s">&#39;resource&#39;</span><span class="p">,</span> <span class="s">&#39;delete&#39;</span><span class="p">)</span>
 <span class="n">related_delete</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">related_delete</span><span class="p">,</span> <span class="s">&#39;related&#39;</span><span class="p">,</span> <span class="s">&#39;delete&#39;</span><span class="p">)</span>
-<span class="n">member_create</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">member_create</span><span class="p">,</span> <span class="s">&#39;member&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">)</span>
-<span class="n">member_delete</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">member_delete</span><span class="p">,</span> <span class="s">&#39;member&#39;</span><span class="p">,</span> <span class="s">&#39;delete&#39;</span><span class="p">)</span>
+<span class="c"># member_create = _decorate(ckan.logic.action.create.member_create, &#39;member&#39;, &#39;create&#39;)</span>
+<span class="c"># member_delete = _decorate(ckan.logic.action.delete.member_delete, &#39;member&#39;, &#39;delete&#39;)</span>
 <span class="n">group_create</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">group_create</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">)</span>
 <span class="n">group_update</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">group_update</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;update&#39;</span><span class="p">)</span>
-<span class="c"># group_list = _decorate(ckan.logic.action.get.group_list, &#39;group&#39;, &#39;list&#39;)</span>
+<span class="n">group_list</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">group_list</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;list&#39;</span><span class="p">)</span>
 <span class="n">group_delete</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">group_delete</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;delete&#39;</span><span class="p">)</span>
 <span class="n">organization_create</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">organization_create</span><span class="p">,</span> <span class="s">&#39;organization&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">)</span>
 <span class="n">organization_update</span> <span class="o">=</span> <span class="n">_decorate</span><span class="p">(</span><span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">organization_update</span><span class="p">,</span> <span class="s">&#39;organization&#39;</span><span class="p">,</span> <span class="s">&#39;update&#39;</span><span class="p">)</span>
@@ -399,15 +420,15 @@
 
     <span class="k">return</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">package_search</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
 
-</div>
-<div class="viewcode-block" id="group_list"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.group_list">[docs]</a><span class="k">def</span> <span class="nf">group_list</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Return a list of the names of the site&#39;s groups.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="s">&quot;for_view&quot;</span> <span class="ow">in</span> <span class="n">context</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">group_list</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+<span class="c"># def group_list(context, data_dict):</span>
+<span class="c">#     &#39;&#39;&#39;</span>
+<span class="c">#     Return a list of the names of the site&#39;s groups.</span>
+<span class="c">#     &#39;&#39;&#39;</span>
+<span class="c">#     if not &quot;for_view&quot; in context:</span>
+<span class="c">#         return []</span>
+<span class="c">#     else:</span>
+<span class="c">#         return ckan.logic.action.get.group_list(context, data_dict)</span>
 
 </div>
 <div class="viewcode-block" id="related_create"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.related_create">[docs]</a><span class="k">def</span> <span class="nf">related_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
@@ -485,6 +506,7 @@
         <span class="k">pass</span>
 
     <span class="k">return</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">related_update</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
 </div>
 <div class="viewcode-block" id="dataset_editor_delete"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.dataset_editor_delete">[docs]</a><span class="k">def</span> <span class="nf">dataset_editor_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -492,12 +514,12 @@
 
 <span class="sd">    :param username: user name to delete</span>
 <span class="sd">    :type username: string</span>
-<span class="sd">    :param id: dataset id</span>
-<span class="sd">    :type id: string</span>
+<span class="sd">    :param name: dataset name or id</span>
+<span class="sd">    :type name: string</span>
 <span class="sd">    :param role: editor, admin or reader</span>
 <span class="sd">    :type role: string</span>
 
-<span class="sd">    :rtype: message dict with `success` and `msg`</span>
+<span class="sd">    :rtype: message string</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">pkg</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
@@ -506,7 +528,7 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">pkg</span> <span class="ow">and</span> <span class="n">user</span> <span class="ow">and</span> <span class="n">role</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Required information missing&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">pkg_dict</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="s">&#39;package_show&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">pkg</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
     <span class="n">pkg_dict</span><span class="p">[</span><span class="s">&#39;domain_object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
@@ -514,47 +536,54 @@
     <span class="c"># This could be simpler, as domain_object_ref is pkg.id</span>
     <span class="n">domain_object</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get_domain_object</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">domain_object_ref</span><span class="p">)</span>
 
-    <span class="c"># Todo: use check_access instead? It is not this detailed, though</span>
+    <span class="c"># These are detailed checks to inform the user of the flaw</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;User not found&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">_authz</span><span class="o">.</span><span class="n">user_has_role</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">domain_object</span><span class="p">)</span> <span class="ow">or</span>
-            <span class="n">_authz</span><span class="o">.</span><span class="n">user_has_role</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s">&#39;admin&#39;</span><span class="p">,</span> <span class="n">domain_object</span><span class="p">)</span> <span class="ow">or</span>
-            <span class="n">role</span> <span class="o">==</span> <span class="s">&#39;reader&#39;</span> <span class="ow">or</span> <span class="n">user</span><span class="o">.</span><span class="n">sysadmin</span> <span class="o">==</span> <span class="bp">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">_authz</span><span class="o">.</span><span class="n">user_has_role</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s">&#39;admin&#39;</span><span class="p">,</span> <span class="n">domain_object</span><span class="p">)</span> <span class="ow">or</span>
+             <span class="n">user</span><span class="o">.</span><span class="n">sysadmin</span><span class="p">))</span> <span class="ow">and</span> <span class="n">role</span> <span class="o">==</span> <span class="s">&#39;admin&#39;</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;No sufficient privileges to remove user from role </span><span class="si">%s</span><span class="s">.&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">role</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="k">raise</span> <span class="n">NotAuthorized</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">check_access</span><span class="p">(</span><span class="s">&#39;package_update&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;No sufficient privileges to remove user from role </span><span class="si">%s</span><span class="s">.&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">role</span>
+        <span class="k">raise</span> <span class="n">NotAuthorized</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_authz</span><span class="o">.</span><span class="n">user_has_role</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">pkg</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;No such user and role combination&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="c"># Validation error is not the correct answer here, but it does the job</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">username</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;visitor&#39;</span> <span class="ow">or</span> <span class="n">username</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;logged_in&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">username</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">model</span><span class="o">.</span><span class="n">PSEUDO_USER__VISITOR</span> <span class="ow">or</span> \
+            <span class="n">username</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">model</span><span class="o">.</span><span class="n">PSEUDO_USER__LOGGED_IN</span> <span class="ow">or</span> \
+            <span class="n">username</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;harvest&#39;</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Built-in users can not be removed&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">username</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;You can not remove yourself&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">_authz</span><span class="o">.</span><span class="n">remove_user_from_role</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">pkg</span><span class="p">)</span>
+
     <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;User removed from role </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">role</span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">msg</span>
 
 </div>
 <div class="viewcode-block" id="dataset_editor_add"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.dataset_editor_add">[docs]</a><span class="k">def</span> <span class="nf">dataset_editor_add</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Adds a user and role to dataset</span>
 
-<span class="sd">    :param name: dataset name</span>
+<span class="sd">    :param name: dataset name or id</span>
 <span class="sd">    :type name: string</span>
 <span class="sd">    :param role: admin, editor or reader</span>
 <span class="sd">    :type role: string</span>
 <span class="sd">    :param username: user to be added</span>
 <span class="sd">    :type username: string</span>
 
-<span class="sd">    :rtype: message dict with &#39;success&#39; and &#39;msg&#39;</span>
+<span class="sd">    :rtype: message string</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">pkg</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
@@ -563,7 +592,7 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">pkg</span> <span class="ow">and</span> <span class="n">user</span> <span class="ow">and</span> <span class="n">role</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Required information missing&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">pkg_dict</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="s">&#39;package_show&#39;</span><span class="p">)(</span><span class="n">context</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">pkg</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
     <span class="n">pkg_dict</span><span class="p">[</span><span class="s">&#39;domain_object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
@@ -571,30 +600,139 @@
     <span class="n">domain_object_ref</span> <span class="o">=</span> <span class="n">_get_or_bust</span><span class="p">(</span><span class="n">pkg_dict</span><span class="p">,</span> <span class="s">&#39;domain_object&#39;</span><span class="p">)</span>
     <span class="n">domain_object</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get_domain_object</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">domain_object_ref</span><span class="p">)</span>
 
-    <span class="c"># Todo: use check_access instead? It is not this detailed, though</span>
+    <span class="c"># These are detailed checks to inform the user of the flaw</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;User not found&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">_authz</span><span class="o">.</span><span class="n">user_has_role</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">domain_object</span><span class="p">)</span> <span class="ow">or</span>
-            <span class="n">_authz</span><span class="o">.</span><span class="n">user_has_role</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s">&#39;admin&#39;</span><span class="p">,</span> <span class="n">domain_object</span><span class="p">)</span> <span class="ow">or</span>
-            <span class="n">role</span> <span class="o">==</span> <span class="s">&#39;reader&#39;</span> <span class="ow">or</span> <span class="n">user</span><span class="o">.</span><span class="n">sysadmin</span> <span class="o">==</span> <span class="bp">True</span><span class="p">):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;No sufficient privileges to add a user to role </span><span class="si">%s</span><span class="s">.&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">role</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">_authz</span><span class="o">.</span><span class="n">user_has_role</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s">&#39;admin&#39;</span><span class="p">,</span> <span class="n">domain_object</span><span class="p">)</span> <span class="ow">or</span>
+             <span class="n">user</span><span class="o">.</span><span class="n">sysadmin</span><span class="p">))</span> <span class="ow">and</span> <span class="n">role</span> <span class="o">==</span> <span class="s">&#39;admin&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NotAuthorized</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">check_access</span><span class="p">(</span><span class="s">&#39;package_update&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="n">NotAuthorized</span>
 
     <span class="k">if</span> <span class="n">_authz</span><span class="o">.</span><span class="n">user_has_role</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">domain_object</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;User already has </span><span class="si">%s</span><span class="s"> rights&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">role</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
-
-    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">username</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;You can not add yourself&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">model</span><span class="o">.</span><span class="n">add_user_to_role</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">pkg</span><span class="p">)</span>
     <span class="n">model</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
     <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;User added&#39;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span></div>
+    <span class="k">return</span> <span class="n">msg</span>
+
+</div>
+<span class="nd">@side_effect_free</span>
+<div class="viewcode-block" id="organization_list_for_user"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.organization_list_for_user">[docs]</a><span class="k">def</span> <span class="nf">organization_list_for_user</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get a list organizations available for current user. Modify CKAN organization permissions before calling original</span>
+<span class="sd">    action.</span>
+
+<span class="sd">    :returns: list of dictized organizations that the user is authorized to edit</span>
+<span class="sd">    :rtype: list of dicts</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c"># NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS</span>
+    <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">ROLE_PERMISSIONS</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ROLE_PERMISSIONS</span>
+
+    <span class="k">return</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">organization_list_for_user</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="member_create"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.member_create">[docs]</a><span class="k">def</span> <span class="nf">member_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Make an object (e.g. a user, dataset or group) a member of a group.</span>
+
+<span class="sd">    Custom organization permission handling added on top of CKAN&#39;s own member_create action.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">_log_action</span><span class="p">(</span><span class="s">&#39;Member&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">],</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">))</span>
+
+    <span class="c"># NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS</span>
+    <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">ROLE_PERMISSIONS</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ROLE_PERMISSIONS</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">get_user_id_for_username</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">group_id</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">capacity</span> <span class="o">=</span> <span class="n">_get_or_bust</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;object&#39;</span><span class="p">,</span> <span class="s">&#39;object_type&#39;</span><span class="p">,</span> <span class="s">&#39;capacity&#39;</span><span class="p">])</span>
+
+    <span class="c"># get role the user has for the group</span>
+    <span class="n">user_role</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_member_role</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s">&#39;user&#39;</span><span class="p">:</span>
+        <span class="c"># get role for the target of this role change</span>
+        <span class="n">target_role</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_member_role</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">target_role</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">target_role</span> <span class="o">=</span> <span class="n">capacity</span>
+
+        <span class="k">if</span> <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">is_sysadmin</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+            <span class="c"># Sysadmin can do anything</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">ORGANIZATION_MEMBER_PERMISSIONS</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">user_role</span><span class="p">,</span> <span class="n">target_role</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">user_id</span> <span class="o">==</span> <span class="n">obj_id</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">NotAuthorized</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;You don&#39;t have permission to modify roles for this organization.&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">member_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="member_delete"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.member_delete">[docs]</a><span class="k">def</span> <span class="nf">member_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Remove an object (e.g. a user, dataset or group) from a group.</span>
+
+<span class="sd">    Custom organization permission handling added on top of CKAN&#39;s own member_create action.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">_log_action</span><span class="p">(</span><span class="s">&#39;Member&#39;</span><span class="p">,</span> <span class="s">&#39;delete&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">],</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">))</span>
+
+    <span class="c"># NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS</span>
+    <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">ROLE_PERMISSIONS</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ROLE_PERMISSIONS</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">get_user_id_for_username</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">group_id</span><span class="p">,</span> <span class="n">target_name</span><span class="p">,</span> <span class="n">obj_type</span> <span class="o">=</span> <span class="n">_get_or_bust</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;object&#39;</span><span class="p">,</span> <span class="s">&#39;object_type&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s">&#39;user&#39;</span><span class="p">:</span>
+        <span class="c"># get user&#39;s role for this group</span>
+        <span class="n">user_role</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_member_role</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+
+        <span class="n">target_id</span> <span class="o">=</span> <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">get_user_id_for_username</span><span class="p">(</span><span class="n">target_name</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="c"># get target&#39;s role for this group</span>
+        <span class="n">target_role</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_member_role</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">target_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">is_sysadmin</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+            <span class="c"># Sysadmin can do anything.</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">ORGANIZATION_MEMBER_PERMISSIONS</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">user_role</span><span class="p">,</span> <span class="n">target_role</span><span class="p">,</span> <span class="s">&#39;member&#39;</span><span class="p">,</span> <span class="n">user_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">NotAuthorized</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;You don&#39;t have permission to remove this user.&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">member_delete</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="organization_member_create"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.organization_member_create">[docs]</a><span class="k">def</span> <span class="nf">organization_member_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Wrapper for CKAN&#39;s group_member_create to modify organization permissions.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c"># NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS</span>
+    <span class="n">ckan</span><span class="o">.</span><span class="n">new_authz</span><span class="o">.</span><span class="n">ROLE_PERMISSIONS</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ROLE_PERMISSIONS</span>
+
+    <span class="k">return</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">group_member_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="package_owner_org_update"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.actions.package_owner_org_update">[docs]</a><span class="k">def</span> <span class="nf">package_owner_org_update</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Update the owning organization of a dataset</span>
+
+<span class="sd">    Used by both package_create and package_update</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">by_name</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">id</span>
+    <span class="n">org_id</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;organization_id&#39;</span><span class="p">)</span>
+
+    <span class="c"># get role the user has for the group</span>
+    <span class="n">user_role</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_member_role</span><span class="p">(</span><span class="n">org_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+
+    <span class="n">pkg</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">ckan</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">package_owner_org_update</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -634,7 +772,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

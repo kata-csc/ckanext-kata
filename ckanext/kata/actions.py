@@ -1,4 +1,3 @@
-# pylint: disable=no-member
 '''
 Kata's action overrides.
 '''

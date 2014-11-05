@@ -1,6 +1,4 @@
 # coding=utf-8
-#
-# pylint: disable=E1101, E1103, invalid-name
 """
 Utility functions for Kata.
 """
@@ -290,11 +288,10 @@ def get_pids_by_type(pid_type, data_dict, primary=None, use_package_id=False):
     Get all of package PIDs of certain type
 
     :param use_package_id: Set to True to get package.id as primary metadata PID
-    :param primary: True to get only primary pids, or False to get all pids without primary='True',
-                    use None to get all pids
+    :param primary: True to get only primary pids, or False to get all pids without primary='True', use None to get all pids.
     :param pid_type: PID type to get (data, metadata, version)
     :param data_dict:
-    :rtype : list of dicts
+    :rtype: list of dicts
     '''
     extra = []
     if use_package_id:
@@ -324,6 +321,29 @@ def get_primary_pid(pid_type, data_dict, use_package_id=False):
         return pids[0]['id']
     else:
         return None
+
+def get_primary_data_pid_from_package(package):
+    '''
+    Returns the primary data PID for a _package_.
+
+    :param package: dataset to query
+    :type package: model.Package
+    :return: the primary data PID
+    :rtype: str or unicode
+    '''
+
+    pid_id = u'pids_{idx}_id'
+    pid_type = u'pids_{idx}_type'
+    pids = [(k, v) for k, v in package.extras.iteritems() if k.startswith('pids')]
+    primary_pid = None
+    for key, value in pids:
+        if 'primary' in key and value == u'True':  # Note string type!
+            idx = key.split('_')[1]
+            if package.extras[pid_type.format(idx=idx)] == 'data':
+                primary_pid = package.extras[pid_id.format(idx=idx)]
+
+    return primary_pid
+
 
 def get_package_id_by_pid(pid, pid_type):
     """ Find pid by id and type.

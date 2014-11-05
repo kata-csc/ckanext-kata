@@ -29,10 +29,10 @@ setup(
         'functionally >= 1.0.1',
         'python-magic >= 0.4.6',
         'python-ldap >= 2.4.16',
-        'iso639',
+        'iso639 == 0.3.0',
     ],
     dependency_links=[
-        "git+https://github.com/kata-csc/iso639.git#egg=iso639"
+        "git+https://github.com/noumar/iso639.git#egg=iso639-0.3.0"
     ],
     package_data={
         'ckan': [

@@ -1,7 +1,7 @@
 import logging
 import pyclamd
 
-log = logging.getLogger(__name__)     # pylint: disable=invalid-name
+log = logging.getLogger(__name__)
 
 def scan_for_malware(stream):
     '''

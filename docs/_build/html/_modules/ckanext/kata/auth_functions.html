@@ -49,12 +49,20 @@
           <div class="body">
             
   <h1>Source code for ckanext.kata.auth_functions</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Custom authorization functions for actions.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">pylons.i18n</span> <span class="kn">import</span> <span class="n">_</span>
+
 <span class="kn">import</span> <span class="nn">ckan.new_authz</span> <span class="kn">as</span> <span class="nn">new_authz</span>
 <span class="kn">from</span> <span class="nn">ckan.logic.auth</span> <span class="kn">import</span> <span class="n">get_package_object</span><span class="p">,</span> <span class="n">update</span>
 <span class="kn">from</span> <span class="nn">ckan.model</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Package</span>
 <span class="kn">import</span> <span class="nn">ckanext.kata.settings</span> <span class="kn">as</span> <span class="nn">settings</span>
-<span class="kn">from</span> <span class="nn">pylons.i18n</span> <span class="kn">import</span> <span class="n">_</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">ckan.logic.auth</span> <span class="kn">as</span> <span class="nn">logic_auth</span>
+
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -71,7 +79,7 @@
 
 <span class="sd">    :rtype: dictionary</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    
+
     <span class="n">pkg</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">roles</span> <span class="k">if</span> <span class="n">pkg</span> <span class="k">else</span> <span class="n">Package</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">roles</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
@@ -80,8 +88,12 @@
             <span class="n">ruser</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">role</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="n">ruser</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="n">role</span><span class="o">.</span><span class="n">role</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;admin&#39;</span><span class="p">,</span> <span class="s">&#39;editor&#39;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+
+    <span class="c"># Check if the user has editor rights to this dataset through an organization</span>
+    <span class="n">package</span> <span class="o">=</span> <span class="n">get_package_object</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">new_authz</span><span class="o">.</span><span class="n">has_user_permission_for_group_or_org</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">owner_org</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="s">&#39;delete_dataset&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+
     <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
 
 </div>
@@ -117,14 +129,75 @@
     <span class="n">user</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
     <span class="n">package</span> <span class="o">=</span> <span class="n">get_package_object</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">is_owner</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)[</span><span class="s">&#39;success&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="c"># if h.check_access(&#39;package_delete&#39;, data_dict):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">authorized</span> <span class="o">=</span> <span class="n">new_authz</span><span class="o">.</span><span class="n">has_user_permission_for_group_or_org</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">owner_org</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="s">&#39;delete_dataset&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">authorized</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;User </span><span class="si">%s</span><span class="s"> not authorized to delete package </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="p">),</span><span class="n">package</span><span class="o">.</span><span class="n">id</span><span class="p">)}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;User </span><span class="si">%s</span><span class="s"> not authorized to delete package </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="p">),</span> <span class="n">package</span><span class="o">.</span><span class="n">id</span><span class="p">)}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span></div>
+
+</div>
+<div class="viewcode-block" id="package_create"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.auth_functions.package_create">[docs]</a><span class="k">def</span> <span class="nf">package_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Modified from CKAN&#39;s original check. Any logged in user can add</span>
+<span class="sd">    a dataset to any organisation.</span>
+<span class="sd">    Packages owner check is done when adding a resource.</span>
+
+<span class="sd">    :param context: context</span>
+<span class="sd">    :param data_dict: data_dict</span>
+<span class="sd">    :return: dictionary with &#39;success&#39;: True|False</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
+
+    <span class="c"># Needed in metadata supplements</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">is_owner</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">))</span>
+
+    <span class="c"># If an organization is given are we able to add a dataset to it?</span>
+    <span class="n">data_dict</span> <span class="o">=</span> <span class="n">data_dict</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">org_id</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;owner_org&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">org_id</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kata_has_user_permission_for_org</span><span class="p">(</span>
+            <span class="n">org_id</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="s">&#39;create_dataset&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;User </span><span class="si">%s</span><span class="s"> not authorized to add a dataset&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">user</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">org_id</span> <span class="ow">and</span> <span class="n">kata_has_user_permission_for_org</span><span class="p">(</span><span class="n">org_id</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="s">&#39;create_dataset&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">logic_auth</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">package_create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="package_show"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.auth_functions.package_show">[docs]</a><span class="k">def</span> <span class="nf">package_show</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Modified from CKAN&#39;s original check. Package&#39;s owner</span>
+<span class="sd">    can see the dataset no matter in what organization it lies in.</span>
+
+<span class="sd">    :param context: context</span>
+<span class="sd">    :type context: dictionary</span>
+<span class="sd">    :param data_dict: package data</span>
+<span class="sd">    :type data_dict: dictionary</span>
+<span class="sd">    :rtype: dictionary with &#39;success&#39;: True|False</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">is_ownr</span> <span class="o">=</span> <span class="n">is_owner</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_ownr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;success&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">logic_auth</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">package_show</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">is_ownr</span>
+</div>
+<div class="viewcode-block" id="kata_has_user_permission_for_org"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.auth_functions.kata_has_user_permission_for_org">[docs]</a><span class="k">def</span> <span class="nf">kata_has_user_permission_for_org</span><span class="p">(</span><span class="n">org_id</span><span class="p">,</span> <span class="n">user_name</span><span class="p">,</span> <span class="n">permission</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Used by auth function package create: everyone has a right to add a dataset to any organisation</span>
+
+<span class="sd">    :param user_name:</span>
+<span class="sd">    :param permission:</span>
+<span class="sd">    :return: True, as everyone has a right to add a dataset to an organisation</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">org_id</span> <span class="ow">and</span> <span class="n">user_name</span> <span class="ow">and</span> <span class="n">permission</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span></div>
 </pre></div>
 
           </div>
@@ -164,7 +237,7 @@
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

@@ -1,5 +1,3 @@
-# pylint: disable=invalid-name, no-member
-
 '''Database model additions for Kata'''
 
 import datetime

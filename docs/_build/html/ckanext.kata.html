@@ -63,34 +63,6 @@
 <li class="toctree-l2"><a class="reference internal" href="ckanext.kata.i18n.html#module-ckanext.kata.i18n">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ckanext.kata.tests.html">ckanext.kata.tests package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ckanext.kata.tests.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ckanext.kata.tests.functional.html">ckanext.kata.tests.functional package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.functional.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.functional.html#ckanext-kata-tests-functional-test-api-module">ckanext.kata.tests.functional.test_api module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.functional.html#ckanext-kata-tests-functional-test-wsgi-module">ckanext.kata.tests.functional.test_wsgi module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.functional.html#module-contents">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="ckanext.kata.tests.test_fixtures.html">ckanext.kata.tests.test_fixtures package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.test_fixtures.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.test_fixtures.html#module-ckanext.kata.tests.test_fixtures.flattened">ckanext.kata.tests.test_fixtures.flattened module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.test_fixtures.html#module-ckanext.kata.tests.test_fixtures.unflattened">ckanext.kata.tests.test_fixtures.unflattened module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.test_fixtures.html#module-ckanext.kata.tests.test_fixtures">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="ckanext.kata.tests.unit.html">ckanext.kata.tests.unit package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.unit.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.unit.html#module-ckanext.kata.tests.unit.test_kata">ckanext.kata.tests.unit.test_kata module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.unit.html#module-ckanext.kata.tests.unit.test_validators">ckanext.kata.tests.unit.test_validators module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ckanext.kata.tests.unit.html#module-ckanext.kata.tests.unit">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="ckanext.kata.tests.html#module-ckanext.kata.tests">Module contents</a></li>
-</ul>
-</li>
 </ul>
 </div>
 </div>
@@ -109,13 +81,13 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>string</em>) &#8211; dataset name</li>
+<li><strong>name</strong> (<em>string</em>) &#8211; dataset name or id</li>
 <li><strong>role</strong> (<em>string</em>) &#8211; admin, editor or reader</li>
 <li><strong>username</strong> (<em>string</em>) &#8211; user to be added</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">message dict with &#8216;success&#8217; and &#8216;msg&#8217;</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">message string</p>
 </td>
 </tr>
 </tbody>
@@ -132,12 +104,12 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>username</strong> (<em>string</em>) &#8211; user name to delete</li>
-<li><strong>id</strong> (<em>string</em>) &#8211; dataset id</li>
+<li><strong>name</strong> (<em>string</em>) &#8211; dataset name or id</li>
 <li><strong>role</strong> (<em>string</em>) &#8211; editor, admin or reader</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">message dict with <cite>success</cite> and <cite>msg</cite></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">message string</p>
 </td>
 </tr>
 </tbody>
@@ -156,9 +128,8 @@
 
 <dl class="function">
 <dt id="ckanext.kata.actions.group_list">
-<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">group_list</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/actions.html#group_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.actions.group_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a list of the names of the site&#8217;s groups.</p>
-</dd></dl>
+<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">group_list</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#ckanext.kata.actions.group_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="ckanext.kata.actions.group_update">
@@ -167,13 +138,17 @@
 
 <dl class="function">
 <dt id="ckanext.kata.actions.member_create">
-<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">member_create</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#ckanext.kata.actions.member_create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">member_create</tt><big>(</big><em>context</em>, <em>data_dict=None</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/actions.html#member_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.actions.member_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an object (e.g. a user, dataset or group) a member of a group.</p>
+<p>Custom organization permission handling added on top of CKAN&#8217;s own member_create action.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="ckanext.kata.actions.member_delete">
-<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">member_delete</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#ckanext.kata.actions.member_delete" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">member_delete</tt><big>(</big><em>context</em>, <em>data_dict=None</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/actions.html#member_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.actions.member_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an object (e.g. a user, dataset or group) from a group.</p>
+<p>Custom organization permission handling added on top of CKAN&#8217;s own member_create action.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="ckanext.kata.actions.organization_create">
@@ -184,6 +159,29 @@
 <dt id="ckanext.kata.actions.organization_delete">
 <tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">organization_delete</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#ckanext.kata.actions.organization_delete" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.actions.organization_list_for_user">
+<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">organization_list_for_user</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/actions.html#organization_list_for_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.actions.organization_list_for_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list organizations available for current user. Modify CKAN organization permissions before calling original
+action.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of dictized organizations that the user is authorized to edit</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of dicts</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.actions.organization_member_create">
+<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">organization_member_create</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/actions.html#organization_member_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.actions.organization_member_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for CKAN&#8217;s group_member_create to modify organization permissions.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="ckanext.kata.actions.organization_update">
@@ -236,6 +234,13 @@ to be specific).</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="ckanext.kata.actions.package_owner_org_update">
+<tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">package_owner_org_update</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/actions.html#package_owner_org_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.actions.package_owner_org_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the owning organization of a dataset</p>
+<p>Used by both package_create and package_update</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ckanext.kata.actions.package_search">
 <tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">package_search</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/actions.html#package_search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.actions.package_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the metadata of a dataset (package) and its resources.</p>
@@ -260,6 +265,8 @@ to be specific).</p>
 <dt id="ckanext.kata.actions.package_show">
 <tt class="descclassname">ckanext.kata.actions.</tt><tt class="descname">package_show</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/actions.html#package_show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.actions.package_show" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the metadata of a dataset (package) and its resources.</p>
+<p>Called before showing the dataset in some interface (browser, API),
+or when adding package to Solr index (no validation / conversions then).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -369,6 +376,7 @@ Otherwise does what ckan&#8217;s similar function does.</p>
 </div>
 <div class="section" id="module-ckanext.kata.auth_functions">
 <span id="ckanext-kata-auth-functions-module"></span><h2>ckanext.kata.auth_functions module<a class="headerlink" href="#module-ckanext.kata.auth_functions" title="Permalink to this headline">¶</a></h2>
+<p>Custom authorization functions for actions.</p>
 <dl class="function">
 <dt id="ckanext.kata.auth_functions.edit_resource">
 <tt class="descclassname">ckanext.kata.auth_functions.</tt><tt class="descname">edit_resource</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/auth_functions.html#edit_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.auth_functions.edit_resource" title="Permalink to this definition">¶</a></dt>
@@ -414,6 +422,50 @@ package in question</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="ckanext.kata.auth_functions.kata_has_user_permission_for_org">
+<tt class="descclassname">ckanext.kata.auth_functions.</tt><tt class="descname">kata_has_user_permission_for_org</tt><big>(</big><em>org_id</em>, <em>user_name</em>, <em>permission</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/auth_functions.html#kata_has_user_permission_for_org"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.auth_functions.kata_has_user_permission_for_org" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used by auth function package create: everyone has a right to add a dataset to any organisation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_name</strong> &#8211; </li>
+<li><strong>permission</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, as everyone has a right to add a dataset to an organisation</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.auth_functions.package_create">
+<tt class="descclassname">ckanext.kata.auth_functions.</tt><tt class="descname">package_create</tt><big>(</big><em>context</em>, <em>data_dict=None</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/auth_functions.html#package_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.auth_functions.package_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modified from CKAN&#8217;s original check. Any logged in user can add
+a dataset to any organisation.
+Packages owner check is done when adding a resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>context</strong> &#8211; context</li>
+<li><strong>data_dict</strong> &#8211; data_dict</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary with &#8216;success&#8217;: True|False</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="ckanext.kata.auth_functions.package_delete">
 <tt class="descclassname">ckanext.kata.auth_functions.</tt><tt class="descname">package_delete</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/auth_functions.html#package_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.auth_functions.package_delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modified check from CKAN, whether the user has a permission to
@@ -431,6 +483,62 @@ authorisation, also the package owner has full privileges in Kata.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary with &#8216;success&#8217;: True|False</p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.auth_functions.package_show">
+<tt class="descclassname">ckanext.kata.auth_functions.</tt><tt class="descname">package_show</tt><big>(</big><em>context</em>, <em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/auth_functions.html#package_show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.auth_functions.package_show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modified from CKAN&#8217;s original check. Package&#8217;s owner
+can see the dataset no matter in what organization it lies in.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>context</strong> (<em>dictionary</em>) &#8211; context</li>
+<li><strong>data_dict</strong> (<em>dictionary</em>) &#8211; package data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary with &#8216;success&#8217;: True|False</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ckanext.kata.clamd_wrapper">
+<span id="ckanext-kata-clamd-wrapper-module"></span><h2>ckanext.kata.clamd_wrapper module<a class="headerlink" href="#module-ckanext.kata.clamd_wrapper" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="ckanext.kata.clamd_wrapper.MalwareCheckError">
+<em class="property">exception </em><tt class="descclassname">ckanext.kata.clamd_wrapper.</tt><tt class="descname">MalwareCheckError</tt><a class="reference internal" href="_modules/ckanext/kata/clamd_wrapper.html#MalwareCheckError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.clamd_wrapper.MalwareCheckError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Exception class that wraps/represents errors that can occur in
+clamd scans.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.clamd_wrapper.scan_for_malware">
+<tt class="descclassname">ckanext.kata.clamd_wrapper.</tt><tt class="descname">scan_for_malware</tt><big>(</big><em>stream</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/clamd_wrapper.html#scan_for_malware"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.clamd_wrapper.scan_for_malware" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks for malware in the given stream using a ClamAV daemon.
+Inspired by the example code in pyclamd.</p>
+<p>Scanning consumes the input stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stream</strong> (<em>file-like object</em>) &#8211; the input stream to scan</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the file is clean and False if there is a detection.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises MalwareCheckError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">if connecting to the ClamAV daemon fails or there is another error</td>
 </tr>
 </tbody>
 </table>
@@ -702,6 +810,12 @@ plain email sender.</p>
 <p>Renders the package_administration page via <tt class="xref py py-meth docutils literal"><span class="pre">_show_dataset_role_page()</span></tt></p>
 </dd></dl>
 
+<dl class="method">
+<dt id="ckanext.kata.controllers.KataPackageController.new">
+<tt class="descname">new</tt><big>(</big><em>data=None</em>, <em>errors=None</em>, <em>error_summary=None</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/controllers.html#KataPackageController.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.controllers.KataPackageController.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite CKAN method to take uploading xml into sequence.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -716,6 +830,29 @@ plain email sender.</p>
 the dashboard.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="ckanext.kata.controllers.KataUserController.logged_out_page">
+<tt class="descname">logged_out_page</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/controllers.html#KataUserController.logged_out_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.controllers.KataUserController.logged_out_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redirect user to front page and inform user.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ckanext.kata.controllers.MalwareScanningStorageController">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.controllers.</tt><tt class="descname">MalwareScanningStorageController</tt><a class="reference internal" href="_modules/ckanext/kata/controllers.html#MalwareScanningStorageController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.controllers.MalwareScanningStorageController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">ckan.controllers.storage.StorageController</span></tt></p>
+<p>MalwareScanningStorageController extends the standard CKAN StorageController
+class by adding an optional malware check on file uploads.</p>
+<p>Malware scanning is disabled by default but can be enabled by setting
+the configuration option kata.storage.malware_scan to true.
+When scanning is enabled, not having a ClamAV daemon running
+will cause uploads to be rejected.</p>
+<dl class="method">
+<dt id="ckanext.kata.controllers.MalwareScanningStorageController.upload_handle">
+<tt class="descname">upload_handle</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/controllers.html#MalwareScanningStorageController.upload_handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.controllers.MalwareScanningStorageController.upload_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -726,14 +863,15 @@ the dashboard.</p>
 <dl class="method">
 <dt id="ckanext.kata.controllers.MetadataController.urnexport">
 <tt class="descname">urnexport</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/controllers.html#MetadataController.urnexport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.controllers.MetadataController.urnexport" title="Permalink to this definition">¶</a></dt>
-<dd><p>The urnexport page</p>
+<dd><p>Generate an XML listing of packages, which have Kata or Ida URN as data PID.
+Used by a third party service.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the packages with service generated urns</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An XML listing of packages and their URNs</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string (xml)</td>
 </tr>
 </tbody>
 </table>
@@ -769,6 +907,26 @@ an arbitrary one is returned.</p>
 <dt id="ckanext.kata.converters.add_to_group">
 <tt class="descclassname">ckanext.kata.converters.</tt><tt class="descname">add_to_group</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/converters.html#add_to_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.converters.add_to_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new group if it doesn&#8217;t yet exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> &#8211; key</li>
+<li><strong>data</strong> &#8211; data</li>
+<li><strong>errors</strong> &#8211; validation errors</li>
+<li><strong>context</strong> &#8211; context</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.converters.check_primary_pids">
+<tt class="descclassname">ckanext.kata.converters.</tt><tt class="descname">check_primary_pids</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/converters.html#check_primary_pids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.converters.check_primary_pids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that primary pids exist, if not, get them from package.id and package.name</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -857,6 +1015,26 @@ validation.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="ckanext.kata.converters.default_name_from_id">
+<tt class="descclassname">ckanext.kata.converters.</tt><tt class="descname">default_name_from_id</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/converters.html#default_name_from_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.converters.default_name_from_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>If name not given, generate name from package.id</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> &#8211; key</li>
+<li><strong>data</strong> &#8211; data</li>
+<li><strong>errors</strong> &#8211; validation errors</li>
+<li><strong>context</strong> &#8211; context</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="ckanext.kata.converters.export_as_related">
 <tt class="descclassname">ckanext.kata.converters.</tt><tt class="descname">export_as_related</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/converters.html#export_as_related"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.converters.export_as_related" title="Permalink to this definition">¶</a></dt>
 <dd><p>Not used?</p>
@@ -867,6 +1045,10 @@ validation.</p>
 <tt class="descclassname">ckanext.kata.converters.</tt><tt class="descname">flattened_from_extras</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/converters.html#flattened_from_extras"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.converters.flattened_from_extras" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a whole bunch of flattened key-value pairs from extras to a list of dicts in data_dict.
 Format in extras must be like <cite>key[0]_index_innerkey</cite>. For example: <cite>pids_02_provider</cite>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The list of dicts is padded to the largest index found with empty dicts. WUI may cause gaps in indexing.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -892,6 +1074,12 @@ For example <cite>(pids, 0, provider)</cite> -&gt; <cite>extras[&#8216;pids_0_pr
 <p class="first admonition-title">Note</p>
 <p class="last">The key-value pairs to convert are before CKAN&#8217;s flattening in format
 pids: [{ id: &#8216;some pid&#8217;, type: &#8216;data&#8217;, ...},{ id: &#8216;other pid&#8217;, type: &#8216;data&#8217;, ...}]</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">From WUI this may create gaps in indexing as those indexes with empty contents are not being sent from the
+HTML form. For example, you may end up having indexes 0, 1, 3, 4, 6 in DB. This will be padded in
+flattened_from_extras by creating empty dicts for those indexes.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1073,9 +1261,106 @@ Title &amp; language pairs will be stored in package_extra.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-ckanext.kata.extractor">
+<span id="ckanext-kata-extractor-module"></span><h2>ckanext.kata.extractor module<a class="headerlink" href="#module-ckanext.kata.extractor" title="Permalink to this headline">¶</a></h2>
+<p>The extractor module provides functions for extracting text contents from resources.</p>
+<dl class="function">
+<dt id="ckanext.kata.extractor.convert_file_to_text">
+<tt class="descclassname">ckanext.kata.extractor.</tt><tt class="descname">convert_file_to_text</tt><big>(</big><em>resource_file_path</em>, <em>format</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/extractor.html#convert_file_to_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.extractor.convert_file_to_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the file descriptor and path for a temporary file that contains
+the contents of the given resource converted to plain text.</p>
+<p>If there is no suitable converter for the format,
+the return value will be (None, None).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource_file_path</strong> (<em>str</em>) &#8211; the file system path to the resource file</li>
+<li><strong>format</strong> (<em>str</em>) &#8211; the file format of the resource (</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.extractor.extract_text">
+<tt class="descclassname">ckanext.kata.extractor.</tt><tt class="descname">extract_text</tt><big>(</big><em>resource_url</em>, <em>format</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/extractor.html#extract_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.extractor.extract_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to extract plain text contents from the CKAN resource with the
+given URL. Only local resources are supported at the moment.</p>
+<p>Non-plain text files are first converted to a plain text representation
+if possible.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource_url</strong> (<em>str</em>) &#8211; URL to the resource</li>
+<li><strong>format</strong> (<em>str</em>) &#8211; the file format of the resource (practically file name extension)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">unicode</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises IOError:</th><td class="field-body"><p class="first last">if the resource is remote or cannot be read</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-ckanext.kata.helpers">
 <span id="ckanext-kata-helpers-module"></span><h2>ckanext.kata.helpers module<a class="headerlink" href="#module-ckanext.kata.helpers" title="Permalink to this headline">¶</a></h2>
 <p>Template helpers for Kata CKAN extension.</p>
+<dl class="class">
+<dt id="ckanext.kata.helpers.LoopIndex">
+<em class="property">class </em><tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">LoopIndex</tt><a class="reference internal" href="_modules/ckanext/kata/helpers.html#LoopIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.LoopIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Simple index object for Jinja2 templates. Avoids problem with Jinja2 variable scope.</p>
+<dl class="method">
+<dt id="ckanext.kata.helpers.LoopIndex.increase">
+<tt class="descname">increase</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#LoopIndex.increase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.LoopIndex.increase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase index value by one and return previous value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ckanext.kata.helpers.LoopIndex.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#LoopIndex.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.LoopIndex.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns next index number, but does not increase value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.create_loop_index">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">create_loop_index</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#create_loop_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.create_loop_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and return LoopIndex object</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.dataset_is_valid">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">dataset_is_valid</tt><big>(</big><em>package</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#dataset_is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.dataset_is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if given dataset is valid. Uses schema from plugin.
+Return true if dataset is valid.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.filter_system_users">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">filter_system_users</tt><big>(</big><em>users</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#filter_system_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.filter_system_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters system users (&#8216;logged_in&#8217;, &#8216;visitor&#8217;, &#8216;harvest&#8217;) out of the
+given iterable of users.
+:param users: an iterable of user data dicts
+:return: a new list with system users omitted
+:rtype: list</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="ckanext.kata.helpers.get_authors">
 <tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_authors</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_authors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_authors" title="Permalink to this definition">¶</a></dt>
@@ -1083,9 +1368,21 @@ Title &amp; language pairs will be stored in package_extra.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ckanext.kata.helpers.get_contact">
-<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_contact</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_contact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_contact" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get one contact from data_dict</p>
+<dt id="ckanext.kata.helpers.get_contacts">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_contacts</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_contacts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_contacts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all contacts from data_dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.get_contributors">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_contributors</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_contributors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_contributors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a all contributors from agent field in data_dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.get_dict_errors">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_dict_errors</tt><big>(</big><em>errors</em>, <em>errors_key</em>, <em>field_key</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_dict_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_dict_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return dictionary error values from errors dictionary</p>
 </dd></dl>
 
 <dl class="function">
@@ -1115,6 +1412,12 @@ Title &amp; language pairs will be stored in package_extra.</p>
 <dt id="ckanext.kata.helpers.get_distributor">
 <tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_distributor</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_distributor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_distributor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single distributor from agent field in data_dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.get_distributors">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_distributors</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_distributors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_distributors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a all distributors from agent field in data_dict</p>
 </dd></dl>
 
 <dl class="function">
@@ -1164,9 +1467,9 @@ Title &amp; language pairs will be stored in package_extra.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ckanext.kata.helpers.get_owner">
-<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_owner</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_owner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_owner" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a single owner from agent field in data_dict</p>
+<dt id="ckanext.kata.helpers.get_owners">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_owners</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_owners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_owners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a all owners from agent field in data_dict</p>
 </dd></dl>
 
 <dl class="function">
@@ -1198,6 +1501,19 @@ package dicts.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_dict</strong> &#8211; A CKAN data_dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.get_pid_types">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_pid_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_pid_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_pid_types" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">PID types defined in settings.py</td>
 </tr>
 </tbody>
 </table>
@@ -1244,6 +1560,19 @@ order and for prettier display</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="ckanext.kata.helpers.get_urn_fi_address">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_urn_fi_address</tt><big>(</big><em>package</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_urn_fi_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_urn_fi_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.get_visibility_options">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">get_visibility_options</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#get_visibility_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.get_visibility_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get possible dataset visibility options for this group and user
+For now the specs say that everyone can add public/private datasets
+to any organisation, thus the simple list to return</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ckanext.kata.helpers.has_agents_field">
 <tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">has_agents_field</tt><big>(</big><em>data_dict</em>, <em>field</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#has_agents_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.has_agents_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if some of the data dict&#8217;s agents has attribute given in field.</p>
@@ -1256,9 +1585,67 @@ order and for prettier display</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="ckanext.kata.helpers.is_allowed_org_member_edit">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">is_allowed_org_member_edit</tt><big>(</big><em>group_dict</em>, <em>user_id</em>, <em>target_id</em>, <em>target_role</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#is_allowed_org_member_edit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.is_allowed_org_member_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the user is allowed to edit an organization member</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>group_dict</strong> &#8211; dict of all groups (organizations)</li>
+<li><strong>user_id</strong> &#8211; user id</li>
+<li><strong>target_id</strong> &#8211; target user id</li>
+<li><strong>target_role</strong> &#8211; target&#8217;s current role</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.is_urn">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">is_urn</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#is_urn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.is_urn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="ckanext.kata.helpers.kata_sorted_extras">
 <tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">kata_sorted_extras</tt><big>(</big><em>list_</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#kata_sorted_extras"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.kata_sorted_extras" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used for outputting package extras, skips package_hide_extras</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.list_organisations">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">list_organisations</tt><big>(</big><em>user</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#list_organisations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.list_organisations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all organisations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> &#8211; the logged in user</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">organization_list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.helpers.modify_error_summary">
+<tt class="descclassname">ckanext.kata.helpers.</tt><tt class="descname">modify_error_summary</tt><big>(</big><em>errors</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/helpers.html#modify_error_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.helpers.modify_error_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies error_summary keys. Otherwise the keys in database are printed, which leads
+to strings like &#8220;Lantitle&#8221;, &#8220;Tag string&#8221; etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>errors</strong> &#8211; error summary dictionary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">errors: keys as specified in settings.ERRORS are changed</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -1283,6 +1670,25 @@ order and for prettier display</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> &#8211; the string to split</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ckanext.kata.kata_ldap">
+<span id="ckanext-kata-kata-ldap-module"></span><h2>ckanext.kata.kata_ldap module<a class="headerlink" href="#module-ckanext.kata.kata_ldap" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ckanext.kata.kata_ldap.get_user_from_ldap">
+<tt class="descclassname">ckanext.kata.kata_ldap.</tt><tt class="descname">get_user_from_ldap</tt><big>(</big><em>uploader</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/kata_ldap.html#get_user_from_ldap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.kata_ldap.get_user_from_ldap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find the eppn from LDAP</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uploader</strong> &#8211; CSC user name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">eppn</td>
 </tr>
 </tbody>
 </table>
@@ -1406,7 +1812,7 @@ otherwise.</p>
 <dl class="class">
 <dt id="ckanext.kata.plugin.KataPlugin">
 <em class="property">class </em><tt class="descclassname">ckanext.kata.plugin.</tt><tt class="descname">KataPlugin</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/plugin.html#KataPlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.plugin.KataPlugin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.core.SingletonPlugin</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.lib.plugins.DefaultDatasetForm</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IActions</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IConfigurer</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IFacets</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IRoutes</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IPackageController</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IConfigurable</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IDatasetForm</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IAuthFunctions</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.ITemplateHelpers</span></tt></p>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.core.SingletonPlugin</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.lib.plugins.DefaultDatasetForm</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IDatasetForm</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IConfigurer</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IAuthFunctions</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IActions</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IFacets</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.ITemplateHelpers</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IRoutes</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IConfigurable</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">ckan.plugins.interfaces.IPackageController</span></tt></p>
 <p>Kata functionality and UI plugin.</p>
 <dl class="method">
 <dt id="ckanext.kata.plugin.KataPlugin.before_index">
@@ -1501,6 +1907,20 @@ doesn&#8217;t provide so many options</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">schema</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="ckanext.kata.plugin.KataPlugin.create_package_schema_oai_dc_ida">
+<em class="property">classmethod </em><tt class="descname">create_package_schema_oai_dc_ida</tt><big>(</big><big>)</big><a class="headerlink" href="#ckanext.kata.plugin.KataPlugin.create_package_schema_oai_dc_ida" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mofidified schema for oai_dc using IDA. See <cite>create_package_schema_oai_dc</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dictionary</td>
 </tr>
 </tbody>
 </table>
@@ -1649,6 +2069,12 @@ when no other plugin instance matches a package&#8217;s type.&#8221;</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="ckanext.kata.plugin.KataPlugin.organization_facets">
+<tt class="descname">organization_facets</tt><big>(</big><em>facets_dict</em>, <em>organization_type</em>, <em>package_type</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/plugin.html#KataPlugin.organization_facets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.plugin.KataPlugin.organization_facets" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <tt class="xref py py-meth docutils literal"><span class="pre">ckan.plugins.IFacets.organization_facets()</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ckanext.kata.plugin.KataPlugin.package_form">
 <tt class="descname">package_form</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/plugin.html#KataPlugin.package_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.plugin.KataPlugin.package_form" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return location of the main package page</p>
@@ -1786,6 +2212,20 @@ doesn&#8217;t provide so many options</p>
 </table>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="ckanext.kata.plugin.KataPlugin.update_package_schema_oai_dc_ida">
+<em class="property">classmethod </em><tt class="descname">update_package_schema_oai_dc_ida</tt><big>(</big><big>)</big><a class="headerlink" href="#ckanext.kata.plugin.KataPlugin.update_package_schema_oai_dc_ida" title="Permalink to this definition">¶</a></dt>
+<dd><p>Oai_dc reader schema for IDA. See <cite>update_package_schema_oai_dc</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -1840,6 +2280,35 @@ doesn&#8217;t provide so many options</p>
 </dd></dl>
 
 <dl class="classmethod">
+<dt id="ckanext.kata.schemas.Schemas.create_package_schema_oai_dc_ida">
+<em class="property">classmethod </em><tt class="descname">create_package_schema_oai_dc_ida</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/schemas.html#Schemas.create_package_schema_oai_dc_ida"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.schemas.Schemas.create_package_schema_oai_dc_ida" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mofidified schema for oai_dc using IDA. See <cite>create_package_schema_oai_dc</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dictionary</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="ckanext.kata.schemas.Schemas.harvest_source_create_package_schema">
+<em class="property">classmethod </em><tt class="descname">harvest_source_create_package_schema</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/schemas.html#Schemas.harvest_source_create_package_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.schemas.Schemas.harvest_source_create_package_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="ckanext.kata.schemas.Schemas.harvest_source_show_package_schema">
+<em class="property">classmethod </em><tt class="descname">harvest_source_show_package_schema</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/schemas.html#Schemas.harvest_source_show_package_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.schemas.Schemas.harvest_source_show_package_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="ckanext.kata.schemas.Schemas.harvest_source_update_package_schema">
+<em class="property">classmethod </em><tt class="descname">harvest_source_update_package_schema</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/schemas.html#Schemas.harvest_source_update_package_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.schemas.Schemas.harvest_source_update_package_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
 <dt id="ckanext.kata.schemas.Schemas.show_package_schema">
 <em class="property">classmethod </em><tt class="descname">show_package_schema</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/schemas.html#Schemas.show_package_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.schemas.Schemas.show_package_schema" title="Permalink to this definition">¶</a></dt>
 <dd><p>The data fields that are returned from CKAN for each dataset can be changed with this method.
@@ -1889,36 +2358,15 @@ doesn&#8217;t provide so many options</p>
 </table>
 </dd></dl>
 
-</dd></dl>
-
-</div>
-<div class="section" id="module-ckanext.kata.settings">
-<span id="ckanext-kata-settings-module"></span><h2>ckanext.kata.settings module<a class="headerlink" href="#module-ckanext.kata.settings" title="Permalink to this headline">¶</a></h2>
-<p>Settings and constants for Kata CKAN extension</p>
-</div>
-<div class="section" id="module-ckanext.kata.tieteet">
-<span id="ckanext-kata-tieteet-module"></span><h2>ckanext.kata.tieteet module<a class="headerlink" href="#module-ckanext.kata.tieteet" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-ckanext.kata.urnhelper">
-<span id="ckanext-kata-urnhelper-module"></span><h2>ckanext.kata.urnhelper module<a class="headerlink" href="#module-ckanext.kata.urnhelper" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ckanext.kata.urnhelper.URNHelper">
-<em class="property">class </em><tt class="descclassname">ckanext.kata.urnhelper.</tt><tt class="descname">URNHelper</tt><a class="reference internal" href="_modules/ckanext/kata/urnhelper.html#URNHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.urnhelper.URNHelper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>Class to generate the urn export feature</p>
 <dl class="classmethod">
-<dt id="ckanext.kata.urnhelper.URNHelper.list_packages">
-<em class="property">classmethod </em><tt class="descname">list_packages</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/urnhelper.html#URNHelper.list_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.urnhelper.URNHelper.list_packages" title="Permalink to this definition">¶</a></dt>
-<dd><p>Lists packages, which have names like
-<a class="reference external" href="urn:nbn:fi:csc-kata">urn:nbn:fi:csc-kata</a> or ida. Generates the
-required xml data.</p>
+<dt id="ckanext.kata.schemas.Schemas.update_package_schema_oai_dc_ida">
+<em class="property">classmethod </em><tt class="descname">update_package_schema_oai_dc_ida</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ckanext/kata/schemas.html#Schemas.update_package_schema_oai_dc_ida"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.schemas.Schemas.update_package_schema_oai_dc_ida" title="Permalink to this definition">¶</a></dt>
+<dd><p>Oai_dc reader schema for IDA. See <cite>update_package_schema_oai_dc</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the packages with urns given by the service</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string (xml)</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -1927,13 +2375,17 @@ required xml data.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-ckanext.kata.settings">
+<span id="ckanext-kata-settings-module"></span><h2>ckanext.kata.settings module<a class="headerlink" href="#module-ckanext.kata.settings" title="Permalink to this headline">¶</a></h2>
+<p>Settings and constants for Kata CKAN extension</p>
+</div>
 <div class="section" id="module-ckanext.kata.utils">
 <span id="ckanext-kata-utils-module"></span><h2>ckanext.kata.utils module<a class="headerlink" href="#module-ckanext.kata.utils" title="Permalink to this headline">¶</a></h2>
 <p>Utility functions for Kata.</p>
 <dl class="function">
-<dt id="ckanext.kata.utils.convert_to_text">
-<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">convert_to_text</tt><big>(</big><em>resource</em>, <em>resource_fname</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#convert_to_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.convert_to_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert structured documents to pure text.</p>
+<dt id="ckanext.kata.utils.datapid_to_name">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">datapid_to_name</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#datapid_to_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.datapid_to_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap re.sub to convert a data-PID to package.name</p>
 </dd></dl>
 
 <dl class="function">
@@ -1950,6 +2402,23 @@ when updating a dataset.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_dict</strong> &#8211; the data dictionary</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the modified data dictionary (resources handled)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.generate_ida_download_url">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">generate_ida_download_url</tt><big>(</big><em>data_pid</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#generate_ida_download_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.generate_ida_download_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an assumed download URL for the data based on the given data PID.</p>
+<p>TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_pid</strong> &#8211; the PID of the IDA dataset (should be actual data PID, not metadata PID)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a download URL for an IDA dataset</td>
 </tr>
 </tbody>
 </table>
@@ -1994,6 +2463,159 @@ when updating a dataset.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="ckanext.kata.utils.get_funders">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">get_funders</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#get_funders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.get_funders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all funders from agent field in data_dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.get_member_role">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">get_member_role</tt><big>(</big><em>group_id</em>, <em>user_id</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#get_member_role"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.get_member_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the user&#8217;s role for this group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>group_id</strong> &#8211; Group ID</li>
+<li><strong>user_id</strong> &#8211; User ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of strings</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.get_package_contact_email">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">get_package_contact_email</tt><big>(</big><em>pkg_id</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#get_package_contact_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.get_package_contact_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the email address of the first distributor/publisher contact
+for the dataset with the given id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pkg_id</strong> &#8211; the id of the package whose contact information to get</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the email address</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or unicode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.get_package_contact_name">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">get_package_contact_name</tt><big>(</big><em>pkg_id</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#get_package_contact_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.get_package_contact_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the first distributor/publisher contact
+for the dataset with the given id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pkg_id</strong> &#8211; the id of the package whose contact information to get</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the name of the contact</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or unicode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.get_package_id_by_data_pids">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">get_package_id_by_data_pids</tt><big>(</big><em>data_dict</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#get_package_id_by_data_pids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.get_package_id_by_data_pids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try if the provided data PIDs match exactly one dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_dict</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Package id or None if not found.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.get_package_id_by_pid">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">get_package_id_by_pid</tt><big>(</big><em>pid</em>, <em>pid_type</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#get_package_id_by_pid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.get_package_id_by_pid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find pid by id and type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pid</strong> &#8211; id of the pid</li>
+<li><strong>pid_type</strong> &#8211; type of the pid</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">id of the package</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.get_pids_by_type">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">get_pids_by_type</tt><big>(</big><em>pid_type</em>, <em>data_dict</em>, <em>primary=None</em>, <em>use_package_id=False</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#get_pids_by_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.get_pids_by_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all of package PIDs of certain type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>use_package_id</strong> &#8211; Set to True to get package.id as primary metadata PID</li>
+<li><strong>primary</strong> &#8211; True to get only primary pids, or False to get all pids without primary=&#8217;True&#8217;, use None to get all pids.</li>
+<li><strong>pid_type</strong> &#8211; PID type to get (data, metadata, version)</li>
+<li><strong>data_dict</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of dicts</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.get_primary_pid">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">get_primary_pid</tt><big>(</big><em>pid_type</em>, <em>data_dict</em>, <em>use_package_id=False</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#get_primary_pid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.get_primary_pid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary PID of the given type for a package.
+This is a convenience function that returns the first primary PID
+returned by get_pids_by_type.</p>
+<p>If no primary PID can be found, this function returns None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pid_type</strong> &#8211; PID type to get (data, metadata, version)</li>
+<li><strong>data_dict</strong> &#8211; </li>
+<li><strong>use_package_id</strong> &#8211; Set to True to get package.id as primary metadata PID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the primary PID of the given type</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str or unicode</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="ckanext.kata.utils.hide_sensitive_fields">
 <tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">hide_sensitive_fields</tt><big>(</big><em>pkg_dict1</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#hide_sensitive_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.hide_sensitive_fields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hide fields that contain sensitive data. Modifies input dict directly.</p>
@@ -2007,6 +2629,15 @@ when updating a dataset.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.utils.is_ida_pid">
+<tt class="descclassname">ckanext.kata.utils.</tt><tt class="descname">is_ida_pid</tt><big>(</big><em>pid</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/utils.html#is_ida_pid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.utils.is_ida_pid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines whether the given string seems to be a PID from the IDA namespace.
+:param pid:
+:return:
+:rtype: bool</p>
 </dd></dl>
 
 <dl class="function">
@@ -2090,7 +2721,7 @@ modifying the dataset in WUI. That would drop all manually added resources if re
 <dl class="function">
 <dt id="ckanext.kata.validators.check_direct_download_url">
 <tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">check_direct_download_url</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#check_direct_download_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.check_direct_download_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate dataset&#8217;s direct download URL (<cite>resource.url</cite>).</p>
+<dd><p>Validate dataset&#8217;s direct download URL.</p>
 </dd></dl>
 
 <dl class="function">
@@ -2113,15 +2744,32 @@ If there is only type, removes it</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ckanext.kata.validators.check_last_and_update_pid">
-<tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">check_last_and_update_pid</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#check_last_and_update_pid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.check_last_and_update_pid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a pid (URN) for package if <cite>package.extras.version</cite> has changed.</p>
+<dt id="ckanext.kata.validators.check_pids">
+<tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">check_pids</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#check_pids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.check_pids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that compulsory PIDs exist. Also check that primary data PID is not modified in any way.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ckanext.kata.validators.check_pids">
-<tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">check_pids</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#check_pids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.check_pids" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that pids field exists</p>
+<dt id="ckanext.kata.validators.check_private">
+<tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">check_private</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#check_private"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.check_private" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes to owner_org_validator requires checking of private value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> &#8211; key</li>
+<li><strong>data</strong> &#8211; data</li>
+<li><strong>errors</strong> &#8211; errors</li>
+<li><strong>context</strong> &#8211; context</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">nothing. Raise invalid if not organisation editor and private == False</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -2135,6 +2783,48 @@ If there is only type, removes it</p>
 <tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">contains_alphanumeric</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#contains_alphanumeric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.contains_alphanumeric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that the field contains some characters, so that eg.
 empty space isn&#8217;t a valid input</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.validators.ignore_empty_data">
+<tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">ignore_empty_data</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#ignore_empty_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.ignore_empty_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ignore empty data, example &#8216;-&#8216; or whitespace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises ckan.lib.navl.dictization_functions.StopOnError:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">if <tt class="docutils literal"><span class="pre">data[key]</span></tt>
+is <tt class="xref py py-data docutils literal"><span class="pre">ckan.lib.navl.dictization_functions.missing</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.validators.kata_owner_org_validator">
+<tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">kata_owner_org_validator</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#kata_owner_org_validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.kata_owner_org_validator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modified version of CKAN&#8217;s owner_org_validator. Anyone
+can add a private dataset to an organisation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> &#8211; key</li>
+<li><strong>data</strong> &#8211; data</li>
+<li><strong>errors</strong> &#8211; errors</li>
+<li><strong>context</strong> &#8211; context</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">nothing. Raise invalid if organisation is not given or it doesn&#8217;t exist</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -2155,6 +2845,33 @@ are also validated.</p>
 <dt id="ckanext.kata.validators.package_name_not_changed">
 <tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">package_name_not_changed</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#package_name_not_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.package_name_not_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that package name doesn&#8217;t change</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.validators.url_not_empty">
+<tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">url_not_empty</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#url_not_empty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.url_not_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the data value is non-empty and contains both a URL scheme and a hostname.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises ckan.lib.navl.dictization_functions.Invalid:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">if data[key] is empty, missing, or
+omits either URL scheme or hostname</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ckanext.kata.validators.validate_access_application_download_url">
+<tt class="descclassname">ckanext.kata.validators.</tt><tt class="descname">validate_access_application_download_url</tt><big>(</big><em>key</em>, <em>data</em>, <em>errors</em>, <em>context</em><big>)</big><a class="reference internal" href="_modules/ckanext/kata/validators.html#validate_access_application_download_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ckanext.kata.validators.validate_access_application_download_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the access_application_download_URL field of a dataset.
+The field is used for expressing the URL at which the actual data
+can be downloaded after entitlement through the access application
+server has been given.</p>
 </dd></dl>
 
 <dl class="function">
@@ -2328,7 +3045,7 @@ custom css (eg. kata.css) and several templates are overwritten from basic CKAN 
           
     <div class="footer">
         &copy; Copyright 2014, CSC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
         </div>
         <div class="clearer"></div>

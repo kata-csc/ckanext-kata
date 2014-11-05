@@ -1,5 +1,3 @@
-# pylint: disable=unused-argument
-
 """
 Main plugin file for Kata CKAN extension. Compatible with CKAN 2.1 and 2.2.
 """
@@ -75,8 +73,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
     Kata functionality and UI plugin.
     """
-    # pylint: disable=no-init, no-self-use
-
     implements(IDatasetForm, inherit=True)
     implements(IConfigurer, inherit=True)
     implements(IConfigurable, inherit=True)
@@ -156,9 +152,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # map.connect('/dataset/import_xml/',
         #             controller="ckanext.harvest.controllers.view:ViewController",
         #             action="import_xml")
+
         map.connect('/user/logged_in',
                     controller="ckanext.kata.controllers:KataUserController",
                     action="logged_in")
+        map.connect('/user/logged_out_redirect',
+                    controller="ckanext.kata.controllers:KataUserController",
+                    action='logged_out_page')
+
         map.connect('/dataset/',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="advanced_search")

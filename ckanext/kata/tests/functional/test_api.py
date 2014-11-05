@@ -1,7 +1,4 @@
 # coding: utf-8
-#
-# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, star-args
-
 """
 Functional tests for Kata that use CKAN API.
 """

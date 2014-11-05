@@ -46,9 +46,7 @@ from ckanext.kata import utils
 _get_or_bust = ckan.logic.get_or_bust
 
 log = logging.getLogger(__name__)
-#get_action = logic.get_action
-t = plugins.toolkit                         # pylint: disable=invalid-name
-# BUCKET = config.get('ckan.storage.bucket', 'default')
+t = plugins.toolkit
 
 
 def get_package_owner(package):
@@ -257,6 +255,9 @@ class AccessRequestController(BaseController):
         url = h.url_for(controller='package', action='read', id=pkg_id)
 
         pkg = Package.get(pkg_id)
+        if not pkg:
+            abort(404, _("Dataset not found"))
+
         pkg_title = pkg.title if pkg.title else pkg.name
 
         user = c.userobj if c.userobj else None
@@ -306,6 +307,9 @@ class AccessRequestController(BaseController):
         url = h.url_for(controller='package', action='read', id=pkg_id)
 
         c.package = Package.get(pkg_id)
+        if not c.package:
+            abort(404, _("Dataset not found"))
+
         c.package_owner = get_package_owner(c.package)
         user = c.userobj if c.userobj else None
 
@@ -447,7 +451,7 @@ class ContactController(BaseController):
                         a=sender['name'],
                         b=sender['email'],
                         c=package_title,
-                        d=package.name
+                        d=utils.get_primary_data_pid_from_package(package)
                     )
                     no_reply_note = settings.REPLY_TO_SENDER_NOTE
 
@@ -540,7 +544,7 @@ class KataUserController(UserController):
         # we need to set the language explicitly here or the flash
         # messages will not be translated.
         ckan.lib.i18n.set_lang(lang)
-        
+
         if h.url_is_local(came_from):
             return h.redirect_to(str(came_from))
 
@@ -566,6 +570,12 @@ class KataUserController(UserController):
                               action='login', came_from=came_from)
             else:
                 return self.login(error=err)
+
+    def logged_out_page(self):
+        """ Redirect user to front page and inform user. """
+        if not c.user:
+            h.flash_notice(_("Successfully logged out."))
+        h.redirect_to(controller='home', action='index')
 
 
 class KataPackageController(PackageController):

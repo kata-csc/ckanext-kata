@@ -1,6 +1,4 @@
 # coding: utf-8
-#
-# pylint: disable=no-self-use, missing-docstring, too-many-public-methods, invalid-name, unused-variable
 """
 Test classes for Kata CKAN Extension.
 """
