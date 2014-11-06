@@ -6,7 +6,7 @@ from ckan.lib.cli import CkanCommand
 import ckan.model as model
 from ckanext.harvest.model import HarvestSource
 from ckanext.kata.model import setup, KataAccessRequest
-from ckanext.kata.utils import send_email
+from ckanext.kata.utils import send_edit_access_request_email
 
 class Kata(CkanCommand):
     '''
@@ -77,7 +77,7 @@ class Kata(CkanCommand):
         for req in all_reqs:
             try:
                 if (curdate - req.created) < timedelta(days=1):
-                    send_email(req)
+                    send_edit_access_request_email(req)
                     req.delete()
                     model.Session.flush()
                 else:

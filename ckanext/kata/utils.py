@@ -34,9 +34,9 @@ def generate_pid():
     return "urn:nbn:fi:csc-kata%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
 
 
-def send_email(req):
+def send_edit_access_request_email(req):
     """
-    Send access request email.
+    Send edit access request email.
 
     :param user_id: user who requests access
     :param pkg_id: dataset's id
@@ -62,7 +62,7 @@ metatietoihin, joiden ylläpitäjä olet. Klikkaa linkkiä, jos haluat tämän k
 saavan muokkausoikeudet aineiston metatietoihin:\n\
 {d}\n'
 
-    controller = 'ckanext.kata.controllers:AccessRequestController'
+    controller = 'ckanext.kata.controllers:EditAccessRequestController'
 
     requester_name = requester.fullname if requester.fullname else requester.name
     accessurl = config.get('ckan.site_url', '') + h.url_for(controller=controller, action="unlock_access", id=req.id)

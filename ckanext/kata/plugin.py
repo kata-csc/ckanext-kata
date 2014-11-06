@@ -129,13 +129,13 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     conditions=get,
                     action="media_type_autocomplete")
         map.connect('/unlock_access/{id}',
-                    controller="ckanext.kata.controllers:AccessRequestController",
+                    controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")
         map.connect('/create_request/{pkg_id}',
-                    controller="ckanext.kata.controllers:AccessRequestController",
+                    controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="create_request")
         map.connect('/render_edit_request/{pkg_id}',
-                    controller="ckanext.kata.controllers:AccessRequestController",
+                    controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="render_edit_request")
         map.connect('/request_dataset/send/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",

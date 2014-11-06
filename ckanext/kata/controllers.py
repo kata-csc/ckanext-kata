@@ -219,9 +219,9 @@ class KATAApiController(ApiController):
         return self._finish_ok(result_set)
 
 
-class AccessRequestController(BaseController):
+class EditAccessRequestController(BaseController):
     '''
-    AccessRequestController class provides a feature to ask
+    EditAccessRequestController class provides a feature to ask
     for editor rights to a dataset. On the other hand,
     it also provides the process to grant them upon request.
     '''

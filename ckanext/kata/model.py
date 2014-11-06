@@ -20,7 +20,7 @@ log = logging.getLogger(__name__)
 
 class KataAccessRequest(DomainObject):
     '''
-    Class for access requests.
+    Class for edit access requests.
     '''
 
     def __init__(self, follower_id, object_id):
