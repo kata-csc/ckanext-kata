@@ -380,37 +380,45 @@ class ContactController(BaseController):
         if c.user and message:
             send_notification(recipient_dict, email_dict)
 
-    def send_contact_message(self, pkg_id):
+    def _prepare_and_send(self, pkg_id, recipient_id, subject, prefix_template, suffix):
         """
         Sends a message by email from the logged in user to the appropriate
-        contact address of the dataset.
+        contact address of the given dataset.
+
+        The prefix template should have formatting placeholders for the following arguments:
+        {sender_name}, {sender_email}, {package_title}, {data_pid}
 
         :param pkg_id: package id
         :type pkg_id: string
+        :param recipient_id: id of the recipient, as returned by utils.get_package_contacts
+        :type recipient_id: string
+        :param subject: the subject of the message
+        :type subject: string
+        :param prefix_template: the template for the prefix to be automatically included before the user message
+        :type prefix_template: unicode
+        :param suffix: an additional note to be automatically included after the user message
+        :type suffix: unicode
         """
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
 
         sender = self._get_logged_in_user()
-        recipient = self._get_contact_email(pkg_id, request.params.get('recipient', ''))
+        recipient = self._get_contact_email(pkg_id, recipient_id)
 
         user_msg = request.params.get('msg', '')
 
         if sender:
             if user_msg:
                 if not self._has_already_contacted(c.userobj, pkg_id):
-                    subject = u"Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
-
-                    prefix = settings.USER_MESSAGE_PREFIX_TEMPLATE.format(
-                        a=sender['name'],
-                        b=sender['email'],
-                        c=package_title,
-                        d=package.name
+                    prefix = prefix_template.format(
+                        sender_name=sender['name'],
+                        sender_email=sender['email'],
+                        package_title=package_title,
+                        data_pid=utils.get_primary_data_pid_from_package(package)
                     )
-                    no_reply_note = settings.REPLY_TO_SENDER_NOTE
 
-                    full_msg = u"{a}{b}{c}".format(a=prefix, b=user_msg, c=no_reply_note)
+                    full_msg = u"{a}{b}{c}".format(a=prefix, b=user_msg, c=suffix)
                     self._send_message(subject, full_msg, recipient.get('email'), recipient.get('name'))
                     self._mark_package_as_contacted(c.userobj, pkg_id)
                     h.flash_success(_("Message sent"))
@@ -424,6 +432,22 @@ class ContactController(BaseController):
         url = h.url_for(controller='package', action='read', id=pkg_id)
 
         return redirect(url)
+
+    def send_contact_message(self, pkg_id):
+        """
+        Sends a message by email from the logged in user to the appropriate
+        contact address of the dataset.
+
+        :param pkg_id: package id
+        :type pkg_id: string
+        """
+
+        package = Package.get(pkg_id)
+        package_title = package.title if package.title else package.name
+        subject = u"Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
+        recipient_id = request.params.get('recipient', '')
+
+        return self._prepare_and_send(pkg_id, recipient_id, subject, settings.USER_MESSAGE_PREFIX_TEMPLATE, settings.REPLY_TO_SENDER_NOTE)
 
     def send_request_message(self, pkg_id):
         """
@@ -436,39 +460,10 @@ class ContactController(BaseController):
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
+        subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
+        recipient_id = request.params.get('recipient', '')
 
-        sender = self._get_logged_in_user()
-        recipient = self._get_contact_email(pkg_id, request.params.get('recipient', ''))
-
-        user_msg = request.params.get('msg', '')
-
-        if sender:
-            if user_msg:
-                if not self._has_already_contacted(c.userobj, pkg_id):
-                    subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
-
-                    prefix = settings.DATA_REQUEST_PREFIX_TEMPLATE.format(
-                        a=sender['name'],
-                        b=sender['email'],
-                        c=package_title,
-                        d=utils.get_primary_data_pid_from_package(package)
-                    )
-                    no_reply_note = settings.REPLY_TO_SENDER_NOTE
-
-                    full_msg = u"{a}{b}{c}".format(a=prefix, b=user_msg, c=no_reply_note)
-                    self._send_message(subject, full_msg, recipient.get('email'), recipient.get('name'))
-                    self._mark_package_as_contacted(c.userobj, pkg_id)
-                    h.flash_success(_("Message sent"))
-                else:
-                    h.flash_error(_("Already contacted"))
-            else:
-                h.flash_error(_("No message"))
-        else:
-            h.flash_error(_("Please login"))
-
-        url = h.url_for(controller='package', action='read', id=pkg_id)
-
-        return redirect(url)
+        return self._prepare_and_send(pkg_id, recipient_id, subject, settings.DATA_REQUEST_PREFIX_TEMPLATE, settings.REPLY_TO_SENDER_NOTE)
 
     def render_contact_form(self, pkg_id):
         """
