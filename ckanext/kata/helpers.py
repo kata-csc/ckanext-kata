@@ -3,6 +3,7 @@
 Template helpers for Kata CKAN extension.
 '''
 
+from paste.deploy.converters import asbool
 from pylons import config
 import functionally as fn
 import logging
@@ -450,8 +451,10 @@ def filter_system_users(users):
     system_user_names = ['logged_in', 'visitor', 'harvest']
     return filter(lambda x: x.get('user') not in system_user_names, users)
 
+
 def is_urn(name):
     return name and name.startswith('urn:nbn:fi:')
+
 
 def get_urn_fi_address(package):
     pid = get_pids_by_type('data', package, primary=True)[0].get('id', None)
@@ -459,6 +462,7 @@ def get_urn_fi_address(package):
         template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
         return template % {'pid': pid}
     return ''
+
 
 def modify_error_summary(errors):
     '''
@@ -487,6 +491,14 @@ def get_pid_types():
     :return: PID types defined in settings.py
     '''
     return settings.PID_TYPES
+
+
+def is_backup_instance():
+    '''
+    :return: Config value kata.is_backup in kata.ini as boolean
+    '''
+    return asbool(config.get('kata.is_backup', False))
+
 
 def list_organisations(user):
     '''

@@ -258,6 +258,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'has_agents_field': helpers.has_agents_field,
             'has_contacts_field': helpers.has_contacts_field,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
+            'is_backup_instance': helpers.is_backup_instance,
             'kata_sorted_extras': helpers.kata_sorted_extras,
             'modify_error_summary': helpers.modify_error_summary,
             'list_organisations': helpers.list_organisations,

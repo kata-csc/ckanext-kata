@@ -8,6 +8,13 @@
   <div role="main" class="hero">
     <div id="content" class="container">
       {{ self.flash() }}
+      {% if h.is_backup_instance() %}
+      <p>
+        <span class="tta-orange"><b>
+        {{ _('There is a maintenance break in service')}}. {{ _('You can not add or edit data during maintenance break')}}. </b></span>
+      </p>
+      <br />
+      {% endif %}
       {% block primary_content %}
         <div class="hero-primary module module-popup">
           <div class="module-content">
