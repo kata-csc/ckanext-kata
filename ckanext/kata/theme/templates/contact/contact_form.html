@@ -18,7 +18,7 @@
   <label for="contact-recipient">{{ _("Recipient") }}</label>
   <select id="contact-recipient" name="recipient">
     {% for recipient in c.recipient_options %}
-      <option value="{{ recipient.value }}">{{ recipient.text }}</option>
+      <option value="{{ recipient.value }}" {% if loop.index0|string == c.recipient_index %}selected{% endif %}>{{ recipient.text }}</option>
     {% endfor %}
   </select>
   <label for="msg">{{ _("Message") }}</label>
