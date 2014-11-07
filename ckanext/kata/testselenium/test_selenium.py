@@ -349,7 +349,6 @@ class TestWithUser(TestCase):
 
         browser.back()
         browser.get(contact_form_url)
-        browser.implicitly_wait(10)      # Wait for some javascript magic
 
         try:
             field = browser.find_element_by_xpath("//textarea[@name='msg']")
@@ -363,7 +362,8 @@ class TestWithUser(TestCase):
             assert 0, 'Contact form expected but not found (second visit)'
 
         try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(text(),'Message sent')]")))
+            WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located(
+                (By.XPATH, "//div[contains(text(),'Message sent')]")))
         except TimeoutException:
             browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
             assert 0, "Sending contact form didn't finish"

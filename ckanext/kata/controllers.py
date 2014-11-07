@@ -481,7 +481,7 @@ class ContactController(BaseController):
         if not c.package:
             abort(404, _("Dataset not found"))
 
-        contacts = utils.get_package_contacts(pkg_id)
+        contacts = utils.get_package_contacts(c.package.id)
         c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
         c.recipient_index = request.params.get('recipient', '')
 
@@ -511,7 +511,7 @@ class ContactController(BaseController):
         if not c.package:
             abort(404, _("Dataset not found"))
 
-        contacts = utils.get_package_contacts(pkg_id)
+        contacts = utils.get_package_contacts(c.package.id)
         c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
         c.recipient_index = request.params.get('recipient', '')
 
