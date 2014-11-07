@@ -16,7 +16,7 @@
   {#<p>{{ _("On this page you can send a message to the owner of the dataset.") }}</p>#}
 
   <label for="contact-recipient">{{ _("Recipient") }}</label>
-  <select class="recipient-selector" id="contact-recipient" name="recipient">
+  <select id="contact-recipient" name="recipient">
     {% for contact in h.get_contacts_for_package(c.package.id) %}
       <option value="{{ contact.id }}" {% if contact.id == c.recipient_id %}selected{% endif %}>
         {{ contact.name }}
