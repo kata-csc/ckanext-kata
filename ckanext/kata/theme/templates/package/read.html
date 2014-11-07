@@ -34,12 +34,7 @@
 
   {% endblock %}
 
-  {% snippet "package/snippets/metadata_info.html",
-      pkg_dict=pkg,
-      user=c.userobj,
-      pkg_notes_formatted=c.pkg_notes_formatted,
-      hide_sensitive_fields=c.hide_sensitive_fields
-  %}
+  {% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj, pkg_notes_formatted=c.pkg_notes_formatted %}
 
   {% block package_resources %}
     {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}

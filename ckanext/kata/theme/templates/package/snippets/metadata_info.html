@@ -159,15 +159,12 @@
       <th>{{ _('URL') }}</th>
       <th>{{ _('Phone') }}</th>
     </tr>
-    {% for contact in h.get_contacts_for_package(pkg_dict.id) %}
+    {% for contact in pkg_dict.contact %}
       <tr>
         <td>{{ contact.name }}</td>
         {% if email %}
-          {% if hide_sensitive_fields %}
-            <td><a href="{{ h.url_for(controller='ckanext.kata.controllers:ContactController',
-                                      action='render_contact_form',
-                                      pkg_id=pkg_dict.id,
-                                      email_id=contact.id) }}">{{_('Send a message') }}</a></td>
+          {% if contact.email == 'hidden' %}
+            <td><a href="{{ h.url_for(controller='ckanext.kata.controllers:ContactController', action='render_contact_form', pkg_id=pkg_dict.id) }}">{{_('Send a message') }}</a></td>
           {% else %}
             <td>{{ contact.email }}</td>
           {% endif %}

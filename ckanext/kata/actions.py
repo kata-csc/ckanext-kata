@@ -69,8 +69,6 @@ def package_show(context, data_dict):
         check_access('package_update', context)
     except NotAuthorized:
         pkg_dict1 = utils.hide_sensitive_fields(pkg_dict1)
-        # Also pass the a flag in the context so that templates know
-        c.hide_sensitive_fields = True
 
     pkg = Package.get(pkg_dict1['id'])
     if 'erelated' in pkg.extras:
