@@ -239,9 +239,10 @@ def validate_discipline(key, data, errors, context):
     # http://onki.fi/fi/browser/overview/okm-tieteenala
     discipline_match = re.compile('[\w \-,]*$', re.UNICODE)
     if val:
-        if not discipline_match.match(val):
-            raise Invalid(_('Discipline "%s" must be alphanumeric '
-                            'characters or symbols: -,') % (val))
+        for item in val.split(","):
+            if not discipline_match.match(item):
+                raise Invalid(_('Discipline "%s" must be alphanumeric '
+                                'characters or symbols: -,') % (item))
     else:
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
@@ -262,8 +263,7 @@ def validate_spatial(key, data, errors, context):
             mismatch = '|'.join([s for s in val.split(',')
                                  if not spatial_match.match(s)])
             raise Invalid(_("Spatial coverage \"%s\" must be alphanumeric "
-                            "characters or symbols: -'/,:().;= "
-                            "Mismatching strings: \"%s\"") % (val, mismatch))
+                            "characters or symbols: -'/,:().;= ") % mismatch)
     else:
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
@@ -279,9 +279,10 @@ def validate_mimetype(key, data, errors, context):
 
     val = data.get(key)
     if isinstance(val, basestring):
-        if not MIME_REGEX.match(val):
-            raise Invalid(_('File type (mimetype) "%s" must be alphanumeric '
-                            'characters or symbols: _-+./') % (val))
+        for item in val.split(","):
+            if not MIME_REGEX.match(item):
+                raise Invalid(_('File type (mimetype) "%s" must be alphanumeric '
+                                'characters or symbols: _-+./') % (val))
 
 
 def validate_algorithm(key, data, errors, context):

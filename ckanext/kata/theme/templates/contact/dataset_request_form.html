@@ -1,8 +1,14 @@
 {% extends "contact/contact_form.html" %}
 {% block contact_form %}
-  {% set form_post_url = h.url_for(controller='ckanext.kata.controllers:ContactController', action='send_request', pkg_id=c.pkg_id) %}
+  {% set form_post_url = h.url_for(controller='ckanext.kata.controllers:ContactController', action='send_request_message', pkg_id=c.package.id) %}
   <form class="dataset-form form-horizontal" method="post" action={{form_post_url}} data-module="basic-form">
   <p>{{ _("On this page you can send a message to the owner of the dataset to request access to the material.") }}</p>
+  <label for="request-recipient">{{ _("Recipient") }}</label>
+  <select id="request-recipient" name="recipient">
+    {% for recipient in c.recipient_options %}
+      <option value="{{ recipient.value }}" {% if loop.index0|string == c.recipient_index %}selected{% endif %}>{{ recipient.text }}</option>
+    {% endfor %}
+  </select>
   <label for="msg">{{ _("Message") }}</label>
   <textarea name="msg" rows="10" cols="50"></textarea>
   <br />

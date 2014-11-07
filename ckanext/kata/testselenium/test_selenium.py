@@ -349,7 +349,6 @@ class TestWithUser(TestCase):
 
         browser.back()
         browser.get(contact_form_url)
-        browser.implicitly_wait(10)      # Wait for some javascript magic
 
         try:
             field = browser.find_element_by_xpath("//textarea[@name='msg']")
@@ -363,7 +362,8 @@ class TestWithUser(TestCase):
             assert 0, 'Contact form expected but not found (second visit)'
 
         try:
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//div[contains(text(),'Message sent')]")))
+            WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located(
+                (By.XPATH, "//div[contains(text(),'Message sent')]")))
         except TimeoutException:
             browser.get_screenshot_as_file('test_2_contact_form_can_go_back.png')
             assert 0, "Sending contact form didn't finish"
@@ -458,6 +458,8 @@ class TestWithUser(TestCase):
                 print ("%r ( %r ) : %r " % (funct, param, values))
                 field = funct(param)
 
+                browser.get_screenshot_as_file('_add_dataset_advanced_____DEBUG_.png')
+
                 for value in values:
                     if value == WebElement.click:
                         field.click()
@@ -505,6 +507,21 @@ class TestWithUser(TestCase):
 
             browser.implicitly_wait(2)
             for o in list(organization) + [Keys.RETURN]:
+                ac.send_keys(o).perform()
+                browser.implicitly_wait(2)
+
+        def _choose_visibility(visibility):
+            '''
+            Choose visibility
+            '''
+            element = browser.find_element_by_xpath(
+                "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")
+
+            ac = ActionChains(browser)
+            ac.move_to_element_with_offset(element, 0.1, 0.1).click().perform()
+
+            browser.implicitly_wait(2)
+            for o in list(visibility) + [Keys.RETURN]:
                 ac.send_keys(o).perform()
                 browser.implicitly_wait(2)
 
@@ -590,8 +607,11 @@ class TestWithUser(TestCase):
             (browser.find_element_by_id, 'direct_download', [Keys.SPACE], None),
             (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),
 
-            #(browser.find_element_by_id, 'licenseURL', [u'dada'], None),
-            (browser.find_element_by_id, 'field-kata-pr', [u'Public'], None),
+            (_choose_organization, org_name, [], None),
+
+            # THIS IS THE PROPER WAY TO CHOOSE AN OPTION FROM SELECT ELEMENT
+            (browser.find_element_by_xpath, "//select[@name='private']/option[text()='Published']",
+             [WebElement.click], None),
 
             # recommended info
 
@@ -616,7 +636,6 @@ class TestWithUser(TestCase):
 
             (browser.find_element_by_id, 'field-notes', [u'Some description about this dataset'], None),
 
-            (_choose_organization, org_name, [], None),
             (browser.find_element_by_xpath, "//button[@name='save']", [WebElement.click], None)
         ]
 

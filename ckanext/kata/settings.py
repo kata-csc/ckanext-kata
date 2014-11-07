@@ -1,4 +1,5 @@
-'''Settings and constants for Kata CKAN extension'''
+# coding=utf8
+# '''Settings and constants for Kata CKAN extension'''
 
 from ckan.common import OrderedDict
 from pylons.i18n.translation import gettext_noop as N_
@@ -201,3 +202,22 @@ TRANSLATION_DUMMIES = [  # Dynamically created strings that should be translated
     N_('Go to Post'),
     N_('Go to Visualization'),
 ]
+
+
+# Message strings to be automatically included in emails sent by users
+
+# Template for the message included at the beginning of emails sent through the contact form
+USER_MESSAGE_PREFIX_TEMPLATE = u"\n{sender_name} ({sender_email}) has sent you a message regarding the following dataset:\
+\n\n{package_title} (Identifier: {data_pid})\n\nThe message is below.\n\n\n{sender_name} ({sender_email}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
+\n\n{package_title} (Tunniste: {data_pid})\n\nViesti:\n\n\n    ---\n"
+
+# Template for the message included at the beginning of emails sent through the data access request form
+DATA_REQUEST_PREFIX_TEMPLATE = u"\n{sender_name} ({sender_email}) is requesting access to data in dataset\n\n{package_title} (Identifier: {data_pid})\n\n\
+for which you are currently marked as distributor.\n\nThe message is below.\n\n\n\
+{sender_name} ({sender_email}) pyytää dataa, joka liittyy tietoaineistoon\n\n{package_title} (Tunniste: {data_pid})\n\nja johon sinut on merkitty jakelijaksi. \
+Mukaan liitetty viesti on alla.\n\n\n    ---\n"
+
+REPLY_TO_SENDER_NOTE = u"\n    ---\n\nPlease do not reply directly to this e-mail.\n\
+If you need to reply to the sender, use the direct e-mail address above.\n\n\
+Älä vastaa suoraan tähän viestiin. Jos haluat vastata lähettäjälle, \
+käytä yllä olevaa sähköpostiosoitetta."

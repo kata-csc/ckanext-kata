@@ -34,9 +34,9 @@ def generate_pid():
     return "urn:nbn:fi:csc-kata%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
 
 
-def send_email(req):
+def send_edit_access_request_email(req):
     """
-    Send access request email.
+    Send edit access request email.
 
     :param user_id: user who requests access
     :param pkg_id: dataset's id
@@ -62,7 +62,7 @@ metatietoihin, joiden ylläpitäjä olet. Klikkaa linkkiä, jos haluat tämän k
 saavan muokkausoikeudet aineiston metatietoihin:\n\
 {d}\n'
 
-    controller = 'ckanext.kata.controllers:AccessRequestController'
+    controller = 'ckanext.kata.controllers:EditAccessRequestController'
 
     requester_name = requester.fullname if requester.fullname else requester.name
     accessurl = config.get('ckan.site_url', '') + h.url_for(controller=controller, action="unlock_access", id=req.id)
@@ -408,40 +408,49 @@ def get_package_id_by_data_pids(data_dict):
     return pkg_ids[0]    # No problems found, so use this
 
 
-def get_package_contact_email(pkg_id):
+def get_package_contacts(pkg_id):
     """
-    Returns the email address of the first distributor/publisher contact
-    for the dataset with the given id.
+    Returns contact information for the dataset with the given id.
 
     :param pkg_id: the id of the package whose contact information to get
-    :return: the email address
-    :rtype: str or unicode
+    :return: a list of contact information dicts
+    :rtype: list of dicts
     """
-    package = Package.get(pkg_id)
 
-    # Todo: this should take the specific contact address, not just the first contact email
-    email_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_email'), package.extras.iteritems())
+    contacts_regex = '^(contact)_(\d+)_(.+)$'
 
-    emails = [con[1] for con in email_tuples]
-    return fn.first(emails)
+    query = select(['id', 'key', 'value', 'state']).where(
+        and_(
+            model.PackageExtra.package_id == pkg_id,
+            model.PackageExtra.key.like('contact_%_%'),
+            model.PackageExtra.state == 'active'
+        )
+    )
 
+    extras = Session.execute(query)
+    extras = model_dictize.extras_list_dictize(extras, {'model': PackageExtra})
 
-def get_package_contact_name(pkg_id):
-    """
-    Returns the name of the first distributor/publisher contact
-    for the dataset with the given id.
+    contacts_by_index = {}
+    for extra in extras:
+        key = extra['key']
+        value = extra['value']
 
-    :param pkg_id: the id of the package whose contact information to get
-    :return: the name of the contact
-    :rtype: str or unicode
-    """
-    package = Package.get(pkg_id)
+        match = re.match(contacts_regex, key)
+        if match:
+            index = match.group(2)
+            type = match.group(3)
 
-    # Todo: this should take the specific contact name, not just the first contact name
-    name_tuples = filter(lambda (k, v): k.startswith('contact_') and k.endswith('_name'), package.extras.iteritems())
+            contact = contacts_by_index.get(index, {})
+            contact[u'index'] = index
+            contact[type] = value
 
-    names = [con[1] for con in name_tuples]
-    return fn.first(names)
+            if type == 'email':
+                contact[u'id'] = extra['id']
+
+            contacts_by_index[index] = contact
+
+    contacts = [ c for c in contacts_by_index.values() ]
+    return sorted(contacts, key=lambda c: int(c['index']))
 
 
 def is_ida_pid(pid):

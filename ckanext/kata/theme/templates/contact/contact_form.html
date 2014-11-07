@@ -1,4 +1,5 @@
 {% extends "page.html" %}
+
 {% block breadcrumb_content %}
   <li>{% link_for _('Datasets'), controller='package', action='search', highlight_actions = 'new index' %}</li>
   <li>{% link_for h.dataset_display_name(c.package)|truncate(15), controller='package', action='read', id=c.pkg_id %}</li>
@@ -8,10 +9,18 @@
 <section class="module">
 <h2 class="module-heading">{{ _('Contact distributor') }}</h2>
 <div class="module-content">
+
 {% block contact_form %}
-  {% set form_post_url = h.url_for(controller='ckanext.kata.controllers:ContactController', action='send_contact', pkg_id=c.pkg_id) %}
+  {% set form_post_url = h.url_for(controller='ckanext.kata.controllers:ContactController', action='send_contact_message', pkg_id=c.package.id) %}
   <form class="dataset-form form-horizontal" method="post" action={{form_post_url}} data-module="basic-form">
   {#<p>{{ _("On this page you can send a message to the owner of the dataset.") }}</p>#}
+
+  <label for="contact-recipient">{{ _("Recipient") }}</label>
+  <select id="contact-recipient" name="recipient">
+    {% for recipient in c.recipient_options %}
+      <option value="{{ recipient.value }}" {% if loop.index0|string == c.recipient_index %}selected{% endif %}>{{ recipient.text }}</option>
+    {% endfor %}
+  </select>
   <label for="msg">{{ _("Message") }}</label>
   <textarea name="msg" rows="10" cols="50"></textarea>
   <br /><br />

@@ -129,26 +129,26 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     conditions=get,
                     action="media_type_autocomplete")
         map.connect('/unlock_access/{id}',
-                    controller="ckanext.kata.controllers:AccessRequestController",
+                    controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")
         map.connect('/create_request/{pkg_id}',
-                    controller="ckanext.kata.controllers:AccessRequestController",
+                    controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="create_request")
         map.connect('/render_edit_request/{pkg_id}',
-                    controller="ckanext.kata.controllers:AccessRequestController",
+                    controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="render_edit_request")
         map.connect('/request_dataset/send/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="send_request")
+                    action="send_request_message")
         map.connect('/request_dataset/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="render_request")
+                    action="render_request_form")
         map.connect('/contact/send/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="send_contact")
+                    action="send_contact_message")
         map.connect('/contact/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
-                    action="render_contact")
+                    action="render_contact_form")
         # map.connect('/dataset/import_xml/',
         #             controller="ckanext.harvest.controllers.view:ViewController",
         #             action="import_xml")

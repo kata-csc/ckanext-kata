@@ -39,6 +39,8 @@ import ckan.plugins as plugins
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
+import ckanext.kata.exceptions as kata_exceptions
+import ckanext.kata.settings as settings
 from ckanext.kata import utils
 
 _get_or_bust = ckan.logic.get_or_bust
@@ -53,7 +55,7 @@ def get_package_owner(package):
        an arbitrary one is returned.
 
        :param package: package data
-       :type package: dictionary
+       :type package: Package object
        :returns: userid
        :rtype: string
     """
@@ -217,9 +219,9 @@ class KATAApiController(ApiController):
         return self._finish_ok(result_set)
 
 
-class AccessRequestController(BaseController):
+class EditAccessRequestController(BaseController):
     '''
-    AccessRequestController class provides a feature to ask
+    EditAccessRequestController class provides a feature to ask
     for editor rights to a dataset. On the other hand,
     it also provides the process to grant them upon request.
     '''
@@ -330,45 +332,26 @@ class ContactController(BaseController):
     The feature provides a form for message sending, and the message is sent via email.
     """
 
-    def _send_if_allowed(self, pkg_id, subject, recipient, email, msg, epilogue=None, prologue=None):
-        """
-        Send a contact e-mail if allowed.
-
-        All of the arguments should be unicode strings.
-
-        :param pkg_id: package id
-        :param subject: email's subject
-        :param recipient: name of the recipient
-        :param email: email address where the message is to be sent
-        :param msg: the message to be sent
-        :param prologue: message's prologue to be included before the user's message (optional)
-        :param epilogue: message's epilogue to be included after the user's message (optional)
-        """
-
-        package = Package.get(pkg_id)
-
-        prologue = prologue + "\n\n\n" if prologue else ""
-        epilogue = "\n\n\n" + epilogue if epilogue else ""
-
-        full_msg = u"{a}{b}{c}".format(a=prologue, b=msg, c=epilogue)
-        email_dict = {"subject": subject,
-                      "body": full_msg}
-
-        if not recipient:
-            # fall back to using the email address as the name of the recipient
-            recipient = email
-
-        recipient_dict = {'display_name': recipient, 'email': email}
-
-        if c.user:
-            if msg:
-                send_notification(recipient_dict, email_dict)
-                self._mark_package_as_contacted(c.userobj, pkg_id)
-                h.flash_notice(_("Message sent"))
-            else:
-                h.flash_error(_("No message"))
+    def _get_logged_in_user(self):
+        if c.userobj:
+            name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
+            email = c.userobj.email
+            return {'name': name, 'email': email}
         else:
-            h.flash_error(_("Please login"))
+            return None
+
+    def _get_contact_email(self, pkg_id, contact_id):
+        recipient = None
+        if contact_id:
+            contacts = utils.get_package_contacts(pkg_id)
+            contact = fn.first(filter(lambda c: c.get('id') == contact_id, contacts))
+
+            if contact and 'email' in contact.keys():
+                email = contact.get('email')
+                name = contact.get('name')
+                recipient = {'name': name, 'email': email}
+
+        return recipient
 
     def _mark_package_as_contacted(self, userobj, pkg_id):
         """Mark this user as having already emailed the contact person of the package."""
@@ -381,100 +364,111 @@ class ContactController(BaseController):
         userobj.extras['contacted'].append(pkg_id)
         userobj.save()
 
-    def send_contact(self, pkg_id):
-        '''
-        Send a user message from CKAN to dataset distributor contact.
-        Constructs the message and calls :meth:`_send_if_allowed`.
+    def _has_already_contacted(self, userobj, pkg_id):
+        return pkg_id in userobj.extras.get('contacted', [])
 
-        Redirects the user to dataset view page.
+    def _send_message(self, subject, message, recipient_email, recipient_name=None):
+        email_dict = {'subject': subject,
+                      'body': message}
 
-        :param pkg_id: package id
-        :type pkg_id: string
-        '''
-        # Todo: replan and fix when we have multiple distributor emails available
-        # This only works because we have only one contact
-        prologue_template = u'{a} ({b}) has sent you a message regarding the following dataset:\
-\n\n{c} (Identifier: {d})\n\nThe message is below.\n\n{a} ({b}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
-\n\n{c} (Tunniste: {d})\n\nViesti:\n\n    ---'
+        if not recipient_name:
+            # fall back to using the email address as the name of the recipient
+            recipient_name = recipient_email
 
-        epilogue = u'    ---\
-\n\nPlease do not reply directly to this e-mail.\
-\nIf you need to reply to the sender, use the direct e-mail address above.\
-\n\nÄlä vastaa suoraan tähän viestiin. Jos vastaat lähettäjälle, \
-käytä yllä olevaa sähköpostiosoitetta.'
+        recipient_dict = {'display_name': recipient_name, 'email': recipient_email}
 
-        package = Package.get(pkg_id)
-        package_title = package.title if package.title else package.name
-        if c.userobj:
-            user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
+        if c.user and message:
+            send_notification(recipient_dict, email_dict)
 
-            email = utils.get_package_contact_email(pkg_id)
-            recipient = utils.get_package_contact_name(pkg_id)
+    def _prepare_and_send(self, pkg_id, recipient_id, subject, prefix_template, suffix):
+        """
+        Sends a message by email from the logged in user to the appropriate
+        contact address of the given dataset.
 
-            user_msg = request.params.get('msg', '')
-            prologue = prologue_template.format(a=user_name, b=c.userobj.email, c=package_title, d=package.name)
-
-            subject = "Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
-            self._send_if_allowed(pkg_id, subject, recipient, email, user_msg, epilogue, prologue)
-        else:
-            h.flash_error(_("Please login"))
-
-        url = h.url_for(controller='package',
-                        action="read",
-                        id=package.id)
-
-        return redirect(url)
-
-    def send_request(self, pkg_id):
-        '''
-        Send a request to access data to CKAN dataset owner.
-
-        Constructs the message and calls :meth:`_send_if_allowed`.
-
-        Redirects the user to dataset view page.
+        The prefix template should have formatting placeholders for the following arguments:
+        {sender_name}, {sender_email}, {package_title}, {data_pid}
 
         :param pkg_id: package id
         :type pkg_id: string
-        '''
-
-        prologue_template = u'{a} ({b}) is requesting access to data in dataset\n\n{c} (Identifier: {d})\n\n\
-for which you are currently marked as distributor.\n\nThe message is below.\n\n\
-{a} ({b}) pyytää dataa, joka liittyy tietoaineistoon\n\n{c} (Tunniste: {d})\n\nja johon sinut on merkitty jakelijaksi. \
-Mukaan liitetty viesti on alla.\n\n    ---'
-
-        epilogue = u'    ---\n\nPlease do not reply directly to this e-mail.\n\
-If you need to reply to the sender, use the direct e-mail address above.\n\n\
-Älä vastaa suoraan tähän viestiin. Jos haluat lähettää viestin \
-lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
+        :param recipient_id: id of the recipient, as returned by utils.get_package_contacts
+        :type recipient_id: string
+        :param subject: the subject of the message
+        :type subject: string
+        :param prefix_template: the template for the prefix to be automatically included before the user message
+        :type prefix_template: unicode
+        :param suffix: an additional note to be automatically included after the user message
+        :type suffix: unicode
+        """
 
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
-        if c.userobj:
-            user_name = c.userobj.fullname if c.userobj.fullname else c.userobj.name
 
-            log.info("Attempting to send email (access request); user id = {u}, package = {p}".format(u=c.userobj.id, p=pkg_id))
+        sender = self._get_logged_in_user()
+        recipient = self._get_contact_email(pkg_id, recipient_id)
 
-            email = utils.get_package_contact_email(pkg_id)
-            recipient = utils.get_package_contact_name(pkg_id)
+        if not recipient:
+            abort(404, _('Recipient not found'))
 
-            user_msg = request.params.get('msg', '')
-            prologue = prologue_template.format(
-                a=user_name, b=c.userobj.email, c=package_title,
-                d=utils.get_primary_data_pid_from_package(package))
+        user_msg = request.params.get('msg', '')
 
-            subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
-            self._send_if_allowed(pkg_id, subject, recipient, email, user_msg, epilogue, prologue)
+        if sender:
+            if user_msg:
+                if not self._has_already_contacted(c.userobj, pkg_id):
+                    prefix = prefix_template.format(
+                        sender_name=sender['name'],
+                        sender_email=sender['email'],
+                        package_title=package_title,
+                        data_pid=utils.get_primary_data_pid_from_package(package)
+                    )
+
+                    full_msg = u"{a}{b}{c}".format(a=prefix, b=user_msg, c=suffix)
+                    self._send_message(subject, full_msg, recipient.get('email'), recipient.get('name'))
+                    self._mark_package_as_contacted(c.userobj, pkg_id)
+                    h.flash_success(_("Message sent"))
+                else:
+                    h.flash_error(_("Already contacted"))
+            else:
+                h.flash_error(_("No message"))
         else:
             h.flash_error(_("Please login"))
 
-        url = h.url_for(controller='package',
-                        action="read",
-                        id=package.id)
+        url = h.url_for(controller='package', action='read', id=pkg_id)
 
         return redirect(url)
 
+    def send_contact_message(self, pkg_id):
+        """
+        Sends a message by email from the logged in user to the appropriate
+        contact address of the dataset.
 
-    def render_contact(self, pkg_id):
+        :param pkg_id: package id
+        :type pkg_id: string
+        """
+
+        package = Package.get(pkg_id)
+        package_title = package.title if package.title else package.name
+        subject = u"Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
+        recipient_id = request.params.get('recipient', '')
+
+        return self._prepare_and_send(pkg_id, recipient_id, subject, settings.USER_MESSAGE_PREFIX_TEMPLATE, settings.REPLY_TO_SENDER_NOTE)
+
+    def send_request_message(self, pkg_id):
+        """
+        Sends a data request message by email from the logged in user to the appropriate
+        contact address of the dataset.
+
+        :param pkg_id: package id
+        :type pkg_id: string
+        """
+
+        package = Package.get(pkg_id)
+        package_title = package.title if package.title else package.name
+        subject = u"Data access request for dataset / Datapyyntö tietoaineistolle %s" % package_title
+        recipient_id = request.params.get('recipient', '')
+
+        return self._prepare_and_send(pkg_id, recipient_id, subject, settings.DATA_REQUEST_PREFIX_TEMPLATE, settings.REPLY_TO_SENDER_NOTE)
+
+    def render_contact_form(self, pkg_id):
         """
         Render the contact form if allowed.
 
@@ -486,6 +480,10 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
 
         if not c.package:
             abort(404, _("Dataset not found"))
+
+        contacts = utils.get_package_contacts(c.package.id)
+        c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
+        c.recipient_index = request.params.get('recipient', '')
 
         url = h.url_for(controller='package',
                         action="read",
@@ -500,7 +498,7 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
             h.flash_error(_("Please login"))
             return redirect(url)
 
-    def render_request(self, pkg_id):
+    def render_request_form(self, pkg_id):
         """
         Render the access request contact form if allowed.
 
@@ -509,6 +507,14 @@ lähettäjälle, käytä yllä olevaa sähköpostiosoitetta.'
         """
 
         c.package = Package.get(pkg_id)
+
+        if not c.package:
+            abort(404, _("Dataset not found"))
+
+        contacts = utils.get_package_contacts(c.package.id)
+        c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
+        c.recipient_index = request.params.get('recipient', '')
+
         url = h.url_for(controller='package',
                         action="read",
                         id=c.package.id)
