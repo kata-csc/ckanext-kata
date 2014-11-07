@@ -406,6 +406,9 @@ class ContactController(BaseController):
         sender = self._get_logged_in_user()
         recipient = self._get_contact_email(pkg_id, recipient_id)
 
+        if not recipient:
+            abort(404, _('Recipient not found'))
+
         user_msg = request.params.get('msg', '')
 
         if sender:
