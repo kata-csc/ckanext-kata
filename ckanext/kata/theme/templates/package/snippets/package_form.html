@@ -30,7 +30,8 @@ then itself be extended to add/remove blocks of functionality. #}
     <div class="form-actions">
       {% block disclaimer %}
         <p class="action-info-kata small tta-orange">
-          {{ _('Important: By submitting content, you agree to release your contributions under the Open Database License. ') }}
+          {{ _('Important: By submitting content, you agree to release your metadata contributions under the Creative Commons CC0 license.') }}
+          <a href={{ _('http://creativecommons.org/publicdomain/zero/1.0/') }}>{{ _('Learn more about CC0') }}</a>
         </p>
       {% endblock %}
       {% block delete_button %}
