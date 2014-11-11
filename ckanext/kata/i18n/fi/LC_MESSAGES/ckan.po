@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-11-10 13:28+0000\n"
+"POT-Creation-Date: 2014-11-11 13:25+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -420,8 +420,8 @@ msgstr "Palvelun tuottaa "
 
 #: ckanext/kata/theme/templates/footer.html:16
 #: ckanext/kata/theme/templates/footer.html:22
-msgid "http://www.csc.fi/english"
-msgstr "http://www.csc.fi/index_html"
+msgid "http://www.csc.fi/home"
+msgstr "https://www.csc.fi/etusivu"
 
 #: ckanext/kata/theme/templates/footer.html:16
 msgid "CSC - IT Center for Science Ltd"

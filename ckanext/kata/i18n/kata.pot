@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-10 13:28+0000\n"
+"POT-Creation-Date: 2014-11-11 13:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -403,7 +403,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:16
 #: ckanext/kata/theme/templates/footer.html:22
-msgid "http://www.csc.fi/english"
+msgid "http://www.csc.fi/home"
 msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:16
