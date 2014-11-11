@@ -20,7 +20,6 @@ from paste.deploy.converters import asbool
 from pylons import config, request, session, g, response
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
-
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.user import UserController
@@ -39,7 +38,6 @@ import ckan.plugins as plugins
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
-import ckanext.kata.exceptions as kata_exceptions
 import ckanext.kata.settings as settings
 from ckanext.kata import utils
 
