@@ -193,7 +193,9 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['owner_org'] = ''
         output = call_action_api(self.app, 'package_create', apikey=self.user_anna.apikey,
-                        status=403, **data_dict)
+                        status=409, **data_dict)
+        assert output
+        assert output.get('__type') == 'Validation Error'
 
     def test_create_dataset_no_org_2(self):
         '''A user with organization cannot create organizationless dataset'''
