@@ -59,7 +59,7 @@ class TestBasics(TestCase):
         """Test that Selenium can access the front page."""
 
         self.browser.get("https://localhost/")
-        assert "Kata" in self.browser.title
+        assert "Etsin" in self.browser.title
 
     def test_navigation(self):
         """
