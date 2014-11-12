@@ -458,8 +458,6 @@ class TestWithUser(TestCase):
                 print ("%r ( %r ) : %r " % (funct, param, values))
                 field = funct(param)
 
-                browser.get_screenshot_as_file('_add_dataset_advanced_____DEBUG_.png')
-
                 for value in values:
                     if value == WebElement.click:
                         field.click()
@@ -468,7 +466,7 @@ class TestWithUser(TestCase):
                     if wait_for:
                         wait_for()
 
-        except (NoSuchElementException, ElementNotVisibleException):
+        except (NoSuchElementException, ElementNotVisibleException, TimeoutException):
             browser.get_screenshot_as_file('_add_dataset_advanced.png')
             browser.quit()
             raise
