@@ -191,6 +191,9 @@ ERRORS = {
     u'Tag string': u'Keywords',
     u'Tags': u'Keywords',
     u'Owner org': u'Owner organization',
+    u'Contact': u'Distributor',
+    u'Yhteydenotto': N_(u'Distributor'),
+    u'Organisaatio': N_(u'Owner organization')
 }
 
 TRANSLATION_DUMMIES = [  # Dynamically created strings that should be translated

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-11 13:28+0000\n"
+"POT-Creation-Date: 2014-11-12 05:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgid "Required information missing"
 msgstr ""
 
 #: ckanext/kata/actions.py:489 ckanext/kata/actions.py:553
-#: ckanext/kata/controllers.py:656 ckanext/kata/controllers.py:734
+#: ckanext/kata/controllers.py:654 ckanext/kata/controllers.py:732
 msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:494 ckanext/kata/actions.py:498
-#: ckanext/kata/controllers.py:731
+#: ckanext/kata/controllers.py:729
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -89,103 +89,103 @@ msgstr ""
 msgid "User %s not authorized to add a dataset"
 msgstr ""
 
-#: ckanext/kata/controllers.py:259 ckanext/kata/controllers.py:311
-#: ckanext/kata/controllers.py:482 ckanext/kata/controllers.py:512
+#: ckanext/kata/controllers.py:257 ckanext/kata/controllers.py:309
+#: ckanext/kata/controllers.py:480 ckanext/kata/controllers.py:510
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:268
+#: ckanext/kata/controllers.py:266
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of package"
 " %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:271 ckanext/kata/controllers.py:320
+#: ckanext/kata/controllers.py:269 ckanext/kata/controllers.py:318
 msgid "A request is already pending"
 msgstr ""
 
-#: ckanext/kata/controllers.py:274 ckanext/kata/controllers.py:323
+#: ckanext/kata/controllers.py:272 ckanext/kata/controllers.py:321
 msgid "You must be logged in to request edit access"
 msgstr ""
 
-#: ckanext/kata/controllers.py:294
+#: ckanext/kata/controllers.py:292
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:299
+#: ckanext/kata/controllers.py:297
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:410
+#: ckanext/kata/controllers.py:408
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:427 ckanext/kata/controllers.py:690
+#: ckanext/kata/controllers.py:425 ckanext/kata/controllers.py:688
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:429 ckanext/kata/controllers.py:495
-#: ckanext/kata/controllers.py:525
+#: ckanext/kata/controllers.py:427 ckanext/kata/controllers.py:493
+#: ckanext/kata/controllers.py:523
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:431
+#: ckanext/kata/controllers.py:429
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:433 ckanext/kata/controllers.py:498
-#: ckanext/kata/controllers.py:528
+#: ckanext/kata/controllers.py:431 ckanext/kata/controllers.py:496
+#: ckanext/kata/controllers.py:526
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:565
+#: ckanext/kata/controllers.py:563
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:567
+#: ckanext/kata/controllers.py:565
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:579
+#: ckanext/kata/controllers.py:577
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:631
+#: ckanext/kata/controllers.py:629
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:653
+#: ckanext/kata/controllers.py:651
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:673
+#: ckanext/kata/controllers.py:671
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:675 ckanext/kata/validators.py:137
+#: ckanext/kata/controllers.py:673 ckanext/kata/validators.py:137
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:695
+#: ckanext/kata/controllers.py:693
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:790
+#: ckanext/kata/controllers.py:788
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:815
+#: ckanext/kata/controllers.py:813
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:820
+#: ckanext/kata/controllers.py:818
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:824
+#: ckanext/kata/controllers.py:822
 msgid "Invalid upload URL"
 msgstr ""
 
@@ -231,7 +231,7 @@ msgstr ""
 msgid "Contributor"
 msgstr ""
 
-#: ckanext/kata/settings.py:56
+#: ckanext/kata/settings.py:56 ckanext/kata/settings.py:195
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:13
 msgid "Distributor"
 msgstr ""
@@ -250,31 +250,35 @@ msgstr ""
 msgid "Producer"
 msgstr ""
 
-#: ckanext/kata/settings.py:197
-msgid "Go to API"
-msgstr ""
-
-#: ckanext/kata/settings.py:198
-msgid "Go to Application"
-msgstr ""
-
-#: ckanext/kata/settings.py:199
-msgid "Go to Idea"
+#: ckanext/kata/settings.py:196
+msgid "Owner organization"
 msgstr ""
 
 #: ckanext/kata/settings.py:200
-msgid "Go to News Article"
+msgid "Go to API"
 msgstr ""
 
 #: ckanext/kata/settings.py:201
-msgid "Go to Paper"
+msgid "Go to Application"
 msgstr ""
 
 #: ckanext/kata/settings.py:202
-msgid "Go to Post"
+msgid "Go to Idea"
 msgstr ""
 
 #: ckanext/kata/settings.py:203
+msgid "Go to News Article"
+msgstr ""
+
+#: ckanext/kata/settings.py:204
+msgid "Go to Paper"
+msgstr ""
+
+#: ckanext/kata/settings.py:205
+msgid "Go to Post"
+msgstr ""
+
+#: ckanext/kata/settings.py:206
 msgid "Go to Visualization"
 msgstr ""
 
