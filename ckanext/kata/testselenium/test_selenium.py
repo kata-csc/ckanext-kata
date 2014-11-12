@@ -40,7 +40,6 @@ from selenium.webdriver.common.by import By
 import time
 
 from unittest import TestCase
-from unittest2 import skip
 
 
 class TestBasics(TestCase):
@@ -479,188 +478,191 @@ class TestWithUser(TestCase):
 
         return browser.current_url
 
-    @skip("TODO: Fix this test")
-    def test_add_dataset_all_fields(self):
-        """
-        Create a dataset with all fields filled.
 
-        Also test that advanced search can find the dataset.
-        """
 
-        browser = webdriver.Firefox()
+    # TODO: Fix this test
 
-        username = u'selenium_advanced_user' + str(int(time.time()*100))
-        self._register_user(browser, username=username)
-
-        org_name = 'seleniumtesting' + str(int(time.time()*100))
-        self._create_organization(org_name, username, 'editor')
-
-        def _choose_organization(organization):
-            '''
-            Choose an organization from dropdown menu
-            '''
-            element = browser.find_element_by_xpath(
-                "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")  # CKAN Generated field
-
-            ac = ActionChains(browser)
-            ac.move_to_element_with_offset(element, 0.1, 0.1).click().perform()
-
-            browser.implicitly_wait(2)
-            for o in list(organization) + [Keys.RETURN]:
-                ac.send_keys(o).perform()
-                browser.implicitly_wait(2)
-
-        def _choose_visibility(visibility):
-            '''
-            Choose visibility
-            '''
-            element = browser.find_element_by_xpath(
-                "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")
-
-            ac = ActionChains(browser)
-            ac.move_to_element_with_offset(element, 0.1, 0.1).click().perform()
-
-            browser.implicitly_wait(2)
-            for o in list(visibility) + [Keys.RETURN]:
-                ac.send_keys(o).perform()
-                browser.implicitly_wait(2)
-
-        def wait_for_element(wait_for):
-            '''Wrap WebDriverWait
-            :param wait_for: tuple containing locator strategy and element name, for example (By.NAME, 'agent__4__name')
-            '''
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located(wait_for))
-
-        # TODO: Use all fields.
-
-        dataset_to_add = [
-            # Add titles
-            (browser.find_element_by_id, 'langtitle__0__value_id', [u'Advanced Selenium Dataset'], None),
-            (browser.find_element_by_name, 'langtitle__0__lang', [u'en'], None),
-            # (browser.find_element_by_id, 'title__1__value_id', [u'Selenium-tietoaineisto'], None),
-            # (browser.find_element_by_name, 'title__1__lang', [u'fi'], None),
-            # (browser.find_element_by_id, 'title__2__value_id', [u'Selenium ÅÄÖ'], None),
-            # (browser.find_element_by_name, 'title__2__lang', [u'sv'], None),
-
-            # Add authors
-            (browser.find_element_by_name, 'agent__0__name', [u'Ascii Author'], None),
-            (browser.find_element_by_name, 'agent__0__organisation', [u'CSC Oy'], None),
-
-            (browser.find_element_by_id, 'authors_add', [WebElement.click],
-             partial(wait_for_element, (By.NAME, 'agent__4__name'))),
-            (browser.find_element_by_name, 'agent__4__name', [u'Åke Author'], None),
-            (browser.find_element_by_name, 'agent__4__organisation', [u'Organization 2'], None),
-
-            (browser.find_element_by_id, 'authors_add', [WebElement.click],
-             partial(wait_for_element, (By.NAME, 'agent__5__name'))),
-            (browser.find_element_by_name, 'agent__5__name', [u'прстуфхцчшчьыъэюя Author'], None),
-            (browser.find_element_by_name, 'agent__5__organisation', [u'Organization 3'], None),
-
-            # keywords
-            (browser.find_element_by_xpath,
-             "//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input",
-             ['Selenium', Keys.RETURN, 'Keyword2', Keys.RETURN], None),
-
-            (browser.find_element_by_id, 'language', [u'eng, fin, swe, tlh'], None),
-
-            (browser.find_element_by_id, 'contact__0__name', [u'Selenium'], None),
-            (browser.find_element_by_id, 'contact__0__phone', [u'+35891234567'], None),
-            (browser.find_element_by_id, 'contact__0__email', [u'kata.selenium@gmail.com'], None),
-            (browser.find_element_by_id, 'contact__0__URL', [u'https://localhost/'], None),
-
-            (browser.find_element_by_id, 'contacts_add', [WebElement.click],
-             partial(wait_for_element, (By.NAME, 'contact__1__name'))),
-
-            (browser.find_element_by_id, 'contact__1__name', [u'Selenium 2'], None),
-            (browser.find_element_by_id, 'contact__1__phone', [u'+35881234567'], None),
-            (browser.find_element_by_id, 'contact__1__email', [u'kata.selenium@gmail.com'], None),
-            (browser.find_element_by_id, 'contact__1__URL', [u'https://localhost/test2'], None),
-
-            (browser.find_element_by_name, 'projdis', [WebElement.click], None),
-
-            (browser.find_element_by_name, 'agent__2__organisation', [u'Selenium Project'], None),
-            (browser.find_element_by_name, 'agent__2__name', [u'Selenium Funder'], None),
-            (browser.find_element_by_name, 'agent__2__fundingid', [u'Selenium Funding'], None),
-            (browser.find_element_by_name, 'agent__2__URL', [u'https://localhost/'], None),
-
-            (browser.find_element_by_id, 'funders_add', [WebElement.click],
-             partial(wait_for_element, (By.NAME, 'agent__6__organisation'))),
-            (browser.find_element_by_name, 'agent__6__organisation', [u'Selenium Project 2'], None),
-            (browser.find_element_by_name, 'agent__6__fundingid', [u'Selenium Funding 2'], None),
-
-            (browser.find_element_by_name, 'agent__3__name', [u'прстуфхцчшчьыъэюя'], None),
-            (browser.find_element_by_id, 'owners_add', [WebElement.click],
-             partial(wait_for_element, (By.NAME, 'agent__7__name'))),
-            (browser.find_element_by_name, 'agent__7__name', [u'прстуфхцчшчьыъэюя 2'], None),
-
-            (browser.find_element_by_id, 'pids__0__id', [u'data-pid-' + str(int(time.time() * 100))], None),
-            # (browser.find_element_by_id, 'pids__0__provider', [u'Selenium'], None),
-            (browser.find_element_by_name, 'pids__1__type', [u'Metadata'], None),
-            (browser.find_element_by_name, 'pids__1__id', [u'metadata-pid-' + str(int(time.time() * 100))], None),
-            # (browser.find_element_by_id, 'pids__1__provider', [u'Selenium'], None),
-            (browser.find_element_by_id, 'pids_add', [WebElement.click],
-             partial(wait_for_element, (By.NAME, 'pids__2__type'))),
-            (browser.find_element_by_name, 'pids__2__type', [u'Version'], None),
-            (browser.find_element_by_name, 'pids__2__id', [u'version-pid-' + str(int(time.time() * 100))], None),
-            # (browser.find_element_by_id, 'pids__2__provider', [u'Selenium'], None),
-
-            (browser.find_element_by_id, 'direct_download', [Keys.SPACE], None),
-            (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),
-
-            (_choose_organization, org_name, [], None),
-
-            # THIS IS THE PROPER WAY TO CHOOSE AN OPTION FROM SELECT ELEMENT
-            (browser.find_element_by_xpath, "//select[@name='private']/option[text()='Published']",
-             [WebElement.click], None),
-
-            # recommended info
-
-            (browser.find_element_by_xpath,
-             "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input",
-             [u'Espoo, Finland', Keys.RETURN], None),
-            # (browser.find_element_by_id, 'geographic_coverage_field', [u'Espoo, Finland', Keys.RETURN], None),
-
-            #(find_select2_choice_inputs, 2, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
-            #(find_select2_choice_inputs, 2, ['Selenium discipline', Keys.RETURN], None),  # discipline
-
-            (browser.find_element_by_xpath,
-             "//input[@id='discipline_field']/../div[@class='select2-container select2-container-multi']//input",
-             [u'Matematiikka', Keys.RETURN], None),
-            # (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.RETURN], None),
-
-            (browser.find_element_by_xpath,
-             "//input[@id='mimetype']/../div[@class='select2-container select2-container-multi']//input",
-             [u'application/pdf', Keys.RETURN], None),
-            (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
-            (browser.find_element_by_id, 'algorithm', [u'md5'], None),
-
-            (browser.find_element_by_id, 'field-notes', [u'Some description about this dataset'], None),
-
-            (browser.find_element_by_xpath, "//button[@name='save']", [WebElement.click], None)
-        ]
-
-        dataset_url = self._add_dataset_advanced(browser, dataset_to_add)
-
-        # Use search to test that the new dataset (or some other similar dataset...) is found from index.
-
-        browser.get("https://localhost/en/dataset")
-
-        try:
-            btn = browser.find_element_by_xpath("//a[contains(@href, '#advanced-search-tab')]")
-            btn.click()
-
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.ID, 'advanced-search-date-end')))
-
-            field = browser.find_element_by_id("advanced-search-text-1")
-            field.send_keys('Advanced Selenium')
-            field.send_keys(Keys.ENTER)
-
-            WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//footer")))
-
-            browser.find_element_by_xpath("//li/div/h3/a[contains(text(),'Advanced Selenium Dataset')]")
-
-        except (TimeoutException, NoSuchElementException):
-            browser.get_screenshot_as_file('test_3_advanced_search.png')
-            raise
-
-        browser.quit()
+    # def test_add_dataset_all_fields(self):
+    #     """
+    #     Create a dataset with all fields filled.
+    #
+    #     Also test that advanced search can find the dataset.
+    #     """
+    #
+    #     browser = webdriver.Firefox()
+    #
+    #     username = u'selenium_advanced_user' + str(int(time.time()*100))
+    #     self._register_user(browser, username=username)
+    #
+    #     org_name = 'seleniumtesting' + str(int(time.time()*100))
+    #     self._create_organization(org_name, username, 'editor')
+    #
+    #     def _choose_organization(organization):
+    #         '''
+    #         Choose an organization from dropdown menu
+    #         '''
+    #         element = browser.find_element_by_xpath(
+    #             "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")  # CKAN Generated field
+    #
+    #         ac = ActionChains(browser)
+    #         ac.move_to_element_with_offset(element, 0.1, 0.1).click().perform()
+    #
+    #         browser.implicitly_wait(2)
+    #         for o in list(organization) + [Keys.RETURN]:
+    #             ac.send_keys(o).perform()
+    #             browser.implicitly_wait(2)
+    #
+    #     def _choose_visibility(visibility):
+    #         '''
+    #         Choose visibility
+    #         '''
+    #         element = browser.find_element_by_xpath(
+    #             "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")
+    #
+    #         ac = ActionChains(browser)
+    #         ac.move_to_element_with_offset(element, 0.1, 0.1).click().perform()
+    #
+    #         browser.implicitly_wait(2)
+    #         for o in list(visibility) + [Keys.RETURN]:
+    #             ac.send_keys(o).perform()
+    #             browser.implicitly_wait(2)
+    #
+    #     def wait_for_element(wait_for):
+    #         '''Wrap WebDriverWait
+    #         :param wait_for: tuple containing locator strategy and element name, for example (By.NAME, 'agent__4__name')
+    #         '''
+    #         WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located(wait_for))
+    #
+    #     # TODO: Use all fields.
+    #
+    #     dataset_to_add = [
+    #         # Add titles
+    #         (browser.find_element_by_id, 'langtitle__0__value_id', [u'Advanced Selenium Dataset'], None),
+    #         (browser.find_element_by_name, 'langtitle__0__lang', [u'en'], None),
+    #         # (browser.find_element_by_id, 'title__1__value_id', [u'Selenium-tietoaineisto'], None),
+    #         # (browser.find_element_by_name, 'title__1__lang', [u'fi'], None),
+    #         # (browser.find_element_by_id, 'title__2__value_id', [u'Selenium ÅÄÖ'], None),
+    #         # (browser.find_element_by_name, 'title__2__lang', [u'sv'], None),
+    #
+    #         # Add authors
+    #         (browser.find_element_by_name, 'agent__0__name', [u'Ascii Author'], None),
+    #         (browser.find_element_by_name, 'agent__0__organisation', [u'CSC Oy'], None),
+    #
+    #         (browser.find_element_by_id, 'authors_add', [WebElement.click],
+    #          partial(wait_for_element, (By.NAME, 'agent__4__name'))),
+    #         (browser.find_element_by_name, 'agent__4__name', [u'Åke Author'], None),
+    #         (browser.find_element_by_name, 'agent__4__organisation', [u'Organization 2'], None),
+    #
+    #         (browser.find_element_by_id, 'authors_add', [WebElement.click],
+    #          partial(wait_for_element, (By.NAME, 'agent__5__name'))),
+    #         (browser.find_element_by_name, 'agent__5__name', [u'прстуфхцчшчьыъэюя Author'], None),
+    #         (browser.find_element_by_name, 'agent__5__organisation', [u'Organization 3'], None),
+    #
+    #         # keywords
+    #         (browser.find_element_by_xpath,
+    #          "//input[@id='field-tags']/../div[@class='select2-container select2-container-multi']//input",
+    #          ['Selenium', Keys.RETURN, 'Keyword2', Keys.RETURN], None),
+    #
+    #         (browser.find_element_by_id, 'language', [u'eng, fin, swe, tlh'], None),
+    #
+    #         (browser.find_element_by_id, 'contact__0__name', [u'Selenium'], None),
+    #         (browser.find_element_by_id, 'contact__0__phone', [u'+35891234567'], None),
+    #         (browser.find_element_by_id, 'contact__0__email', [u'kata.selenium@gmail.com'], None),
+    #         (browser.find_element_by_id, 'contact__0__URL', [u'https://localhost/'], None),
+    #
+    #         (browser.find_element_by_id, 'contacts_add', [WebElement.click],
+    #          partial(wait_for_element, (By.NAME, 'contact__1__name'))),
+    #
+    #         (browser.find_element_by_id, 'contact__1__name', [u'Selenium 2'], None),
+    #         (browser.find_element_by_id, 'contact__1__phone', [u'+35881234567'], None),
+    #         (browser.find_element_by_id, 'contact__1__email', [u'kata.selenium@gmail.com'], None),
+    #         (browser.find_element_by_id, 'contact__1__URL', [u'https://localhost/test2'], None),
+    #
+    #         (browser.find_element_by_name, 'projdis', [WebElement.click], None),
+    #
+    #         (browser.find_element_by_name, 'agent__2__organisation', [u'Selenium Project'], None),
+    #         (browser.find_element_by_name, 'agent__2__name', [u'Selenium Funder'], None),
+    #         (browser.find_element_by_name, 'agent__2__fundingid', [u'Selenium Funding'], None),
+    #         (browser.find_element_by_name, 'agent__2__URL', [u'https://localhost/'], None),
+    #
+    #         (browser.find_element_by_id, 'funders_add', [WebElement.click],
+    #          partial(wait_for_element, (By.NAME, 'agent__6__organisation'))),
+    #         (browser.find_element_by_name, 'agent__6__organisation', [u'Selenium Project 2'], None),
+    #         (browser.find_element_by_name, 'agent__6__fundingid', [u'Selenium Funding 2'], None),
+    #
+    #         (browser.find_element_by_name, 'agent__3__name', [u'прстуфхцчшчьыъэюя'], None),
+    #         (browser.find_element_by_id, 'owners_add', [WebElement.click],
+    #          partial(wait_for_element, (By.NAME, 'agent__7__name'))),
+    #         (browser.find_element_by_name, 'agent__7__name', [u'прстуфхцчшчьыъэюя 2'], None),
+    #
+    #         (browser.find_element_by_id, 'pids__0__id', [u'data-pid-' + str(int(time.time() * 100))], None),
+    #         # (browser.find_element_by_id, 'pids__0__provider', [u'Selenium'], None),
+    #         (browser.find_element_by_name, 'pids__1__type', [u'Metadata'], None),
+    #         (browser.find_element_by_name, 'pids__1__id', [u'metadata-pid-' + str(int(time.time() * 100))], None),
+    #         # (browser.find_element_by_id, 'pids__1__provider', [u'Selenium'], None),
+    #         (browser.find_element_by_id, 'pids_add', [WebElement.click],
+    #          partial(wait_for_element, (By.NAME, 'pids__2__type'))),
+    #         (browser.find_element_by_name, 'pids__2__type', [u'Version'], None),
+    #         (browser.find_element_by_name, 'pids__2__id', [u'version-pid-' + str(int(time.time() * 100))], None),
+    #         # (browser.find_element_by_id, 'pids__2__provider', [u'Selenium'], None),
+    #
+    #         (browser.find_element_by_id, 'direct_download', [Keys.SPACE], None),
+    #         (browser.find_element_by_id, 'direct_download_URL', [u'https://localhost/'], None),
+    #
+    #         (_choose_organization, org_name, [], None),
+    #
+    #         # THIS IS THE PROPER WAY TO CHOOSE AN OPTION FROM SELECT ELEMENT
+    #         (browser.find_element_by_xpath, "//select[@name='private']/option[text()='Published']",
+    #          [WebElement.click], None),
+    #
+    #         # recommended info
+    #
+    #         (browser.find_element_by_xpath,
+    #          "//input[@id='geographic_coverage_field']/../div[@class='select2-container select2-container-multi']//input",
+    #          [u'Espoo, Finland', Keys.RETURN], None),
+    #         # (browser.find_element_by_id, 'geographic_coverage_field', [u'Espoo, Finland', Keys.RETURN], None),
+    #
+    #         #(find_select2_choice_inputs, 2, ['Ultimate Selenium collection', Keys.ENTER], None),  # collection / series
+    #         #(find_select2_choice_inputs, 2, ['Selenium discipline', Keys.RETURN], None),  # discipline
+    #
+    #         (browser.find_element_by_xpath,
+    #          "//input[@id='discipline_field']/../div[@class='select2-container select2-container-multi']//input",
+    #          [u'Matematiikka', Keys.RETURN], None),
+    #         # (browser.find_element_by_id, 'discipline_field', [u'Matematiikka', Keys.RETURN], None),
+    #
+    #         (browser.find_element_by_xpath,
+    #          "//input[@id='mimetype']/../div[@class='select2-container select2-container-multi']//input",
+    #          [u'application/pdf', Keys.RETURN], None),
+    #         (browser.find_element_by_id, 'checksum', [u'f60e586509d99944e2d62f31979a802f'], None),
+    #         (browser.find_element_by_id, 'algorithm', [u'md5'], None),
+    #
+    #         (browser.find_element_by_id, 'field-notes', [u'Some description about this dataset'], None),
+    #
+    #         (browser.find_element_by_xpath, "//button[@name='save']", [WebElement.click], None)
+    #     ]
+    #
+    #     dataset_url = self._add_dataset_advanced(browser, dataset_to_add)
+    #
+    #     # Use search to test that the new dataset (or some other similar dataset...) is found from index.
+    #
+    #     browser.get("https://localhost/en/dataset")
+    #
+    #     try:
+    #         btn = browser.find_element_by_xpath("//a[contains(@href, '#advanced-search-tab')]")
+    #         btn.click()
+    #
+    #         WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.ID, 'advanced-search-date-end')))
+    #
+    #         field = browser.find_element_by_id("advanced-search-text-1")
+    #         field.send_keys('Advanced Selenium')
+    #         field.send_keys(Keys.ENTER)
+    #
+    #         WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//footer")))
+    #
+    #         browser.find_element_by_xpath("//li/div/h3/a[contains(text(),'Advanced Selenium Dataset')]")
+    #
+    #     except (TimeoutException, NoSuchElementException):
+    #         browser.get_screenshot_as_file('test_3_advanced_search.png')
+    #         raise
+    #
+    #     browser.quit()
