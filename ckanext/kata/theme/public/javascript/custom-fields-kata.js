@@ -11,6 +11,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       fieldSelector: '.control-custom',
       numfields: 1,
       index: null,
+      keep: null
     },
 
     /* Initializes the module and attaches custom event listeners. This
@@ -84,11 +85,13 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         return (string || '').replace(/\d+/, get_number);
       }
 
-      var input = field.find(":input").not("[name*='role']");
-      input.val('').attr('id', increment).attr('name', increment);
-
-      var roleField = field.find(":input[name*='role']");
-      roleField.attr('id', increment).attr('name', increment);
+      var input = field.find(":input");
+      input.attr('id', increment).attr('name', increment);
+      input = input.not("[name*='role']")
+      if (this.options.keep) {
+        input = input.not("[name*='" + this.options.keep + "']");
+      }
+      input.val('')
 
       var label = field.find('label');
       label.text(increment).attr('for', increment);

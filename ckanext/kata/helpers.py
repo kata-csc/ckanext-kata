@@ -39,6 +39,8 @@ class LoopIndex(object):
         """ Returns next index number, but does not increase value. """
         return self.index + 1
 
+    def __repr__(self):
+        return str(self.index)
 
 def has_agents_field(data_dict, field):
     '''Return true if some of the data dict's agents has attribute given in field.'''
