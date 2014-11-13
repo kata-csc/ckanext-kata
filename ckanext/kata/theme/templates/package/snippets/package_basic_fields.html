@@ -20,6 +20,7 @@
     {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
 
     <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />
+    <input type="hidden" value="True" id="private" name="private"/>
 </div>
 
 {% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
