@@ -24,7 +24,7 @@
     {% set primary_pids = h.get_pids_by_type('data', data, primary=True) %}
     {% set primary_pid = primary_pids[0] or dict(type='data', primary='True') %}
 
-    <h3 class="module-heading-add-dataset">{{ _("Data, primary") }}</h3>
+    <h3 class="module-heading-add-dataset">{{ _("Primary data identifier") }}</h3>
     <div class="module-content">
       <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
       <input type="hidden" name="pids__{{ index }}__type" value="data" />
@@ -37,7 +37,7 @@
     <input type="hidden" id="name" name="name" value="" />
 
     {% for pid_type in pid_types %}
-      <h3 class="module-heading-add-dataset">{{ _(pid_type | capitalize) }}</h3>
+      <h3 class="module-heading-add-dataset">{% if pid_type == 'data' %} {{ _('Additional data identifiers') }} {% else %}{{ _(pid_type | capitalize) }} {{ _('identifiers') }}{% endif %}</h3>
       <div class="module-content">
         <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type">
           {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
