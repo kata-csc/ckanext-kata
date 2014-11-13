@@ -192,6 +192,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'resource_update': auth_functions.edit_resource,
             'package_create': auth_functions.package_create,
             'package_show': auth_functions.package_show,
+            'user_list': auth_functions.user_list,
+            'user_autocomplete': auth_functions.user_autocomplete,
         }
 
     def get_actions(self):

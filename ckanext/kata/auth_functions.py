@@ -147,3 +147,26 @@ def kata_has_user_permission_for_org(org_id, user_name, permission):
     if org_id and user_name and permission:
         return True
     return False
+
+def user_list(context, data_dict):
+    '''
+    Override to prevent access to user listing for non-admin users.
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    return logic_auth.get.sysadmin(context, data_dict)
+
+def user_autocomplete(context, data_dict):
+    '''
+    Override to separate user autocomplete authorization from user_list.
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    if context.get('user'):
+        return True
+    else:
+        return False
