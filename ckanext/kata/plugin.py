@@ -194,6 +194,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_show': auth_functions.package_show,
             'user_list': auth_functions.user_list,
             'user_autocomplete': auth_functions.user_autocomplete,
+            'user_activity_list': auth_functions.user_activity_list,
         }
 
     def get_actions(self):
@@ -224,6 +225,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'resource_create': actions.resource_create,
             'resource_delete': actions.resource_delete,
             'resource_update': actions.resource_update,
+            'user_activity_list': actions.user_activity_list,
+            'user_activity_list_html': actions.user_activity_list_html,
+            'package_activity_list': actions.package_activity_list,
+            'package_activity_list_html': actions.package_activity_list_html,
+            'group_activity_list': actions.group_activity_list,
+            'group_activity_list_html': actions.group_activity_list_html,
+            'organization_activity_list': actions.organization_activity_list,
+            'organization_activity_list_html': actions.organization_activity_list_html,
         }
 
     def get_helpers(self):

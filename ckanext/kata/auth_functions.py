@@ -160,13 +160,24 @@ def user_list(context, data_dict):
 
 def user_autocomplete(context, data_dict):
     '''
-    Override to separate user autocomplete authorization from user_list.
+    Override to explicitly allow logged in users to have
+    user autocompletion even if user_list is disallowed.
     :param context:
     :param data_dict:
     :return:
     '''
 
     if context.get('user'):
-        return True
+        return {'success': True}
     else:
-        return False
+        return {'success': False}
+
+def user_activity_list(context, data_dict):
+    '''
+    Disables user activity listing for non-sysadmin users.
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    return logic_auth.get.sysadmin(context, data_dict)

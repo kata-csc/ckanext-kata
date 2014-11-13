@@ -681,3 +681,57 @@ def package_owner_org_update(context, data_dict):
     pkg = model.Package.get(data_dict['id'])
 
     return ckan.logic.action.update.package_owner_org_update(context, data_dict)
+
+@side_effect_free
+def user_activity_list(context, data_dict):
+    '''
+    Override to add stricter access limits for retrieving activity lists.
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    check_access('user_activity_list', context)
+    return ckan.logic.action.get.user_activity_list(context, data_dict)
+
+@side_effect_free
+def package_activity_list(context, data_dict):
+    check_access('user_activity_list', context)
+    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+
+@side_effect_free
+def group_activity_list(context, data_dict):
+    check_access('user_activity_list', context)
+    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+
+@side_effect_free
+def organization_activity_list(context, data_dict):
+    check_access('user_activity_list', context)
+    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+
+@side_effect_free
+def user_activity_list_html(context, data_dict):
+    '''
+    Override to add stricter access limits for retrieving activity lists.
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    check_access('user_activity_list', context)
+    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+
+@side_effect_free
+def package_activity_list_html(context, data_dict):
+    check_access('user_activity_list', context)
+    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+
+@side_effect_free
+def group_activity_list_html(context, data_dict):
+    check_access('user_activity_list', context)
+    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+
+@side_effect_free
+def organization_activity_list_html(context, data_dict):
+    check_access('user_activity_list', context)
+    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
