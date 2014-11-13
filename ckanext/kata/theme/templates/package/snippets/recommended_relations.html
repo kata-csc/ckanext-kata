@@ -28,18 +28,6 @@
         {% endcall %}
 #}
 
-    {# Autocomplete for discipline/branch of science #}
-
-    <div class="kata-autocomplete">
-      <h3 class="module-heading-add-dataset optional">{{ _('Discipline/branch of science') }}</h3>
-
-      {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click.') }}
-      <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
-      <span class="kata-btn-span tta-orange">?</span></button><br /><br />
-
-      {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?'} %}
-      {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-medium'], attrs=tag_attrs) }}
-    </div>
     <br />
   </div>
 </section>

@@ -6,19 +6,9 @@
 {% set lastevent = 1 %}
 
 <div>
-  <section class="module">
-    <h2 class="module-heading-add-dataset">{{ _('Recommended information') }}</h2>
-
-    <div class="module-content" id="recommended">
-        {{ _('Metadata in this section is not compulsory, but can provide important information and help others to find your data.') }}
-    </div>
-  </section>
-
   <div>
     {% snippet 'package/snippets/recommended_coverage.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
-    {% snippet 'package/snippets/recommended_relations.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
     {% snippet 'package/snippets/recommended_file_information.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
     {% snippet 'package/snippets/recommended_lifecycle_events.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
-    {% snippet 'package/snippets/recommended_description.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
   </div>
 </div>
