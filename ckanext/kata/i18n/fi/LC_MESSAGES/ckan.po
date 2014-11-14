@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-11-12 05:25+0000\n"
+"POT-Creation-Date: 2014-11-14 05:19+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -211,19 +211,19 @@ msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/helpers.py:413
+#: ckanext/kata/helpers.py:415
 #: ckanext/kata/theme/templates/package/read.html:13
 msgid "Unpublished"
 msgstr "Julkaisematon"
 
-#: ckanext/kata/helpers.py:413
+#: ckanext/kata/helpers.py:415
 msgid "Published"
 msgstr "Julkaistu"
 
 #: ckanext/kata/settings.py:54 ckanext/kata/theme/templates/kata/help.html:303
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:22
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:27
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:62
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:16
 #: ckanext/kata/theme/templates/revision/read.html:50
 msgid "Author"
 msgstr "Tekijä"
@@ -233,17 +233,18 @@ msgid "Contributor"
 msgstr "Avustaja"
 
 #: ckanext/kata/settings.py:56 ckanext/kata/settings.py:195
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:13
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:89
 msgid "Distributor"
 msgstr "Jakelija"
 
 #: ckanext/kata/settings.py:57 ckanext/kata/theme/templates/kata/help.html:294
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:90
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:84
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:160
 msgid "Funder"
 msgstr "Rahoittaja"
 
 #: ckanext/kata/settings.py:58 ckanext/kata/theme/templates/kata/help.html:299
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:195
 msgid "Owner"
 msgstr "Omistaja"
 
@@ -660,7 +661,7 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/package/read_base.html:5
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
 #: ckanext/kata/theme/templates/package/resource_read.html:21
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:24
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:48
 #: ckanext/kata/theme/templates/user/read.html:8
 msgid "Edit"
 msgstr "Muokkaa"
@@ -708,7 +709,7 @@ msgstr "minun-ryhmäni"
 #: ckanext/kata/theme/templates/kata/help.html:359
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:20
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:111
-#: ckanext/kata/theme/templates/package/snippets/recommended_description.html:7
+#: ckanext/kata/theme/templates/package/snippets/recommended_description.html:6
 msgid "Description"
 msgstr "Kuvaus"
 
@@ -1738,7 +1739,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/help.html:143
 msgid ""
 "Contributors: Contributor and contributors's organisation. Multiple "
-"author/organisation pairs can be given."
+"contributor/organisation pairs can be given."
 msgstr ""
 "Muut tekijät: muu tekijä ja muun tekijän organisaatio. Metadataan voidaan"
 " syöttää useampia tekijä-organisaatio -pareja."
@@ -1860,7 +1861,6 @@ msgstr ""
 "voi käyttää dataasi ja mahdollisesti miten he voivat sitä käyttää."
 
 #: ckanext/kata/theme/templates/kata/help.html:184
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:10
 msgid "Recommended information"
 msgstr "Suositellut tiedot"
 
@@ -2196,7 +2196,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:293
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:92
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:88
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:164
 msgid "Funding id"
 msgstr "Rahoitustunniste"
 
@@ -2206,7 +2206,7 @@ msgid "Project name"
 msgstr "Projektin nimi"
 
 #: ckanext/kata/theme/templates/kata/help.html:304
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:5
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:19
 #: ckanext/kata/theme/templates/user/edit_user_form.html:21
 #: ckanext/kata/theme/templates/user/read.html:107
 msgid "Organization"
@@ -2230,7 +2230,7 @@ msgstr "Kontaktin nimi"
 
 #: ckanext/kata/theme/templates/kata/help.html:316
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:160
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:31
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:107
 msgid "Phone"
 msgstr "Puhelinnumero"
 
@@ -2497,7 +2497,7 @@ msgid "Email address"
 msgstr "Sähköpostiosoite"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:70
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:35
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:111
 msgid "john.doe@example.com"
 msgstr "matti.meikalainen@esimerkki.fi"
 
@@ -4785,16 +4785,16 @@ msgstr "Toimijat"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:58
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:157
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:27
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:74
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:97
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:57
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:103
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:150
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:27
 msgid "Name"
 msgstr "Nimi"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:59
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:68
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:103
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:28
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:69
 msgid "Organisation"
 msgstr "Organisaatio"
 
@@ -4811,7 +4811,7 @@ msgid "No description"
 msgstr "Ei kuvausta"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:121
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:126
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:60
 msgid "Keywords"
 msgstr "Avainsanat"
 
@@ -4902,6 +4902,7 @@ msgid "Primary metadata identifier"
 msgstr "Ensisijainen metadatan tunniste"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:198
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:27
 msgid "Primary data identifier"
 msgstr "Ensisijainen datan tunniste"
 
@@ -4934,7 +4935,7 @@ msgid "Other related datasets"
 msgstr "Muut liittyvät tietoaineistot"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:246
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:34
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:67
 msgid "Discipline/branch of science"
 msgstr "Tieteenala"
 
@@ -4947,33 +4948,101 @@ msgstr "Tiedoston muoto"
 msgid "Dataset lifecycle events"
 msgstr "Tietoaineiston elinkaaren tapahtumat:"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:5
-msgid "Agents and roles"
-msgstr "Toimijat ja roolit"
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:4
+msgid "Authors"
+msgstr "Tekijät"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:27
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:16
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:57
+msgid "Familyname Firstname"
+msgstr "Sukunimi Etunimi"
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:18
+msgid ""
+"Field is compulsory.<br /><br />Author is a person or an organisation who"
+" has authored the dataset.<br /><br />Type names of authors and "
+"organisations to the corresponding fields. You can also add an "
+"identifier. You can add more authors by pressing the '+' button. If you "
+"leave an added author field empty, it is discarded."
+msgstr ""
+"Kenttä on pakollinen.<br /><br />Tekijä on henkilö tai organisaatio, joka"
+" on alun perin luonut aineiston.<br /><br />Kirjoita tekijät ja "
+"tekijöiden organisaatiot riveilleen. Voit lisätä myös tunnisteen. Voit "
+"lisätä kenttiä '+'-painikkeella. Jos jätät lisätyt kentät tyhjäksi, "
+"ne jätetään huomiotta."
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:22
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:63
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:46
+msgid "Identifier"
+msgstr "Tunniste"
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:22
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:63
+msgid "http://orcid.org/"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:24
+msgid ""
+"Optionally you can provide author's identifier, such as an ORCID "
+"identifier."
+msgstr ""
+"Voit vaihtoehtoisesti antaa myös tekijän tunnisteen, kuten ORCID-tunnisteen."
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:28
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:69
+msgid "University. Faculty. Department."
+msgstr "Yliopisto. Tiedekunta. Laitos."
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:41
+msgid "Contributors"
+msgstr "Muut tekijät"
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:59
+msgid ""
+"Contributor is a person or an organisation who, in addition to the "
+"author, has contributed significantly to the dataset.<br /><br />Type "
+"names of contributors and organisations to the corresponding fields. You "
+"can also add an identifier. You can add more contributors by pressing the"
+" '+' button. If you leave an added contributor field empty, it is "
+"discarded."
+msgstr ""
+"Muu tekijä on henkilö tai "
+"organisaatio, joka tekijän lisäksi on "
+"osallistunut merkittävästi aineiston luomiseen.<br"
+" /><br />Kirjoita muiden tekijöiden nimet"
+" ja organisaatiot riveilleen. Voit lisätä myös tunnisteen. Voit lisätä lisää "
+"rivejä painamalla '+'-painiketta. Jos jätät"
+" rivin tyhjäksi, se jätetään huomiotta.<br"
+" /><br />Voit antaa joko nimen tai"
+" tunnisteen, kuten ORCID-tunnisteen."
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:65
+msgid ""
+"Optionally you can provide contributor's identifier, such as an ORCID "
+"identifier."
+msgstr ""
+"Voit vaihtoehtoisesti antaa myös muun tekijän tunnisteen, kuten ORCID-tunnisteen."
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:103
 msgid "John Doe"
 msgstr "Matti Meikäläinen"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:28
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:104
 msgid ""
 "Field is compulsory.<br /><br />Type the name of the distributor. "
 "Distributor is a person or an organisation who has the right to "
-"distribute the dataset or has published the dataset.<br /><br />You can "
-"add multiple distributors but the first one is treated as the primary "
-"contact to email based contacts by this service."
+"distribute the dataset or has published the dataset."
 msgstr ""
 "Kenttä on pakollinen.<br /><br />Kirjoita jakelijan nimi. Jakelija on "
 "henkilö tai organisaatio, jolla on oikeus jakaa aineistoa edelleen tai "
-"joka on asettanut aineiston julkisesti saataville.<br /><br />Voit lisätä"
-" useita jakelijoita mutta ensimmäinen jakelija on tässä palvelussa myös "
-"ensisijainen kontakti sähköpostinlähetyksessä."
+"joka on asettanut aineiston julkisesti saataville."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:31
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:107
 msgid "+35844122123"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:32
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:108
 msgid ""
 "Field is compulsory.<br /><br />Type the contact phone number. The phone "
 "number must be in form \"+35812341234\"."
@@ -4981,14 +5050,14 @@ msgstr ""
 "Kenttä on pakollinen.<br /><br />Anna yhteyspuhelinnumero. Numeron pitää "
 "olla muotoa \"+35812341234\"."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:35
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:111
 #: ckanext/kata/theme/templates/user/edit_user_form.html:27
 #: ckanext/kata/theme/templates/user/new_user_form.html:11
 #: ckanext/kata/theme/templates/user/read.html:120
 msgid "Email"
 msgstr "Sähköposti"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:36
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:112
 msgid ""
 "Field is compulsory.<br /><br />Type the contact e-mail address. The "
 "e-mail address is not shown publicly."
@@ -4996,16 +5065,16 @@ msgstr ""
 "Kenttä on pakollinen.<br /><br />Anna sähköpostiosoite, johon voidaan "
 "ottaa yhteyttä. Sähköpostiosoitetta ei näytetä julkisesti."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:39
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:78
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:115
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:154
 msgid "Homepage"
 msgstr "Kotisivu"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:39
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:115
 msgid "http://johndoe.com/contact"
 msgstr "http://esimerkki.fi/contact"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:40
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:116
 msgid ""
 "Field is compulsory.<br /><br />Type a valid web address to your web "
 "page. In case you don't have one, you could for example give an address "
@@ -5016,19 +5085,19 @@ msgstr ""
 "ole, voit antaa esimerkiksi tutkimusryhmän internetosoitteen tai muun "
 "osoitteen, jonka kautta voidaan tarpeen tullen saada lisätietoa datasta."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:54
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:130
 msgid "Project that produced this dataset"
 msgstr "Tietoaineiston tuottanut projekti"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:56
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:132
 msgid "This dataset was produced in a project."
 msgstr "Tämä tietoaineisto on tuotettu projektissa."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:74
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:150
 msgid "my project"
 msgstr "oma projekti"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:75
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:151
 msgid ""
 "Field is compulsory if checkbox 'This dataset was produced in a project.'"
 " is checked.<br /><br />Type the project's name."
@@ -5036,11 +5105,11 @@ msgstr ""
 "Kenttä on pakollinen, jos valintaruutu on valittu.<br /><br />Anna "
 "projektin nimi."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:78
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:154
 msgid "http://myproject"
 msgstr "http://omaprojektini"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:79
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:155
 msgid ""
 "Field is compulsory if checkbox 'This dataset was produced in a project.'"
 " is checked.<br /><br />Type the project's homepage"
@@ -5048,11 +5117,11 @@ msgstr ""
 "Kenttä on pakollinen, jos valintaruutu on valittu.<br /><br />Anna "
 "projektin kotisivu."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:84
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:160
 msgid "my funder"
 msgstr "oma rahoittaja"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:85
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:161
 msgid ""
 "Field is compulsory if checkbox 'This dataset was produced in a project.'"
 " is checked.<br /><br />Type the project funder's name."
@@ -5060,11 +5129,11 @@ msgstr ""
 "Kenttä on pakollinen, jos valintaruutu on valittu.<br /><br />Anna "
 "projektin rahoittajan nimi."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:88
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:164
 msgid "1234"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:89
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:165
 msgid ""
 "Field is compulsory if checkbox 'This dataset was produced in a project.'"
 " is checked.<br /><br />Type the project's funding id."
@@ -5072,19 +5141,15 @@ msgstr ""
 "Kenttä on pakollinen, jos valintaruutu on valittu.<br /><br />Anna "
 "projektin rahoitustunniste."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:103
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:179
 msgid "Owner information"
 msgstr "Omistajatiedot"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:119
-msgid "Owner identity"
-msgstr "Omistajan tunniste"
-
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:121
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:197
 msgid "name or ID such as ORCID"
 msgstr "nimi tai tunniste, kuten ORCID"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:123
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:199
 msgid ""
 "Field is compulsory.<br /><br />Owner is a person or an organisation who "
 "decides upon the use of the dataset.<br /><br />Type the owner's name or "
@@ -5116,83 +5181,25 @@ msgstr ""
 "tyhjäksi, se jätetään huomiotta. Huomaa, että ainakin ensimmäisessä "
 "kentässä on kuitenkin oltava otsikko."
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:49
-msgid "Authors and organizations"
-msgstr "Tekijät ja organisaatiot"
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:62
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:97
-msgid "Familyname, Firstname and/or http://orcid.org/"
-msgstr "Sukunimi, Etunimi ja/tai http://orcid.org/"
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:64
-msgid ""
-"Field is compulsory.<br /><br />Author is a person or an organisation who"
-" has authored the dataset.<br /><br />Type names of authors and "
-"organisations to the corresponding fields, one author per a field pair. "
-"You can add more fields for additional authors by pressing the '+' "
-"button. If you leave an added author field empty, it is discarded, but "
-"note that the first author/organisation field pair must have values.<br "
-"/><br />You can enter the author's name or ID, such as an ORCID "
-"identifier. If you choose to enter a name, please use format "
-"\"familyname, firstname\"."
-msgstr ""
-"Kenttä on pakollinen.<br /><br />Tekijä on henkilö tai organisaatio, joka"
-" on alun perin luonut aineiston.<br /><br />Kirjoita tekijät ja "
-"tekijöiden organisaatiot riveilleen, yksi tekijä kenttäparia kohti. Voit "
-"lisätä kenttiä '+'-painikkeella. Jos jätät lisätyn kenttäparin tyhjäksi, "
-"se jätetään huomiotta. Huomaa, että ainakin ensimmäinen kenttäpari on "
-"täytettävä.<br /><br />Voit antaa joko tekijän nimen tai tunnisteen, "
-"esimerkiksi ORCID-tunnisteen. Jos kirjoitat nimen, käytä mieluiten muotoa"
-" \"sukunimi, etunimi\"."
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:68
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:103
-msgid "University. Faculty. Department."
-msgstr "Yliopisto. Tiedekunta. Laitos."
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:81
-msgid "Contributors"
-msgstr "Muut tekijät"
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:99
-msgid ""
-"Field is not compulsory.<br /><br />Contributor is a person or an "
-"organisation who, in addition to the author, has contributed "
-"significantly to the dataset.<br /><br />Type names of contributors and "
-"organisations to the corresponding fields, one contributor per a field "
-"pair. You can add more fields for additional contributors by pressing the"
-" '+' button. If you leave an added contributor field empty, it is "
-"discarded.<br /><br />You can enter the contributor's name or ID such as "
-"an ORCID identifier."
-msgstr ""
-"Kenttä ei ole pakollinen.<br /><br />Muut tekijä on henkilö tai "
-"organisaatio, joka tekijän lisäksi on osallistunut merkittävästi "
-"aineiston luomiseen.<br /><br />Kirjoita muiden tekijöiden nimet ja "
-"organisaatiot riveilleen, yksi tekijä kenttäparia kohti. Voit lisätä "
-"lisää rivejä painamalla '+'-painiketta. Jos jätät rivin tyhjäksi, se "
-"jätetään huomiotta.<br /><br />Voit antaa joko nimen tai tunnisteen, "
-"kuten ORCID-tunnisteen."
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:119
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:53
 msgid "Subject"
 msgstr "Aihe"
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:122
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:56
 msgid "Search keywords from"
 msgstr "Etsi avainsanoja"
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:122
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:56
 msgid "http://finto.fi/koko/en/"
 msgstr "http://finto.fi/koko/fi/"
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:122
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:56
 msgid " ontology, select keywords with enter or mouse click."
 msgstr ""
 "-ontologiasta. Valitse valittu avainsana näppäimistösi enter-painikkeella"
 " tai hiiren klikkauksella."
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:123
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:57
 msgid ""
 "Field is compulsory.<br /><br />Add keywords that describe your data. "
 "Once you start typing, you will automatically get suggestions for "
@@ -5212,23 +5219,72 @@ msgstr ""
 "(http://finto.fi). JavaScript-tuen on oltava käytössä selaimessasi, jotta"
 " automaattiset ehdotukset toimisivat."
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:126
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:60
 msgid "eg. economy, mental health, government"
 msgstr "esim. talous, mielenterveys, hallitus"
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:132
-msgid "This dataset contains non-textual data"
-msgstr "Tietoaineisto ei sisällä tekstimuotoista dataa"
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:70
+msgid "Search words from"
+msgstr "Etsi sanoja"
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:134
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:70
+msgid "http://finto.fi/okm-tieteenala/en/"
+msgstr "http://finto.fi/okm-tieteenala/fi/"
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:70
+msgid "okm-tieteenala"
+msgstr "OKM:n tieteenalaluokituksesta"
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:70
+msgid "ontology, select keywords with enter or mouse click."
+msgstr ""
+". Valitse valittu avainsana näppäimistösi enter-painikkeella tai hiiren "
+"klikkauksella."
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:71
+msgid ""
+"Enter the academic discipline or disciplines to which your dataset "
+"belongs.<br /><br />Type the name of the discipline in the search box "
+"below. Once you start typing, you will automatically get suggestions for "
+"matching discipline names. The disciplines you enter must be selected "
+"from the given suggestions. You can select the appropropriate discipline "
+"from the list of suggestions with a mouse click. If you make a mistake, "
+"you can remove a discipline by clicking the 'x' next to it.<br /><br "
+"/>The suggestions are retrieved from the Finto vocabulary service "
+"(http://finto.fi/en/). Note that you must have JavaScript enabled in your"
+" browser in order for the automatic suggestions to work."
+msgstr ""
+"Syötä tieteenala, johon datasi liittyy.<br /><br />Voit kirjoittaa "
+"tieteenalan nimen alla olevaan hakukenttään. Kun alat kirjoittaa nimeä, "
+"saat automaattisesti ehdotuksia tieteenalaksi. Alat tulee valita "
+"annetuista suomenkielisistä ehdotuksista. Voit valita sopivan tieteenalan"
+" ehdotettujen joukosta klikkaamalla sitä hiirellä. Voit poistaa jo "
+"valitsemasi tieteenalan 'x'-painikkeesta.<br /><br />Ehdotukset haetaan "
+"Finto-sanastopalvelusta (http://finto.fi). JavaScript-tuen on oltava "
+"käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:75
+msgid "Disciplines"
+msgstr "Tieteenalat"
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:75
+msgid "eg. Matematiikka"
+msgstr "esim. Matematiikka"
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:80
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:83
 msgid "Languages"
 msgstr "Kielet"
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:134
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:81
+msgid "This dataset contains non-textual data"
+msgstr "Tietoaineisto ei sisällä tekstimuotoista dataa"
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:83
 msgid "eng, fin, swe ..."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:135
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:84
 msgid ""
 "Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma "
 "separated list of languages, in ISO 639-2 T format, used in your data, "
@@ -5238,7 +5294,7 @@ msgstr ""
 "pilkulla erotettu lista datassasi käytetyistä kielistä ISO 639-2 T "
 "muodossa, esimerkiksi \"eng, fin, swe\"."
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:139
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:88
 msgid "Find language codes from: "
 msgstr "Löydät kielikoodit osoitteesta: "
 
@@ -5270,62 +5326,71 @@ msgstr "Peruuta"
 msgid "Save"
 msgstr "Tallenna"
 
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:48
+msgid "Save and publish"
+msgstr "Tallenna ja julkaise"
+
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:18
 msgid "Identification information of data"
 msgstr "Aineiston tunnistetiedot"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:21
-msgid "PID type"
-msgstr "PID:n tyyppi"
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:33
+msgid ""
+"Field is compulsory but an automatically generated primary data "
+"identifier is provided if left empty.<br /><br />PID is a permanent "
+"identifier, preferably an HTTP URI. Note that if your data is accessible "
+"via access application like REMS, the primary identifier is sent to the "
+"service as the data identifier.<br /><br />The automatically generated "
+"PID is a URN identifier from the national library of Finland, of form "
+"\"urn:nbn:fi:csc-kata[unique number]\". Visit "
+"http://www.nationallibrary.fi for more information."
+msgstr ""
+"Kenttä on pakollinen mutta jos jätät kentän tyhjäksi siihen generoidaan automaattisesti tunniste.<br /><br />PID on pysytä tunniste, mieluiten HTTP URI. "
+"Huomaa, että jos datasi on saatavilla lupahakemuksella esimerkiksi REMS-palvelun kautta, ensisijainen datan tunniste lähetetään tälle palvelulle.<br /><br />"
+"Automaattinen tunniste on URN-tunniste kansalliskirjaston nimiavaruudesta ja se on muotoa \"urn:nbn:fi:csc-kata[numerosarja]\". "
+"Saadaksesi lisätietoa, vieraile kansalliskirjaston sivulla osoitteessa http://www.kansalliskirjasto.fi."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:22
-msgid "Identifier"
-msgstr "Tunniste"
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:34
+msgid ""
+"Note that the primary data identifier can NOT be edited after saving the "
+"dataset."
+msgstr ""
+"Huomaa, että ensisijaista datan tunnistetta EI voi muokata tietoaineiston tallennuksen jälkeen."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:36
-msgid "Data, primary"
-msgstr "Data, primääri"
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:42
+msgid "Additional data identifiers"
+msgstr "Datan muut tunnisteet"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:56
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:42
+msgid " identifiers"
+msgstr "tunnisteet"
+
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:63
 msgid "Check this to correct errors in an existing PID"
 msgstr "Valitse ruutu korjataksesi virheen tunnisteessa"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:63
-msgid ""
-"PIDs are compulsory. An automatically generated primary data PID is "
-"provided if left empty.<br /><br />PID is a permanent identifier, "
-"preferably an HTTP URI. Note that the first PID is used as primary data "
-"PID. <br /><br />The automatically generated PID is a URN identifier "
-"provided by the national library of Finland, of form \"urn:nbn:fi:csc-"
-"kata[unique number]\". Visit http://www.nationallibrary.fi/ for more "
-"information."
-msgstr ""
-"Tunnisteet (PID) ovat pakollisia. Ensisijainen datan tunniste luodaan "
-"automaattisesti, jos kenttä on jätetty tyhjäksi.<br /><br />PID on "
-"pysyvä, uniikki datan tunniste, mieluiten HTTP URI. Huomaa, että "
-"ensimmäinen tunniste on ensisijainen tunniste.<br /><br />Automaattisesti"
-" generoitu PID on URN-tunniste Kansalliskirjaston nimiavaruudesta, muotoa"
-" \"urn:nbn:fi:csc-kata[numerosarja]\". Lisää tietoa osoitteessa "
-"http://www.kansalliskirjasto.fi/."
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:70
+msgid "PID is a permanent identifier, preferably an HTTP URI."
+msgstr "PID on pysyvä tunniste, mieluiten HTTP URI."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:80
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:92
 msgid "Generate new version identifier"
 msgstr "Luo uusi versiotunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:81
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:93
 msgid "Check to automatically generate a permanent identifier."
 msgstr "Ruksimalla ruudun palvelu generoi pysyvän tunnisteen automaattisesti."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:82
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:94
 msgid ""
 "Generate a new permanent identifier (PID) for a version of the data.<br "
 "/><br />PID is a permanent, unique, identifier, preferably a URI. This "
 "specific PID is for the current data version. You can add your own "
-"identifier or use one generated by the service by leaving the text field "
-"empty and checking the checkbox next to the field. <br /><br />The "
-"automatically generated PID is a URN identifier from the national library"
-" of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit "
-"http://www.nationallibrary.fi for more information."
+"identifier or use one generated by the service by checking this "
+"checkbox.<br /><br />The automatically generated PID is a URN identifier "
+"from the national library of Finland, of form \"urn:nbn:fi:csc-"
+"kata[unique number]\". Visit http://www.nationallibrary.fi for more "
+"information."
 msgstr ""
 "Luo uusi pysyvä tunniste (PID) datan versiolle<br /><br />PID on pysyvä, "
 "uniikki datan tunniste. Voit lisätä oman tunnisteesi tai käyttää palvelun"
@@ -5335,11 +5400,11 @@ msgstr ""
 "kata[numerosarja]\". Lisää tietoa osoitteessa "
 "http://www.kansalliskirjasto.fi/."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:85
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:97
 msgid "Modification date"
 msgstr "Muokkauspvm"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:89
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:101
 msgid ""
 "Field is compulsory but an automatically generated date is provided.<br "
 "/><br />The modification date tells when the data has last been modified."
@@ -5357,17 +5422,21 @@ msgstr ""
 "joka vastaa UTC-aikavyöhykettä.<br /><br />Huomaa, että kalenteri vaatii "
 "toimiakseen JavaScriptin selaimeen."
 
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:24
-msgid "Choose an organization"
-msgstr "Valitse organisaatio"
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:22
+msgid "Choose an organization..."
+msgstr "Valitse organisaatio..."
 
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:27
-msgid "No organization"
-msgstr "Ei organisaatiota"
-
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:43
-msgid "Visibility"
-msgstr "Näkyvyys"
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:32
+msgid ""
+"Field is compulsory.<br /><br />Select an organization to link the "
+"dataset to the organization within this service. Once the dataset is "
+"published it is visible in the organization page. Additionally, the "
+"organization's editors can also modify this dataset."
+msgstr ""
+"Kenttä on pakollinen.<br /><br />Valitse organisaatio yhdistääksesi "
+"tietoaineistosi siihen tässä palvelussa. Kun tietoaineisto on julkaistu, "
+"se on näkyvillä organisaatiosivulla. Lisäksi organisaation muokkaajilla "
+"(editor) on oikeus muokata tätä tietoaineistoa."
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:8
 msgid "Dataset is available for use:"
@@ -5486,9 +5555,8 @@ msgid ""
 "geographical names. You can then select the appropriate location from the"
 " list of suggestions with a mouse click, or you can enter one of your "
 "own. If you make a mistake, you can remove a location by clicking the 'x'"
-" next to it.<br /><br />You can change the language of suggested names "
-"from the language menu.<br /><br />The suggestions are retrieved from the"
-" Finto vocabulary service (http://finto.fi/en/). Note that you must have "
+" next to it.<br /><br />The suggestions are retrieved from the Finto "
+"vocabulary service (http://finto.fi/en/). Note that you must have "
 "JavaScript enabled in your browser in order for the automatic suggestions"
 " to work."
 msgstr ""
@@ -5498,8 +5566,7 @@ msgstr ""
 "paikannimeä, saat automaattisesti ehdotuksia maantieteellisistä nimistä. "
 "Voit valita ehdotuksista sopivan klikkaamalla sitä hiirellä. Voit myös "
 "kirjoittaa omasi, jos ehdotetuista vaihtoehdoista ei löydy sopivaa. Voit "
-"poistaa jo syöttämäsi paikannimen 'x'-painikkeesta.<br /><br >Voit "
-"vaihtaa ehdotettavien nimien kieltä kielivalikosta.<br /><br />Ehdotukset"
+"poistaa jo syöttämäsi paikannimen 'x'-painikkeesta.<br /><br />Ehdotukset"
 " haetaan Finto-sanastopalvelusta (http://finto.fi). JavaScript-tuen on "
 "oltava käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
 
@@ -5559,15 +5626,15 @@ msgstr ""
 "vastaa UTC-vyöhykettä.<br /><br />Huomaa, että työkalu vaatii toimiakseen"
 " JavaScriptin."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_description.html:5
+#: ckanext/kata/theme/templates/package/snippets/recommended_description.html:4
 msgid "Free description"
 msgstr "Vapaa kuvaus"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_description.html:7
+#: ckanext/kata/theme/templates/package/snippets/recommended_description.html:6
 msgid "a freeform description"
 msgstr "vapaamuotoinen kuvaus"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_description.html:9
+#: ckanext/kata/theme/templates/package/snippets/recommended_description.html:8
 msgid ""
 "Type a description about the data over here. The field can be filled with"
 " free text and you can format the text with Markdown formatting."
@@ -5622,14 +5689,6 @@ msgstr ""
 "Jos syötit ylle tarkistussumman, syötä tähän tarkistussumman laskentaan "
 "käytetty algoritmi. Algoritmeja on saatavilla useita, joista vahvemmat "
 "ovat turvallisempia."
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_form.html:13
-msgid ""
-"Metadata in this section is not compulsory, but can provide important "
-"information and help others to find your data."
-msgstr ""
-"Tässä osiossa olevia metatietokenttiä ei ole pakko täyttää. Ne tarjoavat "
-"kuitenkin tärkeää kuvailutietoa datastasi ja edesauttavat sen löytämistä."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:8
 msgid "event"
@@ -5733,54 +5792,6 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:5
 msgid "Relations"
 msgstr "Relaatiot"
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
-msgid "Search words from"
-msgstr "Etsi sanoja"
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
-msgid "http://finto.fi/okm-tieteenala/en/"
-msgstr "http://finto.fi/okm-tieteenala/fi/"
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
-msgid "okm-tieteenala"
-msgstr "OKM:n tieteenalaluokituksesta"
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:36
-msgid "ontology, select keywords with enter or mouse click."
-msgstr ""
-". Valitse valittu avainsana näppäimistösi enter-painikkeella tai hiiren "
-"klikkauksella."
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:37
-msgid ""
-"Enter the academic discipline or disciplines to which your dataset "
-"belongs.<br /><br />Type the name of the discipline in the search box "
-"below. Once you start typing, you will automatically get suggestions for "
-"matching discipline names. The disciplines you enter must be selected "
-"from the given suggestions. You can select the appropropriate discipline "
-"from the list of suggestions with a mouse click. If you make a mistake, "
-"you can remove a discipline by clicking the 'x' next to it.<br /><br "
-"/>The suggestions are retrieved from the Finto vocabulary service "
-"(http://finto.fi/en/). Note that you must have JavaScript enabled in your"
-" browser in order for the automatic suggestions to work."
-msgstr ""
-"Syötä tieteenala, johon datasi liittyy.<br /><br />Voit kirjoittaa "
-"tieteenalan nimen alla olevaan hakukenttään. Kun alat kirjoittaa nimeä, "
-"saat automaattisesti ehdotuksia tieteenalaksi. Alat tulee valita "
-"annetuista suomenkielisistä ehdotuksista. Voit valita sopivan tieteenalan"
-" ehdotettujen joukosta klikkaamalla sitä hiirellä. Voit poistaa jo "
-"valitsemasi tieteenalan 'x'-painikkeesta.<br /><br />Ehdotukset haetaan "
-"Finto-sanastopalvelusta (http://finto.fi). JavaScript-tuen on oltava "
-"käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:41
-msgid "Disciplines"
-msgstr "Tieteenalat"
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:41
-msgid "eg. Matematiikka"
-msgstr "esim. Matematiikka"
 
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:8
 msgid "Supplement"
@@ -6116,4 +6127,35 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
+
+
+#~ msgid ""
+#~ "Field is not compulsory.<br /><br "
+#~ "/>Contributor is a person or an "
+#~ "organisation who, in addition to the "
+#~ "author, has contributed significantly to "
+#~ "the dataset.<br /><br />Type names of"
+#~ " contributors and organisations to the "
+#~ "corresponding fields, one contributor per "
+#~ "a field pair. You can add more "
+#~ "fields for additional contributors by "
+#~ "pressing the '+' button. If you "
+#~ "leave an added contributor field empty,"
+#~ " it is discarded.<br /><br />You can"
+#~ " enter the contributor's name or ID"
+#~ " such as an ORCID identifier."
+#~ msgstr ""
+#~ "Kenttä ei ole pakollinen.<br /><br "
+#~ "/>Muut tekijä on henkilö tai "
+#~ "organisaatio, joka tekijän lisäksi on "
+#~ "osallistunut merkittävästi aineiston luomiseen.<br"
+#~ " /><br />Kirjoita muiden tekijöiden nimet"
+#~ " ja organisaatiot riveilleen, yksi tekijä"
+#~ " kenttäparia kohti. Voit lisätä lisää "
+#~ "rivejä painamalla '+'-painiketta. Jos jätät"
+#~ " rivin tyhjäksi, se jätetään huomiotta.<br"
+#~ " /><br />Voit antaa joko nimen tai"
+#~ " tunnisteen, kuten ORCID-tunnisteen."
+
+
 

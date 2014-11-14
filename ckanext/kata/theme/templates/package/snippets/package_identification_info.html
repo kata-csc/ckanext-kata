@@ -39,7 +39,7 @@
     <input type="hidden" id="name" name="name" value="" />
 
     {% for pid_type in pid_types %}
-      <h3 class="module-heading-add-dataset optional">{% if pid_type == 'data' %} {{ _('Additional data identifiers') }} {% else %}{{ _(pid_type | capitalize) }} {{ _('identifiers') }}{% endif %}{{ kata_form.optional() }}</h3>
+      <h3 class="module-heading-add-dataset optional">{% if pid_type == 'data' %} {{ _('Additional data identifiers') }} {% else %}{{ _(pid_type | capitalize) }}{{ _(' identifiers') }}{% endif %}{{ kata_form.optional() }}</h3>
       <div class="module-content">
         <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type">
           {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
