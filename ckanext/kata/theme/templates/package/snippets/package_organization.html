@@ -16,10 +16,10 @@
 
   {% set existing_org = data.owner_org %}
   <div class="control-group">
-    <label for="field-organizations" class="control-label">{{ _('Choose an organization') }}</label>
+    <label for="field-organizations" class="control-label">{{ _('Organization') }}</label>
     <div class="controls">
       <select id="field-organizations" name="owner_org" data-module="autocomplete">
-        <option value="" {% if not selected_org and data.id %} selected="selected" {% endif %}>{{ _('Choose an owner organization...') }}</option>
+        <option value="" {% if not selected_org and data.id %} selected="selected" {% endif %}>{{ _('Choose an organization...') }}</option>
         {% for organization in organizations_available %}
           {# get out first org from users list only if there is not an existing org #}
           {% set selected_org = (existing_org and existing_org == organization.id) %}
@@ -29,6 +29,7 @@
           <option value="{{ organization.id }}" {% if selected_org %} selected="selected" {% endif %}>{{ organization.display_name }}</option>
         {% endfor %}
       </select>
+      {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Select an organization to link the dataset to the organization within this service. Once the dataset is published it is visible in the organization page. Additionally, the organization's editors can also modify this dataset.")) }}
         {% if errors and errors.owner_org and errors.owner_org is iterable %}<span class="error-block">{{ errors.owner_org|join('') }}</span>{% endif %}
     </div>
   </div>
