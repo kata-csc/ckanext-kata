@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-14 07:29+0000\n"
+"POT-Creation-Date: 2014-11-14 11:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -712,7 +712,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/organization/members.html:36
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:78
 #: ckanext/kata/theme/templates/package/package_rights.html:41
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:40
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:41
 #: ckanext/kata/theme/templates/revision/read.html:24
 msgid "Delete"
 msgstr ""
@@ -846,6 +846,8 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:66
 #: ckanext/kata/theme/templates/home/index.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:1
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
 msgid "Terms of use"
 msgstr ""
 
@@ -897,7 +899,7 @@ msgid "http://creativecommons.org/choose/?lang=en"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:109
-msgid "Search Data"
+msgid "Search data"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:111
@@ -1628,10 +1630,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:201
 msgid ""
-"Discipline/branch of science: The disciplines are chosen from the OKM-"
-"TIETEENALA ontology, from http://finto.fi/. The disciplines are provided only"
-" in Finnish and you should use these Finnish versions to help grouping and "
-"searching of the data."
+"Field of science: The disciplines are chosen from the OKM-TIETEENALA "
+"ontology, from http://finto.fi/. The disciplines are provided only in Finnish"
+" and you should use these Finnish versions to help grouping and searching of "
+"the data."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:204
@@ -4540,7 +4542,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:246
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:67
-msgid "Discipline/branch of science"
+msgid "Field of science"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:252
@@ -4640,7 +4642,8 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:112
 msgid ""
 "Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail "
-"address is not shown publicly."
+"address is not shown publicly but it can be used to send e-mails in this "
+"service."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:115
@@ -4834,10 +4837,10 @@ msgstr ""
 msgid "Find language codes from: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:33
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:34
 msgid ""
 "Important: By submitting content, you agree to release your metadata "
-"contributions under the Creative Commons CC0 license."
+"contributions under the"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:34
@@ -4845,22 +4848,22 @@ msgid "http://creativecommons.org/publicdomain/zero/1.0/"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:34
-msgid "Learn more about CC0"
+msgid "Creative Commons CC0 license."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:39
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:40
 msgid "Are you sure you want to delete this dataset?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:44
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:45
 msgid "Cancel"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:46
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:47
 msgid "Save"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:48
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:49
 msgid "Save and publish"
 msgstr ""
 
@@ -4945,6 +4948,21 @@ msgid ""
 " the organization within this service. Once the dataset is published it is "
 "visible in the organization page. Additionally, the organization's editors "
 "can also modify this dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:3
+msgid ""
+"I have asked consent from all persons whose personal information I have added"
+" to this dataset and informed them of how they can get their personal data "
+"removed. More information from:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
+msgid "http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
+msgid "Check to accept"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:5

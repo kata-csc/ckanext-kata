@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-11-14 07:29+0000\n"
+"POT-Creation-Date: 2014-11-14 11:33+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -288,8 +288,8 @@ msgstr "Siirry visualisointiin"
 #, python-format
 msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
-"Avainsanan \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: "
-"\"\n"
+"Asiasanan \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: \""
+"\n"
 "\"'_.()/#+."
 
 #: ckanext/kata/validators.py:97
@@ -735,7 +735,7 @@ msgstr "Oletko varma että haluat poistaa tämän ryhmän?"
 #: ckanext/kata/theme/templates/organization/members.html:36
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:78
 #: ckanext/kata/theme/templates/package/package_rights.html:41
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:40
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:41
 #: ckanext/kata/theme/templates/revision/read.html:24
 msgid "Delete"
 msgstr "Poista"
@@ -915,6 +915,8 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:66
 #: ckanext/kata/theme/templates/home/index.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:1
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
 msgid "Terms of use"
 msgstr "Käyttöehdot"
 
@@ -970,8 +972,8 @@ msgid "http://creativecommons.org/choose/?lang=en"
 msgstr "http://creativecommons.org/choose/?lang=fi"
 
 #: ckanext/kata/theme/templates/home/index.html:109
-msgid "Search Data"
-msgstr "Hae Dataa"
+msgid "Search data"
+msgstr "Hae dataa"
 
 #: ckanext/kata/theme/templates/home/index.html:111
 msgid "eg. climate"
@@ -1039,7 +1041,7 @@ msgstr "Tapahtuma luotu automaattisesti tuonnin yhteydessä"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:19
 msgid "Tag string"
-msgstr "Avainsanat"
+msgstr "Asiasanat"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:20
 msgid "Availability"
@@ -1165,7 +1167,7 @@ msgstr "Metatietojen lisääminen ja muokkaaminen"
 
 #: ckanext/kata/theme/templates/kata/faq.html:24
 msgid "Why can't I add any keywords?"
-msgstr "Miksi en voi lisätä avainsanoja?"
+msgstr "Miksi en voi lisätä asiasanoja?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:25
 msgid ""
@@ -1750,8 +1752,8 @@ msgid ""
 "are chosen from suggestions or you can also provide your own word if "
 "suitable is not available."
 msgstr ""
-"Avainsanat: avainsanoissa on käytössä JavaScript-valitsin, joka hakee "
-"ehdotuksia sanoiksi KOKO-ontologiasta, kts. http://finto.fi/. Avainsanat "
+"Asiasanat: asiasanoissa on käytössä JavaScript-valitsin, joka hakee "
+"ehdotuksia sanoiksi KOKO-ontologiasta, kts. http://finto.fi/. Asiasanat "
 "valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei "
 "löydy."
 
@@ -1910,10 +1912,10 @@ msgstr "Relaatiot:"
 
 #: ckanext/kata/theme/templates/kata/help.html:201
 msgid ""
-"Discipline/branch of science: The disciplines are chosen from the OKM-"
-"TIETEENALA ontology, from http://finto.fi/. The disciplines are provided "
-"only in Finnish and you should use these Finnish versions to help "
-"grouping and searching of the data."
+"Field of science: The disciplines are chosen from the OKM-TIETEENALA "
+"ontology, from http://finto.fi/. The disciplines are provided only in "
+"Finnish and you should use these Finnish versions to help grouping and "
+"searching of the data."
 msgstr ""
 "Tieteenala: tieteenalat tarjotaan okm-tieteenala-ontologiasta "
 "(http://finto.fi). Tieteenalat tarjotaan vain suomeksi ja jotta "
@@ -4813,7 +4815,7 @@ msgstr "Ei kuvausta"
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:121
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:60
 msgid "Keywords"
-msgstr "Avainsanat"
+msgstr "Asiasanat"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:125
 msgid "Usage information"
@@ -4935,7 +4937,7 @@ msgstr "Muut liittyvät tietoaineistot"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:246
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:67
-msgid "Discipline/branch of science"
+msgid "Field of science"
 msgstr "Tieteenala"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:252
@@ -5058,10 +5060,12 @@ msgstr "Sähköposti"
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:112
 msgid ""
 "Field is compulsory.<br /><br />Type the contact e-mail address. The "
-"e-mail address is not shown publicly."
+"e-mail address is not shown publicly but it can be used to send e-mails "
+"in this service."
 msgstr ""
 "Kenttä on pakollinen.<br /><br />Anna sähköpostiosoite, johon voidaan "
-"ottaa yhteyttä. Sähköpostiosoitetta ei näytetä julkisesti."
+"ottaa yhteyttä. Sähköpostiosoitetta ei näytetä julkisesti mutta "
+"järjestelmän kautta siihen voidaan lähettää sähköpostiviestejä."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:115
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:154
@@ -5185,7 +5189,7 @@ msgstr "Aihe"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:56
 msgid "Search keywords from"
-msgstr "Etsi avainsanoja"
+msgstr "Etsi asiasanoja"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:56
 msgid "http://finto.fi/koko/en/"
@@ -5194,8 +5198,8 @@ msgstr "http://finto.fi/koko/fi/"
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:56
 msgid " ontology, select keywords with enter or mouse click."
 msgstr ""
-"-ontologiasta. Valitse valittu avainsana näppäimistösi enter-painikkeella"
-" tai hiiren klikkauksella."
+"-ontologiasta. Valitse valittu asiasana näppäimistösi enter-painikkeella "
+"tai hiiren klikkauksella."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:57
 msgid ""
@@ -5208,11 +5212,11 @@ msgid ""
 "http://finto.fi/en/). Note that you must have JavaScript enabled in your "
 "browser in order for the automatic suggestions to work."
 msgstr ""
-"Kenttä on pakollinen.<br /><br />Lisää avainsanoja jotka kuvailevat "
+"Kenttä on pakollinen.<br /><br />Lisää asiasanoja jotka kuvailevat "
 "dataasi. Kun alat kirjoittaa sanaa, saat automaattisesti ehdotuksia "
-"avainsanoiksi. Voit valita ehdotuksista sopivan klikkaamalla sitä "
+"asiasanoiksi. Voit valita ehdotuksista sopivan klikkaamalla sitä "
 "hiirellä. Voit myös kirjoittaa oman sanasi, jos ehdotetuista "
-"vaihtoehdoista ei löydy sopivaa. Voit poistaa jo syöttämäsi avainsanan "
+"vaihtoehdoista ei löydy sopivaa. Voit poistaa jo syöttämäsi asiasanan "
 "'x'-painikkeesta.<br /><br />Ehdotukset haetaan Finto-sanastopalvelusta "
 "(http://finto.fi). JavaScript-tuen on oltava käytössä selaimessasi, jotta"
 " automaattiset ehdotukset toimisivat."
@@ -5236,7 +5240,7 @@ msgstr "OKM:n tieteenalaluokituksesta"
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:70
 msgid "ontology, select keywords with enter or mouse click."
 msgstr ""
-". Valitse valittu avainsana näppäimistösi enter-painikkeella tai hiiren "
+". Valitse valittu asiasana näppäimistösi enter-painikkeella tai hiiren "
 "klikkauksella."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:71
@@ -5296,35 +5300,35 @@ msgstr ""
 msgid "Find language codes from: "
 msgstr "Löydät kielikoodit osoitteesta: "
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:33
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:34
 msgid ""
 "Important: By submitting content, you agree to release your metadata "
-"contributions under the Creative Commons CC0 license."
+"contributions under the"
 msgstr ""
-"Tärkeää: lisäämällä sisältöä sitoudut julkaisemaan antamasi metatiedot "
-"Creative Commonsin CC0-lisenssillä."
+"Tärkeää: Etsimessä julkaisemasi tiedot tallennetaan avoimena datana "
+"lisenssillä: "
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:34
 msgid "http://creativecommons.org/publicdomain/zero/1.0/"
 msgstr "http://creativecommons.org/publicdomain/zero/1.0/deed.fi"
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:34
-msgid "Learn more about CC0"
-msgstr "Lue lisää CC0-lisenssistä"
+msgid "Creative Commons CC0 license."
+msgstr "Creative Commons CC0."
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:39
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:40
 msgid "Are you sure you want to delete this dataset?"
 msgstr "Oletko varma että haluat poistaa tämän tietoaineiston?"
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:44
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:45
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:46
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:47
 msgid "Save"
 msgstr "Tallenna"
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:48
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:49
 msgid "Save and publish"
 msgstr "Tallenna ja julkaise"
 
@@ -5440,6 +5444,24 @@ msgstr ""
 "tietoaineistosi siihen tässä palvelussa. Kun tietoaineisto on julkaistu, "
 "se on näkyvillä organisaatiosivulla. Lisäksi organisaation muokkaajilla "
 "(editor) on oikeus muokata tätä tietoaineistoa."
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:3
+msgid ""
+"I have asked consent from all persons whose personal information I have "
+"added to this dataset and informed them of how they can get their "
+"personal data removed. More information from:"
+msgstr ""
+"Olen kysynyt lupaa kaikilta henkilöiltä, joiden tietoja olen lisännyt "
+"tähän tietoaineistoon ja kertonut heille miten he saavat tietonsa "
+"poistetuksi. Lisätietoa aiheesta: "
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
+msgid "http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use"
+msgstr "http://avointiede.fi/documents/10864/17332/Etsin+kayttoehdot"
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
+msgid "Check to accept"
+msgstr "Hyväksy"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:5
 msgid "Use information"
@@ -5874,7 +5896,7 @@ msgstr "Muutokset"
 
 #: ckanext/kata/theme/templates/revision/read.html:74
 msgid "Datasets' Tags"
-msgstr "Tietoaineistojen avainsanat"
+msgstr "Tietoaineistojen asiasanat"
 
 #: ckanext/kata/theme/templates/snippets/facet_list.html:54
 msgid "Clear All"
@@ -6134,10 +6156,4 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
-
-#~ msgid "Project that produced this dataset"
-#~ msgstr "Tietoaineiston tuottanut projekti"
-
-#~ msgid "Identification information of data"
-#~ msgstr "Aineiston tunnistetiedot"
 

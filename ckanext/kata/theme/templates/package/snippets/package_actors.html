@@ -109,7 +109,7 @@
         {% endcall %}
 
         {% call form.input('contact__' ~ index ~ '__email', label=_('Email'), id='contact__' ~ index ~ '__email', placeholder=_('john.doe@example.com'), value=contact.email, error=h.get_dict_field_errors(errors, 'contact', index, 'email'), type='email', classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly.')) }}
+          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly but it can be used to send e-mails in this service.')) }}
         {% endcall %}
 
         {% call form.input('contact__' ~ index ~ '__URL', label=_('Homepage'), id='contact__' ~ index ~ '__URL', placeholder=_('http://johndoe.com/contact'), value=contact.URL, error=h.get_dict_field_errors(errors, 'contact', index, 'URL'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}

@@ -29,7 +29,7 @@
       <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
       <input type="hidden" name="pids__{{ index }}__type" value="data" />
       <div class="input-prepend">
-        <input class="pid kata-pid-input-wide pids_{{ index }}" {{ 'readonly' if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index] }} type="text" id="pids__{{ index }}__id" name="pids__{{ index }}__id" value="{{ primary_pid.id }}" />
+        <input placeholder="http://www.pid.com/1234" class="pid kata-pid-input-wide pids_{{ index }}" {{ 'readonly' if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index] }} type="text" id="pids__{{ index }}__id" name="pids__{{ index }}__id" value="{{ primary_pid.id }}" />
         {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated primary data identifier is provided if left empty.<br /><br />PID is a permanent identifier, preferably an HTTP URI. Note that if your data is accessible via access application like REMS, the primary identifier is sent to the service as the data identifier.<br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi for more information.')) }}
         {{ kata_form.warning_tooltip(tooltip=_('Note that the primary data identifier can NOT be edited after saving the dataset.')) }}
       </div>
@@ -53,7 +53,7 @@
                 <li class="kata">
                   <div class="input-prepend">
                     <input type="hidden" name="pids__{{ index }}__type" value="{{ pid_type }}" />
-                    <input class="pid kata-pid-input-wide pids_{{ index }}" {{ 'readonly' if pid.id and not (h.asbool(pid.get('primary')) and errors and not data.id) }} type="text" id="pids__{{ index }}__id" name="pids__{{ index }}__id" value="{{ pid.id }}" />
+                    <input placeholder="http://www.pid.com/1234"  class="pid kata-pid-input-wide pids_{{ index }}" {{ 'readonly' if pid.id and not (h.asbool(pid.get('primary')) and errors and not data.id) }} type="text" id="pids__{{ index }}__id" name="pids__{{ index }}__id" value="{{ pid.id }}" />
                   </div>
                 </li>
                 <li class="kata">

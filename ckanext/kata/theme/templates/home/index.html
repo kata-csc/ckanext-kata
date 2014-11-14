@@ -106,7 +106,7 @@
             <div class="module module-shallow module-narrow module-dark info box">
               {% block home_search %}
                 <form class="module-content search-form" method="get" action="{% url_for controller='package', action='search' %}">
-                  <h3 class="heading">{{ _("Search Data") }}</h3>
+                  <h3 class="heading">{{ _("Search data") }}</h3>
                   <div class="search-input control-group search-giant">
                     <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('eg. climate') }}" />
                     <button type="submit">
