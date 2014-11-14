@@ -214,7 +214,7 @@ class TestWithUser(TestCase):
             # field.send_keys('Published')
 
             field = browser.find_element_by_xpath(
-                "//section/div/div/div[label[text()='Choose an organization']]/div/div/a")  # CKAN Generated field
+                "//section/div/div/div[label[text()='Organization']]/div/div/a")  # CKAN Generated field
 
             ac = ActionChains(browser)
             ac.move_to_element_with_offset(field, 0.1, 0.1).click().perform()
@@ -224,7 +224,8 @@ class TestWithUser(TestCase):
                 ac.send_keys(o).perform()
                 browser.implicitly_wait(2)
 
-            browser.find_element_by_xpath("//button[@name='save']").click()
+            #browser.find_element_by_xpath("//button[@name='save']").click()
+            browser.find_element_by_xpath("//*[contains(text(), 'Save and publish')]").click()
 
         except NoSuchElementException:
             browser.get_screenshot_as_file('_add_dataset.png')

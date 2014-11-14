@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-11-14 05:19+0000\n"
+"POT-Creation-Date: 2014-11-14 07:29+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -4816,7 +4816,6 @@ msgid "Keywords"
 msgstr "Avainsanat"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:125
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:5
 msgid "Usage information"
 msgstr "Käyttötiedot"
 
@@ -4968,8 +4967,8 @@ msgstr ""
 "Kenttä on pakollinen.<br /><br />Tekijä on henkilö tai organisaatio, joka"
 " on alun perin luonut aineiston.<br /><br />Kirjoita tekijät ja "
 "tekijöiden organisaatiot riveilleen. Voit lisätä myös tunnisteen. Voit "
-"lisätä kenttiä '+'-painikkeella. Jos jätät lisätyt kentät tyhjäksi, "
-"ne jätetään huomiotta."
+"lisätä kenttiä '+'-painikkeella. Jos jätät lisätyt kentät tyhjäksi, ne "
+"jätetään huomiotta."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:22
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:63
@@ -4987,7 +4986,8 @@ msgid ""
 "Optionally you can provide author's identifier, such as an ORCID "
 "identifier."
 msgstr ""
-"Voit vaihtoehtoisesti antaa myös tekijän tunnisteen, kuten ORCID-tunnisteen."
+"Voit vaihtoehtoisesti antaa myös tekijän tunnisteen, kuten ORCID-"
+"tunnisteen."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:28
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:69
@@ -5007,22 +5007,20 @@ msgid ""
 " '+' button. If you leave an added contributor field empty, it is "
 "discarded."
 msgstr ""
-"Muu tekijä on henkilö tai "
-"organisaatio, joka tekijän lisäksi on "
-"osallistunut merkittävästi aineiston luomiseen.<br"
-" /><br />Kirjoita muiden tekijöiden nimet"
-" ja organisaatiot riveilleen. Voit lisätä myös tunnisteen. Voit lisätä lisää "
-"rivejä painamalla '+'-painiketta. Jos jätät"
-" rivin tyhjäksi, se jätetään huomiotta.<br"
-" /><br />Voit antaa joko nimen tai"
-" tunnisteen, kuten ORCID-tunnisteen."
+"Muu tekijä on henkilö tai organisaatio, joka tekijän lisäksi on "
+"osallistunut merkittävästi aineiston luomiseen.<br /><br />Kirjoita "
+"muiden tekijöiden nimet ja organisaatiot riveilleen. Voit lisätä myös "
+"tunnisteen. Voit lisätä lisää rivejä painamalla '+'-painiketta. Jos jätät"
+" rivin tyhjäksi, se jätetään huomiotta.<br /><br />Voit antaa joko nimen "
+"tai tunnisteen, kuten ORCID-tunnisteen."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:65
 msgid ""
 "Optionally you can provide contributor's identifier, such as an ORCID "
 "identifier."
 msgstr ""
-"Voit vaihtoehtoisesti antaa myös muun tekijän tunnisteen, kuten ORCID-tunnisteen."
+"Voit vaihtoehtoisesti antaa myös muun tekijän tunnisteen, kuten ORCID-"
+"tunnisteen."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:103
 msgid "John Doe"
@@ -5086,8 +5084,8 @@ msgstr ""
 "osoitteen, jonka kautta voidaan tarpeen tullen saada lisätietoa datasta."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:130
-msgid "Project that produced this dataset"
-msgstr "Tietoaineiston tuottanut projekti"
+msgid "Project"
+msgstr "Projekti"
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:132
 msgid "This dataset was produced in a project."
@@ -5331,7 +5329,7 @@ msgid "Save and publish"
 msgstr "Tallenna ja julkaise"
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:18
-msgid "Identification information of data"
+msgid "Data identifiers"
 msgstr "Aineiston tunnistetiedot"
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:33
@@ -5345,17 +5343,22 @@ msgid ""
 "\"urn:nbn:fi:csc-kata[unique number]\". Visit "
 "http://www.nationallibrary.fi for more information."
 msgstr ""
-"Kenttä on pakollinen mutta jos jätät kentän tyhjäksi siihen generoidaan automaattisesti tunniste.<br /><br />PID on pysytä tunniste, mieluiten HTTP URI. "
-"Huomaa, että jos datasi on saatavilla lupahakemuksella esimerkiksi REMS-palvelun kautta, ensisijainen datan tunniste lähetetään tälle palvelulle.<br /><br />"
-"Automaattinen tunniste on URN-tunniste kansalliskirjaston nimiavaruudesta ja se on muotoa \"urn:nbn:fi:csc-kata[numerosarja]\". "
-"Saadaksesi lisätietoa, vieraile kansalliskirjaston sivulla osoitteessa http://www.kansalliskirjasto.fi."
+"Kenttä on pakollinen mutta jos jätät kentän tyhjäksi siihen generoidaan "
+"automaattisesti tunniste.<br /><br />PID on pysytä tunniste, mieluiten "
+"HTTP URI. Huomaa, että jos datasi on saatavilla lupahakemuksella "
+"esimerkiksi REMS-palvelun kautta, ensisijainen datan tunniste lähetetään "
+"tälle palvelulle.<br /><br />Automaattinen tunniste on URN-tunniste "
+"kansalliskirjaston nimiavaruudesta ja se on muotoa \"urn:nbn:fi:csc-"
+"kata[numerosarja]\". Saadaksesi lisätietoa, vieraile kansalliskirjaston "
+"sivulla osoitteessa http://www.kansalliskirjasto.fi."
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:34
 msgid ""
 "Note that the primary data identifier can NOT be edited after saving the "
 "dataset."
 msgstr ""
-"Huomaa, että ensisijaista datan tunnistetta EI voi muokata tietoaineiston tallennuksen jälkeen."
+"Huomaa, että ensisijaista datan tunnistetta EI voi muokata tietoaineiston"
+" tallennuksen jälkeen."
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:42
 msgid "Additional data identifiers"
@@ -5437,6 +5440,10 @@ msgstr ""
 "tietoaineistosi siihen tässä palvelussa. Kun tietoaineisto on julkaistu, "
 "se on näkyvillä organisaatiosivulla. Lisäksi organisaation muokkaajilla "
 "(editor) on oikeus muokata tätä tietoaineistoa."
+
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:5
+msgid "Use information"
+msgstr "Käyttöehdot"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:8
 msgid "Dataset is available for use:"
@@ -6128,34 +6135,9 @@ msgstr "Jäsen lähtien:"
 msgid "API Key"
 msgstr "API-avain"
 
+#~ msgid "Project that produced this dataset"
+#~ msgstr "Tietoaineiston tuottanut projekti"
 
-#~ msgid ""
-#~ "Field is not compulsory.<br /><br "
-#~ "/>Contributor is a person or an "
-#~ "organisation who, in addition to the "
-#~ "author, has contributed significantly to "
-#~ "the dataset.<br /><br />Type names of"
-#~ " contributors and organisations to the "
-#~ "corresponding fields, one contributor per "
-#~ "a field pair. You can add more "
-#~ "fields for additional contributors by "
-#~ "pressing the '+' button. If you "
-#~ "leave an added contributor field empty,"
-#~ " it is discarded.<br /><br />You can"
-#~ " enter the contributor's name or ID"
-#~ " such as an ORCID identifier."
-#~ msgstr ""
-#~ "Kenttä ei ole pakollinen.<br /><br "
-#~ "/>Muut tekijä on henkilö tai "
-#~ "organisaatio, joka tekijän lisäksi on "
-#~ "osallistunut merkittävästi aineiston luomiseen.<br"
-#~ " /><br />Kirjoita muiden tekijöiden nimet"
-#~ " ja organisaatiot riveilleen, yksi tekijä"
-#~ " kenttäparia kohti. Voit lisätä lisää "
-#~ "rivejä painamalla '+'-painiketta. Jos jätät"
-#~ " rivin tyhjäksi, se jätetään huomiotta.<br"
-#~ " /><br />Voit antaa joko nimen tai"
-#~ " tunnisteen, kuten ORCID-tunnisteen."
-
-
+#~ msgid "Identification information of data"
+#~ msgstr "Aineiston tunnistetiedot"
 

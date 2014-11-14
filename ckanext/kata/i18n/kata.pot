@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-14 05:19+0000\n"
+"POT-Creation-Date: 2014-11-14 07:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1505,7 +1505,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/help.html:143
 msgid ""
 "Contributors: Contributor and contributors's organisation. Multiple "
-"author/organisation pairs can be given."
+"contributor/organisation pairs can be given."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:146
@@ -4421,7 +4421,6 @@ msgid "Keywords"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:125
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:5
 msgid "Usage information"
 msgstr ""
 
@@ -4662,7 +4661,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:130
-msgid "Project that produced this dataset"
+msgid "Project"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:132
@@ -4866,7 +4865,7 @@ msgid "Save and publish"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:18
-msgid "Identification information of data"
+msgid "Data identifiers"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:33
@@ -4891,7 +4890,7 @@ msgid "Additional data identifiers"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:42
-msgid "identifiers"
+msgid " identifiers"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:63
@@ -4946,6 +4945,10 @@ msgid ""
 " the organization within this service. Once the dataset is published it is "
 "visible in the organization page. Additionally, the organization's editors "
 "can also modify this dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:5
+msgid "Use information"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:8

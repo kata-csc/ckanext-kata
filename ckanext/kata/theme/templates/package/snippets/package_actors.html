@@ -127,7 +127,7 @@
     {% endif %}
     </div>
   </div>
-  <h3 class="module-heading-add-dataset">{{ _('Project that produced this dataset') }}</h3>
+  <h3 class="module-heading-add-dataset">{{ _('Project') }}</h3>
   <div class="module-content">
     <input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />{{ _('This dataset was produced in a project.') }}
   </div>
