@@ -5,7 +5,9 @@
 
 {% block content_primary_nav %}
   {{ h.build_nav_icon('dataset_read', _('Dataset'), id=c.pkg.name) }}
-  {{ h.build_nav_icon('dataset_activity', _('Activity Stream'), id=c.pkg.name) }}
+  {% if h.check_access('sysadmin') or c.is_myself == true %}
+    {{ h.build_nav_icon('dataset_activity', _('Activity Stream'), id=c.pkg.name) }}
+  {% endif %}
   {{ h.build_nav_icon('related_list', _('Related'), id=c.pkg.name) }}
 {% endblock %}
 
