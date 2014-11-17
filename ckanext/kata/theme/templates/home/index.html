@@ -33,43 +33,40 @@
                         {{ _('What is Etsin?') }}
                       </h3>
                       <p>
-                        {{ _('Etsin is a research data finder. The service gathers data from various fields of research to be searched and reused. Etsin allows you to search for data according to your needs and to provide your own datasets for others to find and reuse.') }}
-                      </p>
-                      <p>
-                        {{ _('The research data itself is not stored in Etsin. Rather, Etsin allows you to search for and browse datasets based on their metadata.') }}
-                      </p>
-                      <h3>
-                        {{ _('What is metadata?') }}
-                      </h3>
-                      <p>
-                        {{ _('Metadata is data about data. This is a record that provides information describing the data and how to access it. Firstly, metadata describes important features of the data such as authors, subjects, the fields of research the data pertains to, storage formats, and licenses.') }}
-                      </p>
-                      <p>
-                        {{ _('However, the content of metadata varies depending on what kind of data is being described. The Etsin provides a common ground by employing a common set of metadata fields tailored for research data. In the interest of consistency with other services, the metadata conforms to the minimum metadata model which can be downloaded from this page. Currently, the minimum metadata model is only provided in Finnish.') }}
+                        {{ _('Etsin enables you to find research datasets and to make your own datasets discoverable to others. Etsin offers access to datasets in various fields via a joint metadata model. The descriptive metadata stored in the service includes information on the authors, subject, format and licensing of the data. Etsin works independently of actual data storage location.') }}
                       </p>
                       <h3>
                         {{ _('Is this service for me?') }}
                       </h3>
                       <p>
-                        {{ _('Etsin aims to collect datasets from various sources and from various fields of science and to be a single point of access to all kinds of research data.') }}
-                      </p>
-                      <p>
-                        {{ _('You do not have to be a professional scientist or researcher in order to search for data. Useful data can be generated and reused anywhere and by anyone.') }}
+                        {{ _('Anyone can use Etsin to search for research datasets. Authenticated users may enter information on their datasets, and of others\' datasets with the permission. Etsin aims to collect information on datasets from various sources and from various fields. You do not have to be a professional scientist or researcher in order use the service.') }}
                       </p>
                       <h3>
                         {{ _('Is all of the data open?') }}
                       </h3>
                       <p>
-                        {{ _('Almost all of the metadata is open, but it is for the author to decide how the data itself can be accessed and by whom. Nevertheless, providing your data openly is recommended.') }}
+                        {{ _('The published metadata on the dataset is open to everyone, but the data owner decides how the data can be accessed and by whom. Nevertheless, sharing your data openly is recommended. You will find more information on the About Etsin page.') }}
                       </p>
                       <h3>
-                        {{ _('Terms of use') }}
+                        {{ _('Short user guide') }}
                       </h3>
                       <p>
-                        <a href="{{ _('http://avointiede.fi/documents/10864/17332/Etsin+kayttoehdot') }}">{{ _('Terms of use') }}</a>
-                      </p>
-                      <p>
-                        <a href="{{ _('http://avointiede.fi/documents/10864/17332/Etsin+tietosuojaseloste') }}">{{ _('Privacy policy of Etsin') }}</a>
+                        <ol type="1">
+                          <li>
+                            {% trans %}
+                              You can <i>search</i> for datasets and <i>add</i> descriptive data, aka metadata, for a dataset.
+                            {% endtrans %}
+                          </li>
+                          <li>
+                              {{ _('You find datasets either by typing a keyword in the search field or via the advanced search.') }}
+                          </li>
+                          <li>
+                              {{ _('In order to add data you first need to authenticate yourself by') }} <a href="https://haka.funet.fi/shibboleth/help.php">{{ _('Haka login') }}</a>
+                          </li>
+                          <li>
+                              {{ _('A comprehensive description of your data makes it easier for others to find it and make use of it. Etsin will assist you in filling in the data.') }}
+                          </li>
+                        </ol>
                       </p>
                     {% endblock %}
                   {% endblock %}
@@ -80,22 +77,6 @@
             {% block home_image %}
             {% endblock %}
           </div>
-          {% block additional_info %}
-            <div class="index-additional-info">     
-              <h4 class="module-heading-add-dataset">{{ _('Tools and additional information') }}</h4>
-              <div class="module-content"> 
-                <p>
-                  {{ _('The minimum metadata model recommends a common set of metadata fields. Explore the minimum metadata model (in Finnish):') }}<br /><br />
-                  <a href="{{ _('http://www.tdata.fi/documents/10180/44526/TTA-minimimetatietomalli/c90929e4-3b7e-42a2-8419-a6481decb67d') }}"><span class="format-label" data-format="pdf" property="dc:format"></span> {{ _('Minimum metadata model') }}</a> {{ _('(In Finnish)') }}
-                </p>
-                <p>
-                  {{ _('The preferred license is the Creative Commons 4.0 family. Learn more about the licenses at Creative Commons:') }}<br /><br />
-                <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}"><img src="http://i.creativecommons.org/l/by/4.0/88x31.png"></a>
-                </p>
-              </div>   
-            </div>
-          {% endblock %}
-    
         </div>
       {% endblock %}
       
@@ -151,21 +132,11 @@
                     <img src="{{ _('../../base/images/logo_aila_en.png') }}"></a>
             </div>
         </section>
-        <h1>{{ _('Other research metadata services in Finland') }}</h1>
         <section class="module">
             <h4 class="module-heading-add-dataset">{{ _("Language bank of Finland") }} - {{ _('Browse language resources') }}</h4>
             <div class="module-content">
                 <a href="http://metashare.csc.fi/">
                     <img src="../../base/images/logo_lb.png"></a>
-            </div>
-        </section>
-        <section class="module">
-            <h4 class="module-heading-add-dataset">{{ _("About the service") }}</h4>
-            <div class="module-content">
-
-                <span class="tta-orange strong">
-                    {{ _('Maintenance window: Every fourth monday of each month from 4 pm to 6 pm') }}
-                </span>
             </div>
         </section>
 {% endblock %}

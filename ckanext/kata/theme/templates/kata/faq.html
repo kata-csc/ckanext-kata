@@ -9,20 +9,36 @@
 
 {% block primary_content %}
   <section class="faq" id="kata_faq">
-   <section class="module"><h2 class="module-heading"><a id="faq-kata-metadata">{{ _('Basic information of Etsin') }}</a></h2>
+   <section class="module"><h2 class="module-heading"><a id="faq-kata-metadata">{{ _('Basic information on Etsin') }}</a></h2>
      <div class="module-content">
       <h3 class="question">{{ _('What is Etsin?') }}</h3>
-      <p>{{ _('Etsin is a research data finder. The service is produced by the Finnish Ministry of Education and Culture and maintained by CSC - IT Center for Science Ltd.') }}</p>
+      <p>{{ _('Etsin is a research data finder. The service is offered by the Finnish Ministry of Education and Culture and it is developed and maintained by CSC - IT Center for Science Ltd.') }}</p>
       <h3 class="question">{{ _('What kind of data does Etsin contain?') }}</h3>
-      <p>{{ _('Etsin contains metadata of research data, from various branches of science. Etsin does not contain the actual data itself, but the service allows you to browse and search for available data and lets you know how and where to gain access to it.') }}</p>
+      <p>{{ _('Etsin contains metadata of research data, from various fields of science. Etsin allows you to browse and search for existing datasets. It also contains information on how and where to gain access to the actual research data.') }}</p>
+      <h3 class="question">{{ _('How can I describe a dataset in Etsin?') }}</h3>
+      <p>{{ _('Etsin supports the description of datasets. It lists the basic information which is required in order to make the dataset discoverable by others. Add dataset page includes field-specific instructions for metadata descriptions. If you wish to publish a dataset description in Etsin, you need to hold the rights to publish the dataset or have the consent from the owner of the dataset.') }}</p>
+      <h3 class="question">{{ _('How can make use of others\' data via Etsin?') }}</h3>
+      <p>{{ _('Etsin includes use information for each dataset. Licenses may also be specified.') }}</p>
       <h3 class="question">{{ _('Which browsers does Etsin support?') }}</h3>
       <p>{{ _('Etsin supports most of the popular modern browsers, like Mozilla Firefox, Google Chrome, Safari and Internet Explorer. Old versions of these browsers aren\'t necessarily supported.') }}</p>
+      <h3 class="question">{{ _('Which services are compatible with Etsin and in which ways?') }}</h3>
+      <p>{% trans %}The data described in Etsin can be stored anywhere, e.g. <a href="https://www.tdata.fi/en/ida">IDA storage service</a>. Etsin is integrated with a Resource Entitlement Management System, through which access data can be managed. Open data found in Etsin may be accessed by the user in e.g. <a href="http://avaa.tdata.fi/web/avaa/etusivu">AVAA open data publishing portal</a>.{% endtrans %}</p>
      </div>
    </section>
    <section class="module"><h2 class="module-heading"><a id="faq-add-dataset">{{ _('Adding and modifying metadata') }}</a></h2>
      <div class="module-content">
+       <h3 class="question">{{ _('What does metadata mean?') }}</h3>
+       <p>{{ _('Metadata describes the data, e.g. title, language or description of the content.') }}</p>
+       <h3 class="question">{{ _('What is metadata needed for?') }}</h3>
+       <p>{{ _('Metadata allows you to find the data and understand its content, thus fostering re-use. Without descriptive metadata the data may be a meaningless collection of files, numbers or symbols.') }}</p>
+       <h3 class="question">{{ _('Is metadata added separately for each data file?') }}</h3>
+       <p>{{ _('The person describing the data decides on how large a collection should be described at once. Generally speaking, one description should be made for a collection that is large enough to be independently reutilized. This collection may include actual data files as well as instructions on their content. A large dataset may also be described in smaller portions.') }}</p>
+       <h3 class="question">{{ _('What kind of metadata model is employed in Etsin?') }}</h3>
+       <p>{{ _('The metadata model specifies the minimum level of description necessary to ensure reusability of the data and interoperability with other systems.  The metadata description should include at least the permanent identifier and timestamp of the metadata, the identifier of the dataset and timestamp, dataset name, subject, language, various actors, and dataset use information.') }}</p>
+       <h3 class="question">{{ _('Is there a versioning management system in Etsin?') }}</h3>
+       <p>{{ _('There is no separate field in the metadata model for information about history and revision/adjustments, but records added to the same dataset form a documentation about past actions. Based on the time of modification and metadata with the same persistent identifier amendments are traceable.') }}</p>
        <h3 class="question">{{ _('Why can\'t I add any keywords?') }}</h3>
-       <p>{{ _('Most likely the script files haven\'t loaded because of your browsers security features. The script files are loaded via an unencrypted connection which causes a warning. You must permit this content from your browser. Usually you can do this temporarily from a button in the address bar or from a tab on the bottom of the page, depending on the browser you are using.') }}</p>
+       <p>{{ _('The fields that give automatic suggestions from existing ontologies, like the keywords field, require Javascript. Javascript can be enabled from your browser\'s settings.') }}</p>
        <h3 class="question">{{ _('I added extra fields for titles/authors I do not want to fill. How do I remove these?') }}</h3>
        <p>{{ _('You don\'t need to remove them. Leave them empty and Etsin will ignore them.') }}
        <h3 class="question">{{ _('How can I remove a dataset from Etsin?') }}</h3>
@@ -30,12 +46,12 @@
        <h3 class="question">{{ _('What does creating a new access application form mean?') }}</h3>
        <p>{{ _('It means that Etsin creates automatically a default workflow to REMS (Resource Entitlement Management System). REMS is a service for managing access rights to research data. With it you can specify that a user must send an application in the REMS service to you to gain access to your data. Find out more from: ') }}<a href="https://confluence.csc.fi/display/REMS/Home">{{ _('REMS.')  }}</a></p>
        <h3 class="question">{{ _('I\'m trying to accept an application in REMS but the link to the form received by email is empty.') }}</h3>
-       <p>{{ _('Most likely the distributor\'s email address isn\'t bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the person accepting the application. To fix this, log in to reetta.csc.fi with identity bound to the email address or change the dataset\'s distributor\'s email address to a valid one.') }}</p>
+       <p>{{ _('Most likely the distributor\'s email address isn\'t bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the person accepting the application. To fix this, log in to http://reetta.csc.fi with identity bound to the email address or change the dataset\'s distributor\'s email address to a valid one.') }}</p>
        <h3 class="question">{{ _('I want to add a URL instead of plain text in author/keyword/actor field. Is it resolved?') }}</h3>
        <p>{{ _('Currently URLs are not resolved so for instance an ORCID will be displayed in its given format in dataset and search pages.') }}</p>
      </div>
    </section>
-   <section class="module"><h2 class="module-heading"><a id="faq-search">{{ _('Search: page and features') }}</a></h2>
+   <section class="module"><h2 class="module-heading"><a id="faq-search">{{ _('Search') }}</a></h2>
      <div class="module-content">
        <h3 class="question">{{ _('There are two search fields, why?') }}</h3>
        <p>{{ _('The search field in the upmost part makes it easier to search for data from anywhere in the site. You can use any search field you prefer.') }}</p>
@@ -46,11 +62,12 @@
        <p>{{ _('Facets are generated from the existing datasets in the search engine. If certain types of words are a majority in datasets, they will take the leading positions in facets too. Thus the facets may contain words in some specific language or from specific fields of science because they are so much more popular than others.') }}</p>
      </div>
    </section>
-   <section class="module"><h2 class="module-heading"><a id="faq-user">{{ _('User related features') }}</a></h2>
+   <section class="module"><h2 class="module-heading"><a id="faq-user">{{ _('Authentication and user rights') }}</a></h2>
        <div class="module-content">
            <h3 class="question">{{ _('I opened Etsin and chose log in, then I was suddenly already logged in.') }}</h3>
-           <p>{{ _('This may happen if you have previously logged in and then access Etsin via an unencrypted connection, e.g. using the address http://etsin.avointiede.fi. The identification cookie from your earlier login is only sent via an encrypted connection and thus you could not be identified. Choosing "Log in" redirected you to use an encrypted https connection. At the same time your identification cookie was sent and you were recognized.') }}
-           </p>
+           <p>{{ _('This may happen if you have previously logged in and then access Etsin via an unencrypted connection, e.g. using the address http://etsin.avointiede.fi. The identification cookie from your earlier login is only sent via an encrypted connection and thus you could not be identified. Choosing "Log in" redirected you to use an encrypted https connection. At the same time your identification cookie was sent and you were recognized.') }}</p>
+           <h3 class="question">{{ _('Is a foreign partner in a project allowed to insert his or her metadata into Etsin?') }}</h3>
+           <p>{{ _('A foreign partner in project is allowed to insert his/her metadata into Etsin, as long as he or she is involved in a project operating within the Finnish research system.') }}</p>
        </div>
    </section>
   </section>
@@ -66,16 +83,16 @@
       <div class="faq-toc">
         <ul>
         <li>
-            <a href="#faq-kata-metadata">{{ _('Etsin and metadata') }}</a>
+            <a href="#faq-kata-metadata">{{ _('Basic information on Etsin') }}</a>
         </li>
         <li>
             <a href="#faq-add-dataset">{{ _('Adding and modifying metadata') }}</a>
         </li>
         <li>
-            <a href="#faq-search">{{ _('Search: page and features') }}</a>
+            <a href="#faq-search">{{ _('Search') }}</a>
         </li>
         <li>
-            <a href="#faq-user">{{ _('User related features') }}</a>
+            <a href="#faq-user">{{ _('Authentication and user rights') }}</a>
         </li>
         </ul>
       </div>
