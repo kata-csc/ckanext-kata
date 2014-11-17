@@ -174,7 +174,43 @@ def user_autocomplete(context, data_dict):
 
 def user_activity_list(context, data_dict):
     '''
-    Disables user activity listing for non-sysadmin users.
+    Disables user activity listing except for sysadmins and the users themselves.
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    # Allow any logged in user to view their own activity stream
+    logged_in_user = context.get('user')
+    target_user_obj = context.get('user_obj')
+    if logged_in_user and target_user_obj and hasattr(target_user_obj, 'name') and logged_in_user == target_user_obj.name:
+        return {'success': True}
+    else:
+        return logic_auth.get.sysadmin(context, data_dict)
+
+def package_activity_list(context, data_dict):
+    '''
+    Disables package activity listing from non-sysadmin users.
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    return logic_auth.get.sysadmin(context, data_dict)
+
+def group_activity_list(context, data_dict):
+    '''
+    Disables group activity listing from non-sysadmin users.
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    return logic_auth.get.sysadmin(context, data_dict)
+
+def organization_activity_list(context, data_dict):
+    '''
+    Disables organization activity listing from non-sysadmin users.
     :param context:
     :param data_dict:
     :return:

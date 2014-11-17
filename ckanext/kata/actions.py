@@ -696,18 +696,18 @@ def user_activity_list(context, data_dict):
 
 @side_effect_free
 def package_activity_list(context, data_dict):
-    check_access('user_activity_list', context)
-    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+    check_access('package_activity_list', context)
+    return ckan.logic.action.get.package_activity_list(context, data_dict)
 
 @side_effect_free
 def group_activity_list(context, data_dict):
-    check_access('user_activity_list', context)
-    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+    check_access('group_activity_list', context)
+    return ckan.logic.action.get.group_activity_list(context, data_dict)
 
 @side_effect_free
 def organization_activity_list(context, data_dict):
-    check_access('user_activity_list', context)
-    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+    check_access('organization_activity_list', context)
+    return ckan.logic.action.get.organization_activity_list(context, data_dict)
 
 @side_effect_free
 def user_activity_list_html(context, data_dict):
@@ -723,15 +723,15 @@ def user_activity_list_html(context, data_dict):
 
 @side_effect_free
 def package_activity_list_html(context, data_dict):
-    check_access('user_activity_list', context)
-    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+    check_access('package_activity_list', context)
+    return ckan.logic.action.get.package_activity_list_html(context, data_dict)
 
 @side_effect_free
 def group_activity_list_html(context, data_dict):
-    check_access('user_activity_list', context)
-    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+    check_access('group_activity_list', context)
+    return ckan.logic.action.get.group_activity_list_html(context, data_dict)
 
 @side_effect_free
 def organization_activity_list_html(context, data_dict):
-    check_access('user_activity_list', context)
-    return ckan.logic.action.get.user_activity_list_html(context, data_dict)
+    check_access('organization_activity_list', context)
+    return ckan.logic.action.get.organization_activity_list_html(context, data_dict)
