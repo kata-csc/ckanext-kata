@@ -214,6 +214,27 @@
       <div class="example">
           {{ _('Description: The description field can contain almost anything. Note, that the contents of the description field are visible in the search results, so giving a good description may bring more attention to your dataset.') }}
       </div>
+      <h3 class="help-page">{{ _('Importing metadata from a file') }}</h3>
+          <p>
+              {{ _('If you already have metadata for your dataset as an XML file, you can import the metadata document into Etsin and avoid having to type in all of the metadata manually again. Etsin supports importing metadata in DDI2, OAI-PMH/DC and OAI-PMH/CMDI formats.') }}
+          </p>
+          <p>
+              {{ _('You can find the import option on the left side of the new dataset form. You can import metadata from a file by taking the following steps:') }}
+          </p>
+          <ol>
+              <li>
+                  {{ _('If you have the metadata file available for download on the web, enter then download address of the document in the "URL" field. Alternatively, you can upload a file from your computer by clicking "Browse" and selecting the file.') }}
+              </li>
+              <li>
+                  {{ _('Select the metadata format that matches your file in the "Format" menu.') }}
+              </li>
+              <li>
+                  {{ _('Click "Upload" to import the file. If the file can be successfully imported to Etsin, the input form will be automatically populated by metadata from the imported file.') }}
+              </li>
+              <li>
+                  {{ _('Fill in the remaining required fields that may have been left empty.') }}
+              </li>
+          </ol>
       </div>
     </section>
     <section class="module">
