@@ -53,7 +53,7 @@
     <h3 class="module-heading-add-dataset">{{ _('Subject') }}</h3>
 
     <div class="module-content">
-      {{ _('Search keywords from') }} <a href="{{ _('http://finto.fi/koko/en/') }}">KOKO</a>{{ _(' ontology, select keywords with enter or mouse click.') }}
+      {{ _('Search keywords from') }} <a href="{{ _('http://finto.fi/koko/en/') }}" target="_blank">KOKO</a>{{ _(' ontology, select keywords with enter or mouse click.') }}
       <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
       <span class="kata-btn-span tta-orange">?</span></button><br /><br />
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
@@ -67,7 +67,7 @@
       <h3 class="module-heading-add-dataset optional">{{ _('Field of science') }} {{ kata_form.optional() }}</h3>
 
 
-      {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click.') }}
+      {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}" target="_blank">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click.') }}
       <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
       <span class="kata-btn-span tta-orange">?</span></button><br /><br />
 

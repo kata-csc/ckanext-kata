@@ -459,6 +459,8 @@ def is_urn(name):
 
 
 def get_urn_fi_address(package):
+    if package.get('id', '').startswith('http://') or package.get('id', '').startswith('https://'):
+        return package.get('id')
     pid = get_pids_by_type('data', package, primary=True)[0].get('id', None)
     if is_urn(pid):
         template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")

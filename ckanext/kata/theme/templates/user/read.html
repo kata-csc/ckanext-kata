@@ -27,9 +27,11 @@
         <li{% if c.action == 'read' or c.action == 'me' %} class="active"{% endif %}>
           {% link_for _('Datasets'), controller='user', action='read', id=user.name, icon='sitemap' %}
         </li>
-        <li{% if c.action == 'activity' %} class="active"{% endif %}>
-          {% link_for _('Activity Stream'), controller='user', action='activity', id=user.name, icon='time' %}
-        </li>
+        {% if h.check_access('sysadmin') or c.is_myself == true %}
+          <li{% if c.action == 'activity' %} class="active"{% endif %}>
+            {% link_for _('Activity Stream'), controller='user', action='activity', id=user.name, icon='time' %}
+          </li>
+        {% endif %}
         {% if h.check_access('sysadmin') %}
           <li{% if c.action == 'followers' %} class="active"{% endif %}>
             {% link_for _('Followers'), controller='user', action='followers', id=user.name, icon='group' %}
