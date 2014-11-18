@@ -92,6 +92,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     update_package_schema_oai_dc_ida = Schemas.update_package_schema_oai_dc_ida
     show_package_schema = Schemas.show_package_schema
     tags_schema = Schemas.tags_schema
+    create_package_schema_oai_cmdi = Schemas.create_package_schema_oai_cmdi
 
     def before_map(self, map):
         """

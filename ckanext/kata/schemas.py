@@ -182,6 +182,19 @@ class Schemas:
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
         return schema
 
+
+    @classmethod
+    def create_package_schema_oai_cmdi(cls):
+        """
+        Mofidified schema for oai_dc using CMDI. See `create_package_schema_oai_dc`.
+
+        :rtype: dictionary
+        """
+        schema = cls.create_package_schema_oai_dc()
+        schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
+        return schema
+
+
     @classmethod
     def create_package_schema_ddi(cls):
         '''
