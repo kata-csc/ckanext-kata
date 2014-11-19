@@ -24,7 +24,7 @@
     {% set primary_pids = h.get_pids_by_type('data', data, primary=True) %}
     {% set primary_pid = primary_pids[0] or dict(type='data', primary='True') %}
 
-    <h3 class="module-heading-add-dataset">{{ _("Primary data identifier") }}</h3>
+    <h3 class="module-heading-add-dataset">{{ _("Primary data identifier") }} {{ kata_form.required() }}</h3>
     <div class="module-content">
       <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
       <input type="hidden" name="pids__{{ index }}__type" value="data" />
