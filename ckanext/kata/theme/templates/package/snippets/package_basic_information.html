@@ -5,7 +5,7 @@
   <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
 
   <div class="module-content">
-    <h3 class="module-heading-add-dataset required">{{ _('Titles') }}</h3>
+    <h3 class="module-heading-add-dataset required">{{ _('Titles') }} {{ kata_form.required() }}</h3>
 
     <div class="module-content">
       {% set titles = [] %}
@@ -50,7 +50,7 @@
 
     {# Autocomplete for keywords #}
 
-    <h3 class="module-heading-add-dataset">{{ _('Subject') }}</h3>
+    <h3 class="module-heading-add-dataset">{{ _('Subject') }} {{ kata_form.required() }}</h3>
 
     <div class="module-content">
       {{ _('Search keywords from') }} <a href="{{ _('http://finto.fi/koko/en/') }}" target="_blank">KOKO</a>{{ _(' ontology, select keywords with enter or mouse click.') }}
@@ -77,7 +77,7 @@
 
     {# Languages #}
 
-    <h3 class="module-heading-add-dataset">{{ _('Languages') }}</h3><br />
+    <h3 class="module-heading-add-dataset">{{ _('Languages') }} {{ kata_form.required() }}</h3><br />
     <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset contains non-textual data') }}
     <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
       {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}

@@ -79,5 +79,9 @@ Example:
 {% endmacro %}
 
 {% macro optional() -%}
-    <span>{{ _("Optional") }}</span>
+    <span class="optionality-indicator">{{ _("Optional") }}</span>
+{%- endmacro %}
+
+{% macro required() -%}
+    <span class="optionality-indicator">{{ _("Required") }}</span>
 {%- endmacro %}

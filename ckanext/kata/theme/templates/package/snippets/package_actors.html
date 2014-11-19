@@ -1,7 +1,7 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<h3 class="module-heading-add-dataset">{{ _('Authors') }}</h3>
+<h3 class="module-heading-add-dataset">{{ _('Authors') }} {{ kata_form.required() }}</h3>
 <div class="module-content">
   {% set authors = h.get_authors(data) %}
   {% if authors|length == 0 %}
@@ -86,7 +86,7 @@
   <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
   <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation or '' }}" />
 {% endif %}
-<h3 class="module-heading-add-dataset">{{ _('Distributor') }}</h3>
+<h3 class="module-heading-add-dataset">{{ _('Distributor') }} {{ kata_form.required() }}</h3>
 <div class="module-content">
     {% set contacts = h.get_contacts(data) %}
 
@@ -127,7 +127,7 @@
     {% endif %}
     </div>
   </div>
-  <h3 class="module-heading-add-dataset">{{ _('Project') }}</h3>
+  <h3 class="module-heading-add-dataset">{{ _('Project') }} {{ kata_form.required() }}</h3>
   <div class="module-content">
     <input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />{{ _('This dataset was produced in a project.') }}
   </div>
@@ -176,7 +176,7 @@
       {% if funder_errors and funder_errors is iterable %}<span class="error-block-kata">{{ funder_errors|join('. ') }}</span>{% endif %}
     </div>
   </div>
-  <h3 class="module-heading-add-dataset">{{ _('Owner information') }}</h3>
+  <h3 class="module-heading-add-dataset">{{ _('Owner information') }} {{ kata_form.required() }}</h3>
   <div class="module-content">
     {% set owners = h.get_owners(data) %}
 

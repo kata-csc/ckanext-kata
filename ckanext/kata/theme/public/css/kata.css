@@ -1095,7 +1095,7 @@ h2.optional, h3.optional {
     color: black;
 }
 
-h2.optional span, h3.optional span {
+.optionality-indicator {
     float: right;
     font-size: 75%;
 }
