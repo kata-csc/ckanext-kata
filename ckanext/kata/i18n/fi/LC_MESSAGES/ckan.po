@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-11-14 11:33+0000\n"
+"POT-Creation-Date: 2014-11-19 05:37+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -220,7 +220,7 @@ msgstr "Julkaisematon"
 msgid "Published"
 msgstr "Julkaistu"
 
-#: ckanext/kata/settings.py:54 ckanext/kata/theme/templates/kata/help.html:303
+#: ckanext/kata/settings.py:54 ckanext/kata/theme/templates/kata/help.html:317
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:22
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:27
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:16
@@ -237,13 +237,13 @@ msgstr "Avustaja"
 msgid "Distributor"
 msgstr "Jakelija"
 
-#: ckanext/kata/settings.py:57 ckanext/kata/theme/templates/kata/help.html:294
+#: ckanext/kata/settings.py:57 ckanext/kata/theme/templates/kata/help.html:308
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:90
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:160
 msgid "Funder"
 msgstr "Rahoittaja"
 
-#: ckanext/kata/settings.py:58 ckanext/kata/theme/templates/kata/help.html:299
+#: ckanext/kata/settings.py:58 ckanext/kata/theme/templates/kata/help.html:313
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:195
 msgid "Owner"
 msgstr "Omistaja"
@@ -483,7 +483,9 @@ msgstr "Etsi tietoaineistoja"
 
 #: ckanext/kata/theme/templates/header.html:88
 #: ckanext/kata/theme/templates/header.html:89
-#: ckanext/kata/theme/templates/home/index.html:114
+#: ckanext/kata/theme/templates/home/index.html:95
+#: ckanext/kata/theme/templates/kata/faq.html:54
+#: ckanext/kata/theme/templates/kata/faq.html:92
 #: ckanext/kata/theme/templates/package/search.html:23
 #: ckanext/kata/theme/templates/package/search.html:171
 msgid "Search"
@@ -496,19 +498,19 @@ msgstr "Ohjeet"
 
 #: ckanext/kata/theme/templates/header.html:101
 #: ckanext/kata/theme/templates/kata/faq.html:6
-#: ckanext/kata/theme/templates/kata/faq.html:62
+#: ckanext/kata/theme/templates/kata/faq.html:79
 msgid "FAQ"
 msgstr "FAQ"
 
 #: ckanext/kata/theme/templates/header.html:106
-#: ckanext/kata/theme/templates/kata/help.html:236
-#: ckanext/kata/theme/templates/kata/help.html:401
+#: ckanext/kata/theme/templates/kata/help.html:250
+#: ckanext/kata/theme/templates/kata/help.html:415
 msgid "Stats"
 msgstr "Tilastot"
 
 #: ckanext/kata/theme/templates/header.html:119
-#: ckanext/kata/theme/templates/kata/help.html:125
-#: ckanext/kata/theme/templates/kata/help.html:392
+#: ckanext/kata/theme/templates/kata/help.html:124
+#: ckanext/kata/theme/templates/kata/help.html:406
 #: ckanext/kata/theme/templates/package/search.html:15
 #: ckanext/kata/theme/templates/user/read.html:14
 msgid "Add Dataset"
@@ -678,8 +680,8 @@ msgid "About"
 msgstr "Tietoa"
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:10
-#: ckanext/kata/theme/templates/kata/help.html:335
-#: ckanext/kata/theme/templates/kata/help.html:339
+#: ckanext/kata/theme/templates/kata/help.html:349
+#: ckanext/kata/theme/templates/kata/help.html:353
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:10
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:26
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:24
@@ -705,8 +707,8 @@ msgid "my-group"
 msgstr "minun-ryhmäni"
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:20
-#: ckanext/kata/theme/templates/kata/help.html:325
-#: ckanext/kata/theme/templates/kata/help.html:359
+#: ckanext/kata/theme/templates/kata/help.html:339
+#: ckanext/kata/theme/templates/kata/help.html:373
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:20
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:111
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:6
@@ -735,7 +737,7 @@ msgstr "Oletko varma että haluat poistaa tämän ryhmän?"
 #: ckanext/kata/theme/templates/organization/members.html:36
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:78
 #: ckanext/kata/theme/templates/package/package_rights.html:41
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:41
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:35
 #: ckanext/kata/theme/templates/revision/read.html:24
 msgid "Delete"
 msgstr "Poista"
@@ -766,44 +768,69 @@ msgstr "Tarkastele kohdetta {name}"
 #: ckanext/kata/theme/templates/home/about.html:7
 msgid ""
 " <h2>About Etsin</h2> <p> Etsin is a research data finder. In the service"
-" you can search and find data from various fields of research. Etsin "
-"gathers metadata about existing research data from various external "
-"sources and also provides a web interface to enter metadata directly into"
-" the service. Actual research data is never stored in Etsin and as such "
-"it can be stored anywhere at the discretion of the owner of the data. "
-"However, by gathering the metadata in a single service Etsin allows "
-"anyone to easily discover the data. </p> <p> Comprehensive description of"
-" data plays a very important role in the visibility of the data. Etsin "
-"encourages this by adapting a common set of discipline-independent "
-"metadata fields and by making it easy to enter new metadata. The service "
-"also promotes adding unified information about the availability, "
-"ownership and licensing of data. Increased visibility and findability of "
-"the data promotes data reuse and helps bring merit to researchers. It "
-"also makes the results of research more transparent to funders. </p> <p> "
-"Etsin is provided by the Ministry of Education and Culture of Finland. "
-"Etsin is maintained by CSC — IT Center for Science Ltd. The service is "
-"discipline independent and free to use. </p> "
+" you can search and find data from various fields of research. The "
+"metadata contained in Etsin makes it easy for anyone to discover the "
+"datasets. Etsin makes it possible to enter metadata on datasets into the "
+"service, making them discoverable and reusable for others. The actual "
+"research data may be stored anywhere and the owner controls the access to"
+" the data. Etsin also gathers metadata about existing research data from "
+"various external sources, such as the <a "
+"href=\"http://www.fsd.uta.fi/en/\">Finnish Social Science Data "
+"Archive.</a> </p> <p> Good description of data plays a very important "
+"role in the visibility of the data. Etsin encourages comprehensive "
+"descriptions by adapting a common set of discipline independent metadata "
+"fields and by making it easy to enter metadata.The service also promotes "
+"adding unified information about the availability, ownership and "
+"licensing of data. The goal is to foster licensing practices for research"
+" data. The functionalities of Etsin help document researchers\\' merits "
+"in collecting and sharing data. The information on datasets and project "
+"funding also makes the results of research more transparent to funders. "
+"</p> <p> In addition to the graphical user interface, data in Etsin may "
+"be used through an <a href=\"http://etsin.avointiede.fi/api/3/\">open "
+"interface</a>. <a "
+"href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\">Documentation of the"
+" API</a> may be found on the CKAN pages. </p> <p> All datasets are made "
+"available under <a "
+"href=\"http://creativecommons.org/publicdomain/zero/1.0/\">Creative "
+"Commons 0 license</a>. Data owners decide on the licence of the research "
+"data described in Etsin. For open data, <a "
+"href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons BY"
+" 4.0</a> license is recommended. </p> <p> Customer service contacts and "
+"feedback is available through servicedesk (at) csc.fi. The service "
+"maintenance window is on the fourth Monday of every month between 4 and 6"
+" PM (EST). During that time, the service will be out of use. </p> <p> "
+"Etsin is offered to the scientific community by the Ministry of Education"
+" and Culture of Finland. Etsin is developed and maintained by CSC - IT "
+"Center for Science Ltd. The service is discipline independent and free to"
+" use. </p> "
 msgstr ""
-"<h2>Tietoa Etsin-palvelusta</h2> <p>Etsin on tutkimuksen tietoaineistojen"
-" hakupalvelu. Palvelussa voit hakea ja löytää dataa eri tieteenaloilta. "
-"Etsin kerää tutkimusaineistojen metatietoja useista ulkopuolisista "
-"lähteistä, ja tietoja voi myös syöttää suoraan palveluun. Tutkimusdataa "
-"ei koskaan tallenneta Etsimeen, vaan se voidaan säilyttää missä tahansa "
-"tallennuspalvelussa. Etsimessä olevien metatietojen avulla data on "
-"kuitenkin helposti kenen tahansa löydettävissä. </p> <p> Datan kattava "
-"kuvailu lisää olennaisesti sen näkyvyyttä. Etsin pyrkii edistämään "
-"kuvailujen tasoa tarjoamalla kaikille tieteenaloille yhteiset "
-"metatietokentät ja tekemällä tietojen lisäämisen mahdollisimman helpoksi."
-" Osana yhteisiä metatietokenttiä on myös kentät, jotka kertovat datan "
-"käyttöoikeuksista, omistajuudesta ja lisenssistä. Tällä pyritään "
-"yhtenäistämään erityisesti käyttöoikeus- ja lisenssikäytäntöjä. Etsimen "
-"monipuolisten hakuominaisuuksien ansiosta datan löytäminen on helpompaa. "
-"Tämä edistää myös meriitin syntymistä tutkijoille. Lisäksi aineistoihin "
-"ja tutkimushankkeiden rahoitukseen liittyvät tiedot tekevät tutkimuksen "
-"tuloksista läpinäkyvämpiä rahoittajille. </p> <p>Etsin-palvelun omistaa "
-"opetus- ja kulttuuriministeriö ja sitä ylläpitää CSC — Tieteen "
-"tietotekniikan keskus Oy. Palvelu on tieteenalariippumaton ja "
-"käyttäjilleen maksuton.</p> "
+
+#: ckanext/kata/theme/templates/home/about.html:29
+msgid "http://openscience.fi/documents/14273/17985/Etsin+Service+Description"
+msgstr "http://avointiede.fi/documents/10864/17332/Etsin+palvelukuvaus"
+
+#: ckanext/kata/theme/templates/home/about.html:29
+msgid "Service description"
+msgstr "Palvelukuvaus"
+
+#: ckanext/kata/theme/templates/home/about.html:32
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:8
+msgid "http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use"
+msgstr "http://avointiede.fi/documents/10864/17332/Etsin+kayttoehdot"
+
+#: ckanext/kata/theme/templates/home/about.html:32
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:1
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:8
+msgid "Terms of use"
+msgstr "Käyttöehdot"
+
+#: ckanext/kata/theme/templates/home/about.html:35
+msgid "http://openscience.fi/documents/14273/17985/Etsin+Privacy+Policy"
+msgstr "http://avointiede.fi/documents/10864/17332/Etsin+tietosuojaseloste"
+
+#: ckanext/kata/theme/templates/home/about.html:35
+msgid "Privacy policy"
+msgstr "Tietosuojaseloste"
 
 #: ckanext/kata/theme/templates/home/index.html:3
 msgid "Welcome"
@@ -826,210 +853,140 @@ msgstr "Mikä Etsin on?"
 
 #: ckanext/kata/theme/templates/home/index.html:36
 msgid ""
-"Etsin is a research data finder. The service gathers data from various "
-"fields of research to be searched and reused. Etsin allows you to search "
-"for data according to your needs and to provide your own datasets for "
-"others to find and reuse."
+"Etsin enables you to find research datasets and to make your own datasets"
+" discoverable to others. Etsin offers access to datasets in various "
+"fields via a joint metadata model. The descriptive metadata stored in the"
+" service includes information on the authors, subject, format and "
+"licensing of the data. Etsin works independently of actual data storage "
+"location."
 msgstr ""
-"Etsin on tutkimuksen tietoaineistojen hakupalvelu. Palvelu kerää dataa "
-"eri tieteenaloilta etsittäväksi ja uudelleenkäytettäväksi. Tässä "
-"palvelussa voit etsiä ja löytää tutkimusdataa käyttöösi ja myös esitellä "
-"oman datasi muiden löydettäväksi ja jatkohyödynnettäväksi."
+"Etsimen avulla voit etsiä tutkimusaineistoja ja tehdä oman aineistosi "
+"löydettäväksi muille. Etsin tarjoaa pääsyn eri alojen aineistoihin "
+"yhteisen metatietomallin kautta. Palveluun tallennettavissa metatiedoissa"
+" kuvaillaan aineistoja, esimerkiksi kerrotaan kuka aineiston on "
+"tuottanut, mitä se käsittelee, missä formaatissa se on ja millaisin "
+"ehdoin sitä saa käyttää. Etsin on riippumaton itse aineiston "
+"tallennuspaikasta."
 
 #: ckanext/kata/theme/templates/home/index.html:39
-msgid ""
-"The research data itself is not stored in Etsin. Rather, Etsin allows you"
-" to search for and browse datasets based on their metadata."
-msgstr ""
-"Tutkimusdataa itseään ei tallenneta Etsimeen. Palvelun avulla voit "
-"kuitenkin hakea ja selata aineistoja niiden metatietojen perusteella."
-
-#: ckanext/kata/theme/templates/home/index.html:42
-msgid "What is metadata?"
-msgstr "Mitä on metatieto?"
-
-#: ckanext/kata/theme/templates/home/index.html:45
-msgid ""
-"Metadata is data about data. This is a record that provides information "
-"describing the data and how to access it. Firstly, metadata describes "
-"important features of the data such as authors, subjects, the fields of "
-"research the data pertains to, storage formats, and licenses."
-msgstr ""
-"Lyhyesti määriteltynä metatieto on tietoa tiedosta. Yksittäinen "
-"metatietotietue kuvailee esimerkisi datan ominaisuutta tai miten datan "
-"saa käyttöönsä. Yleisesti metatiedolla kuvaillaan tiedon ominaisuuksia "
-"kuten esimerkiksi tekijöitä, aihepiirejä, tutkimuksen alaa, "
-"tallennusmuotoa ja käyttöoikeuksia."
-
-#: ckanext/kata/theme/templates/home/index.html:48
-msgid ""
-"However, the content of metadata varies depending on what kind of data is"
-" being described. The Etsin provides a common ground by employing a "
-"common set of metadata fields tailored for research data. In the interest"
-" of consistency with other services, the metadata conforms to the minimum"
-" metadata model which can be downloaded from this page. Currently, the "
-"minimum metadata model is only provided in Finnish."
-msgstr ""
-"Pääsääntöisesti metatiedon sisältö riippuu suuresti datasta. Etsin "
-"tarjoaa kuitenkin yhtenäisen rakenteen tutkimusaineistojen metatiedoille."
-" Jotta metatiedot olisivat yhteneväisiä muiden palveluiden kanssa, Etsin "
-"noudattaa metatiedoissa minimimetatietomallia, jonka voit ladata "
-"tarkasteltavaksesi tältä sivulta."
-
-#: ckanext/kata/theme/templates/home/index.html:51
 msgid "Is this service for me?"
 msgstr "Onko tämä palvelu minulle?"
 
-#: ckanext/kata/theme/templates/home/index.html:54
+#: ckanext/kata/theme/templates/home/index.html:42
 msgid ""
-"Etsin aims to collect datasets from various sources and from various "
-"fields of science and to be a single point of access to all kinds of "
-"research data."
+"Anyone can use Etsin to search for research datasets. Authenticated users"
+" may enter information on their own datasets, and of others' datasets "
+"with their permission. Etsin aims to collect information on datasets from"
+" various sources and from various fields. You do not have to be a "
+"professional scientist or researcher in order use the service."
 msgstr ""
-"Etsin pyrkii keräämään tutkimusdataa useista lähteistä ja useilta "
-"tieteenaloilta, jotta yhdestä paikasta pääsisi kiinni eri tutkimusalojen "
-"ja tutkimuslaitosten dataan."
+"Kuka tahansa voi hakea aineistoja Etsimestä. Kirjautuneet käyttäjät "
+"voivat tallentaa tietoja omista tutkimusaineistoistaan ja muiden "
+"aineistoista heidän luvallaan. Tavoitteena on, että Etsimessä olisi "
+"mahdollisimman paljon tietoa erilaisesta tutkimusdatasta, useista eri "
+"lähteistä ja monelta eri alalta. Palvelun käyttäjien ei tarvitse olla "
+"ammattitutkijoita."
 
-#: ckanext/kata/theme/templates/home/index.html:57
-msgid ""
-"You do not have to be a professional scientist or researcher in order to "
-"search for data. Useful data can be generated and reused anywhere and by "
-"anyone."
-msgstr ""
-"Hakeaksesi dataa sinun ei tarvitse ammattitutkija – hyödyllistä dataa voi"
-" tuottaa ja käyttää kuka tahansa ja missä tahansa."
-
-#: ckanext/kata/theme/templates/home/index.html:60
+#: ckanext/kata/theme/templates/home/index.html:45
 msgid "Is all of the data open?"
 msgstr "Onko kaikki data avointa?"
 
-#: ckanext/kata/theme/templates/home/index.html:63
+#: ckanext/kata/theme/templates/home/index.html:48
 msgid ""
-"Almost all of the metadata is open, but it is for the author to decide "
-"how the data itself can be accessed and by whom. Nevertheless, providing "
-"your data openly is recommended."
+"The published metadata on the dataset is open to everyone, but the data "
+"owner decides how the data can be accessed and by whom. Nevertheless, "
+"sharing your data openly is recommended. You will find more information "
+"on the About Etsin page."
 msgstr ""
-"Lähes kaikki metadata on avointa, mutta datan omistaja päättää miten ja "
-"kuka dataan pääsee käsiksi. Datan julkaisemista avoimena kuitenkin "
-"suositellaan."
+"Julkaistut tietoaineistojen kuvailutiedot ovat kaikille avoimia, mutta "
+"aineiston omistaja päättää miten ja kuka aineistoon pääsee käsiksi. "
+"Suosittelemme myös itse datan julkaisemista avoimena. Lisätietoa saat "
+"Tietoa Etsimestä -sivulta."
 
-#: ckanext/kata/theme/templates/home/index.html:66
-#: ckanext/kata/theme/templates/home/index.html:69
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:1
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
-msgid "Terms of use"
-msgstr "Käyttöehdot"
+#: ckanext/kata/theme/templates/home/index.html:51
+msgid "Short user guide"
+msgstr "Pikaohjeet käyttöön"
 
-#: ckanext/kata/theme/templates/home/index.html:69
-msgid "http://avointiede.fi/documents/10864/17332/Etsin+kayttoehdot"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/index.html:72
-msgid "http://avointiede.fi/documents/10864/17332/Etsin+tietosuojaseloste"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/index.html:72
-msgid "Privacy policy of Etsin"
-msgstr "Etsimen tietosuojaseloste"
-
-#: ckanext/kata/theme/templates/home/index.html:85
-msgid "Tools and additional information"
-msgstr "Työkalut ja lisätietoa"
-
-#: ckanext/kata/theme/templates/home/index.html:88
+#: ckanext/kata/theme/templates/home/index.html:56
 msgid ""
-"The minimum metadata model recommends a common set of metadata fields. "
-"Explore the minimum metadata model (in Finnish):"
+" You can <i>search</i> for datasets and <i>add</i> descriptive data, aka "
+"metadata, for a dataset. "
 msgstr ""
-"Minimimetatietomalli määrittelee aineistokuvailuille yhteisiä "
-"metadatakenttiä. Tutustu minimimetatietomalliin:"
+"Etsimessä voit <i>etsiä</i> tietoaineistoja ja <i>lisätä</i> "
+"tutkimusaineistoja kuvailevia tietoja eli metatietoa."
 
-#: ckanext/kata/theme/templates/home/index.html:89
+#: ckanext/kata/theme/templates/home/index.html:61
 msgid ""
-"http://www.tdata.fi/documents/10180/44526/TTA-"
-"minimimetatietomalli/c90929e4-3b7e-42a2-8419-a6481decb67d"
+"You find datasets either by typing a keyword in the search field or via "
+"the advanced search."
 msgstr ""
+"Löydät tietoaineistoja joko kirjoittamalla avainsanan hakukenttään tai "
+"tarkennetulla haulla."
 
-#: ckanext/kata/theme/templates/home/index.html:89
-msgid "Minimum metadata model"
-msgstr "Minimimetatietomalli"
+#: ckanext/kata/theme/templates/home/index.html:64
+msgid "In order to add data you first need to authenticate yourself by"
+msgstr "Lisätäksesi aineiston tiedot sinun on ensin tunnistauduttava"
 
-#: ckanext/kata/theme/templates/home/index.html:89
-msgid "(In Finnish)"
-msgstr " "
+#: ckanext/kata/theme/templates/home/index.html:64
+msgid "Haka login"
+msgstr "Haka-tunnuksillasi"
 
-#: ckanext/kata/theme/templates/home/index.html:92
+#: ckanext/kata/theme/templates/home/index.html:67
 msgid ""
-"The preferred license is the Creative Commons 4.0 family. Learn more "
-"about the licenses at Creative Commons:"
+"A comprehensive description of your data makes it easier for others to "
+"find it and make use of it. Etsin will assist you in filling in the data."
 msgstr ""
-"Suositeltu lisenssi on Creative Commons 4.0 -lisenssiperhe. Lisätietoa "
-"lisensseistä Creative Commonsin sivuilla:"
+"Aineisto kannattaa kuvailla mahdollisimman kattavasti, sillä se edistää "
+"aineiston löydettävyyttä ja hyödynnettävyyttä. Etsin ohjaa sinua "
+"metatietojen täydentämisessä."
 
-#: ckanext/kata/theme/templates/home/index.html:93
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82
-msgid "http://creativecommons.org/choose/?lang=en"
-msgstr "http://creativecommons.org/choose/?lang=fi"
-
-#: ckanext/kata/theme/templates/home/index.html:109
+#: ckanext/kata/theme/templates/home/index.html:90
 msgid "Search data"
 msgstr "Hae dataa"
 
-#: ckanext/kata/theme/templates/home/index.html:111
+#: ckanext/kata/theme/templates/home/index.html:92
 msgid "eg. climate"
 msgstr "esim. ilmasto"
 
-#: ckanext/kata/theme/templates/home/index.html:122
+#: ckanext/kata/theme/templates/home/index.html:103
 msgid "Newest datasets"
 msgstr "Uusimmat tietoaineistot"
 
-#: ckanext/kata/theme/templates/home/index.html:144
+#: ckanext/kata/theme/templates/home/index.html:125
 msgid "Integrated metadata sources"
 msgstr "Palveluun tuotujen metatietojen lähteet"
 
-#: ckanext/kata/theme/templates/home/index.html:146
+#: ckanext/kata/theme/templates/home/index.html:127
 msgid "Finnish social science data archive"
 msgstr "Yhteiskuntatieteellinen tietoarkisto"
 
-#: ckanext/kata/theme/templates/home/index.html:146
+#: ckanext/kata/theme/templates/home/index.html:127
 msgid "Data Archive and Aila Data Service"
 msgstr "Tietoarkisto ja Palveluportaali Aila"
 
-#: ckanext/kata/theme/templates/home/index.html:148
+#: ckanext/kata/theme/templates/home/index.html:129
 msgid "http://www.fsd.uta.fi/en/"
 msgstr "http://www.fsd.uta.fi/fi/"
 
-#: ckanext/kata/theme/templates/home/index.html:149
+#: ckanext/kata/theme/templates/home/index.html:130
 msgid "../../base/images/img_fsd_logo_en.png"
 msgstr "../../base/images/img_fsd_logo_fi.png"
 
-#: ckanext/kata/theme/templates/home/index.html:150
+#: ckanext/kata/theme/templates/home/index.html:131
 msgid "https://services.fsd.uta.fi/index?lang=en"
 msgstr "https://services.fsd.uta.fi"
 
-#: ckanext/kata/theme/templates/home/index.html:151
+#: ckanext/kata/theme/templates/home/index.html:132
 msgid "../../base/images/logo_aila_en.png"
 msgstr "../../base/images/logo_aila_fi.png"
 
-#: ckanext/kata/theme/templates/home/index.html:154
-msgid "Other research metadata services in Finland"
-msgstr "Muut tutkimuksen metatietopalvelut Suomessa"
-
-#: ckanext/kata/theme/templates/home/index.html:156
+#: ckanext/kata/theme/templates/home/index.html:136
 msgid "Language bank of Finland"
 msgstr "Kielipankki"
 
-#: ckanext/kata/theme/templates/home/index.html:156
+#: ckanext/kata/theme/templates/home/index.html:136
 msgid "Browse language resources"
 msgstr "Kielitieteen aineistot"
-
-#: ckanext/kata/theme/templates/home/index.html:163
-msgid "About the service"
-msgstr "Tietoa palvelusta"
-
-#: ckanext/kata/theme/templates/home/index.html:167
-msgid "Maintenance window: Every fourth monday of each month from 4 pm to 6 pm"
-msgstr "Huoltoikkuna: kuukauden neljäs maanantai kello 16.00-18.00"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:15
 msgid "Original metadata record"
@@ -1056,7 +1013,7 @@ msgid "Event"
 msgstr "Tapahtuma"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:23
-#: ckanext/kata/theme/templates/kata/help.html:331
+#: ckanext/kata/theme/templates/kata/help.html:345
 msgid "Geographic coverage"
 msgstr "Maantieteellinen kattavuus"
 
@@ -1065,7 +1022,7 @@ msgid "Title + language"
 msgstr "Otsikko ja sen kieli"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:27
-#: ckanext/kata/theme/templates/kata/help.html:322
+#: ckanext/kata/theme/templates/kata/help.html:336
 msgid "Discipline"
 msgstr "Tieteenala"
 
@@ -1116,18 +1073,19 @@ msgid "Etsin FAQ"
 msgstr "Etsin FAQ"
 
 #: ckanext/kata/theme/templates/kata/faq.html:12
-msgid "Basic information of Etsin"
+#: ckanext/kata/theme/templates/kata/faq.html:86
+msgid "Basic information on Etsin"
 msgstr "Perustietoja etsimestä"
 
 #: ckanext/kata/theme/templates/kata/faq.html:15
 msgid ""
-"Etsin is a research data finder. The service is produced by the Finnish "
-"Ministry of Education and Culture and maintained by CSC - IT Center for "
-"Science Ltd."
+"Etsin is a research data finder. The service is offered by the Finnish "
+"Ministry of Education and Culture and it is developed and maintained by "
+"CSC - IT Center for Science Ltd."
 msgstr ""
-"Etsin on tutkimuksen tietoaineistojen hakupalvelu. Palvelun tuottaa "
-"Opetus- ja kulttuuriministeriö ja sitä ylläpitää CSC - Tieteen "
-"tietotekniikan keskus oy."
+"Etsin on tutkimuksen tietoaineistojen hakupalvelu. Palvelun tarjoaa "
+"opetus- ja kulttuuriministeriö ja sen tuottaa CSC - Tieteen "
+"tietotekniikan keskus Oy."
 
 #: ckanext/kata/theme/templates/kata/faq.html:16
 msgid "What kind of data does Etsin contain?"
@@ -1135,22 +1093,52 @@ msgstr "Minkälaista dataa Etsin sisältää?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:17
 msgid ""
-"Etsin contains metadata of research data, from various branches of "
-"science. Etsin does not contain the actual data itself, but the service "
-"allows you to browse and search for available data and lets you know how "
-"and where to gain access to it."
+"Etsin contains metadata of research data, from various fields of science."
+" Etsin allows you to browse and search for existing datasets. It also "
+"contains information on how and where to gain access to the actual "
+"research data."
 msgstr ""
-"Etsin sisältää tutkimusaineistojen metadataa erinäisiltä tieteenaloilta. "
-"Etsin ei sisällä varsinaista tutkimusdataa itsessään, mutta metatietojen "
-"perusteella voit selata ja hakea saatavilla olevia aineistoja. "
-"Metatiedoista selviää myös, mistä ja miten varsinainen tutkimusdata on "
-"saatavilla."
+"Etsin sisältää tutkimusaineistojen metatietoja. Metatietojen perusteella "
+"voit selata ja hakea olemassa olevia aineistoja. Metatiedoista selviää "
+"myös, mistä ja miten varsinainen tutkimusdata on saatavilla."
 
 #: ckanext/kata/theme/templates/kata/faq.html:18
+msgid "How can I describe a dataset in Etsin?"
+msgstr "Miten kuvailen aineiston?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:19
+msgid ""
+"Etsin supports the description of datasets. It lists the basic "
+"information which is required in order to make the dataset discoverable "
+"by others. Add dataset page includes field-specific instructions for "
+"metadata descriptions. If you wish to publish a dataset description in "
+"Etsin, you need to hold the rights to publish the dataset or have the "
+"consent from the owner of the dataset."
+msgstr ""
+"Aineistosta tulee kuvailla tietyt perustiedot, joiden avulla se on muiden"
+" löydettävissä. 'Lisää tietoaineisto'-sivulla on kenttäkohtaisia ohjeita "
+"aineiston kuvailuun. Mikäli haluat julkaista aineiston tiedot Etsimessä, "
+"tulee sinulla olla siihen tarvittavat oikeudet tai lupa aineiston "
+"omistajalta."
+
+#: ckanext/kata/theme/templates/kata/faq.html:20
+msgid "How can I make use of others' data via Etsin?"
+msgstr "Miten saan aineiston käyttööni?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:21
+msgid ""
+"Etsin includes use information for each dataset. Licenses may also be "
+"specified."
+msgstr ""
+"Etsimessä on jokaisesta aineistosta kerrottu sen käyttöehdot. "
+"Metatiedoissa voi myös olla mainittuna lisenssi, jolla saat aineistoa "
+"käyttää."
+
+#: ckanext/kata/theme/templates/kata/faq.html:22
 msgid "Which browsers does Etsin support?"
 msgstr "Mitä internetselaimia Etsin tukee?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:19
+#: ckanext/kata/theme/templates/kata/faq.html:23
 msgid ""
 "Etsin supports most of the popular modern browsers, like Mozilla Firefox,"
 " Google Chrome, Safari and Internet Explorer. Old versions of these "
@@ -1160,32 +1148,134 @@ msgstr ""
 "Firefox, Google Chrome, Safari sekä Internet Explorer. Näiden vanhoja "
 "selainversioita ei välttämättä tueta."
 
-#: ckanext/kata/theme/templates/kata/faq.html:22
-#: ckanext/kata/theme/templates/kata/faq.html:72
-msgid "Adding and modifying metadata"
-msgstr "Metatietojen lisääminen ja muokkaaminen"
-
 #: ckanext/kata/theme/templates/kata/faq.html:24
-msgid "Why can't I add any keywords?"
-msgstr "Miksi en voi lisätä asiasanoja?"
+msgid "Which services are compatible with Etsin and in which ways?"
+msgstr "Mitkä palvelut ovat yhteensopivia Etsimen kanssa?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:25
 msgid ""
-"Most likely the script files haven't loaded because of your browsers "
-"security features. The script files are loaded via an unencrypted "
-"connection which causes a warning. You must permit this content from your"
-" browser. Usually you can do this temporarily from a button in the "
-"address bar or from a tab on the bottom of the page, depending on the "
-"browser you are using."
+"The data described in Etsin can be stored anywhere, e.g. <a "
+"href=\"https://www.tdata.fi/en/ida\">IDA storage service</a>. Etsin is "
+"integrated with a Resource Entitlement Management System, through which "
+"access data can be managed. Open data found in Etsin may be accessed by "
+"the user in e.g. <a href=\"http://avaa.tdata.fi/web/avaa/etusivu\">AVAA "
+"open data publishing portal</a>."
 msgstr ""
-"Todennäköisesti selaimesi ei ole ladannut JavaScript-tiedostoja. Tämä "
-"johtuu selaimesi tietoturva-asetuksista. JavaScript-lähdekooditiedostot "
-"ladataan suojaamatonta yhteyttä pitkin, joka aiheuttaa varoituksen. Sinun"
-" on sallittava näiden lähdekoodien suorittaminen. Yleensä voit "
-"väliaikaisesti sallia tämän painikkeesta osoitepalkissa tai sivun "
-"alalaidassa, riippuen käyttämästäsi selaimesta."
+"Etsimeen syötettyihin metatietoihin liittyvät aineistot voivat olla "
+"tallennettu mihin tahansa, esim. <a "
+"href=\"https://www.tdata.fi/ida\">IDA-säilytyspalveluun</a>. Etsin on "
+"integroitu Reettaan, joka on käyttövaltuuksien hallinnointipalvelu. "
+"Etsimen kautta löydetyt avoimet ja käyttövaltuuksin rajatut aineistot "
+"ovat käyttäjän ladattavissa <a "
+"href=\"http://avaa.tdata.fi/web/avaa/etusivu\">AVAA-"
+"julkaisualustalla</a>."
 
-#: ckanext/kata/theme/templates/kata/faq.html:26
+#: ckanext/kata/theme/templates/kata/faq.html:28
+#: ckanext/kata/theme/templates/kata/faq.html:89
+msgid "Adding and modifying metadata"
+msgstr "Metatietojen lisääminen ja muokkaaminen"
+
+#: ckanext/kata/theme/templates/kata/faq.html:30
+msgid "What does metadata mean?"
+msgstr "Mitä metadata tarkoittaa? "
+
+#: ckanext/kata/theme/templates/kata/faq.html:31
+msgid ""
+"Metadata describes the data, e.g. title, language or description of the "
+"content."
+msgstr ""
+"Metadata on kuvailevaa tietoa aineistoista, esim. otsikko, kieli tai "
+"kuvaus aineiston sisällöstä."
+
+#: ckanext/kata/theme/templates/kata/faq.html:32
+msgid "What is metadata needed for?"
+msgstr "Mihin metatietoa tarvitaan?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:33
+msgid ""
+"Metadata allows you to find the data and understand its content, thus "
+"fostering re-use. Without descriptive metadata the data may be a "
+"meaningless collection of files, numbers or symbols."
+msgstr ""
+"Metatiedot auttavat löytämään aineiston, ymmärtämään sen sisältöä ja "
+"siten edistävät sen uudelleenkäyttöä. Ilman metadataa tutkimusaineisto "
+"voi olla merkityksetön kokoelma yksittäisiä tiedostoja, numeroita tai "
+"merkkejä."
+
+#: ckanext/kata/theme/templates/kata/faq.html:34
+msgid "Is metadata added separately for each data file?"
+msgstr "Kirjoitetaanko metadatakuvaus jokaisesta tiedostosta erikseen?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:35
+msgid ""
+"The person describing the data decides on how large a collection should "
+"be described at once. Generally speaking, one description should be made "
+"for a collection that is large enough to be independently reutilized. "
+"This collection may include actual data files as well as instructions on "
+"their content. A large dataset may also be described in smaller portions."
+msgstr ""
+"Tutkimusaineiston kuvailija päättää, minkälaisia tiedostokokonaisuuksia "
+"hän kuvaa. Yleisesti ottaen yhdellä metadatakuvauksella pitäisi kuvata "
+"sellainen tiedosto tai tiedostokokonaisuus, joka olisi järkevästi "
+"erikseen hyödynnettävissä. Kokonaisuuteen saattaa kuulua esimerkiksi "
+"varsinaisia datatiedostoja sekä ohjeistusta näiden sisällöstä. Iso, "
+"monimutkainen tutkimusaineisto voidaan kuvailla myös itsenäisesti "
+"hyödynnettävinä pienimpinä kokonaisuuksina."
+
+#: ckanext/kata/theme/templates/kata/faq.html:36
+msgid "What kind of metadata model is employed in Etsin?"
+msgstr "Mikä on Etsimen metatietomalli?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:37
+msgid ""
+"The metadata model specifies the minimum level of description necessary "
+"to ensure reusability of the data and interoperability with other "
+"systems. The metadata description should include at least the permanent "
+"identifier and timestamp of the metadata, the identifier of the dataset "
+"and timestamp, dataset name, subject, language, various actors, and "
+"dataset use information."
+msgstr ""
+"Metatietomalli määrittelee aineistojen kuvauksille vähimmäisvaatimukset, "
+"joiden tavoitteena on mahdollistaa aineistojen jatkokäyttö sekä "
+"kansallisesti että kansainvälisesti mm. varmistamalla yhteentoimivuus "
+"muiden järjestelmien kanssa. Mallinmukainen metadatakuvaus sisältää "
+"metatiedon tunnisteen ja muokkaamisajan, aineiston tunnisteen ja "
+"muokkausajan, aineiston nimen ja aiheen, jakelijan yhteystietoja, "
+"toimijan, käyttöehtoja sekä aineiston kielen."
+
+#: ckanext/kata/theme/templates/kata/faq.html:38
+msgid "Is there a versioning management system in Etsin?"
+msgstr "Onko Etsimessä versiointihallintaa?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:39
+msgid ""
+"There is no separate field in the metadata model for information about "
+"history and revision/adjustments, but records added to the same dataset "
+"form a documentation about past actions. Based on the time of "
+"modification and metadata with the same persistent identifier, amendments"
+" are traceable."
+msgstr ""
+"Aineiston historia- ja muutostiedoille ei ole metatietomallissa erillistä"
+" kenttää, mutta samalle aineistolle annetut metatietotietueet muodostavat"
+" yhdessä dokumentaation aineiston tapahtumahistoriasta. Metatiedon "
+"muokkaamisaikojen ja samantunnisteiden metatietojen perusteella muutoksia"
+" voi jäljitellä."
+
+#: ckanext/kata/theme/templates/kata/faq.html:40
+msgid "Why can't I add any keywords?"
+msgstr "Miksi en voi lisätä asiasanoja?"
+
+#: ckanext/kata/theme/templates/kata/faq.html:41
+msgid ""
+"The fields that give automatic suggestions from existing ontologies, like"
+" the keywords field, require Javascript. Javascript can be enabled from "
+"your browser's settings."
+msgstr ""
+"Kentät, jotka antavat automaattisia ehdotuksia ontologioista, kuten "
+"asiasanakenttä, vaativat Javascript-tuen. Javascript voidaan kytkeä "
+"päälle selaimen asetuksista."
+
+#: ckanext/kata/theme/templates/kata/faq.html:42
 msgid ""
 "I added extra fields for titles/authors I do not want to fill. How do I "
 "remove these?"
@@ -1193,7 +1283,7 @@ msgstr ""
 "Lisäsin ylimääräisiä kenttiä otsikoille/tekijöille, mutta en halua "
 "täyttää niihin mitään. Miten poistan ne?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:27
+#: ckanext/kata/theme/templates/kata/faq.html:43
 msgid ""
 "You don't need to remove them. Leave them empty and Etsin will ignore "
 "them."
@@ -1201,11 +1291,11 @@ msgstr ""
 "Sinun ei tarvitse poistaa niitä. Jätä ne tyhjäksi ja Etsin jättää ne "
 "huomiotta."
 
-#: ckanext/kata/theme/templates/kata/faq.html:28
+#: ckanext/kata/theme/templates/kata/faq.html:44
 msgid "How can I remove a dataset from Etsin?"
 msgstr "Kuinka poistan aineiston tiedot Etsimestä?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:29
+#: ckanext/kata/theme/templates/kata/faq.html:45
 msgid ""
 "Open the dataset for editing. There is a button for removing the entire "
 "metadata record at the bottom of the page. You must have modification "
@@ -1215,11 +1305,11 @@ msgstr ""
 "aineiston metatiedot voi poistaa Etsimestä. Tarvitset muokkausoikeudet "
 "aineiston metatietoihin, jotta voisit poistaa ne."
 
-#: ckanext/kata/theme/templates/kata/faq.html:30
+#: ckanext/kata/theme/templates/kata/faq.html:46
 msgid "What does creating a new access application form mean?"
 msgstr "Mitä tarkoittaa uuden lupahakemuslomakkeen luonti?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:31
+#: ckanext/kata/theme/templates/kata/faq.html:47
 msgid ""
 "It means that Etsin creates automatically a default workflow to REMS "
 "(Resource Entitlement Management System). REMS is a service for managing "
@@ -1234,11 +1324,11 @@ msgstr ""
 "perusteella voit myöntää oikeuden ja toimittaa datasi hakijalle. Lue "
 "lisää aiheesta: "
 
-#: ckanext/kata/theme/templates/kata/faq.html:31
+#: ckanext/kata/theme/templates/kata/faq.html:47
 msgid "REMS."
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/faq.html:32
+#: ckanext/kata/theme/templates/kata/faq.html:48
 msgid ""
 "I'm trying to accept an application in REMS but the link to the form "
 "received by email is empty."
@@ -1246,48 +1336,43 @@ msgstr ""
 "Yritän hyväksyä hakemuksen REMS:ssä, mutta sähköpostin välityksellä "
 "tulleen linkin lomake on tyhjä"
 
-#: ckanext/kata/theme/templates/kata/faq.html:33
+#: ckanext/kata/theme/templates/kata/faq.html:49
 msgid ""
 "Most likely the distributor's email address isn't bound to a Haka "
 "identity or no-one has logged in with that identity to REMS service. Thus"
 " REMS can not recognise the person accepting the application. To fix "
-"this, log in to reetta.csc.fi with identity bound to the email address or"
-" change the dataset's distributor's email address to a valid one."
+"this, log in to https://reetta.csc.fi with identity bound to the email "
+"address or change the dataset's distributor's email address to a valid "
+"one."
 msgstr ""
 "Todennäköistä on että joko jakelijan sähköpostiosoitetta ei ole sidottuna"
 " mihinkään Haka-identiteettiin tai kukaan ei ole kirjautunut sisään "
 "kyseisellä identiteetillä REMS-palveluun. Tällöin REMS ei voi tunnistaa "
-"hyväksyjää. Korjataksesi tämän kirjaudu sisään palvelimelle reetta.csc.fi"
-" identiteetillä, johon sähköposti on sidottu tai muuta tietoaineiston "
-"jakelijan sähköpostiosoite Hakan tunnistamaksi."
+"hyväksyjää. Korjataksesi tämän kirjaudu sisään palvelimelle "
+"https://reetta.csc.fi identiteetillä, johon sähköposti on sidottu tai "
+"muuta tietoaineiston jakelijan sähköpostiosoite Hakan tunnistamaksi."
 
-#: ckanext/kata/theme/templates/kata/faq.html:34
+#: ckanext/kata/theme/templates/kata/faq.html:50
 msgid ""
-"I want to add a URL instead of plain text in author/keyword/actor field. "
-"Is it resolved?"
-msgstr ""
-"Haluaisin lisätä URL:n tavallisen merkkijonon sijaan tekijä-, asiasana- "
-"tai toimijakenttään. Resolvoidaanko URL?"
+"I would like to point to an URI instead of entering plain text in "
+"author/keyword/actor field. Will the service fetch e.g. the author "
+"information from the address by resolving the URI?"
+msgstr "Haluaisin viitata URI-tunnisteeseen sen sijaan että kirjoitan merkkijonon tekijä-, asiasana- tai toimijakenttään. Noutaako palvelu tiedon esimerkiksi tekijästä verkko-osoitteesta, jolloin URI:n sijasta näytettäisiin selkokielinen termi?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:35
+#: ckanext/kata/theme/templates/kata/faq.html:51
 msgid ""
-"Currently URLs are not resolved so for instance an ORCID will be "
-"displayed in its given format in dataset and search pages."
-msgstr ""
-"Tällä hetkellä URL:ja ei vielä resolvoida. Täten esimerkiksi ORCID "
-"näytetään alkuperäisessä muodossaan muun muassa tietoaineiston sivulla "
-"sekä hakunäkymässä."
+"Currently URIs are not resolved so for instance an ORCID URL will be "
+"displayed in its given format on dataset and search pages instead of its "
+"resolved plain text format. On the other hand, currently the author and "
+"contributor fields collect URIs separately, so you can insert author "
+"information as plain text and as URI."
+msgstr "Parhaillaan URI-tunniesteita ei muuteta selkokieliseksi, joten esimerkiksi ORCID URL näytetään sellaisenaan tietoaineiston ja haun sivuilla. Kuitenkin tällä hetkellä tekijäkenttiin kerätään myös tunnisteita erikseen, joten voit lisätä jo nyt palveluun tekijätiedot sekä URI-muodossa että selkokielisenä."
 
-#: ckanext/kata/theme/templates/kata/faq.html:38
-#: ckanext/kata/theme/templates/kata/faq.html:75
-msgid "Search: page and features"
-msgstr "Haku: sivu ja ominaisuudet"
-
-#: ckanext/kata/theme/templates/kata/faq.html:40
+#: ckanext/kata/theme/templates/kata/faq.html:56
 msgid "There are two search fields, why?"
 msgstr "Sivustolla on kaksi hakukenttää, miksi?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:41
+#: ckanext/kata/theme/templates/kata/faq.html:57
 msgid ""
 "The search field in the upmost part makes it easier to search for data "
 "from anywhere in the site. You can use any search field you prefer."
@@ -1296,11 +1381,11 @@ msgstr ""
 "sinun on helppo hakea dataa riippumatta missä päin palvelua olet. Voit "
 "vapaasti käyttää mitä hakukenttää haluat."
 
-#: ckanext/kata/theme/templates/kata/faq.html:42
+#: ckanext/kata/theme/templates/kata/faq.html:58
 msgid "I can't make a search query I want from advanced search."
 msgstr "Tarkennettu haku ei mahdollista haluamani haun tekemistä."
 
-#: ckanext/kata/theme/templates/kata/faq.html:43
+#: ckanext/kata/theme/templates/kata/faq.html:59
 msgid ""
 "You can make more complex search queries by using Solr query syntax. See "
 "more in: "
@@ -1308,17 +1393,17 @@ msgstr ""
 "Voit tehdä monimuotoisempia hakuja käyttäen Solr-hakukoneen syntaksia. "
 "Lue lisää osoitteesta: "
 
-#: ckanext/kata/theme/templates/kata/faq.html:44
+#: ckanext/kata/theme/templates/kata/faq.html:60
 msgid "Solr query syntax"
 msgstr "Solr-hakujen syntaksi"
 
-#: ckanext/kata/theme/templates/kata/faq.html:45
-msgid "My search page is in English, why are the facet choices in Finnish?"
-msgstr ""
-"Minkä vuoksi hakusivuni voi olla englanninkielinen kun taas tarjotut "
-"fasetit ovatkin eri kielellä?"
+#: ckanext/kata/theme/templates/kata/faq.html:61
+msgid ""
+"Why are search options (i.e. facets) sometimes shown in a different "
+"language than the rest of the page?"
+msgstr "Minkä vuoksi tarjotut hakuvaihtoehdot (so. fasetit) saattavat olla eri kielellä kuin muu sivu?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:46
+#: ckanext/kata/theme/templates/kata/faq.html:62
 msgid ""
 "Facets are generated from the existing datasets in the search engine. If "
 "certain types of words are a majority in datasets, they will take the "
@@ -1333,18 +1418,18 @@ msgstr ""
 " Tällöin helposti niitä ilmaantuu hakukoneen indeksiin suuria määriä, "
 "mikä vaikuttaa myös fasettien sisältöön."
 
-#: ckanext/kata/theme/templates/kata/faq.html:49
-#: ckanext/kata/theme/templates/kata/faq.html:78
-msgid "User related features"
-msgstr "Käyttäjiin liittyvät ominaisuudet"
+#: ckanext/kata/theme/templates/kata/faq.html:65
+#: ckanext/kata/theme/templates/kata/faq.html:95
+msgid "Authentication and user rights"
+msgstr "Kirjautuminen ja käyttöoikeudet"
 
-#: ckanext/kata/theme/templates/kata/faq.html:51
+#: ckanext/kata/theme/templates/kata/faq.html:67
 msgid "I opened Etsin and chose log in, then I was suddenly already logged in."
 msgstr ""
 "Avasin Etsimen ja valitsin Kirjaudu sisään, mutta yhtäkkiä olinkin jo "
 "kirjautunut sisään."
 
-#: ckanext/kata/theme/templates/kata/faq.html:52
+#: ckanext/kata/theme/templates/kata/faq.html:68
 msgid ""
 "This may happen if you have previously logged in and then access Etsin "
 "via an unencrypted connection, e.g. using the address "
@@ -1362,10 +1447,24 @@ msgstr ""
 "sinut pystyttiin tunnistamaan evästeen (cookie) avulla."
 
 #: ckanext/kata/theme/templates/kata/faq.html:69
-msgid "Etsin and metadata"
-msgstr "Etsin ja metadata"
+msgid ""
+"Is a foreign partner in a project allowed to insert his or her metadata "
+"into Etsin?"
+msgstr ""
+"Voiko tutkimusprojektin ulkomainen yhteistyökumppani viedä metadatansa "
+"Etsimeen?"
 
-#: ckanext/kata/theme/templates/kata/faq.html:84
+#: ckanext/kata/theme/templates/kata/faq.html:70
+msgid ""
+"A foreign partner in project is allowed to insert his/her metadata into "
+"Etsin, as long as he or she is involved in a project operating within the"
+" Finnish research system."
+msgstr ""
+"Ulkomainen yhteistyökumppani saa tallentaa metadatansa Etsimeen, mikäli "
+"hän on mukana projektissa, joka toimii suomalaisessa "
+"tutkimusjärjestelmässä."
+
+#: ckanext/kata/theme/templates/kata/faq.html:101
 msgid ""
 "Didn't find the question and answer you were looking for? You can submit "
 "additional questions to: "
@@ -1373,8 +1472,8 @@ msgstr ""
 "Etkö löytänyt etsimääsi kysymystä ja vastausta? Lähetä oma kysymyksesi "
 "osoitteeseen: "
 
-#: ckanext/kata/theme/templates/kata/faq.html:85
-#: ckanext/kata/theme/templates/kata/help.html:421
+#: ckanext/kata/theme/templates/kata/faq.html:102
+#: ckanext/kata/theme/templates/kata/help.html:435
 msgid "servicedesk (at) csc.fi"
 msgstr "asiakaspalvelu (at) csc.fi"
 
@@ -1383,7 +1482,7 @@ msgid "Etsin instructions"
 msgstr "Etsimen käyttöohjeet"
 
 #: ckanext/kata/theme/templates/kata/help.html:14
-#: ckanext/kata/theme/templates/kata/help.html:383
+#: ckanext/kata/theme/templates/kata/help.html:397
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:4
 msgid "General information"
 msgstr "Yleistiedot"
@@ -1414,7 +1513,7 @@ msgid "Dataset: a single set of metadata (of data)"
 msgstr "Tietoaineisto: aineiston metatiedot"
 
 #: ckanext/kata/theme/templates/kata/help.html:30
-#: ckanext/kata/theme/templates/kata/help.html:386
+#: ckanext/kata/theme/templates/kata/help.html:400
 msgid "Search (Datasets)"
 msgstr "Haku (Tietoaineistot)"
 
@@ -1626,7 +1725,7 @@ msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr "\"pohjoinen pallonpuolisko\"^5 \"eteläinen pallonpuolisko\""
 
 #: ckanext/kata/theme/templates/kata/help.html:108
-#: ckanext/kata/theme/templates/kata/help.html:389
+#: ckanext/kata/theme/templates/kata/help.html:403
 #: ckanext/kata/theme/templates/package/package_rights.html:7
 msgid "Dataset"
 msgstr "Tietoaineisto"
@@ -1657,10 +1756,6 @@ msgstr ""
 "voit pyytää muokkausoikeuksia aineiston omistajalta."
 
 #: ckanext/kata/theme/templates/kata/help.html:116
-msgid "From the tabs you can see dataset's past activities and followers."
-msgstr "Välilehdistä löydät tietoaineiston tapahtumat ja seuraajat."
-
-#: ckanext/kata/theme/templates/kata/help.html:117
 msgid ""
 "In the related tab you can see publications and datasets related to the "
 "dataset in question and if you are logged in you can add a relation to "
@@ -1671,7 +1766,15 @@ msgstr ""
 "sisäänkirjautuneena, voit lisätä tällaisen relaation tämän tietoaineiston"
 " ja jonkin muun edellämainitun tyyppisen aineiston välille."
 
-#: ckanext/kata/theme/templates/kata/help.html:119
+#: ckanext/kata/theme/templates/kata/help.html:117
+msgid ""
+"In the left hand navigation you can choose to export the dataset's basic "
+"metadata in RDF format from the \"RDF\" link."
+msgstr ""
+"Voit viedä aineistosi RDF-formaatissa painamalla \"RDF\"-linkkiä vasemman"
+" laidan navigoinnista."
+
+#: ckanext/kata/theme/templates/kata/help.html:118
 msgid ""
 "If you are logged in, you can choose to follow the dataset. By following "
 "the dataset you would start to receive changes to this data to your "
@@ -1681,7 +1784,7 @@ msgstr ""
 "tietoaineistoa. Seuratessasi tietoaineistoa saat ilmoituksen siinä "
 "tapahtuvista muutoksista profiilisi uutisiin."
 
-#: ckanext/kata/theme/templates/kata/help.html:128
+#: ckanext/kata/theme/templates/kata/help.html:127
 msgid ""
 "If you are logged in you will find \"Add Dataset\" button for example "
 "from the Datasets and Dashboard pages. This button brings you to the Add "
@@ -1699,11 +1802,11 @@ msgstr ""
 "kuvattuna kuin mahdollista. Kenttien yhteydestä löytyy lyhyt kentän "
 "täyttöohje nappulasta, joka on merkitty kysymysmerkillä, \"?\"."
 
-#: ckanext/kata/theme/templates/kata/help.html:130
+#: ckanext/kata/theme/templates/kata/help.html:129
 msgid "Required information"
 msgstr "Pakolliset tiedot"
 
-#: ckanext/kata/theme/templates/kata/help.html:131
+#: ckanext/kata/theme/templates/kata/help.html:130
 msgid ""
 "The upper part of the page mostly contains the data fields that are the "
 "compulsory minimum for every dataset. Language and project information "
@@ -1718,11 +1821,11 @@ msgstr ""
 "tietoaineisto\"kenttien yhteydessä olevasta '?' -merkistä aukeaa "
 "lisätietoa kentästä."
 
-#: ckanext/kata/theme/templates/kata/help.html:134
+#: ckanext/kata/theme/templates/kata/help.html:133
 msgid "Basic information about the dataset:"
 msgstr "Perustietoja tästä tietoaineistosta:"
 
-#: ckanext/kata/theme/templates/kata/help.html:137
+#: ckanext/kata/theme/templates/kata/help.html:136
 msgid ""
 "Titles: Title and its language. Multiple titles with different languages "
 "can be given."
@@ -1730,7 +1833,7 @@ msgstr ""
 "Otsikot: otsikko ja sen kieli. Useampia otsikoita voidaan antaa eri "
 "kielisinä."
 
-#: ckanext/kata/theme/templates/kata/help.html:140
+#: ckanext/kata/theme/templates/kata/help.html:139
 msgid ""
 "Authors: Author and author's organisation. Multiple author/organisation "
 "pairs can be given."
@@ -1738,7 +1841,7 @@ msgstr ""
 "Tekijätt: tekijä ja tekijän organisaatio. Metadataan voidaan syöttää "
 "useampia tekijä-organisaatio -pareja."
 
-#: ckanext/kata/theme/templates/kata/help.html:143
+#: ckanext/kata/theme/templates/kata/help.html:142
 msgid ""
 "Contributors: Contributor and contributors's organisation. Multiple "
 "contributor/organisation pairs can be given."
@@ -1746,7 +1849,7 @@ msgstr ""
 "Muut tekijät: muu tekijä ja muun tekijän organisaatio. Metadataan voidaan"
 " syöttää useampia tekijä-organisaatio -pareja."
 
-#: ckanext/kata/theme/templates/kata/help.html:146
+#: ckanext/kata/theme/templates/kata/help.html:145
 msgid ""
 "Keywords: Keywords use KOKO ontology from http://finto.fi/. The keywords "
 "are chosen from suggestions or you can also provide your own word if "
@@ -1757,7 +1860,7 @@ msgstr ""
 "valitaan ehdotuksista, mutta voit valita myös oman sanan jos sopivaa ei "
 "löydy."
 
-#: ckanext/kata/theme/templates/kata/help.html:149
+#: ckanext/kata/theme/templates/kata/help.html:148
 msgid ""
 "Languages: List of languages the data contains, in ISO 639-3 format. If "
 "there is no language, you can check the checkbox."
@@ -1765,7 +1868,7 @@ msgstr ""
 "Kielet: lista kielistä, joita datassa on käytetty, ISO 639-3-formaatissa."
 " Jos kieltä ei ole, merkkaa valintaruutu."
 
-#: ckanext/kata/theme/templates/kata/help.html:152
+#: ckanext/kata/theme/templates/kata/help.html:151
 msgid ""
 "Distributor: Provide a name, phone number, valid email address and a "
 "homepage so that others can contact the distributor about the data. This "
@@ -1777,46 +1880,52 @@ msgstr ""
 "datasta. Myös sinä saatat olla jakelija. Huomaa, että sähköpostiosoite "
 "piilotetaan muiden näkyvistä ja se on korvattu yhteydenottolomakkeella. "
 
-#: ckanext/kata/theme/templates/kata/help.html:155
-msgid "Agents and roles:"
-msgstr "Toimijat ja roolit:"
-
-#: ckanext/kata/theme/templates/kata/help.html:158
+#: ckanext/kata/theme/templates/kata/help.html:154
 msgid ""
-"Project that produced this dataset: This information can be skipped by "
-"checking the checkbox. If the information is given, all four fields must "
-"be filled with project data: Project name, project's funder, funding id "
-"(will be hidden to non-editors) and project's homepage."
+"Project: This information can be skipped by checking the checkbox. If the"
+" information is given, all four fields must be filled with project data: "
+"Project name, project's funder, funding id and project's homepage."
 msgstr ""
-"Datan tuottanut projekti: merkkaamalla valintaruutu näiden tietojen "
-"syöttämisen voi ohittaa. Jos tiedot annetaan, kaikki neljä kenttää on "
-"täytettävä. Kentät ovat: projektin nimi, rahoittaja, rahoitustunniste "
-"(kenttä piilotetaan henkilöiltä, joilla ei ole metadataan "
-"muokkausoikeuksia) ja projektin kotisivu."
+"Projekti: merkkaamalla valintaruutu näiden tietojen syöttämisen voi "
+"ohittaa. Jos tiedot annetaan, kaikki neljä kenttää on täytettävä. Kentät "
+"ovat: projektin nimi, rahoittaja, rahoitustunniste ja projektin kotisivu."
 
-#: ckanext/kata/theme/templates/kata/help.html:161
+#: ckanext/kata/theme/templates/kata/help.html:157
 msgid ""
 "Owner information: Data's owner's information, for example a name or an "
-"identification URL."
-msgstr "Omistajatiedot: datan omistajan tiedot, esimerkiksi nimi tai URL-tunniste."
+"identification URL and the organization the dataset is linked to in this "
+"service."
+msgstr ""
+"Omistajatiedot: datan omistajan tiedot, esimerkiksi nimi tai URL-tunniste"
+" sekä organisaatio, johon tietoaineisto yhdistetään."
 
-#: ckanext/kata/theme/templates/kata/help.html:164
-msgid "Identification information of data:"
-msgstr "Aineiston tunnistustiedot:"
+#: ckanext/kata/theme/templates/kata/help.html:160
+msgid "Data identifiers:"
+msgstr "Aineiston tunnistetiedot"
 
-#: ckanext/kata/theme/templates/kata/help.html:167
+#: ckanext/kata/theme/templates/kata/help.html:163
 msgid ""
-"Permanent identifier: The permanent identifier is the data's unique "
+"Primary data identifier: The permanent identifier is the data's unique "
 "identifier. If none is provided, Etsin will give it an URN identifier "
 "from the address space of the National Library of Finland, from a "
 "subspace given to Etsin. This field can NOT be changed afterwards."
 msgstr ""
-"Pysyvä tunniste: pysyvä tunniste on datan yksilöivä tunniste. Jos "
-"tällaista ei ole annettu, Etsin generoi URN-tunnisteen Kansalliskirjaston"
-" tunnisteavaruudesta, Etsimelle annetusta aliavaruudesta. Huomaa, että "
-"tätä kenttää EI voi muokata jälkikäteen!"
+"Ensisijainen datan tunniste: pysyvä tunniste on datan yksilöivä tunniste."
+" Jos tällaista ei ole annettu, Etsin generoi URN-tunnisteen "
+"Kansalliskirjaston tunnisteavaruudesta, Etsimelle annetusta "
+"aliavaruudesta. Huomaa, että tätä kenttää EI voi muokata jälkikäteen!"
 
-#: ckanext/kata/theme/templates/kata/help.html:170
+#: ckanext/kata/theme/templates/kata/help.html:166
+msgid ""
+"Data and metadata identifiers: Additional data and metadata identifiers "
+"can be given to these fields. A primary metadata identifier is "
+"additionally assigned by the service."
+msgstr ""
+"Datan ja metatiedon muut tunnisteet: datan ja metadatan tunnisteita "
+"voidaan syöttää lisää näihin kenttiin. Lisäksi palvelu antaa "
+"automaattisesti ensisijaisen metadatan tunnisteen."
+
+#: ckanext/kata/theme/templates/kata/help.html:169
 msgid ""
 "Version identifier: The version PID can be given or if left empty is "
 "generated by Etsin. Automatically generated identifiers will be URNs from"
@@ -1827,7 +1936,7 @@ msgstr ""
 "tyhjäksi, jolloin Etsin generoi siihen URN-tunnisteen Kansalliskirjaston "
 "Etsimelle antamasta aliavaruudesta."
 
-#: ckanext/kata/theme/templates/kata/help.html:173
+#: ckanext/kata/theme/templates/kata/help.html:172
 msgid ""
 "Modification date: Choose a modification date from the calendar tool. The"
 " default value is this moment."
@@ -1835,15 +1944,15 @@ msgstr ""
 "Muokkauspäivämäärä: valitse muokkauspäivämäärä kalenterityökalusta. "
 "Oletuksena se on tämä hetki."
 
-#: ckanext/kata/theme/templates/kata/help.html:176
+#: ckanext/kata/theme/templates/kata/help.html:175
 msgid ""
-"Usage information tells where the data is located and/or how it can be "
+"Use information tells where the data is located and/or how it can be "
 "accessed:"
 msgstr ""
-"Käyttötiedot kertoo, missä data sijaitsee ja/tai miten sen sen saa "
+"Käyttötiedot kertovat, missä data sijaitsee ja/tai miten sen sen saa "
 "haltuunsa:"
 
-#: ckanext/kata/theme/templates/kata/help.html:179
+#: ckanext/kata/theme/templates/kata/help.html:178
 msgid ""
 "Dataset is available for use: Choose a suitable option for your data. "
 "Provide also the URL's required, the URL fields are displayed according "
@@ -1854,7 +1963,7 @@ msgstr ""
 "URL, kun sitä kysytään. URL:a ei kysytä, jos valitset vaihtoehdoksi "
 "\"ottamalla yhteyttä yhteyshenkilöön\"."
 
-#: ckanext/kata/theme/templates/kata/help.html:182
+#: ckanext/kata/theme/templates/kata/help.html:181
 msgid ""
 "License: Choose a license from the popup menu. This will define who can "
 "use your data and possibly how they can use it."
@@ -1862,30 +1971,24 @@ msgstr ""
 "Lisenssi: valitse lisenssi alasvetovalikosta. Lisenssi määrittelee kuka "
 "voi käyttää dataasi ja mahdollisesti miten he voivat sitä käyttää."
 
-#: ckanext/kata/theme/templates/kata/help.html:184
+#: ckanext/kata/theme/templates/kata/help.html:183
 msgid "Recommended information"
 msgstr "Suositellut tiedot"
 
-#: ckanext/kata/theme/templates/kata/help.html:186
+#: ckanext/kata/theme/templates/kata/help.html:185
 msgid ""
-"Beneath the required information are the recommended data fields that are"
-" by default hidden but can be toggled visible. It is useful to describe "
-"your data as well as possible, so if the fields in recommended "
-"information are valid to your data, please fill them. Here are short "
-"explanations of the fields:"
+"Recommended fields are marked with light gray colour and text "
+"\"Optional\" in the section headers. It is useful to describe your data "
+"as well as possible, so if the optional fields are valid to your data, "
+"please fill them. Here are short explanations of the fields:"
 msgstr ""
-"Pakollisten tietojen alla sijaitsevat suositellut tiedot. Nämä kentät "
-"ovat oletuksena piilossa, mutta ne saa esille klikkaamalla nuolesta. On "
-"hyödyllistä kuvailla datasi niin hyvin kuin mahdollista, joten pyrithän "
-"täyttämään myös suositelluissa tiedoissa tarjottuja kenttiä siinä määrin,"
-" kun ne sopivat dataasi. Seuraavaksi esitellään suositellut kentät "
-"lyhyesti:"
+"Suositellut tiedot on merkitty vaaleamman harmaalla värillä sekä "
+"tekstillä \"Valinnainen\" osion otsikkokentässä. On hyödyllistä kuvailla "
+"dataasi niin kattavasti kuin mahdollista, joten lisäkenttiä kannattaa "
+"täyttää jos ne sopivat datallesi. Seuraavaksi esitellään suositellut "
+"kentät lyhyesti."
 
-#: ckanext/kata/theme/templates/kata/help.html:189
-msgid "Coverage provides fields for spatial and temporal coverage:"
-msgstr "Kattavuudet tarjoavat kentät maantieteelliseen ja ajalliseen kattavuuteen:"
-
-#: ckanext/kata/theme/templates/kata/help.html:192
+#: ckanext/kata/theme/templates/kata/help.html:188
 msgid ""
 "Spatial coverage: Location names are retrieved the location name database"
 " at http://finto.fi/. Choose the locations covered in your data from the "
@@ -1898,7 +2001,7 @@ msgstr ""
 "paikannimia, jos sopivaa ei löydy, kirjoittamalla se kokonaan ja "
 "hyväksymällä näppäimistösi enter-painikkeella."
 
-#: ckanext/kata/theme/templates/kata/help.html:195
+#: ckanext/kata/theme/templates/kata/help.html:191
 msgid ""
 "Temporal coverage: Choose a time period covered in your data using the "
 "date selector."
@@ -1906,26 +2009,19 @@ msgstr ""
 "Ajallinen kattavuus: valitse datasi käyttämä ajallinen kattavuus "
 "päivämäärävalitsimesta."
 
-#: ckanext/kata/theme/templates/kata/help.html:198
-msgid "Relations:"
-msgstr "Relaatiot:"
-
-#: ckanext/kata/theme/templates/kata/help.html:201
+#: ckanext/kata/theme/templates/kata/help.html:194
 msgid ""
-"Field of science: The disciplines are chosen from the OKM-TIETEENALA "
-"ontology, from http://finto.fi/. The disciplines are provided only in "
-"Finnish and you should use these Finnish versions to help grouping and "
-"searching of the data."
+"Field of science: The field of science keywords are chosen from the okm-"
+"tieteenala ontology, from http://finto.fi/."
 msgstr ""
-"Tieteenala: tieteenalat tarjotaan okm-tieteenala-ontologiasta "
-"(http://finto.fi). Tieteenalat tarjotaan vain suomeksi ja jotta "
-"ryhmittely ja haku on helpompaa, valitse tieteenala tarjotuista."
+"Tieteenala: tieteenalan termit valitaan okm-tieteenala-sanastosta, "
+"osoitteesta http://finto.fi/."
 
-#: ckanext/kata/theme/templates/kata/help.html:204
+#: ckanext/kata/theme/templates/kata/help.html:197
 msgid "File information is especially technical information about your data:"
 msgstr "Tiedoston tietoja sisältää teknistä informaatiota datastasi: "
 
-#: ckanext/kata/theme/templates/kata/help.html:207
+#: ckanext/kata/theme/templates/kata/help.html:200
 msgid ""
 "MIME type: The mimetype of the file, see http://www.iana.org/assignments"
 "/media-types for a complete list."
@@ -1933,7 +2029,7 @@ msgstr ""
 "MIME-tyyppi: tiedoston sisältötyyppi (MIME-tyyppi), täydellinen lista "
 "löytyy osoitteesta http://www.iana.org/assignments/media-types."
 
-#: ckanext/kata/theme/templates/kata/help.html:210
+#: ckanext/kata/theme/templates/kata/help.html:203
 msgid ""
 "Checksum and Algorithm: Checksum and the algorithm it was taken with, "
 "especially to verify that the file has not changed."
@@ -1941,11 +2037,11 @@ msgstr ""
 "Tarkistussumma ja algoritmi: tarkistussummaa ja algoritmia voidaan "
 "käyttää esimerkiksi tiedoston muuttumattomuuden varmistamiseen."
 
-#: ckanext/kata/theme/templates/kata/help.html:213
+#: ckanext/kata/theme/templates/kata/help.html:206
 msgid "Dataset lifecycle events:"
 msgstr "Tietoaineiston elinkaaren tapahtumat:"
 
-#: ckanext/kata/theme/templates/kata/help.html:216
+#: ckanext/kata/theme/templates/kata/help.html:209
 msgid ""
 "In case there are events in this dataset, fill all four (event, by whom, "
 "when, description) fields. Choose the event type from the list and "
@@ -1960,11 +2056,11 @@ msgstr ""
 "mutta kun syötät tapahtuman, huomaa että kaikki neljä kenttää on oltava "
 "täytettynä."
 
-#: ckanext/kata/theme/templates/kata/help.html:219
+#: ckanext/kata/theme/templates/kata/help.html:212
 msgid "Free description:"
 msgstr "Vapaa kuvaus:"
 
-#: ckanext/kata/theme/templates/kata/help.html:222
+#: ckanext/kata/theme/templates/kata/help.html:215
 msgid ""
 "Description: The description field can contain almost anything. Note, "
 "that the contents of the description field are visible in the search "
@@ -1975,21 +2071,76 @@ msgstr ""
 "kuvauskentän sisältö näkyy myös hakutuloksissa, joten kattava kuvaus voi "
 "parantaa aineistosi kiinnostavuutta."
 
-#: ckanext/kata/theme/templates/kata/help.html:227
-#: ckanext/kata/theme/templates/kata/help.html:395
+#: ckanext/kata/theme/templates/kata/help.html:217
+msgid "Importing metadata from a file"
+msgstr "Metatietojen tuonti tiedostosta"
+
+#: ckanext/kata/theme/templates/kata/help.html:219
+msgid ""
+"If you already have metadata for your dataset as an XML file, you can "
+"import the metadata document into Etsin and avoid having to type in all "
+"of the metadata manually again. Etsin supports importing metadata in "
+"DDI2, OAI-PMH/DC and OAI-PMH/CMDI formats."
+msgstr ""
+"Jos aineistosi metatiedot on jo valmiiksi kirjoitettu XML-muotoiseksi "
+"metatietodokumentiksi, voit tuoda metatiedot XML-dokumentista Etsimeen ja"
+" välttää näin näppäilemästä kaikkia metatietoja uudestaan. Etsimeen voi "
+"tuoda metatietoja DDI2-, OAI-PMH/DC- ja OAI-PMH/CMDI-muotoisista XML-"
+"tiedostoista."
+
+#: ckanext/kata/theme/templates/kata/help.html:222
+msgid ""
+"You can find the import option on the left side of the new dataset form. "
+"You can import metadata from a file by taking the following steps:"
+msgstr ""
+"Metatietodokumentin tuontitoiminnon löydät tietoaineiston lisäyslomakkeen"
+" vasemmalla puolella olevasta sivupalkista. Voit tuoda metatiedot "
+"Etsimeen seuraavasti:"
+
+#: ckanext/kata/theme/templates/kata/help.html:226
+msgid ""
+"If you have the metadata file available for download on the web, enter "
+"then download address of the document in the \"URL\" field. "
+"Alternatively, you can upload a file from your computer by clicking "
+"\"Browse\" and selecting the file."
+msgstr ""
+"Jos metatietodokumentti on ladattavissa verkosta, voit syöttää dokumentin"
+" latausosoitteen \"URL\"-kenttään. Vaihtoehtoisesti voit lähettää "
+"tiedoston tietokoneeltasi Etsimeen napsauttamalla \"Selaa\"-painiketta "
+"(engl. Browse) ja valitsemalla haluamasi tiedoston."
+
+#: ckanext/kata/theme/templates/kata/help.html:229
+msgid "Select the metadata format that matches your file in the \"Format\" menu."
+msgstr "Valitse metatietodokumenttiasi vastaava tiedostomuoto \"Muoto\"-valikosta."
+
+#: ckanext/kata/theme/templates/kata/help.html:232
+msgid ""
+"Click \"Upload\" to import the file. If the file can be successfully "
+"imported to Etsin, the input form will be automatically populated by "
+"metadata from the imported file."
+msgstr ""
+"Napsauta \"Lataa\"-painiketta. Jos metatietojen tuonti onnistuu, tiedot "
+"ilmestyvät automaattisesti niitä vastaaviin lomakkeen kenttiin."
+
+#: ckanext/kata/theme/templates/kata/help.html:235
+msgid "Fill in the remaining required fields that may have been left empty."
+msgstr "Täytä mahdolliset puuttumaan jääneet tiedot."
+
+#: ckanext/kata/theme/templates/kata/help.html:241
+#: ckanext/kata/theme/templates/kata/help.html:409
 msgid "Additional features"
 msgstr "Lisäominaisuudet"
 
-#: ckanext/kata/theme/templates/kata/help.html:230
+#: ckanext/kata/theme/templates/kata/help.html:244
 msgid "Etsin contains several other features which are shortly covered here."
 msgstr "Etsimessä on myös muita ominaisuuksia, joita käydään läpi seuraavaksi."
 
-#: ckanext/kata/theme/templates/kata/help.html:232
-#: ckanext/kata/theme/templates/kata/help.html:398
+#: ckanext/kata/theme/templates/kata/help.html:246
+#: ckanext/kata/theme/templates/kata/help.html:412
 msgid "User profile"
 msgstr "Käyttäjäprofiili"
 
-#: ckanext/kata/theme/templates/kata/help.html:234
+#: ckanext/kata/theme/templates/kata/help.html:248
 msgid ""
 "User profile provides basic information about you, your dataset and "
 "actions. The user profile can be accessed from the upper right corner. "
@@ -2005,7 +2156,7 @@ msgstr ""
 "tunnuksilla, et voi muokata profiilitietojasi Etsimessä, vaan tiedot "
 "täytyy muuttaa kotiorganisaatiostasi käsin."
 
-#: ckanext/kata/theme/templates/kata/help.html:238
+#: ckanext/kata/theme/templates/kata/help.html:252
 msgid ""
 "The Stats link will take you to the statistics page. The page will show "
 "you some general information about Etsin, its datasets and users."
@@ -2013,12 +2164,12 @@ msgstr ""
 "Tilastot-linkki vie sinut tilastosivulle. Sivu näyttää perustietoa "
 "Etsimen sisältämistä tietoaineistoista ja käyttäjistä."
 
-#: ckanext/kata/theme/templates/kata/help.html:240
-#: ckanext/kata/theme/templates/kata/help.html:404
+#: ckanext/kata/theme/templates/kata/help.html:254
+#: ckanext/kata/theme/templates/kata/help.html:418
 msgid "REMS"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:242
+#: ckanext/kata/theme/templates/kata/help.html:256
 msgid ""
 "Etsin is integrated to a REMS service, Reetta. This means that you can "
 "define your data to be accessible only after an application form is "
@@ -2036,17 +2187,17 @@ msgstr ""
 "tietoaineiston sivulla oleva linkki vie suoraan lupahakemukseen. Lue "
 "lisää "
 
-#: ckanext/kata/theme/templates/kata/help.html:243
+#: ckanext/kata/theme/templates/kata/help.html:257
 msgid "REMS manual"
 msgstr "REMS:n käyttöohjeista"
 
-#: ckanext/kata/theme/templates/kata/help.html:249
-#: ckanext/kata/theme/templates/kata/help.html:407
+#: ckanext/kata/theme/templates/kata/help.html:263
+#: ckanext/kata/theme/templates/kata/help.html:421
 #: ckanext/kata/theme/templates/package/read_base.html:36
 msgid "Dataset administration"
 msgstr "Tietoaineiston hallinta"
 
-#: ckanext/kata/theme/templates/kata/help.html:251
+#: ckanext/kata/theme/templates/kata/help.html:265
 msgid ""
 "From the dataset view page you can choose a link to administer dataset "
 "rights if you have sufficient privileges to do so. From the "
@@ -2074,7 +2225,7 @@ msgstr ""
 "tarjotut merkit ovat liian suttuisia, voit generoida uudet CAPTCHA-kentän"
 " uudelleenlatauspainikkeesta (reload)."
 
-#: ckanext/kata/theme/templates/kata/help.html:254
+#: ckanext/kata/theme/templates/kata/help.html:268
 msgid ""
 "From the top of the page, from the member list table, you can remove "
 "users from their roles in this dataset. Note, that you can not remove the"
@@ -2084,13 +2235,13 @@ msgstr ""
 "rooleista. Huomaa, ettet voi poistaa sisäänrakennettuja käyttäjiä, kuten "
 "visitor ja logged_in, tai itseäsi."
 
-#: ckanext/kata/theme/templates/kata/help.html:256
-#: ckanext/kata/theme/templates/kata/help.html:410
+#: ckanext/kata/theme/templates/kata/help.html:270
+#: ckanext/kata/theme/templates/kata/help.html:424
 #: ckanext/kata/theme/templates/package/snippets/info.html:22
 msgid "Metadata supplements"
 msgstr "Metatietoliitteet"
 
-#: ckanext/kata/theme/templates/kata/help.html:258
+#: ckanext/kata/theme/templates/kata/help.html:272
 msgid ""
 "If you have additional documents that describe your data beyond required "
 "and recommended fields, you can provide such extra information in "
@@ -2102,7 +2253,7 @@ msgstr ""
 "metatietoliitteinä. Metatietoliite voi olla esimerkiksi dokumentti, jossa"
 " kuvataan tarkemmin datan muuttujat."
 
-#: ckanext/kata/theme/templates/kata/help.html:261
+#: ckanext/kata/theme/templates/kata/help.html:275
 msgid ""
 "Metadata supplements are separate documents that appear to viewers of the"
 " dataset as downloadable resources. In many cases the dataset will also "
@@ -2119,7 +2270,7 @@ msgstr ""
 "toimisto-ohjelmien tallennusmuodot). Kaikkiin tiedostoihin haku ei "
 "kuitenkaan välttämättä ulotu."
 
-#: ckanext/kata/theme/templates/kata/help.html:264
+#: ckanext/kata/theme/templates/kata/help.html:278
 msgid ""
 "Adding supplements to the metadata requires that you have editor "
 "privileges to the dataset."
@@ -2127,11 +2278,11 @@ msgstr ""
 "Metatietoliitteiden lisääminen aineistoon edellyttää, että sinulla on "
 "muokkausoikeudet aineiston metatietoihin."
 
-#: ckanext/kata/theme/templates/kata/help.html:267
+#: ckanext/kata/theme/templates/kata/help.html:281
 msgid "To add metadata supplements for a dataset, follow these steps:"
 msgstr "Voit täydentää aineiston tietoja metatietoliitteillä seuraavasti:"
 
-#: ckanext/kata/theme/templates/kata/help.html:269
+#: ckanext/kata/theme/templates/kata/help.html:283
 msgid ""
 "Open the dataset for editing and find the \"Add new supplement\" button "
 "on the left."
@@ -2139,7 +2290,7 @@ msgstr ""
 "Avaa aineiston metatiedot muokattaviksi ja napsauta painiketta \"Lisää "
 "liite\" sivun vasemmassa laidassa."
 
-#: ckanext/kata/theme/templates/kata/help.html:270
+#: ckanext/kata/theme/templates/kata/help.html:284
 msgid ""
 "In the following form, click the button to upload the supplementary "
 "document from your computer to Etsin."
@@ -2147,11 +2298,11 @@ msgstr ""
 "Lähetä liitedokumentti tietokoneeltasi Etsimeen painikkeesta \"Tallenna "
 "tiedosto\"."
 
-#: ckanext/kata/theme/templates/kata/help.html:271
+#: ckanext/kata/theme/templates/kata/help.html:285
 msgid "Enter a name and, optionally, a description for the supplement."
 msgstr "Anna liitteelle nimi ja halutessasi myös kuvaus."
 
-#: ckanext/kata/theme/templates/kata/help.html:272
+#: ckanext/kata/theme/templates/kata/help.html:286
 msgid ""
 "Finally, be sure to confirm adding the supplement to your dataset by "
 "clicking \"Add\" at the bottom of the form."
@@ -2159,17 +2310,17 @@ msgstr ""
 "Vahvista lopuksi lähettämäsi tiedoston lisääminen aineiston liitteeksi "
 "napsauttamalla \"Lisää\"-painiketta sivun alareunassa."
 
-#: ckanext/kata/theme/templates/kata/help.html:275
-#: ckanext/kata/theme/templates/kata/help.html:413
+#: ckanext/kata/theme/templates/kata/help.html:289
+#: ckanext/kata/theme/templates/kata/help.html:427
 #: ckanext/kata/theme/templates/package/search.html:270
 msgid "API"
 msgstr "API"
 
-#: ckanext/kata/theme/templates/kata/help.html:277
+#: ckanext/kata/theme/templates/kata/help.html:291
 msgid "Etsin supports standard"
 msgstr "Etsin tukee "
 
-#: ckanext/kata/theme/templates/kata/help.html:279
+#: ckanext/kata/theme/templates/kata/help.html:293
 msgid ""
 "commands. In addition, Etsin supports addition and deletion of dataset "
 "editors with dataset_editor_add and dataset_editor_delete, respectively. "
@@ -2178,7 +2329,7 @@ msgstr ""
 "muokkaajien ylläpidon kutsuilla dataset_editor_add ja "
 "dataset_editor_delete. "
 
-#: ckanext/kata/theme/templates/kata/help.html:280
+#: ckanext/kata/theme/templates/kata/help.html:294
 msgid ""
 "To add a dataset editor, provide also attributes: name (dataset's name), "
 "role (usually editor) and username (user login to add) "
@@ -2187,7 +2338,7 @@ msgstr ""
 "(tietoaineiston nimi), role (yleisimmin 'editor') sekä username "
 "(sisäänkirjautumisen käyttäjätunnus) "
 
-#: ckanext/kata/theme/templates/kata/help.html:283
+#: ckanext/kata/theme/templates/kata/help.html:297
 msgid ""
 "The metadata model of Etsin is more complex than the default model in "
 "CKAN. An example of a dataset that can be created in Etsin, using Curl: "
@@ -2196,129 +2347,129 @@ msgstr ""
 "ohjelmiston perustietomalli. Esimerkki tietoaineistosta, jonka avulla "
 "tietoaineisto saadaan luotua Etsimeen: "
 
-#: ckanext/kata/theme/templates/kata/help.html:293
+#: ckanext/kata/theme/templates/kata/help.html:307
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:92
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:164
 msgid "Funding id"
 msgstr "Rahoitustunniste"
 
-#: ckanext/kata/theme/templates/kata/help.html:295
+#: ckanext/kata/theme/templates/kata/help.html:309
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:89
 msgid "Project name"
 msgstr "Projektin nimi"
 
-#: ckanext/kata/theme/templates/kata/help.html:304
+#: ckanext/kata/theme/templates/kata/help.html:318
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:19
 #: ckanext/kata/theme/templates/user/edit_user_form.html:21
 #: ckanext/kata/theme/templates/user/read.html:107
 msgid "Organization"
 msgstr "Organisaatio"
 
-#: ckanext/kata/theme/templates/kata/help.html:308
+#: ckanext/kata/theme/templates/kata/help.html:322
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:262
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Algorithm"
 msgstr "Algoritmi"
 
-#: ckanext/kata/theme/templates/kata/help.html:310
+#: ckanext/kata/theme/templates/kata/help.html:324
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:258
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Checksum"
 msgstr "Tarkistussumma"
 
-#: ckanext/kata/theme/templates/kata/help.html:315
+#: ckanext/kata/theme/templates/kata/help.html:329
 msgid "Contact name"
 msgstr "Kontaktin nimi"
 
-#: ckanext/kata/theme/templates/kata/help.html:316
+#: ckanext/kata/theme/templates/kata/help.html:330
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:160
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:107
 msgid "Phone"
 msgstr "Puhelinnumero"
 
-#: ckanext/kata/theme/templates/kata/help.html:326
+#: ckanext/kata/theme/templates/kata/help.html:340
 msgid "Eg. collection"
 msgstr "Esim. collection (kokoaminen)"
 
-#: ckanext/kata/theme/templates/kata/help.html:327
+#: ckanext/kata/theme/templates/kata/help.html:341
 msgid "Date in ISO 8601 format"
 msgstr "Päivämäärä ISO 8601-formaatissa"
 
-#: ckanext/kata/theme/templates/kata/help.html:328
+#: ckanext/kata/theme/templates/kata/help.html:342
 msgid "Eg. person"
 msgstr "Esim. henkilö"
 
-#: ckanext/kata/theme/templates/kata/help.html:334
-#: ckanext/kata/theme/templates/kata/help.html:338
+#: ckanext/kata/theme/templates/kata/help.html:348
+#: ckanext/kata/theme/templates/kata/help.html:352
 msgid "Title language, eg. fin"
 msgstr "Otsikon kieli, esim. fin"
 
-#: ckanext/kata/theme/templates/kata/help.html:342
+#: ckanext/kata/theme/templates/kata/help.html:356
 msgid "Dataset's language(s), eg. eng,fin"
 msgstr "Tietoaineiston kieli tai kielet, esim. eng, fin"
 
-#: ckanext/kata/theme/templates/kata/help.html:343
+#: ckanext/kata/theme/templates/kata/help.html:357
 msgid "Eg. cc-by"
 msgstr "Esim. cc-by"
 
-#: ckanext/kata/theme/templates/kata/help.html:344
+#: ckanext/kata/theme/templates/kata/help.html:358
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:11
 msgid "MIME type"
 msgstr "MIME-tyyppi"
 
-#: ckanext/kata/theme/templates/kata/help.html:345
+#: ckanext/kata/theme/templates/kata/help.html:359
 msgid "Automatically generated, if left empty"
 msgstr "Generoidaan automaattisesti, jos jätetty tyhjäksi"
 
-#: ckanext/kata/theme/templates/kata/help.html:349
-#: ckanext/kata/theme/templates/kata/help.html:355
+#: ckanext/kata/theme/templates/kata/help.html:363
+#: ckanext/kata/theme/templates/kata/help.html:369
 msgid "Provider of the identifier"
 msgstr "Tunnisteen myöntäjä"
 
-#: ckanext/kata/theme/templates/kata/help.html:350
+#: ckanext/kata/theme/templates/kata/help.html:364
 msgid "Eg. data"
 msgstr "Esim. data"
 
-#: ckanext/kata/theme/templates/kata/help.html:351
+#: ckanext/kata/theme/templates/kata/help.html:365
 msgid "True, if primary data identifier"
 msgstr "Arvona 'true', jos primääri datan tunniste"
 
-#: ckanext/kata/theme/templates/kata/help.html:356
+#: ckanext/kata/theme/templates/kata/help.html:370
 msgid "Eg. version"
 msgstr "Esim. versio"
 
-#: ckanext/kata/theme/templates/kata/help.html:361
+#: ckanext/kata/theme/templates/kata/help.html:375
 msgid "Subjects as a comma separated string"
 msgstr "Aihesanat pilkulla eroteltuina"
 
-#: ckanext/kata/theme/templates/kata/help.html:362
-#: ckanext/kata/theme/templates/kata/help.html:363
+#: ckanext/kata/theme/templates/kata/help.html:376
+#: ckanext/kata/theme/templates/kata/help.html:377
 msgid "Time in ISO8601 format, eg. 2000-01-01T00:00:01"
 msgstr "Aika ISO8601-muodossa, esim. 2000-01-01T00:00:01"
 
-#: ckanext/kata/theme/templates/kata/help.html:364
+#: ckanext/kata/theme/templates/kata/help.html:378
 msgid "ISO8601 format, eg. 2014-06-06T07:07:07"
 msgstr "ISO8601-muoto, esim. 2014-06-06T07:07:07"
 
-#: ckanext/kata/theme/templates/kata/help.html:365
+#: ckanext/kata/theme/templates/kata/help.html:379
 msgid "Organization, see organizations in Etsin web user interface."
 msgstr ""
 "Organisaatio, listan organisaatioista löydät Etsimen "
 "web-käyttöliittymästä."
 
-#: ckanext/kata/theme/templates/kata/help.html:366
+#: ckanext/kata/theme/templates/kata/help.html:380
 msgid "True or false, private datasets are not added to the search index."
 msgstr "True tai false, yksityisiä tietoaineistoja ei lisätä hakuindeksiin."
 
-#: ckanext/kata/theme/templates/kata/help.html:368
+#: ckanext/kata/theme/templates/kata/help.html:382
 msgid "YOUR-API-KEY"
 msgstr "SINUN-API-AVAIMESI"
 
-#: ckanext/kata/theme/templates/kata/help.html:378
+#: ckanext/kata/theme/templates/kata/help.html:392
 msgid "Table of contents"
 msgstr "Sisällysluettelo"
 
-#: ckanext/kata/theme/templates/kata/help.html:421
+#: ckanext/kata/theme/templates/kata/help.html:435
 msgid "For additional help send email to: "
 msgstr "Tarvittaessa saat lisäapua lähettämällä sähköpostia osoitteeseen: "
 
@@ -5301,34 +5452,18 @@ msgid "Find language codes from: "
 msgstr "Löydät kielikoodit osoitteesta: "
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:34
-msgid ""
-"Important: By submitting content, you agree to release your metadata "
-"contributions under the"
-msgstr ""
-"Tärkeää: Etsimessä julkaisemasi tiedot tallennetaan avoimena datana "
-"lisenssillä: "
-
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:34
-msgid "http://creativecommons.org/publicdomain/zero/1.0/"
-msgstr "http://creativecommons.org/publicdomain/zero/1.0/deed.fi"
-
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:34
-msgid "Creative Commons CC0 license."
-msgstr "Creative Commons CC0."
-
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:40
 msgid "Are you sure you want to delete this dataset?"
 msgstr "Oletko varma että haluat poistaa tämän tietoaineiston?"
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:45
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:39
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:47
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:41
 msgid "Save"
 msgstr "Tallenna"
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:49
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:43
 msgid "Save and publish"
 msgstr "Tallenna ja julkaise"
 
@@ -5445,21 +5580,31 @@ msgstr ""
 "se on näkyvillä organisaatiosivulla. Lisäksi organisaation muokkaajilla "
 "(editor) on oikeus muokata tätä tietoaineistoa."
 
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:3
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
+msgid ""
+"By submitting content, I agree to release this metadata contribution "
+"under the"
+msgstr "Etsimessä julkaisemasi tiedot tallennetaan avoimena datana lisenssillä "
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
+msgid "http://creativecommons.org/publicdomain/zero/1.0/"
+msgstr "http://creativecommons.org/publicdomain/zero/1.0/deed.fi"
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
+msgid "Creative Commons CC0 license."
+msgstr "Creative Commons CC0."
+
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:7
 msgid ""
 "I have asked consent from all persons whose personal information I have "
 "added to this dataset and informed them of how they can get their "
-"personal data removed. More information from:"
+"personal data removed. Detailed information in:"
 msgstr ""
 "Olen kysynyt lupaa kaikilta henkilöiltä, joiden tietoja olen lisännyt "
 "tähän tietoaineistoon ja kertonut heille miten he saavat tietonsa "
-"poistetuksi. Lisätietoa aiheesta: "
+"poistetuksi. Ehtojen yksityiskohdat: "
 
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
-msgid "http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use"
-msgstr "http://avointiede.fi/documents/10864/17332/Etsin+kayttoehdot"
-
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:11
 msgid "Check to accept"
 msgstr "Hyväksy"
 
@@ -5542,6 +5687,10 @@ msgstr "datan jakelijan kautta"
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:60
 msgid "Data provider's web address"
 msgstr "Datan jakelijan web-osoite"
+
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82
+msgid "http://creativecommons.org/choose/?lang=en"
+msgstr "http://creativecommons.org/choose/?lang=fi"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82
 msgid "Information about licenses"
@@ -6156,4 +6305,3 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:130
 msgid "API Key"
 msgstr "API-avain"
-

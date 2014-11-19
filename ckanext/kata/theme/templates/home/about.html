@@ -7,28 +7,33 @@
           {% trans %}
             <h2>About Etsin</h2>
             <p>
-             Etsin is a research data finder. In the service you can search and find data from
-             various fields of research. Etsin gathers metadata about existing research data
-             from various external sources and also provides a web interface to enter metadata
-             directly into the service. Actual research data is never stored in Etsin and as
-             such it can be stored anywhere at the discretion of the owner of the data.
-             However, by gathering the metadata in a single service Etsin allows anyone to easily discover the data.
+                Etsin is a research data finder. In the service you can search and find data from various fields of research. The metadata contained in Etsin makes it easy for anyone to discover the datasets. Etsin makes it possible to enter metadata on datasets into the service, making them discoverable and reusable for others. The actual research data may be stored anywhere and the owner controls the access to the data. Etsin also gathers metadata about existing research data from various external sources, such as the <a href="http://www.fsd.uta.fi/en/">Finnish Social Science Data Archive.</a>
             </p>
             <p>
-             Comprehensive description of data plays a very important role in the visibility
-             of the data. Etsin encourages this by adapting a common set of discipline-independent
-             metadata fields and by making it easy to enter new metadata. The service also
-             promotes adding unified information about the availability, ownership and licensing of data.
-             Increased visibility and findability of the data promotes data reuse and
-             helps bring merit to researchers.
-             It also makes the results of research more transparent to funders.
+                Good description of data plays a very important role in the visibility of the data. Etsin encourages comprehensive descriptions by adapting a common set of discipline independent metadata fields and by making it easy to enter metadata.The service also promotes adding unified information about the availability, ownership and licensing of data. The goal is to foster licensing practices for research data. The functionalities of Etsin help document researchers\' merits in collecting and sharing data. The information on datasets and project funding also makes the results of research more transparent to funders.
             </p>
             <p>
-             Etsin is provided by the Ministry of Education and Culture of Finland.
-             Etsin is maintained by CSC — IT Center for Science Ltd. The service is discipline
-             independent and free to use.
+                In addition to the graphical user interface, data in Etsin may be used through an <a href="http://etsin.avointiede.fi/api/3/">open interface</a>. <a href="http://docs.ckan.org/en/ckan-2.1.2/api.html">Documentation of the API</a> may be found on the CKAN pages.
+            </p>
+            <p>
+                All datasets are made available under <a href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons 0 license</a>. Data owners decide on the licence of the research data described in Etsin. For open data, <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons BY 4.0</a> license is recommended.
+            </p>
+            <p>
+                Customer service contacts and feedback is available through servicedesk (at) csc.fi. The service maintenance window is on the fourth Monday of every month between 4 and 6 PM (EST). During that time, the service will be out of use.
+            </p>
+            <p>
+                Etsin is offered to the scientific community by the Ministry of Education and Culture of Finland. Etsin is developed and maintained by CSC - IT Center for Science Ltd. The service is discipline independent and free to use.
             </p>
           {% endtrans %}
+          <p>
+              <a href="{{ _('http://openscience.fi/documents/14273/17985/Etsin+Service+Description') }}">{{ _('Service description') }}</a>
+          </p>
+          <p>
+              <a href="{{ _('http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use') }}">{{ _('Terms of use') }}</a>
+          </p>
+          <p>
+              <a href="{{ _('http://openscience.fi/documents/14273/17985/Etsin+Privacy+Policy') }}">{{ _('Privacy policy') }}</a>
+          </p>
         </div>
       {% endif %}
   {% endblock%}

@@ -29,12 +29,6 @@ then itself be extended to add/remove blocks of functionality. #}
 
   {% block form_actions %}
     <div class="form-actions">
-      {% block disclaimer %}
-        <p class="action-info-kata small tta-orange">
-          {{ _('Important: By submitting content, you agree to release your metadata contributions under the') }} <a href="{{ _('http://creativecommons.org/publicdomain/zero/1.0/') }}" target="_blank"> {{ _('Creative Commons CC0 license.') }}</a>
-
-        </p>
-      {% endblock %}
       {% block delete_button %}
         {% if h.check_access('package_delete', {'id': data.id})  %}
           {% set locale = h.dump_json({'content': _('Are you sure you want to delete this dataset?')}) %}
