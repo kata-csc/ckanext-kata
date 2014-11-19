@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-19 09:59+0000\n"
+"POT-Creation-Date: 2014-11-19 11:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -755,32 +755,33 @@ msgid ""
 " discoverable and reusable for others. The actual research data may be stored"
 " anywhere and the owner controls the access to the data. Etsin also gathers "
 "metadata about existing research data from various external sources, such as "
-"the <a href=\"http://www.fsd.uta.fi/en/\">Finnish Social Science Data "
-"Archive.</a> </p> <p> Good description of data plays a very important role in"
-" the visibility of the data. Etsin encourages comprehensive descriptions by "
-"adapting a common set of discipline independent metadata fields and by making"
-" it easy to enter metadata.The service also promotes adding unified "
-"information about the availability, ownership and licensing of data. The goal"
-" is to foster licensing practices for research data. The functionalities of "
-"Etsin help document researchers\\' merits in collecting and sharing data. The"
-" information on datasets and project funding also makes the results of "
-"research more transparent to funders. </p> <p> In addition to the graphical "
-"user interface, data in Etsin may be used through an <a "
-"href=\"http://etsin.avointiede.fi/api/3/\">open interface</a>. <a "
-"href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\">Documentation of the "
-"API</a> may be found on the CKAN pages. </p> <p> All datasets are made "
-"available under <a "
-"href=\"http://creativecommons.org/publicdomain/zero/1.0/\">Creative Commons 0"
-" license</a>. Data owners decide on the licence of the research data "
-"described in Etsin. For open data, <a "
-"href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons BY "
-"4.0</a> license is recommended. </p> <p> Customer service contacts and "
-"feedback is available through servicedesk (at) csc.fi. The service "
-"maintenance window is on the fourth Monday of every month between 4 and 6 PM "
-"(EST). During that time, the service will be out of use. </p> <p> Etsin is "
-"offered to the scientific community by the Ministry of Education and Culture "
-"of Finland. Etsin is developed and maintained by CSC - IT Center for Science "
-"Ltd. The service is discipline independent and free to use. </p> "
+"the <a href=\"http://www.fsd.uta.fi/en/\" target=\"_blank\">Finnish Social "
+"Science Data Archive.</a> </p> <p> Good description of data plays a very "
+"important role in the visibility of the data. Etsin encourages comprehensive "
+"descriptions by adapting a common set of discipline independent metadata "
+"fields and by making it easy to enter metadata.The service also promotes "
+"adding unified information about the availability, ownership and licensing of"
+" data. The goal is to foster licensing practices for research data. The "
+"functionalities of Etsin help document researchers\\' merits in collecting "
+"and sharing data. The information on datasets and project funding also makes "
+"the results of research more transparent to funders. </p> <p> In addition to "
+"the graphical user interface, data in Etsin may be used through an <a "
+"href=\"http://etsin.avointiede.fi/api/3/\" target=\"_blank\">open "
+"interface</a>. <a href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\" "
+"target=\"_blank\">Documentation of the API</a> may be found on the CKAN "
+"pages. </p> <p> All datasets are made available under <a "
+"href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
+"target=\"_blank\">Creative Commons 0 license</a>. Data owners decide on the "
+"licence of the research data described in Etsin. For open data, <a "
+"href=\"https://creativecommons.org/licenses/by/4.0/\" "
+"target=\"_blank\">Creative Commons BY 4.0</a> license is recommended. </p> "
+"<p> Customer service contacts and feedback is available through servicedesk "
+"(at) csc.fi. The service maintenance window is on the fourth Monday of every "
+"month between 4 and 6 PM (EST). During that time, the service will be out of "
+"use. </p> <p> Etsin is offered to the scientific community by the Ministry of"
+" Education and Culture of Finland. Etsin is developed and maintained by CSC -"
+" IT Center for Science Ltd. The service is discipline independent and free to"
+" use. </p> "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:29
@@ -792,13 +793,13 @@ msgid "Service description"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:32
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:8
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:10
 msgid "http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:32
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:1
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:8
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:3
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:10
 msgid "Terms of use"
 msgstr ""
 
@@ -1082,11 +1083,12 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/faq.html:25
 msgid ""
 "The data described in Etsin can be stored anywhere, e.g. <a "
-"href=\"https://www.tdata.fi/en/ida\">IDA storage service</a>. Etsin is "
-"integrated with a Resource Entitlement Management System, through which "
-"access data can be managed. Open data found in Etsin may be accessed by the "
-"user in e.g. <a href=\"http://avaa.tdata.fi/web/avaa/etusivu\">AVAA open data"
-" publishing portal</a>."
+"href=\"https://www.tdata.fi/en/ida\" target=\"_blank\">IDA storage "
+"service</a>. Etsin is integrated with a Resource Entitlement Management "
+"System, through which access data can be managed. Open data found in Etsin "
+"may be accessed by the user in e.g. <a "
+"href=\"http://avaa.tdata.fi/web/avaa/etusivu\" target=\"_blank\">AVAA open "
+"data publishing portal</a>."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:28
@@ -1969,7 +1971,6 @@ msgid "Project name"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:318
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:19
 #: ckanext/kata/theme/templates/user/edit_user_form.html:21
 #: ckanext/kata/theme/templates/user/read.html:109
 msgid "Organization"
@@ -4530,6 +4531,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:59
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:28
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:19
 msgid "Organisation"
 msgstr ""
 
@@ -5064,26 +5066,26 @@ msgid ""
 "can also modify this dataset."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
 msgid "By submitting content, I agree to release this metadata contribution under the"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
 msgid "http://creativecommons.org/publicdomain/zero/1.0/"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:4
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
 msgid "Creative Commons CC0 license."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:7
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:9
 msgid ""
 "I have asked consent from all persons whose personal information I have added"
 " to this dataset and informed them of how they can get their personal data "
 "removed. Detailed information in:"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:11
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:13
 msgid "Check to accept"
 msgstr ""
 
