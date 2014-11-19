@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-18 16:29+0000\n"
+"POT-Creation-Date: 2014-11-19 05:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1209,20 +1209,24 @@ msgid ""
 "Most likely the distributor's email address isn't bound to a Haka identity or"
 " no-one has logged in with that identity to REMS service. Thus REMS can not "
 "recognise the person accepting the application. To fix this, log in to "
-"http://reetta.csc.fi with identity bound to the email address or change the "
+"https://reetta.csc.fi with identity bound to the email address or change the "
 "dataset's distributor's email address to a valid one."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:50
 msgid ""
-"I want to add a URL instead of plain text in author/keyword/actor field. Is "
-"it resolved?"
+"I would like to point to an URI instead of entering plain text in "
+"author/keyword/actor field. Will the service fetch e.g. the author "
+"information from the address by resolving the URI?"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:51
 msgid ""
-"Currently URLs are not resolved so for instance an ORCID will be displayed in"
-" its given format in dataset and search pages."
+"Currently URIs are not resolved so for instance an ORCID URL will be "
+"displayed in its given format on dataset and search pages instead of its "
+"resolved plain text format. On the other hand, currently the author and "
+"contributor fields collect URIs separately, so you can insert author "
+"information as plain text and as URI."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:56
@@ -1250,7 +1254,9 @@ msgid "Solr query syntax"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:61
-msgid "My search page is in English, why are the facet choices in Finnish?"
+msgid ""
+"Why are search options (i.e. facets) sometimes shown in a different language "
+"than the rest of the page?"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:62
@@ -1534,7 +1540,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:117
 msgid ""
-"In the right hand navigation you can choose to export the dataset's basic "
+"In the left hand navigation you can choose to export the dataset's basic "
 "metadata in RDF format from the \"RDF\" link."
 msgstr ""
 
@@ -1615,8 +1621,7 @@ msgstr ""
 msgid ""
 "Project: This information can be skipped by checking the checkbox. If the "
 "information is given, all four fields must be filled with project data: "
-"Project name, project's funder, funding id (will be hidden to non-editors) "
-"and project's homepage."
+"Project name, project's funder, funding id and project's homepage."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:157

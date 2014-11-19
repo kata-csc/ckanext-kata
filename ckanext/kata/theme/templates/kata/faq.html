@@ -47,8 +47,8 @@
        <p>{{ _('It means that Etsin creates automatically a default workflow to REMS (Resource Entitlement Management System). REMS is a service for managing access rights to research data. With it you can specify that a user must send an application in the REMS service to you to gain access to your data. Find out more from: ') }}<a href="https://confluence.csc.fi/display/REMS/Home">{{ _('REMS.')  }}</a></p>
        <h3 class="question">{{ _('I\'m trying to accept an application in REMS but the link to the form received by email is empty.') }}</h3>
        <p>{{ _('Most likely the distributor\'s email address isn\'t bound to a Haka identity or no-one has logged in with that identity to REMS service. Thus REMS can not recognise the person accepting the application. To fix this, log in to https://reetta.csc.fi with identity bound to the email address or change the dataset\'s distributor\'s email address to a valid one.') }}</p>
-       <h3 class="question">{{ _('I want to add a URL instead of plain text in author/keyword/actor field. Is it resolved?') }}</h3>
-       <p>{{ _('Currently URLs are not resolved so for instance an ORCID will be displayed in its given format in dataset and search pages.') }}</p>
+       <h3 class="question">{{ _('I would like to point to an URI instead of entering plain text in author/keyword/actor field. Will the service fetch e.g. the author information from the address by resolving the URI?') }}</h3>
+       <p>{{ _('Currently URIs are not resolved so for instance an ORCID URL will be displayed in its given format on dataset and search pages instead of its resolved plain text format. On the other hand, currently the author and contributor fields collect URIs separately, so you can insert author information as plain text and as URI.') }}</p>
      </div>
    </section>
    <section class="module"><h2 class="module-heading"><a id="faq-search">{{ _('Search') }}</a></h2>
@@ -58,7 +58,7 @@
        <h3 class="question">{{ _('I can\'t make a search query I want from advanced search.') }}</h3>
        <p>{{ _('You can make more complex search queries by using Solr query syntax. See more in: ') }}</p>
        <a href="http://lucene.apache.org/core/2_9_4/queryparsersyntax.html">{{ _('Solr query syntax') }}</a>
-       <h3 class="question">{{ _('My search page is in English, why are the facet choices in Finnish?') }}</h3>
+       <h3 class="question">{{ _('Why are search options (i.e. facets) sometimes shown in a different language than the rest of the page?') }}</h3>
        <p>{{ _('Facets are generated from the existing datasets in the search engine. If certain types of words are a majority in datasets, they will take the leading positions in facets too. Thus the facets may contain words in some specific language or from specific fields of science because they are so much more popular than others.') }}</p>
      </div>
    </section>
