@@ -9,12 +9,15 @@
 
   <rdf:Description rdf:about="${ h.url_for(controller='package',action='read',id=c.pkg_dict['name'], qualified=True) }">
     <dct:identifier>${ c.pkg_dict['id'] }</dct:identifier>
+    <py:for each="pid in h.get_pids_by_type('metadata', c.pkg_dict)">
+      <dct:identifier>${ pid.get('id', '') }</dct:identifier>
+    </py:for>
 
     <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">${ c.pkg_dict['metadata_modified'] }</dct:modified>
     <dct:primaryTopic rdf:resource="${ c.pkg_dict['id'] }"/>
   </rdf:Description>
 
-  <rdf:Description rdf:about="${ c.pkg_dict.get('name', None) }">
+  <rdf:Description rdf:about="${ h.get_primary_pid('data', c.pkg_dict) }">
     <dct:description py:if="c.pkg_dict.get('notes', None)">${ c.pkg_dict['notes'] }</dct:description>
     <py:for each="tag_dict in c.pkg_dict.get('tags', None)">
       <dct:subject>${ tag_dict.get('name') }</dct:subject>
@@ -24,6 +27,7 @@
     <py:for each="pid in c.pkg_dict.get('pids', None)">
       <dct:identifier>${ pid.get('id', None) }</dct:identifier>
     </py:for>
+    <dct:identifier>${ c.pkg_dict.get('id', None) }</dct:identifier>
 
     <py:for each="title in c.pkg_dict.get('langtitle', None)">
       <dct:title xml:lang="${ title.get('lang', None) }">${ title.get('value', None) }</dct:title>   
@@ -71,9 +75,6 @@
         </rdf:Description>
       </dct:publisher>
     </py:for>
-    <dct:publisher py:if="h.get_first_admin(c.pkg_dict.get('id', None))">
-      <foaf:Person rdf:about="${ h.get_first_admin(c.pkg_dict.get('id', None)) }"/>
-    </dct:publisher>
     
     <py:for each="agent in c.pkg_dict.get('agent', None)">
       <dct:publisher py:if="agent.get('role', None)=='distributor'">

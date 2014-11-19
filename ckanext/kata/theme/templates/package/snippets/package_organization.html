@@ -16,7 +16,7 @@
 
   {% set existing_org = data.owner_org %}
   <div class="control-group">
-    <label for="field-organizations" class="control-label">{{ _('Organization') }}</label>
+    <label for="field-organizations" class="control-label">{{ _('Organisation') }}</label>
     <div class="controls">
       <select id="field-organizations" name="owner_org" data-module="autocomplete">
         <option value="" {% if not selected_org and data.id %} selected="selected" {% endif %}>{{ _('Choose an organization...') }}</option>
