@@ -1103,3 +1103,10 @@ h2.optional span, h3.optional span {
 h3.optional {
     margin-bottom: 6px;
 }
+
+.separate-error {
+    border-radius: 2px;
+    margin-bottom: 18px;
+    padding: 7px 15px;
+    width: 584px;
+}
