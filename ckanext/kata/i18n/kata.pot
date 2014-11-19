@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-19 11:15+0000\n"
+"POT-Creation-Date: 2014-11-19 11:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -466,7 +466,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:88
 #: ckanext/kata/theme/templates/header.html:89
-#: ckanext/kata/theme/templates/home/index.html:95
+#: ckanext/kata/theme/templates/home/index.html:104
 #: ckanext/kata/theme/templates/kata/faq.html:54
 #: ckanext/kata/theme/templates/kata/faq.html:92
 #: ckanext/kata/theme/templates/package/search.html:23
@@ -507,6 +507,7 @@ msgid "Organizations"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:121
+#: ckanext/kata/theme/templates/home/index.html:57
 msgid "About Etsin"
 msgstr ""
 
@@ -769,19 +770,19 @@ msgid ""
 "href=\"http://etsin.avointiede.fi/api/3/\" target=\"_blank\">open "
 "interface</a>. <a href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\" "
 "target=\"_blank\">Documentation of the API</a> may be found on the CKAN "
-"pages. </p> <p> All datasets are made available under <a "
+"pages. </p> <p> All dataset descriptions are made available under <a "
 "href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
 "target=\"_blank\">Creative Commons 0 license</a>. Data owners decide on the "
 "licence of the research data described in Etsin. For open data, <a "
 "href=\"https://creativecommons.org/licenses/by/4.0/\" "
 "target=\"_blank\">Creative Commons BY 4.0</a> license is recommended. </p> "
-"<p> Customer service contacts and feedback is available through servicedesk "
-"(at) csc.fi. The service maintenance window is on the fourth Monday of every "
-"month between 4 and 6 PM (EST). During that time, the service will be out of "
-"use. </p> <p> Etsin is offered to the scientific community by the Ministry of"
-" Education and Culture of Finland. Etsin is developed and maintained by CSC -"
-" IT Center for Science Ltd. The service is discipline independent and free to"
-" use. </p> "
+"<p> Customer service contacts and feedback is should be addressed to "
+"servicedesk (at) csc.fi. The service maintenance window is on the fourth "
+"Monday of every month between 4 and 6 PM (EST). During that time, the service"
+" will be out of use. </p> <p> Etsin is offered to the scientific community by"
+" the Ministry of Education and Culture of Finland. Etsin is developed and "
+"maintained by CSC - IT Center for Science Ltd. The service is discipline "
+"independent and free to use. </p> "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:29
@@ -833,112 +834,128 @@ msgstr ""
 #: ckanext/kata/theme/templates/home/index.html:36
 msgid ""
 "Etsin enables you to find research datasets and to make your own datasets "
-"discoverable to others. Etsin offers access to datasets in various fields via"
-" a joint metadata model. The descriptive metadata stored in the service "
-"includes information on the authors, subject, format and licensing of the "
-"data. Etsin works independently of actual data storage location."
+"discoverable to others."
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:39
+msgid ""
+"Etsin offers access to datasets in various fields via a joint metadata model."
+" The descriptive metadata stored in the service includes information on the "
+"authors, subject, format and licensing of the data."
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:41
+msgid "Etsin works independently of actual data storage location."
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:44
 msgid "Is this service for me?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:42
+#: ckanext/kata/theme/templates/home/index.html:47
 msgid ""
 "Anyone can use Etsin to search for research datasets. Authenticated users may"
 " enter information on their own datasets, and of others' datasets with their "
-"permission. Etsin aims to collect information on datasets from various "
-"sources and from various fields. You do not have to be a professional "
-"scientist or researcher in order use the service."
+"permission."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:45
+#: ckanext/kata/theme/templates/home/index.html:50
+msgid ""
+"Etsin aims to collect information on datasets from various sources and from "
+"various fields. You do not have to be a professional scientist or researcher "
+"in order use the service."
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:53
 msgid "Is all of the data open?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:48
+#: ckanext/kata/theme/templates/home/index.html:56
 msgid ""
 "The published metadata on the dataset is open to everyone, but the data owner"
 " decides how the data can be accessed and by whom. Nevertheless, sharing your"
-" data openly is recommended. You will find more information on the About "
-"Etsin page."
+" data openly is recommended. You will find more information on the "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:51
+#: ckanext/kata/theme/templates/home/index.html:57
+msgid " page."
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:60
 msgid "Short user guide"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:56
+#: ckanext/kata/theme/templates/home/index.html:65
 msgid ""
 " You can <i>search</i> for datasets and <i>add</i> descriptive data, aka "
 "metadata, for a dataset. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:61
+#: ckanext/kata/theme/templates/home/index.html:70
 msgid ""
 "You find datasets either by typing a keyword in the search field or via the "
 "advanced search."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:64
+#: ckanext/kata/theme/templates/home/index.html:73
 msgid "In order to add data you first need to authenticate yourself by"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:64
+#: ckanext/kata/theme/templates/home/index.html:73
 msgid "Haka login"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:67
+#: ckanext/kata/theme/templates/home/index.html:76
 msgid ""
 "A comprehensive description of your data makes it easier for others to find "
 "it and make use of it. Etsin will assist you in filling in the data."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:90
+#: ckanext/kata/theme/templates/home/index.html:99
 msgid "Search data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:92
+#: ckanext/kata/theme/templates/home/index.html:101
 msgid "eg. climate"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:103
+#: ckanext/kata/theme/templates/home/index.html:112
 msgid "Newest datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:125
+#: ckanext/kata/theme/templates/home/index.html:134
 msgid "Integrated metadata sources"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:127
+#: ckanext/kata/theme/templates/home/index.html:136
 msgid "Finnish social science data archive"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:127
+#: ckanext/kata/theme/templates/home/index.html:136
 msgid "Data Archive and Aila Data Service"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:129
+#: ckanext/kata/theme/templates/home/index.html:138
 msgid "http://www.fsd.uta.fi/en/"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:130
+#: ckanext/kata/theme/templates/home/index.html:139
 msgid "../../base/images/img_fsd_logo_en.png"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:131
+#: ckanext/kata/theme/templates/home/index.html:140
 msgid "https://services.fsd.uta.fi/index?lang=en"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:132
+#: ckanext/kata/theme/templates/home/index.html:141
 msgid "../../base/images/logo_aila_en.png"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:136
+#: ckanext/kata/theme/templates/home/index.html:145
 msgid "Language bank of Finland"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:136
+#: ckanext/kata/theme/templates/home/index.html:145
 msgid "Browse language resources"
 msgstr ""
 

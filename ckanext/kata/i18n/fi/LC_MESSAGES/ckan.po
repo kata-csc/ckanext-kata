@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-11-19 11:15+0000\n"
+"POT-Creation-Date: 2014-11-19 11:47+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -483,7 +483,7 @@ msgstr "Etsi tietoaineistoja"
 
 #: ckanext/kata/theme/templates/header.html:88
 #: ckanext/kata/theme/templates/header.html:89
-#: ckanext/kata/theme/templates/home/index.html:95
+#: ckanext/kata/theme/templates/home/index.html:104
 #: ckanext/kata/theme/templates/kata/faq.html:54
 #: ckanext/kata/theme/templates/kata/faq.html:92
 #: ckanext/kata/theme/templates/package/search.html:23
@@ -524,6 +524,7 @@ msgid "Organizations"
 msgstr "Organisaatiot"
 
 #: ckanext/kata/theme/templates/header.html:121
+#: ckanext/kata/theme/templates/home/index.html:57
 msgid "About Etsin"
 msgstr "Tietoa Etsimestä"
 
@@ -787,22 +788,22 @@ msgid ""
 "service also promotes adding unified information about the availability, "
 "ownership and licensing of data. The goal is to foster licensing "
 "practices for research data. The functionalities of Etsin help document "
-"researchers\\' merits in collecting and sharing data. The information on "
+"researchers' merits in collecting and sharing data. The information on "
 "datasets and project funding also makes the results of research more "
 "transparent to funders. </p> <p> In addition to the graphical user "
 "interface, data in Etsin may be used through an <a "
 "href=\"http://etsin.avointiede.fi/api/3/\" target=\"_blank\">open "
 "interface</a>. <a href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\" "
 "target=\"_blank\">Documentation of the API</a> may be found on the CKAN "
-"pages. </p> <p> All datasets are made available under <a "
+"pages. </p> <p> All dataset descriptions are made available under <a "
 "href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
 "target=\"_blank\">Creative Commons 0 license</a>. Data owners decide on "
 "the licence of the research data described in Etsin. For open data, <a "
 "href=\"https://creativecommons.org/licenses/by/4.0/\" "
 "target=\"_blank\">Creative Commons BY 4.0</a> license is recommended. "
-"</p> <p> Customer service contacts and feedback is available through "
-"servicedesk (at) csc.fi. The service maintenance window is on the fourth "
-"Monday of every month between 4 and 6 PM (EST). During that time, the "
+"</p> <p> Customer service contacts and feedback should be addressed to"
+" servicedesk (at) csc.fi. The service maintenance window is on the fourth"
+" Monday of every month between 4 and 6 PM (EST). During that time, the "
 "service will be out of use. </p> <p> Etsin is offered to the scientific "
 "community by the Ministry of Education and Culture of Finland. Etsin is "
 "developed and maintained by CSC - IT Center for Science Ltd. The service "
@@ -816,30 +817,33 @@ msgstr ""
 "säilyttää missä tahansa tallennuspalvelussa ja sen käyttöoikeuksista "
 "päättää tiedon omistaja. Etsin kerää tutkimusaineistojen metatietoja myös"
 " keskitetysti useista ulkopuolisista lähteistä, kuten <a "
-"href=\"http://www.fsd.uta.fi/fi/\" target=\"_blank\">Yhteiskuntatieteellisestä "
+"href=\"http://www.fsd.uta.fi/fi/\" "
+"target=\"_blank\">Yhteiskuntatieteellisestä "
 "tietoarkistosta</a>.</p><p>Datan kattava kuvailu lisää olennaisesti sen "
 "näkyvyyttä. Etsin pyrkii edistämään kuvailujen tasoa tarjoamalla kaikille"
 " tieteenaloille yhteiset metatietokentät ja tekemällä tietojen lisäämisen"
 " mahdollisimman helpoksi. Etsimen metatietomalli pohjautuu <a "
 "href=\"https://www.tdata.fi/documents/10180/44526/TTA-"
-"minimimetatietomalli\" target=\"_blank\">minimimetatietomalliin</a>. Osana yhteisiä "
-"metatietokenttiä on myös kentät, jotka kertovat datan käyttöoikeuksista, "
-"omistajuudesta ja lisenssistä. Tällä pyritään yhtenäistämään erityisesti "
-"käyttöoikeus- ja lisenssikäytäntöjä. Etsimen toiminnallisuudet edistävät "
-"meriitin syntymistä tutkijoille aineistojen keräämisestä ja jakamisesta. "
-"Lisäksi aineistoihin ja tutkimushankkeiden rahoitukseen liittyvät tiedot "
-"tekevät tutkimuksen tuloksista läpinäkyvämpiä "
-"rahoittajille.</p><p>Selainkäyttöliittymän lisäksi Etsimen sisältämiä "
-"tietoja voidaan käyttää myös <a "
-"href=\"http://etsin.avointiede.fi/api/3/\" target=\"_blank\">avoimen rajapinnan</a> kautta."
-" <a href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\">Rajapinnan "
+"minimimetatietomalli\" target=\"_blank\">minimimetatietomalliin</a>. "
+"Osana yhteisiä metatietokenttiä on myös kentät, jotka kertovat datan "
+"käyttöoikeuksista, omistajuudesta ja lisenssistä. Tällä pyritään "
+"yhtenäistämään erityisesti käyttöoikeus- ja lisenssikäytäntöjä. Etsimen "
+"toiminnallisuudet edistävät meriitin syntymistä tutkijoille aineistojen "
+"keräämisestä ja jakamisesta. Lisäksi aineistoihin ja tutkimushankkeiden "
+"rahoitukseen liittyvät tiedot tekevät tutkimuksen tuloksista "
+"läpinäkyvämpiä rahoittajille.</p><p>Selainkäyttöliittymän lisäksi Etsimen"
+" sisältämiä tietoja voidaan käyttää myös <a "
+"href=\"http://etsin.avointiede.fi/api/3/\" target=\"_blank\">avoimen "
+"rajapinnan</a> kautta. <a "
+"href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\">Rajapinnan "
 "englanninkielinen dokumentaatio</a> on CKANin "
 "sivustolla.</p><p>Aineistojen kuvailutiedot ovat avoimia <a "
 "href=\"http://creativecommons.org/publicdomain/zero/1.0/\">CC0-lisenssillä</a>."
 " Itse aineistojen lisensoinnista päättävät niiden omistajat. Avoimelle "
 "datalle suositellaan <a "
-"href=\"https://creativecommons.org/licenses/by/4.0/\" target=\"_blank\">Creative Commons BY"
-" 4.0-lisenssiä</a>.</p><p>Asiakaspalvelu ja palaute: asiakaspalvelu (at) "
+"href=\"https://creativecommons.org/licenses/by/4.0/\" "
+"target=\"_blank\">Creative Commons BY "
+"4.0-lisenssiä</a>.</p><p>Asiakaspalvelu ja palaute: asiakaspalvelu (at) "
 "csc.fi. Palvelun huoltoikkuna on joka kuukauden neljäs maanantain klo "
 "16-18 (EST). Tällöin palvelu ei ole käytössä.</p><p>Etsin-palvelun "
 "tarjoaa opetus- ja kulttuuriministeriö ja sen tuottaa CSC - Tieteen "
@@ -895,60 +899,79 @@ msgstr "Mikä Etsin on?"
 #: ckanext/kata/theme/templates/home/index.html:36
 msgid ""
 "Etsin enables you to find research datasets and to make your own datasets"
-" discoverable to others. Etsin offers access to datasets in various "
-"fields via a joint metadata model. The descriptive metadata stored in the"
-" service includes information on the authors, subject, format and "
-"licensing of the data. Etsin works independently of actual data storage "
-"location."
+" discoverable to others."
 msgstr ""
 "Etsimen avulla voit etsiä tutkimusaineistoja ja tehdä oman aineistosi "
-"löydettäväksi muille. Etsin tarjoaa pääsyn eri alojen aineistoihin "
+"löydettäväksi muille."
+
+#: ckanext/kata/theme/templates/home/index.html:39
+msgid ""
+"Etsin offers access to datasets in various fields via a joint metadata "
+"model. The descriptive metadata stored in the service includes "
+"information on the authors, subject, format and licensing of the data."
+msgstr ""
+"Etsin tarjoaa pääsyn eri alojen aineistoihin "
 "yhteisen metatietomallin kautta. Palveluun tallennettavissa metatiedoissa"
 " kuvaillaan aineistoja, esimerkiksi kerrotaan kuka aineiston on "
 "tuottanut, mitä se käsittelee, missä formaatissa se on ja millaisin "
-"ehdoin sitä saa käyttää. Etsin on riippumaton itse aineiston "
+"ehdoin sitä saa käyttää."
+
+#: ckanext/kata/theme/templates/home/index.html:41
+msgid "Etsin works independently of actual data storage location."
+msgstr ""
+"Etsin on riippumaton itse aineiston "
 "tallennuspaikasta."
 
-#: ckanext/kata/theme/templates/home/index.html:39
+#: ckanext/kata/theme/templates/home/index.html:44
 msgid "Is this service for me?"
 msgstr "Onko tämä palvelu minulle?"
 
-#: ckanext/kata/theme/templates/home/index.html:42
+#: ckanext/kata/theme/templates/home/index.html:47
 msgid ""
 "Anyone can use Etsin to search for research datasets. Authenticated users"
 " may enter information on their own datasets, and of others' datasets "
-"with their permission. Etsin aims to collect information on datasets from"
-" various sources and from various fields. You do not have to be a "
-"professional scientist or researcher in order use the service."
+"with their permission."
 msgstr ""
 "Kuka tahansa voi hakea aineistoja Etsimestä. Kirjautuneet käyttäjät "
 "voivat tallentaa tietoja omista tutkimusaineistoistaan ja muiden "
-"aineistoista heidän luvallaan. Tavoitteena on, että Etsimessä olisi "
+"aineistoista heidän luvallaan."
+
+#: ckanext/kata/theme/templates/home/index.html:50
+
+msgid ""
+"Etsin aims to collect information on datasets from various sources and "
+"from various fields. You do not have to be a professional scientist or "
+"researcher in order use the service."
+msgstr ""
+"Tavoitteena on, että Etsimessä olisi "
 "mahdollisimman paljon tietoa erilaisesta tutkimusdatasta, useista eri "
 "lähteistä ja monelta eri alalta. Palvelun käyttäjien ei tarvitse olla "
 "ammattitutkijoita."
 
-#: ckanext/kata/theme/templates/home/index.html:45
+#: ckanext/kata/theme/templates/home/index.html:53
 msgid "Is all of the data open?"
 msgstr "Onko kaikki data avointa?"
 
-#: ckanext/kata/theme/templates/home/index.html:48
+#: ckanext/kata/theme/templates/home/index.html:56
 msgid ""
 "The published metadata on the dataset is open to everyone, but the data "
 "owner decides how the data can be accessed and by whom. Nevertheless, "
 "sharing your data openly is recommended. You will find more information "
-"on the About Etsin page."
+"on the "
 msgstr ""
 "Julkaistut tietoaineistojen kuvailutiedot ovat kaikille avoimia, mutta "
 "aineiston omistaja päättää miten ja kuka aineistoon pääsee käsiksi. "
 "Suosittelemme myös itse datan julkaisemista avoimena. Lisätietoa saat "
-"Tietoa Etsimestä -sivulta."
 
-#: ckanext/kata/theme/templates/home/index.html:51
+#: ckanext/kata/theme/templates/home/index.html:57
+msgid " page."
+msgstr " -sivulta"
+
+#: ckanext/kata/theme/templates/home/index.html:60
 msgid "Short user guide"
 msgstr "Pikaohjeet käyttöön"
 
-#: ckanext/kata/theme/templates/home/index.html:56
+#: ckanext/kata/theme/templates/home/index.html:65
 msgid ""
 " You can <i>search</i> for datasets and <i>add</i> descriptive data, aka "
 "metadata, for a dataset. "
@@ -956,7 +979,7 @@ msgstr ""
 "Etsimessä voit <i>etsiä</i> tietoaineistoja ja <i>lisätä</i> "
 "tutkimusaineistoja kuvailevia tietoja eli metatietoa."
 
-#: ckanext/kata/theme/templates/home/index.html:61
+#: ckanext/kata/theme/templates/home/index.html:70
 msgid ""
 "You find datasets either by typing a keyword in the search field or via "
 "the advanced search."
@@ -964,15 +987,15 @@ msgstr ""
 "Löydät tietoaineistoja joko kirjoittamalla avainsanan hakukenttään tai "
 "tarkennetulla haulla."
 
-#: ckanext/kata/theme/templates/home/index.html:64
+#: ckanext/kata/theme/templates/home/index.html:73
 msgid "In order to add data you first need to authenticate yourself by"
 msgstr "Lisätäksesi aineiston tiedot sinun on ensin tunnistauduttava"
 
-#: ckanext/kata/theme/templates/home/index.html:64
+#: ckanext/kata/theme/templates/home/index.html:73
 msgid "Haka login"
 msgstr "Haka-tunnuksillasi"
 
-#: ckanext/kata/theme/templates/home/index.html:67
+#: ckanext/kata/theme/templates/home/index.html:76
 msgid ""
 "A comprehensive description of your data makes it easier for others to "
 "find it and make use of it. Etsin will assist you in filling in the data."
@@ -981,51 +1004,51 @@ msgstr ""
 "aineiston löydettävyyttä ja hyödynnettävyyttä. Etsin ohjaa sinua "
 "metatietojen täydentämisessä."
 
-#: ckanext/kata/theme/templates/home/index.html:90
+#: ckanext/kata/theme/templates/home/index.html:99
 msgid "Search data"
 msgstr "Hae dataa"
 
-#: ckanext/kata/theme/templates/home/index.html:92
+#: ckanext/kata/theme/templates/home/index.html:101
 msgid "eg. climate"
 msgstr "esim. ilmasto"
 
-#: ckanext/kata/theme/templates/home/index.html:103
+#: ckanext/kata/theme/templates/home/index.html:112
 msgid "Newest datasets"
 msgstr "Uusimmat tietoaineistot"
 
-#: ckanext/kata/theme/templates/home/index.html:125
+#: ckanext/kata/theme/templates/home/index.html:134
 msgid "Integrated metadata sources"
 msgstr "Palveluun tuotujen metatietojen lähteet"
 
-#: ckanext/kata/theme/templates/home/index.html:127
+#: ckanext/kata/theme/templates/home/index.html:136
 msgid "Finnish social science data archive"
 msgstr "Yhteiskuntatieteellinen tietoarkisto"
 
-#: ckanext/kata/theme/templates/home/index.html:127
+#: ckanext/kata/theme/templates/home/index.html:136
 msgid "Data Archive and Aila Data Service"
 msgstr "Tietoarkisto ja Palveluportaali Aila"
 
-#: ckanext/kata/theme/templates/home/index.html:129
+#: ckanext/kata/theme/templates/home/index.html:138
 msgid "http://www.fsd.uta.fi/en/"
 msgstr "http://www.fsd.uta.fi/fi/"
 
-#: ckanext/kata/theme/templates/home/index.html:130
+#: ckanext/kata/theme/templates/home/index.html:139
 msgid "../../base/images/img_fsd_logo_en.png"
 msgstr "../../base/images/img_fsd_logo_fi.png"
 
-#: ckanext/kata/theme/templates/home/index.html:131
+#: ckanext/kata/theme/templates/home/index.html:140
 msgid "https://services.fsd.uta.fi/index?lang=en"
 msgstr "https://services.fsd.uta.fi"
 
-#: ckanext/kata/theme/templates/home/index.html:132
+#: ckanext/kata/theme/templates/home/index.html:141
 msgid "../../base/images/logo_aila_en.png"
 msgstr "../../base/images/logo_aila_fi.png"
 
-#: ckanext/kata/theme/templates/home/index.html:136
+#: ckanext/kata/theme/templates/home/index.html:145
 msgid "Language bank of Finland"
 msgstr "Kielipankki"
 
-#: ckanext/kata/theme/templates/home/index.html:136
+#: ckanext/kata/theme/templates/home/index.html:145
 msgid "Browse language resources"
 msgstr "Kielitieteen aineistot"
 
@@ -1116,7 +1139,7 @@ msgstr "Etsin FAQ"
 #: ckanext/kata/theme/templates/kata/faq.html:12
 #: ckanext/kata/theme/templates/kata/faq.html:86
 msgid "Basic information on Etsin"
-msgstr "Perustietoja etsimestä"
+msgstr "Perustietoja Etsimestä"
 
 #: ckanext/kata/theme/templates/kata/faq.html:15
 msgid ""
@@ -1177,7 +1200,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:22
 msgid "Which browsers does Etsin support?"
-msgstr "Mitä internetselaimia Etsin tukee?"
+msgstr "Mitä selaimia Etsin tukee?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:23
 msgid ""
@@ -1204,13 +1227,12 @@ msgid ""
 "open data publishing portal</a>."
 msgstr ""
 "Etsimeen syötettyihin metatietoihin liittyvät aineistot voivat olla "
-"tallennettu mihin tahansa, esim. <a "
-"href=\"https://www.tdata.fi/ida\" target=\"_blank\">IDA-säilytyspalveluun</a>. Etsin on "
-"integroitu Reettaan, joka on käyttövaltuuksien hallinnointipalvelu. "
-"Etsimen kautta löydetyt avoimet ja käyttövaltuuksin rajatut aineistot "
-"ovat käyttäjän ladattavissa <a "
-"href=\"http://avaa.tdata.fi/web/avaa/etusivu\" target=\"_blank\">AVAA-"
-"julkaisualustalla</a>."
+"tallennettu mihin tahansa, esim. <a href=\"https://www.tdata.fi/ida\" "
+"target=\"_blank\">IDA-säilytyspalveluun</a>. Etsin on integroitu "
+"Reettaan, joka on käyttövaltuuksien hallinnointipalvelu. Etsimen kautta "
+"löydetyt avoimet ja käyttövaltuuksin rajatut aineistot ovat käyttäjän "
+"ladattavissa <a href=\"http://avaa.tdata.fi/web/avaa/etusivu\" "
+"target=\"_blank\">AVAA-julkaisualustalla</a>."
 
 #: ckanext/kata/theme/templates/kata/faq.html:28
 #: ckanext/kata/theme/templates/kata/faq.html:89
@@ -1246,7 +1268,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:34
 msgid "Is metadata added separately for each data file?"
-msgstr "Kirjoitetaanko metadatakuvaus jokaisesta tiedostosta erikseen?"
+msgstr "Kirjoitetaanko kuvaus jokaisesta tiedostosta erikseen?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:35
 msgid ""
@@ -1287,7 +1309,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:38
 msgid "Is there a versioning management system in Etsin?"
-msgstr "Onko Etsimessä versiointihallintaa?"
+msgstr "Onko Etsimessä versionhallintaa?"
 
 #: ckanext/kata/theme/templates/kata/faq.html:39
 msgid ""
@@ -1413,11 +1435,11 @@ msgid ""
 "contributor fields collect URIs separately, so you can insert author "
 "information as plain text and as URI."
 msgstr ""
-"Parhaillaan URI-tunniesteita ei muuteta selkokieliseksi, joten "
-"esimerkiksi ORCID URL näytetään sellaisenaan tietoaineiston ja haun "
-"sivuilla. Kuitenkin tällä hetkellä tekijäkenttiin kerätään myös "
-"tunnisteita erikseen, joten voit lisätä jo nyt palveluun tekijätiedot "
-"sekä URI-muodossa että selkokielisenä."
+"Parhaillaan URI-tunnisteita ei muuteta selkokieliseksi, joten esimerkiksi"
+" ORCID URL näytetään sellaisenaan tietoaineiston ja haun sivuilla. "
+"Kuitenkin tällä hetkellä tekijäkenttiin kerätään myös tunnisteita "
+"erikseen, joten voit lisätä jo nyt palveluun tekijätiedot sekä URI-"
+"muodossa että selkokielisenä."
 
 #: ckanext/kata/theme/templates/kata/faq.html:56
 msgid "There are two search fields, why?"
@@ -5643,7 +5665,7 @@ msgstr ""
 msgid ""
 "By submitting content, I agree to release this metadata contribution "
 "under the"
-msgstr "Etsimessä julkaisemasi tiedot tallennetaan avoimena datana lisenssillä "
+msgstr "Julkaisemalla kuvailutiedot, hyväksyn että ne julkaistaan lisenssillä "
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
 msgid "http://creativecommons.org/publicdomain/zero/1.0/"
@@ -6364,4 +6386,28 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:132
 msgid "API Key"
 msgstr "API-avain"
+
+#~ msgid ""
+#~ "Etsin enables you to find research "
+#~ "datasets and to make your own "
+#~ "datasets discoverable to others. Etsin "
+#~ "offers access to datasets in various "
+#~ "fields via a joint metadata model. "
+#~ "The descriptive metadata stored in the"
+#~ " service includes information on the "
+#~ "authors, subject, format and licensing "
+#~ "of the data. Etsin works independently"
+#~ " of actual data storage location."
+#~ msgstr ""
+#~ "Etsimen avulla voit etsiä tutkimusaineistoja"
+#~ " ja tehdä oman aineistosi löydettäväksi "
+#~ "muille. Etsin tarjoaa pääsyn eri alojen"
+#~ " aineistoihin yhteisen metatietomallin kautta."
+#~ " Palveluun tallennettavissa metatiedoissa "
+#~ "kuvaillaan aineistoja, esimerkiksi kerrotaan "
+#~ "kuka aineiston on tuottanut, mitä se "
+#~ "käsittelee, missä formaatissa se on ja"
+#~ " millaisin ehdoin sitä saa käyttää. "
+#~ "Etsin on riippumaton itse aineiston "
+#~ "tallennuspaikasta."
 

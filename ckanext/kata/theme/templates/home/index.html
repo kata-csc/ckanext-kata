@@ -33,19 +33,28 @@
                         {{ _('What is Etsin?') }}
                       </h3>
                       <p>
-                        {{ _('Etsin enables you to find research datasets and to make your own datasets discoverable to others. Etsin offers access to datasets in various fields via a joint metadata model. The descriptive metadata stored in the service includes information on the authors, subject, format and licensing of the data. Etsin works independently of actual data storage location.') }}
+                        {{ _('Etsin enables you to find research datasets and to make your own datasets discoverable to others.') }}
+                      </p>
+                      <p>
+                        {{ _('Etsin offers access to datasets in various fields via a joint metadata model. The descriptive metadata stored in the service includes information on the authors, subject, format and licensing of the data.') }}
+                      </p>
+                        {{ _('Etsin works independently of actual data storage location.') }}
                       </p>
                       <h3>
                         {{ _('Is this service for me?') }}
                       </h3>
                       <p>
-                        {{ _('Anyone can use Etsin to search for research datasets. Authenticated users may enter information on their own datasets, and of others\' datasets with their permission. Etsin aims to collect information on datasets from various sources and from various fields. You do not have to be a professional scientist or researcher in order use the service.') }}
+                        {{ _('Anyone can use Etsin to search for research datasets. Authenticated users may enter information on their own datasets, and of others\' datasets with their permission.') }}
+                      </p>
+                      <p>
+                        {{ _('Etsin aims to collect information on datasets from various sources and from various fields. You do not have to be a professional scientist or researcher in order use the service.') }}
                       </p>
                       <h3>
                         {{ _('Is all of the data open?') }}
                       </h3>
                       <p>
-                        {{ _('The published metadata on the dataset is open to everyone, but the data owner decides how the data can be accessed and by whom. Nevertheless, sharing your data openly is recommended. You will find more information on the About Etsin page.') }}
+                        {{ _('The published metadata on the dataset is open to everyone, but the data owner decides how the data can be accessed and by whom. Nevertheless, sharing your data openly is recommended. You will find more information on the ') }}
+                        <a href="{{ h.url_for(controller='home', action='about') }}">{{ _('About Etsin') }}</a>{{ _(' page.') }}
                       </p>
                       <h3>
                         {{ _('Short user guide') }}
