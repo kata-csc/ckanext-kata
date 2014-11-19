@@ -214,7 +214,7 @@ class TestWithUser(TestCase):
             # field.send_keys('Published')
 
             field = browser.find_element_by_xpath(
-                "//section/div/div/div[label[text()='Organization']]/div/div/a")  # CKAN Generated field
+                "//section/div/div/div/div[label[text()='Organization']]/div/div/a")  # CKAN Generated field
 
             ac = ActionChains(browser)
             ac.move_to_element_with_offset(field, 0.1, 0.1).click().perform()
@@ -224,7 +224,7 @@ class TestWithUser(TestCase):
                 ac.send_keys(o).perform()
                 browser.implicitly_wait(2)
 
-            #browser.find_element_by_xpath("//button[@name='save']").click()
+            browser.find_element_by_name("kata-accept-terms").click()
             browser.find_element_by_xpath("//*[contains(text(), 'Save and publish')]").click()
 
         except NoSuchElementException:
@@ -302,7 +302,6 @@ class TestWithUser(TestCase):
             driver.find_element_by_name("submit").click()
 
             WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.XPATH, "//h3[contains(text(), '2 members')]")))
-            driver.get_screenshot_as_file('_create_organization_TEMP.png')
 
         except (TimeoutException, NoSuchElementException):
             driver.get_screenshot_as_file('_create_organization.png')
