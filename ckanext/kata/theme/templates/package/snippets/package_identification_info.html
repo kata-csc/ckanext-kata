@@ -18,11 +18,6 @@
   <h2 class="module-heading-add-dataset">{{ _('Data identifiers') }}</h2>
   <div class="module-content">
 
-    {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
-    {% if pid_errors and pid_errors is iterable %}
-      <span class="separate-error error-block">{{ pid_errors|join('. ') }}</span>
-    {% endif %}
-
     {% set index = h.create_loop_index() %}
     {% set pid_types = h.get_pid_types() %}
 
@@ -87,6 +82,18 @@
         </div>
       </div>
     {% endfor %}
+
+    {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
+    {% if pid_errors and pid_errors is iterable %}
+      <span class="separate-error error-block">{{ pid_errors|join('. ') }}</span>
+    {% endif %}
+    {% if errors and errors.pids %}
+      {% for items in errors.pids %}
+        {% if items %}
+          <span class="separate-error error-block">{{ items.get('id')|join('. ') }}</span>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
 
     <input type="hidden" value="{{ index }}" id="pid-index" />
 
