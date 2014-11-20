@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-19 11:47+0000\n"
+"POT-Creation-Date: 2014-11-20 08:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -185,8 +185,16 @@ msgstr ""
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:822
+#: ckanext/kata/controllers.py:821
 msgid "Invalid upload URL"
+msgstr ""
+
+#: ckanext/kata/controllers.py:823
+msgid "Invalid XML content"
+msgstr ""
+
+#: ckanext/kata/controllers.py:827
+msgid "Failed to load file"
 msgstr ""
 
 #: ckanext/kata/converters.py:35
@@ -763,10 +771,10 @@ msgid ""
 "fields and by making it easy to enter metadata.The service also promotes "
 "adding unified information about the availability, ownership and licensing of"
 " data. The goal is to foster licensing practices for research data. The "
-"functionalities of Etsin help document researchers\\' merits in collecting "
-"and sharing data. The information on datasets and project funding also makes "
-"the results of research more transparent to funders. </p> <p> In addition to "
-"the graphical user interface, data in Etsin may be used through an <a "
+"functionalities of Etsin help document researchers' merits in collecting and "
+"sharing data. The information on datasets and project funding also makes the "
+"results of research more transparent to funders. </p> <p> In addition to the "
+"graphical user interface, data in Etsin may be used through an <a "
 "href=\"http://etsin.avointiede.fi/api/3/\" target=\"_blank\">open "
 "interface</a>. <a href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\" "
 "target=\"_blank\">Documentation of the API</a> may be found on the CKAN "
@@ -776,13 +784,13 @@ msgid ""
 "licence of the research data described in Etsin. For open data, <a "
 "href=\"https://creativecommons.org/licenses/by/4.0/\" "
 "target=\"_blank\">Creative Commons BY 4.0</a> license is recommended. </p> "
-"<p> Customer service contacts and feedback is should be addressed to "
-"servicedesk (at) csc.fi. The service maintenance window is on the fourth "
-"Monday of every month between 4 and 6 PM (EST). During that time, the service"
-" will be out of use. </p> <p> Etsin is offered to the scientific community by"
-" the Ministry of Education and Culture of Finland. Etsin is developed and "
-"maintained by CSC - IT Center for Science Ltd. The service is discipline "
-"independent and free to use. </p> "
+"<p> Customer service contacts and feedback should be addressed to servicedesk"
+" (at) csc.fi. The service maintenance window is on the fourth Monday of every"
+" month between 4 and 6 PM (EST). During that time, the service will be out of"
+" use. </p> <p> Etsin is offered to the scientific community by the Ministry "
+"of Education and Culture of Finland. Etsin is developed and maintained by CSC"
+" - IT Center for Science Ltd. The service is discipline independent and free "
+"to use. </p> "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:29
@@ -1263,13 +1271,11 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:58
-msgid "I can't make a search query I want from advanced search."
+msgid "I can't make a query I want from advanced search."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:59
-msgid ""
-"You can make more complex search queries by using Solr query syntax. See more"
-" in: "
+msgid "You can make more complex queries by using Solr query syntax. See more in: "
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:60
