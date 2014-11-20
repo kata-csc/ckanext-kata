@@ -816,11 +816,16 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
                 except (urllib2.URLError, urllib2.HTTPError):
                     log.debug('Could not fetch from url {ur}'.format(ur=url))
                     h.flash_error(_('Could not fetch from url {ur}'.format(ur=url)))
-                    return h.redirect_to(controller='package', action='new')
                 except ValueError, e:
                     log.debug(e)
                     h.flash_error(_('Invalid upload URL'))
-                    return h.redirect_to(controller='package', action='new')
+                except etree.XMLSyntaxError:
+                    h.flash_error(_('Invalid XML content'))
+                except Exception, e:
+                    log.debug(e)
+                    log.debug(type(e))
+                    h.flash_error(_("Failed to load file"))
+                return h.redirect_to(controller='package', action='new') # on error
 
     def new(self, data=None, errors=None, error_summary=None):
         '''

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-11-19 14:33+0000\n"
+"POT-Creation-Date: 2014-11-20 08:58+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -185,9 +185,17 @@ msgstr "Anna tiedosto tai URL"
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:822
+#: ckanext/kata/controllers.py:821
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
+
+#: ckanext/kata/controllers.py:823
+msgid "Invalid XML content"
+msgstr "Virheellinen XML sisältö"
+
+#: ckanext/kata/controllers.py:827
+msgid "Failed to load file"
+msgstr "Tiedostoa ei voitu ladata"
 
 #: ckanext/kata/converters.py:35
 msgid "Organisation is missing"

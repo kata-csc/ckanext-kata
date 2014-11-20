@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-19 14:33+0000\n"
+"POT-Creation-Date: 2014-11-20 08:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -185,8 +185,16 @@ msgstr ""
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:822
+#: ckanext/kata/controllers.py:821
 msgid "Invalid upload URL"
+msgstr ""
+
+#: ckanext/kata/controllers.py:823
+msgid "Invalid XML content"
+msgstr ""
+
+#: ckanext/kata/controllers.py:827
+msgid "Failed to load file"
 msgstr ""
 
 #: ckanext/kata/converters.py:35
