@@ -167,7 +167,10 @@ def user_autocomplete(context, data_dict):
     :return:
     '''
 
-    if context.get('user'):
+    user_name = context.get('user')
+    user_obj = User.get(user_name) if user_name else None
+
+    if user_obj:
         return {'success': True}
     else:
         return {'success': False}
