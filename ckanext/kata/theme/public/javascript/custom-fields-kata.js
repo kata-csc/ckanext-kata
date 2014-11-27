@@ -11,7 +11,8 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       fieldSelector: '.control-custom',
       numfields: 1,
       index: null,
-      keep: null
+      keep: null,
+      hide: null
     },
 
     /* Initializes the module and attaches custom event listeners. This
@@ -99,6 +100,11 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       checkboxes.hide();
       var buttons = field.find('button');
       buttons.hide();
+
+      if (this.options.hide) {
+        field.find(this.options.hide).hide();
+      }
+
       return field;
     },
 

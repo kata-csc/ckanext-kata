@@ -174,12 +174,12 @@
     width: 110px !important;
 }
 .kata-pid-input {
-	margin-left: 10px;
-	width: 110px !important;
+    margin-left: 10px;
+    width: 110px !important;
 }
 .kata-pid-input-wide {
-	margin-left: 10px;
-	width: 393px !important;
+    margin-left: 10px;
+    width: 393px !important;
 }
 .events {
     font-style: bold;
@@ -207,29 +207,38 @@ li.kata label {
     content: '' !important;
 }
 .form-horizontal .katalabel-pid1 {
-	width: 95px !important;
-	text-align: center;
-	float: left;
+    width: 95px !important;
+    text-align: center;
+    float: left;
 }
 .form-horizontal .katalabel-pid1::after {
-	content: '' !important;
+    content: '' !important;
 }
 .form-horizontal .katalabel-pid2 {
-	width: 75px !important;
-	text-align: right;
-	float: left;
+    width: 50px !important;
+    font-size: x-small;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    float: none !important;
+    white-space: normal !important;
+    position: relative;
+    top: 9px;
+    text-align: left;
+    line-height: 0 !important;
 }
+
 .form-horizontal .katalabel-pid2::after {
-	content: '' !important;
+    content: '' !important;
 }
 .form-horizontal .katalabel-pid-wide {
-	width: 380px !important;
-	float: left;
-	text-align: center !important;
+    width: 380px !important;
+    float: left;
+    text-align: center !important;
 
 }
 .form-horizontal .katalabel-pid-wide::after {
-	content: '' !important;
+    content: '' !important;
 }
 ul.kata {
     list-style: none !important;
