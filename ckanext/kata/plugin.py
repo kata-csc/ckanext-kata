@@ -22,6 +22,7 @@ from ckan.plugins import (implements,
                           IRoutes,
                           IFacets,
                           ITemplateHelpers,
+                          IMiddleware,
                           SingletonPlugin)
 
 from ckan.plugins.core import unload
@@ -31,6 +32,8 @@ from ckanext.kata.schemas import Schemas
 from ckanext.kata import actions, auth_functions, settings, utils, helpers
 
 import ckanext.kata.extractor as extractor
+
+from ckanext.kata.middleware import NotAuthorizedMiddleware
 
 log = logging.getLogger('ckanext.kata')
 
@@ -82,6 +85,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     implements(IAuthFunctions, inherit=True)
     implements(IFacets, inherit=True)
     implements(IRoutes, inherit=True)
+    implements(IMiddleware, inherit=True)
 
     create_package_schema = Schemas.create_package_schema
     create_package_schema_oai_dc = Schemas.create_package_schema_oai_dc
@@ -448,7 +452,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
     def _get_common_facets(self):
         titles = utils.get_field_titles(toolkit._)
-        return  OrderedDict((field, titles[field]) for field in settings.FACETS)
+        return OrderedDict((field, titles[field]) for field in settings.FACETS)
 
     def dataset_facets(self, facets_dict, package_type):
         '''
@@ -697,3 +701,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         pkg_dict['data_dict'] = json.dumps(data)
 
         return pkg_dict
+
+    def make_middleware(self, app, config):
+        ''' See `ckan.plugins.interfaces.IMiddleware.make_middleware
+            Add handling for NotAuthorized exceptions.
+        '''
+        return NotAuthorizedMiddleware(app, config)
+
