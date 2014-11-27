@@ -505,7 +505,7 @@ def is_backup_instance():
 
 
 def _sort_organizations(organization_dictionary):
-    return sorted(organization_dictionary, key=lambda organization: organization.get('title', None))
+    return sorted(organization_dictionary, key=lambda organization: organization.get('title', "").lower())
 
 
 def list_organisations(user):
