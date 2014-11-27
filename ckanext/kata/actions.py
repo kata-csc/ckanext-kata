@@ -738,5 +738,5 @@ def organization_activity_list_html(context, data_dict):
 
 @side_effect_free
 def member_list(context, data_dict):
-    check_access('user_list', context)
+    check_access('member_list', context, data_dict)
     return ckan.logic.action.get.member_list(context, data_dict)
