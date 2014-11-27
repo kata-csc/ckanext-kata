@@ -504,6 +504,10 @@ def is_backup_instance():
     return asbool(config.get('kata.is_backup', False))
 
 
+def _sort_organizations(organization_dictionary):
+    return sorted(organization_dictionary, key=lambda organization: organization.get('title', None))
+
+
 def list_organisations(user):
     '''
     Lists all organisations
@@ -516,4 +520,13 @@ def list_organisations(user):
     context['user'] = user.get('name')
     data_dict = dict()
     data_dict['all_fields'] = True
-    return get_action('organization_list')(context, data_dict)
+
+    return _sort_organizations(get_action('organization_list')(context, data_dict))
+
+
+def organizations_available(permission='edit_group'):
+    organizations = _sort_organizations(h.organizations_available(permission))
+    if permission == 'create_dataset':
+        for organization in organizations:
+            organization['name'] = organization.get('title', None) or organization['name']
+    return organizations
