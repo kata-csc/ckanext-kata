@@ -198,6 +198,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_activity_list': auth_functions.package_activity_list,
             'group_activity_list': auth_functions.group_activity_list,
             'organization_activity_list': auth_functions.organization_activity_list,
+            'member_list': auth_functions.member_list,
         }
 
     def get_actions(self):
