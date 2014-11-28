@@ -643,6 +643,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Add res_mimetype to pkg_dict. Can be removed after res_mimetype is
         # added to CKAN's index function.
         data = json.loads(pkg_dict['data_dict'])
+        # We do not want owner_org to organization facets. Note that owner_org.name
+        # is an id in our case and thus not human readable
+        pkg_dict['organization'] = ''
 
         res_mimetype = []
         for resource in data.get('resources', []):
