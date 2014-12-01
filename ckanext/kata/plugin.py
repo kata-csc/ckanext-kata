@@ -205,6 +205,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_activity_list': auth_functions.package_activity_list,
             'group_activity_list': auth_functions.group_activity_list,
             'organization_activity_list': auth_functions.organization_activity_list,
+            'member_list': auth_functions.member_list,
         }
 
     def get_actions(self):
@@ -218,6 +219,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'group_delete': actions.group_delete,
             'member_create': actions.member_create,
             'member_delete': actions.member_delete,
+            'member_list': actions.member_list,
             'organization_create': actions.organization_create,
             'organization_delete': actions.organization_delete,
             'organization_list_for_user': actions.organization_list_for_user,

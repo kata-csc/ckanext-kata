@@ -220,3 +220,21 @@ def organization_activity_list(context, data_dict):
     '''
 
     return logic_auth.get.sysadmin(context, data_dict)
+
+def member_list(context, data_dict):
+    '''
+    Limits group/organization member listing to editors and administrators
+    of the organization.
+
+    :param context:
+    :param data_dict:
+    :return:
+    '''
+
+    user_name = context.get('user')
+    organization_id = data_dict.get('id')
+
+    if new_authz.has_user_permission_for_group_or_org(organization_id, user_name, 'editor'):
+        return {'success': True}
+    else:
+        return {'success': False}
