@@ -199,12 +199,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'resource_update': auth_functions.edit_resource,
             'package_create': auth_functions.package_create,
             'package_show': auth_functions.package_show,
-            'user_list': auth_functions.user_list,
+            'user_list': logic.auth.get.sysadmin,
             'user_autocomplete': auth_functions.user_autocomplete,
             'user_activity_list': auth_functions.user_activity_list,
-            'package_activity_list': auth_functions.package_activity_list,
-            'group_activity_list': auth_functions.group_activity_list,
-            'organization_activity_list': auth_functions.organization_activity_list,
+            'package_activity_list': logic.auth.get.sysadmin,
+            'group_activity_list': logic.auth.get.sysadmin,
+            'organization_activity_list': logic.auth.get.sysadmin,
             'member_list': auth_functions.member_list,
         }
 

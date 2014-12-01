@@ -148,16 +148,6 @@ def kata_has_user_permission_for_org(org_id, user_name, permission):
         return True
     return False
 
-def user_list(context, data_dict):
-    '''
-    Override to prevent access to user listing for non-admin users.
-    :param context:
-    :param data_dict:
-    :return:
-    '''
-
-    return logic_auth.get.sysadmin(context, data_dict)
-
 def user_autocomplete(context, data_dict):
     '''
     Override to explicitly allow logged in users to have
@@ -190,36 +180,6 @@ def user_activity_list(context, data_dict):
         return {'success': True}
     else:
         return logic_auth.get.sysadmin(context, data_dict)
-
-def package_activity_list(context, data_dict):
-    '''
-    Disables package activity listing from non-sysadmin users.
-    :param context:
-    :param data_dict:
-    :return:
-    '''
-
-    return logic_auth.get.sysadmin(context, data_dict)
-
-def group_activity_list(context, data_dict):
-    '''
-    Disables group activity listing from non-sysadmin users.
-    :param context:
-    :param data_dict:
-    :return:
-    '''
-
-    return logic_auth.get.sysadmin(context, data_dict)
-
-def organization_activity_list(context, data_dict):
-    '''
-    Disables organization activity listing from non-sysadmin users.
-    :param context:
-    :param data_dict:
-    :return:
-    '''
-
-    return logic_auth.get.sysadmin(context, data_dict)
 
 def member_list(context, data_dict):
     '''
