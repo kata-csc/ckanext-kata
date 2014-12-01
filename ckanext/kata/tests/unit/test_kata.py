@@ -543,6 +543,18 @@ class TestHelpers(TestCase):
         package = copy.deepcopy(TEST_DATADICT)
         self.assertTrue(helpers.get_urn_fi_address(package).startswith('http://urn.fi/urn:nbn:fi:csc-kata'))
 
+    def test_convert_language_code(self):
+        assert helpers.convert_language_code('fin', 'alpha2') == 'fi'
+        assert helpers.convert_language_code('fin', 'alpha3') == 'fin'
+        assert helpers.convert_language_code('fi', 'alpha2') == 'fi'
+        assert helpers.convert_language_code('fi', 'alpha3') == 'fin'
+
+        assert helpers.convert_language_code('eng', 'alpha2') == 'en'
+        assert helpers.convert_language_code('eng', 'alpha3') == 'eng'
+        assert helpers.convert_language_code('en', 'alpha2') == 'en'
+        assert helpers.convert_language_code('en', 'alpha3') == 'eng'
+
+
 class TestActions(TestCase):
     '''
     Unit tests for action functions.

@@ -108,8 +108,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # Full stops from harvested objects screw up the read method
         # when using the default ckan route
         map.connect('/dataset/{id:.*?}.{format:rdf}',
-                    controller="ckan.controllers.package:PackageController",
-                    action='read')
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action='read_rdf')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
@@ -246,6 +246,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_helpers(self):
         """ Register helpers """
         return {
+            'convert_language_code': helpers.convert_language_code,
             'create_loop_index': helpers.create_loop_index,
             'dataset_is_valid': helpers.dataset_is_valid,
             'filter_system_users': helpers.filter_system_users,

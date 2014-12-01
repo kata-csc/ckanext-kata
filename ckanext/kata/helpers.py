@@ -7,6 +7,7 @@ from paste.deploy.converters import asbool
 from pylons import config
 import functionally as fn
 import logging
+from iso639 import languages
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -530,3 +531,17 @@ def organizations_available(permission='edit_group'):
         for organization in organizations:
             organization['name'] = organization.get('title', None) or organization['name']
     return organizations
+
+
+def convert_language_code(lang, to_format):
+    '''
+    Convert ISO 639 language code to <to_format>. Throws KeyError if none found.
+
+    :param lang: original language code
+    :param to_format: 'alpha2' or 'alpha3'
+    '''
+
+    try:
+        return getattr(languages.get(alpha3=lang), to_format)
+    except KeyError:
+        return getattr(languages.get(alpha2=lang), to_format)
