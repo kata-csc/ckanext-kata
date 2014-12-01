@@ -30,7 +30,7 @@
     <dct:identifier>${ c.pkg_dict.get('id', None) }</dct:identifier>
 
     <py:for each="title in c.pkg_dict.get('langtitle', None)">
-      <dct:title xml:lang="${ title.get('lang', None) }">${ title.get('value', None) }</dct:title>   
+      <dct:title xml:lang="${ h.convert_language_code(title.get('lang'), 'alpha2') or title.get('lang') }">${ title.get('value') }</dct:title>
     </py:for>
 
     <dct:rights rdf:parseType="Literal" xmlns="http://www.loc.gov/METS/">

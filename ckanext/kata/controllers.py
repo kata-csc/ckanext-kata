@@ -836,6 +836,13 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         else:
             return super(KataPackageController, self).new(data, errors, error_summary)
 
+    def read_rdf(self, id, format):
+        '''
+        Render dataset in RDF/XML using CKAN's PackageController.read(). Remove unsupported lang attributes created
+        by Genshi.
+        '''
+        return re.sub(r'(<[^<>]*)( lang=\".{2,3}")([^<>]*>)', r'\1\3', self.read(id, format))
+
 
 class KataInfoController(BaseController):
     '''
