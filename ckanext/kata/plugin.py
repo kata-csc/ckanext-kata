@@ -8,6 +8,7 @@ import json
 import re
 import datetime
 
+from ckan import logic
 from ckan.lib.base import g, c, _
 from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
@@ -188,6 +189,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         implementation overrides
         """
         return {
+            'current_package_list_with_resources': logic.auth.get.sysadmin,
             'package_delete': auth_functions.package_delete,
             'package_update': auth_functions.is_owner,
             'resource_update': auth_functions.edit_resource,
