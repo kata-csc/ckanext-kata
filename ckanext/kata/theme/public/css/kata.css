@@ -276,6 +276,7 @@ ul.kata {
 }
 .kata-medium-input {
     width: 334px !important;
+    font-size: 14px;
 }
 .kata-label-pluspad {
     padding-top: 9px !important;

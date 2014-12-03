@@ -40,6 +40,8 @@ from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
 import ckanext.kata.settings as settings
 from ckanext.kata import utils
+import os
+import difflib
 
 _get_or_bust = ckan.logic.get_or_bust
 
@@ -141,6 +143,32 @@ class KATAApiController(ApiController):
     '''
     Functions for autocomplete fields in add dataset form
     '''
+
+    @beaker_cache(type="dbm", expire=30, invalidate_on_startup=True)
+    def _get_funders(self):
+        records = model.Session.execute("select distinct second.value from package_extra as first \
+            left join package_extra as second on first.package_id = second.package_id and second.key =  'agent_' || substring(first.key from 'agent_(.*)_role') || '_organisation' \
+            where first.key like 'agent%role' and first.value = 'funder' and first.state='active'")
+        url = config.get("ckanext.kata.funder_url", None) or "file://%s" % os.path.abspath(os.path.join(os.path.dirname(__file__), "theme/public/funder.json"))
+        source = urllib2.urlopen(url)
+        try:
+            return [funder['fi'] for funder in json.load(source)] + [result[0] for result in records]
+        finally:
+            source.close()
+
+    def funder_autocomplete(self):
+        query = request.params.get('incomplete', '').lower()
+        limit = request.params.get('limit', 10)
+
+        matches = sorted([funder for funder in self._get_funders() if funder and string.find(funder.lower(), query) != -1],
+                         key=lambda match: (match.lower().startswith(query), difflib.SequenceMatcher(None, match.lower(), query).ratio()),
+                         reverse=True)[0:limit]
+        resultSet = {
+            'ResultSet': {
+                'Result': [{'Name': tag} for tag in matches]
+            }
+        }
+        return self._finish_ok(resultSet)
 
     def media_type_autocomplete(self):
         '''

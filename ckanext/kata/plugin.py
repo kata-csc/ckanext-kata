@@ -134,6 +134,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action="media_type_autocomplete")
+        map.connect('/api/2/util/funder_autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action="funder_autocomplete")
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")

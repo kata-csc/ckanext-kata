@@ -5,6 +5,7 @@ Test Kata's web user interface with Pylons WSGI application.
 import copy
 
 import re
+import json
 from lxml import etree
 from ckan.logic import get_action
 
@@ -273,3 +274,13 @@ class TestURNExport(KataWsgiTestCase):
             except etree.LxmlError:
                 self.fail('Unexpected XML parsing error')
 
+
+class TestKataApi(KataWsgiTestCase):
+    '''
+    Test custom HTTP API.
+    '''
+
+    def test_funder_autocomplete(self):
+        result = self.app.get(url_for(controller= "ckanext.kata.controllers:KATAApiController", action='funder_autocomplete', incomplete=u'eu'))
+        results = json.loads(unicode(result.body))['ResultSet']['Result']
+        self.assertTrue({"Name": "EU muu rahoitus"} in results)

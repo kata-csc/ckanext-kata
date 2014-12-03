@@ -147,6 +147,7 @@
           {% set agent_prefix = "agent__" ~ index ~ "__" %}
 
           {% if loop.index0 == 0 %}
+
             {% call form.input(agent_prefix ~ 'name', label=_('Name'), id=agent_prefix ~ 'name', placeholder=_('my project'), value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
               {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project\'s name.")) }}
             {% endcall %}
@@ -157,8 +158,9 @@
           {% endif %}
 
           <div class="control-custom">
-            {% call form.input(agent_prefix ~ 'organisation', label=_('Funder'), id=agent_prefix ~ 'organisation', placeholder=_('my funder'), value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-              {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project funder\'s name.")) }}
+            {% set format_attrs = {'data-module': 'autocomplete', 'data-module-source': '/api/2/util/funder_autocomplete?incomplete=?', 'class': "kata-medium-input"} %}
+            {% call form.input(agent_prefix ~ 'organisation', label=_('Funder'), id=agent_prefix ~ 'organisation', placeholder=_('my funder'), value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'), classes=[], label_classes=['kata-input-comp'], attrs=format_attrs) %}
+              {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project funder\'s name."), style="top: -14px;") }}
             {% endcall %}
 
             {% call form.input(agent_prefix ~ 'fundingid', label=_('Funding id'), id=agent_prefix ~ 'fundingid', placeholder=_('1234'), value=agent['fundingid'], error=h.get_dict_field_errors(errors, 'agent', index, 'fundingid'), classes=['control-custom'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
