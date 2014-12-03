@@ -520,15 +520,24 @@ def list_organisations(user):
     return get_action('organization_list')(context, data_dict)
 
 
-def convert_language_code(lang, to_format):
+def convert_language_code(lang, to_format, throw_exceptions=True):
     '''
     Convert ISO 639 language code to <to_format>. Throws KeyError if none found.
 
+    :param throw_exceptions: Set to False to never throw KeyError.
     :param lang: original language code
     :param to_format: 'alpha2' or 'alpha3'
     '''
 
+    if throw_exceptions:
+        catch = [KeyError, None]
+    else:
+        catch = [Exception, Exception]
+
     try:
         return getattr(languages.get(alpha3=lang), to_format)
-    except KeyError:
-        return getattr(languages.get(alpha2=lang), to_format)
+    except catch[0]:
+        try:
+            return getattr(languages.get(alpha2=lang), to_format)
+        except catch[1]:
+            return ''
