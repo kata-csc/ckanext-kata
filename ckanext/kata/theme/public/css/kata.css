@@ -1120,3 +1120,15 @@ h3.optional {
     padding: 7px 15px;
     width: 584px;
 }
+
+.select2-result-label {
+    white-space: nowrap;
+}
+
+.kata-select2 {
+    width: 347px !important;
+}
+
+.kata-select2-tooltip {
+    top: -12px !important;
+}
