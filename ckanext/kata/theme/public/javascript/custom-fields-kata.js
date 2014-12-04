@@ -12,7 +12,8 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       numfields: 1,
       index: null,
       keep: null,
-      hide: null
+      hide: null,
+      remove: null
     },
 
     /* Initializes the module and attaches custom event listeners. This
@@ -104,6 +105,15 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       if (this.options.hide) {
         field.find(this.options.hide).hide();
       }
+
+      if (this.options.remove) {
+        field.find(this.options.remove).remove();
+      }
+
+      field.find("[data-module='autocomplete']").each(function(index, element) {
+        $(element).show();
+        ckan.module.initializeElement(element);
+      });
 
       return field;
     },

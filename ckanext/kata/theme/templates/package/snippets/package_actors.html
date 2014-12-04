@@ -138,7 +138,7 @@
       {% do funders.append(dict(role='funder',)) %}
     {% endif %}
 
-    <div data-module="custom-fields-kata" data-module-id="funders" data-module-numfields="{{ funders|length }}" data-module-index="agent-index" id="funders">
+    <div data-module="custom-fields-kata" data-module-id="funders" data-module-numfields="{{ funders|length }}" data-module-index="agent-index" id="funders" data-module-remove=".select2-container">
       {% set funder_errors = h.get_dict_errors(errors, '__extras', 'funder') %}
 
       {% for agent in funders %}
