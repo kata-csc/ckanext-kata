@@ -11,6 +11,6 @@
     </p>
     <div class="control-group control-custom">
       <label class="control-label kata-input-comp" for="kata-accept-terms">{{ _('Check to accept') }}</label>
-      <input type="checkbox" class="checkbox checkbox-generate" name="kata-accept-terms" id="kata-accept-terms" data-module="kata-terms-of-use">
+      <input type="checkbox" class="checkbox checkbox-generate" name="kata-accept-terms" id="kata-accept-terms" data-module="kata-terms-of-use"{% if data.get('kata-accept-terms', None) == 'on' %} checked="checked"{% endif %}>
     </div>
 </div>

@@ -25,7 +25,7 @@ then itself be extended to add/remove blocks of functionality. #}
   {% block metadata_fields %}
     {% snippet 'package/snippets/package_metadata_fields.html', data=data, errors=errors, roles=c.roles %}
   {% endblock %}
-  {% snippet 'package/snippets/package_terms_of_use.html' %}
+  {% snippet 'package/snippets/package_terms_of_use.html', data=data %}
 
   {% block form_actions %}
     <div class="form-actions">
