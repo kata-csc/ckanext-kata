@@ -1152,3 +1152,10 @@ h3.optional {
     width: 331px !important;
     display: inline-block;
 }
+
+.kata-checkbox-label {
+    display: inline-block;
+}
+.kata-checkbox-label:after {
+    content: ""
+}

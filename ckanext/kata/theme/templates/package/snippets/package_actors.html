@@ -149,7 +149,8 @@
   </div>
   <h3 class="module-heading-add-dataset">{{ _('Project') }} {{ kata_form.required() }}</h3>
   <div class="module-content">
-    <input type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />{{ _('This dataset was produced in a project.') }}
+    <input id="projdis" type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />
+    <label for="projdis" class="kata-checkbox-label">{{ _('This dataset was produced in a project.') }}</label>
   </div>
   <div class="module-content" id="projdiv" {% if not h.get_funder(data) %}style="display: none;"{% endif %}>
     {% set funders = h.get_funders(data) %}

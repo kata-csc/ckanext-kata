@@ -65,6 +65,7 @@
 
     <div class="kata-autocomplete">
       <h3 class="module-heading-add-dataset optional">{{ _('Field of science') }} {{ kata_form.optional() }}</h3>
+      <div class="module-content">
 
 
       {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}" target="_blank">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click.') }}
@@ -73,22 +74,26 @@
 
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?'} %}
       {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-medium'], attrs=tag_attrs) }}
+      </div>
     </div>
 
     {# Languages #}
 
-    <h3 class="module-heading-add-dataset">{{ _('Languages') }} {{ kata_form.required() }}</h3><br />
-    <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset contains non-textual data') }}
-    <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
-      {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor kata-medium"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
-      {% endcall %}
-      <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
-      <span class="add-dataset-infotext">
-        {{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
-      </span>
+    <h3 class="module-heading-add-dataset">{{ _('Languages') }} {{ kata_form.required() }}</h3>
+    <div class="module-content">
+        <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
+        <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
+        <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
+          {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language,
+                             classes=['control-medium'], control_classes=["controls editor kata-medium"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
+          {% endcall %}
+          <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+          <span class="add-dataset-infotext">
+            {{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
+          </span>
+        </div>
     </div>
-
     {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
 
   </div>
