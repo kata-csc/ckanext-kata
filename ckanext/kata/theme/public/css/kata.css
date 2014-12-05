@@ -346,9 +346,10 @@ body {
     border-radius: 0 0 0px 0px;
     color: #FFFFFF;
     display: block;
-    margin: -3px 0 20px;
-    padding: 6px 8px 3px;
-    width: 85%;
+    margin: -3px 0 0 0;
+    padding: 6px 8px 6px;
+    width: 100%;
+    border-radius: 6px;
 }
 header.masthead a.logo img {
     height: 87px !important;
@@ -1131,4 +1132,23 @@ h3.optional {
 
 .kata-select2-tooltip {
     top: -12px !important;
+}
+
+.kata-select2-error, .kata-select2-error-control .error-block {
+    position: relative;
+    top: -3px;
+    width: 331px !important;
+    display: inline-block;
+}
+
+.kata-error-non-input {
+    border-radius: 3px;
+    margin: 4px 0;
+    padding: 3px 13px;
+    width: 330px
+}
+
+.kata-medium .error-block, .error-block.kata-medium-error  {
+    width: 331px !important;
+    display: inline-block;
 }

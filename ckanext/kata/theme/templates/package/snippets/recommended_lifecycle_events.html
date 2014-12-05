@@ -18,7 +18,7 @@
             {% set index = loop.index %}
             {% if ev['type'] and (ev['who']|length>0 or ev['when']|length>0 or ev['descr']|length>0) %}
               {% set lastevent = loop.index %}
-    	        
+
               <div class="control-group control-custom">
                 <li class="kata">
                   <div class="input-prepend">
@@ -36,7 +36,7 @@
                       <option value="used" {% if ev['type']=='used'%}selected{% endif %}>{{ _('used') }}</option>
                     </select>
                   </div>
-		        </li>
+                </li>
                 <li class="kata">
                   <div class="input-prepend">
                     <input class="kata-lifecycle-input" type="text" id="event_{{ index }}__who_id" name="event__{{ index }}__who" value="{{ev['who']}}" />
@@ -56,22 +56,22 @@
               <li colspan="4">
                 {% if errors and errors.event and errors.event[index-1] %}
                   {% if errors.event[index-1]['type'] %}
-                    <span class="error-block-kata">
+                    <span class="separate-error error-block-kata">
                       {{ errors.event[index-1]['type']|join('. ') }}
                     </span>
                   {% endif %}
                   {% if errors.event[index-1]['who'] %}
-                    <span class="error-block-kata">
+                    <span class="separate-error error-block-kata">
                       {{ errors.event[index-1]['who']|join('. ') }}
                     </span>
                   {% endif %}
                   {% if errors.event[index-1]['when'] %}
-                    <span class="error-block-kata">
+                    <span class="separate-error error-block-kata">
                       {{ errors.event[index-1]['when']|join('. ') }}
                     </span>
                   {% endif %}
                   {% if errors.event[index-1]['descr'] %}
-                    <span class="error-block-kata">
+                    <span class="separate-error error-block-kata">
                       {{ errors.event[index-1]['descr']|join('. ') }}
                     </span>
                   {% endif %}

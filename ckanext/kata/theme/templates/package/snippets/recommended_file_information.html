@@ -25,7 +25,7 @@
       {{ kata_form.tooltip(tooltip=_("The checksum of the data file can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Checksums are a good way to enable verification of the content to ensure the file is unchanged and genuine.")) }}
       {% if errors.resources %}
         {% if errors.resources[0].hash %}
-          <span class="error-block">
+          <span class="error-block kata-medium-error">
             {{ errors.resources[0].hash[0] }}
           </span>
         {% endif %}
@@ -36,7 +36,7 @@
       {{ kata_form.tooltip(tooltip=_('If the checksum is provided above, the algorithm used for generating the hash should be provided here. There are many different hash algorithms with varying levels of security.')) }}
       {% if errors.resources %}
         {% if errors.resources[0].algorithm %}
-          <span class="error-block">
+          <span class="error-block kata-medium-error">
             {{ errors.resources[0].algorithm[0] }}
           </span>
         {% endif %}

@@ -80,7 +80,7 @@
     <h3 class="module-heading-add-dataset">{{ _('Languages') }} {{ kata_form.required() }}</h3><br />
     <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>{{ _('This dataset contains non-textual data') }}
     <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
-      {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
+      {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=["controls editor kata-medium"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
         {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
       {% endcall %}
       <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
