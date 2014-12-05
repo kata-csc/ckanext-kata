@@ -4,9 +4,10 @@
 <section class="module">
   <h2 class="module-heading-add-dataset">{{ _('Use information') }} {{ kata_form.required() }}</h2>
   <div class="module-content">
-    <p>
-      {{ _('Dataset is available for use:') }}{{ kata_form.tooltip(tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection.")) }}
-    </p>
+    <label class="kata-blank-label">
+      {{ _('Dataset is available for use:') }}
+      {{ kata_form.tooltip(class="kata-tooltip-near", tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection.")) }}
+    </label>
     <div class="control-group ">
       <div class="controls ">
         <label class="radio" for="direct_download">

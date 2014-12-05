@@ -4,7 +4,7 @@
   {{ form.errors(error_summary) }}
 
   {% call form.input('name', label=_('Username'), id='field-username', placeholder=_('username'), value=data.name, error=errors.name, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-    {{ kata_form.tooltip(tooltip=_('Username should contain only lowercase characters and symbols: -_')) }}
+    {{ kata_form.tooltip(class="kata-tooltip-inline", tooltip=_('Username should contain only lowercase characters and symbols: -_')) }}
   {% endcall %}
 
   {{ form.input("fullname", id="field-fullname", label=_("Full Name"), placeholder="Joe Bloggs", value=data.fullname, error=errors.fullname, classes=["control-medium"]) }}

@@ -25,13 +25,13 @@
             {% if index == 0 %}
               {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
             {% endif %}
-            <label class="control-label kata-input-comp" for="langtitle__{{index}}__lang">{{ _('Language') }}</label>
+            <label class="control-label kata-input-comp" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
             <div class="controls kata-input-comp">
               <select name="langtitle__{{ index }}__lang">
                 {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
               </select>
               {% if index == 0 %}
-                {{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();") }}
+                {{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();", class="kata-title-add") }}
               {% endif %}
               {#% if title.value %#}
                 <input style="display: none;" type="checkbox" id="lbtn__{{ index }}__value_id" name="lbtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
@@ -53,9 +53,12 @@
     <h3 class="module-heading-add-dataset">{{ _('Subject') }} {{ kata_form.required() }}</h3>
 
     <div class="module-content">
-      {{ _('Search keywords from') }} <a href="{{ _('http://finto.fi/koko/en/') }}" target="_blank">KOKO</a>{{ _(' ontology, select keywords with enter or mouse click.') }}
-      <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Field is compulsory.<br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
-      <span class="kata-btn-span tta-orange">?</span></button><br /><br />
+      <p>
+        {{ _('Search keywords from') }} <a href="{{ _('http://finto.fi/koko/en/') }}" target="_blank">KOKO</a>{{ _(' ontology, select keywords with enter or mouse click.') }}
+        {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
+      </p>
+
+
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
       {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], attrs=tag_attrs) }}
     </div>
@@ -68,9 +71,10 @@
       <div class="module-content">
 
 
-      {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}" target="_blank">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click.') }}
-      <button type="button" class="btn checkbox kata-plus-btn" onclick="" title="{{ _('Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.') }}">
-      <span class="kata-btn-span tta-orange">?</span></button><br /><br />
+      <p>
+        {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}" target="_blank">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click.') }}
+        {{ kata_form.tooltip(tooltip=_("Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
+      </p>
 
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?'} %}
       {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-medium'], attrs=tag_attrs) }}

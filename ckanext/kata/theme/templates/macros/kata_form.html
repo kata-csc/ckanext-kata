@@ -8,17 +8,17 @@ Create a tooltip for input element.
 tooltip - Tooltip help text to be displayed on the question mark icon.
 #}
 
-{% macro tooltip(id='', tooltip='', attrs={}, class="") %}
-  <button type="button" class="btn checkbox kata-plus-btn tta-orange{% if class %} {{ class }}{% endif %}" onclick="" title="{{ tooltip }}"><span class="kata-btn-span">?</span></button>
+{% macro tooltip(id='', tooltip='', attrs={}, class='') %}
+  <i class="icon-question-sign kata-plus-btn kata-tooltip{% if class %} {{ class }}{% endif %}" title="{{ tooltip }}"></i>
 {% endmacro %}
+
 {#
 Create a warning tooltip for input element.
 
 tooltip - Tooltip help text to be displayed on the exclamation mark icon.
 #}
-
-{% macro warning_tooltip(id='', tooltip='', attrs={}) %}
-  <button type="button" class="btn checkbox kata-plus-btn kata-warning-btn" onclick="" title="{{ tooltip }}"><span class="kata-btn-span kata-btn-warn-span">!</span></button>
+{% macro warning_tooltip(tooltip='', id='', class='') %}
+  <i class="icon-exclamation-sign kata-plus-btn kata-tooltip{% if class %} {{ class }}{% endif %}" title="{{ tooltip }}"></i>
 {% endmacro %}
 
 {#
@@ -26,9 +26,8 @@ Create a button for adding more elements.
 
 onclick     - Javascript content for onclick element.
 #}
-
-{% macro plusbutton(id='', onclick='', attrs={}) %}
-  <button type="button" class="btn checkbox kata-plus-btn" onclick="{{ onclick }}" title="{{ _('Add') }}"{% if id %} id="{{ id }}{% endif %}"><span class="kata-btn-span">+</span></button>
+{% macro plusbutton(onclick='', id='', class='') %}
+  <i class="icon-plus-sign kata-plus-btn kata-add{% if class %} {{ class }}{% endif %}" onclick="{{ onclick }}" title="{{ _('Add') }}"{% if id %} id="{{ id }}"{% endif %}></i>
 {% endmacro %}
 
 {#

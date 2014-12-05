@@ -244,17 +244,7 @@ ul.kata {
     list-style: none !important;
     margin: 0px !important;
 }
-.kata-plus-btn {
-    margin: 0 !important;
-    border-radius: 15px 15px 15px 15px !important;
-    -webkit-border-radius: 15px 15px 15px 15px !important;
-    -moz-border-radius: 15px 15px 15px 15px !important;
-    height: 3px !important;
-    left: 15px !important;
-    padding: 3px 8px !important;
-    position: relative;
-    top: 0;
-}
+
 .kata-warning-btn {
     margin-left: 4px !important;
     background: white !important;
@@ -1156,6 +1146,43 @@ h3.optional {
 .kata-checkbox-label {
     display: inline-block;
 }
-.kata-checkbox-label:after {
+.kata-checkbox-label:after, .kata-blank-label:after {
     content: ""
+}
+
+.kata-tooltip, .kata-add {
+    float: right;
+    font-size: 18px;
+    margin-left: 12px;
+    margin-right: 6px;
+    position: relative;
+    top: 6px;
+}
+
+.kata-tooltip {
+    cursor: default;
+}
+
+.kata-add {
+    cursor: pointer;
+}
+
+label.control-label.kata-wide-label {
+    width: 240px;
+}
+
+.kata-tooltip.kata-tooltip-near {
+    margin-right: 180px;
+}
+
+.kata-tooltip.kata-tooltip-inline {
+    float: none;
+    top: 3px;
+}
+.ui-tooltip-content {
+    font-size: 80%;
+}
+.ui-tooltip {
+    padding-top: 4px;
+    padding-bottom: 4px;
 }

@@ -138,7 +138,7 @@
           {% else %}
             <a id="new_search_element" href="#" onclick="add_search_row({{ loop.index0 }}); return false;"><img src="/images/icons/add.png" title={{ _("Add") }} alt={{ _("Add") }}></a>
             <span data-module="custom-fields-kata">
-            {{ kata_form.tooltip(tooltip=_('Multiple search terms are bind together with ANDs and grouped with ORs. Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)')) }}
+            {{ kata_form.tooltip(class="kata-tooltip-inline", tooltip=_('Multiple search terms are bind together with ANDs and grouped with ORs. Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)')) }}
             </span>
           {% endif %}
         </div>
