@@ -33,7 +33,7 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         //this.$('.checkbox').addClass("btn btn-danger icon-remove");
 
         // Create tooltips with no fade-in (change false to number for a fade-in)
-        jQuery( ".kata-plus-btn" ).tooltip({ show: false });
+        jQuery(".kata-plus-btn").tooltip({ show: false });
       }
     },
 
@@ -114,6 +114,8 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         $(element).show();
         ckan.module.initializeElement(element);
       });
+
+      field.find(".kata-plus-btn").remove();
 
       return field;
     },
