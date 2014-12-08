@@ -109,7 +109,7 @@
     {% set distributor_errors = h.get_dict_errors(errors, '__extras', 'contact') %}
 
     {% for contact in contacts %}
-      <div class="control-group control-custom">
+      <div class="control-group control-custom{% if distributor_errors %} error{% endif %}">
 
         {% set index = loop.index0 %}
         {% call form.input('contact__' ~ index ~ '__name', label=_('Name'), id='contact__' ~ index ~ '__name', placeholder=_('John Doe'), value=contact.name,
@@ -152,7 +152,8 @@
     <input id="projdis" type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />
     <label for="projdis" class="kata-checkbox-label">{{ _('This dataset was produced in a project.') }}</label>
   </div>
-  <div class="module-content" id="projdiv" {% if not h.get_funder(data) %}style="display: none;"{% endif %}>
+
+  <div class="module-content" id="projdiv"{% if not h.get_funder(data) %} style="display: none;"{% endif %}>
     {% set funders = h.get_funders(data) %}
 
     {% if funders|length == 0 %}
@@ -187,7 +188,7 @@
             {% call form.input(agent_prefix ~ 'organisation', label=_('Funder'), id=agent_prefix ~ 'organisation', placeholder=_('my funder'), value=agent.organisation,
                                error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'), classes=[], label_classes=['kata-input-comp'],
                                control_classes=['kata-select2-error-control'], attrs=format_attrs) %}
-              {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project funder\'s name."), class="kata-select2-tooltip") }}
+              {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project funder\'s name.")) }}
             {% endcall %}
 
             {% call form.input(agent_prefix ~ 'fundingid', label=_('Funding id'), id=agent_prefix ~ 'fundingid', placeholder=_('1234'), value=agent['fundingid'],
@@ -207,6 +208,7 @@
       {% if funder_errors and funder_errors is iterable %}<span class="error-block-kata">{{ funder_errors|join('. ') }}</span>{% endif %}
     </div>
   </div>
+
   <h3 class="module-heading-add-dataset">{{ _('Owner information') }} {{ kata_form.required() }}</h3>
   <div class="module-content">
     {% set owners = h.get_owners(data) %}

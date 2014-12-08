@@ -21,12 +21,12 @@
         {# Render title fields #}
         {% for langtitle in titles %}
           {% set index = loop.index0 %}
-          {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
             {% if index == 0 %}
               {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
             {% endif %}
-            <label class="control-label kata-input-comp" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
-            <div class="controls kata-input-comp">
+            <label class="control-label kata-input-comp kata-field-title-language" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
+            <div class="controls kata-input-comp kata-field-title-language">
               <select name="langtitle__{{ index }}__lang">
                 {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
               </select>

@@ -831,9 +831,7 @@ header.masthead {
 #orgauths {
     padding-top: 15px;
 }
-#lastlang {
-    padding-top: 15px;
-}
+
 #temporal_coverage {
     padding-top: 15px;
 }
@@ -1120,10 +1118,6 @@ h3.optional {
     width: 347px !important;
 }
 
-.kata-select2-tooltip {
-    top: -12px !important;
-}
-
 .kata-select2-error, .kata-select2-error-control .error-block {
     position: relative;
     top: -3px;
@@ -1185,4 +1179,21 @@ label.control-label.kata-wide-label {
 .ui-tooltip {
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+.error-block.kata-pid-field-error {
+    margin: 0 0 0 10px;
+    width: 390px;
+}
+
+.kata-field-title {
+    padding-top: 15px;
+}
+
+.control-label.kata-input-comp.kata-field-title-language {
+    padding-top: 10px;
+}
+
+.kata-input-comp.kata-field-title-language {
+    padding-top: 5px;
 }

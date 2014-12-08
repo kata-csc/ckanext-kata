@@ -33,6 +33,9 @@
                 <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
                 <input type="hidden" name="pids__{{ index }}__type" value="data" />
                 <input placeholder="http://www.pid.com/1234" class="pid kata-pid-input-wide pids_{{ index }}" {{ 'readonly' if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index] }} type="text" id="pids__{{ index }}__id" name="pids__{{ index }}__id" value="{{ primary_pid.id }}" />
+                {% if errors.pids and errors.pids[index.index] %}
+                  <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
+                {% endif %}
             </div>
           </li>
           <li class="kata" style="width: 76px;">&nbsp;</li>
@@ -52,7 +55,7 @@
     {% for pid_type in pid_types %}
       <h3 class="module-heading-add-dataset optional">{% if pid_type == 'data' %} {{ _('Additional data identifiers') }} {% else %}{{ _(pid_type | capitalize) }}{{ _(' identifiers') }}{% endif %}{{ kata_form.optional() }}</h3>
       <div class="module-content">
-        <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone">
+        <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block">
           {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
 
           {% for pid in pids %}
@@ -62,6 +65,9 @@
                   <div class="input-prepend">
                     <input type="hidden" name="pids__{{ index }}__type" value="{{ pid_type }}" />
                     <input placeholder="http://www.pid.com/1234"  class="pid kata-pid-input-wide pids_{{ index }}" {{ 'readonly' if pid.id and not (h.asbool(pid.get('primary')) and errors and not data.id) }} type="text" id="pids__{{ index }}__id" name="pids__{{ index }}__id" value="{{ pid.id }}" />
+                    {% if errors.pids and errors.pids[index.index] %}
+                      <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
+                    {% endif %}
                   </div>
                 </li>
                 <li class="kata" style="width: 76px;">
@@ -86,6 +92,8 @@
                 </li>
                 {% endif %}
               </ul>
+
+
             </div>
           {% do index.increase() %}
           {% endfor %}
@@ -96,13 +104,6 @@
     {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
     {% if pid_errors and pid_errors is iterable %}
       <span class="separate-error error-block">{{ pid_errors|join('. ') }}</span>
-    {% endif %}
-    {% if errors and errors.pids %}
-      {% for items in errors.pids %}
-        {% if items %}
-          <span class="separate-error error-block">{{ items.get('id')|join('. ') }}</span>
-        {% endif %}
-      {% endfor %}
     {% endif %}
 
     <input type="hidden" value="{{ index }}" id="pid-index" />
