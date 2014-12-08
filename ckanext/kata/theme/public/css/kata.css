@@ -363,7 +363,7 @@ header.masthead .container {
     background-image: none !important;
     background-size: 100% !important;
     width: 971px;
-    padding-top: 5px;
+    padding-top: 0px;
 }
 header.masthead .content a,
 header.masthead .account a,
@@ -375,16 +375,11 @@ header.masthead .account {
     -moz-box-shadow: 0 0 0 0 #fff;
     -webkit-box-shadow: 0 0 0 0 #fff;
     box-shadow: 0 0 0 0 #fff !important;
-    background-color: transparent !important;
-
+    background-color: #f8f8f8 !important;
+    width: 100%;
 }
+
 header.masthead .account .button {
-    -moz-box-shadow: 0 0 0 0 #0c8bbe;
-    -webkit-box-shadow: 0 0 0 0 #0c8bbe;
-    box-shadow: 0 0 0 0 #0c8bbe;
-    background-color: #6ccff6 !important;
-    /*background-color: rgba(112,196,243,0.9) !important;*/
-    background-color: 
     border: 0px;
     color: #000 !important;
     margin: 2px 5px 2px 0;
@@ -398,15 +393,16 @@ header.masthead .account .button {
     text-decoration: none;
 }
 header.masthead .account .button:hover {
-    background-color: rgba(9,104,142,0.7) !important;
+    background-color: rgba(255, 255, 255, 0.7) !important;
 }
 header.masthead .account .dropdown.open .button,
 header.masthead .account .dropdown .button:hover {
 /* Overwrite profile section buttons shadow color in main.css */
-    box-shadow: 0 1px 0 #0c8bbe inset;
+    box-shadow: 0 1px 0 #f2f2f2 inset;
 }
 header.masthead .dropup, header.masthead .dropdown {
     display: inline-block;
+    float: right;
 }
 header.masthead .user-dropdown-menu a {
     color: #000 !important;
@@ -439,6 +435,9 @@ header.masthead .not-authed a {
 }
 #help_navi a {
     color: black;
+}
+#help_navi i {
+    margin-left: 16px;
 }
 .tta-orange {
     color: #f1592a;

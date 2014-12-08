@@ -5,14 +5,7 @@
   <div class="container">
     {# The .header-image class hides the main text and uses image replacement for the title #}
     <hgroup class="{{ g.header_class }}">
-      {% if g.site_logo %}
-        <a class="logo" href="{{ h.url('home') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ _('Etsin') }}" title="{{ _('Etsin') }}" /></a>
-      {% else %}
-        <h1>
-          <a href="{{ h.url('home') }}">{{ g.site_title }}</a>
-        </h1>
-        {% if g.site_description %}<h2>{{ g.site_description }}</h2>{% endif %}
-      {% endif %}
+
       {% if c.userobj %}
         <div class="section account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
           <div class="dropdown">
@@ -73,12 +66,14 @@
             </div>
           {% endif %}
         </div>
+      {% endif %}
+      {% if g.site_logo %}
+        <a class="logo" href="{{ h.url('home') }}"><img src="{{ h.url_for_static(g.site_logo) }}" alt="{{ _('Etsin') }}" title="{{ _('Etsin') }}" /></a>
       {% else %}
-        <nav class="section account not-authed">
-          <ul class="unstyled">
-            <li>{% link_for _('Log in'), controller='user', action='login' %}</li>
-          </ul>
-        </nav>
+        <h1>
+          <a href="{{ h.url('home') }}">{{ g.site_title }}</a>
+        </h1>
+        {% if g.site_description %}<h2>{{ g.site_description }}</h2>{% endif %}
       {% endif %}
     </hgroup>
     <div class="content">
@@ -95,16 +90,22 @@
       <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataInfoController', action='render_help') }}">
       {{ _('Help') }}
       </a>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <i class="icon-large icon-info-sign"></i>
+
+      <i class="icon-large icon-question-sign "></i>
       <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataInfoController', action='render_faq') }}">
       {{ _('FAQ') }}
       </a>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <i class="icon-large icon-info-sign"></i>
+
+      <i class="icon-large icon-tasks"></i>
       <a href="{{ h.url_for(controller='ckanext.stats.controller:StatsController', action='index') }}">
       {{ _('Stats') }}
       </a>
+      {% if not c.userobj %}
+      <i class="icon-large icon-signin"></i>
+      <a class="button" href="{{ h.url_for(controller='user', action='login') }}">
+        {{ _('Log in') }}
+      </a>
+      {% endif %}
     </div>
   </div>
   <div id="nav_wrapper"> 
