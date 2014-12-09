@@ -15,7 +15,7 @@
         {{ kata_form.tooltip(tooltip=_('Specify the geographical areas or locations that your dataset pertains to. This could be for example the location where the data has been collected or the region where the research subjects live.<br /><br />Once you start typing, you will automatically get suggestions for matching geographical names. You can then select the appropriate location from the list of suggestions with a mouse click, or you can enter one of your own. If you make a mistake, you can remove a location by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.')) }}
       </p>
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/location_autocomplete?incomplete=?'} %}
-      {{ form.input('geographic_coverage', id='geographic_coverage_field', label=_('Locations'), placeholder=_('eg. Finland'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium'], attrs=tag_attrs) }}
+      {{ form.input('geographic_coverage', id='geographic_coverage_field', label=_('Locations'), placeholder=_('eg. Finland'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
     </div>
     <br />
 

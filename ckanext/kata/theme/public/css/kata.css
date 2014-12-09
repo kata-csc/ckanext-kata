@@ -1133,6 +1133,10 @@ h3.optional {
     display: inline-block;
 }
 
+.error-block-autocomplete .error-block {
+    margin: -7px 0 0;
+}
+
 .kata-error-non-input {
     border-radius: 3px;
     margin: 4px 0;

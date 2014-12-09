@@ -60,7 +60,7 @@
 
 
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-      {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], attrs=tag_attrs) }}
+      {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
     </div>
     <br />
 
