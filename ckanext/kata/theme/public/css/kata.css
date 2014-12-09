@@ -1088,6 +1088,10 @@ input, button, select, textarea {
   background-image: none !important;
 }
 
+label.error {
+    color: #b55457;
+}
+
 /* Make the text in the resource type selector / upload link always bold */
 .dataset-form-resource-types label {
   font-weight: normal !important;
