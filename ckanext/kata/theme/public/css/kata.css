@@ -1043,6 +1043,7 @@ input, button, select, textarea {
     -khtml-opacity: 0.9;
     opacity: 0.9;
     z-index: 10000;
+    cursor: pointer;
 }
 #field-license {
     width: 300px !important;
