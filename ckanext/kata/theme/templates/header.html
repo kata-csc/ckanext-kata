@@ -1,4 +1,4 @@
-<header class="masthead">
+<header class="masthead{% if c.userobj %} authenticated{% endif %}">
   {% if g.debug and not g.debug_supress_header %}
     <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
   {% endif %}
@@ -85,7 +85,9 @@
         </div>
       </form>
     </div>
-    <div id="help_navi">
+
+  </div>
+  <div id="help_navi">
       <i class="icon-large icon-info-sign"></i>
       <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataInfoController', action='render_help') }}">
       {{ _('Help') }}
@@ -106,7 +108,6 @@
         {{ _('Log in') }}
       </a>
       {% endif %}
-    </div>
   </div>
   <div id="nav_wrapper"> 
     <ul id="kata_navigation">

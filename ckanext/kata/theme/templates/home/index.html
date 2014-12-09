@@ -93,10 +93,10 @@
         <div class="hero-secondary-inner">
       
           {% block home_secondary_content %}
-            <div class="module module-shallow module-narrow module-dark info box">
+            <div class="module">
               {% block home_search %}
+                <h3 class="module-heading-box">{{ _("Search data") }}</h3>
                 <form class="module-content search-form" method="get" action="{% url_for controller='package', action='search' %}">
-                  <h3 class="heading">{{ _("Search data") }}</h3>
                   <div class="search-input control-group search-giant">
                     <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('eg. climate') }}" />
                     <button type="submit">
@@ -109,7 +109,7 @@
             {% endblock %}
             {% block package_list %}
               <section class="module">
-                  <h4 class="module-heading-add-dataset">{{ _("Newest datasets") }}</h4>
+                  <h4 class="module-heading-box">{{ _("Newest datasets") }}</h4>
                   <div class="module-content">
                     {% set list_class = "unstyled dataset-list" %}
                     {% set item_class = "dataset-item module-content new-dataset" %}
