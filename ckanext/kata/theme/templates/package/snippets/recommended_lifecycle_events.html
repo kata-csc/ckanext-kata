@@ -55,27 +55,28 @@
               </div>
               <li colspan="4">
                 {% if errors and errors.event and errors.event[index-1] %}
-                  {% if errors.event[index-1]['type'] %}
                     <span class="separate-error error-block-kata">
-                      {{ errors.event[index-1]['type']|join('. ') }}
-                    </span>
+                  {% if errors.event[index-1]['type'] %}
+                      <p>
+                        {{ errors.event[index-1]['type']|join('. ') }}
+                      </p>
                   {% endif %}
                   {% if errors.event[index-1]['who'] %}
-                    <span class="separate-error error-block-kata">
-                      {{ errors.event[index-1]['who']|join('. ') }}
-                    </span>
+                      <p>
+                        {{ errors.event[index-1]['who']|join('. ') }}
+                      </p>
                   {% endif %}
                   {% if errors.event[index-1]['when'] %}
-                    <span class="separate-error error-block-kata">
-                      {{ errors.event[index-1]['when']|join('. ') }}
-                    </span>
+                      <p>
+                        {{ errors.event[index-1]['when']|join('. ') }}
+                      </p>
                   {% endif %}
                   {% if errors.event[index-1]['descr'] %}
-                    <span class="separate-error error-block-kata">
-                      {{ errors.event[index-1]['descr']|join('. ') }}
-                    </span>
+                      <p>
+                        {{ errors.event[index-1]['descr']|join('. ') }}
+                      </p>
                   {% endif %}
-                       
+                  </span>
                 {% endif %}
               </li>
             {% endif %}
