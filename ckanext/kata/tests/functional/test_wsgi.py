@@ -283,4 +283,4 @@ class TestKataApi(KataWsgiTestCase):
     def test_funder_autocomplete(self):
         result = self.app.get(url_for(controller= "ckanext.kata.controllers:KATAApiController", action='funder_autocomplete', incomplete=u'eu'))
         results = json.loads(unicode(result.body))['ResultSet']['Result']
-        self.assertTrue({"Name": "EU muu rahoitus"} in results)
+        self.assertTrue({"Name": "EU muu rahoitus - EU other funding"} in results)

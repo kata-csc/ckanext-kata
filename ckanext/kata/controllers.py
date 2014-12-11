@@ -152,7 +152,7 @@ class KATAApiController(ApiController):
         url = config.get("ckanext.kata.funder_url", None) or "file://%s" % os.path.abspath(os.path.join(os.path.dirname(__file__), "theme/public/funder.json"))
         source = urllib2.urlopen(url)
         try:
-            return [funder['fi'] for funder in json.load(source)] + [result[0] for result in records]
+            return ["%s - %s" % (funder['fi'], funder['en']) for funder in json.load(source)] + [result[0] for result in records]
         finally:
             source.close()
 
