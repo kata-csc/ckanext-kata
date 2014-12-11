@@ -47,10 +47,10 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-color: #ababac;
-    padding: 4px;
-    padding-top: 30px !important;
-    padding-bottom: 10px !important;
-    margin-bottom: 10px !important;
+    padding: 10px;
+    padding-top: 30px;
+
+    margin-bottom: 10px;
 }
 
 #dataset-search, #advanced-search {
@@ -1161,7 +1161,7 @@ h3.optional {
     content: ""
 }
 
-.kata-tooltip, .kata-add {
+.kata-tooltip, .kata-add, .kata-action {
     float: right;
     font-size: 18px;
     margin-left: 12px;
@@ -1183,7 +1183,7 @@ h3.optional {
     cursor: default;
 }
 
-.kata-add {
+.kata-add, .kata-action {
     cursor: pointer;
 }
 
@@ -1195,10 +1195,16 @@ label.control-label.kata-wide-label {
     margin-right: 180px;
 }
 
-.kata-tooltip.kata-tooltip-inline {
+.kata-tooltip.kata-tooltip-inline, .kata-add.kata-tooltip-inline, .kata-action.kata-tooltip-inline {
     float: none;
     top: 3px;
 }
+
+.kata-action, .kata-action:hover {
+    color: #444444;
+    text-decoration: none;
+}
+
 .ui-tooltip-content {
     font-size: 80%;
 }
@@ -1222,4 +1228,8 @@ label.control-label.kata-wide-label {
 
 .kata-input-comp.kata-field-title-language {
     padding-top: 5px;
+}
+
+.kata-search-module {
+    padding: 0;
 }

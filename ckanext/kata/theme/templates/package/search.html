@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-<div class="module-content tab-content active">
+<div class="module-content tab-content active kata-search-module">
 
   {# Basic search tab #}
 
@@ -134,9 +134,9 @@
                  name="{{ current_row_dict.get('field') ~ '-' ~ loop.index0 }}" value="{{ current_row_dict.get('text') }}"
                  autocomplete="off" placeholder="{{ _('Search...') }}"/>
           {% if loop.index0 != 1 %}
-            <a id="del_search_element" href="#" onclick="remove_search_row({{ loop.index0 }})"><img src="/images/icons/delete.png" title={{ _("Remove") }} alt={{ _("Remove") }}></a>
+            <a id="del_search_element" href="#" onclick="remove_search_row({{ loop.index0 }})"><i class="icon-remove kata-plus-btn kata-action kata-tooltip-inline" title="{{ _('Remove') }}" alt="{{ _('Remove') }}"></i></a>
           {% else %}
-            <a id="new_search_element" href="#" onclick="add_search_row({{ loop.index0 }}); return false;"><img src="/images/icons/add.png" title={{ _("Add") }} alt={{ _("Add") }}></a>
+            <a id="new_search_element" href="#" onclick="add_search_row({{ loop.index0 }}); return false;"><i class="icon-plus-sign kata-plus-btn kata-action kata-tooltip-inline" title="{{ _('Add') }}" alt="{{ _('Add') }}"></i></a>
             <span data-module="custom-fields-kata">
             {{ kata_form.tooltip(class="kata-tooltip-inline", tooltip=_('Multiple search terms are bind together with ANDs and grouped with ORs. Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)')) }}
             </span>
