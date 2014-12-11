@@ -3,6 +3,7 @@ import datetime
 from datetime import timedelta
 
 from ckan.lib.cli import CkanCommand
+from ckan.lib.dictization.model_dictize import package_dictize
 import ckan.model as model
 from ckanext.harvest.model import HarvestSource
 from ckanext.kata.model import setup, KataAccessRequest
@@ -42,6 +43,8 @@ class Kata(CkanCommand):
             self.send_emails()
         elif cmd == 'sphinx':
             self.sphinx()
+        elif cmd == 'crawl':
+            self.generate_crawl()
         else:
             print 'Command %s not recognized' % cmd
 
@@ -91,3 +94,15 @@ class Kata(CkanCommand):
         from pkg_resources import load_entry_point
         cmd = load_entry_point('Sphinx', 'console_scripts', 'sphinx-build')
         cmd(['sphinx-build', '-b', 'html', '-d', self.args[1], self.args[2], self.args[3]])
+
+    def generate_crawl(self):
+        """
+        Generate strings using packages for crawling.
+        Example: sudo /opt/data/ckan/pyenv/bin/paster --plugin=ckanext-kata katacmd crawl -c /etc/kata.ini "http://10.10.10.10:5000/dataset/%(name)s.rdf"
+        """
+        if len(self.args) != 2:
+            print "Crawl requires format argument"
+            sys.exit(1)
+
+        for package in model.Session.query(model.Package).all():
+            print self.args[1] % package_dictize(package, {'model': model})
