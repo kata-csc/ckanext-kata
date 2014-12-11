@@ -10,6 +10,7 @@
         <div class="section account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
           <div class="dropdown">
             <a href="{{ h.url_for(controller='user', action='dashboard') }}" class="button notifications{% if c.new_activities > 0 %} notifications-important{% endif %}" title="{{ c.new_activities }} {{ _('new notifications') }}">
+              <i class="icon-envelope-alt"></i>
               {{ _('Notifications') }} {{ c.new_activities }}
             </a>
           </div>
@@ -21,6 +22,7 @@
           </div>
           <div class="dropdown">
             <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+              <i class="icon-user"></i>
               {{ c.userobj.fullname or c.userobj.name }}
               <i class="icon-chevron-down"></i>
             </a>
