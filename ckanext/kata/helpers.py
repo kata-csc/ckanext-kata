@@ -542,15 +542,22 @@ def convert_language_code(lang, to_format, throw_exceptions=True):
     :param to_format: 'alpha2' or 'alpha3'
     '''
 
+    mappings = {'alpha2': 'part1', 'alpha3': 'part2b'}
+    if to_format in mappings:
+        to_format = mappings[to_format]
+
     if throw_exceptions:
         catch = [KeyError, None]
     else:
         catch = [Exception, Exception]
 
     try:
-        return getattr(languages.get(alpha3=lang), to_format)
+        return getattr(languages.get(part2b=lang), to_format)
     except catch[0]:
         try:
-            return getattr(languages.get(alpha2=lang), to_format)
-        except catch[1]:
-            return ''
+            return getattr(languages.get(part3=lang), to_format)
+        except catch[0]:
+            try:
+                return getattr(languages.get(part1=lang), to_format)
+            except catch[1]:
+                return ''

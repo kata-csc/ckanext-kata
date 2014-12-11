@@ -343,16 +343,20 @@ def convert_languages(key, data, errors, context):
         lang = lang.strip().lower()
         if lang:
             try:
-                languages.get(alpha3=lang)
+                languages.get(part2b=lang)
                 new_languages.append(lang)
             except KeyError:
                 try:
-                    # Convert two character language codes
-                    lang_object = languages.get(alpha2=lang)
-                    new_languages.append(lang_object.terminology)
-                except KeyError as ke:
-                    errors[key].append(_('Language %s not in ISO 639-2 T format') % lang)
-                    # We could still try to convert from ISO 639-2 B if it shows up somewhere
+                    languages.get(part3=lang)
+                    new_languages.append(lang)
+                except KeyError:
+                    try:
+                        # Convert two character language codes
+                        lang_object = languages.get(part1=lang)
+                        new_languages.append(lang_object.part2t)
+                    except KeyError as ke:
+                        errors[key].append(_('Language %s not in ISO 639-2 T format') % lang)
+                        # We could still try to convert from ISO 639-2 B if it shows up somewhere
 
     if new_languages:
         data[key] = ', '.join(new_languages)
