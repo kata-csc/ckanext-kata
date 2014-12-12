@@ -97,7 +97,7 @@ add_search_row = function(index) {
     //cloned_row.show();
 
     // Update element remove button
-    cloned_row.children('a#del_search_element').attr('onclick', 'remove_search_row(' + new_index + ');');
+    cloned_row.children('a#del_search_element').attr('onclick', 'remove_search_row(' + new_index + '); return false;');
 
     cloned_row.insertBefore($('div#search-fields-end'));
   }
