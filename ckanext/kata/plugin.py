@@ -508,7 +508,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 elif param.startswith('ext_advanced-search'):
                     if value:
                         extra_advanced_search = True
-                else: # Extract search terms
+                else:  # Extract search terms
                     extra_terms.append((param, value))
         return extra_terms, extra_ops, extra_dates, extra_advanced_search
 
@@ -589,6 +589,38 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             qdate += '*]'
         data_dict['q'] += ' %s:%s' % (extra_dates['field'], qdate)
 
+    def parse_temporal_coverage(self, extras):
+        """
+
+        Add temporal coverage restriction to Solr query:
+
+        -(-temporal_coverage_begin:[* TO 2100-01-01T00:00:00Z] AND temporal_coverage_begin:[* TO *]) AND
+        -(-temporal_coverage_end:[1600-01-01T00:00:00Z TO *] AND temporal_coverage_end:[* TO *])
+        --------------------------
+
+        :param q: data_dict['q']
+        :param extras: data_dict['extras']
+        :rtype : str
+        """
+        START_FIELD = 'temporal_coverage_begin'
+        END_FIELD = 'temporal_coverage_end'
+
+        c.current_search_limiters = {}
+
+        start_date = extras.get(START_FIELD) + '-01-01T00:00:00Z' \
+            if extras.get(START_FIELD) else '*'
+        end_date = extras.get(END_FIELD) + '-01-01T00:00:00Z' \
+            if extras.get(END_FIELD) else '*'
+
+        query = ('-(-{sf}:[* TO {e}] AND {sf}:[* TO *]) AND '
+                 '-(-{ef}:[{s}-01-01T00:00:00Z TO *] AND {ef}:[* TO *])').\
+            format(s=start_date, e=end_date, sf=START_FIELD, ef=END_FIELD)
+
+        c.current_search_limiters['ext_date-{f}'.format(f=START_FIELD)] = start_date
+        c.current_search_limiters['ext_date-{f}'.format(f=END_FIELD)] = end_date
+
+        return query
+
     def before_search(self, data_dict):
         '''
         Things to do before querying Solr. Basically used by
@@ -604,8 +636,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.search_fields = settings.SEARCH_FIELDS
         c.translated_field_titles = utils.get_field_titles(toolkit._)
 
+        extras = data_dict.get('extras')
+
         # Start advanced search parameter parsing
-        if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
+        if extras:
             #log.debug("before_search(): data_dict['extras']: %r" %
             #          data_dict['extras'].items())
 
@@ -615,8 +649,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
             if len(extra_terms) > 0:
                 self.parse_search_terms(data_dict, extra_terms, extra_ops)
-            if len(extra_dates) > 0:
-                self.parse_search_dates(data_dict, extra_dates)
+            # if len(extra_dates) > 0:
+            #     self.parse_search_dates(data_dict, extra_dates)
+
+            data_dict['q'] = data_dict['q'] + self.parse_temporal_coverage(extras)
 
             #log.debug("before_search(): c.current_search_rows: %s; \
             #    c.current_search_limiters: %s" % (c.current_search_rows,
