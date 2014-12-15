@@ -710,6 +710,18 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if EMAIL.match(item['key']):
                 item['value'] = u''
 
+        # Make dates compliant with ISO 8601 used by Solr.
+        # We assume here that what we get is partial date that is compliant with the standard
+        # Eg. the standard always uses 4-digit year (1583-9999) and two-digit month
+        DATE_TEMPLATE = '2000-01-01T00:00:00Z'
+
+        for temporal_field in ['temporal_coverage_begin', 'temporal_coverage_end']:
+            temporal_date = pkg_dict.get(temporal_field)
+            if temporal_date and len(temporal_date) < len(DATE_TEMPLATE):
+                pkg_dict[temporal_field] = temporal_date + DATE_TEMPLATE[len(temporal_date):]
+            if temporal_date == '':
+                pkg_dict.pop(temporal_field)
+
         pkg_dict['data_dict'] = json.dumps(data)
 
         return pkg_dict
