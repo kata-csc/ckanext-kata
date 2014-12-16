@@ -150,7 +150,7 @@ msgstr " (Tai jos käytät OpenID:tä, sitä ei ole liitetty käyttäjätiliisi.
 
 #: ckanext/kata/controllers.py:605
 msgid "Successfully logged out."
-msgstr ""
+msgstr "Olet nyt kirjautunut ulos."
 
 #: ckanext/kata/controllers.py:657 ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
