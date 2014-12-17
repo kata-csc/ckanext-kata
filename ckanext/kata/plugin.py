@@ -589,35 +589,43 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             qdate += '*]'
         data_dict['q'] += ' %s:%s' % (extra_dates['field'], qdate)
 
-    def parse_temporal_coverage(self, extras):
+    def constrain_by_temporal_coverage(self, extras):
         """
-
-        Add temporal coverage restriction to Solr query:
+        Add temporal coverage constraint to Solr query if fields are given in extras
 
         -(-temporal_coverage_begin:[* TO 2100-01-01T00:00:00Z] AND temporal_coverage_begin:[* TO *]) AND
         -(-temporal_coverage_end:[1600-01-01T00:00:00Z TO *] AND temporal_coverage_end:[* TO *])
         --------------------------
 
-        :param q: data_dict['q']
         :param extras: data_dict['extras']
+        :returns: Solr query that constrains by temporal coverage
         :rtype : str
         """
         START_FIELD = 'temporal_coverage_begin'
         END_FIELD = 'temporal_coverage_end'
+        EXTRAS_START_FIELD = 'ext_' + START_FIELD
+        EXTRAS_END_FIELD = 'ext_' + END_FIELD
 
-        c.current_search_limiters = {}
+        if not c.current_search_limiters:
+            c.current_search_limiters = {}
 
-        start_date = extras.get(START_FIELD) + '-01-01T00:00:00Z' \
-            if extras.get(START_FIELD) else '*'
-        end_date = extras.get(END_FIELD) + '-01-01T00:00:00Z' \
-            if extras.get(END_FIELD) else '*'
+        start_date = extras.get(EXTRAS_START_FIELD)
+        end_date = extras.get(EXTRAS_END_FIELD)
 
-        query = ('-(-{sf}:[* TO {e}] AND {sf}:[* TO *]) AND '
-                 '-(-{ef}:[{s}-01-01T00:00:00Z TO *] AND {ef}:[* TO *])').\
-            format(s=start_date, e=end_date, sf=START_FIELD, ef=END_FIELD)
+        query = ''
 
-        c.current_search_limiters['ext_date-{f}'.format(f=START_FIELD)] = start_date
-        c.current_search_limiters['ext_date-{f}'.format(f=END_FIELD)] = end_date
+        if start_date or end_date:
+            if start_date:
+                c.current_search_limiters[START_FIELD] = extras.pop(EXTRAS_START_FIELD)
+            if end_date:
+                c.current_search_limiters[END_FIELD] = extras.pop(EXTRAS_END_FIELD)
+
+            start_date = start_date + '-01-01T00:00:00Z' if start_date else '*'
+            end_date = end_date + '-01-01T00:00:00Z' if end_date else '*'
+
+            query = ('-(-{sf}:[* TO {e}] AND {sf}:[* TO *]) AND '
+                     '-(-{ef}:[{s} TO *] AND {ef}:[* TO *])').\
+                format(s=start_date, e=end_date, sf=START_FIELD, ef=END_FIELD)
 
         return query
 
@@ -640,23 +648,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # Start advanced search parameter parsing
         if extras:
-            #log.debug("before_search(): data_dict['extras']: %r" %
-            #          data_dict['extras'].items())
+            data_dict['q'] = data_dict.get('q', '') + self.parse_temporal_coverage(extras)
 
             extra_terms, extra_ops, extra_dates, c.advanced_search = self.extract_search_params(data_dict)
-            #log.debug("before_search(): extra_terms: %r; extra_ops: %r; "
-            #          + "extra_dates: %r", extra_terms, extra_ops, extra_dates)
 
             if len(extra_terms) > 0:
                 self.parse_search_terms(data_dict, extra_terms, extra_ops)
             # if len(extra_dates) > 0:
             #     self.parse_search_dates(data_dict, extra_dates)
 
-            data_dict['q'] = data_dict['q'] + self.parse_temporal_coverage(extras)
-
-            #log.debug("before_search(): c.current_search_rows: %s; \
-            #    c.current_search_limiters: %s" % (c.current_search_rows,
-            #    c.current_search_limiters))
         # End advanced search parameter parsing
 
         data_dict['facet.field'] = settings.FACETS

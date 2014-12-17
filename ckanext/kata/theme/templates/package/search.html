@@ -152,12 +152,12 @@
             <label class="control-label" for="advanced-search-date">{{ _('Year') }}</label>
             <div class="controls" id="advanced-search-date">
               <input id="advanced-search-date-start" type="number"
-                     pattern="[0-9]{1,4}" class="kata-search-relation" name="temporal_coverage_begin"
+                     pattern="[0-9]{1,4}" class="kata-search-relation" name="ext_temporal_coverage_begin"
                      value="{{ c.current_search_limiters['temporal_coverage_begin'] }}"
                      autocomplete="off" placeholder="{{ _('Start year') }}"/>
               -
               <input id="advanced-search-date-end" type="number"
-                     pattern="[0-9]{1,4}" class="kata-search-relation" name="temporal_coverage_end"
+                     pattern="[0-9]{1,4}" class="kata-search-relation" name="ext_temporal_coverage_end"
                      value="{{ c.current_search_limiters['temporal_coverage_end'] }}"
                      autocomplete="off" placeholder="{{ _('End year') }}"/>
             </div>
