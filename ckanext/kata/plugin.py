@@ -265,6 +265,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_dict_errors': helpers.get_dict_errors,
             'get_dict_field_errors': helpers.get_dict_field_errors,
             'get_distributor': helpers.get_distributor,
+            'get_download_url': helpers.get_download_url,
             'get_first_admin': helpers.get_first_admin,
             'get_funder': helpers.get_funder,
             'get_funders': helpers.get_funders,
@@ -276,7 +277,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_pid_types': helpers.get_pid_types,
             'get_primary_pid': utils.get_primary_pid,
             'get_related_urls': helpers.get_related_urls,
-            'get_rdf_extras': helpers.get_rdf_extras,
             'get_rightscategory': helpers.get_rightscategory,
             'get_urn_fi_address': helpers.get_urn_fi_address,
             'get_visibility_options': helpers.get_visibility_options,
@@ -289,6 +289,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'modify_error_summary': helpers.modify_error_summary,
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
+            'split_disciplines': helpers.split_disciplines,
             'string_to_list': helpers.string_to_list,
             'organizations_available': helpers.organizations_available,
         }

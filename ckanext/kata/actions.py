@@ -25,6 +25,7 @@ import ckan.new_authz
 from ckanext.kata.schemas import Schemas
 import sqlalchemy
 import ckan.lib.dictization.model_dictize as model_dictize
+from ckan.common import request
 
 _or_ = sqlalchemy.or_
 
@@ -313,6 +314,7 @@ def _log_action(target_type, action, who, target_id):
         log_str = '[ ' + target_type + ' ] [ ' + str(datetime.datetime.now())
         log_str += ' ] ' + target_type + ' ' + action + 'd by: ' + who
         log_str += ' target: ' + target_id
+        log_str += ' Remote IP: ' + request.environ.get('REMOTE_ADDR', 'Could not read remote IP')
         log.info(log_str)
     except:
         log.info('Debug failed! Action not logged')
@@ -414,6 +416,7 @@ def related_create(context, data_dict):
         log_str = '[' + str(datetime.datetime.now())
         log_str += ']' + ' related created ' + 'by: ' + context['user']
         log_str += ' target: ' + ret['id']
+        log_str += ' Remote IP: ' + request.environ.get('REMOTE_ADDR', 'Could not read remote IP')
         log.info(log_str)
     except:
         pass
@@ -452,6 +455,7 @@ def related_update(context, data_dict):
         log_str = '[' + str(datetime.datetime.now())
         log_str += ']' + ' related updated ' + 'by: ' + context['user']
         log_str += ' target: ' + data_dict['id']
+        log_str += ' Remote IP: ' + request.environ.get('REMOTE_ADDR', 'Could not read remote IP')
         log.info(log_str)
     except:
         pass
