@@ -218,7 +218,7 @@
     {% endif %}
 
     <div data-module="custom-fields-kata" data-module-id="owner" data-module-numfields="{{ owners|length }}" data-module-index="agent-index" id="owner">
-      {% set owner_errors = h.get_dict_errors(errors, 'agent', 'owner') %}
+      {% set owner_errors = h.get_dict_errors(errors, '__extras', 'owner') %}
 
       {% for agent in owners %}
         <div class="control-group control-custom{{ " error" if owner_errors }}">
