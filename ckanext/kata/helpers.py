@@ -525,9 +525,10 @@ def convert_language_code(lang, to_format, throw_exceptions=True):
 
 def split_disciplines(disc):
     '''
+    Split disciplines with the help of lookahead
 
-    :param disc:
-    :return:
+    :param disc: discipline string
+    :return: list of disciplines
     '''
     if isinstance(disc, basestring):
         return re.split(r',(?! )', disc)
