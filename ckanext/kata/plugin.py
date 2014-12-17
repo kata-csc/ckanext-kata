@@ -226,6 +226,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'member_list': actions.member_list,
             'organization_create': actions.organization_create,
             'organization_delete': actions.organization_delete,
+            'organization_list': actions.organization_list,
             'organization_list_for_user': actions.organization_list_for_user,
             'organization_member_create': actions.organization_member_create,
             'organization_update': actions.organization_update,
