@@ -532,3 +532,11 @@ def split_disciplines(disc):
     '''
     if isinstance(disc, basestring):
         return re.split(r',(?! )', disc)
+
+
+def get_ga_id():
+    '''
+
+    :return: google analytics id
+    '''
+    return config.get('kata.ga_id', '')

@@ -269,6 +269,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_first_admin': helpers.get_first_admin,
             'get_funder': helpers.get_funder,
             'get_funders': helpers.get_funders,
+            'get_ga_id': helpers.get_ga_id,
             'get_if_url': helpers.get_if_url,
             'get_owners': helpers.get_owners,
             'get_package_ratings': helpers.get_package_ratings,
