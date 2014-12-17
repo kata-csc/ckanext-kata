@@ -5,16 +5,19 @@
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:dct="http://purl.org/dc/terms/"
   xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dcat="http://www.w3.org/ns/dcat#"
+  xmlns:nrd="http://purl.org/net/nrd#"
+  xmlns:fp="http://downlode.org/Code/RDF/File_Properties/schema#"
 >
 
   <rdf:Description rdf:about="${ h.url_for(controller='package',action='read',id=c.pkg_dict['name'], qualified=True) }">
-    <dct:identifier>${ c.pkg_dict['id'] }</dct:identifier>
+    <nrd:metadataIdentifier>${ c.pkg_dict['id'] }</nrd:metadataIdentifier>
     <py:for each="pid in h.get_pids_by_type('metadata', c.pkg_dict)">
-      <dct:identifier>${ pid.get('id', '') }</dct:identifier>
+      <nrd:metadataIdentifier>${ pid.get('id', '') }</nrd:metadataIdentifier>
     </py:for>
 
     <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">${ c.pkg_dict['metadata_modified'] }</dct:modified>
-    <dct:primaryTopic rdf:resource="${ c.pkg_dict['id'] }"/>
+    <foaf:primaryTopic rdf:resource="${ c.pkg_dict['id'] }"/>
   </rdf:Description>
 
   <rdf:Description rdf:about="${ h.get_primary_pid('data', c.pkg_dict) }">
@@ -24,10 +27,12 @@
     </py:for>
     <foaf:homepage rdf:resource="${ h.url_for(controller='package', action='read', id=c.pkg_dict['name'], qualified=True)}"/>
 
-    <py:for each="pid in c.pkg_dict.get('pids', None)">
+    <py:for each="pid in h.get_pids_by_type('data', c.pkg_dict)">
       <dct:identifier>${ pid.get('id', None) }</dct:identifier>
     </py:for>
-    <dct:identifier>${ c.pkg_dict.get('id', None) }</dct:identifier>
+    <py:for each="pid in h.get_pids_by_type('version', c.pkg_dict)">
+      <dct:identifier>${ pid.get('id', None) }</dct:identifier>
+    </py:for>
 
     <py:for each="title in c.pkg_dict.get('langtitle', None)">
       <py:with vars="language=h.convert_language_code(title.get('lang'), 'alpha2', throw_exceptions=False) or title.get('lang');">
@@ -37,62 +42,71 @@
     </py:for>
 
     <dct:rights rdf:parseType="Literal" xmlns="http://www.loc.gov/METS/">
-      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='contact_owner'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
-      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='direct_download'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
-      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='access_application'" RIGHTSCATEGORY="CONTRACTUAL">${ c.pkg_dict.get('access_application_URL', None) }</RightsDeclaration>
-      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='access_request'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
-      <RightsDeclaration py:if="c.pkg_dict.get('availability', None)=='through_provider'" RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">${ c.pkg_dict.get('license_url', None) } ${ c.pkg_dict.get('license_URL', None) }</RightsDeclaration>
-
+      <RightsDeclarationMD RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">
+        <py:if test="c.pkg_dict.get('license_url', None)">
+          ${ c.pkg_dict.get('license_url', None) }
+        </py:if>
+        <py:if test="not c.pkg_dict.get('license_url', None) and not c.pkg_dict.get('license_URL', None)">
+          ${ c.pkg_dict['license_id'] }
+        </py:if>
+        <py:if test="c.pkg_dict.get('license_URL', None)">
+          ${ c.pkg_dict.get('license_URL', None) }
+        </py:if>
+      </RightsDeclarationMD>
     </dct:rights>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <dct:rightsHolder py:if="agent.get('role', None)=='owner' and h.get_if_url(agent.get('name', None))" rdf:resource="${ agent.get('name', None) }"/>
-      <dct:rightsHolder py:if="agent.get('role', None)=='owner' and not h.get_if_url(agent.get('name', None))">${ agent.get('name', None) }</dct:rightsHolder>
+      <nrd:owner py:if="agent.get('role', None)=='owner' and not h.get_if_url(agent.get('name', None))">
+        <foaf:Agent>
+          <foaf:name>${ agent.get('name', None) }</foaf:name>
+        </foaf:Agent>
+      </nrd:owner>
+      <nrd:owner py:if="agent.get('role', None)=='owner' and h.get_if_url(agent.get('name', None))" rdf:resource="${ agent.get('name', None) }"/>
     </py:for>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <dct:creator py:if="agent.get('role', None)=='author'">
-        <rdf:Description>
+      <nrd:creator py:if="agent.get('role', None)=='author'">
+        <foaf:Agent>
           <foaf:name py:if="agent.get('name', None)">${ agent.get('name', None) }</foaf:name>
           <foaf:organization py:if="agent.get('organisation', None)">${ agent.get('organisation', None) }</foaf:organization>
-        </rdf:Description>
-      </dct:creator>
+        </foaf:Agent>
+      </nrd:creator>
     </py:for>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <dct:contributor py:if="agent.get('role', None)=='contributor'">
-        <rdf:Description>
+      <nrd:contributor py:if="agent.get('role', None)=='contributor'">
+        <foaf:Agent>
           <foaf:name py:if="agent.get('name', None)">${ agent.get('name', None) }</foaf:name>
           <foaf:organization py:if="agent.get('organisation', None)">${ agent.get('organisation', None) }</foaf:organization>
-        </rdf:Description>
-      </dct:contributor>
+        </foaf:Agent>
+      </nrd:contributor>
     </py:for>
 
     <py:for each="contact in c.pkg_dict.get('contact', None)">
-      <dct:publisher py:if="contact.get('name', None)">
-        <rdf:Description>
+      <nrd:distributor py:if="contact.get('name', None)">
+        <foaf:Agent>
           <foaf:name>${ contact.get('name', None) }</foaf:name>
           <foaf:mbox py:if="contact.get('email', None) != 'hidden'" rdf:resource="mailto:${ contact.get('email', None) }"/>
           <foaf:homepage py:if="contact.get('URL', None)" rdf:resource="${ contact.get('URL', None) }"/>
           <foaf:phone py:if="contact.get('phone', None)" rdf:resource="tel:${ contact.get('phone', None) }"/>
-        </rdf:Description>
-      </dct:publisher>
+        </foaf:Agent>
+      </nrd:distributor>
     </py:for>
     
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <dct:publisher py:if="agent.get('role', None)=='distributor'">
-        <rdf:Description>
+      <nrd:distributor py:if="agent.get('role', None)=='distributor'">
+        <foaf:Agent>
           <foaf:name>${ agent.get('name', None) }</foaf:name>
-        </rdf:Description>
-      </dct:publisher>
+        </foaf:Agent>
+      </nrd:distributor>
     </py:for>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
       <dct:contributor py:if="agent.get('role', None)=='funder'">
         <foaf:Project>
-          <foaf:name>${ agent.get('organisation', None) }</foaf:name>
+          <foaf:name>${ agent.get('name', None) }</foaf:name>
           <foaf:Organization rdf:parseType="Literal">
-            <foaf:name rdf:parseType="Literal">${ agent.get('name', None) }</foaf:name>
+            <foaf:name rdf:parseType="Literal">${ agent.get('organisation', None) }</foaf:name>
           </foaf:Organization>
           <foaf:homepage  py:if="agent.get('URL', None)" rdf:resource="${ agent.get('URL', None) }"/>
           <rdfs:comment py:if="agent.get('fundingid', None)">${ agent.get('fundingid', None) }</rdfs:comment>
@@ -104,21 +118,27 @@
       <dct:language py:if="lang">${ lang }</dct:language>
     </py:for>
 
-    <dct:format py:if="c.pkg_dict.get('mimetype', None)">${ c.pkg_dict.get('mimetype', None) }</dct:format>
-    <dct:spatial py:if="c.pkg_dict.get('geographic_coverage', None)">${ c.pkg_dict.get('geographic_coverage', None) }</dct:spatial>
+    <dcat:distribution>
+      <dcat:downloadURL py:if="c.pkg_dict.get('availability', '') == 'direct_download' or c.pkg_dict.get('availability', '') == 'access_request'" rdf:about="${ h.get_download_url(c.pkg_dict) }"/>
+      <dcat:landingPage py:if="c.pkg_dict.get('availability', '') == 'access_application' or c.pkg_dict.get('availability', '') == 'through_provider'" rdf:about="${ h.get_download_url(c.pkg_dict) }"/>
+      <fp:checksum py:if="c.pkg_dict.get('checksum', False) or c.pkg_dict.get('algorithm', False)"><fp:Checksum>
+        <fp:checksumValue py:if="c.pkg_dict.get('checksum', None)">${ c.pkg_dict['checksum'] }</fp:checksumValue>
+        <fp:generator py:if="c.pkg_dict.get('algorithm', None)">
+          <rdf:Description>${ c.pkg_dict['algorithm'] }</rdf:Description>
+        </fp:generator>
+      </fp:Checksum></fp:checksum>
+      <dcat:mediaType py:if="c.pkg_dict.get('mimetype', False)">${ c.pkg_dict['mimetype'] }</dcat:mediaType>
+    </dcat:distribution>
+
+    <dct:spatial py:if="c.pkg_dict.get('geographic_coverage', None)">${ c.pkg_dict['geographic_coverage'] }</dct:spatial>
     <dct:temporal py:if="c.pkg_dict.get('temporal_coverage_begin', None)">start=${ c.pkg_dict.get('temporal_coverage_begin', None) }; end=${ c.pkg_dict.get('temporal_coverage_end', None) }; scheme=ISO-8601;</dct:temporal>
+
+    <py:for each="disc in h.split_disciplines(c.pkg_dict.get('discipline', ''))">
+      <nrd:discipline>${ disc }</nrd:discipline>
+    </py:for>
 
     <py:for each="rel in h.get_related_urls(c.pkg)">
       <dct:isReferencedBy rdf:resource="${ rel }"/>
-    </py:for>
-    
-    <py:for each="extra in h.get_rdf_extras(c.pkg_dict)">
-        <dct:relation py:if="extra.get('value', None)">
-          <rdf:Description>
-            <rdfs:label>${ extra.get('key','') }</rdfs:label>
-            <rdf:value>${ extra.get('value','') }</rdf:value>
-          </rdf:Description>
-        </dct:relation>
     </py:for>
 
   </rdf:Description>

@@ -139,7 +139,7 @@ RESOURCE_TYPE_DATASET = 'dataset'
 AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
                         'access_request': 'access_request_URL',
                         'contact_owner': None,
-                        'direct_download': None,
+                        'direct_download': 'direct_download_URL',
                         'through_provider': 'through_provider_URL',
                         }
 

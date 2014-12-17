@@ -8,6 +8,7 @@ from pylons import config
 import functionally as fn
 import logging
 from iso639 import languages
+import re
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -221,51 +222,12 @@ def get_related_urls(pkg):
         ret.append(rel.related.url)
     return ret
 
-
-def get_rdf_extras(pkg_dict):
+def get_download_url(pkg_dict, type=''):
     '''
-    Get extras that have no defined location in rdf
-    
-    Contains much "manual" stuff for keeping the logical
-    order and for prettier display
-    
-    :param pkg_dict: the package data dict
-    :returns: `[{ 'key': 'the key', 'value': 'the value'}, {..}, ..]`
-    :rtype: list of dicts
+    :param pkg_dict: package dictionary
+    :return: download url or None
     '''
-    ret = []
-    if pkg_dict.get('discipline', None):
-        ret.append({'key': 'discipline', 
-                    'value': pkg_dict.get('discipline', None)})
-    if pkg_dict.get('event', None):
-        for event in pkg_dict.get('event'):
-            value = 'type=' + event.get('type', '') + '; who=' + \
-                    event.get('who', '') + '; when=' + \
-                    event.get('when', '') + '; description=' + \
-                    event.get('descr', '')
-            ret.append({'key': 'event', 'value': value})
-    availability = pkg_dict.get('availability', '')
-    if availability == 'direct_download':
-        ret.append({'key': 'availability', 
-                    'value': availability})
-        ret.append({'key': 'direct_download_URL', 
-                    'value': pkg_dict.get('direct_download_URL', None)})            
-    if availability == 'access_application':
-        ret.append({'key': 'availability', 
-                    'value': availability})
-        ret.append({'key': 'access_application_URL', 
-                    'value': pkg_dict.get('access_application_URL', None)})
-    if availability == 'access_request':
-        ret.append({'key': 'availability', 'value': availability})
-        ret.append({'key': 'access_request_URL', 
-                    'value': pkg_dict.get('access_request_URL', None)})
-    if availability == 'contact_owner':
-         ret.append({'key': 'availability', 'value': availability})
-    
-    ret.append({'key': 'hash', 'value': pkg_dict.get('hash', None)})
-    ret.append({'key': 'algorithm', 'value': pkg_dict.get('algorithm', None)})
-    
-    return ret
+    return pkg_dict.get(settings.AVAILABILITY_OPTIONS.get(pkg_dict.get('availability', '')), None)
 
 
 def get_if_url(data):
@@ -322,13 +284,12 @@ def get_rightscategory(license):
     '''
     Return rightscategory based on license id
     
-    :returns: LICENSED, COPYRIGHTED or PUBLIC DOMAIN
+    :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
     '''
-    if license == "other_closed":
-        return "COPYRIGHTED"
-    if license == "cc-zero" or license == "cc-by" or license == "cc-by-4.0":
+    if license == 'other-pd':
+        return "PUBLIC DOMAIN"
+    elif license and license not in ['notspecified', 'other-closed', 'other_closed', 'other-nc', 'other-at', 'other-open']:
         return "LICENSED"
-    # Can not recognise the license:
     return "OTHER"
 
 
@@ -561,3 +522,12 @@ def convert_language_code(lang, to_format, throw_exceptions=True):
                 return getattr(languages.get(part1=lang), to_format)
             except catch[1]:
                 return ''
+
+def split_disciplines(disc):
+    '''
+
+    :param disc:
+    :return:
+    '''
+    if isinstance(disc, basestring):
+        return re.split(r',(?! )', disc)
