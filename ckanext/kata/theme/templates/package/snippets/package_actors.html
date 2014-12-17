@@ -218,24 +218,25 @@
     {% endif %}
 
     <div data-module="custom-fields-kata" data-module-id="owner" data-module-numfields="{{ owners|length }}" data-module-index="agent-index" id="owner">
-      {% set owner_errors = h.get_dict_errors(errors, '__extras', 'owner') %}
+      {% set owner_errors = h.get_dict_errors(errors, 'agent', 'owner') %}
 
       {% for agent in owners %}
         <div class="control-group control-custom{{ " error" if owner_errors }}">
           {% set index = agent_index.increase() %}
           {% set agent_prefix = "agent__" ~ index ~ "__" %}
 
-          <label class="control-label kata-input-comp" for="agent__{{ index }}__name_id">{{ _('Owner') }}</label>
-          <div class="controls editor">
-            <input class="kata-medium-input" type="text" placeholder="{{ _('name or ID such as ORCID') }}" id="agent__{{ index }}__name_id" name="agent__{{ index }}__name" value="{{ agent.name }}" />
-            {% if loop.index0 == 0 %}
-              {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Owner is a person or an organisation who decides upon the use of the dataset.<br /><br />Type the owner\'s name or ID, such as an ORCID identifier.")) }}
-              {{ kata_form.plusbutton(id="owners_add", onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
-            {% endif %}
+            {% call form.input('agent__' ~ index ~ '__name', label=_('Owner'), id='agent__' ~ index ~ '__name_id', placeholder=_('name or ID such as ORCID'),
+                           value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
+                           control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
+
+              {% if loop.index0 == 0 %}
+                {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Owner is a person or an organisation who decides upon the use of the dataset.<br /><br />Type the owner\'s name or ID, such as an ORCID identifier.")) }}
+                {{ kata_form.plusbutton(id="owners_add", onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+              {% endif %}
+            {% endcall %}
 
             <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="owner" />
 
-          </div>
           <input style="display: none;" type="checkbox" id="obtn__{{ index }}__value_id" name="obtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 
         </div>
