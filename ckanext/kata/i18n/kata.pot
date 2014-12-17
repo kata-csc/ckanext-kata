@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-15 16:10+0200\n"
+"POT-Creation-Date: 2014-12-17 09:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,60 +17,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:83 ckanext/kata/converters.py:174
+#: ckanext/kata/actions.py:84 ckanext/kata/converters.py:174
 msgid "Paper"
 msgstr ""
 
-#: ckanext/kata/actions.py:185
+#: ckanext/kata/actions.py:186
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:481 ckanext/kata/actions.py:545
+#: ckanext/kata/actions.py:485 ckanext/kata/actions.py:549
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:492 ckanext/kata/actions.py:556
+#: ckanext/kata/actions.py:496 ckanext/kata/actions.py:560
 #: ckanext/kata/controllers.py:682 ckanext/kata/controllers.py:760
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:497 ckanext/kata/actions.py:501
+#: ckanext/kata/actions.py:501 ckanext/kata/actions.py:505
 #: ckanext/kata/controllers.py:757
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:505
+#: ckanext/kata/actions.py:509
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:512
+#: ckanext/kata/actions.py:516
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:516
+#: ckanext/kata/actions.py:520
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:521
+#: ckanext/kata/actions.py:525
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:567
+#: ckanext/kata/actions.py:571
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:573
+#: ckanext/kata/actions.py:577
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:682
+#: ckanext/kata/actions.py:686
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:716
+#: ckanext/kata/actions.py:720
 msgid "You don't have permission to remove this user."
 msgstr ""
 
@@ -219,11 +219,11 @@ msgstr ""
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
 
-#: ckanext/kata/helpers.py:416 ckanext/kata/theme/templates/package/read.html:13
+#: ckanext/kata/helpers.py:377 ckanext/kata/theme/templates/package/read.html:13
 msgid "Unpublished"
 msgstr ""
 
-#: ckanext/kata/helpers.py:416
+#: ckanext/kata/helpers.py:377
 msgid "Published"
 msgstr ""
 
@@ -1000,44 +1000,48 @@ msgstr ""
 msgid "Title + language"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:27
+#: ckanext/kata/theme/templates/kata/dummy.html:25
+msgid "Access request URL"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:28
 #: ckanext/kata/theme/templates/kata/help.html:336
 msgid "Discipline"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:28
+#: ckanext/kata/theme/templates/kata/dummy.html:29
 msgid "All fields"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:31
+#: ckanext/kata/theme/templates/kata/dummy.html:32
 msgid "Start typing…"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:34
+#: ckanext/kata/theme/templates/kata/dummy.html:35
 msgid "Data identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:35
+#: ckanext/kata/theme/templates/kata/dummy.html:36
 msgid "Version identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:36
+#: ckanext/kata/theme/templates/kata/dummy.html:37
 msgid "Metadata identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:39
+#: ckanext/kata/theme/templates/kata/dummy.html:40
 msgid "Owner org"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:40
+#: ckanext/kata/theme/templates/kata/dummy.html:41
 msgid "Temporal coverage begin"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:41
+#: ckanext/kata/theme/templates/kata/dummy.html:42
 msgid "Temporal coverage end"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:44
+#: ckanext/kata/theme/templates/kata/dummy.html:45
 msgid ""
 " <p>Organizations act like publishing departments for datasets (for example, "
 "the Department of Health). This means that datasets can be published by and "

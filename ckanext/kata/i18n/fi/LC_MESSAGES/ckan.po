@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-12-15 16:10+0200\n"
+"POT-Creation-Date: 2014-12-17 09:44+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -17,60 +17,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:83 ckanext/kata/converters.py:174
+#: ckanext/kata/actions.py:84 ckanext/kata/converters.py:174
 msgid "Paper"
 msgstr "Artikkeli"
 
-#: ckanext/kata/actions.py:185
+#: ckanext/kata/actions.py:186
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
 
-#: ckanext/kata/actions.py:481 ckanext/kata/actions.py:545
+#: ckanext/kata/actions.py:485 ckanext/kata/actions.py:549
 msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
-#: ckanext/kata/actions.py:492 ckanext/kata/actions.py:556
+#: ckanext/kata/actions.py:496 ckanext/kata/actions.py:560
 #: ckanext/kata/controllers.py:682 ckanext/kata/controllers.py:760
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
-#: ckanext/kata/actions.py:497 ckanext/kata/actions.py:501
+#: ckanext/kata/actions.py:501 ckanext/kata/actions.py:505
 #: ckanext/kata/controllers.py:757
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
 
-#: ckanext/kata/actions.py:505
+#: ckanext/kata/actions.py:509
 msgid "No such user and role combination"
 msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
 
-#: ckanext/kata/actions.py:512
+#: ckanext/kata/actions.py:516
 msgid "Built-in users can not be removed"
 msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
 
-#: ckanext/kata/actions.py:516
+#: ckanext/kata/actions.py:520
 msgid "You can not remove yourself"
 msgstr "Et voi poistaa itseäsi"
 
-#: ckanext/kata/actions.py:521
+#: ckanext/kata/actions.py:525
 #, python-format
 msgid "User removed from role %s"
 msgstr "Käyttäjä poistettu roolista %s"
 
-#: ckanext/kata/actions.py:567
+#: ckanext/kata/actions.py:571
 #, python-format
 msgid "User already has %s rights"
 msgstr "Käyttäjällä on jo %s -oikeudet"
 
-#: ckanext/kata/actions.py:573
+#: ckanext/kata/actions.py:577
 msgid "User added"
 msgstr "Käyttäjä lisätty"
 
-#: ckanext/kata/actions.py:682
+#: ckanext/kata/actions.py:686
 msgid "You don't have permission to modify roles for this organization."
 msgstr "Sinulla ei ole oikeuksia muokata tämän organisaation rooleja."
 
-#: ckanext/kata/actions.py:716
+#: ckanext/kata/actions.py:720
 msgid "You don't have permission to remove this user."
 msgstr "Sinulla ei ole oikeuksia poistaa tätä käyttäjää."
 
@@ -219,12 +219,12 @@ msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/helpers.py:416
+#: ckanext/kata/helpers.py:377
 #: ckanext/kata/theme/templates/package/read.html:13
 msgid "Unpublished"
 msgstr "Julkaisematon"
 
-#: ckanext/kata/helpers.py:416
+#: ckanext/kata/helpers.py:377
 msgid "Published"
 msgstr "Julkaistu"
 
@@ -1088,44 +1088,48 @@ msgstr "Maantieteellinen kattavuus"
 msgid "Title + language"
 msgstr "Otsikko ja sen kieli"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:27
+#: ckanext/kata/theme/templates/kata/dummy.html:25
+msgid "Access request URL"
+msgstr "Tietoaineiston web-osoite"
+
+#: ckanext/kata/theme/templates/kata/dummy.html:28
 #: ckanext/kata/theme/templates/kata/help.html:336
 msgid "Discipline"
 msgstr "Tieteenala"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:28
+#: ckanext/kata/theme/templates/kata/dummy.html:29
 msgid "All fields"
 msgstr "Kaikki kentät"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:31
+#: ckanext/kata/theme/templates/kata/dummy.html:32
 msgid "Start typing…"
 msgstr "Kirjoita tähän…"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:34
+#: ckanext/kata/theme/templates/kata/dummy.html:35
 msgid "Data identifier"
 msgstr "Datan tunniste"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:35
+#: ckanext/kata/theme/templates/kata/dummy.html:36
 msgid "Version identifier"
 msgstr "Versiotunniste"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:36
+#: ckanext/kata/theme/templates/kata/dummy.html:37
 msgid "Metadata identifier"
 msgstr "Metadatan tunniste"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:39
+#: ckanext/kata/theme/templates/kata/dummy.html:40
 msgid "Owner org"
 msgstr "Organisaatio"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:40
+#: ckanext/kata/theme/templates/kata/dummy.html:41
 msgid "Temporal coverage begin"
 msgstr "Ajallisen kattavuuden alku"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:41
+#: ckanext/kata/theme/templates/kata/dummy.html:42
 msgid "Temporal coverage end"
 msgstr "Ajallisen kattavuuden loppu"
 
-#: ckanext/kata/theme/templates/kata/dummy.html:44
+#: ckanext/kata/theme/templates/kata/dummy.html:45
 msgid ""
 " <p>Organizations act like publishing departments for datasets (for "
 "example, the Department of Health). This means that datasets can be "
@@ -6404,7 +6408,4 @@ msgstr "Jäsen lähtien:"
 #: ckanext/kata/theme/templates/user/read.html:132
 msgid "API Key"
 msgstr "API-avain"
-
-#~ msgid " with license as "
-#~ msgstr " lisenssillä "
 
