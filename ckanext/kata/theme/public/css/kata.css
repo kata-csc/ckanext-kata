@@ -264,6 +264,9 @@ ul.kata {
 .kata-input-org {
     width: 200px !important;
 }
+.kata-input-license {
+    width: 475px !important;
+}
 .kata-medium-input {
     width: 334px !important;
     font-size: 14px;

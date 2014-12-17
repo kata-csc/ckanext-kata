@@ -6,7 +6,7 @@
   <div class="module-content">
     <label class="kata-blank-label">
       {{ _('Dataset is available for use:') }}
-      {{ kata_form.tooltip(class="kata-tooltip-near", tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection.")) }}
+      {{ kata_form.tooltip(tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection.")) }}
     </label>
     <div class="control-group ">
       <div class="controls ">
@@ -71,7 +71,7 @@
       {% set error = errors.license_id %}
       <label class="control-label" for="field-license">{{ _("License") }}</label>
       <div class="controls">
-        <select id="field-license" name="license_id" data-module="autocomplete">
+        <select id="field-license" name="license_id" class="kata-input-license" data-module="autocomplete">
           {% for licence_desc, licence_id in licences %}
             <option value="{{ licence_id }}" {% if data.get('license_id', 'notspecified') == licence_id %}selected="selected"{% endif %}>{{ licence_desc }}</option>
           {% endfor %}
