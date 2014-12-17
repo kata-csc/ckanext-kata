@@ -4,22 +4,33 @@ this.ckan.module('dateselect-simple-kata', function (jQuery, _)
         initialize: function () {
             var lm = $('#last_modified');
             lm.datetimepicker({
-            timeFormat: "HH:mm:ssz",
-            separator: 'T',
-            dateFormat: "yy-mm-dd",
-            showTimezone: true,
-            showSecond: true,
-            timezoneIso8601: true,
-            defaultTimezone: 'Z',
-            changeYear: true,
+                timeFormat: "HH:mm:ssz",
+                separator: 'T',
+                dateFormat: "yy-mm-dd",
+                showTimezone: true,
+                showSecond: true,
+                timezoneIso8601: true,
+                defaultTimezone: 'Z',
+                changeYear: true,
             });
             var d = new Date();
-            var parsed = $.datepicker.parseDateTime("yy-mm-dd", "HH:mm:ssz", lm[0].value, {separator: 'T'}, {separator: 'T'} );
-            var def = $.datepicker.parseDateTime("yy-mm-dd", "HH:mm:ssz", d.toISOString(), {separator: 'T'}, {separator: 'T'} );
+
+            var defaultDate = null;
+            try {
+                defaultDate = $.datepicker.parseDateTime("yy-mm-dd", "HH:mm:ssz", d.toISOString(), {separator: 'T'}, {separator: 'T'} );
+            } catch(e) {
+                // pass
+            }
+            var parsed = null;
+            try {
+                parsed = $.datepicker.parseDateTime("yy-mm-dd", "HH:mm:ssz", lm[0].value, {separator: 'T'}, {separator: 'T'} );
+            } catch(e) {
+                // pass
+            }
             if (parsed) {
                 lm.datetimepicker('setDate', (parsed));
-            } else {
-                lm.datetimepicker('setDate', (def));
+            } else if (defaultDate) {
+                lm.datetimepicker('setDate', (defaultDate));
             }
         },
     };
