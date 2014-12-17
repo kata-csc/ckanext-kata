@@ -621,7 +621,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 c.current_search_limiters[END_FIELD] = extras.pop(EXTRAS_END_FIELD)
 
             start_date = start_date + '-01-01T00:00:00Z' if start_date else '*'
-            end_date = end_date + '-01-01T00:00:00Z' if end_date else '*'
+            end_date = end_date + '-12-31T23:59:59.999Z' if end_date else '*'
 
             query = ('-(-{sf}:[* TO {e}] AND {sf}:[* TO *]) AND '
                      '-(-{ef}:[{s} TO *] AND {ef}:[* TO *])').\
@@ -648,7 +648,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         # Start advanced search parameter parsing
         if extras:
-            data_dict['q'] = data_dict.get('q', '') + self.parse_temporal_coverage(extras)
+            data_dict['q'] = data_dict.get('q', '') + self.constrain_by_temporal_coverage(extras)
 
             extra_terms, extra_ops, extra_dates, c.advanced_search = self.extract_search_params(data_dict)
 
@@ -747,15 +747,17 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 item['value'] = u''
 
         # Make dates compliant with ISO 8601 used by Solr.
-        # We assume here that what we get is partial date that is compliant with the standard
+        # We assume here that what we get is partial date (YYYY or YYYY-MM) that is compliant with the standard.
         # Eg. the standard always uses 4-digit year (1583-9999) and two-digit month
-        DATE_TEMPLATE = '2000-01-01T00:00:00Z'
+        DATE_TEMPLATES = {'temporal_coverage_begin': '2000-01-01T00:00:00Z',
+                          'temporal_coverage_end': '2000-12-31T23:59:59Z'}
 
-        for temporal_field in ['temporal_coverage_begin', 'temporal_coverage_end']:
+        for temporal_field, date_template in DATE_TEMPLATES.iteritems():
             temporal_date = pkg_dict.get(temporal_field)
-            if temporal_date and len(temporal_date) < len(DATE_TEMPLATE):
-                pkg_dict[temporal_field] = temporal_date + DATE_TEMPLATE[len(temporal_date):]
+            if temporal_date and len(temporal_date) < len(date_template):
+                pkg_dict[temporal_field] = temporal_date + date_template[len(temporal_date):]
             if temporal_date == '':
+                # Remove empty strings as they won't fit into Solr's DateField
                 pkg_dict.pop(temporal_field)
 
         pkg_dict['data_dict'] = json.dumps(data)
