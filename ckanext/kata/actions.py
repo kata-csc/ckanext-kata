@@ -26,6 +26,7 @@ from ckanext.kata.schemas import Schemas
 import sqlalchemy
 import ckan.lib.dictization.model_dictize as model_dictize
 from ckan.common import request
+import ckan.new_authz as new_authz
 
 _or_ = sqlalchemy.or_
 
@@ -806,4 +807,54 @@ def organization_activity_list_html(context, data_dict):
 @side_effect_free
 def member_list(context, data_dict):
     check_access('member_list', context, data_dict)
-    return ckan.logic.action.get.member_list(context, data_dict)
+
+    # Copy from CKAN member_list:
+    model = context['model']
+
+    group = model.Group.get(_get_or_bust(data_dict, 'id'))
+    if not group:
+        raise NotFound
+
+    obj_type = data_dict.get('object_type', None)
+    capacity = data_dict.get('capacity', None)
+
+    # User must be able to update the group to remove a member from it
+    check_access('group_show', context, data_dict)
+
+    q = model.Session.query(model.Member).\
+        filter(model.Member.group_id == group.id).\
+        filter(model.Member.state == "active")
+
+    if obj_type:
+        q = q.filter(model.Member.table_name == obj_type)
+    if capacity:
+        q = q.filter(model.Member.capacity == capacity)
+
+    trans = new_authz.roles_trans()
+
+    def translated_capacity(capacity):
+        try:
+            return _Capacity(trans[capacity], capacity) # Etsin modification
+        except KeyError:
+            return capacity
+
+    return [(m.table_id, m.table_name, translated_capacity(m.capacity))
+            for m in q.all()]
+
+
+class _Capacity(object):
+    """ Wrapper for capacity. In template view as translation,
+        but the original capacity is accesible via original attribute.
+    """
+    def __init__(self, translation, original):
+        self.translation = translation
+        self.original = original
+
+    def __repr__(self):
+        return unicode(self.translation).encode('utf-8')
+
+    def __str__(self):
+        return unicode(self.translation)
+
+    def __unicode__(self):
+        return unicode(self.translation)

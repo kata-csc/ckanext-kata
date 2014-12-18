@@ -348,6 +348,7 @@ def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
     :param target_id: target user id
     :param target_role: target's current role
     '''
+    target_role = getattr(target_role, 'original', target_role)
 
     user = fn.first(filter(lambda user: user.get('id') == user_id, group_dict['users']))
 
