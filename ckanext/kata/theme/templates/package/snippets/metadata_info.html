@@ -130,7 +130,7 @@
     {% if pkg_dict.availability == 'direct_download' %}{{ _(' available freely ') }}{% if pkg_dict.direct_download_URL %} <a href="{{pkg_dict.direct_download_URL}}" class="download">{{ _('from this address') }}</a> {% endif %}. {% endif %}
     {% if pkg_dict.availability == 'access_request' %}{{ _(' available via login ') }}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}" class="download">{{ _('from this address') }}</a> {% endif %}. {% endif %}
     {% if pkg_dict.availability == 'contact_owner' %}
-        {{ _(' available by ') -}} {% link_for _('contacting the distributor'), controller='ckanext.kata.controllers:ContactController', action='render_request_form', pkg_id=pkg_dict.id, class_='download' %}.
+        {{ _(' available by ') -}} {% link_for _('contacting the distributor'), controller='ckanext.kata.controllers:ContactController', action='render_request_form', pkg_id=pkg_dict.name, class_='download' %}.
     {% endif %}
     {% if pkg_dict.availability == 'through_provider' %}{{ _(' available through ') }}<a href="{{pkg_dict.through_provider_URL}}" class="download">{{ _('data provider') }}</a>. {% endif %}
     {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}.{% endif %}
@@ -167,7 +167,7 @@
         <td>{{ contact.name }}</td>
         {% if email %}
           {% if contact.email == 'hidden' %}
-            <td><a href="{{ h.url_for(controller='ckanext.kata.controllers:ContactController', action='render_contact_form', pkg_id=pkg_dict.id, recipient=loop.index0) }}">{{_('Send a message') }}</a></td>
+            <td><a href="{{ h.url_for(controller='ckanext.kata.controllers:ContactController', action='render_contact_form', pkg_id=pkg_dict.name, recipient=loop.index0) }}">{{_('Send a message') }}</a></td>
           {% else %}
             <td>{{ contact.email }}</td>
           {% endif %}
