@@ -1,12 +1,12 @@
 ckanext-kata
 ============
 
-KATA extensions for CKAN
+Kata extension for CKAN. Used by Etsin (https://etsin.avointiede.fi/en/).
 
 Installation
 ============
 
-To install this Kata-plugin
+To install this extension
 
   pip install -e git://github.com/kata-csc/ckanext-kata.git#egg=ckanext-kata
 
