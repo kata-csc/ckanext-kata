@@ -29,8 +29,8 @@ def is_owner(context, data_dict):
     :rtype: dictionary
     '''
 
-    pkg = context.get('package', None)
-    roles = pkg.roles if pkg else Package.get(data_dict['id']).roles
+    pkg = context.get('package', None) or Package.get(data_dict['id'])
+    roles = pkg.roles if pkg else []
     user = context.get('user', False)
     if user:
         for role in roles:
