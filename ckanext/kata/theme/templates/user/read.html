@@ -105,10 +105,7 @@
         {% endif %}
         {% endif %}
       </dl>
-        <dl>
-          <dt>{{ _('Organization') }}</dt>
-          <dd>{{ user.organization or _('Undefined')}}</dd>
-        </dl>
+
       {% if c.is_myself %}
        <dl>
           <dt>{{ _('Telephone') }} <span class="label" title="{{ _('This means only you can see this') }}">{{ _('Private') }}</span></dt>
@@ -124,7 +121,7 @@
       </dl>
       {% endif %}
       <dl>
-        <dt>{{ _('Member Since') }}</dt>
+        <dt>{{ _('First login') }}</dt>
         <dd>{{ h.render_datetime(user.created) }}</dd>
       </dl>
       {% if c.is_myself %}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2014-12-17 09:44+0000\n"
+"POT-Creation-Date: 2015-01-05 14:44+0200\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -17,60 +17,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:84 ckanext/kata/converters.py:174
+#: ckanext/kata/actions.py:85 ckanext/kata/converters.py:174
 msgid "Paper"
 msgstr "Artikkeli"
 
-#: ckanext/kata/actions.py:186
+#: ckanext/kata/actions.py:187
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
 
-#: ckanext/kata/actions.py:485 ckanext/kata/actions.py:549
+#: ckanext/kata/actions.py:486 ckanext/kata/actions.py:550
 msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
-#: ckanext/kata/actions.py:496 ckanext/kata/actions.py:560
+#: ckanext/kata/actions.py:497 ckanext/kata/actions.py:561
 #: ckanext/kata/controllers.py:682 ckanext/kata/controllers.py:760
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
-#: ckanext/kata/actions.py:501 ckanext/kata/actions.py:505
+#: ckanext/kata/actions.py:502 ckanext/kata/actions.py:506
 #: ckanext/kata/controllers.py:757
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
 
-#: ckanext/kata/actions.py:509
+#: ckanext/kata/actions.py:510
 msgid "No such user and role combination"
 msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
 
-#: ckanext/kata/actions.py:516
+#: ckanext/kata/actions.py:517
 msgid "Built-in users can not be removed"
 msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
 
-#: ckanext/kata/actions.py:520
+#: ckanext/kata/actions.py:521
 msgid "You can not remove yourself"
 msgstr "Et voi poistaa itseäsi"
 
-#: ckanext/kata/actions.py:525
+#: ckanext/kata/actions.py:526
 #, python-format
 msgid "User removed from role %s"
 msgstr "Käyttäjä poistettu roolista %s"
 
-#: ckanext/kata/actions.py:571
+#: ckanext/kata/actions.py:572
 #, python-format
 msgid "User already has %s rights"
 msgstr "Käyttäjällä on jo %s -oikeudet"
 
-#: ckanext/kata/actions.py:577
+#: ckanext/kata/actions.py:578
 msgid "User added"
 msgstr "Käyttäjä lisätty"
 
-#: ckanext/kata/actions.py:686
+#: ckanext/kata/actions.py:687
 msgid "You don't have permission to modify roles for this organization."
 msgstr "Sinulla ei ole oikeuksia muokata tämän organisaation rooleja."
 
-#: ckanext/kata/actions.py:720
+#: ckanext/kata/actions.py:721
 msgid "You don't have permission to remove this user."
 msgstr "Sinulla ei ole oikeuksia poistaa tätä käyttäjää."
 
@@ -219,12 +219,12 @@ msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/helpers.py:377
+#: ckanext/kata/helpers.py:378
 #: ckanext/kata/theme/templates/package/read.html:13
 msgid "Unpublished"
 msgstr "Julkaisematon"
 
-#: ckanext/kata/helpers.py:377
+#: ckanext/kata/helpers.py:378
 msgid "Published"
 msgstr "Julkaistu"
 
@@ -2451,7 +2451,6 @@ msgstr "Projektin nimi"
 
 #: ckanext/kata/theme/templates/kata/help.html:318
 #: ckanext/kata/theme/templates/user/edit_user_form.html:21
-#: ckanext/kata/theme/templates/user/read.html:109
 msgid "Organization"
 msgstr "Organisaatio"
 
@@ -5307,7 +5306,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:127
 #: ckanext/kata/theme/templates/user/edit_user_form.html:27
 #: ckanext/kata/theme/templates/user/new_user_form.html:11
-#: ckanext/kata/theme/templates/user/read.html:122
+#: ckanext/kata/theme/templates/user/read.html:119
 msgid "Email"
 msgstr "Sähköposti"
 
@@ -5401,11 +5400,11 @@ msgstr ""
 msgid "Owner information"
 msgstr "Omistajatiedot"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:230
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:228
 msgid "name or ID such as ORCID"
 msgstr "nimi tai tunniste, kuten ORCID"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:232
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:233
 msgid ""
 "Field is compulsory.<br /><br />Owner is a person or an organisation who "
 "decides upon the use of the dataset.<br /><br />Type the owner's name or "
@@ -6209,7 +6208,7 @@ msgid "Your organization"
 msgstr "Sinun organisaatiosi"
 
 #: ckanext/kata/theme/templates/user/edit_user_form.html:23
-#: ckanext/kata/theme/templates/user/read.html:114
+#: ckanext/kata/theme/templates/user/read.html:111
 msgid "Telephone"
 msgstr "Puhelin"
 
@@ -6218,7 +6217,7 @@ msgid "eg. +35891234567"
 msgstr "esim. +35891234567"
 
 #: ckanext/kata/theme/templates/user/edit_user_form.html:25
-#: ckanext/kata/theme/templates/user/read.html:118
+#: ckanext/kata/theme/templates/user/read.html:115
 msgid "Mobile"
 msgstr "Matkapuhelin"
 
@@ -6381,31 +6380,30 @@ msgstr "Muokkaukset"
 msgid "Open ID"
 msgstr ""
 
-#: ckanext/kata/theme/templates/user/read.html:110
+#: ckanext/kata/theme/templates/user/read.html:111
 #: ckanext/kata/theme/templates/user/read.html:115
 #: ckanext/kata/theme/templates/user/read.html:119
-msgid "Undefined"
-msgstr "Määrittelemätön"
-
-#: ckanext/kata/theme/templates/user/read.html:114
-#: ckanext/kata/theme/templates/user/read.html:118
-#: ckanext/kata/theme/templates/user/read.html:122
-#: ckanext/kata/theme/templates/user/read.html:132
+#: ckanext/kata/theme/templates/user/read.html:129
 msgid "This means only you can see this"
 msgstr "Vain sinä näet tämän"
 
-#: ckanext/kata/theme/templates/user/read.html:114
-#: ckanext/kata/theme/templates/user/read.html:118
-#: ckanext/kata/theme/templates/user/read.html:122
-#: ckanext/kata/theme/templates/user/read.html:132
+#: ckanext/kata/theme/templates/user/read.html:111
+#: ckanext/kata/theme/templates/user/read.html:115
+#: ckanext/kata/theme/templates/user/read.html:119
+#: ckanext/kata/theme/templates/user/read.html:129
 msgid "Private"
 msgstr "Yksityinen"
 
-#: ckanext/kata/theme/templates/user/read.html:127
-msgid "Member Since"
-msgstr "Jäsen lähtien:"
+#: ckanext/kata/theme/templates/user/read.html:112
+#: ckanext/kata/theme/templates/user/read.html:116
+msgid "Undefined"
+msgstr "Määrittelemätön"
 
-#: ckanext/kata/theme/templates/user/read.html:132
+#: ckanext/kata/theme/templates/user/read.html:124
+msgid "First login"
+msgstr "Ensimmäinen kirjautuminen"
+
+#: ckanext/kata/theme/templates/user/read.html:129
 msgid "API Key"
 msgstr "API-avain"
 
