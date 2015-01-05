@@ -11,14 +11,14 @@ from ckan.logic import get_action
 
 from ckan.tests import url_for
 import ckan.model as model
-from ckan.lib import search
 
 from ckanext.harvest import model as harvest_model
 import ckanext.kata.model as kata_model
 from ckanext.kata import settings
-from ckanext.kata import utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
+import lxml.etree
+
 
 
 class TestPages(KataWsgiTestCase):
@@ -234,6 +234,8 @@ class TestURNExport(KataWsgiTestCase):
     Test urn export
     '''
 
+    namespaces = {'u': 'urn:nbn:se:uu:ub:epc-schema:rs-location-mapping'}
+
     @classmethod
     def setup_class(cls):
         kata_model.setup()
@@ -254,20 +256,25 @@ class TestURNExport(KataWsgiTestCase):
         offset = url_for('/urnexport')
         res = self.app.get(offset)
 
-        assert res.body.count('<identifier>') == 0   # No datasets to export
+        # No datasets to export
+        self.assertEquals(len(lxml.etree.fromstring(res.body).xpath("//u:identifier", namespaces=self.namespaces)), 0)
+        assert res.body.count('<identifier>') == 0
 
         organization = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
 
-
-        for count, private in (1, False), (1, True), (2, False):
+        for count, private, delete in (1, False, False), (1, True, False), (2, False, False), (2, False, True), (3, False, False):
             data = copy.deepcopy(TEST_DATADICT)
             data['owner_org'] = organization['name']
             data['private'] = private
 
-            get_action('package_create')({'user': 'test_sysadmin'}, data)
+            package = get_action('package_create')({'user': 'test_sysadmin'}, data)
+            if delete:
+                get_action('package_delete')({'user': 'test_sysadmin'}, {'id': package['id']})
 
             res = self.app.get(offset)
-            self.assertEquals(res.body.count('<identifier>'), count)
+
+            tree = lxml.etree.fromstring(res.body)
+            self.assertEquals(len(tree.xpath("//u:identifier", namespaces=self.namespaces)), count)
 
             try:
                 etree.XML(res.body)  # Validate that result is XML
