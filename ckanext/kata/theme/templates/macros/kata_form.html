@@ -45,7 +45,7 @@ Example:
 #}
 {% macro kataerrors(errors={}, h=False, type="error", classes=[]) %}
   {% if errors %}
-    <div class="error-explanation alert alert-{{ type }}{{ " " ~ classes | join(' ') }}">
+    <div class="error-explanation alert alert-{{ type }}{{ " " ~ classes | join(' ') }}" data-module="kata-leave-info" data-module-message="{{ _("You have unsaved changes. Make sure to click 'Save Changes' below before leaving this page.") }}">
       <p>{{ _('The form contains invalid entries:') }}</p>
       <ul>
         {# Awful hack for error messages. 'errors' is a summary and has only
