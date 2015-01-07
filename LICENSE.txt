@@ -1,8 +1,8 @@
 License
 +++++++
-ckanext-kata - Kata extensions for CKAN
+ckanext-kata - Kata CKAN extension (used by Etsin research data finder, https://etsin.avointiede.fi/en/)
 
-Copyright (C) 2012-2014  Opetus- ja kulttuuriministeriö (Ministry of Education and Culture)
+Copyright (C) 2012-2014  Opetus- ja kulttuuriministeriö (Finnish Ministry of Education and Culture)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
