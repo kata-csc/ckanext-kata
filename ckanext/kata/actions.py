@@ -372,6 +372,14 @@ def package_search(context, data_dict):
         # don't want harvest source packages
         data_dict['fq'] += " +dataset_type:dataset"
 
+    sort = data_dict.get('sort', "")
+
+    if c.controller == "organization" and c.action == "read":
+        if not sort or sort == 'name asc':
+            data_dict['sort'] = 'title_string asc'
+        elif sort == 'name desc':
+            data_dict['sort'] = 'title_string desc'
+
     return ckan.logic.action.get.package_search(context, data_dict)
 
 
