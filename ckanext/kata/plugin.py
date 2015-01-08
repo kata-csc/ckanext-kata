@@ -511,7 +511,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 elif param.startswith('ext_advanced-search'):
                     if value:
                         extra_advanced_search = True
-                else: # Extract search terms
+                else:  # Extract search terms
                     extra_terms.append((param, value))
         return extra_terms, extra_ops, extra_dates, extra_advanced_search
 
@@ -592,6 +592,46 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             qdate += '*]'
         data_dict['q'] += ' %s:%s' % (extra_dates['field'], qdate)
 
+    def constrain_by_temporal_coverage(self, extras):
+        """
+        Add temporal coverage constraint to Solr query if fields are given in extras
+
+        -(-temporal_coverage_begin:[* TO 2100-01-01T00:00:00Z] AND temporal_coverage_begin:[* TO *]) AND
+        -(-temporal_coverage_end:[1600-01-01T00:00:00Z TO *] AND temporal_coverage_end:[* TO *])
+        --------------------------
+
+        :param extras: data_dict['extras']
+        :returns: Solr query that constrains by temporal coverage
+        :rtype : str
+        """
+        START_FIELD = 'temporal_coverage_begin'
+        END_FIELD = 'temporal_coverage_end'
+        EXTRAS_START_FIELD = 'ext_' + START_FIELD
+        EXTRAS_END_FIELD = 'ext_' + END_FIELD
+
+        if not c.current_search_limiters:
+            c.current_search_limiters = {}
+
+        start_date = extras.get(EXTRAS_START_FIELD)
+        end_date = extras.get(EXTRAS_END_FIELD)
+
+        query = ''
+
+        if start_date or end_date:
+            if start_date:
+                c.current_search_limiters[START_FIELD] = extras.pop(EXTRAS_START_FIELD)
+            if end_date:
+                c.current_search_limiters[END_FIELD] = extras.pop(EXTRAS_END_FIELD)
+
+            start_date = start_date + '-01-01T00:00:00Z' if start_date else '*'
+            end_date = end_date + '-12-31T23:59:59.999Z' if end_date else '*'
+
+            query = ('-(-{sf}:[* TO {e}] AND {sf}:[* TO *]) AND '
+                     '-(-{ef}:[{s} TO *] AND {ef}:[* TO *])').\
+                format(s=start_date, e=end_date, sf=START_FIELD, ef=END_FIELD)
+
+        return query
+
     def before_search(self, data_dict):
         '''
         Things to do before querying Solr. Basically used by
@@ -607,23 +647,19 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.search_fields = settings.SEARCH_FIELDS
         c.translated_field_titles = utils.get_field_titles(toolkit._)
 
+        extras = data_dict.get('extras')
+
         # Start advanced search parameter parsing
-        if data_dict.has_key('extras') and len(data_dict['extras']) > 0:
-            #log.debug("before_search(): data_dict['extras']: %r" %
-            #          data_dict['extras'].items())
+        if extras:
+            data_dict['q'] = data_dict.get('q', '') + self.constrain_by_temporal_coverage(extras)
 
             extra_terms, extra_ops, extra_dates, c.advanced_search = self.extract_search_params(data_dict)
-            #log.debug("before_search(): extra_terms: %r; extra_ops: %r; "
-            #          + "extra_dates: %r", extra_terms, extra_ops, extra_dates)
 
             if len(extra_terms) > 0:
                 self.parse_search_terms(data_dict, extra_terms, extra_ops)
-            if len(extra_dates) > 0:
-                self.parse_search_dates(data_dict, extra_dates)
+            # if len(extra_dates) > 0:
+            #     self.parse_search_dates(data_dict, extra_dates)
 
-            #log.debug("before_search(): c.current_search_rows: %s; \
-            #    c.current_search_limiters: %s" % (c.current_search_rows,
-            #    c.current_search_limiters))
         # End advanced search parameter parsing
 
         data_dict['facet.field'] = settings.FACETS
@@ -712,6 +748,20 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for item in data.get('extras', []):
             if EMAIL.match(item['key']):
                 item['value'] = u''
+
+        # Make dates compliant with ISO 8601 used by Solr.
+        # We assume here that what we get is partial date (YYYY or YYYY-MM) that is compliant with the standard.
+        # Eg. the standard always uses 4-digit year (1583-9999) and two-digit month
+        DATE_TEMPLATES = {'temporal_coverage_begin': '2000-01-01T00:00:00Z',
+                          'temporal_coverage_end': '2000-12-31T23:59:59Z'}
+
+        for temporal_field, date_template in DATE_TEMPLATES.iteritems():
+            temporal_date = pkg_dict.get(temporal_field)
+            if temporal_date and len(temporal_date) < len(date_template):
+                pkg_dict[temporal_field] = temporal_date + date_template[len(temporal_date):]
+            if temporal_date == '':
+                # Remove empty strings as they won't fit into Solr's DateField
+                pkg_dict.pop(temporal_field)
 
         pkg_dict['data_dict'] = json.dumps(data)
 
