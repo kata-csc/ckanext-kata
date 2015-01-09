@@ -7,6 +7,7 @@ import os
 import json
 import re
 import datetime
+import iso8601
 
 from ckan import logic
 from ckan.lib.base import g, c, _
@@ -757,10 +758,20 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         for temporal_field, date_template in DATE_TEMPLATES.iteritems():
             temporal_date = pkg_dict.get(temporal_field)
-            if temporal_date and len(temporal_date) < len(date_template):
-                pkg_dict[temporal_field] = temporal_date + date_template[len(temporal_date):]
+
+            # Remove time zone as Solr doesn't support it.
+            # NOTE: Date time is not converted to UTC, but time zone is just stripped. Could be converted with arrow.
+            if temporal_date:
+                try:
+                    datetime_obj = iso8601.parse_date(temporal_date)
+                    temporal_date = datetime_obj.replace(tzinfo=None).isoformat()
+
+                    pkg_dict[temporal_field] = temporal_date + date_template[len(temporal_date):]
+                except iso8601.ParseError:
+                    temporal_date = ''
+
             if temporal_date == '':
-                # Remove empty strings as they won't fit into Solr's DateField
+                # Remove empty strings as they won't fit into Solr's TrieDateField
                 pkg_dict.pop(temporal_field)
 
         pkg_dict['data_dict'] = json.dumps(data)
