@@ -608,29 +608,8 @@ class KataUserController(UserController):
 
 class KataPackageController(PackageController):
     """
-    Adds advanced search feature.
+    Dataset handling modifications and additions.
     """
-
-    def advanced_search(self):
-        """
-        Parse query parameters from different search form inputs, modify into
-        one query string 'q' in the context and call basic :meth:`search` method of
-        the super class.
-
-        :returns: dictionary with keys results and count
-        """
-        # TODO: Clean: Obsolete or move logging code elsewhere
-        # parse author search into q
-        q_author = c.q_author = request.params.get('q_author', u'')
-
-        # unicode format (decoded from utf8)
-        q_free = c.q_free = request.params.get('q_free', u'')
-        q = c.q = q_free + u' AND ' + u'author:' + q_author
-
-        log.debug('advanced_search(): request.params.items(): %r' % request.params.items())
-        #log.debug('advanced_search(): q: %r' % q)
-        log.debug('advanced_search(): call to search()')
-        return self.search()
 
     def dataset_editor_manage(self, name):
         '''
