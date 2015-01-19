@@ -545,10 +545,23 @@ def get_ga_id():
     '''
     return config.get('kata.ga_id', '')
 
+
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
     '''
-    Return all labels for an uri
+    Return all labels for an uri. Cached version.
+
+    :param uri: single uri to get the labels for
+    :param ontology: ontology to use or none to guess it
+    :return: dict of labels (fi, en, sv), [{u'lang': u'fi', u'value': u'Matematiikka},{u'lang': u'en'...}] or None
+    '''
+    return get_labels_for_uri_nocache(uri, ontology)
+
+
+# E.g. harvesters must bypass cache
+def get_labels_for_uri_nocache(uri, ontology=None):
+    '''
+    Return all labels for an uri.
 
     :param uri: single uri to get the labels for
     :param ontology: ontology to use or none to guess it
@@ -576,10 +589,9 @@ def get_labels_for_uri(uri, ontology=None):
         for item in jsondata['graph']:
             if item.get('uri') == uri:
                 return item['prefLabel']
-
     return None
 
-@beaker_cache(type="dbm", expire=86400)
+
 def get_label_for_uri(uri, ontology=None, lang=None):
     '''
     Return a label for an uri
@@ -587,24 +599,33 @@ def get_label_for_uri(uri, ontology=None, lang=None):
     :param uri: single uri to get a label for
     :param ontology: ontology to use or none
     :param lang: language of the label. If not provided, uses the language of environment
-    :return:
+    :return: resolved label by given language or original string if uri can not be resolved
     '''
     if not uri.startswith("http://www.yso.fi") or not isinstance(uri, basestring):
         return uri
 
-    if not lang:
-        lang = h.lang()
+    try:
+        if not lang:
+            lang = h.lang()
+    except TypeError:
+        lang = config.get('ckan.locale_default', 'en')
 
-    labels = get_labels_for_uri(uri, ontology)
+    try:
+        labels = get_labels_for_uri(uri, ontology)
+    except TypeError:
+        labels = get_labels_for_uri_nocache(uri, ontology)
     if labels:
         for label in labels:
             if label.get('lang') == lang:
-                return label.get('value') or uri
+                return label.get('value')
 
     return uri
 
+
 def disciplines_string_resolved(disciplines, ontology=None, lang=None):
     '''
+    Function to print disciplines nicely on dataset view page, resolving what can
+    be resolved and leaving the rest as they were.
 
     :param disciplines: comma separated string containing all disciplines
     :param ontology: ontology to use or none to guess it

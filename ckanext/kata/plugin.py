@@ -274,6 +274,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_if_url': helpers.get_if_url,
             'get_label_for_uri': helpers.get_label_for_uri,
             'get_labels_for_uri': helpers.get_labels_for_uri,
+            'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,
             'get_owners': helpers.get_owners,
             'get_package_ratings': helpers.get_package_ratings,
             'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
@@ -751,6 +752,20 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for item in data.get('extras', []):
             if EMAIL.match(item['key']):
                 item['value'] = u''
+
+        disciplines = helpers.split_disciplines(pkg_dict.get('discipline'))
+        resolved_disc = []
+        if disciplines:
+            for disc in disciplines:
+                try:
+                    labels = helpers.get_labels_for_uri(disc, 'okm-tieteenala')
+                except TypeError:
+                    labels = helpers.get_labels_for_uri_nocache(disc, 'okm-tieteenala')
+                if labels:
+                    for label in labels:
+                        resolved_disc.append(label.get('value'))
+        pkg_dict['extras_discipline_resolved'] = ",".join(resolved_disc)
+
 
         # Make dates compliant with ISO 8601 used by Solr.
         # We assume here that what we get is partial date (YYYY or YYYY-MM) that is compliant with the standard.
