@@ -424,6 +424,10 @@ def is_urn(name):
     return name and name.startswith('urn:nbn:fi:')
 
 
+def is_url(data):
+    return data.startswith('http://') or data.startswith('https://')
+
+
 def get_urn_fi_address(package):
     if package.get('id', '').startswith('http://') or package.get('id', '').startswith('https://'):
         return package.get('id')

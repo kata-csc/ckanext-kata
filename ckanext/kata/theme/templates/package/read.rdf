@@ -134,7 +134,8 @@
     <dct:temporal py:if="c.pkg_dict.get('temporal_coverage_begin', None)">start=${ c.pkg_dict.get('temporal_coverage_begin', None) }; end=${ c.pkg_dict.get('temporal_coverage_end', None) }; scheme=ISO-8601;</dct:temporal>
 
     <py:for each="disc in h.split_disciplines(c.pkg_dict.get('discipline', ''))">
-      <nrd:discipline>${ disc }</nrd:discipline>
+      <nrd:discipline py:if="h.is_url(disc)" rdf:resource="${ disc }"/>
+      <nrd:discipline py:if="h.is_url(disc)==False and disc">${ disc }</nrd:discipline>
     </py:for>
 
     <py:for each="rel in h.get_related_urls(c.pkg)">
