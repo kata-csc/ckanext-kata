@@ -254,6 +254,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'convert_language_code': helpers.convert_language_code,
             'create_loop_index': helpers.create_loop_index,
             'dataset_is_valid': helpers.dataset_is_valid,
+            'disciplines_string_resolved': helpers.disciplines_string_resolved,
             'filter_system_users': helpers.filter_system_users,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
@@ -267,6 +268,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_funders': helpers.get_funders,
             'get_ga_id': helpers.get_ga_id,
             'get_if_url': helpers.get_if_url,
+            'get_label_for_uri': helpers.get_label_for_uri,
+            'get_labels_for_uri': helpers.get_labels_for_uri,
+            'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,
             'get_owners': helpers.get_owners,
             'get_package_ratings': helpers.get_package_ratings,
             'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
@@ -281,6 +285,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'has_contacts_field': helpers.has_contacts_field,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'is_backup_instance': helpers.is_backup_instance,
+            'is_url': helpers.is_url,
             'kata_sorted_extras': helpers.kata_sorted_extras,
             'list_organisations': helpers.list_organisations,
             'modify_error_summary': helpers.modify_error_summary,
@@ -594,6 +599,20 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for item in data.get('extras', []):
             if EMAIL.match(item['key']):
                 item['value'] = u''
+
+        disciplines = helpers.split_disciplines(pkg_dict.get('discipline'))
+        resolved_disc = []
+        if disciplines:
+            for disc in disciplines:
+                try:
+                    labels = helpers.get_labels_for_uri(disc, 'okm-tieteenala')
+                except TypeError:
+                    labels = helpers.get_labels_for_uri_nocache(disc, 'okm-tieteenala')
+                if labels:
+                    for label in labels:
+                        resolved_disc.append(label.get('value'))
+        pkg_dict['extras_discipline_resolved'] = ",".join(resolved_disc)
+
 
         # Make dates compliant with ISO 8601 used by Solr.
         # We assume here that what we get is partial date (YYYY or YYYY-MM) that is compliant with the standard.

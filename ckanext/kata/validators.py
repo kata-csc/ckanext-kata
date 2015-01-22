@@ -237,12 +237,12 @@ def validate_discipline(key, data, errors, context):
     val = data.get(key)
     # Regexp is specifically for okm-tieteenala, at:
     # http://onki.fi/fi/browser/overview/okm-tieteenala
-    discipline_match = re.compile('[\w \-,]*$', re.UNICODE)
+    discipline_match = re.compile('(http://)?[\w \-,\.\/]*$', re.UNICODE)
     if val:
         for item in val.split(","):
             if not discipline_match.match(item):
                 raise Invalid(_('Discipline "%s" must be alphanumeric '
-                                'characters or symbols: -,') % (item))
+                                'characters or symbols: -,/.') % (item))
     else:
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way

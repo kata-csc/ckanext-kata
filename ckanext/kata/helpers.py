@@ -9,6 +9,9 @@ import functionally as fn
 import logging
 from iso639 import languages
 import re
+from pylons.decorators.cache import beaker_cache
+import json
+import urllib2
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -421,6 +424,10 @@ def is_urn(name):
     return name and name.startswith('urn:nbn:fi:')
 
 
+def is_url(data):
+    return data.startswith('http://') or data.startswith('https://')
+
+
 def get_urn_fi_address(package):
     if package.get('id', '').startswith('http://') or package.get('id', '').startswith('https://'):
         return package.get('id')
@@ -541,3 +548,96 @@ def get_ga_id():
     :return: google analytics id
     '''
     return config.get('kata.ga_id', '')
+
+
+@beaker_cache(type="dbm", expire=86400)
+def get_labels_for_uri(uri, ontology=None):
+    '''
+    Return all labels for an uri. Cached version.
+
+    :param uri: single uri to get the labels for
+    :param ontology: ontology to use or none to guess it
+    :return: dict of labels (fi, en, sv), [{u'lang': u'fi', u'value': u'Matematiikka},{u'lang': u'en'...}] or None
+    '''
+    return get_labels_for_uri_nocache(uri, ontology)
+
+
+# E.g. harvesters must bypass cache
+def get_labels_for_uri_nocache(uri, ontology=None):
+    '''
+    Return all labels for an uri.
+
+    :param uri: single uri to get the labels for
+    :param ontology: ontology to use or none to guess it
+    :return: dict of labels (fi, en, sv), [{u'lang': u'fi', u'value': u'Matematiikka},{u'lang': u'en'...}] or None
+    '''
+
+    if not uri.startswith("http://www.yso.fi") or not isinstance(uri, basestring):
+        return None
+
+    # try to find ontology, if it wasn't provided. Copes with some erratic inputs
+    if not ontology:
+        search = re.search(r'.*\/onto\/([^\/]*)\/.*$', uri)
+        try:
+            ontology = search.group(1)
+        except AttributeError:
+            return None
+    if not ontology:
+        return None
+
+    url = "http://finto.fi/rest/v1/{ontology}/data?uri={uri}&format=application/json".format(ontology=ontology, uri=uri)
+    # Reverse DNS resolving can be extremely slow
+    data = urllib2.urlopen(url).read()
+    jsondata = json.loads(data)
+    if jsondata.get('graph'):
+        for item in jsondata['graph']:
+            if item.get('uri') == uri:
+                return item['prefLabel']
+    return None
+
+
+def get_label_for_uri(uri, ontology=None, lang=None):
+    '''
+    Return a label for an uri
+
+    :param uri: single uri to get a label for
+    :param ontology: ontology to use or none
+    :param lang: language of the label. If not provided, uses the language of environment
+    :return: resolved label by given language or original string if uri can not be resolved
+    '''
+    if not uri.startswith("http://www.yso.fi") or not isinstance(uri, basestring):
+        return uri
+
+    try:
+        if not lang:
+            lang = h.lang()
+    except TypeError:
+        lang = config.get('ckan.locale_default', 'en')
+
+    try:
+        labels = get_labels_for_uri(uri, ontology)
+    except TypeError:
+        labels = get_labels_for_uri_nocache(uri, ontology)
+    if labels:
+        for label in labels:
+            if label.get('lang') == lang:
+                return label.get('value')
+
+    return uri
+
+
+def disciplines_string_resolved(disciplines, ontology=None, lang=None):
+    '''
+    Function to print disciplines nicely on dataset view page, resolving what can
+    be resolved and leaving the rest as they were.
+
+    :param disciplines: comma separated string containing all disciplines
+    :param ontology: ontology to use or none to guess it
+    :param lang: language of the label. If not provided, uses the language set in environment.
+    :return: comma separated string of resolved disciplines
+    '''
+    disc_list = split_disciplines(disciplines)
+    if hasattr(disc_list, "__iter__"):
+        return ", ".join([get_label_for_uri(x, ontology, lang) for x in disc_list])
+    else:
+        return disciplines

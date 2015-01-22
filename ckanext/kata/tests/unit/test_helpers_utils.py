@@ -76,6 +76,25 @@ class TestHelpers(TestCase):
         assert disciplines[1] == 'Fysiikka'
         assert helpers.split_disciplines('Tiede-, taide- ja liikuntakasvatus')[0] == 'Tiede-, taide- ja liikuntakasvatus'
 
+    def test_disciplines_string_resolved(self):
+        disciplines = u'Matematiikka,Fysiikka'
+        assert helpers.disciplines_string_resolved(disciplines) == u'Matematiikka, Fysiikka'
+        disciplines = u'http://www.yso.fi/onto/okm-tieteenala/ta111,Fysiikka'
+        assert helpers.disciplines_string_resolved(disciplines, None, 'en') == u'Mathematics, Fysiikka', helpers.disciplines_string_resolved(disciplines, None, 'en')
+        disciplines = u'http://www.yso.fi/onto/okm-tieteenala/xyz1234,Fysiikka'
+        assert helpers.disciplines_string_resolved(disciplines, None, 'en') == u'http://www.yso.fi/onto/okm-tieteenala/xyz1234, Fysiikka'
+
+    def test_get_label_for_uri(self):
+        discipline = u'Matematiikka'
+        assert helpers.get_label_for_uri(discipline, None, 'en') == discipline
+        discipline = u'http://www.yso.fi/baldur/okm-tieteenala/ta111'
+        assert helpers.get_label_for_uri(discipline, None, 'en') == discipline
+        assert helpers.get_label_for_uri(discipline, 'okm-tieteenala') == discipline
+        discipline = u'http://www.yso.fi/onto/okm-tieteenala/ta111'
+        assert helpers.get_label_for_uri(discipline) == u'Mathematics'
+        discipline = u'http://www.yso.fi/onto/okm-tieteenala/xyz1234'
+        assert helpers.get_label_for_uri(discipline) == discipline
+
 
 class TestUtils(TestCase):
     """Unit tests for functions in utils.py."""

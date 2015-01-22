@@ -247,7 +247,9 @@
 {% if pkg_dict.discipline %}
 <tr>
   <th class="dataset-label">{{ _('Field of science') }}</th>
-  <td class="dataset-details">{{pkg_dict.discipline}}</td>
+    <td class="dataset-details">
+     {{ h.disciplines_string_resolved(pkg_dict.discipline, 'okm-tieteenala') }}
+    </td>
 </tr>
 {% endif %}
 {% if pkg_dict.mimetype %}

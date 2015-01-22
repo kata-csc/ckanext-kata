@@ -203,7 +203,7 @@ class KATAApiController(ApiController):
         :rtype: dictionary
         '''
         query = request.params.get('incomplete', '')
-        return self._onki_autocomplete(query, "okm-tieteenala")
+        return self._onki_autocomplete_uri(query, "okm-tieteenala")
 
     def location_autocomplete(self):
         '''
@@ -242,6 +242,32 @@ class KATAApiController(ApiController):
                 'Result': [{'Name': label} for label in labels]
             }
         }
+        return self._finish_ok(result_set)
+
+    def _onki_autocomplete_uri(self, query, vocab):
+        '''
+        Queries the remote ontology for suggestions and
+        formats the data, suggests uri's. Returns uri as key and
+        label as name.
+
+        :param query: the string to search for
+        :type query: string
+        :param vocab: the vocabulary/ontology
+        :type vocab: string
+
+        :rtype: dictionary
+        '''
+        url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
+
+        if query:
+            url = url_template.format(q=query, v=vocab)
+            data = urllib2.urlopen(url).read()
+            jsondata = json.loads(data)
+            if u'results' in jsondata:
+                results = jsondata['results']
+                labels = [(concept['prefLabel'].encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
+
+        result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
         return self._finish_ok(result_set)
 
 
