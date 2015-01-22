@@ -315,7 +315,10 @@ def _log_action(target_type, action, who, target_id):
         log_str = '[ ' + target_type + ' ] [ ' + str(datetime.datetime.now())
         log_str += ' ] ' + target_type + ' ' + action + 'd by: ' + who
         log_str += ' target: ' + target_id
-        log_str += ' Remote IP: ' + request.environ.get('REMOTE_ADDR', 'Could not read remote IP')
+        try:
+            log_str += ' Remote IP: ' + request.environ.get('REMOTE_ADDR', 'Could not read remote IP')
+        except TypeError:
+            log_str += ' Remote IP: Not available, probably a harvested dataset'
         log.info(log_str)
     except:
         log.info('Debug failed! Action not logged')
