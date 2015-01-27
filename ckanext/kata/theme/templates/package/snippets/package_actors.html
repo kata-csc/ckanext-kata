@@ -29,6 +29,8 @@
           {% endif %}
         {% endcall %}
 
+        <input type="checkbox" class="checkbox checkbox-generate" name="{{ 'agent__' ~ index ~ '__generate' }}" id="{{ 'agent__' ~ index ~ '__generate' }}" data-module="kata-autofill-by-id" data-module-source="/api/2/util/orcid?query=?" data-module-from="{{ 'agent__' ~ index ~ '__id' }}" data-module-to="{{ 'agent__' ~ index ~ '__name' }}">
+
         {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation'), id='agent__' ~ index ~ '__organisation_id',
                            placeholder=_('University. Faculty. Department.'), value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'),
                            classes=['control-custom'], label_classes=['kata-input-comp'], control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}

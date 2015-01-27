@@ -137,6 +137,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action="funder_autocomplete")
+        map.connect('/api/2/util/orcid',
+                    controller=api_controller,
+                    conditions=get,
+                    action="orcid")
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")
@@ -271,6 +275,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_label_for_uri': helpers.get_label_for_uri,
             'get_labels_for_uri': helpers.get_labels_for_uri,
             'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,
+            'get_name_by_orcid': helpers.get_name_by_orcid,
             'get_owners': helpers.get_owners,
             'get_package_ratings': helpers.get_package_ratings,
             'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,

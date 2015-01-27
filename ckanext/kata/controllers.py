@@ -40,6 +40,7 @@ from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
 import ckanext.kata.settings as settings
 from ckanext.kata import utils
+import ckanext.kata.helpers as kata_helpers
 import os
 import difflib
 
@@ -269,6 +270,13 @@ class KATAApiController(ApiController):
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
         return self._finish_ok(result_set)
+
+    def orcid(self):
+        query = request.params.get('query', '')
+        log.debug(query)
+        if query:
+            return self._finish_ok([kata_helpers.get_name_by_orcid(query)])
+
 
 
 class EditAccessRequestController(BaseController):

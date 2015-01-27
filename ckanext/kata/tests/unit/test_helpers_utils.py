@@ -95,6 +95,15 @@ class TestHelpers(TestCase):
         discipline = u'http://www.yso.fi/onto/okm-tieteenala/xyz1234'
         assert helpers.get_label_for_uri(discipline) == discipline
 
+    def test_orcid(self):
+        orcid = '0000-0002-8123-4583'
+        assert helpers.get_name_by_orcid(orcid) == {"family-name": "Koskinen", "first-name": "Pinja"}, helpers.get_name_by_orcid(orcid)
+        orcid = 'orcid.org/0000-0002-8123-4583'
+        assert helpers.get_name_by_orcid(orcid) == {"family-name": "Koskinen", "first-name": "Pinja"}, helpers.get_name_by_orcid(orcid)
+        orcid = 'http://orcid.org/0000-0002-8123-4583'
+        assert helpers.get_name_by_orcid(orcid) == {"family-name": "Koskinen", "first-name": "Pinja"}, helpers.get_name_by_orcid(orcid)
+        orcid = "1234-1234-1234-1234"
+        assert helpers.get_name_by_orcid(orcid) == {"family-name": "", "first-name": ""}, helpers.get_name_by_orcid(orcid)
 
 class TestUtils(TestCase):
     """Unit tests for functions in utils.py."""

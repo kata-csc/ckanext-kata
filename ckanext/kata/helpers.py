@@ -641,3 +641,39 @@ def disciplines_string_resolved(disciplines, ontology=None, lang=None):
         return ", ".join([get_label_for_uri(x, ontology, lang) for x in disc_list])
     else:
         return disciplines
+
+def get_name_by_orcid(orcid):
+    '''
+
+    :param orcid:
+    :return:
+    '''
+
+    if (orcid.startswith("http://orcid.org") or orcid.startswith("orcid.org")) and isinstance(orcid, basestring):
+        search = re.search(r'.*orcid.org/([\d\-]*).*$', orcid)
+        try:
+            id = search.group(1)
+        except AttributeError:
+            id = orcid
+    else:
+        id = orcid
+
+    given_name = ""
+    family_name = ""
+
+    try:
+        if id:
+            url = "http://pub.orcid.org/{i}/orcid-bio".format(i=id)
+            headers = {"Accept": "application/orcid+json"}
+
+            request = urllib2.Request(url, None, headers)
+            data = urllib2.urlopen(request).read()
+            jsondata = json.loads(data)
+
+            given_name = jsondata.get('orcid-profile').get('orcid-bio').get('personal-details').get('given-names').get('value')
+            family_name = jsondata.get('orcid-profile').get('orcid-bio').get('personal-details').get('family-name').get('value')
+
+    except (urllib2.HTTPError, KeyError), e:
+        log.info("Resolving orcid failed for id {a}. Error: {b}".format(a=orcid, b=e))
+
+    return {"family-name": family_name, "first-name": given_name}
