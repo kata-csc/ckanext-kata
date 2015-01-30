@@ -1,7 +1,8 @@
 '''Functional test package for Kata'''
+
 import copy
-import logging
 import unittest
+import ckanapi
 
 import paste.fixture
 from pylons import config
@@ -59,6 +60,11 @@ class KataApiTestCase(unittest.TestCase):
 
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
+
+        cls.api_user_normal = ckanapi.TestAppCKAN(cls.app, apikey=cls.user_normal.apikey)
+        cls.api_user_sysadmin = ckanapi.TestAppCKAN(cls.app, apikey=cls.user_sysadmin.apikey)
+        cls.api_user_anna = ckanapi.TestAppCKAN(cls.app, apikey=cls.user_anna.apikey)
+        cls.api_user_joe = ckanapi.TestAppCKAN(cls.app, apikey=cls.user_joe.apikey)
 
         cls.TEST_DATADICT = copy.deepcopy(TEST_DATADICT)
 

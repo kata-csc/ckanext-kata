@@ -141,8 +141,8 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  ],
                  'tag_string': u'Python,ohjelmoitunut solukuolema,programming',
                  'temporal_coverage_begin': u'2003-07-10T06:36:27-12:00',
-                 'temporal_coverage_end': u'2010-04-15T03:24:47Z',
-                 # 'temporal_coverage_end': u'2010-04-15T03:24:47+12:45',   # This won't work because of missing URL encoding in call_action_api
+                 # 'temporal_coverage_end': u'2010-04-15T03:24:47Z',
+                 'temporal_coverage_end': u'2010-04-15T03:24:47+12:45',   # This won't work because of missing URL encoding in call_action_api
                  'title': u'',
                  'type': u'dataset',
                  'version': u'2013-11-18T12:25:53Z',
