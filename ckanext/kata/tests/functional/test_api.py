@@ -4,15 +4,13 @@ Functional tests for Kata that use CKAN API.
 """
 
 import copy
-import ckanapi
 import testfixtures
 
 from ckan.lib.helpers import url_for
 from ckan.lib import search
-from ckan.logic import ValidationError
-from ckan.tests import call_action_api
+from ckan.logic import ValidationError, NotAuthorized
 
-from ckanext.kata import settings, utils, helpers
+from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
 
@@ -21,7 +19,6 @@ class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
 
     def test_create_dataset(self):
-        # output = self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
         output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
         assert output
         assert output['id'].startswith('urn:nbn:fi:csc-kata')
@@ -30,12 +27,10 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data = copy.copy(self.TEST_DATADICT)
         data.pop('tag_string')
 
-        # self.assertRaises(ValidationError, self.api_user_normal.call_action, 'package_create', data_dict=data)
-        # TODO: Use this latter form in all!
         self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
 
     def test_create_dataset_sysadmin(self):
-        output = self.api_user_sysadmin.call_action('package_create', data_dict=self.TEST_DATADICT)
+        output = self.api_user_sysadmin.action.package_create(**self.TEST_DATADICT)
         assert output
         assert output['id'].startswith('urn:nbn:fi:csc-kata')
 
@@ -44,7 +39,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         Add a dataset and 20 resources and read dataset through API
         '''
         print 'Create dataset'
-        output = self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
+        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
         assert 'id' in output
 
         new_res = copy.deepcopy(TEST_RESOURCE)
@@ -68,7 +63,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         Add, modify and delete a dataset through API
         '''
         print 'Create dataset'
-        output = self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
+        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
         assert 'id' in output
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
@@ -238,11 +233,11 @@ class TestSearchDataset(KataApiTestCase):
         '''
         Test that agent name was indexed correctly by Solr.
         '''
-        output = ckanapi.TestAppCKAN(self.app).call_action('package_search', data_dict={'q': 'Runoilija'})
+        output = self.api.call_action('package_search', data_dict={'q': 'Runoilija'})
         print(output)
         assert output['count'] == 1
 
-        output = ckanapi.TestAppCKAN(self.app).call_action('package_search', data_dict={'q': 'R. Runoilija'})
+        output = self.api.call_action('package_search', data_dict={'q': 'R. Runoilija'})
         print(output)
         assert output['count'] == 1
 
@@ -254,7 +249,7 @@ class TestSearchDataset(KataApiTestCase):
         # Make the dataset private
         self.api_user_normal.call_action('package_update', data_dict=data)
 
-        output = ckanapi.TestAppCKAN(self.app).call_action('package_search', data_dict={'q': 'Runoilija'})
+        output = self.api.call_action('package_search', data_dict={'q': 'Runoilija'})
 
         # Private dataset should not be found
         assert output['count'] == 0, output['count']
@@ -264,28 +259,22 @@ class TestSearchDataset(KataApiTestCase):
         self.api_user_normal.call_action('package_update', data_dict=data)
 
     def test_search_dataset_agent_id(self):
-        output = ckanapi.TestAppCKAN(self.app).call_action('package_search',
+        output = self.api.call_action('package_search',
                                                            data_dict={'q': 'agent:lhywrt8y08536tq3yq'})
         print(output)
         assert output['count'] == 1
 
     def test_search_dataset_agent_org(self):
-        output = call_action_api(self.app, 'package_search', status=200,
-                                 **{'q': 'agent:CSC'})
-        print(output)
-        assert output['count'] == 1
+        output = self.api.call_action('package_search', data_dict={'q': 'agent:CSC'})
+        assert output['count'] == 1, output
 
     def test_search_dataset_agent_not_found(self):
-        output = call_action_api(self.app, 'package_search', status=200,
-                                 **{'q': 'agent:NSA'})
-        print(output)
-        assert output['count'] == 0
+        output = self.api.call_action('package_search', data_dict={'q': 'agent:NSA'})
+        assert output['count'] == 0, output
 
     def test_search_dataset_funder(self):
-        output = call_action_api(self.app, 'package_search', status=200,
-                                 **{'q': 'funder:Ahanen'})
-        print(output)
-        assert output['count'] == 1
+        output = self.api.call_action('package_search', data_dict={'q': 'funder:Ahanen'})
+        assert output['count'] == 1, output
 
 
 class TestDataReading(KataApiTestCase):
@@ -360,8 +349,7 @@ class TestDataReading(KataApiTestCase):
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
 
-        output = call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey,
-                                 status=200, id=output['id'])
+        output = self.api_user_anna.action.package_show(id=output['id'])
 
         # Use hide_sensitive_fields() because user is not the creator of the dataset
         original = copy.deepcopy(self.public_dataset)
@@ -371,31 +359,20 @@ class TestDataReading(KataApiTestCase):
         '''
         Check that private dataset may not be read by other user
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey,
-                                 status=200, **self.TEST_DATADICT)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
+        output = self.api_user_joe.action.package_create(**self.TEST_DATADICT)
         assert 'id' in output
 
-        call_action_api(self.app, 'package_show', apikey=self.user_anna.apikey, status=403, id=output['id'])
+        self.assertRaises(NotAuthorized, self.api_user_anna.action.package_show, id=output['id'])
 
     def test_create_update_and_read_dataset(self):
         '''
         Create, update and read a dataset through API and check that values are correct
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                 status=200, **self.TEST_DATADICT)
-        assert 'id' in output
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=output['id'])
-        output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey,
-                                 status=200, **output)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
-        assert 'id' in output
+        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
+        output = self.api_user_normal.action.package_show(id=output['id'])
 
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=output['id'])
+        output = self.api_user_normal.action.package_update(**output)
+        output = self.api_user_normal.action.package_show(id=output['id'])
 
         assert self._compare_datadicts(self.TEST_DATADICT, output)
 
@@ -403,14 +380,9 @@ class TestDataReading(KataApiTestCase):
         '''
         Test that anonymous user can not read protected data
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **self.public_dataset)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
-        assert 'id' in output
+        output = self.api_user_sysadmin.action.package_create(**self.public_dataset)
 
-        output = call_action_api(self.app, 'package_show', status=200, id=output['id'])
-        assert output
+        output = self.api.action.package_show(id=output['id'])
 
         for contact in output.get('contact', []):
             assert 'email' not in contact or \
@@ -424,9 +396,7 @@ class TestDataReading(KataApiTestCase):
 
         ACCESS_URL = 'http://www.csc.fi/english/'
 
-        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                 status=200, **self.TEST_DATADICT)
-        assert 'id' in output
+        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['id'] = output['id']
@@ -435,12 +405,9 @@ class TestDataReading(KataApiTestCase):
 
         # UPDATE AVAILABILITY
 
-        output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey,
-                                 status=200, **data_dict)
-        assert 'id' in output
+        output = self.api_user_normal.action.package_update(**data_dict)
 
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=output['id'])
+        output = self.api_user_normal.action.package_show(id=output['id'])
 
         # import pprint
         # pprint.pprint(output)
@@ -458,12 +425,9 @@ class TestDataReading(KataApiTestCase):
 
         # UPDATE AVAILABILITY AGAIN
 
-        output = call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey,
-                                 status=200, **output)
-        assert 'id' in output
+        output = self.api_user_normal.action.package_update(**output)
 
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=output['id'])
+        output = self.api_user_normal.action.package_show(id=output['id'])
 
         assert 'access_application_URL' not in output
         assert output.get('direct_download_URL') == settings.DATASET_URL_UNKNOWN, output['direct_download_URL']
@@ -477,29 +441,22 @@ class TestDataReading(KataApiTestCase):
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['discipline'] = None
 
-        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                 status=200, **data_dict)
-        assert 'id' in output
+        output = self.api_user_normal.action.package_create(**data_dict)
 
         data_dict['id'] = output['id']
         data_dict['discipline'] = 'Matematiikka'
 
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=data_dict['id'])
+        output = self.api_user_normal.action.package_show(id=data_dict['id'])
         assert 'discipline' not in output
 
-        call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey,
-                        status=200, **data_dict)
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=data_dict['id'])
+        output = self.api_user_normal.action.package_update(**data_dict)
+        output = self.api_user_normal.action.package_show(id=data_dict['id'])
         assert 'discipline' in output
 
         data_dict['discipline'] = None
 
-        call_action_api(self.app, 'package_update', apikey=self.user_normal.apikey,
-                        status=200, **data_dict)
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=data_dict['id'])
+        output = self.api_user_normal.action.package_update(**data_dict)
+        output = self.api_user_normal.action.package_show(id=data_dict['id'])
         assert 'discipline' not in output
 
     def test_create_and_read_resource(self):
@@ -511,71 +468,48 @@ class TestDataReading(KataApiTestCase):
         data_dict['through_provider_URL'] = 'http://www.tdata.fi/'
         data_dict.pop('direct_download_URL')
 
-        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                 status=200, **data_dict)
-        assert 'id' in output
+        output = self.api_user_normal.action.package_create(**data_dict)
 
         new_res = copy.deepcopy(TEST_RESOURCE)
         new_res['package_id'] = output['id']
 
-        output = call_action_api(self.app, 'resource_create', apikey=self.user_normal.apikey,
-                                 status=200, **new_res)
-        assert output
-
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=new_res['package_id'])
-        assert 'id' in output
+        output = self.api_user_normal.action.resource_create(**new_res)
+        output = self.api_user_normal.action.package_show(id=new_res['package_id'])
 
         resources = output.get('resources')
         assert len(resources) == 2
         assert resources[0]['url'] == TEST_RESOURCE['url'] or \
             resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
 
-    def test_create_and_read_resource2(self):
+    def test_create_and_read_resource_2(self):
         '''
         Create and read resource data through API and test that 'url' matches. Availability 'direct_download'.
-        Test with sysadmin user.
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                 status=200, **self.TEST_DATADICT)
-        assert 'id' in output
+        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
 
         new_res = copy.deepcopy(TEST_RESOURCE)
         new_res['package_id'] = output['id']
 
-        output = call_action_api(self.app, 'resource_create', apikey=self.user_normal.apikey,
-                                 status=200, **new_res)
-        assert output
-
-        output = call_action_api(self.app, 'package_show', apikey=self.user_normal.apikey,
-                                 status=200, id=new_res['package_id'])
-        assert 'id' in output
+        output = self.api_user_normal.action.resource_create(**new_res)
+        output = self.api_user_normal.action.package_show(id=new_res['package_id'])
 
         resources = output.get('resources')
         assert len(resources) == 2
         assert resources[0]['url'] == TEST_RESOURCE['url'] or \
             resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
 
-    def test_create_and_read_resource3(self):
+    def test_create_and_read_resource_3(self):
         '''
         Create and delete a resource data through API and test that dataset still matches.
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **self.TEST_DATADICT)
-        assert 'id' in output
+        output = self.api_user_sysadmin.action.package_create(**self.TEST_DATADICT)
 
         new_res = copy.deepcopy(TEST_RESOURCE)
         new_res['package_id'] = output['id']
 
-        output = call_action_api(self.app, 'resource_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **new_res)
-
-        call_action_api(self.app, 'resource_delete', apikey=self.user_sysadmin.apikey,
-                        status=200, id=output['id'])
-
-        output = call_action_api(self.app, 'package_show', apikey=self.user_sysadmin.apikey,
-                                 status=200, id=new_res['package_id'])
-        assert 'id' in output
+        output = self.api_user_sysadmin.action.resource_create(**new_res)
+        output = self.api_user_sysadmin.action.resource_delete(id=output['id'])
+        output = self.api_user_sysadmin.action.package_show(id=new_res['package_id'])
 
         assert self._compare_datadicts(self.TEST_DATADICT, output)
 
@@ -583,9 +517,7 @@ class TestDataReading(KataApiTestCase):
         '''
         Create and read a dataset through API and check that RDF generation doesn't break.
         '''
-        output = call_action_api(self.app, 'package_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **self.public_dataset)
-        assert 'id' in output
+        output = self.api_user_sysadmin.action.package_create(**self.public_dataset)
 
         offset = url_for("/dataset/{0}.rdf".format(output['id']))
         res = self.app.get(offset)
@@ -614,22 +546,15 @@ class TestSchema(KataApiTestCase):
             data = self.TEST_DATADICT.copy()
             data.pop(requirement)
 
-            output = call_action_api(self.app, 'package_create', apikey=self.user_normal.apikey,
-                                     status=409, **data)
-            assert '__type' in output
-            assert output['__type'] == 'Validation Error'
+            self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
 
 
 class TestOrganizationAdmin(KataApiTestCase):
     """Tests for creating organizations and playing with them through API."""
 
     def test_create_organization(self):
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **TEST_ORGANIZATION)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
+        output = self.api_user_sysadmin.action.organization_create(**TEST_ORGANIZATION)
 
-        assert output
         assert output['title'] == TEST_ORGANIZATION['title'], output
         assert output['image_url'] == TEST_ORGANIZATION['image_url'], output
         assert output['description'] == TEST_ORGANIZATION['description'], output
@@ -639,280 +564,215 @@ class TestOrganizationAdmin(KataApiTestCase):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'new-org'
 
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **NEW_ORG)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
+        output = self.api_user_sysadmin.action.organization_create(**NEW_ORG)
+
         assert output
 
         # Sysadmin can create an admin for organization
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'admin'})
-        # organization_member_create doesn't return anything, so no checking...
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='admin')
 
         # admin can create an editor for organization
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_normal.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_joe.name,
-                                                'role': 'editor'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_joe.name,
+                                                                 role='editor')
 
         # editor can create a member for organization
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_joe.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'member'})
+        self.api_user_joe.action.organization_member_create(id=NEW_ORG['name'],
+                                                            username=self.user_anna.name,
+                                                            role='member')
 
         # editor can remove a member from organization
-        call_action_api(self.app, 'organization_member_delete', apikey=self.user_joe.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name})
+        self.api_user_joe.action.organization_member_delete(id=NEW_ORG['name'],
+                                                            username=self.user_anna.name)
 
         # admin can remove an editor from organization
-        call_action_api(self.app, 'organization_member_delete', apikey=self.user_normal.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_joe.name})
+        self.api_user_sysadmin.action.organization_member_delete(id=NEW_ORG['name'],
+                                                                 username=self.user_joe.name)
 
     def test_organization_members_role_changes(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'newest-org'
 
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **NEW_ORG)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
-        assert output
+        self.api_user_sysadmin.action.organization_create(**NEW_ORG)
 
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'admin'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='admin')
 
         # admin can NOT change self to editor
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_normal.apikey,
-                                 status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'editor'})
+        self.assertRaises(NotAuthorized, self.api_user_normal.action.organization_member_create,
+                          id=NEW_ORG['name'], username=self.user_normal.name, role='editor')
 
         # Add editor
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_normal.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'editor'})
+        self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
+                                                               username=self.user_anna.name,
+                                                               role='editor')
 
         # editor can not change self to admin
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_anna.apikey,
-                                 status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'admin'})
+        self.assertRaises(NotAuthorized, self.api_user_anna.action.organization_member_create,
+                          id=NEW_ORG['name'], username=self.user_anna.name, role='admin')
 
         # editor can change self to member
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_anna.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'member'})
+        self.api_user_anna.action.organization_member_create(id=NEW_ORG['name'],
+                                                             username=self.user_anna.name,
+                                                             role='member')
 
         # member can not change self back to editor
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_anna.apikey,
-                                 status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'editor'})
+        self.assertRaises(NotAuthorized, self.api_user_anna.action.organization_member_create,
+                          id=NEW_ORG['name'], username=self.user_anna.name, role='editor')
 
         # member can not change self back to admin
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_anna.apikey,
-                                 status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'admin'})
+        self.assertRaises(NotAuthorized, self.api_user_anna.action.organization_member_create,
+                          id=NEW_ORG['name'], username=self.user_anna.name, role='admin')
 
     def test_organization_members_role_changes_2(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'even-newer-org'
 
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **NEW_ORG)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
-        assert output
+        self.api_user_sysadmin.action.organization_create(**NEW_ORG)
 
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'admin'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='admin')
 
         # admin can add an editor
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_normal.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_joe.name,
-                                                'role': 'editor'})
+        self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_joe.name,
+                                                                 role='editor')
 
         # admin can change editor to member
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_normal.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_joe.name,
-                                                'role': 'member'})
+        self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_joe.name,
+                                                                 role='member')
 
         # admin can change member to editor
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_normal.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_joe.name,
-                                                'role': 'editor'})
+        self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_joe.name,
+                                                                 role='editor')
 
         # admin can not add admin
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_normal.apikey,
-                                 status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'admin'})
+        self.assertRaises(NotAuthorized, self.api_user_normal.action.organization_member_create,
+                          id=NEW_ORG['name'], username=self.user_anna.name, role='admin')
 
         # editor can not add editor
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_joe.apikey,
-                                 status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'editor'})
+        self.assertRaises(NotAuthorized, self.api_user_joe.action.organization_member_create,
+                          id=NEW_ORG['name'], username=self.user_anna.name, role='editor')
 
         # editor can not lower the role of admin/editor to member
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_joe.apikey,
-                                 status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'member'})
+        self.assertRaises(NotAuthorized, self.api_user_joe.action.organization_member_create,
+                          id=NEW_ORG['name'], username=self.user_normal.name, role='member')
 
     def test_organization_members_sysadmin(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'most-newest-org'
 
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **NEW_ORG)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
-        assert output
+        self.api_user_sysadmin.action.organization_create(**NEW_ORG)
 
         # Sysadmin can create an admin for organization
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'admin'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='admin')
 
         # Sysadmin can lower an admin to editor
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'editor'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='editor')
 
         # Sysadmin can lower an editor to member
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'member'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='member')
 
     def test_member_delete_as_sysadmin(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'test_member_delete_as_sysadmin-org'
 
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **NEW_ORG)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
-        assert output
+        self.api_user_sysadmin.action.organization_create(**NEW_ORG)
 
         # Sysadmin can create an admin for organization
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'admin'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='admin')
 
         # Sysadmin can delete an admin
-        call_action_api(self.app, 'organization_member_delete', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name})
+        self.api_user_sysadmin.action.organization_member_delete(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name)
 
     def test_member_delete_oneself(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'test_member_delete_oneself-org'
 
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **NEW_ORG)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
-        assert output
+        self.api_user_sysadmin.action.organization_create(**NEW_ORG)
 
         # Sysadmin create an admin for organization
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'admin'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='admin')
 
         # Admin can NOT delete herself
-        call_action_api(self.app, 'organization_member_delete', apikey=self.user_normal.apikey,
-                                 status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name})
+        self.assertRaises(NotAuthorized, self.api_user_normal.action.organization_member_delete,
+                          id=NEW_ORG['name'], username=self.user_normal.name)
 
         # Sysadmin create an editor for organization
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'editor'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='editor')
 
         # Editor can delete herself
-        call_action_api(self.app, 'organization_member_delete', apikey=self.user_normal.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name})
+        self.api_user_normal.action.organization_member_delete(id=NEW_ORG['name'],
+                                                               username=self.user_normal.name)
 
     def test_organization_create_not_logged_in(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'test_organization_create_not_logged_in-org'
 
-        output = call_action_api(self.app, 'organization_create', status=403, **NEW_ORG)
+        self.assertRaises(NotAuthorized, self.api.action.organization_create, **NEW_ORG)
 
     def test_member_delete(self):
         NEW_ORG = copy.deepcopy(TEST_ORGANIZATION)
         NEW_ORG['name'] = 'test_member_delete-org'
 
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **NEW_ORG)
-        if '__type' in output:
-            assert output['__type'] != 'Validation Error'
-        assert output
+        self.api_user_sysadmin.action.organization_create(**NEW_ORG)
 
         # Sysadmin can create an admin for organization
-        call_action_api(self.app, 'organization_member_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **{'id': NEW_ORG['name'],
-                                                'username': self.user_normal.name,
-                                                'role': 'admin'})
+        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+                                                                 username=self.user_normal.name,
+                                                                 role='admin')
 
-        # Unknown user can not add member
-        call_action_api(self.app, 'organization_member_create', status=403, **{'id': NEW_ORG['name'],
-                                                'username': self.user_anna.name,
-                                                'role': 'member'})
+        # User without API key can not add member
+        self.assertRaises(NotAuthorized, self.api.action.organization_member_create,
+                          id=NEW_ORG['name'], username=self.user_anna.name, role='member')
 
         # User without API key can not delete member
-        call_action_api(self.app, 'organization_member_delete', status=403,
-                        **{'id': NEW_ORG['name'], 'username': self.user_normal.name})
+        self.assertRaises(NotAuthorized, self.api.action.organization_member_delete,
+                          id=NEW_ORG['name'], username=self.user_normal.name)
 
     def test_create_dataset_switch_organization(self):
         # CREATE ORGANIZATION 2
         org2 = copy.deepcopy(TEST_ORGANIZATION)
         org2['name'] = 'someorgan'
-        output = call_action_api(self.app, 'organization_create', apikey=self.user_sysadmin.apikey,
-                                 status=200, **org2)
+
+        output = self.api_user_sysadmin.action.organization_create(**org2)
 
         org2_id = output['id']
 
         # CREATE DATASET
-        output = call_action_api(self.app, 'package_create', apikey=self.user_joe.apikey,
-                                 status=200, **self.TEST_DATADICT)
+        output = self.api_user_joe.action.package_create(**self.TEST_DATADICT)
 
         data_dict = output
         data_dict2 = copy.deepcopy(data_dict)
         data_dict2['owner_org'] = org2_id
 
         # MOVE DATASET TO ORGANIZATION 2 AS SYSADMIN
-        call_action_api(self.app, 'package_update', apikey=self.user_sysadmin.apikey, status=200, **data_dict2)
+        self.api_user_sysadmin.action.package_update(**data_dict2)
 
         # MOVE DATASET TO ORGANIZATION 1 AS MEMBER
-        call_action_api(self.app, 'package_update', apikey=self.user_joe.apikey, status=200, **data_dict)
+        self.api_user_joe.action.package_update(**data_dict)
 
         data_dict2['private'] = u'False'
 
         # TRY TO MOVE DATASET TO ORGANIZATION 2 AS NON MEMBER
-        call_action_api(self.app, 'package_update', apikey=self.user_joe.apikey, status=200, **data_dict2)
+        self.api_user_joe.action.package_update(**data_dict2)
 
