@@ -16,10 +16,20 @@ import ckanext.kata.validators as va
 import ckanext.kata.converters as co
 import ckanext.kata.settings as settings
 
+
 class Schemas:
+    '''
+    Class for static schemas
+    '''
+
+    def __init__(self):
+        pass
 
     @classmethod
     def tags_schema(cls):
+        '''
+        Schema for dataset keywords (tags)
+        '''
         schema = {
             'name': [not_missing,
                      not_empty,
