@@ -224,7 +224,7 @@ class TestWithUser(TestCase):
                 ac.send_keys(o).perform()
                 browser.implicitly_wait(2)
 
-            browser.find_element_by_name("kata-accept-terms").click()
+            browser.find_element_by_name("accept-terms").click()
             browser.find_element_by_xpath("//*[contains(text(), 'Save and publish')]").click()
 
         except NoSuchElementException:

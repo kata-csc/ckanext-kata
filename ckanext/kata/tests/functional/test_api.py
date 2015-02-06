@@ -180,6 +180,13 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         output = self.api_user_normal.call_action('package_create', data_dict=data_dict)
         assert output
 
+    def test_create_dataset_without_accepting_terms_of_usage(self):
+        data = copy.copy(self.TEST_DATADICT)
+        data.pop('accept-terms')
+
+        self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
+
+
 
 class TestUpdateDataset(KataApiTestCase):
     """Tests for (mainly) dataset updating."""
@@ -307,6 +314,9 @@ class TestDataReading(KataApiTestCase):
         data_dict.pop('name', None)
         data_dict.pop('title', None)
 
+        # Terms of usage acceptance is checked but not saved
+        data_dict.pop('accept-terms', None)
+
         # tag_string is converted into a list of tags, so the result won't match
         # TODO: convert both to the same format and then compare?
         data_dict.pop('tag_string', None)
@@ -371,6 +381,7 @@ class TestDataReading(KataApiTestCase):
         output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
         output = self.api_user_normal.action.package_show(id=output['id'])
 
+        output['accept-terms'] = 'true'
         output = self.api_user_normal.action.package_update(**output)
         output = self.api_user_normal.action.package_show(id=output['id'])
 
@@ -422,6 +433,7 @@ class TestDataReading(KataApiTestCase):
         assert output.get('availability') == 'access_application'
 
         output['availability'] = 'contact_owner'
+        output['accept-terms'] = 'yes'
 
         # UPDATE AVAILABILITY AGAIN
 
@@ -762,6 +774,7 @@ class TestOrganizationAdmin(KataApiTestCase):
         output = self.api_user_joe.action.package_create(**self.TEST_DATADICT)
 
         data_dict = output
+        data_dict['accept-terms'] = 'true'
         data_dict2 = copy.deepcopy(data_dict)
         data_dict2['owner_org'] = org2_id
 

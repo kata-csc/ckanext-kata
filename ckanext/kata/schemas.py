@@ -47,7 +47,7 @@ class Schemas:
     @classmethod
     def create_package_schema(cls):
         """
-        Return the schema for validating new dataset dicts.
+        Return the schema for validating new dataset dicts that a user creates through web interface or API.
 
         :rtype: schema
         """
@@ -57,7 +57,7 @@ class Schemas:
 
     @classmethod
     def _create_package_schema(cls):
-        """ Create common schema for dataset create and update.
+        """ Create common schema for dataset create and update. Used by user interfaces and harvesters.
         """
         # TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!
         # Note: harvester schemas
@@ -70,6 +70,7 @@ class Schemas:
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, co.convert_to_extras_kata, unicode, va.validate_general]
 
+        schema['accept-terms'] = [va.usage_terms_accepted, ignore]
         schema['agent'] = {'role': [not_empty, va.check_agent_fields, va.validate_general, unicode, co.flattened_to_extras],
                            'name': [ignore_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
                            'id': [ignore_empty, va.validate_general, unicode, co.flattened_to_extras],
@@ -179,6 +180,8 @@ class Schemas:
         # Todo: requires additional testing and planning
         schema = cls._create_package_schema()
 
+        schema.pop('accept-terms', None)
+
         schema['__extras'] = [ignore]   # This removes orgauth checking
         schema['availability'].insert(0, ignore_missing)
         schema['contact_URL'] = [ignore_missing, url_validator, co.convert_to_extras_kata, unicode, va.validate_general]
@@ -214,6 +217,9 @@ class Schemas:
         :rtype: schema
         '''
         schema = cls._create_package_schema()
+
+        schema.pop('accept-terms', None)
+
         schema['discipline'].insert(0, ignore_missing)
         schema['event'] = {'type': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],

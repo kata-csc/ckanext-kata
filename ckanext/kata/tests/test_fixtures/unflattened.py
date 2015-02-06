@@ -41,6 +41,7 @@ TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'resource_type': 'file'}
 
 TEST_DATADICT = {'access_application_new_form': u'False',
+                 'accept-terms': u'yes',
                  'agent': [{'role': u'author',
                             'name': u'T. Tekijä',
                             'organisation': u'O-Org',

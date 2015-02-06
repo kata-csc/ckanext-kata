@@ -501,7 +501,6 @@ def check_private(key, data, errors, context):
     '''
     Changes to owner_org_validator requires checking of private value.
 
-
     :param key: key
     :param data: data
     :param errors: errors
@@ -519,3 +518,13 @@ def check_private(key, data, errors, context):
         if not is_editor:
             raise Invalid(_('Only organization\'s editors and admins can create a public dataset'))
 
+
+def usage_terms_accepted(value, context):
+    '''
+    Check if a boolean value is true
+
+    :param value: value to check
+    :param context: CKAN context
+    '''
+    if not asbool(value):
+        raise Invalid(_('Terms of use must be accepted'))

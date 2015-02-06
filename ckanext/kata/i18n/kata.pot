@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 1.3.0\n"
+"Project-Id-Version: ckanext-kata 1.3.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-01-05 14:44+0200\n"
+"POT-Creation-Date: 2015-02-06 12:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,52 +25,52 @@ msgstr ""
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:486 ckanext/kata/actions.py:550
+#: ckanext/kata/actions.py:497 ckanext/kata/actions.py:561
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:497 ckanext/kata/actions.py:561
-#: ckanext/kata/controllers.py:682 ckanext/kata/controllers.py:760
+#: ckanext/kata/actions.py:508 ckanext/kata/actions.py:572
+#: ckanext/kata/controllers.py:687 ckanext/kata/controllers.py:765
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:502 ckanext/kata/actions.py:506
-#: ckanext/kata/controllers.py:757
+#: ckanext/kata/actions.py:513 ckanext/kata/actions.py:517
+#: ckanext/kata/controllers.py:762
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:510
+#: ckanext/kata/actions.py:521
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:517
+#: ckanext/kata/actions.py:528
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:521
+#: ckanext/kata/actions.py:532
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:526
+#: ckanext/kata/actions.py:537
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:572
+#: ckanext/kata/actions.py:583
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:578
+#: ckanext/kata/actions.py:589
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:687
+#: ckanext/kata/actions.py:698
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:721
+#: ckanext/kata/actions.py:732
 msgid "You don't have permission to remove this user."
 msgstr ""
 
@@ -89,111 +89,111 @@ msgstr ""
 msgid "User %s not authorized to add a dataset"
 msgstr ""
 
-#: ckanext/kata/controllers.py:285 ckanext/kata/controllers.py:337
-#: ckanext/kata/controllers.py:508 ckanext/kata/controllers.py:538
+#: ckanext/kata/controllers.py:311 ckanext/kata/controllers.py:363
+#: ckanext/kata/controllers.py:534 ckanext/kata/controllers.py:564
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:294
+#: ckanext/kata/controllers.py:320
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of package"
 " %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:297 ckanext/kata/controllers.py:346
+#: ckanext/kata/controllers.py:323 ckanext/kata/controllers.py:372
 msgid "A request is already pending"
 msgstr ""
 
-#: ckanext/kata/controllers.py:300 ckanext/kata/controllers.py:349
+#: ckanext/kata/controllers.py:326 ckanext/kata/controllers.py:375
 msgid "You must be logged in to request edit access"
 msgstr ""
 
-#: ckanext/kata/controllers.py:320
+#: ckanext/kata/controllers.py:346
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:325
+#: ckanext/kata/controllers.py:351
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:436
+#: ckanext/kata/controllers.py:462
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:453 ckanext/kata/controllers.py:716
+#: ckanext/kata/controllers.py:479 ckanext/kata/controllers.py:721
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:455 ckanext/kata/controllers.py:521
-#: ckanext/kata/controllers.py:551
+#: ckanext/kata/controllers.py:481 ckanext/kata/controllers.py:547
+#: ckanext/kata/controllers.py:577
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:457
+#: ckanext/kata/controllers.py:483
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:459 ckanext/kata/controllers.py:524
-#: ckanext/kata/controllers.py:554
+#: ckanext/kata/controllers.py:485 ckanext/kata/controllers.py:550
+#: ckanext/kata/controllers.py:580
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:591
+#: ckanext/kata/controllers.py:617
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:593
+#: ckanext/kata/controllers.py:619
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:605
+#: ckanext/kata/controllers.py:631
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:657 ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:662 ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:679
+#: ckanext/kata/controllers.py:684
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:699
+#: ckanext/kata/controllers.py:704
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:701 ckanext/kata/validators.py:137
+#: ckanext/kata/controllers.py:706 ckanext/kata/validators.py:137
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:721
+#: ckanext/kata/controllers.py:726
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:816
+#: ckanext/kata/controllers.py:821
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:841
+#: ckanext/kata/controllers.py:846
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:846
+#: ckanext/kata/controllers.py:851
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:849
+#: ckanext/kata/controllers.py:854
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:851
+#: ckanext/kata/controllers.py:856
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:855
+#: ckanext/kata/controllers.py:860
 msgid "Failed to load file"
 msgstr ""
 
@@ -219,11 +219,11 @@ msgstr ""
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
 
-#: ckanext/kata/helpers.py:378 ckanext/kata/theme/templates/package/read.html:13
+#: ckanext/kata/helpers.py:381 ckanext/kata/theme/templates/package/read.html:13
 msgid "Unpublished"
 msgstr ""
 
-#: ckanext/kata/helpers.py:378
+#: ckanext/kata/helpers.py:381
 msgid "Published"
 msgstr ""
 
@@ -324,7 +324,7 @@ msgstr ""
 
 #: ckanext/kata/validators.py:244
 #, python-format
-msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,"
+msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,/."
 msgstr ""
 
 #: ckanext/kata/validators.py:265
@@ -389,8 +389,12 @@ msgstr ""
 msgid "Organization does not exist"
 msgstr ""
 
-#: ckanext/kata/validators.py:520
+#: ckanext/kata/validators.py:519
 msgid "Only organization's editors and admins can create a public dataset"
+msgstr ""
+
+#: ckanext/kata/validators.py:530
+msgid "Terms of use must be accepted"
 msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:13
@@ -1006,6 +1010,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:28
 #: ckanext/kata/theme/templates/kata/help.html:336
+#: ckanext/kata/theme/templates/snippets/facet_list.html:68
 msgid "Discipline"
 msgstr ""
 
@@ -2011,13 +2016,13 @@ msgid "Organization"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:322
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:265
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:267
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Algorithm"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:324
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:261
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:263
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Checksum"
 msgstr ""
@@ -2141,6 +2146,12 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/package_rights.html:63
 #: ckanext/kata/theme/templates/package/search.html:139
 msgid "Add"
+msgstr ""
+
+#: ckanext/kata/theme/templates/macros/kata_form.html:48
+msgid ""
+"You have unsaved changes. Make sure to click 'Save Changes' below before "
+"leaving this page."
 msgstr ""
 
 #: ckanext/kata/theme/templates/macros/kata_form.html:56
@@ -4717,11 +4728,11 @@ msgstr ""
 msgid "Field of science"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:255
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:257
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:274
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:276
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr ""
@@ -4976,35 +4987,35 @@ msgid ""
 "suggestions to work."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:80
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:79
 msgid "Disciplines"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:80
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:79
 msgid "eg. Matematiikka"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:86
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:84
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:89
 msgid "Languages"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:89
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:87
 msgid "This dataset contains non-textual data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:89
 msgid "eng, fin, swe ..."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:93
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91
 msgid ""
 "Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma "
 "separated list of languages, in ISO 639-2 T format, used in your data, for "
 "example \"eng, fin, swe\"."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:97
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:95
 msgid "Find language codes from: "
 msgstr ""
 
@@ -5519,11 +5530,11 @@ msgstr ""
 msgid "Clear All"
 msgstr ""
 
-#: ckanext/kata/theme/templates/snippets/facet_list.html:80
+#: ckanext/kata/theme/templates/snippets/facet_list.html:83
 msgid "Show More"
 msgstr ""
 
-#: ckanext/kata/theme/templates/snippets/facet_list.html:82
+#: ckanext/kata/theme/templates/snippets/facet_list.html:85
 msgid "Show Only Popular"
 msgstr ""
 

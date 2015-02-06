@@ -6,6 +6,7 @@ Test data in flattened package dictionary format.
 TEST_DATA_FLATTENED = {('_ckan_phase',): u'',
                        ('access_application_URL',): u'',
                        ('access_request_URL',): u'',
+                       ('accept-terms',): u'yes',
                        ('agent', 0, 'URL'): u'',
                        ('agent', 0, 'fundingid'): u'',
                        ('agent', 0, 'name'): u'',
