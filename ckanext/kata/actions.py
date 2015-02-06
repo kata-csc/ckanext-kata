@@ -239,6 +239,8 @@ def package_update(context, data_dict):
         # When this is reached, we are updating a dataset, not creating a new resource
         data_dict['resources'] = old_resources
         data_dict = utils.dataset_to_resource(data_dict)
+    else:
+        data_dict['accept-terms'] = 'yes'  # This is not needed when adding a resource
 
     _handle_pids(context, data_dict)
 
