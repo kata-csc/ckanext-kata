@@ -34,11 +34,20 @@
     font-weight: bold;
 }
 
+.float-none {
+    float: none !important;
+}
+
 /* header */
 
 /* nav */
 
 /* content */
+
+.icon-kata-arrow-up {
+    color: #209D82;
+    margin-left: 20px !important;
+}
 
 .search-terms {
     background-color: #ebebec;
@@ -49,7 +58,6 @@
     border-color: #ababac;
     padding: 10px;
     padding-top: 30px;
-
     margin-bottom: 10px;
 }
 

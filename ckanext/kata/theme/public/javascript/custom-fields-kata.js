@@ -102,6 +102,15 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       var buttons = field.find('button');
       buttons.hide();
 
+      var resolve = field.find("[id*='resolve']");
+      if (resolve) {
+          resolve.attr('id', increment)
+          .attr('data-module-from', increment)
+          .attr('data-module-to', increment);
+          resolve.parent().parent().removeClass("alert-error");
+          resolve.removeClass("float-none");
+      }
+
       if (this.options.hide) {
         field.find(this.options.hide).hide();
       }
@@ -114,6 +123,11 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         $(element).show();
         ckan.module.initializeElement(element);
       });
+
+        field.find("[data-module='kata-autofill-by-id']").each(function(index, element) {
+            $(element).show();
+            ckan.module.initializeElement(element);
+        });
 
       field.find(".kata-plus-btn").remove();
 
@@ -194,4 +208,3 @@ KATA.checkLang = function(obj) {
         alert('Losing data on language if this is disabled!');
     }
 };
-
