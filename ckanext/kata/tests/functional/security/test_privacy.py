@@ -3,7 +3,7 @@ Test privacy of Kata
 '''
 
 from ckan.logic import NotAuthorized
-from ckanext.kata.tests.security import KataPrivacyTestCase
+from ckanext.kata.tests.functional.security import KataPrivacyTestCase
 
 
 class TestPrivacy(KataPrivacyTestCase):
