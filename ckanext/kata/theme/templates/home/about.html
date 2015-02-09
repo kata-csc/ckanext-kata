@@ -1,4 +1,5 @@
   {% ckan_extends %}
+  {% set help_url = g.site_url + h.url_for(controller='ckanext.kata.controllers:KataInfoController', action='render_help') + '#api-reference' %}
   {% block about %}
       {% if g.site_about %}
         {{ h.render_markdown(g.site_about) }}
@@ -13,7 +14,7 @@
                 Good description of data plays a very important role in the visibility of the data. Etsin encourages comprehensive descriptions by adapting a common set of discipline independent metadata fields and by making it easy to enter metadata.The service also promotes adding unified information about the availability, ownership and licensing of data. The goal is to foster licensing practices for research data. The functionalities of Etsin help document researchers' merits in collecting and sharing data. The information on datasets and project funding also makes the results of research more transparent to funders.
             </p>
             <p>
-                In addition to the graphical user interface, data in Etsin may be used through an <a href="http://etsin.avointiede.fi/api/3/" target="_blank">open interface</a>. <a href="http://docs.ckan.org/en/ckan-2.1.2/api.html" target="_blank">Documentation of the API</a> may be found on the CKAN pages.
+                In addition to the graphical user interface, data in Etsin may be used through an <a href="http://etsin.avointiede.fi/api/3/" target="_blank">open interface</a>. <a href="http://docs.ckan.org/en/ckan-2.1.2/api.html" target="_blank">Documentation of the API</a> may be found on the CKAN pages. Details about the data model used by Etsin can be found from the <a href="{{ help_url }}" target="_blank">help page's API section</a>.
             </p>
             <p>
                 All dataset descriptions are made available under <a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank">Creative Commons 0 license</a>. Data owners decide on the licence of the research data described in Etsin. For open data, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons BY 4.0</a> license is recommended.

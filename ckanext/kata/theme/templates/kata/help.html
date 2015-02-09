@@ -277,16 +277,14 @@
         <p>
             {{ _('Adding supplements to the metadata requires that you have editor privileges to the dataset.') }}
         </p>
-        <p>
-            {{ _('To add metadata supplements for a dataset, follow these steps:') }}
-            <ol>
-              <li>{{ _('Open the dataset for editing and find the "Add new supplement" button on the left.') }}</li>
-              <li>{{ _('In the following form, click the button to upload the supplementary document from your computer to Etsin.') }}</li>
-              <li>{{ _('Enter a name and, optionally, a description for the supplement.') }}</li>
-              <li>{{ _('Finally, be sure to confirm adding the supplement to your dataset by clicking "Add" at the bottom of the form.') }}</li>
-            </ol>
-        </p>
-            <h3 class="help-page"><a id="api-reference" class="help-h4">{{ _('API') }}</a></h3>
+        {{ _('To add metadata supplements for a dataset, follow these steps:') }}
+        <ol>
+            <li>{{ _('Open the dataset for editing and find the "Add new supplement" button on the left.') }}</li>
+            <li>{{ _('In the following form, click the button to upload the supplementary document from your computer to Etsin.') }}</li>
+            <li>{{ _('Enter a name and, optionally, a description for the supplement.') }}</li>
+            <li>{{ _('Finally, be sure to confirm adding the supplement to your dataset by clicking "Add" at the bottom of the form.') }}</li>
+        </ol>
+        <h3 class="help-page"><a id="api-reference" class="help-h4">{{ _('API') }}</a></h3>
         <p>
             {{ _('Etsin supports standard')}}
             <a href="http://docs.ckan.org/en/ckan-2.1.2/api.html" target="_blank">CKAN API</a>
@@ -294,8 +292,12 @@
             {{ _('To add a dataset editor, provide also attributes: name (dataset\'s name), role (usually editor) and username (user login to add) ') }}
         </p>
         <p>
-            {{ _('The metadata model of Etsin is more complex than the default model in CKAN. An example of a dataset that can be created in Etsin, using Curl: ') }}
+            {{ _('The metadata model of Etsin is more complex than the default model in CKAN. Beneath is an example of a dataset that can be created in Etsin, using Curl. Note, that you can get your API key from your profile page.') }}
         </p>
+          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#kata-data-model">
+  {{ _('Display data model') }}
+          </button>
+            {% snippet 'kata/snippets/data-model.html' %}
 
         <div class="example">
             {# Manually written example mostly because pre doesn't work together with trans #}
@@ -377,7 +379,8 @@ curl http://etsin.avointiede.fi/api/3/action/package_create --data-urlencode '{
     "temporal_coverage_end": "<b>{{ _('Time in ISO8601 format, eg. 2000-01-01T00:00:01') }}</b>",
     "version": "<b>{{ _('ISO8601 format, eg. 2014-06-06T07:07:07') }}</b>",
     "owner_org": "<b>{{ _('Organization, see organizations in Etsin web user interface.') }}</b>",
-    "private": "<b>{{ _('True or false, private datasets are not added to the search index.') }}</b>"
+    "private": "<b>{{ _('True or false, private datasets are not added to the search index.') }}</b>",
+    "accept-terms": "<b>{{ _('Set to \'true\' to accept terms of use. See http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use') }}</b>"
 }'
 -H "Authorization: <b>{{ _('YOUR-API-KEY') }}</b>"
             </pre>
