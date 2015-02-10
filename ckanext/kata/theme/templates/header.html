@@ -99,11 +99,12 @@
       <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataInfoController', action='render_faq') }}">
       {{ _('FAQ') }}
       </a>
-
+      {#
       <i class="icon-large icon-tasks"></i>
       <a href="{{ h.url_for(controller='ckanext.stats.controller:StatsController', action='index') }}">
       {{ _('Stats') }}
       </a>
+      #}
       {% if not c.userobj %}
       <i class="icon-large icon-signin"></i>
       <a class="button" href="{{ h.url_for(controller='user', action='login') }}">

@@ -247,10 +247,10 @@
         <p>
             {{ _('User profile provides basic information about you, your dataset and actions. The user profile can be accessed from the upper right corner. The upper right corner also provides a direct link to your own datasets. Note that if you have logged in using Haka, you can not change your profile information from Etsin: the changes must be done by your home organisation.') }}
         </p>
-        <h3 class="help-page"><a id="stats" class="help-h4">{{ _('Stats') }}</a></h3>
+        {#<h3 class="help-page"><a id="stats" class="help-h4">{{ _('Stats') }}</a></h3>
         <p>
             {{ _('The Stats link will take you to the statistics page. The page will show you some general information about Etsin, its datasets and users.') }}
-        </p>
+        </p>#}
         <h3 class="help-page"><a id="rems" class="help-h4">{{ _('REMS') }}</a></h3>
         <p>
             {{ _('Etsin is integrated to a REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: ') }}
@@ -414,9 +414,9 @@ curl http://etsin.avointiede.fi/api/3/action/package_create --data-urlencode '{
           <li>
             <a href="#user-profile" class="toc-sub">- {{ _('User profile') }}</a>
           </li>
-          <li>
+          {#<li>
             <a href="#stats" class="toc-sub">- {{ _('Stats') }}</a>
-          </li>
+          </li>#}
           <li>
             <a href="#rems" class="toc-sub">- {{ _('REMS') }}</a>
           </li>
