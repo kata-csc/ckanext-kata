@@ -335,15 +335,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             return url
         return cached_url(ref)
 
-    def is_custom_form(self, _dict):
-        """
-        Template helper, used to identify ckan custom form
-        """
-        for key in self.hide_extras_form:
-            if _dict.get('key', None) and _dict['key'].find(key) > -1:
-                return False
-        return True
-
     def kata_sorted_extras(self, list_):
         '''
         Used for outputting package extras, skips `package_hide_extras`
@@ -392,12 +383,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         here = os.path.dirname(__file__)
         rootdir = os.path.dirname(os.path.dirname(here))
 
-        roles = config.get('kata.contact_roles', 'Please, Configure')
         config['package_hide_extras'] = ' '.join(settings.KATA_FIELDS)
         config['ckan.i18n_directory'] = os.path.join(rootdir, 'ckanext', 'kata')
-        roles = [r for r in roles.split(', ')]
-        self.roles = roles
-        self.hide_extras_form = config.get('kata.hide_extras_form', '').split()
 
         try:
             # This controls the operation of the CKAN search indexing. If you don't define this option
@@ -423,20 +410,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         '''
         return True
 
-    def configure(self, config):
-        '''
-        Pass configuration to plugins and extensions.
-        Called by load_environment.
-        '''
-        self.date_format = config.get('kata.date_format', '%Y-%m-%d')
-
     def setup_template_variables(self, context, data_dict):
         """
         Override ``DefaultDatasetForm.setup_template_variables()`` form  method from :file:`ckan.lib.plugins.py`.
         """
         super(KataPlugin, self).setup_template_variables(context, data_dict)
 
-        c.roles = self.roles
         c.lastmod = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
     def new_template(self):
