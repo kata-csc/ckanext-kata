@@ -1,24 +1,25 @@
 ckanext-kata
 ============
 
-Kata extension for CKAN. Used by Etsin (https://etsin.avointiede.fi/en/).
+Kata extension for CKAN. Used in Etsin research data finder at [https://etsin.avointiede.fi/en/](http://google.com).
 
 Installation
 ============
 
-To install this extension
+You can install the extension with:
 
-  pip install -e git://github.com/kata-csc/ckanext-kata.git#egg=ckanext-kata
+`pip install -e git://github.com/kata-csc/ckanext-kata.git#egg=ckanext-kata`
 
-.ini configuration
-==================
-Put following lines under [app:main]
+Requirements
+============
 
-    kata.contact_roles = Author, Maintainer, Publisher, Sponsor, Funder, Distributor, Producer
-    kata.date_format = %d.%m.%Y
-    
-    # Hide certain extras fields from dataset read form:
-    package_hide_extras = role
-    
-    # Hide certain extras fields from edit form
-    kata.hide_extras_form = role pid
+* CKAN 2.1.2
+* Some additional Python packages that will be installed using `pip install`
+
+Configuration
+=============
+
+Put the following lines under [app:main] in CKAN configuration file
+
+> kata.storage.malware_scan = true
+> kata.is_backup = false
