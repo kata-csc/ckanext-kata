@@ -16,6 +16,9 @@ import ckanext.kata.validators as va
 import ckanext.kata.converters as co
 import ckanext.kata.settings as settings
 
+import logging
+log = logging.getLogger(__name__)
+
 
 class Schemas:
     '''
@@ -139,6 +142,53 @@ class Schemas:
         return schema
 
     @classmethod
+    def private_package_schema(cls):
+        '''
+        For a private dataset only a title and owner_org are required. The design is based on a principle,
+        that as little changes as possible are made - ignore_missing, ignore_empty are only added and the
+        rest'll stay the same, if possible.
+
+        :return: schema, where only title and owner_org are required
+        '''
+
+        schema = cls.create_package_schema()
+        dicts = ['tags', 'contact']
+        passdicts = ['langtitle', 'agent']
+        keystocheck = settings.KATA_FIELDS_REQUIRED + ['language', '__extras', 'tag_string', 'accept-terms', 'version']
+
+        def _clean_schema_item(val):
+            if ignore_missing not in val:
+                val.insert(0, ignore_missing)
+            if ignore_empty not in val:
+                val.insert(0, ignore_empty)
+            if not_empty in val:
+                val.remove(not_empty)
+            if not_missing in val:
+                val.remove(not_missing)
+
+        for key, value in schema.iteritems():
+            if key not in keystocheck or key in passdicts:
+                continue
+            elif key == '__extras':
+                # Remove checks: no agent nor contact is required
+                if va.check_agent in value:
+                    value.remove(va.check_agent)
+                if va.check_contact in value:
+                    value.remove(va.check_contact)
+            elif key == 'accept-terms':
+                if va.usage_terms_accepted in value:
+                    value.remove(va.usage_terms_accepted)
+            elif key in dicts:
+                # Add validators to pass empty stuff and remove validators that check that stuff exists
+                for k, v in schema[key].iteritems():
+                    _clean_schema_item(v)
+            else:
+                # Same as the one above, for non-dictionaries
+                _clean_schema_item(value)
+
+        return schema
+
+    @classmethod
     def create_package_schema_oai_dc_ida(cls):
         """
         Mofidified schema for oai_dc using IDA. See `create_package_schema_oai_dc`.
@@ -184,6 +234,7 @@ class Schemas:
 
         schema['__extras'] = [ignore]   # This removes orgauth checking
         schema['availability'].insert(0, ignore_missing)
+        # Todo: this shouldn't be anymore
         schema['contact_URL'] = [ignore_missing, url_validator, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)

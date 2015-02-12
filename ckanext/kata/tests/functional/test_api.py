@@ -160,7 +160,6 @@ class TestCreateDatasetAndResources(KataApiTestCase):
     def test_create_public_dataset_by_member(self):
         '''Organization member can create public dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        data_dict['private'] = False
 
         self.api_user_joe.call_action('package_create', data_dict=data_dict)
 
@@ -169,13 +168,11 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         Anyone can create a public dataset to an organization
         '''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        data_dict['private'] = False
         self.api_user_anna.call_action('package_create', data_dict=data_dict)
 
     def test_create_public_dataset_by_editor(self):
         '''Organization editor can create public dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        data_dict['private'] = False
 
         output = self.api_user_normal.call_action('package_create', data_dict=data_dict)
         assert output
@@ -198,7 +195,6 @@ class TestUpdateDataset(KataApiTestCase):
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['notes'] = "A new description"
-        data_dict['private'] = False
 
         output = self.api_user_normal.call_action('package_update', data_dict=data_dict)
 
@@ -229,7 +225,6 @@ class TestSearchDataset(KataApiTestCase):
         search.clear()
 
         data_dict = copy.deepcopy(cls.TEST_DATADICT)    # Create public dataset
-        data_dict['private'] = False
 
         # Create a dataset for this test class
         output = cls.api_user_sysadmin.call_action('package_create', data_dict=data_dict)
@@ -297,7 +292,6 @@ class TestDataReading(KataApiTestCase):
         super(TestDataReading, cls).setup_class()
 
         cls.public_dataset = copy.deepcopy(cls.TEST_DATADICT)    # Create public dataset
-        cls.public_dataset['private'] = False
 
     def _compare_datadicts(self, original, output):
         '''
@@ -369,10 +363,47 @@ class TestDataReading(KataApiTestCase):
         '''
         Check that private dataset may not be read by other user
         '''
-        output = self.api_user_joe.action.package_create(**self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data['private'] = u'True'
+        output = self.api_user_joe.action.package_create(**data)
+
         assert 'id' in output
 
         self.assertRaises(NotAuthorized, self.api_user_anna.action.package_show, id=output['id'])
+
+    def test_create_and_update_and_read_dataset_private(self):
+
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data['private'] = True
+        data_dict = {
+                     'id': u'',
+                     'name': u'',
+                     'owner_org': u'',
+                     'private': u'True',
+                     'langtitle': [{}],
+                     }
+
+        self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
+
+        data_dict['langtitle'] = [{'lang': u'fin', 'value': u'Test Data'}]
+        data_dict['owner_org'] = data['owner_org']
+        output = self.api_user_joe.action.package_create(**data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        # Remove some random stuff from the dict for authentic testing experience
+        data['agent'] = [{'role': u'author',
+                          'name': u'T. Tekijä',
+                          'organisation': u'O-Org'
+                        }]
+        data['accept-terms'] = u'False'
+        data.pop('availability')
+        data['direct_download_URL'] = u'http://'
+        output = self.api_user_joe.action.package_create(**data)
+        output = self.api_user_joe.action.package_show(id=output['id'])
+        output = self.api_user_joe.action.package_update(**output)
+        output = self.api_user_joe.action.package_show(id=output['id'])
+
+        assert self._compare_datadicts(data, output)
 
     def test_create_update_and_read_dataset(self):
         '''

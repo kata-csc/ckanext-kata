@@ -26,7 +26,7 @@ then itself be extended to add/remove blocks of functionality. #}
     {% snippet 'package/snippets/package_metadata_fields.html', data=data, errors=errors, roles=c.roles %}
   {% endblock %}
   {% snippet 'package/snippets/package_terms_of_use.html' %}
-
+  {% if errors and errors.get('accept-terms') and errors.get('accept-terms') is iterable %}<span class="error-block-kata">{{ errors.get('accept-terms')|join('.') }}</span>{% endif %}
   {% block form_actions %}
     <div class="form-actions">
       {% block delete_button %}
@@ -38,7 +38,7 @@ then itself be extended to add/remove blocks of functionality. #}
       {% block cancel_button %}
         <a class="btn" href="">{% block cancel_button_text %}{{ _('Cancel') }}{% endblock %}</a>
       {% endblock %}
-      <button class="btn btn-primary" type="submit" value="finish" name="save" disabled="disabled">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
+      <button class="btn btn-primary" type="submit" value="finish" name="save">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
       {# Changing the text of save and publish on edit can be done in new_package_form.html #}
       <button class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled">{% block save_and_publish_button_text %}{{ _('Save and publish') }}{% endblock %}</button>
     </div>

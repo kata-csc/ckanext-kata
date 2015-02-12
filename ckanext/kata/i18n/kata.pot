@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-09 09:12+0000\n"
+"POT-Creation-Date: 2015-02-12 10:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,60 +17,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:85 ckanext/kata/converters.py:174
+#: ckanext/kata/actions.py:86 ckanext/kata/converters.py:174
 msgid "Paper"
 msgstr ""
 
-#: ckanext/kata/actions.py:187
+#: ckanext/kata/actions.py:188
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:499 ckanext/kata/actions.py:563
+#: ckanext/kata/actions.py:506 ckanext/kata/actions.py:570
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:510 ckanext/kata/actions.py:574
+#: ckanext/kata/actions.py:517 ckanext/kata/actions.py:581
 #: ckanext/kata/controllers.py:687 ckanext/kata/controllers.py:765
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:515 ckanext/kata/actions.py:519
+#: ckanext/kata/actions.py:522 ckanext/kata/actions.py:526
 #: ckanext/kata/controllers.py:762
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:523
+#: ckanext/kata/actions.py:530
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:530
+#: ckanext/kata/actions.py:537
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:534
+#: ckanext/kata/actions.py:541
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:539
+#: ckanext/kata/actions.py:546
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:585
+#: ckanext/kata/actions.py:592
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:591
+#: ckanext/kata/actions.py:598
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:700
+#: ckanext/kata/actions.py:707
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:734
+#: ckanext/kata/actions.py:741
 msgid "You don't have permission to remove this user."
 msgstr ""
 
@@ -165,7 +165,7 @@ msgstr ""
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:706 ckanext/kata/validators.py:137
+#: ckanext/kata/controllers.py:706 ckanext/kata/validators.py:139
 msgid "Invalid email address"
 msgstr ""
 
@@ -263,137 +263,139 @@ msgstr ""
 msgid "Owner organization"
 msgstr ""
 
-#: ckanext/kata/settings.py:200
-msgid "Go to API"
+#: ckanext/kata/settings.py:197 ckanext/kata/theme/templates/home/about.html:33
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:3
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:10
+msgid "Terms of use"
 msgstr ""
 
 #: ckanext/kata/settings.py:201
-msgid "Go to Application"
+msgid "Go to API"
 msgstr ""
 
 #: ckanext/kata/settings.py:202
-msgid "Go to Idea"
+msgid "Go to Application"
 msgstr ""
 
 #: ckanext/kata/settings.py:203
-msgid "Go to News Article"
+msgid "Go to Idea"
 msgstr ""
 
 #: ckanext/kata/settings.py:204
-msgid "Go to Paper"
+msgid "Go to News Article"
 msgstr ""
 
 #: ckanext/kata/settings.py:205
-msgid "Go to Post"
+msgid "Go to Paper"
 msgstr ""
 
 #: ckanext/kata/settings.py:206
+msgid "Go to Post"
+msgstr ""
+
+#: ckanext/kata/settings.py:207
 msgid "Go to Visualization"
 msgstr ""
 
-#: ckanext/kata/validators.py:60
+#: ckanext/kata/validators.py:62
 #, python-format
 msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 
-#: ckanext/kata/validators.py:97
+#: ckanext/kata/validators.py:99
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:100 ckanext/kata/validators.py:120
+#: ckanext/kata/validators.py:102 ckanext/kata/validators.py:122
 msgid "Invalid date"
 msgstr ""
 
-#: ckanext/kata/validators.py:117
+#: ckanext/kata/validators.py:119
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: 2001-03-01 "
 "or 2001-03"
 msgstr ""
 
-#: ckanext/kata/validators.py:147
+#: ckanext/kata/validators.py:149
 msgid "Invalid characters: <> not allowed"
 msgstr ""
 
-#: ckanext/kata/validators.py:156
+#: ckanext/kata/validators.py:158
 msgid "Value must contain alphanumeric characters"
 msgstr ""
 
-#: ckanext/kata/validators.py:164
+#: ckanext/kata/validators.py:166
 msgid "Invalid telephone number, must be like +13221221"
 msgstr ""
 
-#: ckanext/kata/validators.py:244
+#: ckanext/kata/validators.py:246
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,/."
 msgstr ""
 
-#: ckanext/kata/validators.py:265
+#: ckanext/kata/validators.py:267
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
 "-'/,:().;= "
 msgstr ""
 
-#: ckanext/kata/validators.py:284
+#: ckanext/kata/validators.py:286
 #, python-format
 msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
 msgstr ""
 
-#: ckanext/kata/validators.py:296
+#: ckanext/kata/validators.py:298
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 
-#: ckanext/kata/validators.py:307
+#: ckanext/kata/validators.py:309
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:321
+#: ckanext/kata/validators.py:323
 msgid "Duplicate titles for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:350
+#: ckanext/kata/validators.py:352
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:362
+#: ckanext/kata/validators.py:364
 msgid "Missing compulsory distributor information"
 msgstr ""
 
-#: ckanext/kata/validators.py:384
+#: ckanext/kata/validators.py:386
 msgid "Missing dataset title"
 msgstr ""
 
-#: ckanext/kata/validators.py:394
+#: ckanext/kata/validators.py:396
 msgid "Missing dataset PIDs"
 msgstr ""
 
-#: ckanext/kata/validators.py:407
+#: ckanext/kata/validators.py:409
 msgid "Missing primary data PID"
 msgstr ""
 
-#: ckanext/kata/validators.py:415
+#: ckanext/kata/validators.py:417
 msgid "Primary data PID can not be modified"
 msgstr ""
 
-#: ckanext/kata/validators.py:433 ckanext/kata/validators.py:469
+#: ckanext/kata/validators.py:435 ckanext/kata/validators.py:471
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:20
 msgid "Missing value"
 msgstr ""
 
-#: ckanext/kata/validators.py:488
-msgid "An organization must be supplied"
-msgstr ""
-
-#: ckanext/kata/validators.py:495
+#: ckanext/kata/validators.py:501
 msgid "Organization does not exist"
 msgstr ""
 
-#: ckanext/kata/validators.py:519
+#: ckanext/kata/validators.py:525
 msgid "Only organization's editors and admins can create a public dataset"
 msgstr ""
 
-#: ckanext/kata/validators.py:530
+#: ckanext/kata/validators.py:536
 msgid "Terms of use must be accepted"
 msgstr ""
 
@@ -466,7 +468,7 @@ msgid "Etsin"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:84
-#: ckanext/kata/theme/templates/header.html:122
+#: ckanext/kata/theme/templates/header.html:123
 #: ckanext/kata/theme/templates/package/search.html:8
 msgid "Search Datasets"
 msgstr ""
@@ -492,18 +494,12 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:105
-#: ckanext/kata/theme/templates/kata/help.html:250
-#: ckanext/kata/theme/templates/kata/help.html:418
-msgid "Stats"
-msgstr ""
-
-#: ckanext/kata/theme/templates/header.html:110
+#: ckanext/kata/theme/templates/header.html:111
 #: ckanext/kata/theme/templates/user/logout_first.html:16
 msgid "Log in"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:123
+#: ckanext/kata/theme/templates/header.html:124
 #: ckanext/kata/theme/templates/kata/help.html:124
 #: ckanext/kata/theme/templates/kata/help.html:409
 #: ckanext/kata/theme/templates/package/search.html:15
@@ -511,14 +507,14 @@ msgstr ""
 msgid "Add Dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:124
+#: ckanext/kata/theme/templates/header.html:125
 #: ckanext/kata/theme/templates/organization/index.html:3
 #: ckanext/kata/theme/templates/organization/index.html:6
 #: ckanext/kata/theme/templates/organization/index.html:18
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:125
+#: ckanext/kata/theme/templates/header.html:126
 #: ckanext/kata/theme/templates/home/index.html:57
 msgid "About Etsin"
 msgstr ""
@@ -813,12 +809,6 @@ msgstr ""
 #: ckanext/kata/theme/templates/home/about.html:33
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:10
 msgid "http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:33
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:3
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:10
-msgid "Terms of use"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:36
@@ -1868,12 +1858,6 @@ msgid ""
 " corner also provides a direct link to your own datasets. Note that if you "
 "have logged in using Haka, you can not change your profile information from "
 "Etsin: the changes must be done by your home organisation."
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/help.html:252
-msgid ""
-"The Stats link will take you to the statistics page. The page will show you "
-"some general information about Etsin, its datasets and users."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:254

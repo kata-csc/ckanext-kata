@@ -193,7 +193,8 @@ ERRORS = {
     u'Owner org': u'Owner organization',
     u'Contact': u'Distributor',
     u'Yhteydenotto': N_(u'Distributor'),
-    u'Organisaatio': N_(u'Owner organization')
+    u'Organisaatio': N_(u'Owner organization'),
+    u'Accept-terms': N_(u'Terms of use'),
 }
 
 TRANSLATION_DUMMIES = [  # Dynamically created strings that should be translated

@@ -9,6 +9,7 @@ import re
 from pylons import c
 from pylons.i18n import _
 
+from paste.deploy.converters import asbool
 import ckan.logic.action.get
 import ckan.logic.action.create
 import ckan.logic.action.update
@@ -196,6 +197,9 @@ def package_create(context, data_dict):
     _handle_pids(context, data_dict)
 
     _add_ida_download_url(context, data_dict)
+    if asbool(data_dict.get('private')):
+        context['schema'] = Schemas.private_package_schema()
+
     if data_dict.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_create_package_schema()
 
@@ -229,7 +233,7 @@ def package_update(context, data_dict):
     '''
     # Get all resources here since we get only 'dataset' resources from WUI.
     package_context = {'model': model, 'ignore_auth': True, 'validate': True,
-                    'extras_as_string': True}
+                       'extras_as_string': True}
     package_data = package_show(package_context, data_dict)
     # package_data = ckan.logic.action.get.package_show(package_context, data_dict)
 
@@ -271,6 +275,9 @@ def package_update(context, data_dict):
     # type of the harvester (eg. DDI)
     # if data_dict['name'].startswith('FSD'):
     #     context['schema'] = schemas.update_package_schema_ddi()
+
+    if asbool(data_dict.get('private')):
+        context['schema'] = Schemas.private_package_schema()
 
     if package_data.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_update_package_schema()

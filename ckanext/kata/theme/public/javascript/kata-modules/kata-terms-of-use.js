@@ -7,7 +7,6 @@ this.ckan.module('kata-terms-of-use', function (jQuery, _) {
 
     _onChange: function () {
       var val = this.el.prop('checked') ? false : true;
-      document.getElementsByName("save")[0].disabled = val;
       document.getElementsByName("save")[1].disabled = val;
     }
   };

@@ -1,4 +1,5 @@
-# coding=utf-8
+#### coding=utf-8
+# -*- coding: utf-8 -*-
 """
 Validators for user inputs.
 """
@@ -10,6 +11,7 @@ import urlparse
 
 from pylons.i18n import _
 from paste.deploy.converters import asbool
+from pylons import config
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
@@ -485,7 +487,11 @@ def kata_owner_org_validator(key, data, errors, context):
 
     if value is missing or not value:
         if not new_authz.check_config_permission('create_unowned_dataset'):
-            raise Invalid(_('An organization must be supplied'))
+            err = u'An organization must be supplied.'
+            err += u' If you do not find a suitable organization, please choose the default organization "'
+            err += u'Ei linkitetä organisaatioon - do not link to an organization'
+            err += u'" provided by the service.'
+            raise Invalid(_(err))
         data.pop(key, None)
         raise df.StopOnError
 

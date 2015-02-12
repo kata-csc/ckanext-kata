@@ -146,7 +146,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'title': u'',
                  'type': u'dataset',
                  'version': u'2013-11-18T12:25:53Z',
-                 'private': True,  # Use Python boolean or fix _compare_datadicts() in tests to support 'True' == True
+                 'private': False,  # Use Python boolean or fix _compare_datadicts() in tests to support 'True' == True
                  'xpaths': {
                      'xpath/path1': u'xpath_value',
                      'xpath/path2': u'xpath_value2',
