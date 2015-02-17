@@ -1,7 +1,4 @@
-ckanext-kata
-============
-
-Kata extension for CKAN. Used in Etsin research data finder at [https://etsin.avointiede.fi/en/](http://google.com).
+Kata is a CKAN extension for handling metadata of research datasets. It is used in Etsin research data finder at [https://etsin.avointiede.fi/en/](http://google.com).
 
 Installation
 ============
@@ -22,4 +19,5 @@ Configuration
 Put the following lines under [app:main] in CKAN configuration file
 
 > kata.storage.malware_scan = true
+
 > kata.is_backup = false
