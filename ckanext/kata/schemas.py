@@ -62,7 +62,6 @@ class Schemas:
     def _create_package_schema(cls):
         """ Create common schema for dataset create and update. Used by user interfaces and harvesters.
         """
-        # TODO: MIKKO: Use the general converter for lang_title and check that lang_title exists!
         # Note: harvester schemas
 
         schema = default_create_package_schema()
