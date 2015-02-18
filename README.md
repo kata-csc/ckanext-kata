@@ -21,3 +21,19 @@ Put the following lines under [app:main] in CKAN configuration file
 > kata.storage.malware_scan = true
 
 > kata.is_backup = false
+
+If Google Analytics is on, add
+
+> kata.ga_id = [GA ID]
+
+If LDAP is used, add basic LDAP configuration to the aforementioned file:
+
+> kata.ldap.enabled = true
+
+> kata.ldap.password = [LDAP PASSWORD]
+
+> kata.ldap.server = [LDAP SERVER]
+
+> kata.ldap.dn = [DN]
+
+> kata.ldap.basedn = [BASE DN]
