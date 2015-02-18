@@ -1,4 +1,4 @@
-Kata is a CKAN extension for handling metadata of research datasets. It is used in Etsin research data finder at [https://etsin.avointiede.fi/en/](http://google.com).
+Kata is a CKAN extension for handling metadata of research datasets. It is used in [Etsin research data finder](https://etsin.avointiede.fi/en/).
 
 Installation
 ============
