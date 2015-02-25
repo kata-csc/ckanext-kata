@@ -82,11 +82,9 @@ class Schemas:
         schema['contact'] = {'name': [not_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
                              'email': [not_empty, unicode, va.validate_email, co.flattened_to_extras],
                              'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
-                             # phone number can be missing from the first users
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
-        # phone number can be missing from the first users
-        # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
-        # schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
+        schema['description'] = {'text': [ignore_missing, unicode, co.flattened_to_extras],
+                                 'lang': [ignore_missing, unicode, co.flattened_to_extras]}
         schema['event'] = {'type': [ignore_missing, va.check_events, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_date],
@@ -348,11 +346,11 @@ class Schemas:
         for key in settings.KATA_FIELDS:
             schema[key] = [co.convert_from_extras_kata, ignore_missing, unicode]
 
-        schema['__after'] = [co.check_primary_pids]
+        schema['access_application_new_form'] = [unicode],
         schema['agent'] = [co.flattened_from_extras, ignore_missing]
         schema['contact'] = [co.flattened_from_extras, ignore_missing]
-        schema['access_application_new_form'] = [unicode],
         # schema['author'] = [org_auth_from_extras, ignore_missing, unicode]
+        schema['description'] = [co.flattened_from_extras, ignore_missing]
         schema['event'] = [co.flattened_from_extras, ignore_missing]
         schema['langdis'] = [unicode]
         # schema['organization'] = [ignore_missing, unicode]
@@ -362,6 +360,7 @@ class Schemas:
         #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
         schema['xpaths'] = [co.from_extras_json, ignore_missing, unicode]
         #schema['resources']['resource_type'] = [from_resource]
+        schema['__after'] = [co.check_primary_pids]
 
         return schema
 
