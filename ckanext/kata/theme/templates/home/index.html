@@ -122,32 +122,8 @@
       </div>
     </div>
   </div>
-  <div class="main homepage">
-    <div class="container">
-      {{ self.secondary_content() }}
-    </div>
-  </div>
+
 {% endblock %}
 
-{# Add here links to services that provide data to Etsin, as we get them #}
-{% block secondary_content %}
-        <h1>{{ _('Integrated metadata sources') }}</h1>
-        <section class="module">
-            <h4 class="module-heading-add-dataset">{{ _("Finnish social science data archive") }} - {{ _('Data Archive and Aila Data Service') }}</h4>
-            <div class="module-content">
-                <a href="{{ _('http://www.fsd.uta.fi/en/') }}" target="_blank">
-                    <img src="{{ _('../../base/images/img_fsd_logo_en.png') }}"></a>
-                <a href="{{ _('https://services.fsd.uta.fi/index?lang=en') }}" target="_blank">
-                    <img src="{{ _('../../base/images/logo_aila_en.png') }}"></a>
-            </div>
-        </section>
-        <section class="module">
-            <h4 class="module-heading-add-dataset">{{ _("Language bank of Finland") }} - {{ _('Browse language resources') }}</h4>
-            <div class="module-content">
-                <a href="http://metashare.csc.fi/" target="_blank">
-                    <img src="../../base/images/logo_lb.png"></a>
-            </div>
-        </section>
-{% endblock %}
 {% block home_tags %}
 {% endblock %}
