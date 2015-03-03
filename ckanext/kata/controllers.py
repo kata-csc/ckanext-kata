@@ -230,12 +230,15 @@ class KATAApiController(ApiController):
 
         labels = []
         if query:
-            url = url_template.format(q=query, v=vocab)
+            try:
+                url = url_template.format(q=query, v=vocab)
+            except UnicodeEncodeError:
+                url = url_template.format(q=query.encode('utf-8'), v=vocab)
             data = urllib2.urlopen(url).read()
             jsondata = json.loads(data)
             if u'results' in jsondata:
                 results = jsondata['results']
-                labels = [concept['prefLabel'].encode('utf-8') for concept in results]
+                labels = [concept.get('prefLabel', '').encode('utf-8') for concept in results]
 
         result_set = {
             'ResultSet': {
@@ -259,13 +262,17 @@ class KATAApiController(ApiController):
         '''
         url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
 
+        labels = []
         if query:
-            url = url_template.format(q=query, v=vocab)
+            try:
+                url = url_template.format(q=query, v=vocab)
+            except UnicodeEncodeError:
+                url = url_template.format(q=query.encode('utf-8'), v=vocab)
             data = urllib2.urlopen(url).read()
             jsondata = json.loads(data)
             if u'results' in jsondata:
                 results = jsondata['results']
-                labels = [(concept['prefLabel'].encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
+                labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
         return self._finish_ok(result_set)
