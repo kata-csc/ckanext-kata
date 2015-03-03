@@ -25,7 +25,7 @@ class TestHelpers(TestCase):
 
     def test_get_package_ratings_2(self):
         data_dict = copy.deepcopy(TEST_DATADICT)
-        data_dict.pop('notes')
+        data_dict.pop('notes', '')
         data_dict.pop('temporal_coverage_begin')
         data_dict.pop('discipline')
         data_dict.pop('algorithm')

@@ -572,6 +572,26 @@ class TestDataReading(KataApiTestCase):
         # for agent in self.TEST_DATADICT['agent']:
         #     assert agent.get('name') in res.body
 
+    def test_legacy_description(self):
+        '''
+        Test package.notes
+        '''
+        NOTES = u'CKAN default style of dataset description. No multilingual support.'
+        data = copy.copy(self.TEST_DATADICT)
+        data['notes'] = NOTES
+
+        output = self.api_user_normal.action.package_create(**data)
+        # output = self.api_user_sysadmin.action.package_show(id=output['id'])
+
+        assert output.get('notes') == NOTES
+        assert len(output.get('description')) == 2
+
+        data.pop('description')
+
+        output = self.api_user_normal.action.package_create(**data)
+
+        assert output.get('notes') == NOTES
+        assert len(output.get('description', '')) == 0
 
 class TestSchema(KataApiTestCase):
     '''
