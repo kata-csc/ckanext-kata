@@ -25,14 +25,14 @@
           {% trans %}
             <h2>Licensing</h2>
             <p>The ownership and usage rights of the dataset are described in Etsin.</p>
-            <p>All dataset metadata in Etsin are made available under <a href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons 0 licence</a>.</p>
-            <p>Data owners decide on the licence of the research data described in Etsin. For open data, <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons BY 4.0 licence is recommended</a>.</p>
+            <p>All dataset metadata in Etsin are made available under <a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank">Creative Commons 0 licence</a>.</p>
+            <p>Data owners decide on the licence of the research data described in Etsin. For open data, <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons BY 4.0 licence is recommended</a>.</p>
           {% endtrans %}
 
             <div class="centered-container img-short">
-              <a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank">
+              <a href="{{ _('http://creativecommons.org/publicdomain/zero/1.0/') }}" target="_blank">
                   <img src="../../base/images/about_logo_cc-zero.png" title="CC0" width="128px"></a>
-              <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">
+              <a href="{{ _('https://creativecommons.org/licenses/by/4.0/') }}" target="_blank">
                   <img src="../../base/images/about_logo_cc-by.png" title="CC BY 4.0" width="128px"></a>
             </div>
 
@@ -54,9 +54,9 @@
 
           {% trans %}
             <h2>API</h2>
-            <p>In addition to the graphical user interface, data in Etsin may be used through an <a href="http://etsin.avointiede.fi/api/3">open interface</a>.</p>
-            <p><a href="http://etsin.avointiede.fi/fi/help#api-reference">Instructions on how to use the Etsin API</a> may be found in the help section.</p>
-            <p><a href="http://docs.ckan.org/en/ckan-2.1.2/api.html">General documentation of the CKAN API</a> may be found on the CKAN pages.</p>
+            <p>In addition to the graphical user interface, data in Etsin may be used through an <a href="http://etsin.avointiede.fi/api/3" target="_blank">open interface</a>.</p>
+            <p><a href="http://etsin.avointiede.fi/fi/help#api-reference" target="_blank">Instructions on how to use the Etsin API</a> may be found in the help section.</p>
+            <p><a href="http://docs.ckan.org/en/ckan-2.1.2/api.html" target="_blank">General documentation of the CKAN API</a> may be found on the CKAN pages.</p>
           {% endtrans %}
 
           {% trans %}
@@ -68,10 +68,10 @@
 
             <div class="centered-container img-tall">
               <a href="{{ _('http://www.minedu.fi/OPM/?lang=en') }}" target="_blank">
-                  <img src="../../base/images/about_logo_okm-teksti.png" title="{{ _('Ministry of Education and Culture of Finland') }}"></a>
+                  <img src="{{ _('../../base/images/about_logo_okm_en.png') }}" title="{{ _('Ministry of Education and Culture of Finland') }}"></a>
               <a href="{{ _('http://openscience.fi/') }}" target="_blank">
                   <img src="{{ _('../../base/images/about_logo_att_en.jpg') }}" title="{{ _('Open Science and Research Initiative') }}"></a>
-              <a href="{{ _('https://www.csc.fi/home') }}" target="_blank">
+              <a href="{{ _('https://www.csc.fi/en') }}" target="_blank">
                   <img src="../../base/images/about_logo_csc.jpg" title="{{ _('CSC - IT Center for Science') }}"></a>
             </div>
 

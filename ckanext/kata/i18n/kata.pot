@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 1.3.2\n"
+"Project-Id-Version: ckanext-kata 1.3.3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-03-03 08:57+0000\n"
+"POT-Creation-Date: 2015-03-03 13:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -802,11 +802,20 @@ msgstr ""
 msgid ""
 " <h2>Licensing</h2> <p>The ownership and usage rights of the dataset are "
 "described in Etsin.</p> <p>All dataset metadata in Etsin are made available "
-"under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\">Creative "
-"Commons 0 licence</a>.</p> <p>Data owners decide on the licence of the "
-"research data described in Etsin. For open data, <a "
-"href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons BY 4.0"
-" licence is recommended</a>.</p> "
+"under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
+"target=\"_blank\">Creative Commons 0 licence</a>.</p> <p>Data owners decide "
+"on the licence of the research data described in Etsin. For open data, <a "
+"href=\"http://creativecommons.org/licenses/by/4.0/\" "
+"target=\"_blank\">Creative Commons BY 4.0 licence is recommended</a>.</p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/about.html:33
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
+msgid "http://creativecommons.org/publicdomain/zero/1.0/"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/about.html:35
+msgid "https://creativecommons.org/licenses/by/4.0/"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:39
@@ -849,12 +858,14 @@ msgstr ""
 #: ckanext/kata/theme/templates/home/about.html:55
 msgid ""
 " <h2>API</h2> <p>In addition to the graphical user interface, data in Etsin "
-"may be used through an <a href=\"http://etsin.avointiede.fi/api/3\">open "
-"interface</a>.</p> <p><a href=\"http://etsin.avointiede.fi/fi/help#api-"
-"reference\">Instructions on how to use the Etsin API</a> may be found in the "
-"help section.</p> <p><a "
-"href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\">General documentation of"
-" the CKAN API</a> may be found on the CKAN pages.</p> "
+"may be used through an <a href=\"http://etsin.avointiede.fi/api/3\" "
+"target=\"_blank\">open interface</a>.</p> <p><a "
+"href=\"http://etsin.avointiede.fi/fi/help#api-reference\" "
+"target=\"_blank\">Instructions on how to use the Etsin API</a> may be found "
+"in the help section.</p> <p><a "
+"href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\" "
+"target=\"_blank\">General documentation of the CKAN API</a> may be found on "
+"the CKAN pages.</p> "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:62
@@ -870,6 +881,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:70
 msgid "http://www.minedu.fi/OPM/?lang=en"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/about.html:71
+msgid "../../base/images/about_logo_okm_en.png"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:71
@@ -889,7 +904,7 @@ msgid "Open Science and Research Initiative"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:74
-msgid "https://www.csc.fi/home"
+msgid "https://www.csc.fi/en"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:75
@@ -5649,10 +5664,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
 msgid "By submitting content, I agree to release this metadata contribution under the"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
-msgid "http://creativecommons.org/publicdomain/zero/1.0/"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6

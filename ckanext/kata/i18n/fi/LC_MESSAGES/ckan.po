@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-03-03 08:57+0000\n"
+"POT-Creation-Date: 2015-03-03 13:49+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -839,20 +839,30 @@ msgid ""
 " <h2>Licensing</h2> <p>The ownership and usage rights of the dataset are "
 "described in Etsin.</p> <p>All dataset metadata in Etsin are made "
 "available under <a "
-"href=\"http://creativecommons.org/publicdomain/zero/1.0/\">Creative "
-"Commons 0 licence</a>.</p> <p>Data owners decide on the licence of the "
-"research data described in Etsin. For open data, <a "
-"href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons BY"
-" 4.0 licence is recommended</a>.</p> "
+"href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
+"target=\"_blank\">Creative Commons 0 licence</a>.</p> <p>Data owners "
+"decide on the licence of the research data described in Etsin. For open "
+"data, <a href=\"http://creativecommons.org/licenses/by/4.0/\" "
+"target=\"_blank\">Creative Commons BY 4.0 licence is recommended</a>.</p>"
+" "
 msgstr ""
 " <h2>Käyttöoikeudet</h2> <p>Osana aineistojen kuvailua tulee määrittää "
 "aineiston omistajuus ja käyttöoikeudet.</p> <p>Aineistojen kuvailutiedot "
 "Etsimessä ovat avoimia <a "
-"href=\"http://creativecommons.org/publicdomain/zero/1.0/\">CC0-lisenssillä</a>.</p><p>Itse"
-" aineistojen lisensoinnista päättävät niiden omistajat. Avoimelle datalle"
-" suositellaan <a "
-"href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons BY"
-" 4.0-lisenssiä</a>.</p>"
+"href=\"https://creativecommons.org/publicdomain/zero/1.0/legalcode.fi\" "
+"target=\"_blank\">CC0-lisenssillä</a>.</p><p>Itse aineistojen "
+"lisensoinnista päättävät niiden omistajat. Avoimelle datalle suositellaan"
+" <a href=\"http://creativecommons.org/licenses/by/4.0/legalcode.fi\" "
+"target=\"_blank\">Creative Commons BY 4.0-lisenssiä</a>.</p>"
+
+#: ckanext/kata/theme/templates/home/about.html:33
+#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
+msgid "http://creativecommons.org/publicdomain/zero/1.0/"
+msgstr "http://creativecommons.org/publicdomain/zero/1.0/legalcode.fi"
+
+#: ckanext/kata/theme/templates/home/about.html:35
+msgid "https://creativecommons.org/licenses/by/4.0/"
+msgstr "http://creativecommons.org/licenses/by/4.0/legalcode.fi"
 
 #: ckanext/kata/theme/templates/home/about.html:39
 msgid ""
@@ -901,20 +911,24 @@ msgstr "Kielitieteen aineistot"
 #: ckanext/kata/theme/templates/home/about.html:55
 msgid ""
 " <h2>API</h2> <p>In addition to the graphical user interface, data in "
-"Etsin may be used through an <a "
-"href=\"http://etsin.avointiede.fi/api/3\">open interface</a>.</p> <p><a "
-"href=\"http://etsin.avointiede.fi/fi/help#api-reference\">Instructions on"
-" how to use the Etsin API</a> may be found in the help section.</p> <p><a"
-" href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\">General "
-"documentation of the CKAN API</a> may be found on the CKAN pages.</p> "
+"Etsin may be used through an <a href=\"http://etsin.avointiede.fi/api/3\""
+" target=\"_blank\">open interface</a>.</p> <p><a "
+"href=\"http://etsin.avointiede.fi/fi/help#api-reference\" "
+"target=\"_blank\">Instructions on how to use the Etsin API</a> may be "
+"found in the help section.</p> <p><a "
+"href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\" "
+"target=\"_blank\">General documentation of the CKAN API</a> may be found "
+"on the CKAN pages.</p> "
 msgstr ""
 " <h2>Rajapinta</h2> <p>Selainkäyttöliittymän lisäksi Etsintä voi käyttää "
-"myös <a href=\"http://etsin.avointiede.fi/api/3\">avoimen rajapinnan "
-"kautta.</p> <p><a href=\"http://etsin.avointiede.fi/fi/help#api-"
-"reference\">Rajapinnan käyttöohjeita</a> on dokumentoitu palvelun "
+"myös <a href=\"http://etsin.avointiede.fi/api/3\" "
+"target=\"_blank\">avoimen rajapinnan kautta.</p> <p><a "
+"href=\"http://etsin.avointiede.fi/fi/help#api-reference\" "
+"target=\"_blank\">Rajapinnan käyttöohjeita</a> on dokumentoitu palvelun "
 "ohjeissa.</p> Yleinen <a "
-"href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\">CKAN-rajapinnan</a> "
-"englanninkielinen dokumentaatio löytyy CKANin sivustolta."
+"href=\"http://docs.ckan.org/en/ckan-2.1.2/api.html\" target=\"_blank"
+"\">CKAN-rajapinnan</a> englanninkielinen dokumentaatio löytyy CKANin "
+"sivustolta."
 
 #: ckanext/kata/theme/templates/home/about.html:62
 msgid ""
@@ -939,6 +953,10 @@ msgid "http://www.minedu.fi/OPM/?lang=en"
 msgstr "http://www.minedu.fi/OPM/?lang=fi"
 
 #: ckanext/kata/theme/templates/home/about.html:71
+msgid "../../base/images/about_logo_okm_en.png"
+msgstr "../../base/images/about_logo_okm_fi.gif"
+
+#: ckanext/kata/theme/templates/home/about.html:71
 msgid "Ministry of Education and Culture of Finland"
 msgstr "Opetus- ja kulttuuriministeriö"
 
@@ -955,8 +973,8 @@ msgid "Open Science and Research Initiative"
 msgstr "Avoin tiede ja tutkimus -hanke"
 
 #: ckanext/kata/theme/templates/home/about.html:74
-msgid "https://www.csc.fi/home"
-msgstr "https://www.csc.fi/etusivu"
+msgid "https://www.csc.fi/en"
+msgstr "http://www.csc.fi/fi"
 
 #: ckanext/kata/theme/templates/home/about.html:75
 msgid "CSC - IT Center for Science"
@@ -6267,10 +6285,6 @@ msgid ""
 msgstr "Julkaisemalla kuvailutiedot, hyväksyn että ne julkaistaan lisenssillä "
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
-msgid "http://creativecommons.org/publicdomain/zero/1.0/"
-msgstr "http://creativecommons.org/publicdomain/zero/1.0/deed.fi"
-
-#: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
 msgid "Creative Commons CC0 license."
 msgstr "Creative Commons CC0."
 
@@ -6992,4 +7006,7 @@ msgstr "Ensimmäinen kirjautuminen"
 #: ckanext/kata/theme/templates/user/read.html:129
 msgid "API Key"
 msgstr "API-avain"
+
+#~ msgid "https://www.csc.fi/home"
+#~ msgstr "https://www.csc.fi/etusivu"
 
