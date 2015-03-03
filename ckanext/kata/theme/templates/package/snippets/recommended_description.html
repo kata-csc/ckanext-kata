@@ -1,18 +1,38 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-{% if not data.description %}
-  {% data.description = [] %}
+{% set notes = data.description %}
+{% if not notes %}
+  {% set notes = [] %}
 {% endif %}
 
-{% do data.description.append({'text': data.notes, 'lang': h.lang()}) %}
+{% do notes.append({'text': data.notes, 'lang': h.lang()}) %}
 
 <h3 class="module-heading-add-dataset optional">{{ _('Free description') }}{{ kata_form.optional() }}</h3>
-<div class="module-content optional">
-{#% sjdlk %#}
-  {% for note in data.description %}
-    {{ form.markdown('description', id='field-description', label=_('Description'), placeholder=_('a freeform description'), value=note, error=errors.description) }}
-    {# The tooltip can't be inserted so that it would look nice. If needed, add the tooltip below later. #}
-<!--  {{ kata_form.tooltip(tooltip=_('Type a description about the data over here. The field can be filled with free text and you can format the text with Markdown formatting.')) }}  -->
+
+<div class="module-content optional" data-module="custom-fields-kata" data-module-id="description" data-module-numfields="{{ notes|length }}" id="description">
+  {% set description_errors = h.get_dict_errors(errors, '__extras', 'description') %}
+
+  {% for description in notes %}
+    {% set prefix = "description__" ~ loop.index0 ~ "__" %}
+
+    <div class="control-group control-custom{{ " error" if description_errors }}">
+      {{ form.markdown('description', id=prefix ~ 'text', label=_('Description'), placeholder=_('a free-form description'), value=description.text, error=errors.description) }}
+      {# The tooltip can't be inserted so that it would look nice. If needed, add the tooltip below later.       #}
+      {#{ kata_form.tooltip(tooltip=_('Type a description about the data over here. The field can be filled with free text and you can format the text with Markdown formatting.')) }#}
+      <label class="control-label kata-input-comp" for="{{ prefix ~ 'lang' }}">{{ _('Language') }}</label>
+      <div class="controls kata-input-comp">
+        <select name="{{ prefix ~ 'lang' }}">
+        {% snippet 'package/snippets/languages.html', selected=description.lang %}
+        </select>
+
+        {% if loop.index0 == 0 %}
+          {{ kata_form.plusbutton(onclick="$(\'#description_btn__" ~ loop.index0 ~ "__value_id\').change();", class="kata-description-add") }}
+        {% endif %}
+        <input style="display: none;" type="checkbox" id="description_btn__{{ loop.index0 }}__value_id" name="description_btn__{{ loop.index0 }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+      </div>
+    </div>
+
   {% endfor %}
+
 </div>
