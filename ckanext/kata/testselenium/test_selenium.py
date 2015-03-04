@@ -325,7 +325,7 @@ class TestWithUser(TestCase):
         username = u'selenium_contact_user' + str(int(time.time()*100))
         self._register_user(browser, username=username)
 
-        org_name = 'seleniumtesting' + str(int(time.time()*100))
+        org_name = 'Selenium' + str(int(time.time()*100))
         self._create_organization(org_name, username, 'editor')
 
         dataset_url = self._add_dataset(browser, org_name)
