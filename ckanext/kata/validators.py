@@ -534,3 +534,14 @@ def usage_terms_accepted(value, context):
     '''
     if not asbool(value):
         raise Invalid(_('Terms of use must be accepted'))
+
+
+def check_text(key, data, errors, context):
+    '''
+    Stop converting language of empty description fields.
+    '''
+
+    if not data.get((key[0], key[1], 'text')):
+        data.pop(key, None)
+        raise StopOnError
+

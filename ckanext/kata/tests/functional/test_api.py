@@ -577,12 +577,11 @@ class TestDataReading(KataApiTestCase):
         Test package.notes
         '''
         NOTES = u'CKAN default style of dataset description. No multilingual support.'
+
         data = copy.copy(self.TEST_DATADICT)
         data['notes'] = NOTES
 
         output = self.api_user_normal.action.package_create(**data)
-        # output = self.api_user_sysadmin.action.package_show(id=output['id'])
-
         assert output.get('notes') == NOTES
         assert len(output.get('description')) == 2
 
@@ -592,6 +591,20 @@ class TestDataReading(KataApiTestCase):
 
         assert output.get('notes') == NOTES
         assert len(output.get('description', '')) == 0
+
+    def test_empty_descriptions(self):
+        '''
+        Test that empty descriptions gets stripped
+        '''
+        data = copy.copy(self.TEST_DATADICT)
+
+        data['description'].insert(1, {u'lang': u'eng', u'text': ''})
+        data['description'].append({u'lang': u'bnt', u'text': ''})
+
+        output = self.api_user_normal.action.package_create(**data)
+        assert len(output.get('description')) == 2
+
+
 
 class TestSchema(KataApiTestCase):
     '''
