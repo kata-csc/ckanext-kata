@@ -110,10 +110,10 @@ def get_dict_field_errors(errors, field, index, name):
     :returns: `[u'error1', u'error2']`
     '''
     error = []
-    error_dict = errors.get(field)
+    error_list = errors.get(field)
     try:
-        if error_dict and error_dict[index]:
-            error = error_dict[index].get(name)
+        if error_list and error_list[index]:
+            error = error_list[index].get(name)
     except IndexError:
         pass
     return error
