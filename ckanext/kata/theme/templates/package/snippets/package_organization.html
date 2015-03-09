@@ -34,6 +34,9 @@
     </div>
   </div>
 
+  {% set org_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'false', 'data-module-source': '/api/2/util/organization/autocomplete?incomplete=?', 'data-module-label': 'title', 'data-module-key': 'id'} %}
+  {{ form.input('new_orgs', id='field-new-orgs', label=_('New Orgz'), placeholder=_('Choose an organization...'), value=data.owner_org, error=errors.owner_org, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=org_attrs) }}
+
 </div>
 
 {% endblock %}

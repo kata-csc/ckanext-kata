@@ -270,6 +270,20 @@ class KATAApiController(ApiController):
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
         return self._finish_ok(result_set)
 
+    # TODO Juho: Temporary organisation autocomplete implementation in
+    # kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
+    #  @jsonp.jsonpify
+    def organization_autocomplete(self):
+        q = request.params.get('incomplete', '')
+        limit = request.params.get('limit', 20)
+        organization_list = []
+
+        if q:
+            context = {'user': c.user, 'model': model}
+            data_dict = {'q': q, 'limit': limit}
+            organization_list = get_action('organization_autocomplete')(context, data_dict)
+        return self._finish_ok(organization_list)
+
 
 class EditAccessRequestController(BaseController):
     '''
