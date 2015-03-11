@@ -83,8 +83,8 @@ class Schemas:
                              'email': [not_empty, unicode, va.validate_email, co.flattened_to_extras],
                              'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
-        schema['description'] = {'text': [ignore_missing, unicode, co.flattened_to_extras],
-                                 'lang': [ignore_missing, va.check_text, co.convert_languages, unicode, co.flattened_to_extras]}
+        schema['description'] = {'text': [ignore_empty, unicode, co.flattened_to_extras],
+                                 'lang': [ignore_empty, va.check_text, co.convert_languages, unicode, co.flattened_to_extras]}
         schema['event'] = {'type': [ignore_missing, va.check_events, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_date],
@@ -111,7 +111,6 @@ class Schemas:
         schema['version'] = [not_empty, unicode, va.validate_kata_date]
         schema['availability'] = [not_missing, co.convert_to_extras_kata]
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
-        # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
         schema['__extras'] = [va.check_agent, va.check_langtitle, va.check_contact, va.check_pids]
         schema['__junk'] = [va.check_junk]
         schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
