@@ -79,6 +79,13 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                               'URL': u'http://www.tdata.fi',
                               'phone': u'05549583',
                               }],
+                 'description': [
+                     {'lang': u'eng', 'text': u'''This is a dataset used for testing Kata CKAN extension.
+                     This is entirely fictional data and any resemblance to anything is purely coincidental.
+                     No animals were harmed during this dataset creation.'''},
+                     {'lang': u'fin', 'text': u'''Tämä on Kata-CKAN-laajennoksen testaukseen käytetty aineisto.
+                     Aineisto on täysin kuvitteellinen.'''},
+                 ],
                  'direct_download_URL': u'http://www.tdata.fi/kata',
                  'discipline': u'Tietojenkäsittely ja informaatiotieteet',
                  'geographic_coverage': u'Keilaniemi (populated place),Espoo (city)',
@@ -93,13 +100,6 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'license_id': u'cc-by',
                  'mimetype': u'application/csv',
                  'name': u'',
-                 'description': [
-                     {'lang': u'eng', 'text': u'''This is a dataset used for testing Kata CKAN extension.
-                     This is entirely fictional data and any resemblance to anything is purely coincidental.
-                     No animals were harmed during this dataset creation.'''},
-                     {'lang': u'fin', 'text': u'''Tämä on Kata-CKAN-laajennoksen testaukseen käytetty aineisto.
-                     Aineisto on täysin kuvitteellinen.'''},
-                 ],
                  'owner_org': '',
                  'event': [
                      {

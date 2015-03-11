@@ -574,11 +574,11 @@ class TestDataReading(KataApiTestCase):
 
     def test_legacy_description(self):
         '''
-        Test package.notes
+        Test that package.notes is handled properly even with the structured description field.
         '''
         NOTES = u'CKAN default style of dataset description. No multilingual support.'
 
-        data = copy.copy(self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
         data['notes'] = NOTES
 
         output = self.api_user_normal.action.package_create(**data)
@@ -594,15 +594,19 @@ class TestDataReading(KataApiTestCase):
 
     def test_empty_descriptions(self):
         '''
-        Test that empty descriptions gets stripped
+        Test that empty descriptions get stripped
         '''
-        data = copy.copy(self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
 
         data['description'].insert(1, {u'lang': u'eng', u'text': ''})
         data['description'].append({u'lang': u'bnt', u'text': ''})
 
         output = self.api_user_normal.action.package_create(**data)
-        assert len(output.get('description')) == 2
+
+        descriptions = output.get('description')
+
+        assert len(descriptions) == 3
+        assert not descriptions[1]  # This should be an empty dict as it doesn't get converted to DB
 
 
 
