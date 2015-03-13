@@ -498,8 +498,29 @@ def kata_owner_org_validator(key, data, errors, context):
     model = context['model']
     group = model.Group.get(value)
     if not group:
-        raise Invalid(_('Organization does not exist'))
-    group_id = group.id
+        org_name = re.sub(r'[^A-Za-z0-9]+', '-', value).lower()
+        group_own = model.Group.get(org_name)
+        if not group_own:
+            data_dict = {
+                'title': value,
+                'description': u'',
+                'image_url': u'',
+                'users': [{'capacity': 'admin', 'name': context['user']}],
+                'type': 'organization',
+                'name': org_name
+            }
+            new_org = logic.get_action('organization_create')(context, data_dict)
+            group_id = new_org['id']
+            # TODO Juho: add translation
+            # TODO Juho: Handle ü in value
+            h.flash_success('New organisation "{org}" created automatically.'
+                            .format(org=value))
+        else:
+            group_id = group_own.id
+            #raise Invalid('group_own: {go} \n group_own.id: {gid}'.format(
+            #    go=group_own, gid=group_own.id))
+    else:
+        group_id = group.id
     data[key] = group_id
 
 
