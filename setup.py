@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-version = '1.3.2'
+version = '1.3.3'
 
 setup(
     name='ckanext-kata',
@@ -32,7 +32,7 @@ setup(
         'iso639 >= 0.4.0',
     ],
     dependency_links=[
-        "git+https://github.com/noumar/iso639.git#egg=iso639-0.4.0"
+        "git+https://github.com/noumar/iso639.git#egg=iso639-0.4.1"
     ],
     package_data={
         'ckan': [

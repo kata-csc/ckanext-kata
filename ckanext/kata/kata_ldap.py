@@ -30,8 +30,8 @@ def get_user_from_ldap(uploader):
                         return False
                     else:
                         return res[0][1]['eduPersonPrincipalName'][0]
-                except:
-                    log.info('Faulty LDAP result')
+                except Exception as e:
+                    log.info('Faulty LDAP result %s' % e)
                     return False
 
             except ldap.INVALID_CREDENTIALS:

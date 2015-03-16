@@ -402,6 +402,7 @@ def dataset_is_valid(package):
     """ Check if given dataset is valid. Uses schema from plugin.
         Return true if dataset is valid.
     """
+    package['accept-terms'] = u'True'
     package_plugin = plugins.lookup_package_plugin(package['type'])
     _, errors = validate(package, package_plugin.update_package_schema(), {'model': model, 'session': model.Session, 'user': c.user})
     return not bool(errors)
