@@ -37,6 +37,9 @@ within_tertiary
   page and not the left column.
 
 #}
+
+{% set label_function = h.format_facet_labels %}
+
 {% with items = items or h.get_facet_items_dict(name) %}
 {% set found = False %}
   {% if within_tertiary %}
@@ -65,9 +68,6 @@ within_tertiary
           {% for item in items %}
             {% set href = h.remove_url_param(name, item.name, extras=extras) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
             {% set label = label_function(item) if label_function else item.display_name %}
-            {% if title == _('Discipline') %}
-              {% set label = h.get_label_for_uri(label, 'okm-tieteenala') %}
-            {% endif %}
             {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
             {% set count = count_label(item['count']) if count_label else ('(%d)' % item['count']) %}
             <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %}">
