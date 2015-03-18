@@ -513,12 +513,10 @@ def kata_owner_org_validator(key, data, errors, context):
             group_id = new_org['id']
             # TODO Juho: add translation
             # TODO Juho: Handle ü in value
-            h.flash_success('New organisation "{org}" created automatically.'
+            h.flash_success(_('New organisation "{org}" created automatically.')
                             .format(org=value))
         else:
             group_id = group_own.id
-            #raise Invalid('group_own: {go} \n group_own.id: {gid}'.format(
-            #    go=group_own, gid=group_own.id))
     else:
         group_id = group.id
     data[key] = group_id

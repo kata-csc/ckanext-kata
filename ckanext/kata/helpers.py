@@ -642,3 +642,14 @@ def disciplines_string_resolved(disciplines, ontology=None, lang=None):
         return ", ".join([get_label_for_uri(x, ontology, lang) for x in disc_list])
     else:
         return disciplines
+
+
+def resolve_org_name(org_id):
+    '''
+    Get the name of the organization by id.
+    '''
+    group = model.Group.get(org_id)
+    if not group:
+        return org_id
+    return group.title
+    # return 'HALOO!?'
