@@ -1,0 +1,54 @@
+{% extends "package/base.html" %}
+
+{% block primary %}
+
+<div class="module-content tab-content active">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#basic-tab" data-toggle="tab">{{ _('General metadata') }}</a></li>
+        <li><a href="#agents-tab" data-toggle="tab">{{ _('Agents') }}</a></li>
+        <li><a href="#licence-tab" data-toggle="tab">{{ _('Licence and availability') }}</a></li>
+        <li><a href="#additional-tab" data-toggle="tab">{{ _('Additional information') }}</a></li>
+        <li><a href="#identifier-tab" data-toggle="tab">{{ _('Identifiers') }}</a></li>
+        <li><a href="#discipline-tab" data-toggle="tab">{{ _('Discipline specific') }}</a></li>
+    </ul>
+    <div id="basic-tab" class="tab-pane active">
+    {#% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %#}
+        <p>Basic stuff</p>
+    </div>
+    <div id="agents-tab" class="tab-pane">
+        <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+    </div>
+    <div id="licence-tab" class="tab-pane">
+        <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+    </div>
+    <div id="additional-tab" class="tab-pane">
+        <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+    </div>
+    <div id="identifier-tab" class="tab-pane">
+        <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+    </div>
+    <div id="discipline-tab" class="tab-pane">
+        <p>You lack discipline!</p>
+    </div>
+
+    {#% snippet 'package/snippets/package_terms_of_use.html' %#}
+
+    {% block form_actions %}
+        <div class="form-actions">
+            {% block delete_button %}
+                {#% if h.check_access('package_delete', {'id': data.id}) %#}
+                {#% set locale = h.dump_json({'content': _('Are you sure you want to delete this dataset?')}) %#}
+                {# <a class="btn btn-danger pull-left" href="{% url_for controller='package', action='delete', id=data.id %}" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a> #}
+                {#% endif %#}
+            {% endblock %}
+            {% block cancel_button %}
+                <a class="btn" href="">{% block cancel_button_text %}{{ _('Cancel') }}{% endblock %}</a>
+            {% endblock %}
+            <button class="btn btn-primary" type="submit" value="finish" name="save">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
+
+            <button class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled">{% block save_and_publish_button_text %}{{ _('Save and publish') }}{% endblock %}</button>
+        </div>
+    {% endblock %}
+
+</div>
+{% endblock %}
