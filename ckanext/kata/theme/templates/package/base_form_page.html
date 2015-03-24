@@ -1,5 +1,20 @@
 {% extends "package/base.html" %}
 
+{% set user = c.userobj %}
+
+{% set data = data or pkg or {} %}
+{% set errors = errors or {} %}
+
+{# From both package_basic_fields.html #}
+{% set dataset_is_draft = data.get('state', 'draft').startswith('draft') or data.get('state', 'none') ==  'none' %}
+{% set dataset_has_organization = data.owner_org or data.group_id %}
+{% set organizations_available = h.organizations_available('create_dataset') %}
+{% set user_is_sysadmin = h.check_access('sysadmin') %}
+{% set show_organizations_selector = organizations_available and (user_is_sysadmin or dataset_is_draft) %}
+{% set show_visibility_selector = dataset_has_organization or (organizations_available and (user_is_sysadmin or dataset_is_draft)) %}
+
+{% set agent_index = h.create_loop_index() %}
+
 {% block primary %}
 
 <div class="module-content tab-content active">
@@ -15,7 +30,7 @@
   </ul>
 
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#basic-tab" data-toggle="tab">{{ _('General metadata') }}</a></li>
+        <li class="active"><a href="#basic-tab" data-toggle="tab">{{ _('Basic metadata') }}</a></li>
         <li><a href="#agents-tab" data-toggle="tab">{{ _('Agents') }}</a></li>
         <li><a href="#licence-tab" data-toggle="tab">{{ _('Licence and availability') }}</a></li>
         <li><a href="#additional-tab" data-toggle="tab">{{ _('Additional information') }}</a></li>
@@ -23,26 +38,28 @@
         <li><a href="#discipline-tab" data-toggle="tab">{{ _('Discipline specific') }}</a></li>
     </ul>
     <div id="basic-tab" class="tab-pane active">
-    {#% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %#}
-        <p>Basic stuff</p>
+      {% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
     </div>
     <div id="agents-tab" class="tab-pane">
-        <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+      {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
     </div>
     <div id="licence-tab" class="tab-pane">
-        <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+      {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
     </div>
     <div id="additional-tab" class="tab-pane">
-        <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+      {% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
     </div>
     <div id="identifier-tab" class="tab-pane">
-        <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+      {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
     </div>
     <div id="discipline-tab" class="tab-pane">
-        <p>You lack discipline!</p>
+      <p>Discipline specific stuff will be here</p>
     </div>
 
     {% snippet 'package/snippets/package_terms_of_use.html' %}
+
+    <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />
+    <input type="hidden" value="True" id="private" name="private"/>
 
     {% block form_actions %}
         <div class="form-actions">

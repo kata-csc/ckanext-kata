@@ -2,8 +2,6 @@
 {% import 'macros/kata_form.html' as kata_form %}
 
 <section class="module">
-  <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
-
   <div class="module-content">
     <h3 class="module-heading-add-dataset required">{{ _('Titles') }} {{ kata_form.required() }}</h3>
 
@@ -96,7 +94,5 @@
           </span>
         </div>
     </div>
-    {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
-
   </div>
 </section>
