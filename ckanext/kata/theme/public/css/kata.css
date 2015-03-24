@@ -94,8 +94,9 @@
     font-size: 14px;
 }
 .checkbox-generate {
-    margin-bottom: 10px !important;
+    margin-bottom: 12px !important;
     width: 15px !important;
+    vertical-align: bottom;
 }
 .main.homepage {
     border-top: 1px solid #000 !important;
@@ -1173,6 +1174,7 @@ h3.optional {
 
 .kata-checkbox-label {
     display: inline-block;
+    padding-right: 8px;
 }
 .kata-checkbox-label:after, .kata-blank-label:after {
     content: ""

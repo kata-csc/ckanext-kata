@@ -1,7 +1,6 @@
 {% import 'macros/kata_form.html' as kata_form %}
 
-<h3 class="module-heading-add-dataset">{{ _('Terms of use') }} {{ kata_form.required() }}</h3>
-<div class="module-content">
+<div class="module-content edit-user-form-infotext form-actions">
     <p>
         {{ _('By submitting content, I agree to release this metadata contribution under the') }} <a href="{{ _('http://creativecommons.org/publicdomain/zero/1.0/') }}" target="_blank"> {{ _('Creative Commons CC0 license.') }}</a>
     </p>
@@ -10,7 +9,7 @@
         <a href="{{ _('http://openscience.fi/documents/14273/17985/Etsin+Terms+of+Use') }}" target="_blank">{{ _('Terms of use') }}</a><br />
     </p>
     <div class="control-group control-custom">
-      <label class="control-label kata-input-comp" for="accept-terms">{{ _('Check to accept') }}</label>
-      <input type="checkbox" class="checkbox checkbox-generate" name="accept-terms" id="accept-terms" data-module="kata-terms-of-use">
+      <label class="kata-checkbox-label control-label" for="accept-terms">{{ _('Check to accept:') }}</label>
+      <input type="checkbox" class="checkbox checkbox-generate" name="accept-terms" id="accept-terms" data-module="kata-terms-of-use" />
     </div>
 </div>
