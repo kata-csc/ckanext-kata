@@ -1252,3 +1252,15 @@ label.control-label.kata-wide-label {
 .kata-search-module {
     padding: 0;
 }
+
+.kata-dataset-tabs > li > a {
+    background-color: #0c8bbe;
+    color: #FFFFFF !important;
+}
+.kata-dataset-tabs > li > a:hover {
+    color: #0c8bbe !important;
+}
+.kata-dataset-tabs > li.active > a {
+    color: #0c8bbe !important;
+    font-weight: bold;
+}
