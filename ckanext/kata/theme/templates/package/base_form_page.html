@@ -20,6 +20,12 @@
 <div class="module-content tab-content active">
 
 {#% snippet 'package/snippets/info.html', pkg=pkg, action='package_edit' %#}
+    {% if errors %}
+      <div data-module="kata-notification-tools" class="floating-error" id="kata-error-window">
+        <i class="icon-info-sign">&nbsp;</i>{{ _('You have errors in your metadata. Please, make the requested corrections.') }}
+      </div>
+    {% endif %}
+
   <ul class="unstyled nav nav-simple">
     <li class="nav-btn"><a href="#TODO" class="btn disabled">{{ _("Upload XML") }}</a></li>
     {% if pkg and h.check_access('package_update', {'id':pkg.id }) %}
