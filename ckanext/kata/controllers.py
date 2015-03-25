@@ -193,8 +193,11 @@ class KATAApiController(ApiController):
 
         :rtype: dictionary
         '''
+
         query = request.params.get('incomplete', '')
-        return self._onki_autocomplete(query, "koko")
+        language = request.params.get('language', '')
+
+        return self._onki_autocomplete_uri(query, "koko", language)
 
     def discipline_autocomplete(self):
         '''
@@ -202,8 +205,11 @@ class KATAApiController(ApiController):
 
         :rtype: dictionary
         '''
+
         query = request.params.get('incomplete', '')
-        return self._onki_autocomplete_uri(query, "okm-tieteenala")
+        language = request.params.get('language', '')
+
+        return self._onki_autocomplete_uri(query, "okm-tieteenala", language)
 
     def location_autocomplete(self):
         '''
@@ -212,9 +218,11 @@ class KATAApiController(ApiController):
         :rtype: dictionary
         '''
         query = request.params.get('incomplete', '')
+        language = request.params.get('language', '')
+
         return self._onki_autocomplete(query, "paikat")
 
-    def _onki_autocomplete(self, query, vocab):
+    def _onki_autocomplete(self, query, vocab, language=None):
         '''
         Queries the remote ontology for suggestions and
         formats the data.
@@ -223,17 +231,22 @@ class KATAApiController(ApiController):
         :type query: string
         :param vocab: the vocabulary/ontology
         :type vocab: string
+        :param language: the language of the query
+        :type query: string
 
         :rtype: dictionary
         '''
         url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
 
+        if language:
+            url_template += "&lang={l}"
+
         labels = []
         if query:
             try:
-                url = url_template.format(q=query, v=vocab)
+                url = url_template.format(q=query, v=vocab, l=language)
             except UnicodeEncodeError:
-                url = url_template.format(q=query.encode('utf-8'), v=vocab)
+                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
             data = urllib2.urlopen(url).read()
             jsondata = json.loads(data)
             if u'results' in jsondata:
@@ -245,9 +258,10 @@ class KATAApiController(ApiController):
                 'Result': [{'Name': label} for label in labels]
             }
         }
+
         return self._finish_ok(result_set)
 
-    def _onki_autocomplete_uri(self, query, vocab):
+    def _onki_autocomplete_uri(self, query, vocab, language=None):
         '''
         Queries the remote ontology for suggestions and
         formats the data, suggests uri's. Returns uri as key and
@@ -257,17 +271,23 @@ class KATAApiController(ApiController):
         :type query: string
         :param vocab: the vocabulary/ontology
         :type vocab: string
+        :param language: the language of the query
+        :type query: string
 
         :rtype: dictionary
         '''
+
         url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
+
+        if language:
+            url_template += "&lang={l}"
 
         labels = []
         if query:
             try:
-                url = url_template.format(q=query, v=vocab)
+                url = url_template.format(q=query, v=vocab, l=language)
             except UnicodeEncodeError:
-                url = url_template.format(q=query.encode('utf-8'), v=vocab)
+                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
             data = urllib2.urlopen(url).read()
             jsondata = json.loads(data)
             if u'results' in jsondata:
@@ -275,6 +295,7 @@ class KATAApiController(ApiController):
                 labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
+
         return self._finish_ok(result_set)
 
 

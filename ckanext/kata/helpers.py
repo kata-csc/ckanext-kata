@@ -593,7 +593,15 @@ def get_labels_for_uri_nocache(uri, ontology=None):
     if jsondata.get('graph'):
         for item in jsondata['graph']:
             if item.get('uri') == uri:
-                return item['prefLabel']
+                translations = item['prefLabel']
+
+                # When FINTO has only one translation for a word
+                # it returns a singular dict item. In this case we need
+                # to return it within a list to have a consistent return value
+                if isinstance(translations, dict):
+                    return [translations]
+
+                return translations
     return None
 
 
@@ -606,7 +614,7 @@ def get_label_for_uri(uri, ontology=None, lang=None):
     :param lang: language of the label. If not provided, uses the language of environment
     :return: resolved label by given language or original string if uri can not be resolved
     '''
-    if not uri.startswith("http://www.yso.fi") or not isinstance(uri, basestring):
+    if not isinstance(uri, basestring) or not uri.startswith("http://www.yso.fi"):
         return uri
 
     try:
@@ -642,3 +650,15 @@ def disciplines_string_resolved(disciplines, ontology=None, lang=None):
         return ", ".join([get_label_for_uri(x, ontology, lang) for x in disc_list])
     else:
         return disciplines
+
+def format_facet_labels(facet_item):
+    '''
+    This function is used by facet_list.html to format the labels properly.
+    In the case of Etsin, the facet label url's are resolved and returned
+    according to the display language
+
+    :param facet_item: a dict containing the Finto uri as display_name
+    :return: a resolved label in an according language
+    '''
+
+    return get_label_for_uri(facet_item['display_name'])

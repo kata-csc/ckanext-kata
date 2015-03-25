@@ -256,6 +256,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'dataset_is_valid': helpers.dataset_is_valid,
             'disciplines_string_resolved': helpers.disciplines_string_resolved,
             'filter_system_users': helpers.filter_system_users,
+            'format_facet_labels': helpers.format_facet_labels,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
             'get_contributors': helpers.get_contributors,
@@ -579,19 +580,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if EMAIL.match(item['key']):
                 item['value'] = u''
 
-        disciplines = helpers.split_disciplines(pkg_dict.get('discipline'))
-        resolved_disc = []
-        if disciplines:
-            for disc in disciplines:
-                try:
-                    labels = helpers.get_labels_for_uri(disc, 'okm-tieteenala')
-                except TypeError:
-                    labels = helpers.get_labels_for_uri_nocache(disc, 'okm-tieteenala')
-                if labels:
-                    for label in labels:
-                        resolved_disc.append(label.get('value'))
-        pkg_dict['extras_discipline_resolved'] = ",".join(resolved_disc)
-
+        # Resolve uri labels and add them to the Solr index.
+        # Discipline field in pkg_dict is of type comma-separated-string, while
+        # tags are given already as a list
+        split_disciplines = helpers.split_disciplines(pkg_dict.get('discipline'))
+        pkg_dict['extras_discipline_resolved'] = self._resolve_labels(split_disciplines, 'okm-tieteenala')
+        pkg_dict['extras_keywords_resolved'] = self._resolve_labels(pkg_dict.get('tags'), 'koko')
 
         # Make dates compliant with ISO 8601 used by Solr.
         # We assume here that what we get is partial date (YYYY or YYYY-MM) that is compliant with the standard.
@@ -627,3 +621,27 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         '''
         return NotAuthorizedMiddleware(app, config)
 
+    def _resolve_labels(self, entries, vocab):
+        '''
+        A helper function to resolve lables for discplines and tag_strings
+
+        :param entries: the comma-separated pkg_dict entries for a set of uris as a string
+        :param vocab: the vocabulary of the query
+        :returns: a comma-separated string of resolved entries.
+        unresolved entries are left as-is.
+        '''
+
+        resolved_entries = []
+
+        # resolve entries by URI from FINTO
+        if entries:
+            for entry in entries:
+                try:
+                    labels = helpers.get_labels_for_uri(entry, vocab)
+                except TypeError:
+                    labels = helpers.get_labels_for_uri_nocache(entry, vocab)
+                if labels:
+                    for label in labels:
+                        resolved_entries.append(label.get('value'))
+
+        return ",".join(resolved_entries)
