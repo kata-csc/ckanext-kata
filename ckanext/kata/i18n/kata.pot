@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-03-03 13:49+0000\n"
+"POT-Creation-Date: 2015-03-25 13:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -399,34 +399,57 @@ msgstr ""
 msgid "Terms of use must be accepted"
 msgstr ""
 
-#: ckanext/kata/theme/templates/footer.html:13
-msgid "Etsin is part of the "
+#: ckanext/kata/theme/templates/footer.html:12
+msgid ""
+" <p>Open science and research is an initiative funded by the Ministry of "
+"Education and Culture with the target of making Finland one of the leading "
+"countries in openness of science and research by the year 2017.</p> "
 msgstr ""
 
-#: ckanext/kata/theme/templates/footer.html:13
 #: ckanext/kata/theme/templates/footer.html:22
 msgid "http://openscience.fi"
 msgstr ""
 
-#: ckanext/kata/theme/templates/footer.html:13
-msgid "Open science and research initiative's (ATT)"
-msgstr ""
-
-#: ckanext/kata/theme/templates/footer.html:13
-msgid " services"
-msgstr ""
-
-#: ckanext/kata/theme/templates/footer.html:16
-msgid "Service is provided by "
-msgstr ""
-
-#: ckanext/kata/theme/templates/footer.html:16
-#: ckanext/kata/theme/templates/footer.html:22
+#: ckanext/kata/theme/templates/footer.html:24
 msgid "http://www.csc.fi/"
 msgstr ""
 
-#: ckanext/kata/theme/templates/footer.html:16
-msgid "CSC - IT Center for Science Ltd"
+#: ckanext/kata/theme/templates/footer.html:27
+msgid "http://okm.fi/OPM/?lang=en"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:28
+#: ckanext/kata/theme/templates/home/about.html:87
+msgid "../../base/images/about_logo_okm_en.png"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:28
+#: ckanext/kata/theme/templates/home/about.html:87
+msgid "Ministry of Education and Culture of Finland"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:29
+#: ckanext/kata/theme/templates/home/about.html:88
+msgid "http://openscience.fi/"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:30
+msgid "../../base/images/about_logo_att_pysty_en.png"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:30
+#: ckanext/kata/theme/templates/home/about.html:89
+msgid "Open Science and Research Initiative"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:31
+#: ckanext/kata/theme/templates/home/about.html:90
+msgid "https://www.csc.fi/en"
+msgstr ""
+
+#: ckanext/kata/theme/templates/footer.html:32
+#: ckanext/kata/theme/templates/home/about.html:91
+msgid "CSC - IT Center for Science"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:12
@@ -806,7 +829,7 @@ msgid ""
 "target=\"_blank\">Creative Commons 0 licence</a>.</p> <p>Data owners decide "
 "on the licence of the research data described in Etsin. For open data, <a "
 "href=\"http://creativecommons.org/licenses/by/4.0/\" "
-"target=\"_blank\">Creative Commons BY 4.0 licence is recommended</a>.</p> "
+"target=\"_blank\">Creative Commons BY 4.0</a> licence is recommended.</p> "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:33
@@ -870,6 +893,15 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:62
 msgid ""
+" <h2>Development</h2> <p>Etsin is based on open source CKAN data portal. The "
+"open source code created in the development of Etsin is available from our "
+"GitHub repository. The development work utilizes the PyCharm editor.</p> "
+"<p>To contact the Etsin development team please email <a "
+"href=\"mailto:servicedesk@csc.fi\">servicedesk@csc.fi</a></p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/about.html:77
+msgid ""
 " <h2>Contact</h2> <p>Etsin is offered to the scientific community by the "
 "Ministry of Education and Culture of Finland. Etsin is developed and "
 "maintained by CSC - IT Center for Science Ltd.</p> <p>Customer service "
@@ -879,45 +911,12 @@ msgid ""
 " (EET). During that time, the service will be out of use.</p> "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/about.html:70
+#: ckanext/kata/theme/templates/home/about.html:86
 msgid "http://www.minedu.fi/OPM/?lang=en"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/about.html:71
-msgid "../../base/images/about_logo_okm_en.png"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:71
-msgid "Ministry of Education and Culture of Finland"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:72
-msgid "http://openscience.fi/"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:73
+#: ckanext/kata/theme/templates/home/about.html:89
 msgid "../../base/images/about_logo_att_en.jpg"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:73
-msgid "Open Science and Research Initiative"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:74
-msgid "https://www.csc.fi/en"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:75
-msgid "CSC - IT Center for Science"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:79
-msgid ""
-" <h2>Development</h2> <p>Etsin is based on open source CKAN data portal. The "
-"open source code crated in the development of Etsin is available from our "
-"GitHub repository. The development work utilizes the PyCharm editor.</p> "
-"<p>To contact the Etsin development team please email <a "
-"href=\"mailto:servicedesk@csc.fi\">servicedesk@csc.fi</a></p> "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:3

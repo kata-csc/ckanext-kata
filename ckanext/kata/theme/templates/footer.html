@@ -9,17 +9,28 @@
       </div>
       <div class="footer-second">
         {% block footer_contact %}
-        <p>
-          {{ _('Etsin is part of the ') }}<a href="{{ _('http://openscience.fi') }}" target="_blank">{{ _('Open science and research initiative\'s (ATT)') }}</a>{{ _(' services') }}
-        </p>
-        <p>
-          {{ _('Service is provided by ') }}<a href="{{ _('http://www.csc.fi/') }}" target="_blank">{{ _('CSC - IT Center for Science Ltd') }}</a>
-        </p>
+          {% trans %}
+            <p>Open science and research is an initiative funded by the Ministry of Education and Culture
+              with the target of making Finland one of the leading countries in openness of science and
+              research by the year 2017.</p>
+          {% endtrans %}
         {% endblock %}
       </div>
       <div class="footer-third">
         {% block footer_logo %}
-          <a href="{{ _('http://openscience.fi') }}" target="_blank"><img src="/base/images/ATT_pos_vaaka_RGB.png" alt="TTA"></a>&nbsp;<a href="{{ _('http://www.csc.fi/') }}" target="_blank"><img src="/base/images/csc-logo-transp80.png"></a>
+          <!--
+          <a href="{{ _('http://openscience.fi') }}" target="_blank"><img src="/base/images/ATT_pos_vaaka_RGB.png" alt="TTA"></a>
+          &nbsp;
+          <a href="{{ _('http://www.csc.fi/') }}" target="_blank"><img src="/base/images/csc-logo-transp80.png"></a>
+          -->
+        <div class="img-container">
+          <a href="{{ _('http://okm.fi/OPM/?lang=en') }}" target="_blank">
+              <img src="{{ _('../../base/images/about_logo_okm_en.png') }}" title="{{ _('Ministry of Education and Culture of Finland') }}"></a>
+          <a href="{{ _('http://openscience.fi/') }}" target="_blank">
+              <img src="{{ _('../../base/images/about_logo_att_pysty_en.png') }}" title="{{ _('Open Science and Research Initiative') }}"></a>
+          <a href="{{ _('https://www.csc.fi/en') }}" target="_blank">
+              <img src="/base/images/csc-logo-transp80.png" title="{{ _('CSC - IT Center for Science') }}"></a>
+          </div>
         {% endblock %}
       </div>
       

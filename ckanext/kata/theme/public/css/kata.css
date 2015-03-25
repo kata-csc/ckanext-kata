@@ -106,7 +106,7 @@
 .site-footer {
     background-color: #ebebec;
     background-image: none;
-    padding: 20px 0;
+    padding: 10px 0;
     background-image:-webkit-linear-gradient(bottom, #ebebec, #ebebec);
     background-image:-moz-linear-gradient(bottom, #ebebec, #ebebec);
     background-image:-o-linear-gradient(bottom, #ebebec, #ebebec);
@@ -145,29 +145,37 @@
     background-repeat: no-repeat no-repeat;
     padding-left: 80px;
     background: none;
+    display: none;
 }
 .footer-second {
     margin: 0px;
     float: left;
-    padding-top: 20px;
+    padding-top: 44px;
     background-image: none;
     background-position: 0 0;
     background-repeat: no-repeat no-repeat;
-    padding-left: 50px;
+    padding-left: 32px;
     background: none;
+    width: 50%;
 }
 .footer-third {
     margin: 0px;
     float: right;
+    padding-right: 32px;
     background-image: none !important;
     background-position: 0 0;
     background-repeat: no-repeat no-repeat;
-     padding-left: 20px;
+    /*padding-left: 20px;*/
     background: none;
 }
-.footer-third img {
-    height: 80px;
+
+.footer-third .img-container img {
+    /*text-align: center;*/
+    margin: 24px auto;
+    max-height: 80px;
 }
+
+
 .site-footer {
     filter: 0 !important;
 }

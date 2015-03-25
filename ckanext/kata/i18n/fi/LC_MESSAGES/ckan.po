@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-03-03 13:49+0000\n"
+"POT-Creation-Date: 2015-03-25 13:23+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -416,34 +416,61 @@ msgstr ""
 msgid "Terms of use must be accepted"
 msgstr "Käyttöehtojen hyväksyminen on pakollista"
 
-#: ckanext/kata/theme/templates/footer.html:13
-msgid "Etsin is part of the "
-msgstr "Etsin on osa "
+#: ckanext/kata/theme/templates/footer.html:12
+msgid ""
+" <p>Open science and research is an initiative funded by the Ministry of "
+"Education and Culture with the target of making Finland one of the "
+"leading countries in openness of science and research by the year "
+"2017.</p> "
+msgstr ""
+"<p>ATT-hanke on opetus- ja kulttuuriministeriön rahoittama hanke, "
+"jonka tavoitteena on, että vuoteen 2017 mennessä Suomi nousee yhdeksi"
+" johtavista maista tieteen ja tutkimuksen avoimuudessa.</p>"
 
-#: ckanext/kata/theme/templates/footer.html:13
 #: ckanext/kata/theme/templates/footer.html:22
 msgid "http://openscience.fi"
 msgstr "http://avointiede.fi"
 
-#: ckanext/kata/theme/templates/footer.html:13
-msgid "Open science and research initiative's (ATT)"
-msgstr "Avoin tiede ja tutkimus (ATT) -hankkeen"
-
-#: ckanext/kata/theme/templates/footer.html:13
-msgid " services"
-msgstr " palveluita"
-
-#: ckanext/kata/theme/templates/footer.html:16
-msgid "Service is provided by "
-msgstr "Palvelun tuottaa "
-
-#: ckanext/kata/theme/templates/footer.html:16
-#: ckanext/kata/theme/templates/footer.html:22
+#: ckanext/kata/theme/templates/footer.html:24
 msgid "http://www.csc.fi/"
 msgstr "http://www.csc.fi/"
 
-#: ckanext/kata/theme/templates/footer.html:16
-msgid "CSC - IT Center for Science Ltd"
+#: ckanext/kata/theme/templates/footer.html:27
+msgid "http://okm.fi/OPM/?lang=en"
+msgstr "http://okm.fi/OPM/"
+
+#: ckanext/kata/theme/templates/footer.html:28
+#: ckanext/kata/theme/templates/home/about.html:87
+msgid "../../base/images/about_logo_okm_en.png"
+msgstr "../../base/images/about_logo_okm_fi.gif"
+
+#: ckanext/kata/theme/templates/footer.html:28
+#: ckanext/kata/theme/templates/home/about.html:87
+msgid "Ministry of Education and Culture of Finland"
+msgstr "Opetus- ja kulttuuriministeriö"
+
+#: ckanext/kata/theme/templates/footer.html:29
+#: ckanext/kata/theme/templates/home/about.html:88
+msgid "http://openscience.fi/"
+msgstr "http://avointiede.fi"
+
+#: ckanext/kata/theme/templates/footer.html:30
+msgid "../../base/images/about_logo_att_pysty_en.png"
+msgstr "../../base/images/about_logo_att_pysty_fi.png"
+
+#: ckanext/kata/theme/templates/footer.html:30
+#: ckanext/kata/theme/templates/home/about.html:89
+msgid "Open Science and Research Initiative"
+msgstr "Avoin tiede ja tutkimus -hanke"
+
+#: ckanext/kata/theme/templates/footer.html:31
+#: ckanext/kata/theme/templates/home/about.html:90
+msgid "https://www.csc.fi/en"
+msgstr "http://www.csc.fi/fi"
+
+#: ckanext/kata/theme/templates/footer.html:32
+#: ckanext/kata/theme/templates/home/about.html:91
+msgid "CSC - IT Center for Science"
 msgstr "CSC - Tieteen tietotekniikan keskus Oy"
 
 #: ckanext/kata/theme/templates/header.html:12
@@ -832,7 +859,9 @@ msgstr ""
 "aineiston näkyvyyttä. Etsin pyrkii edistämään kuvailujen tasoa "
 "tarjoamalla kaikille tieteenaloille yhteiset metatietokentät ja tekemällä"
 " tietojen lisäämisen mahdollisimman helpoksi. Etsimen metatietomalli "
-"pohjautuu minimimetatietomalliin. </p> "
+"pohjautuu <a href=\"https://www.tdata.fi/documents/10180/44526/TTA-"
+"minimimetatietomalli/c90929e4-3b7e-42a2-8419-a6481decb67d\" "
+"target=\"_blank\">minimimetatietomalliin.</a> </p> "
 
 #: ckanext/kata/theme/templates/home/about.html:25
 msgid ""
@@ -843,26 +872,26 @@ msgid ""
 "target=\"_blank\">Creative Commons 0 licence</a>.</p> <p>Data owners "
 "decide on the licence of the research data described in Etsin. For open "
 "data, <a href=\"http://creativecommons.org/licenses/by/4.0/\" "
-"target=\"_blank\">Creative Commons BY 4.0 licence is recommended</a>.</p>"
+"target=\"_blank\">Creative Commons BY 4.0</a> licence is recommended.</p>"
 " "
 msgstr ""
 " <h2>Käyttöoikeudet</h2> <p>Osana aineistojen kuvailua tulee määrittää "
 "aineiston omistajuus ja käyttöoikeudet.</p> <p>Aineistojen kuvailutiedot "
 "Etsimessä ovat avoimia <a "
-"href=\"https://creativecommons.org/publicdomain/zero/1.0/legalcode.fi\" "
+"href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
 "target=\"_blank\">CC0-lisenssillä</a>.</p><p>Itse aineistojen "
 "lisensoinnista päättävät niiden omistajat. Avoimelle datalle suositellaan"
-" <a href=\"http://creativecommons.org/licenses/by/4.0/legalcode.fi\" "
-"target=\"_blank\">Creative Commons BY 4.0-lisenssiä</a>.</p>"
+" <a href=\"http://creativecommons.org/licenses/by/4.0/\" "
+"target=\"_blank\">Creative Commons BY 4.0</a> -lisenssiä.</p>"
 
 #: ckanext/kata/theme/templates/home/about.html:33
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
 msgid "http://creativecommons.org/publicdomain/zero/1.0/"
-msgstr "http://creativecommons.org/publicdomain/zero/1.0/legalcode.fi"
+msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:35
 msgid "https://creativecommons.org/licenses/by/4.0/"
-msgstr "http://creativecommons.org/licenses/by/4.0/legalcode.fi"
+msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:39
 msgid ""
@@ -932,6 +961,20 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:62
 msgid ""
+" <h2>Development</h2> <p>Etsin is based on open source CKAN data portal. "
+"The open source code created in the development of Etsin is available "
+"from our GitHub repository. The development work utilizes the PyCharm "
+"editor.</p> <p>To contact the Etsin development team please email <a "
+"href=\"mailto:servicedesk@csc.fi\">servicedesk@csc.fi</a></p> "
+msgstr ""
+" <h2>Palvelun kehitys</h2> <p>Etsin perustuu avoimen lähdekoodin CKAN-"
+"dataportaaliin. Etsimen kehitystössä syntyvä avoin koodi löytyy Etsimen "
+"Github-sivuilta. Kehitystyössä hydöynnetään PyCharm-"
+"editoria.</p><p>Kehitystiimiin saa yhteyden osoitteesta <a "
+"href=\"mailto:asiakaspalvelu@csc.fi\">asiakaspalvelu@csc.fi</a></p>"
+
+#: ckanext/kata/theme/templates/home/about.html:77
+msgid ""
 " <h2>Contact</h2> <p>Etsin is offered to the scientific community by the "
 "Ministry of Education and Culture of Finland. Etsin is developed and "
 "maintained by CSC - IT Center for Science Ltd.</p> <p>Customer service "
@@ -948,51 +991,13 @@ msgstr ""
 " huoltoikkuna on joka kuukauden neljäs maanantai klo 16-18 (EET). Tällöin"
 " palvelu ei ole käytössä.</p>"
 
-#: ckanext/kata/theme/templates/home/about.html:70
+#: ckanext/kata/theme/templates/home/about.html:86
 msgid "http://www.minedu.fi/OPM/?lang=en"
 msgstr "http://www.minedu.fi/OPM/?lang=fi"
 
-#: ckanext/kata/theme/templates/home/about.html:71
-msgid "../../base/images/about_logo_okm_en.png"
-msgstr "../../base/images/about_logo_okm_fi.gif"
-
-#: ckanext/kata/theme/templates/home/about.html:71
-msgid "Ministry of Education and Culture of Finland"
-msgstr "Opetus- ja kulttuuriministeriö"
-
-#: ckanext/kata/theme/templates/home/about.html:72
-msgid "http://openscience.fi/"
-msgstr "http://avointiede.fi"
-
-#: ckanext/kata/theme/templates/home/about.html:73
+#: ckanext/kata/theme/templates/home/about.html:89
 msgid "../../base/images/about_logo_att_en.jpg"
 msgstr "../../base/images/about_logo_att_fi.jpg"
-
-#: ckanext/kata/theme/templates/home/about.html:73
-msgid "Open Science and Research Initiative"
-msgstr "Avoin tiede ja tutkimus -hanke"
-
-#: ckanext/kata/theme/templates/home/about.html:74
-msgid "https://www.csc.fi/en"
-msgstr "http://www.csc.fi/fi"
-
-#: ckanext/kata/theme/templates/home/about.html:75
-msgid "CSC - IT Center for Science"
-msgstr "CSC - Tieteen tietotekniikan keskus Oy"
-
-#: ckanext/kata/theme/templates/home/about.html:79
-msgid ""
-" <h2>Development</h2> <p>Etsin is based on open source CKAN data portal. "
-"The open source code crated in the development of Etsin is available from"
-" our GitHub repository. The development work utilizes the PyCharm "
-"editor.</p> <p>To contact the Etsin development team please email <a "
-"href=\"mailto:servicedesk@csc.fi\">servicedesk@csc.fi</a></p> "
-msgstr ""
-" <h2>Palvelun kehitys</h2> <p>Etsin perustuu avoimen lähdekoodin CKAN-"
-"dataportaaliin. Etsimen kehitystössä syntyvä avoin koodi löytyy Etsimen "
-"Github-sivuilta. Kehitystyössä hydöynnetään PyCharm-"
-"editoria.</p><p>Kehitystiimiin saa yhteyden osoitteesta <a "
-"href=\"mailto:asiakaspalvelu@csc.fi\">asiakaspalvelu@csc.fi</a></p>"
 
 #: ckanext/kata/theme/templates/home/index.html:3
 msgid "Welcome"
@@ -7006,7 +7011,4 @@ msgstr "Ensimmäinen kirjautuminen"
 #: ckanext/kata/theme/templates/user/read.html:129
 msgid "API Key"
 msgstr "API-avain"
-
-#~ msgid "https://www.csc.fi/home"
-#~ msgstr "https://www.csc.fi/etusivu"
 
