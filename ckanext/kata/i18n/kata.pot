@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 1.3.2\n"
+"Project-Id-Version: ckanext-kata 1.3.3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-12 10:36+0000\n"
+"POT-Creation-Date: 2015-03-04 11:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgid "Required information missing"
 msgstr ""
 
 #: ckanext/kata/actions.py:517 ckanext/kata/actions.py:581
-#: ckanext/kata/controllers.py:687 ckanext/kata/controllers.py:765
+#: ckanext/kata/controllers.py:694 ckanext/kata/controllers.py:772
 msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:522 ckanext/kata/actions.py:526
-#: ckanext/kata/controllers.py:762
+#: ckanext/kata/controllers.py:769
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -89,111 +89,111 @@ msgstr ""
 msgid "User %s not authorized to add a dataset"
 msgstr ""
 
-#: ckanext/kata/controllers.py:311 ckanext/kata/controllers.py:363
-#: ckanext/kata/controllers.py:534 ckanext/kata/controllers.py:564
+#: ckanext/kata/controllers.py:318 ckanext/kata/controllers.py:370
+#: ckanext/kata/controllers.py:541 ckanext/kata/controllers.py:571
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:320
+#: ckanext/kata/controllers.py:327
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of package"
 " %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:323 ckanext/kata/controllers.py:372
+#: ckanext/kata/controllers.py:330 ckanext/kata/controllers.py:379
 msgid "A request is already pending"
 msgstr ""
 
-#: ckanext/kata/controllers.py:326 ckanext/kata/controllers.py:375
+#: ckanext/kata/controllers.py:333 ckanext/kata/controllers.py:382
 msgid "You must be logged in to request edit access"
 msgstr ""
 
-#: ckanext/kata/controllers.py:346
+#: ckanext/kata/controllers.py:353
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:351
+#: ckanext/kata/controllers.py:358
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:462
+#: ckanext/kata/controllers.py:469
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:479 ckanext/kata/controllers.py:721
+#: ckanext/kata/controllers.py:486 ckanext/kata/controllers.py:728
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:481 ckanext/kata/controllers.py:547
-#: ckanext/kata/controllers.py:577
+#: ckanext/kata/controllers.py:488 ckanext/kata/controllers.py:554
+#: ckanext/kata/controllers.py:584
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:483
+#: ckanext/kata/controllers.py:490
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:485 ckanext/kata/controllers.py:550
-#: ckanext/kata/controllers.py:580
+#: ckanext/kata/controllers.py:492 ckanext/kata/controllers.py:557
+#: ckanext/kata/controllers.py:587
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:617
+#: ckanext/kata/controllers.py:624
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:619
+#: ckanext/kata/controllers.py:626
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:631
+#: ckanext/kata/controllers.py:638
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:662 ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:669 ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:684
+#: ckanext/kata/controllers.py:691
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:704
+#: ckanext/kata/controllers.py:711
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:706 ckanext/kata/validators.py:139
+#: ckanext/kata/controllers.py:713 ckanext/kata/validators.py:139
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:726
+#: ckanext/kata/controllers.py:733
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:821
+#: ckanext/kata/controllers.py:828
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:846
+#: ckanext/kata/controllers.py:853
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:851
+#: ckanext/kata/controllers.py:858
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:854
+#: ckanext/kata/controllers.py:861
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:856
+#: ckanext/kata/controllers.py:863
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:860
+#: ckanext/kata/controllers.py:867
 msgid "Failed to load file"
 msgstr ""
 
@@ -455,6 +455,7 @@ msgid "Edit Profile"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:59
+#: ckanext/kata/theme/templates/user/dashboard.html:8
 msgid "My Datasets"
 msgstr ""
 
@@ -2236,11 +2237,11 @@ msgid "The title of the dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:17
-msgid "title_0"
+msgid "The first title"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:17
-msgid "Internally title_0 is copied to this field"
+msgid "Internally the first title is copied to this field"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:18
@@ -2366,7 +2367,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:29
-msgid "URL for access application"
+msgid "Access application URL"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:29
@@ -6037,6 +6038,14 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/snippets/related.html:16
 msgid "Add Item"
+msgstr ""
+
+#: ckanext/kata/theme/templates/user/dashboard.html:7
+msgid "News feed"
+msgstr ""
+
+#: ckanext/kata/theme/templates/user/dashboard.html:9
+msgid "My Organizations"
 msgstr ""
 
 #: ckanext/kata/theme/templates/user/edit_user_form.html:11

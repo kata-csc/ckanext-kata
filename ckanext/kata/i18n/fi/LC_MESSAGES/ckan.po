@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-02-12 10:36+0000\n"
+"POT-Creation-Date: 2015-03-04 11:34+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -30,12 +30,12 @@ msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
 #: ckanext/kata/actions.py:517 ckanext/kata/actions.py:581
-#: ckanext/kata/controllers.py:687 ckanext/kata/controllers.py:765
+#: ckanext/kata/controllers.py:694 ckanext/kata/controllers.py:772
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
 #: ckanext/kata/actions.py:522 ckanext/kata/actions.py:526
-#: ckanext/kata/controllers.py:762
+#: ckanext/kata/controllers.py:769
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
@@ -89,111 +89,111 @@ msgstr "Käyttäjällä %s ei ole oikeuksia poistaa tietoaineistoa %s"
 msgid "User %s not authorized to add a dataset"
 msgstr "Käyttäjällä %s ei ole oikeuksia lisätä tietoaineistoa"
 
-#: ckanext/kata/controllers.py:311 ckanext/kata/controllers.py:363
-#: ckanext/kata/controllers.py:534 ckanext/kata/controllers.py:564
+#: ckanext/kata/controllers.py:318 ckanext/kata/controllers.py:370
+#: ckanext/kata/controllers.py:541 ckanext/kata/controllers.py:571
 msgid "Dataset not found"
 msgstr "Tietoaineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:320
+#: ckanext/kata/controllers.py:327
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of "
 "package %s"
 msgstr "Pyyntö muokkausoikeuksien saamiseksi lähetetään aineiston %s ylläpitäjälle"
 
-#: ckanext/kata/controllers.py:323 ckanext/kata/controllers.py:372
+#: ckanext/kata/controllers.py:330 ckanext/kata/controllers.py:379
 msgid "A request is already pending"
 msgstr "Pyyntö on jo jonossa"
 
-#: ckanext/kata/controllers.py:326 ckanext/kata/controllers.py:375
+#: ckanext/kata/controllers.py:333 ckanext/kata/controllers.py:382
 msgid "You must be logged in to request edit access"
 msgstr "Sinun täytyy olla kirjautunut pyytääksesi muokkausoikeuksia"
 
-#: ckanext/kata/controllers.py:346
+#: ckanext/kata/controllers.py:353
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr "Käyttäjällä %s on nyt muokkausoikeudet tietoaineistoon %s"
 
-#: ckanext/kata/controllers.py:351
+#: ckanext/kata/controllers.py:358
 msgid "No such request found!"
 msgstr "Pyyntöä ei löytynyt."
 
-#: ckanext/kata/controllers.py:462
+#: ckanext/kata/controllers.py:469
 msgid "Recipient not found"
 msgstr "Vastaanottajaa ei löytynyt"
 
-#: ckanext/kata/controllers.py:479 ckanext/kata/controllers.py:721
+#: ckanext/kata/controllers.py:486 ckanext/kata/controllers.py:728
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
-#: ckanext/kata/controllers.py:481 ckanext/kata/controllers.py:547
-#: ckanext/kata/controllers.py:577
+#: ckanext/kata/controllers.py:488 ckanext/kata/controllers.py:554
+#: ckanext/kata/controllers.py:584
 msgid "Already contacted"
 msgstr "Olet ottanut yhteyttä jo aiemmin"
 
-#: ckanext/kata/controllers.py:483
+#: ckanext/kata/controllers.py:490
 msgid "No message"
 msgstr "Viesti on tyhjä"
 
-#: ckanext/kata/controllers.py:485 ckanext/kata/controllers.py:550
-#: ckanext/kata/controllers.py:580
+#: ckanext/kata/controllers.py:492 ckanext/kata/controllers.py:557
+#: ckanext/kata/controllers.py:587
 msgid "Please login"
 msgstr "Kirjaudu sisään"
 
-#: ckanext/kata/controllers.py:617
+#: ckanext/kata/controllers.py:624
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:619
+#: ckanext/kata/controllers.py:626
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr " (Tai jos käytät OpenID:tä, sitä ei ole liitetty käyttäjätiliisi.)"
 
-#: ckanext/kata/controllers.py:631
+#: ckanext/kata/controllers.py:638
 msgid "Successfully logged out."
 msgstr "Olet nyt kirjautunut ulos."
 
-#: ckanext/kata/controllers.py:662 ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:669 ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:684
+#: ckanext/kata/controllers.py:691
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
-#: ckanext/kata/controllers.py:704
+#: ckanext/kata/controllers.py:711
 msgid "Feature disabled"
 msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:706 ckanext/kata/validators.py:139
+#: ckanext/kata/controllers.py:713 ckanext/kata/validators.py:139
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
-#: ckanext/kata/controllers.py:726
+#: ckanext/kata/controllers.py:733
 msgid "Bad Captcha. Please try again."
 msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
-#: ckanext/kata/controllers.py:821
+#: ckanext/kata/controllers.py:828
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:846
+#: ckanext/kata/controllers.py:853
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:851
+#: ckanext/kata/controllers.py:858
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:854
+#: ckanext/kata/controllers.py:861
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
-#: ckanext/kata/controllers.py:856
+#: ckanext/kata/controllers.py:863
 msgid "Invalid XML content"
 msgstr "Virheellinen XML sisältö"
 
-#: ckanext/kata/controllers.py:860
+#: ckanext/kata/controllers.py:867
 msgid "Failed to load file"
 msgstr "Tiedostoa ei voitu ladata"
 
@@ -472,6 +472,7 @@ msgid "Edit Profile"
 msgstr "Muokkaa profiilia"
 
 #: ckanext/kata/theme/templates/header.html:59
+#: ckanext/kata/theme/templates/user/dashboard.html:8
 msgid "My Datasets"
 msgstr "Omat tietoaineistot"
 
@@ -2687,12 +2688,12 @@ msgid "The title of the dataset"
 msgstr "Tietoaineiston otsikko"
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:17
-msgid "title_0"
-msgstr "title_0"
+msgid "The first title"
+msgstr "Ensimmäinen otsikko"
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:17
-msgid "Internally title_0 is copied to this field"
-msgstr "Sisäisesti title_0:n arvo kopioidaan tähän kenttään"
+msgid "Internally the first title is copied to this field"
+msgstr "Sisäisesti ensimmäisen otsikon arvo kopioidaan tähän kenttään"
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:18
 msgid "License of the data"
@@ -2819,8 +2820,8 @@ msgstr ""
 "contact_owner, through_provider."
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:29
-msgid "URL for access application"
-msgstr "URL lupahakemukseen"
+msgid "Access application URL"
+msgstr "Lupahakemuksen URL"
 
 #: ckanext/kata/theme/templates/kata/snippets/data-model.html:29
 msgid "Linked to availability access_application and access_application_new_form"
@@ -6707,6 +6708,14 @@ msgstr "Tietoaineistolla ei ole kuvausta"
 msgid "Add Item"
 msgstr "Lisää kohde"
 
+#: ckanext/kata/theme/templates/user/dashboard.html:7
+msgid "News feed"
+msgstr "Uutisvirta"
+
+#: ckanext/kata/theme/templates/user/dashboard.html:9
+msgid "My Organizations"
+msgstr "Minun organisaationi"
+
 #: ckanext/kata/theme/templates/user/edit_user_form.html:11
 msgid "Change your details"
 msgstr "Muuta tietojasi"
@@ -6930,20 +6939,4 @@ msgstr "Ensimmäinen kirjautuminen"
 #: ckanext/kata/theme/templates/user/read.html:129
 msgid "API Key"
 msgstr "API-avain"
-
-#~ msgid "An organization must be supplied"
-#~ msgstr "Organisaatio vaaditaan"
-
-#~ msgid "Stats"
-#~ msgstr "Tilastot"
-
-#~ msgid ""
-#~ "The Stats link will take you to"
-#~ " the statistics page. The page will"
-#~ " show you some general information "
-#~ "about Etsin, its datasets and users."
-#~ msgstr ""
-#~ "Tilastot-linkki vie sinut tilastosivulle. "
-#~ "Sivu näyttää perustietoa Etsimen sisältämistä"
-#~ " tietoaineistoista ja käyttäjistä."
 
