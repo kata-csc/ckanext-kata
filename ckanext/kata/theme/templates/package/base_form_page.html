@@ -64,6 +64,15 @@
 
     {% snippet 'package/snippets/package_terms_of_use.html' %}
 
+    <!-- Tab paginator -->
+    <div class="tab-paginator" data-module="kata-tab-paginator">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn nofocus" id="prev-tab" ><span class="icon-chevron-left" ></span></button>
+        <div id="tab-indicator" class="" hidden="true""></div>
+        <button type="button" class="btn nofocus" id="next-tab"><span class="icon-chevron-right" ></span></button>
+      </div>
+    </div>
+
     <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />
     <input type="hidden" value="True" id="private" name="private"/>
 

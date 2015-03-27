@@ -524,6 +524,29 @@ header.masthead .not-authed a {
 .editing [role="main"], .editing .main {
     background: none;
 }
+
+.empty-dot {
+    position: relative;
+    display: inline-block;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    border: 1px solid #666;
+    background-color: #eeeeee;
+    margin: -7px 2px;
+}
+
+.filled-dot {
+    position: relative;
+    display: inline-block;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    border: 1px solid #666;
+    background-color: #0c8bbe;
+    margin: -7px 2px;
+}
+
 .hero {
     background-image: none;
 }
@@ -614,6 +637,10 @@ header.masthead .not-authed a {
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     -moz-box-shadow: none !important;
+}
+
+.nofocus:focus {
+  outline: none;
 }
 .no-padding {
     padding: 0px 0px 0px 0px;
@@ -1222,6 +1249,20 @@ label.control-label.kata-wide-label {
 .kata-action, .kata-action:hover {
     color: #444444;
     text-decoration: none;
+}
+
+#tab-indicator {
+    display: inline-block;
+    border: 1px solid gray;
+    margin: -1px;
+    padding: 4px 2px;
+    background-color: #eeeeee;
+}
+
+.tab-paginator {
+    display: table;
+    margin: 0 auto;
+    opacity:unset;
 }
 
 .ui-tooltip-content {
