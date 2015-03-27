@@ -652,4 +652,3 @@ def resolve_org_name(org_id):
     if not group:
         return org_id
     return group.title
-    # return 'HALOO!?'

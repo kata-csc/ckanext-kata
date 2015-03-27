@@ -509,10 +509,10 @@ def kata_owner_org_validator(key, data, errors, context):
                 'type': 'organization',
                 'name': org_name
             }
-            new_org = logic.get_action('organization_create')(context, data_dict)
+            context_org = context.copy()
+            context_org['schema'] = logic.schema.default_group_schema()
+            new_org = logic.get_action('organization_create')(context_org, data_dict)
             group_id = new_org['id']
-            # TODO Juho: add translation
-            # TODO Juho: Handle ü in value
             h.flash_success(_('New organisation "{org}" created automatically.')
                             .format(org=value))
         else:
