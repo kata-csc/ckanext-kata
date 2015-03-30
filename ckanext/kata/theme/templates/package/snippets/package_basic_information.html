@@ -1,82 +1,112 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<div class="module-content kata-add-dataset-fields">
-  {% set titles = [] %}
-  {% if data.langtitle %}
-    {% set titles = data.langtitle %}
-  {% endif %}
-  {% if (titles|length) == 0 %}
-    {% for extra in range(1,2) %}
-      {% do titles.append({'value': '', 'lang': ''}) %}
-    {% endfor %}
-  {% endif %}
-  <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numfields="{{ (titles|length) }}" id="lastlang">
-    {# Render title fields #}
-    {% for langtitle in titles %}
-      {% set index = loop.index0 %}
-      {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
-        {% if index == 0 %}
-          {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
-        {% endif %}
-        <label class="control-label kata-input-comp kata-field-title-language" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
-          <select name="langtitle__{{ index }}__lang">
-            {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
-          </select>
-          {% if index == 0 %}
-            {{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();", class="kata-title-add") }}
-          {% endif %}
-          {#% if title.value %#}
-            <input style="display: none;" type="checkbox" id="lbtn__{{ index }}__value_id" name="lbtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-          {#% endif %#}
-      {% endcall %}
-    {% endfor %}
 
-    {% if errors.langtitle %}
-      <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
+<div class="kata-add-dataset-wrapper">
+  <div class="kata-add-dataset-fields">
+    {% set titles = [] %}
+    {% if data.langtitle %}
+        {% set titles = data.langtitle %}
     {% endif %}
+    {% if (titles|length) == 0 %}
+        {% for extra in range(1,2) %}
+            {% do titles.append({'value': '', 'lang': ''}) %}
+        {% endfor %}
+    {% endif %}
+    <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numfields="{{ (titles|length) }}" id="lastlang">
+        {# Render title fields #}
+        {% for langtitle in titles %}
+            {% set index = loop.index0 %}
+            {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+                <label class="control-label kata-input-comp kata-field-title-language" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
+                <select name="langtitle__{{ index }}__lang">
+                    {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
+                </select>
+                {% if index == 0 %}
+                    {{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();", class="kata-title-add") }}
+                {% endif %}
+                {#% if title.value %#}
+                    <input style="display: none;" type="checkbox" id="lbtn__{{ index }}__value_id" name="lbtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+                {#% endif %#}
+            {% endcall %}
+        {% endfor %}
+
+        {% if errors.langtitle %}
+          <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
+        {% endif %}
+    </div>
   </div>
+  <div class="kata-add-dataset-instructions" data-module="kata-instructions">
+    {% trans %}
+      Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.
+    {% endtrans %}
+  </div>
+</div>
 
-    {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('a freeform description'), value=data.notes, error=errors.notes) }}
-    {# The tooltip can't be inserted so that it would look nice. If needed, add the tooltip below later. #}
-<!--  {{ kata_form.tooltip(tooltip=_('Type a description about the data over here. The field can be filled with free text and you can format the text with Markdown formatting.')) }}  -->
+<div class="kata-add-dataset-wrapper">
+    <div class="kata-add-dataset-fields">
+        {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('a freeform description'), value=data.notes, error=errors.notes) }}
+        {# The tooltip can't be inserted so that it would look nice. If needed, add the tooltip below later. #}
+    </div>
 
-    {# Autocomplete for keywords #}
+    <div class="kata-add-dataset-instructions" data-module="kata-instructions">
+        {% trans %}
+            Type a description about the data over here. The field can be filled with free text and you can format the text with Markdown formatting.
+        {% endtrans %}
+    </div>
 
-      <p>
-        {{ _('Search keywords from') }} <a href="{{ _('http://finto.fi/koko/en/') }}" target="_blank">KOKO</a>{{ _(' ontology, select keywords with enter or mouse click.') }}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
-      </p>
 
+</div>
 
-      {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-      {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
-    <br />
+<div class="kata-add-dataset-wrapper">
+    <div class="kata-add-dataset-fields">
+        {# Autocomplete for keywords #}
+        {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+        {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
+        <br />
+    </div>
+    <div class="kata-add-dataset-instructions" data-module="kata-instructions">
+      {% trans %}
+        Search keywords from <a href="http://finto.fi/koko/en/" target="_blank">KOKO</a> ontology, select keywords with enter or mouse click.
+        <br /><br />Field is compulsory.<br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.
+      {% endtrans %}
+    </div>
+</div>
 
+<div class="kata-add-dataset-wrapper">
+    <div class="kata-add-dataset-fields">
     {# Autocomplete for field of science #}
+      <div class="kata-autocomplete">
 
-    <div class="kata-autocomplete">
-
-
-      <p>
-        {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}" target="_blank">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click.') }}
-        {{ kata_form.tooltip(tooltip=_("Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
-      </p>
-      {% set disc_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?', 'data-module-key': 'key', 'data-module-label': 'label'} %}
-      {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=disc_attrs) }}
+        {% set disc_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/discipline_autocomplete?incomplete=?', 'data-module-key': 'key', 'data-module-label': 'label'} %}
+        {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=disc_attrs) }}
+      </div>
     </div>
-    {# Languages #}
+    <div class="kata-add-dataset-instructions" data-module="kata-instructions">
+        {% trans %}
+            Search words from <a href="http://finto.fi/okm-tieteenala/en/" target="_blank">okm-tieteenala</a> ontology, select keywords with enter or mouse click.
+            Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.
+        {% endtrans %}
+    </div>
+</div>
 
-    <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
-    <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
-    <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
-      {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language,
+<div class="kata-add-dataset-wrapper">
+    <div class="kata-add-dataset-fields">
+        {# Languages #}
+
+        <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
+        <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
+        <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
+            {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language,
                          classes=['control-medium'], control_classes=["controls editor kata-medium"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
-        {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
-      {% endcall %}
-      <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
-      <span class="add-dataset-infotext">
-        {{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
-      </span>
+            {% endcall %}
+        </div>
     </div>
-  </div>
+    <div class="kata-add-dataset-instructions" data-module="kata-instructions">
+      {% trans %}
+        Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".
+        Find language codes from: <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
+      {% endtrans %}
+    </div>
+</div>
+
