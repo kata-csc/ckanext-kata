@@ -473,14 +473,15 @@ def url_not_empty(key, data, errors, context):
 
 def kata_owner_org_validator(key, data, errors, context):
     '''
-    Modified version of CKAN's owner_org_validator. Anyone
-    can add a private dataset to an organisation
+    Modified version of CKAN's owner_org_validator. Anyone can add a private
+    dataset to an organisation. If the organisation doesn't exist it is created.
+    The admin for the new organization is defined by config.
 
     :param key: key
     :param data: data
     :param errors: errors
     :param context: context
-    :return: nothing. Raise invalid if organisation is not given or it doesn't exist
+    :return: nothing
     '''
 
     value = data.get(key)
@@ -501,16 +502,21 @@ def kata_owner_org_validator(key, data, errors, context):
         org_name = re.sub(r'[^A-Za-z0-9]+', '-', value).lower()
         group_own = model.Group.get(org_name)
         if not group_own:
+            org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
             data_dict = {
                 'title': value,
                 'description': u'',
                 'image_url': u'',
-                'users': [{'capacity': 'admin', 'name': context['user']}],
                 'type': 'organization',
                 'name': org_name
             }
-            context_org = context.copy()
-            context_org['schema'] = logic.schema.default_group_schema()
+            context_org = {
+                'message': '',
+                'model': context['model'],
+                'schema': logic.schema.default_group_schema(),
+                'session': context['session'],
+                'user': org_admin,
+            }
             new_org = logic.get_action('organization_create')(context_org, data_dict)
             group_id = new_org['id']
             h.flash_success(_('New organisation "{org}" created automatically.')
