@@ -11,28 +11,37 @@
 {% set organizations_available = h.list_organisations(user) %}
 {% set user_is_sysadmin = h.check_access('sysadmin') %}
 
-<div data-module="dataset-visibility">
+<div class="kata-add-dataset-wrapper">
+    <div class="kata-add-dataset-fields">
+
+        <div data-module="dataset-visibility">
 
 
-  {% set existing_org = data.owner_org %}
-  <div class="control-group{% if errors and errors.owner_org %} error{% endif %}">
-    <label for="field-organizations" class="control-label">{{ _('Organisation') }}</label>
-    <div class="controls">
-      <select id="field-organizations" name="owner_org" data-module="autocomplete" class="kata-select2">
-        <option value="" {% if not selected_org and data.id %} selected="selected" {% endif %}>{{ _('Choose an organization...') }}</option>
-        {% for organization in organizations_available %}
-          {# get out first org from users list only if there is not an existing org #}
-          {% set selected_org = (existing_org and existing_org == organization.id) %}
-          {% if selected_org %}
-            {% set current_org = organization %}
-          {% endif %}
-          <option value="{{ organization.id }}" {% if selected_org %} selected="selected" {% endif %}>{{ organization.display_name }}</option>
-        {% endfor %}
-      </select>
-      {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Select an organization to link the dataset to the organization within this service. Once the dataset is published it is visible in the organization page. Additionally, the organization's editors can also modify this dataset.")) }}
-      {% if errors and errors.owner_org and errors.owner_org is iterable %}<span class="error-block kata-select2-error">{{ errors.owner_org|join('') }}</span>{% endif %}
+            {% set existing_org = data.owner_org %}
+            <div class="control-group{% if errors and errors.owner_org %} error{% endif %}">
+                <label for="field-organizations" class="control-label">{{ _('Organisation') }}</label>
+                <div class="controls">
+                    <select id="field-organizations" name="owner_org" data-module="autocomplete" class="kata-select2">
+                        <option value="" {% if not selected_org and data.id %} selected="selected" {% endif %}>{{ _('Choose an organization...') }}</option>
+                        {% for organization in organizations_available %}
+                            {# get out first org from users list only if there is not an existing org #}
+                            {% set selected_org = (existing_org and existing_org == organization.id) %}
+                            {% if selected_org %}
+                                {% set current_org = organization %}
+                            {% endif %}
+                            <option value="{{ organization.id }}" {% if selected_org %} selected="selected" {% endif %}>{{ organization.display_name }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if errors and errors.owner_org and errors.owner_org is iterable %}<span class="error-block kata-select2-error">{{ errors.owner_org|join('') }}</span>{% endif %}
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+    <div class="kata-add-dataset-instructions" data-module="kata-instructions">
+      {% trans %}
+        Field is compulsory.<br /><br />Select an organization to link the dataset to the organization within this service. Once the dataset is published it is visible in the organization page. Additionally, the organization's editors can also modify this dataset.
+      {% endtrans %}
+    </div>
 
 </div>
 

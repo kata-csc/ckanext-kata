@@ -1,9 +1,10 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<section class="module">
-  <h2 class="module-heading-add-dataset optional">{{ _('Dataset lifecycle events') }} {{ kata_form.optional() }}</h2>
-  <div class="module-content">
+
+<h2 class="module-heading-add-dataset optional">{{ _('Dataset lifecycle events') }} {{ kata_form.optional() }}</h2>
+<div class="kata-add-dataset-wrapper">
+  <div class="kata-add-dataset-fields">
     <div data-module="custom-fields-kata" data-module-id="lifecycle" id="lifecycle">
       <label class="control-label katalabel1"><span>{{ _('event') }}</span></label>
       <label class="control-label katalabel"><span>{{ _('by whom') }}</span></label>
@@ -169,7 +170,6 @@
               {{ kata_form.plusbutton(onclick="$(\'#evbtn__" ~ index ~ "__value_id\').change();") }}
             </li>
             <li class="kata">
-              {{ kata_form.tooltip(tooltip=_('Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.<br /><br />To remove an event, delete its contents from the three text fields.')) }}
               <input style="display: none;" type="checkbox" id="evbtn__{{index}}__value_id" name="evbtn__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
             </li>
           </div>
@@ -177,4 +177,10 @@
       {% endif %}
     </div>
   </div>
-</section>
+  <div class="kata-add-dataset-instructions" data-module="kata-instructions">
+    {% trans %}
+      Describe the lifecycle of your data by adding important events related to the data. A single event consists of four fields: event, by whom, when and description. Fill all four fields when adding an event.<br /><br />You can add more events by first adding a new set of fields by clicking the \'+\' button.<br /><br />To remove an event, delete its contents from the three text fields.
+    {% endtrans %}
+  </div>
+</div>
+

@@ -1,91 +1,96 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<section class="module">
-  <h2 class="module-heading-add-dataset">{{ _('Use information') }} {{ kata_form.required() }}</h2>
-  <div class="module-content">
-    <label class="kata-blank-label">
-      {{ _('Dataset is available for use:') }}
-      {{ kata_form.tooltip(tooltip=_("Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection.")) }}
-    </label>
-    <div class="control-group ">
-      <div class="controls ">
-        <label class="radio" for="direct_download">
-          <input type="radio" name="availability" id="direct_download" value="direct_download" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'direct_download'%}checked{% endif %}>
-          {{ _('directly downloadable') }}
-        </label>
-        {# Somewhat dirty solution. The resource error is *somewhere* in array as some indices may be for metadata documents #}
-        <div id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not (errors.resources and data.availability == 'direct_download') %}style="display:none"{% endif %}>
-          {% if errors.resources and data.availability == 'direct_download' %}
-            {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=[_('Missing value')], classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
-          {% else %}
-            {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
-          {% endif %}
-        </div>
 
-        <label class="radio" for="access_request">
-          <input type="radio" name="availability" id="access_request" value="access_request" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'access_request'%}checked{% endif %}>
-          {{ _('downloadable after registration / identification') }}
+<h2 class="module-heading-add-dataset">{{ _('Use information') }} {{ kata_form.required() }}</h2>
+<div class="kata-add-dataset-wrapper">
+    <div class="kata-add-dataset-fields">
+        <label class="kata-blank-label">
+            {{ _('Dataset is available for use:') }}
         </label>
-        <div id="urlDiv_access_request" {% if not data.access_request_URL and not errors.access_request_URL %}style="display:none"{% endif %}>
-          {{ form.input('access_request_URL', label=_('Web address for downloading the dataset'), id="access_request_URL", placeholder=_('http://mydata.com'), value=data.access_request_URL, error=errors.access_request_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
-        </div>
+        <div class="control-group ">
+            <div class="controls ">
+                <label class="radio" for="direct_download">
+                    <input type="radio" name="availability" id="direct_download" value="direct_download" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'direct_download'%}checked{% endif %}>
+                    {{ _('directly downloadable') }}
+                </label>
+                {# Somewhat dirty solution. The resource error is *somewhere* in array as some indices may be for metadata documents #}
+                <div id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not (errors.resources and data.availability == 'direct_download') %}style="display:none"{% endif %}>
+                    {% if errors.resources and data.availability == 'direct_download' %}
+                        {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=[_('Missing value')], classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+                    {% else %}
+                        {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+                    {% endif %}
+                </div>
 
-        <label class="radio" for="access_application">
-          <input type="radio" name="availability" id="access_application" value="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application'}}>
-          {{ _('with data access application form') }}
-        </label>
-        <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application' and not errors.access_application_URL %}style="display:none"{% endif %}>
-          {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}
-            {% set new_form_chk = true %}
-          {% endif %}
-          <label class="checkbox" for="access_application_new_form">
-            <input type="checkbox" style="top: 4px;" id="access_application_new_form" name="access_application_new_form" onchange="$('#access_application_URL_box').toggle('fast')" {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}checked value="True"{% endif %}>
-            {{ _('Create a new access request form automatically') }}
-          </label>
-          <div id="access_application_URL_box" {% if new_form_chk %} style="display: none" {%endif%}>
-            {{ form.input('access_application_URL', label=_('Web address of access application form'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
-          </div>
-        </div>
+                <label class="radio" for="access_request">
+                    <input type="radio" name="availability" id="access_request" value="access_request" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'access_request'%}checked{% endif %}>
+                    {{ _('downloadable after registration / identification') }}
+                </label>
+                <div id="urlDiv_access_request" {% if not data.access_request_URL and not errors.access_request_URL %}style="display:none"{% endif %}>
+                    {{ form.input('access_request_URL', label=_('Web address for downloading the dataset'), id="access_request_URL", placeholder=_('http://mydata.com'), value=data.access_request_URL, error=errors.access_request_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+                </div>
 
-        <label class="radio" for="contact_owner">
-          <input type="radio" name="availability" id="contact_owner" value="contact_owner" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'contact_owner'%}checked{% endif %}>
-          {{ _('only by contacting the distributor') }}
-        </label>
-        {% if data.availability == 'through_provider' %}
-          <label class="radio" for="through_provider">
-          <input type="radio" name="availability" id="through_provider" value="through_provider" style="top: 4px" onclick="KATA.toggleAccess(this)" checked>
-            {{ _('through data provider') }}
-          </label>
-            <div id="urlDiv_through_provider">
-              {{ form.input('through_provider_URL', label=_('Data provider\'s web address'), id="through_provider_URL", placeholder=_('http://mydata.com'), value=data.through_provider_URL, error=errors.through_provider_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+                <label class="radio" for="access_application">
+                    <input type="radio" name="availability" id="access_application" value="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application'}}>
+                    {{ _('with data access application form') }}
+                </label>
+                <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application' and not errors.access_application_URL %}style="display:none"{% endif %}>
+                    {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}
+                        {% set new_form_chk = true %}
+                    {% endif %}
+                    <label class="checkbox" for="access_application_new_form">
+                        <input type="checkbox" style="top: 4px;" id="access_application_new_form" name="access_application_new_form" onchange="$('#access_application_URL_box').toggle('fast')" {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}checked value="True"{% endif %}>
+                        {{ _('Create a new access request form automatically') }}
+                    </label>
+                    <div id="access_application_URL_box" {% if new_form_chk %} style="display: none" {%endif%}>
+                        {{ form.input('access_application_URL', label=_('Web address of access application form'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+                    </div>
+                </div>
+
+                <label class="radio" for="contact_owner">
+                    <input type="radio" name="availability" id="contact_owner" value="contact_owner" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'contact_owner'%}checked{% endif %}>
+                    {{ _('only by contacting the distributor') }}
+                </label>
+                {% if data.availability == 'through_provider' %}
+                    <label class="radio" for="through_provider">
+                        <input type="radio" name="availability" id="through_provider" value="through_provider" style="top: 4px" onclick="KATA.toggleAccess(this)" checked>
+                        {{ _('through data provider') }}
+                    </label>
+                    <div id="urlDiv_through_provider">
+                        {{ form.input('through_provider_URL', label=_('Data provider\'s web address'), id="through_provider_URL", placeholder=_('http://mydata.com'), value=data.through_provider_URL, error=errors.through_provider_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+                    </div>
+                {% endif%}
+                {% if errors.availability %}
+                    <span class="error-block kata-error-non-input">{{ errors.availability[0] }}</span>
+                {% endif %}
             </div>
-        {% endif%}
-        {% if errors.availability %}
-          <span class="error-block kata-error-non-input">{{ errors.availability[0] }}</span>
-        {% endif %}
-      </div>
-    </div>
+        </div>
 
-    <div class="control-group">
-      {% set error = errors.license_id %}
-      <label class="control-label" for="field-license">{{ _("License") }}</label>
-      <div class="controls">
-        <select id="field-license" name="license_id" class="kata-input-license" data-module="autocomplete">
-          {% for licence_desc, licence_id in licences %}
-            <option value="{{ licence_id }}" {% if data.get('license_id', 'notspecified') == licence_id %}selected="selected"{% endif %}>{{ licence_desc }}</option>
-          {% endfor %}
-        </select>
-        {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
-        <br />
-        <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
-        <span class="add-dataset-infotext">
-          <a target="_blank" href="{{ _('http://creativecommons.org/choose/?lang=en') }}">{{ _('Information about licenses') }}</a>
-        </span>
-      </div>
-      {% if data.license_URL %}
-        {{ form.input('license_URL', id='license_URL', label=_('License URL'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.license_URL, error=errors.license_URL, classes=['control-medium']) }}
-      {% endif %}
+        <div class="control-group">
+            {% set error = errors.license_id %}
+            <label class="control-label" for="field-license">{{ _("License") }}</label>
+            <div class="controls">
+                <select id="field-license" name="license_id" class="kata-input-license" data-module="autocomplete">
+                    {% for licence_desc, licence_id in licences %}
+                        <option value="{{ licence_id }}" {% if data.get('license_id', 'notspecified') == licence_id %}selected="selected"{% endif %}>{{ licence_desc }}</option>
+                    {% endfor %}
+                </select>
+                {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
+                <br />
+                <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
+                <span class="add-dataset-infotext">
+                    <a target="_blank" href="{{ _('http://creativecommons.org/choose/?lang=en') }}">{{ _('Information about licenses') }}</a>
+                </span>
+            </div>
+            {% if data.license_URL %}
+                {{ form.input('license_URL', id='license_URL', label=_('License URL'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.license_URL, error=errors.license_URL, classes=['control-medium']) }}
+            {% endif %}
+        </div>
     </div>
-  </div>
-</section>
+    <div class="kata-add-dataset-instructions" data-module="kata-instructions">
+        {% trans %}
+            Usage and license information fields are compulsory.<br /><br />Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br /><br />Choose a license from the selection.
+        {% endtrans %}
+    </div>
+</div>
