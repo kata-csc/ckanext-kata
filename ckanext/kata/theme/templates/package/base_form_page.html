@@ -1,5 +1,8 @@
 {% extends "package/base.html" %}
 
+{% import 'macros/form.html' as form %}
+{% import 'macros/kata_form.html' as kataform %}
+
 {% set user = c.userobj %}
 
 {% set data = data or pkg or {} %}
@@ -15,7 +18,29 @@
 
 {% set agent_index = h.create_loop_index() %}
 
+{% set action = c.form_action or '' %}
+
+
+{# ######################### #}
+
 {% block primary %}
+
+{# This provides a full page that renders a form for adding a dataset. It can
+then itself be extended to add/remove blocks of functionality. #}
+<form class="dataset-form" method="post" action="{{ action }}" data-module="basic-form"
+      xmlns="http://www.w3.org/1999/html">
+
+{#
+  _ckan_phase was removed when integrating the ONKI selector
+  Its existence lead to inconsistent functionalities when adding a new dataset
+  or editing an old one. The problematic function can be found from:
+  package._save_edit, tag_string lines within if '_ckan_phase'
+  Though, the quick fix causes some problems, eg. the partial update brakes
+ #}
+  <input type="hidden" name="_ckan_phase" value="" />
+  {# pkg_name used in 3 stage edit #}
+  <input type="hidden" name="pkg_name" value="{{ data.id }}" />
+  {% block errors %}{{ kataform.kataerrors(error_summary, h) }}{% endblock %}
 
 <div class="module-content tab-content active">
 
@@ -94,4 +119,5 @@
     {% endblock %}
 
 </div>
+</form>
 {% endblock %}
