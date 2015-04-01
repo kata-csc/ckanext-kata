@@ -1,7 +1,7 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<h3 class="module-heading-add-dataset">{{ _('Authors') }} {{ kata_form.required() }}</h3>
+<h3 class="">{{ _('Authors') }}</h3>
 <div class="kata-add-dataset-wrapper">
     <div class="kata-add-dataset-fields">
         {% set authors = h.get_authors(data) %}
@@ -14,7 +14,7 @@
             {% set index = agent_index.increase() %}
             <div class="control-group control-custom{{ " error" if author_errors }}">
                 <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
-                {% call form.input('agent__' ~ index ~ '__name', label=_('Author'), id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'),
+                {% call form.input('agent__' ~ index ~ '__name', label=_('Author') ~ ' * ', id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'),
                            value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'],
                            label_classes=['kata-input-comp'], control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
                 {% endcall %}
@@ -26,7 +26,7 @@
                     {% endif %}
                 {% endcall %}
 
-                {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation'), id='agent__' ~ index ~ '__organisation_id',
+                {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation') ~ ' * ', id='agent__' ~ index ~ '__organisation_id',
                            placeholder=_('University. Faculty. Department.'), value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'),
                            classes=['control-custom'], label_classes=['kata-input-comp'], control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
                     {% if loop.index0 == 0 %}
@@ -42,13 +42,13 @@
     </div>
     <div class="kata-add-dataset-instructions" data-module="kata-instructions">
         {% trans %}
-            Field is compulsory.<br /><br />Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields. You can also add an identifier. You can add more authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded.
+            Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields. You can also add an identifier. You can add more authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded.
             Optionally you can provide author\'s identifier, such as an ORCID identifier.
         {% endtrans %}
     </div>
 </div>
 
-<h3 class="module-heading-add-dataset optional">{{ _('Contributors') }}{{ kata_form.optional() }}</h3>
+<h3 class="">{{ _('Contributors') }}</h3>
 <div class="kata-add-dataset-wrapper">
     <div class="kata-add-dataset-fields">
         {% set contributors = h.get_contributors(data) %}
@@ -104,7 +104,7 @@
   <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
   <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation or '' }}" />
 {% endif %}
-<h3 class="module-heading-add-dataset">{{ _('Distributor') }} {{ kata_form.required() }}</h3>
+<h3 class="">{{ _('Distributor') }}</h3>
 <div class="kata-add-dataset-wrapper">
     <div class="kata-add-dataset-fields">
         {% set contacts = h.get_contacts(data) %}
@@ -119,7 +119,7 @@
                 <div class="control-group control-custom{% if distributor_errors %} error{% endif %}">
 
                     {% set index = loop.index0 %}
-                    {% call form.input('contact__' ~ index ~ '__name', label=_('Name'), id='contact__' ~ index ~ '__name', placeholder=_('John Doe'), value=contact.name,
+                    {% call form.input('contact__' ~ index ~ '__name', label=_('Name') ~ ' * ', id='contact__' ~ index ~ '__name', placeholder=_('John Doe'), value=contact.name,
                            error=h.get_dict_field_errors(errors, 'contact', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
                            control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
                     {% endcall %}
@@ -129,7 +129,7 @@
                            control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
                     {% endcall %}
 
-                    {% call form.input('contact__' ~ index ~ '__email', label=_('Email'), id='contact__' ~ index ~ '__email', placeholder=_('john.doe@example.com'), value=contact.email,
+                    {% call form.input('contact__' ~ index ~ '__email', label=_('Email') ~ ' * ', id='contact__' ~ index ~ '__email', placeholder=_('john.doe@example.com'), value=contact.email,
                            error=h.get_dict_field_errors(errors, 'contact', index, 'email'), type='email', classes=['control-custom'], label_classes=['kata-input-comp'],
                            control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
                     {% endcall %}
@@ -152,18 +152,18 @@
     </div>
     <div class="kata-add-dataset-instructions" data-module="kata-instructions">
       {% trans %}
-        Field is compulsory.<br /><br />Type the name of the distributor. Distributor is a person or an organisation who has the right to distribute the dataset or has published the dataset.
-        Field is compulsory.<br /><br />Type the contact phone number. The phone number must be in form \"+35812341234\".
-        Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly but it can be used to send e-mails in this service.
-        Field is compulsory.<br /><br />Type a valid web address to your web page. In case you don\'t have one, you could for example give an address to your research group\'s site or any site that could make it possible to contact the origin of the dataset in case of need.
+        Type the name of the distributor. Distributor is a person or an organisation who has the right to distribute the dataset or has published the dataset.
+        Type the contact phone number. The phone number must be in form \"+35812341234\".
+        Type the contact e-mail address. The e-mail address is not shown publicly but it can be used to send e-mails in this service.
+        Type a valid web address to your web page. In case you don\'t have one, you could for example give an address to your research group\'s site or any site that could make it possible to contact the origin of the dataset in case of need.
       {% endtrans %}
     </div>
 </div>
-<h3 class="module-heading-add-dataset">{{ _('Project') }} {{ kata_form.required() }}</h3>
+<h3 class="">{{ _('Project') }}</h3>
 <div class="kata-add-dataset-wrapper">
     <div class="kata-add-dataset-fields">
         <input id="projdis" type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />
-        <label for="projdis" class="kata-checkbox-label">{{ _('This dataset was produced in a project.') }}</label>
+        <label for="projdis" class="kata-checkbox-label">{{ _('This dataset was produced in a project.') }} * </label>
     </div>
 
     <div class="module-content" id="projdiv"{% if not h.get_funder(data) %} style="display: none;"{% endif %}>
@@ -220,14 +220,14 @@
 </div>
   <div class="kata-add-dataset-instructions" data-module="kata-instructions">
       {% trans %}
-        Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project\'s homepage.
-        Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project funder\'s name.
-        Field is compulsory if checkbox \'This dataset was produced in a project.\' is checked.<br /><br />Type the project\'s funding id.
+        Type the project\'s homepage.
+        Type the project funder\'s name.
+        Type the project\'s funding id.
       {% endtrans %}
   </div>
 </div>
 
-<h3 class="module-heading-add-dataset">{{ _('Owner information') }} {{ kata_form.required() }}</h3>
+<h3 class="">{{ _('Owner information') }}</h3>
 <div class="kata-add-dataset-wrapper">
     <div class="kata-add-dataset-fields">
         {% set owners = h.get_owners(data) %}
@@ -244,7 +244,7 @@
                     {% set index = agent_index.increase() %}
                     {% set agent_prefix = "agent__" ~ index ~ "__" %}
 
-                    {% call form.input('agent__' ~ index ~ '__name', label=_('Owner'), id='agent__' ~ index ~ '__name_id', placeholder=_('name or ID such as ORCID'),
+                    {% call form.input('agent__' ~ index ~ '__name', label=_('Owner') ~ ' * ', id='agent__' ~ index ~ '__name_id', placeholder=_('name or ID such as ORCID'),
                            value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
                            control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
 
@@ -264,7 +264,7 @@
         </div>
     <div class="kata-add-dataset-instructions" data-module="kata-instructions">
       {% trans %}
-        Field is compulsory.<br /><br />Owner is a person or an organisation who decides upon the use of the dataset.<br /><br />Type the owner\'s name or ID, such as an ORCID identifier.
+        Owner is a person or an organisation who decides upon the use of the dataset.<br /><br />Type the owner\'s name or ID, such as an ORCID identifier.
       {% endtrans %}
     </div>
 </div>

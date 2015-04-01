@@ -17,8 +17,8 @@
         {# Render title fields #}
         {% for langtitle in titles %}
             {% set index = loop.index0 %}
-            {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
-                <label class="control-label kata-input-comp kata-field-title-language" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
+            {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title') ~ ' ** ', placeholder='', value=langtitle.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+                {# <label class="control-label kata-input-comp kata-field-title-language" for="langtitle__{{ index }}__lang">{{ _('Language') }} ** </label> #}
                 <select name="langtitle__{{ index }}__lang">
                     {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
                 </select>
@@ -38,7 +38,7 @@
   </div>
   <div class="kata-add-dataset-instructions" data-module="kata-instructions">
     {% trans %}
-      Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.
+      Type an informative title for the research data. Choose the title's language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.
     {% endtrans %}
   </div>
 </div>
@@ -62,13 +62,13 @@
     <div class="kata-add-dataset-fields">
         {# Autocomplete for keywords #}
         {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-        {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
+        {{ form.input('tag_string', id='field-tags', label=_('Keywords') ~ ' * ', placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
         <br />
     </div>
     <div class="kata-add-dataset-instructions" data-module="kata-instructions">
       {% trans %}
         Search keywords from <a href="http://finto.fi/koko/en/" target="_blank">KOKO</a> ontology, select keywords with enter or mouse click.
-        <br /><br />Field is compulsory.<br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.
+        <br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.
       {% endtrans %}
     </div>
 </div>
@@ -97,14 +97,14 @@
         <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
         <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
         <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
-            {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language,
+            {% call form.input('language', label=_('Languages') ~ ' * ', id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language,
                          classes=['control-medium'], control_classes=["controls editor kata-medium"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
             {% endcall %}
         </div>
     </div>
     <div class="kata-add-dataset-instructions" data-module="kata-instructions">
       {% trans %}
-        Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".
+        Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".
         Find language codes from: <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
       {% endtrans %}
     </div>
