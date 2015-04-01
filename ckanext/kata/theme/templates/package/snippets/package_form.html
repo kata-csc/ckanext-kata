@@ -25,8 +25,7 @@ then itself be extended to add/remove blocks of functionality. #}
   {% block metadata_fields %}
     {% snippet 'package/snippets/package_metadata_fields.html', data=data, errors=errors, roles=c.roles %}
   {% endblock %}
-  {% snippet 'package/snippets/package_terms_of_use.html' %}
-  {% if errors and errors.get('accept-terms') and errors.get('accept-terms') is iterable %}<span class="error-block-kata">{{ errors.get('accept-terms')|join('.') }}</span>{% endif %}
+
   {% block form_actions %}
     <div class="form-actions">
       {% block delete_button %}

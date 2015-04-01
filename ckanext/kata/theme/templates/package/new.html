@@ -1,14 +1,11 @@
-{% ckan_extends %}
+{% extends 'package/base_form_page.html' %}
 
 {% block resources_module %}
     {# TODO: Pass in a list of previously created resources and the current package dict #}
     {% snippet "package/snippets/resources.html", pkg={}, action='new_resource' %}
 {% endblock %}
 
-{% block secondary_content %}
-  {{ super() }}
 
   {% block import_xml_module %}
     {% snippet "package/snippets/import_xml.html" %}
   {% endblock %}
-{% endblock %}

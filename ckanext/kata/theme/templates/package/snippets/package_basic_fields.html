@@ -6,21 +6,59 @@
   </div>
 {% endif %}
 
-<div>
-    {% set agent_index = h.create_loop_index() %}
+{% set agent_index = h.create_loop_index() %}
 
-    {% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+    {#% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %#}
 
     {# If we have a default group then this wants remembering #}
-    {% if data.group_id %}
-      <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
-    {% endif %}
+{% if data.group_id %}
+  <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
+{% endif %}
 
-    {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
-    {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+    {#% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %#}
+    {#% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %#}
 
-    <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />
-    <input type="hidden" value="True" id="private" name="private"/>
-</div>
+<input type="hidden" value="{{ agent_index.index }}" id="agent-index" />
+<input type="hidden" value="True" id="private" name="private"/>
 
-{% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
+<div class="module-content tab-content active">
+  <ul class="nav nav-tabs kata-dataset-tabs">
+    <li class="active"><a href="#basic-tab" data-toggle="tab">{{ _('Basic metadata') }}</a></li>
+    <li><a href="#agents-tab" data-toggle="tab">{{ _('Agents') }}</a></li>
+    <li><a href="#licence-tab" data-toggle="tab">{{ _('Licence and availability') }}</a></li>
+    <li><a href="#additional-tab" data-toggle="tab">{{ _('Additional information') }}</a></li>
+    <li><a href="#identifier-tab" data-toggle="tab">{{ _('Identifiers') }}</a></li>
+    <li><a href="#discipline-tab" data-toggle="tab">{{ _('Discipline specific') }}</a></li>
+  </ul>
+    <div id="basic-tab" class="tab-pane active">
+        {% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+    </div>
+    <div id="agents-tab" class="tab-pane">
+        {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+    </div>
+    <div id="licence-tab" class="tab-pane">
+        {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+    </div>
+    <div id="additional-tab" class="tab-pane">
+        {% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
+    </div>
+    <div id="identifier-tab" class="tab-pane">
+        {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+    </div>
+    <div id="discipline-tab" class="tab-pane">
+        <p>Discipline specific stuff will be here</p>
+    </div>
+    {% snippet 'package/snippets/package_terms_of_use.html' %}
+    {% if errors and errors.get('accept-terms') and errors.get('accept-terms') is iterable %}<span class="error-block-kata">{{ errors.get('accept-terms')|join('.') }}</span>{% endif %}
+
+<!-- Tab paginator -->
+    <div class="tab-paginator" data-module="kata-tab-paginator">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn nofocus" id="prev-tab" ><span class="icon-chevron-left" ></span></button>
+            <div id="tab-indicator" class="" hidden="true""></div>
+            <button type="button" class="btn nofocus" id="next-tab"><span class="icon-chevron-right" ></span></button>
+            </div>
+        </div>
+    </div>
+
+{#% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %#}
