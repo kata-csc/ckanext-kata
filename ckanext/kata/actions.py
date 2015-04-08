@@ -88,32 +88,6 @@ def package_show(context, data_dict):
                                  'dataset_id': pkg.id}
                     related_create(context, data_dict)
 
-    # The following part handles the conversion from the old langtitle
-    # to the new type language JSON string
-
-    """
-    # if a new type of translation string title is found, let's use that
-    if title:
-        extras_title = pkg.extras.get(u'title')
-
-    # otherwise use langtitle and convert it to the new json format
-    elif langtitles and not isinstance(langtitles, basestring):
-        # langtitle is of deprecated type [{'lang': u'eng', 'value': u'My Dataset Name'}]
-        d = {}
-        for langtitle in langtitles:
-            d[langtitle['lang']] = langtitle['value']
-
-        extras_title = json.dumps(d)
-    """
-
-    log.debug("--------- DEBUG ---------")
-    log.debug(pkg_dict1.get(u'title'))
-
-    #pkg.extras.get(u'langtitle')
-
-    # TODO: is the revision now updated in case of conversion to the new format?
-    # TODO: pkg.pop('langtitle') ??
-
     """
     if extras_title and extras_title != pkg.title:
         repo.new_revision()
@@ -121,9 +95,6 @@ def package_show(context, data_dict):
         pkg.save()
         rebuild(pkg.id)  # Rebuild solr-index for this dataset
     """
-
-    # An alternative solution for showing the title:
-    # pkg_dict1['title'] = helpers.get_translation(pkg_dict1.get(u'title'))
 
     return pkg_dict1
 

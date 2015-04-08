@@ -90,26 +90,23 @@ def org_auth_from_extras(key, data, errors, context):
         if not orgauth in orgauths:
             orgauths.append(orgauth)
 
-def convert_langtitle_to_title(key, data, errors, context):
+def langtitles_to_title(key, data, errors, context):
     '''
-    Convert a field of type
-    ('field', n, 'lang'): u'en',
-    ('field', n, 'value'): u'translation'
+    Fetch all the langtitle fields of type
+    ('langtitle', n, 'lang'): u'en',
+    ('langtitle', n, 'value'): u'translation'
 
-    to a json field of type
-    field: {'en':'translation', 'fi':'kaannos'}
+    and generate a JSON translation string of type
+    title: {'en':'translation', 'fi':'kaannos'}
 
-    Since this converter is called once for each translation,
-    we need to fetch the previously saved json string from extras
-    and update it.
+    This converter is called only once for the hidden field
+    'title' where the data is then stored.
 
     :param key: key
     :param data: data
     :param errors: validation errors
     :param context: context
     '''
-
-    # TODO: catch errors
 
     json_data = {}
 
@@ -123,58 +120,6 @@ def convert_langtitle_to_title(key, data, errors, context):
         i+=1
 
     data[('title',)] = json.dumps(json_data)
-
-    import pprint
-    log.debug("OUR CONVERTER DATA : -------------------------")
-    log.debug(pprint.pformat(data))
-
-
-def json_translation_to_extras(key, data, errors, context):
-    '''
-    Convert a field of type
-    ('field', n, 'lang'): u'en',
-    ('field', n, 'value'): u'translation'
-
-    to a json field of type
-    field: {'en':'translation', 'fi':'kaannos'}
-
-    Since this converter is called once for each translation,
-    we need to fetch the previously saved json string from extras
-    and update it.
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-
-    #TODO: catch parsing errors
-    #TODO: is this function needed anymore?
-
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
-
-    json_data = {}
-
-    lval = data[(key[0], key[1], 'lang')]
-    rval = data[(key[0], key[1], 'value')]
-
-    # update the field, if one already exists in extras
-    for item in extras:
-        if item['key'] == key[0]:
-            json_data = json.loads(item['value'])
-            json_data[lval] = rval
-            item['value'] = json.dumps(json_data)
-
-            return
-
-    # if no existing field is found from extras, create a new one
-    json_data[lval] = rval
-
-    # NOTE: this doesn't not work correctly with the package validators
-    extras.append({'key': key[0],
-                   'value': json.dumps(json_data)})
 
 
 def ltitle_to_extras(key, data, errors, context):

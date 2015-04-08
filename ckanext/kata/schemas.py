@@ -94,18 +94,12 @@ class Schemas:
         schema['id'] = [default(u''), co.update_pid, unicode]
 
         # Langtitle is deprecated, and called only for the old type of packages, which are then updated to new types
-        # TODO: not_missing removed, va.validate_title, va.validate_title_duplicates
-        # convert_langtitle_to_title
-        #schema['langtitle'] = {'value': [unicode , co.json_translation_to_extras],
-        #                       'lang': [unicode, co.convert_languages]}
+        # TODO: removed validators for testing: not_missing, va.validate_title, va.validate_title_duplicates
         schema['langtitle'] = {'value': [unicode],
                                'lang': [unicode, co.convert_languages]}
 
-        # The title field creates the new type translation JSON file
-        # TODO: add va.validate_title_duplicates, va.validate_title
-        #schema['title'] = {'value': [not_missing, unicode, co.json_translation_to_extras],
-        #                       'lang': [not_missing, unicode, co.convert_languages]}
-        schema['title'] = [unicode, co.convert_langtitle_to_title]
+        # TODO: removed validators for testing: add va.validate_title_duplicates, va.validate_title
+        schema['title'] = [unicode, co.langtitles_to_title]
 
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
@@ -373,10 +367,10 @@ class Schemas:
         schema['pids'] = [co.flattened_from_extras, ignore_missing]
         # schema['projdis'] = [unicode]
 
-        # modified for new title format: co.convert_langtitle_to_title
+        # modified for new title format: co.langtitles_to_title
         #schema['title'] = [ignore_missing]
 
-        #schema['langtitle'] = {'value': [unicode , co.convert_langtitle_to_title],
+        #schema['langtitle'] = {'value': [unicode , co.langtitles_to_title],
         #                       'lang': [unicode, co.convert_languages]}
 
         #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
