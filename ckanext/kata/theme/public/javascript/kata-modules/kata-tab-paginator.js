@@ -13,8 +13,8 @@ this.ckan.module('kata-tab-paginator', function (jQuery, _) {
       //var undoneIndicator = "<span class='icon-ok-sign style='color:gray'></span>";
       //var activeIndicator = "<span class='icon-ok-sign' style='color:blue'></span>";
 
-      var undoneIndicator = "<span class='empty-dot'></span>";
-      var activeIndicator = "<span class='filled-dot'></span>";
+      var undoneIndicator = "<span class='empty-dot dot'></span>";
+      var activeIndicator = "<span class='filled-dot dot'></span>";
 
        /* Progress indicator initialization */
       jQuery("#tab-indicator").append(activeIndicator);
@@ -34,6 +34,13 @@ this.ckan.module('kata-tab-paginator', function (jQuery, _) {
 
       jQuery('#prev-tab').click(function(e){
         jQuery('.nav-tabs > .active').prev('li').find('a').trigger('click');
+        $("html, body").animate({scrollTop: $(".kata-dataset-tabs").offset().top - 10}, "fast");
+      });
+
+      /* Open the corresponding tab by clicking the dot */
+      jQuery('#tab-indicator').on("click", ".dot", function(e) {
+        dotIdx = $(e.target).index();
+        jQuery('.nav-tabs').find('li').eq(dotIdx).find('a').trigger('click');
         $("html, body").animate({scrollTop: $(".kata-dataset-tabs").offset().top - 10}, "fast");
       });
 

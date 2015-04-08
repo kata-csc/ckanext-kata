@@ -44,13 +44,14 @@
     overflow: hidden;
     /*width: 50px;*/
     border-left: 1px dotted;
-    padding-left: 5px;
+    padding-left: 16px;
     height: 120px;
     margin-bottom: 10px;
+    text-align: justify;
 }
 .kata-add-dataset-fields {
     float: left;
-    width: 80%;
+    width: 70%;
     padding-left: 5px;
     margin-right: 5px;
 }
