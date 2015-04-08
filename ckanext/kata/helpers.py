@@ -672,13 +672,13 @@ def get_translation(translation_json_string, lang=None):
     # convert ISO639-1 to ISO639-2 (fi -> fin, en -> eng)
     lang = convert_language_code(lang, 'alpha3')
 
-    # if translation is found in JSON, return it
-    # otherwise default to english (or empty)
-    if json_data:
-        if lang in json_data:
-            return json_data.get(lang)
-        else:
-            return json_data.get('eng', '')
+    # return the given language if it is found,
+    # otherwise return the next one from the defaults list
+    defaults = [lang, 'eng', 'fin']
+    for lang in defaults:
+        translation = json_data.get(lang)
+        if translation:
+            return translation
 
 
 def disciplines_string_resolved(disciplines, ontology=None, lang=None):

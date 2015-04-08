@@ -21,7 +21,7 @@ from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
-from ckanext.kata import utils, settings
+from ckanext.kata import utils, settings, helpers
 from ckan.logic import get_action
 import ckan.new_authz
 from ckanext.kata.schemas import Schemas
@@ -91,10 +91,7 @@ def package_show(context, data_dict):
     # The following part handles the conversion from the old langtitle
     # to the new type language JSON string
 
-    title = pkg.extras.get(u'title')
-    langtitles = pkg_dict1.get(u'langtitle')
-    extras_title = ""
-
+    """
     # if a new type of translation string title is found, let's use that
     if title:
         extras_title = pkg.extras.get(u'title')
@@ -107,20 +104,26 @@ def package_show(context, data_dict):
             d[langtitle['lang']] = langtitle['value']
 
         extras_title = json.dumps(d)
-
     """
+
     log.debug("--------- DEBUG ---------")
-    log.debug(title)
-    log.debug(langtitles)
+    log.debug(pkg_dict1.get(u'title'))
 
-    TODO: is the revision now updated in case of conversion to the new format?
+    #pkg.extras.get(u'langtitle')
+
+    # TODO: is the revision now updated in case of conversion to the new format?
+    # TODO: pkg.pop('langtitle') ??
+
     """
-
     if extras_title and extras_title != pkg.title:
         repo.new_revision()
         pkg.title = extras_title
         pkg.save()
         rebuild(pkg.id)  # Rebuild solr-index for this dataset
+    """
+
+    # An alternative solution for showing the title:
+    # pkg_dict1['title'] = helpers.get_translation(pkg_dict1.get(u'title'))
 
     return pkg_dict1
 
@@ -313,6 +316,8 @@ def package_update(context, data_dict):
     if package_data.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_update_package_schema()
 
+
+
     pkg_dict1 = ckan.logic.action.update.package_update(context, data_dict)
 
     # Logging for production use
@@ -324,6 +329,7 @@ def package_update(context, data_dict):
     index = index_for('package')
     # update_dict calls index_package, so it would basically be the same
     index.update_dict(pkg_dict)
+
     return pkg_dict1
 
 

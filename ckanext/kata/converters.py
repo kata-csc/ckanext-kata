@@ -90,6 +90,45 @@ def org_auth_from_extras(key, data, errors, context):
         if not orgauth in orgauths:
             orgauths.append(orgauth)
 
+def convert_langtitle_to_title(key, data, errors, context):
+    '''
+    Convert a field of type
+    ('field', n, 'lang'): u'en',
+    ('field', n, 'value'): u'translation'
+
+    to a json field of type
+    field: {'en':'translation', 'fi':'kaannos'}
+
+    Since this converter is called once for each translation,
+    we need to fetch the previously saved json string from extras
+    and update it.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    # TODO: catch errors
+
+    json_data = {}
+
+    # loop through all the title translations
+    i = 0
+    while data.get(('langtitle', i, 'lang'), []):
+        lval = data[('langtitle', i, 'lang')]
+        rval = data[('langtitle', i, 'value')]
+        if rval:    # skip a language without translation
+            json_data[lval] = rval
+        i+=1
+
+    data[('title',)] = json.dumps(json_data)
+
+    import pprint
+    log.debug("OUR CONVERTER DATA : -------------------------")
+    log.debug(pprint.pformat(data))
+
+
 def json_translation_to_extras(key, data, errors, context):
     '''
     Convert a field of type
@@ -110,6 +149,7 @@ def json_translation_to_extras(key, data, errors, context):
     '''
 
     #TODO: catch parsing errors
+    #TODO: is this function needed anymore?
 
     extras = data.get(('extras',), [])
     if not extras:

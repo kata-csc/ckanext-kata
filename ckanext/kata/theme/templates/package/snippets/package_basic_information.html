@@ -23,13 +23,13 @@
         {% for title in titles %}
           {% set index = loop.index0 %}
           {# langtitle deprecated, use title for the new type JSON translations #}
-          {% call form.input('title__' ~ index ~ '__value', id='title__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
             {% if index == 0 %}
               {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
             {% endif %}
-            <label class="control-label kata-input-comp kata-field-title-language" for="title__{{ index }}__lang">{{ _('Language') }}</label>
+            <label class="control-label kata-input-comp kata-field-title-language" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
             <div class="controls kata-input-comp kata-field-title-language">
-              <select name="title__{{ index }}__lang">
+              <select name="langtitle__{{ index }}__lang">
                 {% snippet 'package/snippets/languages.html', selected=title.lang %}
               </select>
               {% if index == 0 %}
@@ -42,9 +42,13 @@
           {% endcall %}
         {% endfor %}
 
+        {# Include a hidden form to get a 'title' field to package #}
+        {{ form.hidden('title', data.title) }}
+
         {# langtitle -> title #}
         {% if errors.title %}
-          <span class="error-block-kata">{{ errors.title[0].value[0]}}</span>
+          {# <span class="error-block-kata">{{ errors.title[0].value[0]}}</span> #}
+          <span class="error-block-kata">{{ errors.title[0] }}</span>
         {% endif %}
       </div>
     </div>
