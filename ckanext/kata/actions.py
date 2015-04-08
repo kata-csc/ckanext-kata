@@ -6,6 +6,7 @@ import datetime
 import logging
 
 import re
+import json
 from pylons import c
 from pylons.i18n import _
 
@@ -87,11 +88,37 @@ def package_show(context, data_dict):
                                  'dataset_id': pkg.id}
                     related_create(context, data_dict)
 
-    # Update package.title to match package.extras.title_0
-    extras_title = pkg.extras.get(u'title_0')
+    # The following part handles the conversion from the old langtitle
+    # to the new type language JSON string
+
+    title = pkg.extras.get(u'title')
+    langtitles = pkg_dict1.get(u'langtitle')
+    extras_title = ""
+
+    # if a new type of translation string title is found, let's use that
+    if title:
+        extras_title = pkg.extras.get(u'title')
+
+    # otherwise use langtitle and convert it to the new json format
+    elif langtitles and not isinstance(langtitles, basestring):
+        # langtitle is of deprecated type [{'lang': u'eng', 'value': u'My Dataset Name'}]
+        d = {}
+        for langtitle in langtitles:
+            d[langtitle['lang']] = langtitle['value']
+
+        extras_title = json.dumps(d)
+
+    """
+    log.debug("--------- DEBUG ---------")
+    log.debug(title)
+    log.debug(langtitles)
+
+    TODO: is the revision now updated in case of conversion to the new format?
+    """
+
     if extras_title and extras_title != pkg.title:
         repo.new_revision()
-        pkg.title = pkg.extras[u'title_0']
+        pkg.title = extras_title
         pkg.save()
         rebuild(pkg.id)  # Rebuild solr-index for this dataset
 

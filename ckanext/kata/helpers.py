@@ -550,6 +550,23 @@ def get_ga_id():
     '''
     return config.get('kata.ga_id', '')
 
+def json_to_list(pkg_dict):
+
+    langlist = []
+
+    try:
+        json_data = json.loads(pkg_dict)
+    except ValueError:
+        return pkg_dict
+    except TypeError:
+        for k, v in pkg_dict:
+            langlist.append({"lang": k, "value": v})
+            return langlist
+
+    for k, v in json_data.iteritems():
+        langlist.append({"lang": k, "value": v})
+
+    return langlist
 
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
@@ -633,6 +650,35 @@ def get_label_for_uri(uri, ontology=None, lang=None):
                 return label.get('value')
 
     return uri
+
+def get_translation(translation_json_string, lang=None):
+    '''
+    Returns the given JSON translation string in correct language.
+
+    :param translation_json_string: a json string containing translations, i.e. title
+    :param lang: language of the translation
+    :return:
+    '''
+
+    try:
+        json_data = json.loads(translation_json_string)
+    except ValueError:
+        return translation_json_string
+
+    # if no language is given as a parameter, fetch the currently used
+    if not lang:
+        lang = h.lang()
+
+    # convert ISO639-1 to ISO639-2 (fi -> fin, en -> eng)
+    lang = convert_language_code(lang, 'alpha3')
+
+    # if translation is found in JSON, return it
+    # otherwise default to english (or empty)
+    if json_data:
+        if lang in json_data:
+            return json_data.get(lang)
+        else:
+            return json_data.get('eng', '')
 
 
 def disciplines_string_resolved(disciplines, ontology=None, lang=None):

@@ -92,7 +92,15 @@ class Schemas:
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_date],
                            'descr': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric]}
         schema['id'] = [default(u''), co.update_pid, unicode]
-        schema['langtitle'] = {'value': [not_missing, unicode, va.validate_title, va.validate_title_duplicates, co.ltitle_to_extras],
+
+        # Langtitle is deprecated, and called only for the old type of packages, which are then updated to new types
+        # TODO: not_missing removed, va.validate_title, va.validate_title_duplicates
+        schema['langtitle'] = {'value': [unicode , co.json_translation_to_extras],
+                               'lang': [unicode, co.convert_languages]}
+
+        # The title field creates the new type translation JSON file
+        # TODO: add va.validate_title_duplicates, va.validate_title
+        schema['title'] = {'value': [not_missing, unicode, co.json_translation_to_extras],
                                'lang': [not_missing, unicode, co.convert_languages]}
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
@@ -114,7 +122,8 @@ class Schemas:
         schema['availability'] = [not_missing, co.convert_to_extras_kata]
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
         # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
-        schema['__extras'] = [va.check_agent, va.check_langtitle, va.check_contact, va.check_pids]
+        # va.check_langtitle removed
+        schema['__extras'] = [va.check_agent, va.check_contact, va.check_pids]
         schema['__junk'] = [va.check_junk]
         schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
                           va.validate_general]
