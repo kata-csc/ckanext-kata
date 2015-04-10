@@ -7,6 +7,7 @@ import logging
 
 import re
 from pylons import c
+from pylons import config
 from pylons.i18n import _
 
 from paste.deploy.converters import asbool
@@ -18,8 +19,10 @@ from ckan.model import Related, Session, Package, repo
 import ckan.model as model
 from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
+import ckan.lib.helpers as h
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
+import ckan.logic as logic
 from ckanext.kata import utils, settings
 from ckan.logic import get_action
 import ckan.new_authz
@@ -799,13 +802,35 @@ def package_owner_org_update(context, data_dict):
     Used by both package_create and package_update
     '''
 
-    user_id = model.User.by_name(context.get('user')).id
     org_id = data_dict.get('organization_id')
-
-    # get role the user has for the group
-    user_role = utils.get_member_role(org_id, user_id)
-
-    pkg = model.Package.get(data_dict['id'])
+    model = context['model']
+    group = model.Group.get(org_id)
+    if not group:
+        org_name = re.sub(r'[^A-Za-z0-9]+', '-', org_id).lower()
+        group_own = model.Group.get(org_name)
+        if not group_own:
+            org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
+            org_dict = {
+                'title': org_id,
+                'description': u'',
+                'image_url': u'',
+                'type': 'organization',
+                'name': org_name
+            }
+            org_context = {
+                'message': '',
+                'model': context['model'],
+                'schema': logic.schema.default_group_schema(),
+                'session': context['session'],
+                'user': org_admin,
+            }
+            new_org = logic.get_action('organization_create')(org_context, org_dict)
+            group_id = new_org['id']
+            h.flash_success(_('New organisation "{org}" created automatically.')
+                            .format(org=org_id))
+        else:
+            group_id = group_own.id
+        data_dict['organization_id'] = group_id
 
     return ckan.logic.action.update.package_owner_org_update(context, data_dict)
 

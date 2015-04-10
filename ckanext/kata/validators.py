@@ -498,34 +498,8 @@ def kata_owner_org_validator(key, data, errors, context):
 
     model = context['model']
     group = model.Group.get(value)
-    if not group:
-        org_name = re.sub(r'[^A-Za-z0-9]+', '-', value).lower()
-        group_own = model.Group.get(org_name)
-        if not group_own:
-            org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
-            data_dict = {
-                'title': value,
-                'description': u'',
-                'image_url': u'',
-                'type': 'organization',
-                'name': org_name
-            }
-            context_org = {
-                'message': '',
-                'model': context['model'],
-                'schema': logic.schema.default_group_schema(),
-                'session': context['session'],
-                'user': org_admin,
-            }
-            new_org = logic.get_action('organization_create')(context_org, data_dict)
-            group_id = new_org['id']
-            h.flash_success(_('New organisation "{org}" created automatically.')
-                            .format(org=value))
-        else:
-            group_id = group_own.id
-    else:
-        group_id = group.id
-    data[key] = group_id
+    if group:
+        data[key] = group.id
 
 
 def check_private(key, data, errors, context):

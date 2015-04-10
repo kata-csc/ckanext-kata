@@ -9,6 +9,7 @@ import testfixtures
 from ckan.lib.helpers import url_for
 from ckan.lib import search
 from ckan.logic import ValidationError, NotAuthorized
+import ckan.model as model
 
 from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
@@ -819,4 +820,90 @@ class TestOrganizationAdmin(KataApiTestCase):
 
         # TRY TO MOVE DATASET TO ORGANIZATION 2 AS NON MEMBER
         self.api_user_joe.action.package_update(**data_dict2)
+
+
+class TestOrganizationChangeAndCreate(KataApiTestCase):
+    '''Tests for creating organizations when creating or updating the data set.'''
+
+    def test_create_owner_org_existing(self):
+        '''Create dataset with some existing organization.
+
+            This tests following:
+             ckanext.kata.actions.package_owner_org_update()
+             ckanext.kata.validators.kata_owner_org_validator()
+        '''
+
+        existing_org = copy.deepcopy(TEST_ORGANIZATION)
+        existing_org['title'] = 'Existing org for create'
+        existing_org['name'] = 'existing-org-for-create'
+        org_dict = self.api_user_sysadmin.action.organization_create(**existing_org)
+
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        # data_dict['title'] = 'A new dataset'
+        data_dict['owner_org'] = existing_org['title']
+        pkg_dict = self.api_user_normal.call_action('package_create', data_dict=data_dict)
+
+        assert pkg_dict['owner_org'] == org_dict['id'], "%s != %s" % (model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first().title, org_dict['title'])
+
+    def test_create_owner_org_new(self):
+        '''Create dataset with a new organization.
+
+            This tests following:
+             ckanext.kata.actions.package_owner_org_update()
+             ckanext.kata.validators.kata_owner_org_validator()
+        '''
+
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        # data_dict['title'] = 'A new dataset'
+        data_dict['owner_org'] = 'A New Org for create'
+        pkg_dict = self.api_user_normal.call_action('package_create', data_dict=data_dict)
+
+        neworg = model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first()
+
+        assert neworg.title == data_dict['owner_org'], "%s != %s" % (neworg.title, data_dict['owner_org'])
+
+
+    def test_update_owner_org_existing(self):
+        '''Change owner organization to some existing organization.
+            Change owner organization to non-existing organization.
+            Create dataset with some existing organization.
+            Create dataset with non-existing organization.
+
+            This tests following:
+             ckanext.kata.actions.package_owner_org_update()
+             ckanext.kata.validators.kata_owner_org_validator()
+        '''
+
+        existing_org = copy.deepcopy(TEST_ORGANIZATION)
+        existing_org['title'] = 'Some existing org'
+        org_dict = self.api_user_sysadmin.action.organization_create(**existing_org)
+
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['owner_org'] = existing_org['title']
+        pkg_dict = self.api_user_normal.call_action('package_update', data_dict=data_dict)
+
+        # neworg = model.Session.query(model.Group).filter(model.Group.name == org_dict['name'])\
+        #     .first().packages(with_private=True, return_query=True)\
+        #     .filter(model.Package.id == pkg_dict['id'])
+
+        # org_id = model.Session.query(model.Package).filter(model.Package.id == pkg_dict['id']).first().owner_org
+
+        assert pkg_dict['owner_org'] == org_dict['id'], "%s != %s" % (model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first().title, org_dict['title'])
+
+    def test_update_owner_org_new(self):
+        '''Change owner organization to non-existing organization. A new
+        organisation should be created.
+
+            This tests following:
+             ckanext.kata.actions.package_owner_org_update()
+             ckanext.kata.validators.kata_owner_org_validator()
+        '''
+
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict['owner_org'] = 'A Brand New Org'
+        pkg_dict = self.api_user_normal.call_action('package_update', data_dict=data_dict)
+
+        neworg = model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first()
+
+        assert neworg.title == data_dict['owner_org'], "%s != %s" % (neworg.title, data_dict['owner_org'])
 
