@@ -108,6 +108,29 @@ def langtitles_to_title(key, data, errors, context):
     :param context: context
     '''
 
+    # For API requests, we need to check if the
+    # title data is already given in the new format, and
+    # no langtitles given. In that case, do nothing.
+    if data.get(('title',)) and not data.get(('langtitle', 0, 'lang')):
+        # TODO: validate the JSON here, including the ISO translations
+        # in case we are given a JSON translation string, we need to validate it
+        json_string = data.get(('title',))
+        log.debug(errors)
+        try:
+            log.debug(json_string)
+            json_data = json.loads(json_string)
+        except ValueError:
+            errors[key].append(_('The given title string is not JSON parseable'))
+
+        # we also need to validate the keys:
+        for k in json_data.keys():
+            try:
+                languages.get(part3=k)
+            except KeyError:
+                errors[key].append(_('The language code is not in ISO639-3 format'))
+
+        return
+
     json_data = {}
 
     # loop through all the title translations

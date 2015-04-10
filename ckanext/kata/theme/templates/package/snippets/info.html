@@ -15,7 +15,9 @@ Example:
     <h2 class="module-heading"><i class="icon-sitemap"></i> {{ _("Edit Dataset") }}</h2>
     <ul class="unstyled nav nav-simple">
       <li class="nav-item{% if action == 'package_edit' %} active{% endif %}">
-        {% link_for h.dataset_display_name(pkg)|truncate(30), controller='package', action='edit', id=pkg.name %}
+        {#% link_for h.dataset_display_name(pkg)|truncate(30), controller='package', action='edit', id=pkg.name %#}
+        {% set title = h.get_translation(pkg.title) or pkg.name %}
+        {% link_for title|truncate(30), controller='package', action='edit', id=pkg.name %}
       </li>
     </ul>
     {% set resources = pkg.resources or [] %}

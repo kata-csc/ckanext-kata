@@ -93,13 +93,14 @@ class Schemas:
                            'descr': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric]}
         schema['id'] = [default(u''), co.update_pid, unicode]
 
-        # Langtitle is deprecated, and called only for the old type of packages, which are then updated to new types
-        # TODO: removed validators for testing: not_missing, va.validate_title, va.validate_title_duplicates
-        schema['langtitle'] = {'value': [unicode],
+        # Langtitle fields are used by the UI, to construct a 'title' field with translations in JSON format
+        # This is not necessarily needed for the API calls
+        schema['langtitle'] = {'value': [unicode, va.validate_title, va.validate_title_duplicates],
                                'lang': [unicode, co.convert_languages]}
 
-        # TODO: removed validators for testing: add va.validate_title_duplicates, va.validate_title
-        schema['title'] = [unicode, co.langtitles_to_title]
+        # The title field has all the title translations in JSON format. The converter langtitles_to_title
+        # needs to be called to construct the JSON string from the UI's langtitle fields.
+        schema['title'] = [unicode, not_missing, co.langtitles_to_title]
 
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]

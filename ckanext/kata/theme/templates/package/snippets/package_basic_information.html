@@ -9,10 +9,14 @@
 
     <div class="module-content">
       {% set titles = [] %}
-      {% if data.title %}
-        {#% set titles = h.json_to_list(data.langtitle) %#}
+
+      {% if data.langtitle %}
+        {# In case there are validation errors, the previous edits need to be fetched from the langtitle field #}
+        {% set titles = data.langtitle %}
+      {% elif data.title %}
         {% set titles = h.json_to_list(data.title) %}
       {% endif %}
+
       {% if (titles|length) == 0 %}
         {% for extra in range(1,2) %}
           {% do titles.append({'value': '', 'lang': ''}) %}
