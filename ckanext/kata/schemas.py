@@ -96,6 +96,7 @@ class Schemas:
                                'lang': [not_missing, unicode, co.convert_languages]}
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
+        schema['license_id'] = [co.to_licence_id, unicode]
         schema['temporal_coverage_begin'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \

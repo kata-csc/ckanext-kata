@@ -525,3 +525,21 @@ class TestExtrasFlatteners(TestCase):
             assert data[('extras',)][i]['key'].startswith('pids_1_')
             assert data[('extras',)][i]['value'] in data.values()
 
+class TestLincenseConverters(TestCase):
+    """Unit tests for license identification and conversion"""
+
+    import ckanext.kata.converters as co
+
+    @classmethod
+    def setup_class(cls):
+        """Set up tests."""
+        cls.key=('license_id',)
+        cls.test_data1 = {('license_id',): None }
+        cls.test_data2 = {('license_id',): "" }
+        cls.test_data3 = {('license_id',): "CC-BY-SA-4.0" }
+        cls.test_data4 = {('license_id',): "https://creativecommons.org/licenses/by/4.0/"}
+
+    def test_license_conversion(self):
+        co.to_licence_id(('licence_id', 0,), )
+        pass
+

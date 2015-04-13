@@ -485,3 +485,40 @@ def check_primary_pids(key, data, errors, context):
 
     if not data_pids:
         data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})
+
+
+def to_licence_id(key, data, errors, context):
+    '''
+    Try to match licence to existing defined license, replace matched content with licence id.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    import os, pprint
+    pprint.pprint(key)
+    pprint.pprint(data)
+    log.debug('to_licence_id')
+    map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/license_id_map.json'
+    license_id = data.get(key)
+    if license_id:
+        license_id = license_id.lower()
+        with open(map_file_name) as map_file:
+            license_map = json.load(map_file)
+            log.debug("loaded  "+ map_file_name)
+
+        log.debug("raw licence id " + license_id)
+        license_id = license_map.get(license_id)
+        if license_id:
+            log.debug("converted licence id" + license_id)
+            data[key] = license_id
+        else:
+            log.debug("No license ID in licence collection")
+            data[key] = "undefined"
+    else:
+        log.debug("No license ID in data")
+        data[key] = "undefined"
+
+    log.debug('to_license_id end')

@@ -66,16 +66,19 @@
         {% endif %}
       </div>
     </div>
-
+{{ licence_desc }}
     <div class="control-group">
       {% set error = errors.license_id %}
       <label class="control-label" for="field-license">{{ _("License") }}</label>
       <div class="controls">
+          <!-- test input for licenses -->
+          <input id="license_id" class="kata-medium-input" type="text" placeholder="ypotettu license_id" value="" name="license_id">
+          <!--
         <select id="field-license" name="license_id" class="kata-input-license" data-module="autocomplete">
           {% for licence_desc, licence_id in licences %}
             <option value="{{ licence_id }}" {% if data.get('license_id', 'notspecified') == licence_id %}selected="selected"{% endif %}>{{ licence_desc }}</option>
           {% endfor %}
-        </select>
+        </select> -->
         {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
         <br />
         <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
