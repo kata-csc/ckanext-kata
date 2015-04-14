@@ -522,7 +522,6 @@ class TestJSONConverters(TestCase):
         assert len(errors) > 0
 
 
-
 class TestExtrasFlatteners(TestCase):
 
     @classmethod
