@@ -368,8 +368,9 @@ class Schemas:
         schema['pids'] = [co.flattened_from_extras, ignore_missing]
         # schema['projdis'] = [unicode]
 
-        # modified for new title format: co.langtitles_to_title
-        #schema['title'] = [ignore_missing]
+        # co.title_from_extras updates the title field to show the JSON
+        # translation string if old format titles are found from extras
+        schema['title'] = [ignore_missing, co.title_from_extras]
 
         #schema['langtitle'] = {'value': [unicode , co.langtitles_to_title],
         #                       'lang': [unicode, co.convert_languages]}
