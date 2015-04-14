@@ -481,6 +481,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.translated_field_titles = utils.get_field_titles(toolkit._)
 
         extras = data_dict.get('extras')
+        data_dict['defType'] = 'edismax'
 
         # Start advanced search parameter parsing
         if extras:
