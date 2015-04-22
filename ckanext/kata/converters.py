@@ -122,6 +122,8 @@ def gen_translation_str_from_langtitle(key, data, errors, context):
 
         # we also need to validate the keys:
         for k in json_data.keys():
+            if k == "undefined":    # some harvesters don't have languages defined
+                continue
             try:
                 languages.get(part3=k)
             except KeyError:
