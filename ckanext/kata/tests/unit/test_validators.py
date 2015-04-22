@@ -15,7 +15,7 @@ from ckanext.kata.validators import validate_kata_date, \
     validate_title_duplicates, validate_title, check_direct_download_url, check_pids
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict, StopOnError
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
-    flattened_to_extras, flattened_from_extras, langtitles_to_title
+    flattened_to_extras, flattened_from_extras, gen_translation_str_from_langtitle
 from ckanext.kata import settings
 from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
 
@@ -474,7 +474,7 @@ class TestJSONConverters(TestCase):
         assert data[('extras',)][0]['key'] == 'pids'
         assert data[('extras',)][0]['value'] == self.serialized, data[('extras',)][0]['value']
 
-    def test_langtitles_to_title(self):
+    def test_gen_translation_str_from_langtitle(self):
         data = copy.deepcopy(self.test_data)
         data[('langtitle', 0, 'lang')] = u'sv'
         data[('langtitle', 0, 'value')] = u'testdata'
@@ -482,7 +482,7 @@ class TestJSONConverters(TestCase):
         data[('langtitle', 1, 'value')] = u'testidata'
         data[('title',)] = u''
 
-        langtitles_to_title(('title',), data, {}, {})
+        gen_translation_str_from_langtitle(('title',), data, {}, {})
 
         assert data[('title',)]
 
@@ -496,7 +496,7 @@ class TestJSONConverters(TestCase):
         # check that the title is of type string
         assert isinstance(d, basestring)
 
-    def test_langtitles_to_title2(self):
+    def test_gen_translation_str_from_langtitle2(self):
         # test that the title field is not updated, if the
         # JSON string is already given in 'title'
 
@@ -506,7 +506,7 @@ class TestJSONConverters(TestCase):
         errors = defaultdict(list)
 
         data[('title',)] = json_string
-        langtitles_to_title(('title',), data, errors, {})
+        gen_translation_str_from_langtitle(('title',), data, errors, {})
 
         assert data[('title',)]
         assert data[('title',)] == json_string
@@ -516,7 +516,7 @@ class TestJSONConverters(TestCase):
         errors = defaultdict(list)
 
         data[('title',)] = json_string
-        langtitles_to_title(('title',), data, errors, {})
+        gen_translation_str_from_langtitle(('title',), data, errors, {})
 
         assert data[('title',)]
         assert len(errors) > 0

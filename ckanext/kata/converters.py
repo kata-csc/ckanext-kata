@@ -90,7 +90,7 @@ def org_auth_from_extras(key, data, errors, context):
         if not orgauth in orgauths:
             orgauths.append(orgauth)
 
-def langtitles_to_title(key, data, errors, context):
+def gen_translation_str_from_langtitle(key, data, errors, context):
     '''
     Fetch all the langtitle fields of type
     ('langtitle', n, 'lang'): u'en',
@@ -142,7 +142,7 @@ def langtitles_to_title(key, data, errors, context):
 
     data[('title',)] = json.dumps(json_data)
 
-def title_from_extras(key, data, errors, context):
+def gen_translation_str_from_extras(key, data, errors, context):
     '''
     This converter is only used for converting the
     old format title fields from extras to the new JSON format

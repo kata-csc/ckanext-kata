@@ -98,9 +98,10 @@ class Schemas:
         schema['langtitle'] = {'value': [unicode, va.validate_title, va.validate_title_duplicates],
                                'lang': [unicode, co.convert_languages]}
 
-        # The title field has all the title translations in JSON format. The converter langtitles_to_title
+        # The title field contains all the title translations in JSON format.
+        # The converter gen_translation_str_from_langtitle
         # needs to be called to construct the JSON string from the UI's langtitle fields.
-        schema['title'] = [unicode, not_missing, co.langtitles_to_title]
+        schema['title'] = [unicode, not_missing, co.gen_translation_str_from_langtitle]
 
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
@@ -368,11 +369,11 @@ class Schemas:
         schema['pids'] = [co.flattened_from_extras, ignore_missing]
         # schema['projdis'] = [unicode]
 
-        # co.title_from_extras updates the title field to show the JSON
+        # co.gen_translation_str_from_extras updates the title field to show the JSON
         # translation string if old format titles are found from extras
-        schema['title'] = [ignore_missing, co.title_from_extras]
+        schema['title'] = [ignore_missing, co.gen_translation_str_from_extras]
 
-        #schema['langtitle'] = {'value': [unicode , co.langtitles_to_title],
+        #schema['langtitle'] = {'value': [unicode , co.gen_translation_str_from_langtitle],
         #                       'lang': [unicode, co.convert_languages]}
 
         #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]

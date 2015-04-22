@@ -281,6 +281,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_related_urls': helpers.get_related_urls,
             'get_rightscategory': helpers.get_rightscategory,
             'get_translation' : helpers.get_translation,
+            'get_translation_from_extras' : helpers.get_translation_from_extras,
             'get_urn_fi_address': helpers.get_urn_fi_address,
             'get_visibility_options': helpers.get_visibility_options,
             'has_agents_field': helpers.has_agents_field,

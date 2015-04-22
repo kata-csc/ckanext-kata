@@ -680,6 +680,49 @@ def get_translation(translation_json_string, lang=None):
         if translation:
             return translation
 
+def get_translation_from_extras(package):
+    '''
+    Fetch the translation string from the extras, in case the title is of the old type.
+    This function ensures that the legacy title is shown in right language even though the
+    package hasn't gone through the converter in show_package_schema or create_package_schema
+    yet (i.e. in package_item.html).
+
+    :param package: package dict
+    :param default: default value to return, if there is no matching value to the language
+    :return: translated value
+    '''
+
+    # Try to translate the valid package title, if it doesn't work,
+    # we need to fetch the title from extras
+    try:
+        t = package.get("title")
+        json.loads(t)
+        return get_translation(t)
+    except ValueError:
+        pass
+
+    ret = ""
+    lang = convert_language_code(h.lang(), 'alpha3')    # fi -> fin
+
+    langlist = list()   # an ordered list of title languages
+    valuelist = list()  # an ordered list of titles
+
+    if package.get('extras') and lang:
+        for extra in package.get('extras'):
+            for key, value in extra.iteritems():
+                if value.startswith("lang_title"):  # fetch the language of the given title
+                    langlist.insert(int(value.split('_')[2]), extra['value'])
+                if value.startswith("title"):       # fetch the title
+                    valuelist.insert(int(value.split('_')[1]), extra['value'])
+        try:
+            ret = valuelist[langlist.index(lang)]
+        except:
+            log.debug('List index was probably out of range')
+            if valuelist:   # use the first title given, if any are given at all
+                ret = valuelist[0]
+
+    return ret
+
 
 def disciplines_string_resolved(disciplines, ontology=None, lang=None):
     '''
