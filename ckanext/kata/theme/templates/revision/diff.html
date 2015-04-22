@@ -7,7 +7,7 @@
 
 {% block breadcrumb_content %}
   {% if c.diff_entity == 'package' %}
-    {% set dataset = pkg.title or pkg.name %}
+    {% set dataset = h.get_translation(pkg.title) or pkg.name %}
     <li>{% link_for _('Datasets'), controller='package', action='search', highlight_actions = 'new index' %}</li>
     <li>{% link_for dataset, controller='package', action='read', id=pkg.name %}</li>
     <li class="active"><a href="" title="{{ _('Revision Differences') }}">{{ _('Revision Differences') }}</a></li>
@@ -22,7 +22,7 @@
 {% block primary_content_inner %}
   <h1>{{ _('Revision Differences') }} -
     {% if c.diff_entity == 'package' %}
-      {% link_for pkg.title, controller='package', action='read', id=pkg.name %}
+      {% link_for h.get_translation(pkg.title), controller='package', action='read', id=pkg.name %}
     {% elif c.diff_entity == 'group' %}
       {% link_for group.display_name, controller='group', action='read', id=group.name %}
     {% endif %}
