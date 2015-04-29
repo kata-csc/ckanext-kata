@@ -195,6 +195,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {
             'current_package_list_with_resources': logic.auth.get.sysadmin,
             'package_delete': auth_functions.package_delete,
+            'package_revision_list': auth_functions.package_revision_list,
             'package_update': auth_functions.is_owner,
             'resource_update': auth_functions.edit_resource,
             'package_create': auth_functions.package_create,
