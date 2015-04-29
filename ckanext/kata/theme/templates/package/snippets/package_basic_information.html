@@ -49,11 +49,10 @@
         {# Include a hidden form to get a 'title' field to package #}
         {{ form.hidden('title', data.title) }}
 
-        {# langtitle -> title #}
-        {% if errors.title %}
-          {# <span class="error-block-kata">{{ errors.title[0].value[0]}}</span> #}
-          <span class="error-block-kata">{{ errors.title[0] }}</span>
+        {% if errors.langtitle %}
+          <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
         {% endif %}
+
       </div>
     </div>
 
