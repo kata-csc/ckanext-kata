@@ -567,7 +567,7 @@ class ContactController(BaseController):
 
         url = h.url_for(controller='package',
                         action="read",
-                        id=c.package.id)
+                        id=c.package.name)
         if c.user:
             if pkg_id not in c.userobj.extras.get('contacted', []):
                 return render('contact/contact_form.html')
@@ -597,7 +597,7 @@ class ContactController(BaseController):
 
         url = h.url_for(controller='package',
                         action="read",
-                        id=c.package.id)
+                        id=c.package.name)
         if c.user:
             if pkg_id not in c.userobj.extras.get('contacted', []):
                 return render('contact/dataset_request_form.html')
