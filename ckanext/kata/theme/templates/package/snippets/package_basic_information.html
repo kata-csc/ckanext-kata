@@ -47,7 +47,8 @@
         {% endfor %}
 
         {# Include a hidden form to get a 'title' field to package #}
-        {{ form.hidden('title', data.title) }}
+        {# This field CANNOT be empty, otherwise the title converter is not ran #}
+        {{ form.hidden('title', '{"fin":""}') }}
 
         {% if errors.langtitle %}
           <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>

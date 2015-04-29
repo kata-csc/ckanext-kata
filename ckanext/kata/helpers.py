@@ -662,7 +662,7 @@ def get_translation(translation_json_string, lang=None):
 
     try:
         json_data = json.loads(translation_json_string)
-    except ValueError:
+    except (ValueError, TypeError):
         return translation_json_string
 
     # if no language is given as a parameter, fetch the currently used
@@ -695,10 +695,10 @@ def get_translation_from_extras(package):
     # Try to translate the valid package title, if it doesn't work,
     # we need to fetch the title from extras
     try:
-        t = package.get("title")
+        t = package.get("title", "")
         json.loads(t)
         return get_translation(t)
-    except ValueError:
+    except (ValueError, TypeError):
         pass
 
     ret = ""
