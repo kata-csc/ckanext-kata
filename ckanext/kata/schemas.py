@@ -95,7 +95,7 @@ class Schemas:
 
         # Langtitle fields are used by the UI, to construct a 'title' field with translations in JSON format
         # This is not necessarily needed for the API calls
-        schema['langtitle'] = {'value': [unicode, va.validate_title, va.validate_title_duplicates],
+        schema['langtitle'] = {'value': [unicode, va.validate_title, va.validate_title_duplicates, co.escape_quotes],
                                'lang': [unicode, co.convert_languages]}
 
         # The title field contains all the title translations in JSON format.

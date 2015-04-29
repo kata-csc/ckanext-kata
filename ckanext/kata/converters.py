@@ -186,6 +186,17 @@ def gen_translation_str_from_extras(key, data, errors, context):
             data[('title',)] = json.dumps(json_data)
 
 
+def escape_quotes(key, data, errors, context):
+    '''
+    Escape double quotes, so that we can store the title in json
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    data[key] = data.get(key).replace('"', '\\"')
 
 def ltitle_to_extras(key, data, errors, context):
     '''
