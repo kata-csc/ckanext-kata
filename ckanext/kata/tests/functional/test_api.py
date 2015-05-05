@@ -839,21 +839,19 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
         org_dict = self.api_user_sysadmin.action.organization_create(**existing_org)
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        # data_dict['title'] = 'A new dataset'
         data_dict['owner_org'] = existing_org['title']
         pkg_dict = self.api_user_normal.call_action('package_create', data_dict=data_dict)
 
-        assert pkg_dict['owner_org'] == org_dict['id'], "%s != %s" % (model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first().title, org_dict['title'])
+        assert pkg_dict['owner_org'] == org_dict['id'], "%s != %s" % (model.Session.query(model.Group).
+                                                                      filter(model.Group.id == pkg_dict['owner_org']).
+                                                                      first().title, org_dict['title'])
 
     def test_create_owner_org_new(self):
         '''Create dataset with a new organization.'''
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict['title'] = 'A new dataset to create'
-        #data_dict['id'] = 'imaginary-id-245092'
         data_dict['owner_org'] = 'A New Org for create'
-        #data_dict['pids'][1]['id'] = u'urn:nbn:fi:csc-kata20140728095759999999'
-        #pkg_dict = self.api_user_normal.call_action('package_create', data_dict=data_dict)
         pkg_dict = self.api_user_joe.action.package_create(**data_dict)
 
         neworg = model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first()

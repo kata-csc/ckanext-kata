@@ -11,7 +11,6 @@ import urlparse
 
 from pylons.i18n import _
 from paste.deploy.converters import asbool
-from pylons import config
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
@@ -473,9 +472,8 @@ def url_not_empty(key, data, errors, context):
 
 def kata_owner_org_validator(key, data, errors, context):
     '''
-    Modified version of CKAN's owner_org_validator. Anyone can add a private
-    dataset to an organisation. If the organisation doesn't exist it is created.
-    The admin for the new organization is defined by config.
+    Modified version of CKAN's owner_org_validator. Anyone can add a
+    dataset to an organisation. If the organisation doesn't exist it is created later on.
 
     :param key: key
     :param data: data

@@ -489,11 +489,14 @@ def check_primary_pids(key, data, errors, context):
         data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})
 
 
-def organization_create(key, data, errors, context):
+def organization_create_converter(key, data, errors, context):
     '''
-    Update the owning organization of a dataset
+    Converter to create an organization on the fly. Called during handling of parameter __after in schema.
 
-    Used by both package_create and package_update
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
     '''
 
     errors_found = False
@@ -527,7 +530,7 @@ def organization_create(key, data, errors, context):
                 new_org = logic.get_action('organization_create')(org_context, org_dict)
                 group_id = new_org['id']
                 h.flash_success(_('New organisation "{org}" created automatically.')
-                    .format(org=org_id))
+                                .format(org=org_id))
             else:
                 group_id = group_own.id
             data[('owner_org',)] = group_id
