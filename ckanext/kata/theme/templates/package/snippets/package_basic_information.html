@@ -51,7 +51,7 @@
         {{ form.hidden('title', '{"fin":""}') }}
 
         {% if errors.langtitle %}
-          <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
+          <span class="error-block-kata">{{ errors.langtitle[0].value | join(". ") }}</span>
         {% endif %}
 
       </div>
