@@ -31,6 +31,7 @@ import sqlalchemy
 import ckan.lib.dictization.model_dictize as model_dictize
 from ckan.common import request
 import ckan.new_authz as new_authz
+import copy
 
 _or_ = sqlalchemy.or_
 
@@ -793,46 +794,6 @@ def organization_member_create(context, data_dict):
     ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     return ckan.logic.action.create.group_member_create(context, data_dict)
-
-
-def package_owner_org_update(context, data_dict):
-    '''
-    Update the owning organization of a dataset
-
-    Used by both package_create and package_update
-    '''
-
-    org_id = data_dict.get('organization_id')
-    model = context['model']
-    group = model.Group.get(org_id)
-    if not group:
-        org_name = re.sub(r'[^A-Za-z0-9]+', '-', org_id).lower()
-        group_own = model.Group.get(org_name)
-        if not group_own:
-            org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
-            org_dict = {
-                'title': org_id,
-                'description': u'',
-                'image_url': u'',
-                'type': 'organization',
-                'name': org_name
-            }
-            org_context = {
-                'message': '',
-                'model': context['model'],
-                'schema': logic.schema.default_group_schema(),
-                'session': context['session'],
-                'user': org_admin,
-            }
-            new_org = logic.get_action('organization_create')(org_context, org_dict)
-            group_id = new_org['id']
-            h.flash_success(_('New organisation "{org}" created automatically.')
-                            .format(org=org_id))
-        else:
-            group_id = group_own.id
-        data_dict['organization_id'] = group_id
-
-    return ckan.logic.action.update.package_owner_org_update(context, data_dict)
 
 @side_effect_free
 def user_activity_list(context, data_dict):

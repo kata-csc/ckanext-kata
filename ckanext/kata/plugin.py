@@ -236,7 +236,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'organization_update': actions.organization_update,
             'package_create': actions.package_create,
             'package_delete': actions.package_delete,
-            'package_owner_org_update': actions.package_owner_org_update,
             'package_search': actions.package_search,
             'package_show': actions.package_show,
             'package_update': actions.package_update,

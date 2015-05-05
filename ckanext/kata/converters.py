@@ -4,6 +4,7 @@ Functions to convert dataset form fields from or to db fields.
 """
 import json
 from iso639 import languages
+from pylons import config
 
 from ckan.lib import helpers as h
 
@@ -15,6 +16,7 @@ from ckan.lib.navl.dictization_functions import missing
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
 from ckan.model.authz import setup_default_user_roles
+import ckan.logic as logic
 
 from ckanext.kata import settings, utils
 
@@ -485,3 +487,47 @@ def check_primary_pids(key, data, errors, context):
 
     if not data_pids:
         data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})
+
+
+def organization_create(key, data, errors, context):
+    '''
+    Update the owning organization of a dataset
+
+    Used by both package_create and package_update
+    '''
+
+    errors_found = False
+    for key, value in errors.iteritems():
+        if value:
+            errors_found = True
+            break
+    if not errors_found:
+        org_id = data.get(('owner_org',))
+        model = context['model']
+        group = model.Group.get(org_id)
+        if not group:
+            org_name = re.sub(r'[^A-Za-z0-9]+', '-', org_id).lower()
+            group_own = model.Group.get(org_name)
+            if not group_own:
+                org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
+                org_dict = {
+                    'title': org_id,
+                    'description': u'',
+                    'image_url': u'',
+                    'type': 'organization',
+                    'name': org_name
+                }
+                org_context = {
+                    'message': '',
+                    'model': context['model'],
+                    'schema': logic.schema.default_group_schema(),
+                    'session': context['session'],
+                    'user': org_admin,
+                }
+                new_org = logic.get_action('organization_create')(org_context, org_dict)
+                group_id = new_org['id']
+                h.flash_success(_('New organisation "{org}" created automatically.')
+                    .format(org=org_id))
+            else:
+                group_id = group_own.id
+            data[('owner_org',)] = group_id

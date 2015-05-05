@@ -72,6 +72,7 @@ class Schemas:
         for key in settings.KATA_FIELDS_RECOMMENDED:
             schema[key] = [ignore_missing, co.convert_to_extras_kata, unicode, va.validate_general]
 
+        schema['__after'] = [co.organization_create]
         schema['accept-terms'] = [va.usage_terms_accepted, ignore]
         schema['agent'] = {'role': [not_empty, va.check_agent_fields, va.validate_general, unicode, co.flattened_to_extras],
                            'name': [ignore_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
