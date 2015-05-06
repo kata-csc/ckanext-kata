@@ -502,35 +502,37 @@ def organization_create_converter(key, data, errors, context):
     errors_found = False
     for key, value in errors.iteritems():
         if value:
-            errors_found = True
-            break
-    if not errors_found:
-        org_id = data.get(('owner_org',))
-        model = context['model']
-        group = model.Group.get(org_id)
-        if not group:
-            org_name = re.sub(r'[^A-Za-z0-9]+', '-', org_id).lower()
-            group_own = model.Group.get(org_name)
-            if not group_own:
-                org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
-                org_dict = {
-                    'title': org_id,
-                    'description': u'',
-                    'image_url': u'',
-                    'type': 'organization',
-                    'name': org_name
-                }
-                org_context = {
-                    'message': '',
-                    'model': context['model'],
-                    'schema': logic.schema.default_group_schema(),
-                    'session': context['session'],
-                    'user': org_admin,
-                }
-                new_org = logic.get_action('organization_create')(org_context, org_dict)
-                group_id = new_org['id']
-                h.flash_success(_('New organisation "{org}" created automatically.')
-                                .format(org=org_id))
-            else:
-                group_id = group_own.id
-            data[('owner_org',)] = group_id
+            return
+
+    org_id = data.get(('owner_org',))
+    model = context['model']
+    if model.Group.get(org_id):
+        return
+
+    org_name = re.sub(r'[^\w]+', '-', org_id).lower()
+    group_own = model.Group.get(org_name)
+    if not group_own:
+        org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
+        org_dict = {
+            'title': org_id,
+            'description': u'',
+            'image_url': u'',
+            'type': 'organization',
+            'name': org_name
+        }
+        org_context = {
+            'message': '',
+            'model': context['model'],
+            'schema': logic.schema.default_group_schema(),
+            'session': context['session'],
+            'user': org_admin,
+        }
+
+        new_org = logic.get_action('organization_create')(org_context, org_dict)
+        group_id = new_org['id']
+        h.flash_success(_('New organisation "{org}" created automatically.')
+                        .format(org=org_id))
+    else:
+        group_id = group_own.id
+
+    data[('owner_org',)] = group_id

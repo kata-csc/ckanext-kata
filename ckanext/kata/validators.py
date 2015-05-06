@@ -24,6 +24,8 @@ import ckan.logic as logic
 
 log = logging.getLogger('ckanext.kata.validators')
 
+PACKAGE_NAME_MAX_LENGTH = 100
+
 # Regular expressions for validating e-mail and telephone number
 # Characters accepted for e-mail. Note that the first character can't be .
 EMAIL_REGEX = re.compile(
@@ -493,6 +495,14 @@ def kata_owner_org_validator(key, data, errors, context):
             raise Invalid(_(err))
         data.pop(key, None)
         raise df.StopOnError
+
+    if len(value) < 2:
+        raise Invalid(_('Organization name must be at least %s characters long') % 2)
+    if len(value) > PACKAGE_NAME_MAX_LENGTH:
+        raise Invalid(_('Organization name must be a maximum of %i characters long') % \
+                      PACKAGE_NAME_MAX_LENGTH)
+    if value.lower() in ['new', 'edit', 'search']:
+        raise Invalid(_('This organization name cannot be used'))
 
     model = context['model']
     group = model.Group.get(value)
