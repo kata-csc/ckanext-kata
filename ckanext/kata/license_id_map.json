@@ -5,11 +5,5 @@
   "other-closed": "other-closed",
   "other-nc": "other-nc",
   "other-pd": "other-pd",
-  "other-open":  "other-open",
-  "cc-by-nc-1.0": "CC-BY-NC-1.0",
-  "https://creativecommons.org/licenses/by-nc/1.0/": "CC-BY-NC-1.0",
-  "creative commons attribution-noncommmercial 1.0": "CC-BY-NC-1.0",
-  "cc-by-2.0": "CC-BY-2.0",
-  "cc-by-2.0": "CC-BY-2.0",
-  "cc-zero": "CC0-1.0"
+  "other-open": "other-open"
 }

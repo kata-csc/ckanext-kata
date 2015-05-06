@@ -15,7 +15,7 @@ from ckanext.kata.validators import validate_kata_date, \
     validate_title_duplicates, validate_title, check_direct_download_url, check_pids
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict, StopOnError
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
-    flattened_to_extras, flattened_from_extras
+    flattened_to_extras, flattened_from_extras, to_licence_id
 from ckanext.kata import settings
 from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
 
@@ -525,21 +525,28 @@ class TestExtrasFlatteners(TestCase):
             assert data[('extras',)][i]['key'].startswith('pids_1_')
             assert data[('extras',)][i]['value'] in data.values()
 
-class TestLincenseConverters(TestCase):
+class TestLicenseConverters(TestCase):
     """Unit tests for license identification and conversion"""
-
-    import ckanext.kata.converters as co
 
     @classmethod
     def setup_class(cls):
         """Set up tests."""
         cls.key=('license_id',)
-        cls.test_data1 = {('license_id',): None }
-        cls.test_data2 = {('license_id',): "" }
-        cls.test_data3 = {('license_id',): "CC-BY-SA-4.0" }
-        cls.test_data4 = {('license_id',): "https://creativecommons.org/licenses/by/4.0/"}
+        cls.test_data1 = {cls.key: None }
+        cls.test_data2 = {cls.key: "" }
+        cls.test_data3 = {cls.key: "https://creativecommons.org/licenses/by/4.0/"}
+        cls.test_data5 = {cls.key: "creative commons attribution-noncommmercial 1.0"}
 
     def test_license_conversion(self):
-        co.to_licence_id(('licence_id', 0,), )
-        pass
+        to_licence_id(self.key, self.test_data1, {}, {})
+        assert self.test_data1.get(self.key) == 'undefined'
+        to_licence_id(self.key, self.test_data2, {}, {})
+        assert self.test_data2.get(self.key) == 'undefined'
+        to_licence_id(self.key, self.test_data3, {}, {})
+        assert self.test_data3.get(self.key) == 'CC-BY-SA-4.0'
+        to_licence_id(self.key, self.test_data4, {}, {})
+        assert self.test_data4.get(self.key) == 'CC-BY-4.0'
+        to_licence_id(self.key, self.test_data5, {}, {})
+        assert self.test_data5.get(self.key) == 'CC-BY-NC-1.0'
+
 

@@ -497,26 +497,56 @@ def to_licence_id(key, data, errors, context):
     :param context: context
     '''
 
-    import os, pprint
-    pprint.pprint(key)
-    pprint.pprint(data)
+    import os
     log.debug('to_licence_id')
     map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/license_id_map.json'
     license_id = data.get(key)
+    license_id_out = None
     if license_id:
-        license_id = license_id.lower()
-        with open(map_file_name) as map_file:
-            license_map = json.load(map_file)
-            log.debug("loaded  "+ map_file_name)
+        license_id_lower = license_id.lower()
 
-        log.debug("raw licence id " + license_id)
-        license_id = license_map.get(license_id)
-        if license_id:
-            log.debug("converted licence id" + license_id)
-            data[key] = license_id
+        if 'cc' in license_id_lower or ('creative' in license_id_lower and 'commons' in 'license_id'):
+            if 'by' in license_id_lower or 'attribution' in license_id_lower:
+                if 'nc' in license_id_lower or 'noncommercial' in license_id_lower:
+                    if 'sa' in license_id_lower or 'sharealike' in license_id_lower:
+                        license_id_work = 'CC-BY-NC-SA'
+                    elif 'nd' in license_id_lower or 'nonderivative' in license_id_lower:
+                        license_id_work = 'CC-BY-NC-ND'
+                    else:
+                        license_id_work = 'CC-NC'
+                elif 'nd' in license_id_lower or 'nonderivative' in license_id_lower:
+                    license_id_out = 'CC-BY-ND'
+                elif 'sa' in license_id_lower or 'sharealike' in license_id_lower:
+                    license_id_work = 'CC-BY-SA'
+                else:
+                    license_id_work ='CC-BY'
+
+            if license_id_work:
+                if '1' in license_id_lower:
+                    license_id_out = license_id_work + "-1.0"
+                elif '2' in license_id_lower:
+                    license_id_out = license_id_work + "-2.0"
+                elif '3' in license_id_lower:
+                    license_id_out = license_id_work + "-3.0"
+                elif '4' in license_id_lower:
+                    license_id_out = license_id_work + "-4.0"
+            if 'cc0' in license_id_lower or 'zero' in license_id_lower:
+                license_id_out = 'CC0-1.0'
+        if license_id_out:
+            data[key] = license_id_out
         else:
-            log.debug("No license ID in licence collection")
-            data[key] = "undefined"
+            with open(map_file_name) as map_file:
+                license_map = json.load(map_file)
+                log.debug("loaded  " + map_file_name)
+
+            log.debug("raw licence id " + license_id)
+            license_id = license_map.get(license_id)
+            if license_id:
+                log.debug("converted licence id" + license_id)
+                data[key] = license_id
+            else:
+                log.debug("No license ID in licence collection")
+                data[key] = "undefined"
     else:
         log.debug("No license ID in data")
         data[key] = "undefined"
