@@ -11,7 +11,6 @@ import urlparse
 
 from pylons.i18n import _
 from paste.deploy.converters import asbool
-from pylons import config
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
@@ -24,6 +23,8 @@ import ckan.new_authz as new_authz
 import ckan.logic as logic
 
 log = logging.getLogger('ckanext.kata.validators')
+
+PACKAGE_NAME_MAX_LENGTH = 100
 
 # Regular expressions for validating e-mail and telephone number
 # Characters accepted for e-mail. Note that the first character can't be .
@@ -473,14 +474,14 @@ def url_not_empty(key, data, errors, context):
 
 def kata_owner_org_validator(key, data, errors, context):
     '''
-    Modified version of CKAN's owner_org_validator. Anyone
-    can add a private dataset to an organisation
+    Modified version of CKAN's owner_org_validator. Anyone can add a
+    dataset to an organisation. If the organisation doesn't exist it is created later on.
 
     :param key: key
     :param data: data
     :param errors: errors
     :param context: context
-    :return: nothing. Raise invalid if organisation is not given or it doesn't exist
+    :return: nothing
     '''
 
     value = data.get(key)
@@ -495,12 +496,18 @@ def kata_owner_org_validator(key, data, errors, context):
         data.pop(key, None)
         raise df.StopOnError
 
+    if len(value) < 2:
+        raise Invalid(_('Organization name must be at least %s characters long') % 2)
+    if len(value) > PACKAGE_NAME_MAX_LENGTH:
+        raise Invalid(_('Organization name must be a maximum of %i characters long') % \
+                      PACKAGE_NAME_MAX_LENGTH)
+    if value.lower() in ['new', 'edit', 'search']:
+        raise Invalid(_('This organization name cannot be used'))
+
     model = context['model']
     group = model.Group.get(value)
-    if not group:
-        raise Invalid(_('Organization does not exist'))
-    group_id = group.id
-    data[key] = group_id
+    if group:
+        data[key] = group.id
 
 
 def check_private(key, data, errors, context):

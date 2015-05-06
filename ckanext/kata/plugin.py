@@ -137,6 +137,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action="funder_autocomplete")
+        # TODO Juho: Temporary organisation autocomplete implementation in
+        # kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
+        map.connect('/api/2/util/organization/autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action='organization_autocomplete')
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")
@@ -206,6 +212,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_activity_list': logic.auth.get.sysadmin,
             'group_activity_list': logic.auth.get.sysadmin,
             'organization_activity_list': logic.auth.get.sysadmin,
+            'organization_autocomplete': auth_functions.organization_autocomplete,
             'member_list': auth_functions.member_list,
         }
 
@@ -221,6 +228,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'member_create': actions.member_create,
             'member_delete': actions.member_delete,
             'member_list': actions.member_list,
+            'organization_autocomplete': actions.organization_autocomplete,
             'organization_create': actions.organization_create,
             'organization_delete': actions.organization_delete,
             'organization_list': actions.organization_list,
@@ -229,7 +237,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'organization_update': actions.organization_update,
             'package_create': actions.package_create,
             'package_delete': actions.package_delete,
-            'package_owner_org_update': actions.package_owner_org_update,
             'package_search': actions.package_search,
             'package_show': actions.package_show,
             'package_update': actions.package_update,
@@ -293,6 +300,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'modify_error_summary': helpers.modify_error_summary,
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
+            'resolve_org_name': helpers.resolve_org_name,
             'split_disciplines': helpers.split_disciplines,
             'string_to_list': helpers.string_to_list,
             'organizations_available': helpers.organizations_available,

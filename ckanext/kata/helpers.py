@@ -662,3 +662,13 @@ def format_facet_labels(facet_item):
     '''
 
     return get_label_for_uri(facet_item['display_name'])
+
+
+def resolve_org_name(org_id):
+    '''
+    Get the name of the organization by id.
+    '''
+    group = model.Group.get(org_id)
+    if not group:
+        return org_id
+    return group.title
