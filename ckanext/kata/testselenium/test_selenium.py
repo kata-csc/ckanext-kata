@@ -214,8 +214,9 @@ class TestWithUser(TestCase):
             # field.send_keys('Published')
 
             field = browser.find_element_by_xpath(
-                "//section/div/div/div/div[label[text()='Organisation']]/div/div/a")  # CKAN Generated field
+                "//section/div/div/div/div/div[label[text()='Organisation']]/div/div/a")  # CKAN Generated field
 
+            field.send_keys('selenium')
             ac = ActionChains(browser)
             ac.move_to_element_with_offset(field, 0.1, 0.1).click().perform()
 
