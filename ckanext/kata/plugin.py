@@ -178,6 +178,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_faq")
+        map.connect('data-model',
+                    '/data-model',
+                    controller="ckanext.kata.controllers:KataInfoController",
+                    action="render_data_model")
         map.connect('/package_administration/{name}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="dataset_editor_manage")
