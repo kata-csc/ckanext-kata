@@ -277,7 +277,7 @@ def get_first_admin(id):
                 profileurl = ""
                 if user:
                     profileurl = config.get('ckan.site_url', '') + \
-                                 h.url_for(controller="user", action="read", 
+                                 h.url_for(controller="user", action="read",
                                            id=user.name)
                     return profileurl
     return False
@@ -286,7 +286,7 @@ def get_first_admin(id):
 def get_rightscategory(license):
     '''
     Return rightscategory based on license id
-    
+
     :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
     '''
     if license == 'other-pd':
@@ -679,6 +679,14 @@ def get_translation(translation_json_string, lang=None):
         translation = json_data.get(lang)
         if translation:
             return translation
+
+def get_description(package):
+    try:
+        t = package.get('notes', '')
+        json.loads(t)
+        return get_translation(t)
+    except (ValueError, TypeError):
+        return package.get('notes', '')
 
 def get_translation_from_extras(package):
     '''

@@ -90,29 +90,13 @@ def org_auth_from_extras(key, data, errors, context):
         if not orgauth in orgauths:
             orgauths.append(orgauth)
 
-def gen_translation_str_from_langtitle(key, data, errors, context):
-    '''
-    Fetch all the langtitle fields of type
-    ('langtitle', n, 'lang'): u'en',
-    ('langtitle', n, 'value'): u'translation'
-
-    and generate a JSON translation string of type
-    title: {'en':'translation', 'fi':'kaannos'}
-
-    This converter is called only once for the hidden field
-    'title' where the data is then stored.
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-
+def gen_translation_str_from_multilanguage_field(fieldkey, key, data, errors, context):
+    langkey = 'lang' + fieldkey
     # For API requests, we need to validate if the
     # title data is already given in the new format, and
     # no langtitles given. In that case, do nothing.
-    if data.get(('title',)) and not data.get(('langtitle', 0, 'lang')):
-        json_string = data.get(('title',))
+    if data.get((fieldkey,)) and not data.get((langkey, 0, 'lang')):
+        json_string = data.get((fieldkey,))
 
         json_data = {}
         try:
@@ -135,14 +119,44 @@ def gen_translation_str_from_langtitle(key, data, errors, context):
 
     # loop through all the title translations
     i = 0
-    while data.get(('langtitle', i, 'lang'), []):
-        lval = data[('langtitle', i, 'lang')]
-        rval = data[('langtitle', i, 'value')]
+    while data.get((langkey, i, 'lang'), []):
+        lval = data[(langkey, i, 'lang')]
+        rval = data[(langkey, i, 'value')]
         if rval:    # skip a language without translation
             json_data[lval] = rval
         i+=1
 
-    data[('title',)] = json.dumps(json_data)
+    print fieldkey, json_data
+    data[(fieldkey,)] = json.dumps(json_data)
+
+def gen_translation_str_from_langtitle(key, data, errors, context):
+    '''
+    Fetch all the langtitle fields of type
+    ('langtitle', n, 'lang'): u'en',
+    ('langtitle', n, 'value'): u'translation'
+
+    and generate a JSON translation string of type
+    title: {'en':'translation', 'fi':'kaannos'}
+
+    This converter is called only once for the hidden field
+    'title' where the data is then stored.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+    return gen_translation_str_from_multilanguage_field('title', key, data, errors, context)
+
+def gen_translation_str_from_langnotes(key, data, errors, context):
+    return gen_translation_str_from_multilanguage_field('notes', key, data, errors, context)
+
+def ensure_valid_notes(key, data, errors, context):
+    field = data.get(('notes',))
+    try:
+        json.loads(field)
+    except (ValueError, TypeError):
+        data[('notes',)] = json.dumps({'fin': field})
 
 def gen_translation_str_from_extras(key, data, errors, context):
     '''
@@ -257,7 +271,7 @@ def ltitle_from_extras(key, data, errors, context):
                 data.pop((k[0], k[1], 'value'), None)
                 data.pop((k[0], k[1], '__extras'), None)
                 data.pop(k, None)
-                
+
     langs = sorted(langs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     titles = sorted(titles, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     for lang, title in zip(langs, titles):

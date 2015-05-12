@@ -110,12 +110,25 @@
 <section class="module-content">
 
 <h3>{{ _('Description') }}</h3>
-  {% if not pkg_notes_formatted == '' %}
-    <div class="notes embedded-content">
-      {{ pkg_notes_formatted }}
+  {% if pkg_dict.notes and pkg_dict.notes != '{}' %}
+    <div class="accordion" id="description-accordion">
+      {%- for description in h.json_to_list(pkg_dict.notes) -%}
+      <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#description-accordion" href="{{'#collapse' ~ loop.index0}}">
+              {{ description.lang }}
+            </a>
+          </div>
+          <div id="{{'collapse' ~ loop.index0}}" class="accordion-body collapse {% if loop.index0 == 0 %} in {% endif %}">
+            <div class="accordion-inner">
+              <div class="notes embedded-content">{{ h.render_markdown(description.value) }}</div>
+            </div>
+          </div>
+      </div>
+      {% endfor %}
     </div>
   {% else %}
-  <p>{{ _('No description') }}</p>
+    <p>{{ _('No description') }}</p>
   {% endif%}
 </section>
 {% block package_tags %}

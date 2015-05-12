@@ -406,9 +406,9 @@ class EditAccessRequestController(BaseController):
 
 class ContactController(BaseController):
     """
-    Add features to contact the dataset's owner. 
-    
-    From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author. 
+    Add features to contact the dataset's owner.
+
+    From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author.
     The feature provides a form for message sending, and the message is sent via email.
     """
 
@@ -958,4 +958,3 @@ class MalwareScanningStorageController(StorageController):
         else:
             # TODO: produce a meaningful error message through javascript?
             abort(403)
-

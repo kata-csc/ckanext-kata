@@ -309,19 +309,32 @@ def validate_title(key, data, errors, context):
             raise Invalid(_('First title can not be empty'))
 
 
+def validate_multilang_field(fieldkey, message, key, data, errors, context):
+    '''
+    Checks that there is only one multilanguage field per language
+    :param fieldkey: key of the multilanguage field in data
+    :param message: localized error message if validation fails
+    '''
+    langs = []
+    for k in data.keys():
+        if k[0] == fieldkey and k[2] == 'lang' and \
+                (fieldkey, k[1], 'value',) in data and \
+                len(data.get((fieldkey, k[1], 'value',))) > 0:
+                langs.append(data[k])
+    if len(set(langs)) != len(langs):
+        raise Invalid(message)
+
 def validate_title_duplicates(key, data, errors, context):
     '''
     Checks that there is only one title per language
     '''
-    langs = []
-    for k in data.keys():
-        if k[0] == 'langtitle' and k[2] == 'lang' and \
-                ('langtitle', k[1], 'value',) in data and \
-                len(data.get(('langtitle', k[1], 'value',))) > 0:
-                langs.append(data[k])
-    if len(set(langs)) != len(langs):
-        raise Invalid(_('Duplicate titles for a language not permitted'))
+    return validate_multilang_field('langtitle', _('Duplicate titles for a language not permitted'), key, data, errors, context)
 
+def validate_notes_duplicates(key, data, errors, context):
+    '''
+    Checks that there is only one notes entry per language
+    '''
+    return validate_multilang_field('langnotes', _('Duplicate notes for a language not permitted'), key, data, errors, context)
 
 def package_name_not_changed(key, data, errors, context):
     '''

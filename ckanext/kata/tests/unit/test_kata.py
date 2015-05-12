@@ -579,4 +579,3 @@ class TestAdvancedSearch(TestCase):
         test_dict = copy.deepcopy(self.some_data_dict)
         q = advanced_search.constrain_by_temporal_coverage(self.c, test_dict['extras'])
         assert q
-

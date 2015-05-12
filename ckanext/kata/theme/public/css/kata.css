@@ -607,7 +607,7 @@ header.masthead .not-authed a {
     background-image: -moz-linear-gradient(top, #5a5a5c, #5a5a5c);
     background-image: -o-linear-gradient(top, #5a5a5c, #5a5a5c);
     background-image: -ms-linear-gradient(top, #5a5a5c, #5a5a5c);
-    background-repeat: repeat no-repeat;  
+    background-repeat: repeat no-repeat;
 }
 .module-grey {
     background-color: #ebebec;
@@ -795,7 +795,7 @@ input, button, select, textarea {
     position: absolute;
     right: 10px;
 }
-#language-wrapper .lang-select:before, 
+#language-wrapper .lang-select:before,
 #language-wrapper .lang-select:after {
     display: none !important;
 }
@@ -900,7 +900,7 @@ header.masthead {
 .faq-helpdesk {
     color: #555;
     font-size: 13px;
-    padding: 15px;    
+    padding: 15px;
 }
 .faq-helpdesk p {
     padding-top: 10px;
@@ -918,7 +918,7 @@ h3.question {
     list-style: none;
     padding: 0px;
     margin: 0px;
-    text-align: left;    
+    text-align: left;
 }
 .faq-toc li {
     width: auto;
@@ -937,7 +937,7 @@ h3.question {
     display: block;
     text-decoration: none;
     padding: 2px;
-    width: 100%;    
+    width: 100%;
 }
 .help-toc {
     padding: 0px;
