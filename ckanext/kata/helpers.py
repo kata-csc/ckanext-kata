@@ -277,7 +277,7 @@ def get_first_admin(id):
                 profileurl = ""
                 if user:
                     profileurl = config.get('ckan.site_url', '') + \
-                                 h.url_for(controller="user", action="read", 
+                                 h.url_for(controller="user", action="read",
                                            id=user.name)
                     return profileurl
     return False
@@ -286,7 +286,7 @@ def get_first_admin(id):
 def get_rightscategory(license):
     '''
     Return rightscategory based on license id
-    
+
     :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
     '''
     if license == 'other-pd':
@@ -438,6 +438,10 @@ def get_urn_fi_address(package):
         return template % {'pid': pid}
     return ''
 
+def get_dummy_title():
+    return json.dumps({
+      'fin': 'Otsikko suomeksi wäää "qwerty"', 'eng': 'Title in English 算盤爾後'
+    })
 
 def modify_error_summary(errors):
     '''

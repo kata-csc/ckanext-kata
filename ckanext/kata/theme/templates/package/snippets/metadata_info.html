@@ -1,7 +1,16 @@
+{% import 'macros/kata_form.html' as kata_form %}
+
 <section class="module-content additional-info">
 
 {% set urn_url = h.get_urn_fi_address(pkg_dict) %}
 <h3>{{ _('General information') }}</h3>
+
+<div class="form-horizontal">
+{% set model = h.get_dummy_title() %}
+{# set model = {'a': 'b', 'fin': 'asdf'} #}
+{% set currentlang = h.lang() %}
+{{ kata_form.multilang_field('title-field', _('Title'), model, currentlang) }}
+</div>
 
 {%- if urn_url -%}
 <p><a href="{{ urn_url }}">{{ urn_url }}</a></p>
