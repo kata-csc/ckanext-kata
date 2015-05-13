@@ -680,6 +680,27 @@ def get_translation(translation_json_string, lang=None):
         if translation:
             return translation
 
+def get_language(lang):
+    '''
+    Resolves the complete language name from a given language code
+
+    :param lang: language code in iso format
+    :return:
+
+    '''
+
+    try:
+        return languages.get(part2b=lang).name
+    except:
+        try:
+            return languages.get(part3=lang).name
+        except:
+            try:
+                return languages.get(part1=lang).name
+            except:
+                return lang
+
+
 def get_translation_from_extras(package):
     '''
     Fetch the translation string from the extras, in case the title is of the old type.
