@@ -128,7 +128,6 @@ classes to form-*. 'error' class moved to 'form-content'. Removed input paramete
   </div>
 {% endmacro %}
 
-
 {#
 Copied from CKAN form.html.
 #}
@@ -137,3 +136,33 @@ Copied from CKAN form.html.
   {{ " " }}{{ key }}{% if value != "" %}="{{ value }}"{% endif %}
   {%- endfor -%}
 {%- endmacro -%}
+
+{% macro multilang_field(name, label, model={}, current='') -%}
+  {# set currentlang = h.lang() #}
+  <div data-module="kata-multilang-field" data-module-model="{{ model }}" data-module-current="{{ current }}" data-module-name="{{ name }}">
+
+    <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
+      <label class="control-label{{ " " ~ label_classes | join(' ') }}" for="{{ name }}">{{ label }}</label>
+      <div class="controls{{ " " ~ control_classes | join(' ') }}">
+        <ul class="nav nav-tabs"></ul>
+        {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
+        <input id="{{ name }}" type="text" name="{{ name }}" class="input-block-level"
+               value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}" />
+      </div>
+    </div>
+    <div id="add-new-lang-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">{{ _('Add new language field') }}</h3>
+      </div>
+      <div class="modal-body">
+        <p>Modal body</p>
+        <input id="add-new-lang-modal-value" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">{{ _('Cancel') }}</button>
+        <button class="btn btn-primary">{{ _('Add') }}</button>
+      </div>
+    </div>
+  </div>
+{%- endmacro %}

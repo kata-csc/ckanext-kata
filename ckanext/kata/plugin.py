@@ -317,6 +317,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_dataset_paged_order': helpers.get_dataset_paged_order,
             'get_language': helpers.get_language,
             'get_urn_fi_address': helpers.get_urn_fi_address,
+            'get_dummy_title': helpers.get_dummy_title,
             'get_visibility_options': helpers.get_visibility_options,
             'has_agents_field': helpers.has_agents_field,
             'has_contacts_field': helpers.has_contacts_field,

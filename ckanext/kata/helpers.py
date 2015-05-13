@@ -416,6 +416,10 @@ def get_urn_fi_address(package):
         return template % {'pid': pid}
     return ''
 
+def get_dummy_title():
+    return json.dumps({
+      'fin': 'Otsikko suomeksi wäää "qwerty"', 'eng': 'Title in English 算盤爾後'
+    })
 
 def modify_error_summary(errors):
     '''
