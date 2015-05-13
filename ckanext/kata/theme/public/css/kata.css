@@ -788,6 +788,17 @@ input, button, select, textarea {
     width: 17px;
     font-size: 17px;
 }
+
+#kata_navigation > li:last-child
+{
+    float:right !important;
+}
+
+#kata_navigation > li:last-child a
+{
+    text-transform: none !important;
+}
+
 #language-wrapper {
     z-index: 200 !important;
 }
@@ -795,7 +806,7 @@ input, button, select, textarea {
     position: absolute;
     right: 10px;
 }
-#language-wrapper .lang-select:before, 
+#language-wrapper .lang-select:before,
 #language-wrapper .lang-select:after {
     display: none !important;
 }
