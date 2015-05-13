@@ -44,6 +44,10 @@
       </div>
     {% endcall %}
   {% endfor %}
+
+        {% if errors.langnotes %}
+          <span class="error-block-kata">{{ errors.langnotes[0].value | join(". ") }}</span>
+        {% endif %}
 </div>
 
 </div>
