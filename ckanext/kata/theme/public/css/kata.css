@@ -460,6 +460,12 @@ header.masthead .not-authed a {
   font-weight: bold;
   color: black;
 }
+#kata_navigation > li:last-child {
+  float: right !important;
+}
+#kata_navigation > li:last-child a {
+  text-transform: none !important;
+}
 #help_navi {
   color: #000;
   margin-bottom: 5px;
