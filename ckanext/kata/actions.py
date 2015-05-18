@@ -68,6 +68,9 @@ def package_show(context, data_dict):
         agents = filter(None, pkg_dict1.get('agent', []))
         pkg_dict1['agent'] = agents or []
 
+    #print "testing with dummy data"
+    #pkg_dict1['titletest'] = {}
+
     # Normally logic function should not catch the raised errors
     # but here it is needed so action package_show won't catch it instead
     # Hiding information from API calls
@@ -165,8 +168,8 @@ def package_create(context, data_dict):
     """
     Creates a new dataset.
 
-    Extends ckan's similar method to instantly reindex the SOLR index, 
-    so that this newly added package emerges in search results instantly instead of 
+    Extends ckan's similar method to instantly reindex the SOLR index,
+    so that this newly added package emerges in search results instantly instead of
     during the next timed reindexing.
 
     :param context: context
@@ -297,7 +300,7 @@ def package_delete(context, data_dict):
     '''
     Deletes a package
 
-    Extends ckan's similar method to instantly re-index the SOLR index. 
+    Extends ckan's similar method to instantly re-index the SOLR index.
     Otherwise the changes would only be added during a re-index (a rebuild of search index,
     to be specific).
 

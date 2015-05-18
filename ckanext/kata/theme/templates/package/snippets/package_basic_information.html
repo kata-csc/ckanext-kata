@@ -139,6 +139,12 @@
         {% endif %}
 
       </div>
+
+      {% set currentlang = h.lang() %}
+      {#
+      {{ kata_form.multilang_field('title-field', _('Title'), data.titletest, currentlang) }}
+      #}
+
     </div>
 
 
