@@ -372,6 +372,16 @@ body {
   width: 100%;
   border-radius: 6px;
 }
+.multilang-hidden {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  font-size: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: -1px;
+}
 header.masthead {
   background-color: #FFF !important;
   background-image: none !important;

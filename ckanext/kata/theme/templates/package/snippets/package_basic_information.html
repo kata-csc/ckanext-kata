@@ -55,6 +55,12 @@
         {% endif %}
 
       </div>
+
+      {% set currentlang = h.lang() %}
+      {#
+      {{ kata_form.multilang_field('title-field', _('Title'), data.titletest, currentlang) }}
+      #}
+
     </div>
 
     {% snippet 'package/snippets/recommended_description.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
@@ -68,7 +74,7 @@
         {{ _('Search keywords from') }} <a href="{{ _('http://finto.fi/koko/en/') }}" target="_blank">KOKO</a>{{ _(' ontology, select keywords with enter or mouse click.') }}
         {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
       </p>
-      
+
       {% set autocomplete_source = '/api/2/util/tag/autocomplete?incomplete=?&language=' ~ h.lang()  %}
       {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
       {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
