@@ -4,6 +4,7 @@ Functions to convert dataset form fields from or to db fields.
 """
 import json
 from iso639 import languages
+from pylons import config
 
 from ckan.lib import helpers as h
 
@@ -15,6 +16,7 @@ from ckan.lib.navl.dictization_functions import missing
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
 from ckan.model.authz import setup_default_user_roles
+import ckan.logic as logic
 
 from ckanext.kata import settings, utils
 
@@ -487,6 +489,53 @@ def check_primary_pids(key, data, errors, context):
         data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})
 
 
+def organization_create_converter(key, data, errors, context):
+    '''
+    Converter to create an organization on the fly. Called during handling of parameter __after in schema.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    errors_found = False
+    for key, value in errors.iteritems():
+        if value:
+            return
+
+    org_id = data.get(('owner_org',))
+    model = context['model']
+    if model.Group.get(org_id):
+        return
+
+    org_name = re.sub(r'[^\w]+', '-', org_id).lower()
+    group_own = model.Group.get(org_name)
+    if not group_own:
+        org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
+        org_dict = {
+            'title': org_id,
+            'description': u'',
+            'image_url': u'',
+            'type': 'organization',
+            'name': org_name
+        }
+        org_context = {
+            'message': '',
+            'model': context['model'],
+            'schema': logic.schema.default_group_schema(),
+            'session': context['session'],
+            'user': org_admin,
+        }
+
+        new_org = logic.get_action('organization_create')(org_context, org_dict)
+        group_id = new_org['id']
+        h.flash_success(_('New organisation "{org}" created automatically.')
+                        .format(org=org_id))
+    else:
+        group_id = group_own.id
+
+    data[('owner_org',)] = group_id
 def to_licence_id(key, data, errors, context):
     '''
     Try to match licence to existing defined license, replace matched content with licence id.

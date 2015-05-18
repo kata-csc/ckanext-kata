@@ -7,6 +7,7 @@ import logging
 
 import re
 from pylons import c
+from pylons import config
 from pylons.i18n import _
 
 from paste.deploy.converters import asbool
@@ -18,8 +19,10 @@ from ckan.model import Related, Session, Package, repo
 import ckan.model as model
 from ckan.lib.search import index_for, rebuild
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
+import ckan.lib.helpers as h
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
+import ckan.logic as logic
 from ckanext.kata import utils, settings
 from ckan.logic import get_action
 import ckan.new_authz
@@ -28,6 +31,7 @@ import sqlalchemy
 import ckan.lib.dictization.model_dictize as model_dictize
 from ckan.common import request
 import ckan.new_authz as new_authz
+import copy
 
 _or_ = sqlalchemy.or_
 
@@ -679,6 +683,41 @@ def organization_list(context, data_dict):
     return group_list
 
 
+# TODO Juho: Temporary organisation autocomplete implementation in
+# kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
+def organization_autocomplete(context, data_dict):
+    '''
+    Return a list of organization names that contain a string.
+
+    :param q: the string to search for
+    :type q: string
+    :param limit: the maximum number of organizations to return (optional,
+        default: 20)
+    :type limit: int
+
+    :rtype: a list of organization dictionaries each with keys ``'name'``,
+        ``'title'``, and ``'id'``
+    '''
+
+    check_access('organization_autocomplete', context, data_dict)
+
+    q = data_dict['q']
+    limit = data_dict.get('limit', 20)
+    model = context['model']
+
+    query = model.Group.search_by_name_or_title(q, group_type=None, is_org=True)
+
+    organization_list = []
+    for organization in query.all():
+        result_dict = {}
+        for k in ['id', 'name', 'title']:
+            result_dict[k] = getattr(organization, k)
+        organization_list.append(result_dict)
+
+    log.debug("organization_list: {ol}".format(ol=organization_list))  # Remove this
+    return organization_list
+
+
 def member_create(context, data_dict=None):
     '''
     Make an object (e.g. a user, dataset or group) a member of a group.
@@ -755,24 +794,6 @@ def organization_member_create(context, data_dict):
     ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     return ckan.logic.action.create.group_member_create(context, data_dict)
-
-
-def package_owner_org_update(context, data_dict):
-    '''
-    Update the owning organization of a dataset
-
-    Used by both package_create and package_update
-    '''
-
-    user_id = model.User.by_name(context.get('user')).id
-    org_id = data_dict.get('organization_id')
-
-    # get role the user has for the group
-    user_role = utils.get_member_role(org_id, user_id)
-
-    pkg = model.Package.get(data_dict['id'])
-
-    return ckan.logic.action.update.package_owner_org_update(context, data_dict)
 
 @side_effect_free
 def user_activity_list(context, data_dict):

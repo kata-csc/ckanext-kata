@@ -136,6 +136,9 @@ def package_show(context, data_dict):
     else:
         return is_ownr
 
+def package_revision_list(context, data_dict):
+    return package_show(context, data_dict)
+
 def kata_has_user_permission_for_org(org_id, user_name, permission):
     '''
     Used by auth function package create: everyone has a right to add a dataset to any organisation
@@ -198,3 +201,8 @@ def member_list(context, data_dict):
         return {'success': True}
     else:
         return {'success': False}
+
+# TODO Juho: Temporary organisation autocomplete implementation in
+# kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
+def organization_autocomplete(context, data_dict):
+    return logic_auth.get.organization_list(context, data_dict)

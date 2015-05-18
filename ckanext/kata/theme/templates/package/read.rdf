@@ -138,6 +138,11 @@
       <nrd:discipline py:if="h.is_url(disc)==False and disc">${ disc }</nrd:discipline>
     </py:for>
 
+    <py:for each="tag in c.pkg_dict.get('tags', '')">
+      <nrd:keyword py:if="h.is_url(tag.get('display_name', ''))" rdf:resource="${ tag.get('display_name', '') }"/>
+      <nrd:keyword py:if="h.is_url(tag.get('display_name', ''))==False and tag">${ tag.get('display_name', '') }</nrd:keyword>
+    </py:for>
+
     <py:for each="rel in h.get_related_urls(c.pkg)">
       <dct:isReferencedBy rdf:resource="${ rel }"/>
     </py:for>

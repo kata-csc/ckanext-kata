@@ -137,6 +137,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action="funder_autocomplete")
+        # TODO Juho: Temporary organisation autocomplete implementation in
+        # kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
+        map.connect('/api/2/util/organization/autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action='organization_autocomplete')
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")
@@ -172,6 +178,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/faq',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_faq")
+        map.connect('data-model',
+                    '/data-model',
+                    controller="ckanext.kata.controllers:KataInfoController",
+                    action="render_data_model")
         map.connect('/package_administration/{name}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="dataset_editor_manage")
@@ -195,6 +205,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         return {
             'current_package_list_with_resources': logic.auth.get.sysadmin,
             'package_delete': auth_functions.package_delete,
+            'package_revision_list': auth_functions.package_revision_list,
             'package_update': auth_functions.is_owner,
             'resource_update': auth_functions.edit_resource,
             'package_create': auth_functions.package_create,
@@ -205,6 +216,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_activity_list': logic.auth.get.sysadmin,
             'group_activity_list': logic.auth.get.sysadmin,
             'organization_activity_list': logic.auth.get.sysadmin,
+            'organization_autocomplete': auth_functions.organization_autocomplete,
             'member_list': auth_functions.member_list,
         }
 
@@ -220,6 +232,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'member_create': actions.member_create,
             'member_delete': actions.member_delete,
             'member_list': actions.member_list,
+            'organization_autocomplete': actions.organization_autocomplete,
             'organization_create': actions.organization_create,
             'organization_delete': actions.organization_delete,
             'organization_list': actions.organization_list,
@@ -228,7 +241,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'organization_update': actions.organization_update,
             'package_create': actions.package_create,
             'package_delete': actions.package_delete,
-            'package_owner_org_update': actions.package_owner_org_update,
             'package_search': actions.package_search,
             'package_show': actions.package_show,
             'package_update': actions.package_update,
@@ -256,6 +268,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'dataset_is_valid': helpers.dataset_is_valid,
             'disciplines_string_resolved': helpers.disciplines_string_resolved,
             'filter_system_users': helpers.filter_system_users,
+            'format_facet_labels': helpers.format_facet_labels,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
             'get_contributors': helpers.get_contributors,
@@ -291,6 +304,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'modify_error_summary': helpers.modify_error_summary,
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
+            'resolve_org_name': helpers.resolve_org_name,
             'split_disciplines': helpers.split_disciplines,
             'string_to_list': helpers.string_to_list,
             'organizations_available': helpers.organizations_available,
@@ -480,6 +494,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.translated_field_titles = utils.get_field_titles(toolkit._)
 
         extras = data_dict.get('extras')
+        data_dict['defType'] = 'edismax'
 
         # Start advanced search parameter parsing
         if extras:
@@ -579,19 +594,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             if EMAIL.match(item['key']):
                 item['value'] = u''
 
-        disciplines = helpers.split_disciplines(pkg_dict.get('discipline'))
-        resolved_disc = []
-        if disciplines:
-            for disc in disciplines:
-                try:
-                    labels = helpers.get_labels_for_uri(disc, 'okm-tieteenala')
-                except TypeError:
-                    labels = helpers.get_labels_for_uri_nocache(disc, 'okm-tieteenala')
-                if labels:
-                    for label in labels:
-                        resolved_disc.append(label.get('value'))
-        pkg_dict['extras_discipline_resolved'] = ",".join(resolved_disc)
-
+        # Resolve uri labels and add them to the Solr index.
+        # Discipline field in pkg_dict is of type comma-separated-string, while
+        # tags are given already as a list
+        split_disciplines = helpers.split_disciplines(pkg_dict.get('discipline'))
+        pkg_dict['extras_discipline_resolved'] = self._resolve_labels(split_disciplines, 'okm-tieteenala')
+        pkg_dict['extras_keywords_resolved'] = self._resolve_labels(pkg_dict.get('tags'), 'koko')
 
         # Make dates compliant with ISO 8601 used by Solr.
         # We assume here that what we get is partial date (YYYY or YYYY-MM) that is compliant with the standard.
@@ -627,3 +635,27 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         '''
         return NotAuthorizedMiddleware(app, config)
 
+    def _resolve_labels(self, entries, vocab):
+        '''
+        A helper function to resolve lables for discplines and tag_strings
+
+        :param entries: the comma-separated pkg_dict entries for a set of uris as a string
+        :param vocab: the vocabulary of the query
+        :returns: a comma-separated string of resolved entries.
+        unresolved entries are left as-is.
+        '''
+
+        resolved_entries = []
+
+        # resolve entries by URI from FINTO
+        if entries:
+            for entry in entries:
+                try:
+                    labels = helpers.get_labels_for_uri(entry, vocab)
+                except TypeError:
+                    labels = helpers.get_labels_for_uri_nocache(entry, vocab)
+                if labels:
+                    for label in labels:
+                        resolved_entries.append(label.get('value'))
+
+        return ",".join(resolved_entries)

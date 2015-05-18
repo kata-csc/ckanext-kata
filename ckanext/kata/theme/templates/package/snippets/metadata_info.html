@@ -118,8 +118,12 @@
   {% endif%}
 </section>
 {% block package_tags %}
-  {% if pkg_dict.tags %}<h3 class="module-content">{{ _('Keywords') }}</h3>{% endif %}
+  {% if pkg_dict.tags %}
+    <section class="module-content">
+    <h3>{{ _('Keywords') }}</h3>
+  {% endif %}
   {% snippet "package/snippets/tags.html", tags=pkg_dict.tags %}
+  </section>
 {% endblock %}
 <section class="module-content additional-info">
 <h3>{{ _('Usage information') }}</h3>
