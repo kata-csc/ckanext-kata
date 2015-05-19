@@ -69,7 +69,7 @@
     <py:for each="agent in c.pkg_dict.get('agent', None)">
       <nrd:owner py:if="agent.get('role', None)=='owner' and not h.get_if_url(agent.get('name', None))">
         <foaf:Agent>
-          <foaf:name>${ agent.get('name', None) }</foaf:name>
+          <foaf:name>${ agent.get('name', agent.get('organisation', '')) }</foaf:name>
         </foaf:Agent>
       </nrd:owner>
       <nrd:owner py:if="agent.get('role', None)=='owner' and h.get_if_url(agent.get('name', None))" rdf:resource="${ agent.get('name', None) }"/>
