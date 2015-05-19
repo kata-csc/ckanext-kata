@@ -21,6 +21,7 @@ from ckan.logic import get_action
 from ckan.model import User, Package, Session, PackageExtra
 from ckan.lib import helpers as h
 from ckanext.kata import settings
+import unicodedata
 
 
 log = logging.getLogger(__name__)
@@ -477,3 +478,15 @@ def generate_ida_download_url(data_pid):
 
     ida_download_url_template = "http://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
     return ida_download_url_template.format(p=data_pid)
+
+
+def slugify(str):
+    '''
+    Converts string to a sane url format, e.g. ääöö to aaoo.
+
+    :param str: string to convert
+    :return:
+    '''
+
+    nkfd_form = unicodedata.normalize('NFKD', str)
+    return u"".join([c for c in nkfd_form if not unicodedata.combining(c)])

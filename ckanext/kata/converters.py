@@ -509,7 +509,7 @@ def organization_create_converter(key, data, errors, context):
     if model.Group.get(org_id):
         return
 
-    org_name = re.sub(r'[^\w]+', '-', org_id).lower()
+    org_name = re.sub(r'[^\w]+', '-', utils.slugify(org_id)).lower()
     group_own = model.Group.get(org_name)
     if not group_own:
         org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
