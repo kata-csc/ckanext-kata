@@ -309,6 +309,10 @@ class TestDataReading(KataApiTestCase):
         data_dict.pop('name', None)
         data_dict.pop('title', None)
 
+        # langtitle is converted to a translation JSON string in 'title' field
+        # after that it is not needed anymore
+        data_dict.pop('langtitle', None)
+
         # Terms of usage acceptance is checked but not saved
         data_dict.pop('accept-terms', None)
 

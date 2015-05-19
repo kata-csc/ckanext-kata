@@ -1,8 +1,9 @@
 {% extends "package/read_base.html" %}
 
 {% set pkg = c.pkg_dict %}
+{% set title = h.get_translation(pkg.title) %}
 
-{% block subtitle %}{{ pkg.title or pkg.name }}{% endblock %}
+{% block subtitle %}{{ title or pkg.name }}{% endblock %}
 
 {% block primary_content_inner %}
   {{ super() }}  
@@ -30,7 +31,7 @@
       <span class="rating" title="{{ _('Metadata score {rating}/5').format(rating=rating) }}">{{ stars }}</span>
     </div>
 
-    <h2 class="module-content">{{pkg.title}}</h2>
+    <h2 class="module-content">{{title}}</h2>
 
   {% endblock %}
 

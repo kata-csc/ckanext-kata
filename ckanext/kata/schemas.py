@@ -93,8 +93,17 @@ class Schemas:
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_date],
                            'descr': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric]}
         schema['id'] = [default(u''), co.update_pid, unicode]
-        schema['langtitle'] = {'value': [not_missing, unicode, va.validate_title, va.validate_title_duplicates, co.ltitle_to_extras],
-                               'lang': [not_missing, unicode, co.convert_languages]}
+
+        # Langtitle fields are used by the UI, to construct a 'title' field with translations in JSON format
+        # This is not necessarily needed for the API calls
+        schema['langtitle'] = {'value': [unicode, va.validate_title, va.validate_title_duplicates, co.escape_quotes],
+                               'lang': [unicode, co.convert_languages]}
+
+        # The title field contains all the title translations in JSON format.
+        # The converter gen_translation_str_from_langtitle
+        # needs to be called to construct the JSON string from the UI's langtitle fields.
+        schema['title'] = [unicode, not_missing, co.gen_translation_str_from_langtitle]
+
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_begin'] = \
@@ -115,7 +124,8 @@ class Schemas:
         schema['availability'] = [not_missing, co.convert_to_extras_kata]
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
         # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
-        schema['__extras'] = [va.check_agent, va.check_langtitle, va.check_contact, va.check_pids]
+        # va.check_langtitle removed
+        schema['__extras'] = [va.check_agent, va.check_contact, va.check_pids]
         schema['__junk'] = [va.check_junk]
         schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
                           va.validate_general]
@@ -359,7 +369,14 @@ class Schemas:
         # schema['organization'] = [ignore_missing, unicode]
         schema['pids'] = [co.flattened_from_extras, ignore_missing]
         # schema['projdis'] = [unicode]
-        schema['title'] = [co.ltitle_from_extras, ignore_missing]
+
+        # co.gen_translation_str_from_extras updates the title field to show the JSON
+        # translation string if old format titles are found from extras
+        schema['title'] = [ignore_missing, co.gen_translation_str_from_extras]
+
+        #schema['langtitle'] = {'value': [unicode , co.gen_translation_str_from_langtitle],
+        #                       'lang': [unicode, co.convert_languages]}
+
         #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
         schema['xpaths'] = [co.from_extras_json, ignore_missing, unicode]
         #schema['resources']['resource_type'] = [from_resource]

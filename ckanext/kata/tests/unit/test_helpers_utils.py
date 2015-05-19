@@ -95,6 +95,23 @@ class TestHelpers(TestCase):
         discipline = u'http://www.yso.fi/onto/okm-tieteenala/xyz1234'
         assert helpers.get_label_for_uri(discipline) == discipline
 
+    def test_get_translation(self):
+        translation_json = '{"fin":"otsikko", "eng":"title"}'
+
+        translation_fi = helpers.get_translation(translation_json, 'fi')
+        assert translation_fi == "otsikko"
+
+        translation_en = helpers.get_translation(translation_json, 'en')
+        assert translation_en == "title"
+
+        # this should default to en
+        translation_def_en = helpers.get_translation(translation_json, 'sv')
+        assert translation_def_en == "title"
+
+        translation_json = '{"fin":"otsikko"}'
+        translation_def_fi = helpers.get_translation(translation_json, 'sv')
+        assert translation_def_fi == "otsikko"
+
 
 class TestUtils(TestCase):
     """Unit tests for functions in utils.py."""

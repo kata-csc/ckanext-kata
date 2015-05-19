@@ -92,6 +92,113 @@ def org_auth_from_extras(key, data, errors, context):
         if not orgauth in orgauths:
             orgauths.append(orgauth)
 
+def gen_translation_str_from_langtitle(key, data, errors, context):
+    '''
+    Fetch all the langtitle fields of type
+    ('langtitle', n, 'lang'): u'en',
+    ('langtitle', n, 'value'): u'translation'
+
+    and generate a JSON translation string of type
+    title: {'en':'translation', 'fi':'kaannos'}
+
+    This converter is called only once for the hidden field
+    'title' where the data is then stored.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    # For API requests, we need to validate if the
+    # title data is already given in the new format, and
+    # no langtitles given. In that case, do nothing.
+    if data.get(('title',)) and not data.get(('langtitle', 0, 'lang')):
+        json_string = data.get(('title',))
+
+        json_data = {}
+        try:
+            json_data = json.loads(json_string)
+        except ValueError:
+            errors[key].append(_('The given title string is not JSON parseable'))
+
+        # we also need to validate the keys:
+        for k in json_data.keys():
+            if k == "undefined":    # some harvesters don't have languages defined
+                continue
+            try:
+                languages.get(part3=k)
+            except KeyError:
+                errors[key].append(_('The language code is not in ISO639-3 format'))
+
+        return
+
+    json_data = {}
+
+    # loop through all the title translations
+    i = 0
+    while data.get(('langtitle', i, 'lang'), []):
+        lval = data[('langtitle', i, 'lang')]
+        rval = data[('langtitle', i, 'value')]
+        if rval:    # skip a language without translation
+            json_data[lval] = rval
+        i+=1
+
+    data[('title',)] = json.dumps(json_data)
+
+def gen_translation_str_from_extras(key, data, errors, context):
+    '''
+    This converter is only used for converting the
+    old format title fields from extras to the new JSON format
+    in order to retain the compatibility between the new and
+    the old format.
+
+    1)  Check that the title isn't already in new format
+    2)  If it's not, fetch the title translations from extras
+    3)  convert the data to the new JSON format
+    4)  dump the jason string to the data dict's
+        title field.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    # NOTE: the title isn't updated to the database in this case,
+    # should the whole conversion logic be done in actions.py instead?
+
+    # check that title isn't already of new JSON format
+    # otherwise, parse the JSON title from extras
+    json_string = data.get(('title',))
+    try:
+        json.loads(json_string)
+    except ValueError:
+        if not data.get(('langtitle',)):
+            # use the existing converter to fetch the data from the extras
+            # and create a langtitle field.
+            ltitle_from_extras(key, data, errors, context)
+            langtitles = data.get(('langtitle',))
+
+            # convert the extras to the new JSON format here
+            json_data = {}
+            for langtitle in langtitles:
+                json_data[langtitle['lang']] = langtitle['value']
+
+            data[('title',)] = json.dumps(json_data)
+
+
+def escape_quotes(key, data, errors, context):
+    '''
+    Escape double quotes, so that we can store the title in json
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    data[key] = data.get(key).replace('"', '\\"')
 
 def ltitle_to_extras(key, data, errors, context):
     '''

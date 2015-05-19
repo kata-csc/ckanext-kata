@@ -15,7 +15,7 @@ from ckanext.kata.validators import validate_kata_date, \
     validate_title_duplicates, validate_title, check_direct_download_url, check_pids
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict, StopOnError
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
-    flattened_to_extras, flattened_from_extras
+    flattened_to_extras, flattened_from_extras, gen_translation_str_from_langtitle
 from ckanext.kata import settings
 from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
 
@@ -473,6 +473,53 @@ class TestJSONConverters(TestCase):
         assert data[('extras',)]
         assert data[('extras',)][0]['key'] == 'pids'
         assert data[('extras',)][0]['value'] == self.serialized, data[('extras',)][0]['value']
+
+    def test_gen_translation_str_from_langtitle(self):
+        data = copy.deepcopy(self.test_data)
+        data[('langtitle', 0, 'lang')] = u'sv'
+        data[('langtitle', 0, 'value')] = u'testdata'
+        data[('langtitle', 1, 'lang')] = u'fi'
+        data[('langtitle', 1, 'value')] = u'testidata'
+        data[('title',)] = u''
+
+        gen_translation_str_from_langtitle(('title',), data, {}, {})
+
+        assert data[('title',)]
+
+        # check that the title field contains json and is well formed
+        d = data[('title',)]
+        titles_json = json.loads(d)
+
+        assert titles_json.get('sv') == 'testdata'
+        assert titles_json.get('fi') == 'testidata'
+
+        # check that the title is of type string
+        assert isinstance(d, basestring)
+
+    def test_gen_translation_str_from_langtitle2(self):
+        # test that the title field is not updated, if the
+        # JSON string is already given in 'title'
+
+        json_string = '{"fin":"otsikko", "eng":"title"}'
+
+        data = copy.deepcopy(self.test_data)
+        errors = defaultdict(list)
+
+        data[('title',)] = json_string
+        gen_translation_str_from_langtitle(('title',), data, errors, {})
+
+        assert data[('title',)]
+        assert data[('title',)] == json_string
+
+        # test that the ISO language codes are validated
+        json_string = '{"fin":"otsikko", "invalid_lang_code":"title"}'
+        errors = defaultdict(list)
+
+        data[('title',)] = json_string
+        gen_translation_str_from_langtitle(('title',), data, errors, {})
+
+        assert data[('title',)]
+        assert len(errors) > 0
 
 
 class TestExtrasFlatteners(TestCase):

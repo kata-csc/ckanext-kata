@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-    {% block subtitle %}{{ _('Dataset title') }}: {{ c.pkg.title }}{% endblock %}
+    {% block subtitle %}{{ _('Dataset title') }}: {{ h.get_translation(c.pkg.title) }}{% endblock %}
 
   {% set filtered_members = h.filter_system_users(c.members) %}
   <h3 class="page-heading">{{ _('{0} named roles').format(filtered_members|length) }}</h3>

@@ -550,6 +550,23 @@ def get_ga_id():
     '''
     return config.get('kata.ga_id', '')
 
+def json_to_list(pkg_dict):
+
+    langlist = []
+
+    try:
+        json_data = json.loads(pkg_dict)
+    except ValueError:
+        return pkg_dict
+    except TypeError:
+        for k, v in pkg_dict:
+            langlist.append({"lang": k, "value": v})
+            return langlist
+
+    for k, v in json_data.iteritems():
+        langlist.append({"lang": k, "value": v})
+
+    return langlist
 
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
@@ -633,6 +650,99 @@ def get_label_for_uri(uri, ontology=None, lang=None):
                 return label.get('value')
 
     return uri
+
+def get_translation(translation_json_string, lang=None):
+    '''
+    Returns the given JSON translation string in correct language.
+
+    :param translation_json_string: a json string containing translations, i.e. title
+    :param lang: language of the translation
+    :return:
+    '''
+
+    try:
+        json_data = json.loads(translation_json_string)
+    except (ValueError, TypeError):
+        return translation_json_string
+
+    # if no language is given as a parameter, fetch the currently used
+    if not lang:
+        lang = h.lang()
+
+    # convert ISO639-1 to ISO639-2 (fi -> fin, en -> eng)
+    lang = convert_language_code(lang, 'alpha3')
+
+    # return the given language if it is found,
+    # otherwise return the next one from the defaults list
+    defaults = [lang, 'eng', 'fin']
+    for lang in defaults:
+        translation = json_data.get(lang)
+        if translation:
+            return translation
+
+def get_language(lang):
+    '''
+    Resolves the complete language name from a given language code
+
+    :param lang: language code in iso format
+    :return:
+
+    '''
+
+    try:
+        return languages.get(part2b=lang).name
+    except:
+        try:
+            return languages.get(part3=lang).name
+        except:
+            try:
+                return languages.get(part1=lang).name
+            except:
+                return lang
+
+
+def get_translation_from_extras(package):
+    '''
+    Fetch the translation string from the extras, in case the title is of the old type.
+    This function ensures that the legacy title is shown in right language even though the
+    package hasn't gone through the converter in show_package_schema or create_package_schema
+    yet (i.e. in package_item.html).
+
+    :param package: package dict
+    :param default: default value to return, if there is no matching value to the language
+    :return: translated value
+    '''
+
+    # Try to translate the valid package title, if it doesn't work,
+    # we need to fetch the title from extras
+    try:
+        t = package.get("title", "")
+        json.loads(t)
+        return get_translation(t)
+    except (ValueError, TypeError):
+        pass
+
+    ret = ""
+    lang = convert_language_code(h.lang(), 'alpha3')    # fi -> fin
+
+    langlist = list()   # an ordered list of title languages
+    valuelist = list()  # an ordered list of titles
+
+    if package.get('extras') and lang:
+        for extra in package.get('extras'):
+            for key, value in extra.iteritems():
+                if value.startswith("lang_title"):  # fetch the language of the given title
+                    langlist.insert(int(value.split('_')[2]), extra['value'])
+                if value.startswith("title"):       # fetch the title
+                    valuelist.insert(int(value.split('_')[1]), extra['value'])
+        try:
+            ret = valuelist[langlist.index(lang)]
+        except:
+            log.debug('List index was probably out of range')
+            if valuelist:   # use the first title given, if any are given at all
+                ret = valuelist[0]
+
+    return ret
 
 
 def disciplines_string_resolved(disciplines, ontology=None, lang=None):

@@ -18,7 +18,7 @@
 </table>
 {% endif %}
 
-{% if pkg_dict.langtitle %}
+{% if pkg_dict.title %}
 <h4>{{ _('Titles') }}</h4>
 <table class="table table-striped table-bordered table-condensed">
   <tbody>
@@ -26,10 +26,11 @@
     <th>{{ _('Title') }}</th>
     <th>{{ _('Language') }}</th>
   </tr>
-  {% for langtitle in pkg_dict.langtitle %}
+
+  {% for title in h.json_to_list(pkg_dict.title) %}
   <tr>
-    <td>{{ langtitle.value }}</td>
-    <td>{{ langtitle.lang }}</td>
+    <td>{{ title.value }}</td>
+    <td>{{ _(h.get_language(title.lang)) }}</td>
   </tr>
   {% endfor %}
   </tbody>
