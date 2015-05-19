@@ -93,9 +93,7 @@ Example:
       <label class="control-label{{ " " ~ label_classes | join(' ') }}" for="{{ name }}">{{ label }}</label>
       <div class="controls{{ " " ~ control_classes | join(' ') }}">
         <ul class="nav nav-tabs"></ul>
-        <div class="multilang-input-area">
-        <!-- <input id="{{ name }}" type="text" name="{{ name }}" class="input-block-level"
-               value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}" /> -->
+        <div class="multilang-input-area"></div>
         {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
       </div>
     </div>
@@ -106,7 +104,6 @@ Example:
       </div>
       <div class="modal-body">
         <p>Modal body</p>
-        <!-- <input id="add-new-lang-modal-value" /> -->
         <input id="tab-language-selection" data-module="kata-language-selection" data-module-current="{{ current }}" />
       </div>
       <div class="modal-footer">
