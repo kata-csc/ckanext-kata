@@ -485,7 +485,7 @@ def slugify(str):
     Converts string to a sane url format, e.g. ääöö to aaoo.
 
     :param str: string to convert
-    :return:
+    :return: converted unicode string
     '''
 
     nkfd_form = unicodedata.normalize('NFKD', str)
