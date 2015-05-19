@@ -937,6 +937,13 @@ class KataInfoController(BaseController):
         '''
         return render('kata/faq.html')
 
+    def render_data_model(self):
+        '''
+        Provides the data-model as a separate page
+        '''
+
+        return render('kata/data-model.html')
+
 
 class MalwareScanningStorageController(StorageController):
     '''

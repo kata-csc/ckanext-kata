@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+var path = require('path'),
+    nodeWatch = require('../../../../ckan/node_modules/nodewatch'),
+    exec = require('child_process').exec,
+    watch = path.join(__dirname, 'public', 'less');
+
+function now() {
+  return new Date().toISOString().replace('T', ' ').substr(0, 19);
+}
+
+function compile(event, filename) {
+  var start = Date.now(),
+      targetFile = __dirname + '/public/css/' + 'kata.css',
+      ckanModules = path.join(__dirname, '..', '..', '..', '..', 'ckan', 'node_modules');
+      lessCompiler = path.join(ckanModules, 'less', 'bin', 'lessc'),
+      autoprefixer = path.join(ckanModules, 'autoprefixer', 'autoprefixer'),
+      cmdLine = lessCompiler + ' ' + __dirname + '/public/less/main.less > ' + targetFile;
+
+  exec(cmdLine, function (err, stdout, stderr) {
+    var duration = Date.now() - start;
+
+    if (err) {
+      console.log('An error occurred running the less command:');
+      console.log(err.message);
+    }
+    else if (stderr || stdout) {
+      console.log(stdout, stderr);
+    } else {
+      exec(autoprefixer + ' -b "last 2 version, ie >= 10" ' + targetFile, function (err, stdout, stderr) {
+        if (err) {
+          console.log('An error occurred running the autoprefixer command:');
+          console.log(err.message);
+        }
+        else if (stderr || stdout) {
+          console.log(stdout, stderr);
+        } else {
+          console.log('[%s] recompiled ' + targetFile + ' in %sms', now(), duration);
+        }
+      });
+    }
+  });
+}
+
+console.log('Watching %s', watch);
+nodeWatch.add(watch).onChange(compile);
+compile();

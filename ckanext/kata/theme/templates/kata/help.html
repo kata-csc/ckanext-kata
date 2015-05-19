@@ -294,10 +294,9 @@
         <p>
             {{ _('The metadata model of Etsin is more complex than the default model in CKAN. Beneath is an example of a dataset that can be created in Etsin, using Curl. Note, that you can get your API key from your profile page.') }}
         </p>
-          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#kata-data-model">
-  {{ _('Display data model') }}
-          </button>
-            {% snippet 'kata/snippets/data-model.html' %}
+
+          <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataInfoController', action='render_data_model') }}" target="_blank">{{ _('Display data model') }}</a>
+          <br />
 
         <div class="example">
             {# Manually written example mostly because pre doesn't work together with trans #}
