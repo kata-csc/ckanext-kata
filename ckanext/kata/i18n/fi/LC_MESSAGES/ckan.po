@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-05-19 11:22+0000\n"
+"POT-Creation-Date: 2015-05-19 11:52+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -419,32 +419,34 @@ msgstr "Puuttuva arvo"
 #: ckanext/kata/validators.py:491
 msgid ""
 "An organization must be supplied. If you do not find a suitable "
-"organization, please choose the default organization"
+"organization, please choose the default organization 'Ei linkitetä "
+"organisaatioon - do not link to an organization' or create a new one."
 msgstr ""
-"Organisaatio on syötettävä. Käytä oletusorganisaatiota, jos et löydä "
-"sopivaa listalta."
+"Organisaatio on syötettävä. Käytä oletusorganisaatiota 'Ei linkitetä "
+"organisaatioon - do not link to an organization', jos et löydä "
+"sopivaa listalta tai luo uusi organisaatio."
 
-#: ckanext/kata/validators.py:500
+#: ckanext/kata/validators.py:501
 #, python-format
 msgid "Organization name must be at least %s characters long"
 msgstr "Organisaation nimen on oltava ainakin %s merkkiä pitkä"
 
-#: ckanext/kata/validators.py:502
+#: ckanext/kata/validators.py:503
 #, python-format
 msgid "Organization name must be a maximum of %i characters long"
 msgstr "Organisaation nimen on oltava maksimissaan %i merkkiä pitkä"
 
-#: ckanext/kata/validators.py:505
+#: ckanext/kata/validators.py:506
 msgid "This organization name cannot be used"
 msgstr "Tätä organisaationimeä ei voi käyttää"
 
-#: ckanext/kata/validators.py:532
+#: ckanext/kata/validators.py:533
 msgid "Only organization's editors and admins can create a public dataset"
 msgstr ""
 "Vain organisaation muokkaajat ja ylläpitäjät voivat julkaista "
 "tietoaineiston"
 
-#: ckanext/kata/validators.py:543
+#: ckanext/kata/validators.py:544
 msgid "Terms of use must be accepted"
 msgstr "Käyttöehtojen hyväksyminen on pakollista"
 
@@ -6325,6 +6327,16 @@ msgid ""
 "visible in the organization page. Additionally, the organization's "
 "editors can also modify this dataset."
 msgstr ""
+"Kenttä on pakollinen.<br /><br />Valitse organisaatio linkittääksesi "
+"tietoaineiston kyseiseen organisaatioon. Saat automaattisesti ehdotuksia "
+"saatavilla olevista organisaatioista ryhtyessäsi kirjoittamaan tekstiä "
+"kenttään. Valitse haluamasi klikkaamalla ehdotusta hiirellä tai "
+"painamalla enteriä. Jos et löydä organisaatiotasi listalta, voit "
+"kirjoittaa kenttään uuden organisaation nimen, joka luodaan "
+"automaattisesti tallentaessasi tietoaineistosi. <br /><br />Kun "
+"tietoaineisto on julkaistu, se näytetään valitsemasi organisaation "
+"sivulla. Myös organisaation käyttöoikeuden haltijat voivat muokata tätä "
+"tietoaineistoa."
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:6
 msgid ""
@@ -7085,19 +7097,4 @@ msgstr "Ensimmäinen kirjautuminen"
 #: ckanext/kata/theme/templates/user/read.html:129
 msgid "API Key"
 msgstr "API-avain"
-
-#~ msgid "The title of the dataset"
-#~ msgstr "Tietoaineiston otsikko"
-
-#~ msgid "The first title"
-#~ msgstr "Ensimmäinen otsikko"
-
-#~ msgid "Internally the first title is copied to this field"
-#~ msgstr "Sisäisesti ensimmäisen otsikon arvo kopioidaan tähän kenttään"
-
-#~ msgid "Close"
-#~ msgstr "Sulje"
-
-#~ msgid "Data model of Etsin"
-#~ msgstr "Etsimen tietomalli"
 

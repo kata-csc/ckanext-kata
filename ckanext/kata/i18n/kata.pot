@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-19 11:22+0000\n"
+"POT-Creation-Date: 2015-05-19 11:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -402,28 +402,29 @@ msgstr ""
 #: ckanext/kata/validators.py:491
 msgid ""
 "An organization must be supplied. If you do not find a suitable organization,"
-" please choose the default organization"
+" please choose the default organization 'Ei linkitetä organisaatioon - do not"
+" link to an organization' or create a new one."
 msgstr ""
 
-#: ckanext/kata/validators.py:500
+#: ckanext/kata/validators.py:501
 #, python-format
 msgid "Organization name must be at least %s characters long"
 msgstr ""
 
-#: ckanext/kata/validators.py:502
+#: ckanext/kata/validators.py:503
 #, python-format
 msgid "Organization name must be a maximum of %i characters long"
 msgstr ""
 
-#: ckanext/kata/validators.py:505
+#: ckanext/kata/validators.py:506
 msgid "This organization name cannot be used"
 msgstr ""
 
-#: ckanext/kata/validators.py:532
+#: ckanext/kata/validators.py:533
 msgid "Only organization's editors and admins can create a public dataset"
 msgstr ""
 
-#: ckanext/kata/validators.py:543
+#: ckanext/kata/validators.py:544
 msgid "Terms of use must be accepted"
 msgstr ""
 
