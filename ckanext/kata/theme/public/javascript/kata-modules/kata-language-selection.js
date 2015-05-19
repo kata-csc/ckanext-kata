@@ -1,19 +1,5 @@
-/* An auto-complete module for select and input elements that can pull in
- * a list of terms from an API endpoint (provided using data-module-source).
- *
- * source   - A url pointing to an API autocomplete endpoint.
- * interval - The interval between requests in milliseconds (default: 1000).
- * items    - The max number of items to display (default: 10)
- * tags     - Boolean attribute if true will create a tag input.
- * key      - A string of the key you want to be the form value to end up on
- *            from the ajax returned results
- * label    - A string of the label you want to appear within the dropdown for
- *            returned results
- *
- * Examples
- *
- *   // <input name="tags" data-module="autocomplete" data-module-source="http://" />
- *
+/* 
+ * Based on ckan's autocomplete module
  */
 this.ckan.module('kata-language-selection', function (jQuery, translate) {
   return {
@@ -76,7 +62,7 @@ this.ckan.module('kata-language-selection', function (jQuery, translate) {
           //settings.tags = this._onQuery;
         } else {
           //settings.query = this._onQuery;
-          settings.createSearchChoice = this.formatTerm;
+          //settings.createSearchChoice = this.formatTerm;
         }
         settings.initSelection = this.formatInitialValue;
       }
@@ -94,84 +80,6 @@ this.ckan.module('kata-language-selection', function (jQuery, translate) {
       $('.select2-choice', select2.container).on('click', function() {
         return false;
       });
-    },
-
-    /* Looks up the completions for the current search term and passes them
-     * into the provided callback function.
-     *
-     * The results are formatted for use in the select2 autocomplete plugin.
-     *
-     * string - The term to search for.
-     * fn     - A callback function.
-     *
-     * Examples
-     *
-     *   module.getCompletions('cake', function (results) {
-     *     results === {results: []}
-     *   });
-     *
-     * Returns a jqXHR promise.
-     */
-    getCompletions: function (string, fn) {
-      var parts  = this.options.source.split('?');
-      var end    = parts.pop();
-      var source = parts.join('?') + string + end;
-      var client = this.sandbox.client;
-      var options = {
-        format: function(data) {
-          var completion_options = jQuery.extend(options, {objects: true});
-          return {
-            results: client.parseCompletions(data, completion_options)
-          }
-        },
-        key: this.options.key,
-        label: this.options.label
-      };
-
-      return client.getCompletions(source, options, fn);
-    },
-
-    /* Looks up the completions for the provided text but also provides a few
-     * optimisations. If there is no search term it will automatically set
-     * an empty array. Ajax requests will also be debounced to ensure that
-     * the server is not overloaded.
-     *
-     * string - The term to search for.
-     * fn     - A callback function.
-     *
-     * Returns nothing.
-     */
-    lookup: function (string, fn) {
-      var module = this;
-
-      // Cache the last searched term otherwise we'll end up searching for
-      // old data.
-      this._lastTerm = string;
-
-      if (string) {
-        if (!this._debounced) {
-          // Set a timer to prevent the search lookup occurring too often.
-          this._debounced = setTimeout(function () {
-            var term = module._lastTerm;
-
-            delete module._debounced;
-
-            // Cancel the previous request if it hasn't yet completed.
-            if (module._last) {
-              module._last.abort();
-            }
-
-            module._last = module.getCompletions(term, function (terms) {
-              fn(module._lastResults = terms);
-            });
-          }, this.options.interval);
-        } else {
-          // Re-use the last set of terms.
-          fn(this._lastResults || {results: []});
-        }
-      } else {
-        fn({results: []});
-      }
     },
 
     /* Formatter for the select2 plugin that returns a string for use in the
@@ -252,15 +160,6 @@ this.ckan.module('kata-language-selection', function (jQuery, translate) {
       return formatted;
     },
 
-    /* Callback triggered when the select2 plugin needs to make a request.
-     *
-     * Returns nothing.
-     */
-    _onQuery: function (options) {
-      if (options) {
-        this.lookup(options.term, options.callback);
-      }
-    },
 
     /* Called when a key is pressed.  If the key is a comma we block it and
      * then simulate pressing return.
