@@ -6,7 +6,7 @@
 {% block subtitle %}{{ title or pkg.name }}{% endblock %}
 
 {% block primary_content_inner %}
-  {{ super() }}  
+  {{ super() }}
   {% block package_description %}
     {% if pkg.private %}
       <span class="dataset-private label label-inverse pull-right">

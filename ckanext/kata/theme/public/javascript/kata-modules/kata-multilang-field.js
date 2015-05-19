@@ -3,7 +3,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
     initialize: function () {
       this.selectors = {
         modal: '#add-new-lang-modal',
-        modalvalue: '#add-new-lang-modal-value',
+        modalvalue: '#tab-language-selection',
         tab: 'multilang-tab',
         tabregex: /multilang-tab-\w+/,
         inputarea: '.multilang-input-area'
@@ -12,7 +12,6 @@ ckan.module('kata-multilang-field', function ($, translate) {
       $.proxyAll(this, /_set/);
       $.proxyAll(this, /_on/);
       this.model = _.isObject(this.options.model) ? this.options.model : {};
-      console.log("model", this.options.model, this.model);
 
       this.inputDiv = this.el.find(this.selectors.inputarea);
 
@@ -58,7 +57,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
         var inputs = [];
         _.each(_.keys(this.model), function (langcode) {
           var liEl = '<li><a class="' + this.selectors.tab + ' ' + this.selectors.tab + '-' + langcode + '">' +
-            langcode + '<span class="langtab-close"><i class="icon-remove"></i></span></a></li>';
+            KataLanguages.get(langcode, this.options.current) + '<span class="langtab-close"><i class="icon-remove"></i></span></a></li>';
           ulEl.append(liEl);
           var elId = this.options.name + '__0__' + langcode;
           var inputEl = '<div class="multilang-input-wrapper">' +
