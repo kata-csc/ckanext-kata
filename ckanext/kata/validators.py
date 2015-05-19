@@ -488,11 +488,11 @@ def kata_owner_org_validator(key, data, errors, context):
 
     if value is missing or not value:
         if not new_authz.check_config_permission('create_unowned_dataset'):
-            err = u'An organization must be supplied.'
-            err += u' If you do not find a suitable organization, please choose the default organization "'
-            err += u'Ei linkitetä organisaatioon - do not link to an organization'
-            err += u'" provided by the service.'
-            raise Invalid(_(err))
+            err = _(
+            "An organization must be supplied. If you do not find a suitable organization, please choose the default organization"
+            )
+
+            raise Invalid(err)
         data.pop(key, None)
         raise df.StopOnError
 
