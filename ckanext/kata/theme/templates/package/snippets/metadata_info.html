@@ -30,7 +30,7 @@
   {% for title in h.json_to_list(pkg_dict.title) %}
   <tr>
     <td>{{ title.value }}</td>
-    <td>{{ _(h.get_language(title.lang)) }}</td>
+    <td>{% if h.get_language(title.lang) %}{{ _(h.get_language(title.lang)) }}{% endif %}</td>
   </tr>
   {% endfor %}
   </tbody>
