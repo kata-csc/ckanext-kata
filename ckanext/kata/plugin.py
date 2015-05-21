@@ -43,7 +43,7 @@ log = logging.getLogger('ckanext.kata')
 from repoze.who.plugins.auth_tkt import AuthTktCookiePlugin
 
 def _get_monkeys(self, environ, value, max_age=None):
-    
+
     if max_age is not None:
         max_age = int(max_age)
         later = datetime.datetime.now() + datetime.timedelta(seconds=max_age)
@@ -272,6 +272,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
             'get_contributors': helpers.get_contributors,
+            'get_description': helpers.get_description,
             'get_dict_errors': helpers.get_dict_errors,
             'get_dict_field_errors': helpers.get_dict_field_errors,
             'get_distributor': helpers.get_distributor,
@@ -299,6 +300,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_visibility_options': helpers.get_visibility_options,
             'has_agents_field': helpers.has_agents_field,
             'has_contacts_field': helpers.has_contacts_field,
+            'has_json_content': helpers.has_json_content,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'is_backup_instance': helpers.is_backup_instance,
             'is_url': helpers.is_url,
@@ -531,7 +533,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         indexing it to Solr index. For example, we
         add resource mimetype to the index, modify
         agents and hide the email address
-        
+
         :param pkg_dict: pkg_dict to modify
         :returns: the modified package dict to be indexed
         '''

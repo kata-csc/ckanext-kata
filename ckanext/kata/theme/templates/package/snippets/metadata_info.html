@@ -110,12 +110,25 @@
 <section class="module-content">
 
 <h3>{{ _('Description') }}</h3>
-  {% if not pkg_notes_formatted == '' %}
-    <div class="notes embedded-content">
-      {{ pkg_notes_formatted }}
+  {% if h.has_json_content(pkg_dict.notes) %}
+    <div class="accordion kata-accordion" id="description-accordion" data-module="kata-accordion">
+      {%- for description in h.json_to_list(pkg_dict.notes) -%}
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#description-accordion" href="{{'#collapse' ~ loop.index0}}">
+            {{ _(h.get_language(description.lang)) }}
+          </a>
+        </div>
+        <div id="{{'collapse' ~ loop.index0}}" class="accordion-body collapse">
+          <div class="accordion-inner">
+            <div class="notes embedded-content">{{ h.render_markdown(description.value) }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
   {% else %}
-  <p>{{ _('No description') }}</p>
+    <p>{{ _('No description') }}</p>
   {% endif%}
 </section>
 {% block package_tags %}

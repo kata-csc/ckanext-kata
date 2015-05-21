@@ -195,13 +195,15 @@ class TestUpdateDataset(KataApiTestCase):
         self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        data_dict['notes'] = "A new description"
+        data_dict['langnotes'] = [
+            {'lang': 'eng', 'value': 'A new description'}
+        ]
 
         output = self.api_user_normal.call_action('package_update', data_dict=data_dict)
 
         self.api_user_normal.call_action('package_show', data_dict=dict(id=output['id']))
 
-        assert output['notes'] == "A new description"
+        assert output['notes'] == '{"eng": "A new description"}'
 
     def test_update_by_data_pid_fail(self):
         '''Try to update a dataset with wrong PIDs'''
@@ -305,13 +307,15 @@ class TestDataReading(KataApiTestCase):
 
         data_dict = copy.deepcopy(original)
 
-        # name (data pid) and title are generated so they shouldn't match
+        # name (data pid), title and notes are generated so they shouldn't match
         data_dict.pop('name', None)
         data_dict.pop('title', None)
+        data_dict.pop('notes', None)
 
-        # langtitle is converted to a translation JSON string in 'title' field
-        # after that it is not needed anymore
+        # lang* fields are converted to translation JSON strings and
+        # after that they are not needed anymore
         data_dict.pop('langtitle', None)
+        data_dict.pop('langnotes', None)
 
         # Terms of usage acceptance is checked but not saved
         data_dict.pop('accept-terms', None)

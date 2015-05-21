@@ -1,3 +1,30 @@
 .kata-captcha-fix table {
     table-layout: auto !important;
 }
+
+.kata-accordion {
+  .accordion-heading {
+    font-weight: 700;
+    position: relative;
+    .accordion-toggle {
+      &:after {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        content: "\f077"; // chevron-up
+        font-family: FontAwesome;
+        text-decoration: none;
+      }
+      &.collapsed:after {
+        content: "\f078"; // chevron-down
+      }
+      &:focus, &:active {
+        outline: 0;
+        text-decoration: none;
+      }
+    }
+  }
+  .accordion-inner {
+    border-top: none;
+  }
+}

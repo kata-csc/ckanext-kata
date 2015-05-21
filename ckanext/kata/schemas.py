@@ -104,6 +104,11 @@ class Schemas:
         # needs to be called to construct the JSON string from the UI's langtitle fields.
         schema['title'] = [unicode, not_missing, co.gen_translation_str_from_langtitle]
 
+        # Description (notes) is a multilanguage field similar to title
+        schema['langnotes'] = {'value': [unicode, va.validate_notes_duplicates, co.escape_quotes],
+                               'lang': [unicode, co.convert_languages]}
+        schema['notes'] = [co.gen_translation_str_from_langnotes]
+
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_begin'] = \
@@ -163,7 +168,7 @@ class Schemas:
 
         schema = cls.create_package_schema()
         dicts = ['tags', 'contact']
-        passdicts = ['langtitle', 'agent']
+        passdicts = ['langtitle', 'langnotes', 'agent']
         keystocheck = settings.KATA_FIELDS_REQUIRED + ['language', '__extras', 'tag_string', 'accept-terms', 'version']
 
         def _clean_schema_item(val):
@@ -373,6 +378,8 @@ class Schemas:
         # co.gen_translation_str_from_extras updates the title field to show the JSON
         # translation string if old format titles are found from extras
         schema['title'] = [ignore_missing, co.gen_translation_str_from_extras]
+
+        schema['notes'] = [co.ensure_valid_notes]
 
         #schema['langtitle'] = {'value': [unicode , co.gen_translation_str_from_langtitle],
         #                       'lang': [unicode, co.convert_languages]}

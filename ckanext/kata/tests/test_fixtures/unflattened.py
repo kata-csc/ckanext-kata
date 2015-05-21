@@ -93,9 +93,12 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'license_id': u'cc-by',
                  'mimetype': u'application/csv',
                  'name': u'',
-                 'notes': u'''This is a dataset used for testing Kata CKAN extension.
-                 This is entirely fictional data and any resemblance to anything is purely coincidental.
-                 No animals were harmed during this dataset creation.''',
+                 'langnotes': [
+                    {'lang': u'fin', 'value': u'''This is a dataset used for testing Kata CKAN extension.
+                    This is entirely fictional data and any resemblance to anything is purely coincidental.
+                    No animals were harmed during this dataset creation.'''}
+                 ],
+                 'notes': u'',
                  'owner_org': '',
                  'event': [
                      {
@@ -152,4 +155,3 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                      'xpath/path2': u'xpath_value2',
                  },
                  }
-

@@ -169,6 +169,29 @@
 .kata-captcha-fix table {
   table-layout: auto !important;
 }
+.kata-accordion .accordion-heading {
+  font-weight: 700;
+  position: relative;
+}
+.kata-accordion .accordion-heading .accordion-toggle:after {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  content: "\f077";
+  font-family: FontAwesome;
+  text-decoration: none;
+}
+.kata-accordion .accordion-heading .accordion-toggle.collapsed:after {
+  content: "\f078";
+}
+.kata-accordion .accordion-heading .accordion-toggle:focus,
+.kata-accordion .accordion-heading .accordion-toggle:active {
+  outline: 0;
+  text-decoration: none;
+}
+.kata-accordion .accordion-inner {
+  border-top: none;
+}
 .role-select {
   margin: 0;
   height: 36px;

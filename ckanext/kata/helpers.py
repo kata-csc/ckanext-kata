@@ -216,6 +216,20 @@ def get_package_ratings(data):
     return (rating, stars)
 
 
+def get_description(package):
+    '''
+    Get description (notes)
+
+    :return: translated notes from multilanguage field or notes as is
+    '''
+    try:
+        t = package.get('notes', '')
+        json.loads(t)
+        return get_translation(t)
+    except (ValueError, TypeError):
+        return package.get('notes', '')
+
+
 def get_related_urls(pkg):
     '''
     Get related urls for package
@@ -277,7 +291,7 @@ def get_first_admin(id):
                 profileurl = ""
                 if user:
                     profileurl = config.get('ckan.site_url', '') + \
-                                 h.url_for(controller="user", action="read", 
+                                 h.url_for(controller="user", action="read",
                                            id=user.name)
                     return profileurl
     return False
@@ -286,7 +300,7 @@ def get_first_admin(id):
 def get_rightscategory(license):
     '''
     Return rightscategory based on license id
-    
+
     :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
     '''
     if license == 'other-pd':
@@ -567,6 +581,23 @@ def json_to_list(pkg_dict):
         langlist.append({"lang": k, "value": v})
 
     return langlist
+
+
+def has_json_content(data):
+    '''
+    Return True if data contains at least some non-empty values in json.
+    E.g. '{"fin": ""}' returns False
+    '''
+    if not data:
+        return False
+    try:
+        json_data = json.loads(data)
+    except (ValueError, TypeError):
+        return False
+    if len(json_data) == 0 or (isinstance(json_data, dict) and not any(json_data.values())):
+        return False
+    return True
+
 
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
