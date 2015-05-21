@@ -553,8 +553,8 @@ def to_licence_id(key, data, errors, context):
     license_id_out = None
     if license_id:
         license_id_lower = license_id.lower()
-
-        if 'cc' in license_id_lower or ('creative' in license_id_lower and 'commons' in 'license_id'):
+        log.debug("raw licence id " + license_id + " lowered license id "+ license_id_lower)
+        if 'cc' in license_id_lower or ('creative' in license_id_lower and 'commons' in license_id_lower):
             if 'by' in license_id_lower or 'attribution' in license_id_lower:
                 if 'nc' in license_id_lower or 'noncommercial' in license_id_lower:
                     if 'sa' in license_id_lower or 'sharealike' in license_id_lower:
@@ -562,13 +562,13 @@ def to_licence_id(key, data, errors, context):
                     elif 'nd' in license_id_lower or 'nonderivative' in license_id_lower:
                         license_id_work = 'CC-BY-NC-ND'
                     else:
-                        license_id_work = 'CC-NC'
+                        license_id_work = 'CC-BY-NC'
                 elif 'nd' in license_id_lower or 'nonderivative' in license_id_lower:
-                    license_id_out = 'CC-BY-ND'
+                    license_id_work = 'CC-BY-ND'
                 elif 'sa' in license_id_lower or 'sharealike' in license_id_lower:
                     license_id_work = 'CC-BY-SA'
                 else:
-                    license_id_work ='CC-BY'
+                    license_id_work = 'CC-BY'
 
             if license_id_work:
                 if '1' in license_id_lower:
@@ -582,17 +582,17 @@ def to_licence_id(key, data, errors, context):
             if 'cc0' in license_id_lower or 'zero' in license_id_lower:
                 license_id_out = 'CC0-1.0'
         if license_id_out:
+            log.debug("converted licence id" + license_id_out)
             data[key] = license_id_out
         else:
             with open(map_file_name) as map_file:
                 license_map = json.load(map_file)
                 log.debug("loaded  " + map_file_name)
 
-            log.debug("raw licence id " + license_id)
-            license_id = license_map.get(license_id)
-            if license_id:
-                log.debug("converted licence id" + license_id)
-                data[key] = license_id
+            license_id_out = license_map.get(license_id_lower)
+            if license_id_out:
+                log.debug("converted licence id" + license_id_out)
+                data[key] = license_id_out
             else:
                 log.debug("No license ID in licence collection")
                 data[key] = "undefined"

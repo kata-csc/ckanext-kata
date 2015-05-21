@@ -534,8 +534,10 @@ class TestLicenseConverters(TestCase):
         cls.key=('license_id',)
         cls.test_data1 = {cls.key: None }
         cls.test_data2 = {cls.key: "" }
-        cls.test_data3 = {cls.key: "https://creativecommons.org/licenses/by/4.0/"}
+        cls.test_data3 = {cls.key: "CC-BY-SA"}
+        cls.test_data4 = {cls.key: "https://creativecommons.org/licenses/by/4.0/"}
         cls.test_data5 = {cls.key: "creative commons attribution-noncommmercial 1.0"}
+        cls.test_data6 = {cls.key: "CLARIN_ACA-NC"}
 
     def test_license_conversion(self):
         to_licence_id(self.key, self.test_data1, {}, {})
@@ -543,10 +545,12 @@ class TestLicenseConverters(TestCase):
         to_licence_id(self.key, self.test_data2, {}, {})
         assert self.test_data2.get(self.key) == 'undefined'
         to_licence_id(self.key, self.test_data3, {}, {})
-        assert self.test_data3.get(self.key) == 'CC-BY-SA-4.0'
+        assert self.test_data3.get(self.key) == 'undefined'
         to_licence_id(self.key, self.test_data4, {}, {})
         assert self.test_data4.get(self.key) == 'CC-BY-4.0'
         to_licence_id(self.key, self.test_data5, {}, {})
         assert self.test_data5.get(self.key) == 'CC-BY-NC-1.0'
+        to_licence_id(self.key, self.test_data6, {}, {})
+        assert self.test_data6.get(self.key) == 'ClarinACA+NC-1.0'
 
 
