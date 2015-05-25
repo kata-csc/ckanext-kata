@@ -1,3 +1,21 @@
+html, body {
+  min-width: 970px;
+}
+a {
+  color: @link-color;
+  text-decoration: none;
+  &:hover, &:focus {
+    color: @link-secondary-color;
+    text-decoration: underline;
+  }
+}
+body {
+    background-color: #FFF !important;
+    background: none !important;
+    font-family: Arial, Tahoma, sans-serif;
+}
+
+
 .form-actions {
   .action-info-kata {
     float: left;
@@ -44,4 +62,17 @@
 .control-custom.disabled .checkbox.btn {
     background-color: #53cc61 !important;
     background-image: linear-gradient(to bottom, #3ac34a, #53cc61);
+}
+
+.nav-simple {
+  .nav-item a {
+    color: @link-color;
+  }
+  .nav-item.active a {
+    color: white;
+  }
+}
+
+i.chevron-alt {
+  color: @link-alternative-color;
 }

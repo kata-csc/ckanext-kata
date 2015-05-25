@@ -48,11 +48,11 @@ within_tertiary
     {% set wrapper_class = 'nav-facet nav-facet-tertiary' %}
   {% endif %}
   <section class="{{ wrapper_class or 'module module-narrow module-shallow' }}">
-    <h2 class="module-heading tta-lblue {% if items %}accordion-toggle{% endif %}" {% if items %}onclick="$('#{{ title or h.get_facet_title(name) }}').toggle('fast')"{% endif %}>
+    <h2 class="module-heading {% if items %}accordion-toggle{% endif %}" {% if items %}onclick="$('#{{ title or h.get_facet_title(name) }}').toggle('fast')"{% endif %}>
       <!-- i class="icon-medium icon-filter tta-blue"></i -->
       {{ title or h.get_facet_title(name) }}
       {% if items %}
-      <i class="icon-chevron-down tta-blue pull-right"></i>
+      <i class="icon-chevron-down chevron-alt pull-right"></i>
       {% endif %}
       <!-- <a href="{{ h.remove_url_param(name, extras=extras) }}" class="action">{{ _('Clear All') }}</a> -->
     </h2>
@@ -89,6 +89,6 @@ within_tertiary
     {#% else %#}
       {#<p class="module-content empty">{{ _('There are no filters for this search') }}</p>#}
     {#% endif %#}
-    
+
   </section>
 {% endwith %}

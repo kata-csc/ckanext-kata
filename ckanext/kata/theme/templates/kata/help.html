@@ -11,7 +11,7 @@
 {% block primary_content %}
   <section class="help" id="kata_help">
     <section class="module">
-      <h3 class="module-heading"><a id="help-general" class="help-h3">{{ _('General information') }}</a></h3>
+      <h3 class="module-heading" id="help-general">{{ _('General information') }}</h3>
 
       <div class="module-content">
         <p>
@@ -27,7 +27,7 @@
       </div>
     </section>
     <section class="module">
-      <h3 class="module-heading"><a id="help-datasets" class="help-h3">{{ _('Search (Datasets)') }}</a></h3>
+      <h3 class="module-heading" id="help-datasets">{{ _('Search (Datasets)') }}</h3>
       <div class="module-content">
         <p>
             {{ _('Search can be accessed from the Datasets page. You can submit your queries using the Search tab or the Advanced search tab, which will provide a guided interface for more complex queries. Note that you can also provide more complex queries to the search field by providing a correct syntax, which will be discussed later in this section.') }}
@@ -105,7 +105,7 @@
       </div>
     </section>
     <section class="module">
-      <h3 class="module-heading"><a id="help-dataset" class="help-h3">{{ _('Dataset') }}</a></h3>
+      <h3 class="module-heading" id="help-dataset">{{ _('Dataset') }}</h3>
       <div class="module-content">
       <p>
           {{ _('Choosing a dataset from the search result will show the dataset\'s information. The dataset page also provides additional features:') }}
@@ -117,11 +117,11 @@
           <li>{{ _('In the left hand navigation you can choose to export the dataset\'s basic metadata in RDF format from the "RDF" link.') }}</li>
           <li>{{ _('If you are logged in, you can choose to follow the dataset. By following the dataset you would start to receive changes to this data to your Dashboard\'s news feed.') }}</li>
       </ul>
-      
+
       </div>
     </section>
     <section class="module">
-      <h3 class="module-heading"><a id="help-add-dataset" class="help-h3">{{ _('Add Dataset') }}</a></h3>
+      <h3 class="module-heading" id="help-add-dataset">{{ _('Add Dataset') }}</h3>
       <div class="module-content">
       <p>
           {{ _('If you are logged in you will find "Add Dataset" button for example from the Datasets and Dashboard pages. This button brings you to the Add Dataset form. The Add Dataset page encourages and guides you to fill in the metadata as well as possible to ensure that metadata is of good quality and your data is as well described as possible. The fields are accompanied with a tooltip, "?", which will give instructions for that specific field.') }}
@@ -238,36 +238,36 @@
       </div>
     </section>
     <section class="module">
-      <h3 class="module-heading"><a id="help-other" class="help-h3">{{ _('Additional features') }}</a></h3>
+      <h3 class="module-heading" id="help-other">{{ _('Additional features') }}</h3>
       <div class="module-content">
         <p>
             {{ _('Etsin contains several other features which are shortly covered here.') }}
         </p>
-        <h3 class="help-page"><a id="user-profile" class="help-h4">{{ _('User profile') }}</a></h3>
+        <h3 class="help-page" id="user-profile">{{ _('User profile') }}</h3>
         <p>
             {{ _('User profile provides basic information about you, your dataset and actions. The user profile can be accessed from the upper right corner. The upper right corner also provides a direct link to your own datasets. Note that if you have logged in using Haka, you can not change your profile information from Etsin: the changes must be done by your home organisation.') }}
         </p>
-        {#<h3 class="help-page"><a id="stats" class="help-h4">{{ _('Stats') }}</a></h3>
+        {#<h3 class="help-page" id="stats">{{ _('Stats') }}</h3>
         <p>
             {{ _('The Stats link will take you to the statistics page. The page will show you some general information about Etsin, its datasets and users.') }}
         </p>#}
-        <h3 class="help-page"><a id="rems" class="help-h4">{{ _('REMS') }}</a></h3>
+        <h3 class="help-page" id="rems">{{ _('REMS') }}</h3>
         <p>
             {{ _('Etsin is integrated to a REMS service, Reetta. This means that you can define your data to be accessible only after an application form is filled and sent to you to accept in the REMS service. You can create your own workflow or use the automatically generated simple form. When a REMS application is done user can go to fill the application from the download link of the data. Read more from: ') }}
             <a href="https://confluence.csc.fi/display/REMS/REMS+Manual" target="_blank">{{ _('REMS manual') }}</a>
         </p>
-        {#<h3 class="help-page"><a id="collections" class="help-h4">{{ _('Collections') }}</a></h3>
+        {#<h3 class="help-page" id="collections">{{ _('Collections') }}</h3>
         <p>
             {{ _('The Collections page shows categories which may have datasets under them, grouped together under one set. You can also add a new collection and from the collection page also add a dataset under this collection. Note, that for now only collections\' administrators can add datasets under it.') }}
         </p>#}
-        <h3 class="help-page"><a id="dataset-admin" class="help-h4">{{ _('Dataset administration') }}</a></h3>
+        <h3 class="help-page" id="dataset-admin">{{ _('Dataset administration') }}</h3>
         <p>
             {{ _('From the dataset view page you can choose a link to administer dataset rights if you have sufficient privileges to do so. From the administration page, you can add editors and admins (if you have admin privileges) for the dataset. Type and accept the username with enter or mouse click in the "User" field, choose a role from "Role" menu and press "Add". If you don\'t find the user, he or she probably hasn\'t logged in to Etsin yet. In this case you can send an email with your own message added to it. The message is not obligatory. Note, that for spam protection you must also fill the CAPTCHA field. If the displayed words are too messy, you can reload the CAPTCHA to get a new string from its reload button.') }}
         </p>
         <p>
             {{ _('From the top of the page, from the member list table, you can remove users from their roles in this dataset. Note, that you can not remove the built-in user accounts, like visitor and logged_in, nor yourself.') }}
         </p>
-        <h3 class="help-page"><a id="metadata-supplements" class="help-h4">{{ _('Metadata supplements') }}</a></h3>
+        <h3 class="help-page" id="metadata-supplements">{{ _('Metadata supplements') }}</h3>
         <p>
             {{ _('If you have additional documents that describe your data beyond required and recommended fields, you can provide such extra information in metadata supplements. An example of a useful supplement would be a detailed description of variables in your data.') }}
         </p>
@@ -284,7 +284,7 @@
             <li>{{ _('Enter a name and, optionally, a description for the supplement.') }}</li>
             <li>{{ _('Finally, be sure to confirm adding the supplement to your dataset by clicking "Add" at the bottom of the form.') }}</li>
         </ol>
-        <h3 class="help-page"><a id="api-reference" class="help-h4">{{ _('API') }}</a></h3>
+        <h3 class="help-page" id="api-reference">{{ _('API') }}</h3>
         <p>
             {{ _('Etsin supports standard')}}
             <a href="http://docs.ckan.org/en/ckan-2.1.2/api.html" target="_blank">CKAN API</a>

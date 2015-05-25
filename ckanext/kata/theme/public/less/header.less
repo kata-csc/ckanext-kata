@@ -104,3 +104,25 @@ header.masthead {
     text-transform: none !important;
   }
 }
+
+#help_navi {
+  margin-bottom: 5px;
+  float: right;
+  margin-right: 17px;
+  a {
+    display: inline-block;
+    margin-left: 18px;
+    color: @link-color;
+    &:focus, &:active, &:hover {
+      text-decoration: none;
+    }
+    .linktext {
+      &:focus, &:active, &:hover {
+        text-decoration: underline;
+      }
+    }
+    .icon-large {
+      margin-right: 8px;
+    }
+  }
+}

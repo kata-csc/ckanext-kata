@@ -1,3 +1,21 @@
+html,
+body {
+  min-width: 970px;
+}
+a {
+  color: #0c8bbe;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #09688e;
+  text-decoration: underline;
+}
+body {
+  background-color: #FFF !important;
+  background: none !important;
+  font-family: Arial, Tahoma, sans-serif;
+}
 .form-actions .action-info-kata {
   float: left;
   line-height: 2;
@@ -47,6 +65,15 @@
 .control-custom.disabled .checkbox.btn {
   background-color: #53cc61 !important;
   background-image: linear-gradient(to bottom, #3ac34a, #53cc61);
+}
+.nav-simple .nav-item a {
+  color: #0c8bbe;
+}
+.nav-simple .nav-item.active a {
+  color: white;
+}
+i.chevron-alt {
+  color: #6dcff6;
 }
 .search-terms {
   background-color: #ebebec;
@@ -361,30 +388,6 @@ input[id="xmlfile"] {
 .ui-timepicker-rtl dl dd {
   margin: 0 65px 10px 10px;
 }
-/* overwriting min.main*/
-html,
-body {
-  min-width: 970px;
-}
-a {
-  color: #0c8bbe;
-  text-decoration: none;
-}
-a:hover,
-a:focus {
-  color: #09688e;
-  text-decoration: underline;
-}
-a.download {
-  color: #f1592a;
-  font-weight: bold;
-  font-size: 14px;
-}
-body {
-  background-color: #FFF !important;
-  background: none !important;
-  font-family: Arial, Tahoma, sans-serif;
-}
 .error-block-kata {
   background: none repeat scroll 0 0 #C6898B;
   border-radius: 0 0 0px 0px;
@@ -490,16 +493,27 @@ header.masthead .not-authed a {
   text-transform: none !important;
 }
 #help_navi {
-  color: #000;
   margin-bottom: 5px;
   float: right;
   margin-right: 17px;
 }
 #help_navi a {
-  color: black;
+  display: inline-block;
+  margin-left: 18px;
+  color: #0c8bbe;
 }
-#help_navi i {
-  margin-left: 16px;
+#help_navi a:focus,
+#help_navi a:active,
+#help_navi a:hover {
+  text-decoration: none;
+}
+#help_navi a .linktext:focus,
+#help_navi a .linktext:active,
+#help_navi a .linktext:hover {
+  text-decoration: underline;
+}
+#help_navi a .icon-large {
+  margin-right: 8px;
 }
 .tta-orange {
   color: #f1592a;
@@ -889,38 +903,8 @@ header.masthead {
   padding-top: 10px;
 }
 h3.question {
-  color: #0c8bbe;
   font-size: 15px;
   font-weight: bold;
-}
-.faq-toc {
-  padding: 0px;
-  margin: 0px;
-}
-.faq-toc ul {
-  list-style: none;
-  padding: 0px;
-  margin: 0px;
-  text-align: left;
-}
-.faq-toc li {
-  width: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  border-bottom: 1px dotted #6ccff6;
-}
-.faq-toc li:hover {
-  background-color: #eeeeee;
-}
-.faq-toc li a {
-  display: inline-block;
-  color: #5a5a5c;
-  display: block;
-  text-decoration: none;
-  padding: 2px;
-  width: 100%;
 }
 .help-toc {
   padding: 0px;
@@ -932,31 +916,21 @@ h3.question {
   margin: 0px;
   text-align: left;
 }
-.help-toc li {
+.help-toc ul li {
   width: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 7px;
-  padding-bottom: 7px;
+  padding: 7px 15px;
   border-bottom: 1px dotted #6ccff6;
 }
-.help-toc li:hover {
+.help-toc ul li:hover {
   background-color: #eeeeee;
 }
-.help-toc li a {
-  display: inline-block;
-  color: #5a5a5c;
+.help-toc ul li a {
   display: block;
   text-decoration: none;
   padding: 2px;
   width: 100%;
 }
-.help-toc li a.toc-sub {
-  display: inline-block;
-  width: 100%;
-  color: #5a5a5c;
-  display: block;
-  text-decoration: none;
+.help-toc ul li a.toc-sub {
   padding: 4px;
   padding-left: 20px;
 }
@@ -975,11 +949,6 @@ h3.question {
 .faq .module-heading a:hover,
 .faq .module-heading a:focus {
   text-decoration: none !important;
-}
-.help-page a:hover,
-.help-page a:focus {
-  text-decoration: none !important;
-  color: #0C8BBE !important;
 }
 .onkiAutocomplete .onkiFinder {
   font-family: Arial, sans-serif !important;
@@ -1239,4 +1208,18 @@ label.control-label.kata-wide-label {
 }
 .kata-search-module {
   padding: 0;
+}
+a.download {
+  color: #f1592a;
+  font-weight: bold;
+  font-size: 14px;
+}
+.dataset-heading a {
+  color: #0c8bbe;
+}
+.nav-facet .nav-item a {
+  color: #0c8bbe;
+}
+.nav-facet .nav-item.active a {
+  color: white;
 }
