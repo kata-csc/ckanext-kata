@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-05-21 11:52+0000\n"
+"POT-Creation-Date: 2015-05-25 05:48+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:86 ckanext/kata/converters.py:299
+#: ckanext/kata/actions.py:86 ckanext/kata/converters.py:301
 msgid "Paper"
 msgstr "Artikkeli"
 
@@ -165,7 +165,7 @@ msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 msgid "Feature disabled"
 msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:748 ckanext/kata/validators.py:141
+#: ckanext/kata/controllers.py:748 ckanext/kata/validators.py:140
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
@@ -205,38 +205,38 @@ msgstr "Organisaatio puuttuu"
 msgid "Author is missing"
 msgstr "Tekijä puuttuu"
 
-#: ckanext/kata/converters.py:125
+#: ckanext/kata/converters.py:126
 msgid "The given title string is not JSON parseable"
 msgstr ""
 
-#: ckanext/kata/converters.py:134
+#: ckanext/kata/converters.py:135
 msgid "The language code is not in ISO639-3 format"
 msgstr "Kieli ei ole annettu ISO 639-2 T-muodossa"
 
-#: ckanext/kata/converters.py:344
+#: ckanext/kata/converters.py:346
 msgid "No language given"
 msgstr "Kieltä ei annettu"
 
-#: ckanext/kata/converters.py:350
+#: ckanext/kata/converters.py:352
 #, python-format
 msgid "Language is disabled, removing languages: '%s'"
 msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 
-#: ckanext/kata/converters.py:483
+#: ckanext/kata/converters.py:485
 #, python-format
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/converters.py:656
+#: ckanext/kata/converters.py:658
 msgid "New organisation \"{org}\" created automatically."
 msgstr "Uusi organisaatio \"{org}\" luotu automaattisesti."
 
-#: ckanext/kata/helpers.py:390
+#: ckanext/kata/helpers.py:395
 #: ckanext/kata/theme/templates/package/read.html:14
 msgid "Unpublished"
 msgstr "Julkaisematon"
 
-#: ckanext/kata/helpers.py:390
+#: ckanext/kata/helpers.py:395
 msgid "Published"
 msgstr "Julkaistu"
 
@@ -310,7 +310,7 @@ msgstr "Siirry kirjoitukseen"
 msgid "Go to Visualization"
 msgstr "Siirry visualisointiin"
 
-#: ckanext/kata/validators.py:64
+#: ckanext/kata/validators.py:63
 #, python-format
 msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
@@ -318,15 +318,15 @@ msgstr ""
 "\n"
 "\"'_.()/#+."
 
-#: ckanext/kata/validators.py:101
+#: ckanext/kata/validators.py:100
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr "Päivämäärän muoto väärä, oikea muoto ISO8601. Esimerkki: 2001-01-01"
 
-#: ckanext/kata/validators.py:104 ckanext/kata/validators.py:124
+#: ckanext/kata/validators.py:103 ckanext/kata/validators.py:123
 msgid "Invalid date"
 msgstr "Vääränlainen päivämäärä"
 
-#: ckanext/kata/validators.py:121
+#: ckanext/kata/validators.py:120
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: "
 "2001-03-01 or 2001-03"
@@ -335,26 +335,26 @@ msgstr ""
 "\"\n"
 "\"2001-01-01"
 
-#: ckanext/kata/validators.py:151
+#: ckanext/kata/validators.py:150
 msgid "Invalid characters: <> not allowed"
 msgstr "Kiellettyjä merkkejä: <> ei sallittu"
 
-#: ckanext/kata/validators.py:160
+#: ckanext/kata/validators.py:159
 msgid "Value must contain alphanumeric characters"
 msgstr "Arvon täytyy sisältää aakkosnumeerisia merkkejä"
 
-#: ckanext/kata/validators.py:168
+#: ckanext/kata/validators.py:167
 msgid "Invalid telephone number, must be like +13221221"
 msgstr "Vääränmuotoinen puhelinnumero, vaaditaan muotoa +13221221."
 
-#: ckanext/kata/validators.py:248
+#: ckanext/kata/validators.py:247
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,/."
 msgstr ""
 "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: -,/."
 
-#: ckanext/kata/validators.py:269
+#: ckanext/kata/validators.py:268
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
@@ -363,7 +363,7 @@ msgstr ""
 "Maantieteellisen kattavuuden \"%s\" pitää koostua alfanumeerisita "
 "merkeistä (ascii) ja näistä erikoismerkeistä: -'/,:().;= "
 
-#: ckanext/kata/validators.py:288
+#: ckanext/kata/validators.py:287
 #, python-format
 msgid ""
 "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: "
@@ -372,51 +372,51 @@ msgstr ""
 "Tiedostotyypin (mimetyyppi) \"%s\" pitää koostua alfanumeerisita "
 "merkeistä (ascii) ja näistä erikoismerkeistä: _'+./"
 
-#: ckanext/kata/validators.py:300
+#: ckanext/kata/validators.py:299
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 "Algoritmin \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
 "erikoismerkeistä: _-()"
 
-#: ckanext/kata/validators.py:311
+#: ckanext/kata/validators.py:310
 msgid "First title can not be empty"
 msgstr "Ensimmäinen otsikko ei voi olla tyhjä"
 
-#: ckanext/kata/validators.py:328
+#: ckanext/kata/validators.py:324
 msgid "Duplicate fields for a language not permitted"
 msgstr "Et voi syöttää useampia kenttiä samalla kielellä"
 
-#: ckanext/kata/validators.py:365
+#: ckanext/kata/validators.py:361
 msgid "Missing compulsory agent: {0}"
 msgstr "Pakollinen toimija puuttuu: {0}"
 
-#: ckanext/kata/validators.py:377
+#: ckanext/kata/validators.py:373
 msgid "Missing compulsory distributor information"
 msgstr "Pakollinen jakelijan tieto puuttuu"
 
-#: ckanext/kata/validators.py:399
+#: ckanext/kata/validators.py:395
 msgid "Missing dataset title"
 msgstr "Tietoaineiston otsikko puuttuu"
 
-#: ckanext/kata/validators.py:409
+#: ckanext/kata/validators.py:405
 msgid "Missing dataset PIDs"
 msgstr "Tietoaineiston tunnisteita puuttuu"
 
-#: ckanext/kata/validators.py:422
+#: ckanext/kata/validators.py:418
 msgid "Missing primary data PID"
 msgstr "Primääri datan tunniste puuttuu"
 
-#: ckanext/kata/validators.py:430
+#: ckanext/kata/validators.py:426
 msgid "Primary data PID can not be modified"
 msgstr "Ensisijaista datan tunnistetta ei voi muuttaa"
 
-#: ckanext/kata/validators.py:448 ckanext/kata/validators.py:484
+#: ckanext/kata/validators.py:444 ckanext/kata/validators.py:480
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:20
 msgid "Missing value"
 msgstr "Puuttuva arvo"
 
-#: ckanext/kata/validators.py:503
+#: ckanext/kata/validators.py:499
 msgid ""
 "An organization must be supplied. If you do not find a suitable "
 "organization, please choose the default organization 'Ei linkitetä "
@@ -426,27 +426,27 @@ msgstr ""
 "organisaatioon - do not link to an organization', jos et löydä sopivaa "
 "listalta tai luo uusi organisaatio."
 
-#: ckanext/kata/validators.py:513
+#: ckanext/kata/validators.py:509
 #, python-format
 msgid "Organization name must be at least %s characters long"
 msgstr "Organisaation nimen on oltava ainakin %s merkkiä pitkä"
 
-#: ckanext/kata/validators.py:515
+#: ckanext/kata/validators.py:511
 #, python-format
 msgid "Organization name must be a maximum of %i characters long"
 msgstr "Organisaation nimen on oltava maksimissaan %i merkkiä pitkä"
 
-#: ckanext/kata/validators.py:518
+#: ckanext/kata/validators.py:514
 msgid "This organization name cannot be used"
 msgstr "Tätä organisaationimeä ei voi käyttää"
 
-#: ckanext/kata/validators.py:545
+#: ckanext/kata/validators.py:541
 msgid "Only organization's editors and admins can create a public dataset"
 msgstr ""
 "Vain organisaation muokkaajat ja ylläpitäjät voivat julkaista "
 "tietoaineiston"
 
-#: ckanext/kata/validators.py:556
+#: ckanext/kata/validators.py:552
 msgid "Terms of use must be accepted"
 msgstr "Käyttöehtojen hyväksyminen on pakollista"
 
@@ -7099,3 +7099,4 @@ msgstr "Ensimmäinen kirjautuminen"
 #: ckanext/kata/theme/templates/user/read.html:129
 msgid "API Key"
 msgstr "API-avain"
+
