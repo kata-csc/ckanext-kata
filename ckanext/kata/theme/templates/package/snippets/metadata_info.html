@@ -254,10 +254,22 @@
   <td class="dataset-details">{{ pkg_dict.geographic_coverage }}</td>
 </tr>
 {% endif %}
-{% if pkg_dict.temporal_coverage_begin and pkg_dict.temporal_coverage_end %}
+{% if pkg_dict.temporal_coverage_begin or pkg_dict.temporal_coverage_end %}
 <tr>
   <th class="dataset-label">{{ _('Period of time covered') }}</th>
-  <td class="dataset-details">{{ pkg_dict.temporal_coverage_begin }}{{_(' to ') }}{{ pkg_dict.temporal_coverage_end }}</td>
+  {% set tc_begin = pkg_dict.temporal_coverage_begin %}
+  {% set tc_end = pkg_dict.temporal_coverage_end %}
+  <td class="dataset-details">
+    {% if tc_begin and tc_end %}
+      {{tc_begin}}{{_(' to ') }}{{tc_end}}
+    {% endif %}
+    {% if tc_begin and not tc_end %}
+      {{_('Begin')}}: {{tc_begin}}
+    {% endif %}
+    {% if tc_end and not tc_begin %}
+      {{_('End')}}: {{tc_end}}
+    {% endif %}
+  </td>
 </tr>
 {% endif %}
 {% if pkg_dict.publications %}

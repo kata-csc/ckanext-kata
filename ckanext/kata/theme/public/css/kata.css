@@ -219,6 +219,29 @@ i.chevron-alt {
 .kata-accordion .accordion-inner {
   border-top: none;
 }
+.kata-datepicker-container .time-details {
+  display: inline-block;
+  margin-left: 10px;
+}
+.kata-datepicker-error {
+  margin-top: 20px;
+}
+.kata-datepicker-date {
+  width: 12ex;
+}
+.kata-datepicker-time {
+  width: 10ex;
+}
+.kata-datepicker-tz {
+  width: 11ex;
+}
+.kata-datepicker-enabler {
+  margin-top: 3px;
+  display: block;
+}
+.kata-datepicker-enabler input {
+  top: 5px;
+}
 .role-select {
   margin: 0;
   height: 36px;
@@ -397,6 +420,15 @@ input[id="xmlfile"] {
   padding: 6px 8px 6px;
   width: 100%;
   border-radius: 6px;
+}
+#temporal_coverage {
+  padding-top: 15px;
+}
+#temporal_coverage .controls-row:not(:first-of-type) {
+  margin-top: 15px;
+}
+#temporal_coverage .control-label:not(:first-of-type) {
+  padding-top: 20px;
 }
 header.masthead {
   background-color: #FFF !important;
@@ -863,12 +895,6 @@ header.masthead {
 #orgauths {
   padding-top: 15px;
 }
-#temporal_coverage {
-  padding-top: 15px;
-}
-#temporal_coverage label {
-  margin: 0 !important;
-}
 /* ONKI selector */
 .onki-area {
   border: 1px solid;
@@ -1170,7 +1196,10 @@ h3.optional {
   cursor: pointer;
 }
 label.control-label.kata-wide-label {
-  width: 240px;
+  width: 210px;
+}
+.form-horizontal .controls-wide {
+  margin-left: 215px;
 }
 .kata-tooltip.kata-tooltip-near {
   margin-right: 180px;

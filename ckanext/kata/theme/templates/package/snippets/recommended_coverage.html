@@ -22,23 +22,37 @@
     <div>
       <h3 class="module-heading-add-dataset optional">{{ _('Temporal coverage') }}</h3>
 
-      <div data-module="dateselect-dcmi-kata">
+      {% set lang = h.lang() %}
+      <div data-module="kata-temporal-coverage" data-module-currentlang="{{ lang }}">
         <div id="temporal_coverage">
           <label class="control-label kata-input-comp{% if errors and errors.temporal_coverage_begin %} error{% endif %}" for="temporal_coverage_begin">{{ _('Begin') }}</label>
-          <div class="controls">
-            <input type="text" id="temporal_coverage_begin" name="temporal_coverage_begin" value="{{data.temporal_coverage_begin}}" class="kata-medium-input" />
-            {{ kata_form.tooltip(tooltip=_('Temporal coverage - begin - can be filled to include the starting time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br /><br />Click the field to open a calendar tool to choose a modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires JavaScript to be enabled in the browser.')) }}
+          <div class="controls controls-row" data-module="kata-datetimepicker"
+               data-module-currentlang="{{ lang }}" data-module-name="temporal_coverage_begin"
+               data-module-value="{{data.temporal_coverage_begin}}">
+
+            {{ kata_form.tooltip(tooltip=_('Temporal coverage - begin - can be filled to include the starting time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br><br>Click the calendar icon to select a date. If you wish to enter only year or month you can do so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally enter time with timezone information by choosing "use exact time". By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br><br>Note that this tool requires JavaScript to be enabled in the browser.')) }}
+            <div class="kata-datetimepicker-parent"></div>
+            <!-- <input type="text" id="temporal_coverage_begin" name="temporal_coverage_begin" value="{{data.temporal_coverage_begin}}" class="kata-medium-input" />
+
+            -->
+
             {% if errors.temporal_coverage_begin %}
               <span class="error-block kata-medium-error">{{ errors.temporal_coverage_begin[0] }}</span>
             {% endif %}
           </div>
           <label class="control-label kata-input-comp{% if errors and errors.temporal_coverage_end %} error{% endif %}" for="temporal_coverage_end">{{ _('End') }}</label>
-          <div class="controls">
-            <input type="text" id="temporal_coverage_end" name="temporal_coverage_end" value="{{data.temporal_coverage_end}}" class="kata-medium-input" />
-            {{ kata_form.tooltip(tooltip=_('Temporal coverage - end - can be filled to include the ending time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br /><br />Click the field to open a calendar tool to choose a modification date and time for this dataset. Accept and insert the date to the field by pressing the Done button. By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br /><br />Note that this tool requires JavaScript to be enabled in the browser.')) }}
+          <div class="controls controls-row" data-module="kata-datetimepicker"
+               data-module-currentlang="{{ lang }}" data-module-name="temporal_coverage_end"
+               data-module-value="{{data.temporal_coverage_end}}">
+            <!-- <input type="text" id="temporal_coverage_end" name="temporal_coverage_end" value="{{data.temporal_coverage_end}}" class="kata-medium-input" /> -->
+
+            {{ kata_form.tooltip(tooltip=_('Temporal coverage - end - can be filled to include the ending time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br><br>Click the calendar icon to select a date. If you wish to enter only year or month you can do so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally enter time with timezone information by choosing "use exact time". By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br><br>Note that this tool requires JavaScript to be enabled in the browser.')) }}
+            <div class="kata-datetimepicker-parent"></div>
+
             {% if errors.temporal_coverage_end %}
               <span class="error-block kata-medium-error">{{ errors.temporal_coverage_end[0] }}</span>
             {% endif %}
+            <div class="kata-datepicker-error"></div>
           </div>
         </div>
       </div>

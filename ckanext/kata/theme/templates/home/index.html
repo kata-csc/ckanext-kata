@@ -88,10 +88,10 @@
           </div>
         </div>
       {% endblock %}
-      
+
       <div class="hero-secondary">
         <div class="hero-secondary-inner">
-      
+
           {% block home_secondary_content %}
             <div class="module">
               {% block home_search %}
@@ -116,7 +116,7 @@
                     {% snippet 'snippets/package_list.html', packages=c.datasets, list_class=list_class, item_class=item_class, truncate=220, small=True %}
                   </div>
               </section>
-            {% endblock %}  
+            {% endblock %}
           {% endblock %}
         </div>
       </div>
