@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-05-19 11:52+0000\n"
+"POT-Creation-Date: 2015-05-25 06:08+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -423,8 +423,8 @@ msgid ""
 "organisaatioon - do not link to an organization' or create a new one."
 msgstr ""
 "Organisaatio on syötettävä. Käytä oletusorganisaatiota 'Ei linkitetä "
-"organisaatioon - do not link to an organization', jos et löydä "
-"sopivaa listalta tai luo uusi organisaatio."
+"organisaatioon - do not link to an organization', jos et löydä sopivaa "
+"listalta tai luo uusi organisaatio."
 
 #: ckanext/kata/validators.py:501
 #, python-format
@@ -571,6 +571,10 @@ msgstr "Ohjeet"
 #: ckanext/kata/theme/templates/kata/faq.html:79
 msgid "FAQ"
 msgstr "FAQ"
+
+#: ckanext/kata/theme/templates/header.html:105
+msgid "Stats"
+msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:111
 #: ckanext/kata/theme/templates/user/logout_first.html:16
@@ -3720,6 +3724,18 @@ msgstr "Lataa"
 msgid "Edit Dataset"
 msgstr "Muokkaa tietoaineistoa"
 
+#: ckanext/kata/theme/templates/package/snippets/info.html:36
+msgid "Add new supplement"
+msgstr "Lisää liite"
+
+#: ckanext/kata/theme/templates/package/snippets/info.html:39
+msgid ""
+"Dataset has invalid information. Please add all required information to "
+"add supplements."
+msgstr ""
+"Tietoaineisto sisältää virheellistä tietoa. Lisää kaikki vaaditut tiedot "
+"lisääksesi liitteitä."
+
 #: ckanext/kata/theme/templates/package/snippets/languages.html:2
 msgid "Finnish"
 msgstr "suomi"
@@ -6632,7 +6648,7 @@ msgstr "kenen toimesta"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:10
 msgid "when"
-msgstr ""
+msgstr "milloin"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:11
 msgid "description"
