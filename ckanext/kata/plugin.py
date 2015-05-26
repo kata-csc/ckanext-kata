@@ -37,10 +37,11 @@ from ckanext.kata.middleware import NotAuthorizedMiddleware
 
 log = logging.getLogger('ckanext.kata')
 
-###### MONKEY PATCH FOR REPOZE.WHO ######
+# ##### MONKEY PATCH FOR REPOZE.WHO ######
 # Enables secure setting for cookies
 # Part of repoze.who since version 2.0a4
 from repoze.who.plugins.auth_tkt import AuthTktCookiePlugin
+
 
 def _get_monkeys(self, environ, value, max_age=None):
 
@@ -69,7 +70,7 @@ def _get_monkeys(self, environ, value, max_age=None):
     return cookies
 
 AuthTktCookiePlugin._get_cookies = _get_monkeys
-###### END OF MONKEY PATCH ######
+# ##### END OF MONKEY PATCH ######
 
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
@@ -293,9 +294,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_primary_pid': utils.get_primary_pid,
             'get_related_urls': helpers.get_related_urls,
             'get_rightscategory': helpers.get_rightscategory,
-            'get_translation' : helpers.get_translation,
-            'get_translation_from_extras' : helpers.get_translation_from_extras,
-            'get_language' : helpers.get_language,
+            'get_translation': helpers.get_translation,
+            'get_translation_from_extras': helpers.get_translation_from_extras,
+            'get_language': helpers.get_language,
             'get_urn_fi_address': helpers.get_urn_fi_address,
             'get_visibility_options': helpers.get_visibility_options,
             'has_agents_field': helpers.has_agents_field,
@@ -338,7 +339,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         :rtype: boolean
         '''
-        return [] != filter(lambda x : x.get(field), data_dict.get('agent', []))
+        return [] != filter(lambda x: x.get(field), data_dict.get('agent', []))
 
     def has_contacts_field(self, data_dict, field):
         '''
@@ -346,50 +347,14 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         :rtype: boolean
         '''
-        return [] != filter(lambda x : x.get(field), data_dict.get('contact', []))
+        return [] != filter(lambda x: x.get(field), data_dict.get('contact', []))
 
     def reference_update(self, ref):
         # Todo: this can be found from helpers as well!
-        #@beaker_cache(type="dbm", expire=2678400)
+        # @beaker_cache(type="dbm", expire=2678400)
         def cached_url(url):
             return url
         return cached_url(ref)
-
-    def kata_sorted_extras(self, list_):
-        '''
-        Used for outputting package extras, skips `package_hide_extras`
-        '''
-        output = []
-        for extra in sorted(list_, key=lambda x:x['key']):
-            if extra.get('state') == 'deleted':
-                continue
-
-            # Todo: the AND makes no sense. Isn't this in helpers too?
-            key, val = extra['key'], extra['value']
-            if key in g.package_hide_extras and\
-                key in settings.KATA_FIELDS and\
-                key.startswith('author_') and\
-                key.startswith('organization_'):
-                continue
-
-            if  key.startswith('title_') or\
-                key.startswith('lang_title_') or\
-                key == 'harvest_object_id' or\
-                key == 'harvest_source_id' or\
-                key == 'harvest_source_title':
-                continue
-
-            found = False
-            for _key in g.package_hide_extras:
-                if extra['key'].startswith(_key):
-                    found = True
-            if found:
-                continue
-
-            if isinstance(val, (list, tuple)):
-                val = ", ".join(map(unicode, val))
-            output.append((key, val))
-        return output
 
     def update_config(self, config):
         """
@@ -515,9 +480,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         data_dict['facet.field'] = settings.FACETS
 
-        #log.debug("before_search(): data_dict: %r" % data_dict)
+        # log.debug("before_search(): data_dict: %r" % data_dict)
         # Uncomment below to show query with results and in the search field
-        #c.q = data_dict['q']
+        # c.q = data_dict['q']
 
         # Log non-empty search queries and constraints (facets)
         q = data_dict.get('q')
@@ -548,7 +513,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         res_mimetype = []
         for resource in data.get('resources', []):
-            if resource['mimetype'] == None:
+            if resource['mimetype'] is None:
                 res_mimetype.append(u'')
             else:
                 res_mimetype.append(resource['mimetype'])
