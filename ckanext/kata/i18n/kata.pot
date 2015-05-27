@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-25 06:08+0000\n"
+"POT-Creation-Date: 2015-05-27 13:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,6 +80,7 @@ msgid "Resource %s not editable"
 msgstr ""
 
 #: ckanext/kata/auth_functions.py:86
+#: ckanext/kata/theme/templates/kata/dummy.html:102
 #, python-format
 msgid "User %s not authorized to delete package %s"
 msgstr ""
@@ -91,6 +92,7 @@ msgstr ""
 
 #: ckanext/kata/controllers.py:353 ckanext/kata/controllers.py:405
 #: ckanext/kata/controllers.py:576 ckanext/kata/controllers.py:606
+#: ckanext/kata/theme/templates/kata/dummy.html:59
 msgid "Dataset not found"
 msgstr ""
 
@@ -257,7 +259,7 @@ msgid "Distributor"
 msgstr ""
 
 #: ckanext/kata/settings.py:57 ckanext/kata/theme/templates/kata/help.html:309
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:91
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:102
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:188
 msgid "Funder"
 msgstr ""
@@ -506,6 +508,7 @@ msgid "Edit Profile"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:59
+#: ckanext/kata/theme/templates/kata/dummy.html:180
 #: ckanext/kata/theme/templates/user/dashboard.html:8
 msgid "My Datasets"
 msgstr ""
@@ -520,7 +523,8 @@ msgid "Etsin"
 msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:84
-#: ckanext/kata/theme/templates/header.html:123
+#: ckanext/kata/theme/templates/header.html:120
+#: ckanext/kata/theme/templates/kata/dummy.html:110
 #: ckanext/kata/theme/templates/package/search.html:8
 msgid "Search Datasets"
 msgstr ""
@@ -535,27 +539,28 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:95
+#: ckanext/kata/theme/templates/header.html:94
 #: ckanext/kata/theme/templates/kata/help.html:6
 msgid "Help"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:100
+#: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/kata/faq.html:6
 #: ckanext/kata/theme/templates/kata/faq.html:79
 msgid "FAQ"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:105
+#: ckanext/kata/theme/templates/header.html:102
 msgid "Stats"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:111
+#: ckanext/kata/theme/templates/header.html:108
 #: ckanext/kata/theme/templates/user/logout_first.html:16
 msgid "Log in"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:124
+#: ckanext/kata/theme/templates/header.html:121
+#: ckanext/kata/theme/templates/kata/dummy.html:112
 #: ckanext/kata/theme/templates/kata/help.html:124
 #: ckanext/kata/theme/templates/kata/help.html:399
 #: ckanext/kata/theme/templates/package/search.html:15
@@ -563,7 +568,7 @@ msgstr ""
 msgid "Add Dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:125
+#: ckanext/kata/theme/templates/header.html:122
 #: ckanext/kata/theme/templates/organization/index.html:3
 #: ckanext/kata/theme/templates/organization/index.html:6
 #: ckanext/kata/theme/templates/organization/index.html:18
@@ -571,7 +576,7 @@ msgstr ""
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/header.html:126
+#: ckanext/kata/theme/templates/header.html:123
 #: ckanext/kata/theme/templates/home/index.html:57
 msgid "About Etsin"
 msgstr ""
@@ -584,6 +589,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:3
 #: ckanext/kata/theme/templates/datamining/read.html:7
 #: ckanext/kata/theme/templates/group/read_base.html:17
+#: ckanext/kata/theme/templates/kata/dummy.html:109
 #: ckanext/kata/theme/templates/organization/read_base.html:8
 #: ckanext/kata/theme/templates/package/base.html:15
 #: ckanext/kata/theme/templates/package/base.html:19
@@ -670,6 +676,7 @@ msgid "Group Form"
 msgstr ""
 
 #: ckanext/kata/theme/templates/group/index.html:3
+#: ckanext/kata/theme/templates/kata/dummy.html:111
 msgid "Groups of Datasets"
 msgstr ""
 
@@ -732,7 +739,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:10
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:10
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:26
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:37
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:30
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:18
 msgid "Title"
@@ -745,9 +752,9 @@ msgstr ""
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:18
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:18
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:9
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:61
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:92
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:180
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:72
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:103
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:191
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:22
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:19
 msgid "URL"
@@ -763,7 +770,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/help.html:340
 #: ckanext/kata/theme/templates/kata/help.html:364
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:20
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:112
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:123
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:26
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:21
 msgid "Description"
@@ -806,12 +813,14 @@ msgid "This group has no description"
 msgstr ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_item.html:31
+#: ckanext/kata/theme/templates/kata/dummy.html:114
 msgid "{num} Dataset"
 msgid_plural "{num} Datasets"
 msgstr[0] ""
 msgstr[1] ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_item.html:33
+#: ckanext/kata/theme/templates/kata/dummy.html:116
 msgid "0 Datasets"
 msgstr ""
 
@@ -1443,7 +1452,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/data-model.html:41
 #: ckanext/kata/theme/templates/kata/help.html:308
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:93
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:104
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:194
 msgid "Funding id"
 msgstr ""
@@ -1509,7 +1518,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/data-model.html:48
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:267
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:278
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:81
 msgid "Field of science"
 msgstr ""
@@ -1665,6 +1674,766 @@ msgid ""
 "organizations, admins can assign roles and authorisation its members, giving "
 "individual users the right to publish datasets from that particular "
 "organisation (e.g. Office of National Statistics).</p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:58
+msgid "Unable to add package to search index"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:60
+#, python-format
+msgid "Unauthorized to read package %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:61
+msgid "CKAN Dataset Revision History"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:62
+msgid "Recent changes to CKAN Dataset: "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:63
+msgid "Unauthorized to create a package"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:64
+msgid "Unauthorized to update dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:65
+msgid "The dataset {id} could not be found."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:66
+#, python-format
+msgid "Unauthorized to delete package %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:67
+msgid "Dataset has been deleted."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:68
+#, python-format
+msgid "Unauthorized to read dataset %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:69
+msgid "Package not found"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:70
+#, python-format
+msgid "Datasets affected: %s. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:71
+msgid "{actor} added the tag {tag} to the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:72
+msgid "{actor} updated the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:73
+msgid "{actor} changed the extra {extra} of the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:74
+msgid "{actor} updated the resource {resource} in the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:75
+msgid "{actor} updated the {related_type} {related_item} of the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:76
+msgid "{actor} deleted the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:77
+msgid "{actor} deleted the extra {extra} from the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:78
+msgid "{actor} deleted the resource {resource} from the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:79
+msgid "{actor} created the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:80
+msgid "{actor} added the extra {extra} to the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:81
+msgid "{actor} added the resource {resource} to the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:82
+msgid "{actor} removed the tag {tag} from the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:83
+msgid "{actor} started following {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:84
+msgid "{actor} added the {related_type} {related_item} to the dataset {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:85
+msgid "Created new dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:86
+msgid "Edited resources."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:87
+msgid "Package resource(s) invalid"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:88
+#: ckanext/kata/theme/templates/kata/help.html:108
+#: ckanext/kata/theme/templates/kata/help.html:396
+#: ckanext/kata/theme/templates/package/package_rights.html:7
+#: ckanext/kata/theme/templates/package/read_base.html:16
+msgid "Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:89
+msgid "You cannot add a dataset to this organization"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:90
+msgid "Resource"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:91
+msgid "Datasets with no organization can't be private."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:92
+#, python-format
+msgid "REST API: Create package relationship: %s %s %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:93
+msgid "You must supply a package id or name (parameter \"package\")."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:94
+msgid "You must be logged in to follow a dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:95
+#, python-format
+msgid "REST API: Delete Package: %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:96
+msgid "Resource was not found."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:97
+msgid "Package was not found."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:98
+#, python-format
+msgid "REST API: Update package relationship: %s %s %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:99
+#, python-format
+msgid "User %s not authorized to create packages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:100
+#, python-format
+msgid "User %s not authorized to add dataset to this organization"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:101
+msgid "Valid API key needed to create a package"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:103
+msgid "No package found for this resource, cannot check auth."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:104
+#, python-format
+msgid "User %s not authorized to read these packages"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:105
+#, python-format
+msgid "User %s not authorized to read package %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:106
+#, python-format
+msgid "User %s not authorized to edit package %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:107
+#, python-format
+msgid "User %s not authorized to change state of package %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:108
+msgid "Valid API key needed to edit a package"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:113
+msgid "Search datasets..."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:115
+msgid "{num} Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:117
+msgid "Edit datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:118
+msgid "Add dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:119
+msgid "Sorry no datasets found for \"{query}\""
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:120
+#: ckanext/kata/theme/templates/snippets/package_item.html:47
+msgid "This dataset has no description"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:121
+msgid "This organization has no datasets associated to it"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:122
+#: ckanext/kata/theme/templates/package/base.html:20
+msgid "Create Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:123
+msgid "What are datasets?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:125
+msgid ""
+" <p><strong>Admin:</strong> Can add/edit and delete datasets, as well as "
+"manage group members.</p> <p><strong>Editor:</strong> Can add and edit "
+"datasets, but not manage group members.</p> <p><strong>Member:</strong> Can "
+"view the group's private datasets, but not add new datasets.</p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:132
+msgid ""
+" <p>Groups allow you to group together datasets under a community (for "
+"example, Civil Liberty data) or topic (e.g. Transport, Health, Environment) "
+"to make it easier for users to browse datasets by theme. Datasets can be part"
+" of a group, but do not belong to the group for editing or authorisation "
+"purposes.</p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:140
+msgid ""
+" <p><strong>Admin:</strong> Can add/edit and delete datasets, as well as "
+"manage organization members.</p> <p><strong>Editor:</strong> Can add and edit"
+" datasets, but not manage organization members.</p> "
+"<p><strong>Member:</strong> Can view the organization's private datasets, but"
+" not add new datasets.</p> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:148
+msgid ""
+" Are you sure you want to delete this Organization? This will delete all the "
+"public and private datasets belonging to this organization. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:153
+msgid ""
+" Datasets are simply used to group related pieces of data. These can then be "
+"found under a single url with a description and licensing information. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:158
+#, python-format
+msgid ""
+" Cannot purge package %s as associated revision %s includes non-deleted "
+"packages %s "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:163
+msgid "Are you sure you want to delete dataset - {name}?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:164
+#: ckanext/kata/theme/templates/package/edit.html:8
+msgid "View dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:165
+msgid "Create dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:166
+msgid "Update Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:167
+msgid "Add metadata to the dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:168
+msgid "Add data to the dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:169
+#, python-format
+msgid "This is the current revision of this dataset, as edited at %(timestamp)s."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:170
+msgid "Related Media for {dataset}"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:171
+#: ckanext/kata/theme/templates/package/resource_read.html:55
+msgid "From the dataset abstract"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:172
+#: ckanext/kata/theme/templates/package/search.html:4
+msgid "Search for a Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:173
+#: ckanext/kata/theme/templates/package/snippets/info.html:15
+msgid "Edit Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:174
+msgid "There is no description for this dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:175
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:34
+msgid "Are you sure you want to delete this dataset?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:176
+#, python-format
+msgid "Read dataset as of %s"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:177
+#: ckanext/kata/theme/templates/revision/read.html:74
+msgid "Datasets' Tags"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:178
+msgid "This dataset satisfies the Open Definition."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:179
+msgid "Sorry no datasets found"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:181
+#: ckanext/kata/theme/templates/user/read.html:51
+msgid "You haven't created any datasets."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:182
+msgid "Create datasets, groups and other exciting things"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:183
+#: ckanext/kata/theme/templates/user/read.html:56
+msgid "User hasn't created any datasets."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:184
+msgid "Number of datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:185
+msgid "View dataset resources"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:186
+msgid "Delete the resource '%name%'?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:187
+msgid "Find datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:188
+msgid "Add a dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:189
+msgid "Deleted Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:190
+msgid "There are no datasets currently in this group."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:191
+msgid "New Dataset..."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:192
+msgid "Existing Dataset..."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:193
+msgid "Add datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:194
+#, python-format
+msgid "[1:You searched for \"%(query)s\". ]%(number_of_results)s datasets found."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:195
+msgid "Find data"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:196
+msgid "datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:197
+msgid "Share data"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:198
+msgid "Create a dataset »"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:199
+msgid "datasets."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:200
+msgid "Import Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:201
+msgid "dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:202
+msgid "Further dataset previews not shown."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:203
+msgid "- Datasets - History"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:204
+msgid "- Edit - Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:205
+msgid "- Edit Resources - Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:206
+msgid "- Datasets - Followers"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:207
+msgid "Dataset History"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:208
+msgid "Add - Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:209
+msgid "Add a Dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:210
+msgid "A short descriptive title for the dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:211
+msgid "The URL for the web page describing the data (not the data itself)."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:212
+msgid "when viewing the dataset."
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:213
+msgid "Do you really want to change the state of this dataset?"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:214
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:157
+msgid "This dataset is"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:215
+msgid "- Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:216
+msgid "Related Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:217
+msgid "This is an old revision of this dataset, as edited"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:218
+msgid "This is the current revision of this dataset, as edited"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:219
+msgid "- Dataset - Resource"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:220
+msgid "From the [1:Dataset]:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:221
+msgid "Do you know of a dataset that should be added to"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:222
+msgid "You can also access this registry using the"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:223
+#, python-format
+msgid "[1:%(item_count)s] datasets found"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:224
+msgid "Would you like to [1:create a new dataset?]"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:225
+msgid "Dataset -"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:226
+#, python-format
+msgid "There are %(count)s datasets tagged with [1:%(tagname)s]:"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:227
+msgid "Add a new dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:228
+msgid "Or simply browse the repository"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:229
+msgid "Total number of Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:230
+msgid "Total datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:231
+msgid "Dataset Revisions per Week"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:232
+msgid "All dataset revisions"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:233
+msgid "New datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:234
+msgid "Top Rated Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:235
+msgid "Most Edited Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:236
+msgid "No edited datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:237
+msgid "Number of Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:238
+msgid "Users Owning Most Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:239
+msgid "Total Number of Datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:240
+msgid "Revisions to Datasets per week"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:241
+msgid "Users owning most datasets"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:242
+msgid "Dataset Leaderboard"
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:244
+#, python-format
+msgid ""
+" This is an old revision of this dataset, as edited at %(timestamp)s. It may "
+"differ significantly from the <a href=\"%(url)s\">current revision</a>. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:249
+#, python-format
+msgid ""
+" <p class=\"empty\">This dataset has no data, <a href=\"%(url)s\">why not add"
+" some?</a> "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:254
+msgid ""
+" These are applications built with the datasets as well as ideas for things "
+"that could be done with them. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:259
+msgid ""
+" No apps, ideas, news stories or images have been related to this dataset "
+"yet. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:264
+msgid ""
+" {number} dataset found for \"{query}\" {number} datasets found for "
+"\"{query}\" "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:269
+msgid " {number} dataset found {number} datasets found "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:274
+msgid ""
+" Whilst tags are great at collecting datasets together, there are occasions "
+"when you want to restrict users from editing a collection. A [1:group] can be"
+" set-up to specify which users have permission to add or remove datasets from"
+" it. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:281
+#, python-format
+msgid ""
+" %(site_title)s is a community-run catalogue of useful sets of data on the "
+"Internet. You can collect links here to data from around the web for yourself"
+" and others to use, or search for data that others have collected. Depending "
+"on the type of data (and its conditions of use), %(site_title)s may also be "
+"able to store a copy of the data or host it in a database, and provide some "
+"basic visualisation tools. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:290
+msgid ""
+" This site is running a powerful piece of open-source data cataloguing "
+"software called [1:CKAN], written and maintained by the [2:Open Knowledge "
+"Foundation]. Each 'dataset' record on CKAN contains a description of the data"
+" and other useful information, such as what formats it is available in, who "
+"owns it and whether it is freely available, and what subject areas the data "
+"is about. Other users can improve or add to this information (CKAN keeps a "
+"fully versioned history). "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:300
+msgid ""
+" CKAN powers a number of data catalogues on the Internet. [1:The Data Hub] is"
+" an openly editable open data catalogue, in the style of Wikipedia. The UK "
+"Government uses CKAN to run [2:data.gov.uk], which currently lists 8,000 "
+"government datasets. Official public data from most European countries is "
+"listed in a CKAN catalogue at [3:publicdata.eu]. There is a comprehensive "
+"list of catalogues like these around the world at [4:datacatalogs.org], which"
+" is itself powered by CKAN. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:310
+#, python-format
+msgid ""
+" Most of the data indexed at %(site_title)s is openly licensed, meaning "
+"anyone is free to use or re-use it however they like. Perhaps someone will "
+"take that nice dataset of a city's public art that you found, and add it to a"
+" tourist map - or even make a neat app for your phone that'll help you find "
+"artworks when you visit the city. Open data means more enterprise, "
+"collaborative science and transparent government. You can read more about "
+"open data in the [1:Open Data Handbook]. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:320
+msgid ""
+" Add your own datasets to share them with others and\\n to find other people "
+"interested in your data. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:325
+msgid ""
+" Here you can supply an Excel file with details of multiple datasets and "
+"import these into "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:330
+msgid ""
+" Comma-separated terms that may link this dataset to similar ones. For more "
+"information on conventions, see [1:this wiki page]. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:335
+msgid " Upload or link data files, APIs and other materials related to your dataset. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:339
+msgid ""
+" The name of the main contact, for enquiries about this particular dataset, "
+"using the e-mail address in the following field. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:344
+msgid ""
+" Adding custom fields to the dataset such as \"location:uk\" can help users "
+"find it in the search engine. This data will also appear under "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:349
+#, python-format
+msgid " [1:Dataset page] on \\n [2:%(harvest_catalogue_name)s] "
+msgstr ""
+
+#: ckanext/kata/theme/templates/kata/dummy.html:354
+msgid ""
+" Choose a dataset attribute and find out which categories in that area have "
+"the most datasets. E.g. tags, groups, license, res_format, country. "
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/faq.html:3
@@ -2164,13 +2933,6 @@ msgstr ""
 msgid "\"northern hemisphere\"^5 \"southern hemisphere\""
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/help.html:108
-#: ckanext/kata/theme/templates/kata/help.html:396
-#: ckanext/kata/theme/templates/package/package_rights.html:7
-#: ckanext/kata/theme/templates/package/read_base.html:16
-msgid "Dataset"
-msgstr ""
-
 #: ckanext/kata/theme/templates/kata/help.html:111
 msgid ""
 "Choosing a dataset from the search result will show the dataset's "
@@ -2610,18 +3372,18 @@ msgid "Display data model"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:310
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:90
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:101
 msgid "Project name"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:323
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:285
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:296
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Algorithm"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:325
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:281
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:292
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Checksum"
 msgstr ""
@@ -2631,7 +3393,7 @@ msgid "Contact name"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:331
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:181
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:192
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:121
 msgid "Phone"
 msgstr ""
@@ -2808,7 +3570,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/package_rights.html:60
 #: ckanext/kata/theme/templates/package/role_fields.html:13
 #: ckanext/kata/theme/templates/package/role_fields.html:40
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:58
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:69
 msgid "Role"
 msgstr ""
 
@@ -2842,14 +3604,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:81
 msgid "Save Organization"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/base.html:20
-msgid "Create Dataset"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/edit.html:8
-msgid "View dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/package_rights.html:11
@@ -2984,10 +3738,6 @@ msgstr ""
 msgid "There is no description for this resource"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/resource_read.html:55
-msgid "From the dataset abstract"
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/resource_read.html:57
 #, python-format
 msgid "Source: <a href=\"%(url)s\">%(dataset)s</a>"
@@ -3026,10 +3776,6 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/resource_read.html:96
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:72
 msgid "License"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/search.html:4
-msgid "Search for a Dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:26
@@ -3191,10 +3937,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:16
 msgid "Upload"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/info.html:15
-msgid "Edit Dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/info.html:36
@@ -5153,28 +5895,36 @@ msgstr ""
 msgid "Zuni"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:14
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:27
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:10
+msgid "Permanent address for dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:15
+msgid "Uniform Resource Name"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:25
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:38
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:34
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:29
 msgid "Language"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:15
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:26
 msgid "No language"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:22
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:33
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:8
 msgid "Titles"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:42
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:53
 msgid "Agents"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:59
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:178
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:70
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:189
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:63
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:115
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:173
@@ -5182,153 +5932,149 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:60
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:71
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:32
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:79
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:21
 msgid "Organisation"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:78
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:89
 msgid "Project and funding information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:106
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:117
 msgid "No funding information is available."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:131
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:142
 msgid "No description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:137
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:148
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:74
 msgid "Keywords"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:143
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:154
 msgid "Usage information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:146
-msgid "This dataset is"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:147
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:158
 msgid " available via an access form in "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:147
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:158
 msgid "this link"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:148
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:159
 msgid " available freely "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:148
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:149
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:159
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:160
 msgid "from this address"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:149
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:160
 msgid " available via login "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:151
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:162
 msgid " available by "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:151
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:162
 msgid "contacting the distributor"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:153
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:164
 msgid " available through "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:153
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:164
 msgid "data provider"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:154
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:165
 msgid " available freely or availability is not specified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:157
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:168
 msgid "Dataset license: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:167
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:178
 msgid "Distributors"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:179
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:190
 msgid "E-Mail"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:188
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:199
 msgid "Send a message"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:202
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:213
 msgid "Identification information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:204
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:215
 msgid "Last modification time of data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:207
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:218
 msgid "Last modified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:212
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:223
 msgid "Permanent identifiers"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:215
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:226
 msgid "Primary metadata identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:219
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:230
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:27
 msgid "Primary data identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:233
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:244
 msgid "Additional information on dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:237
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:248
 msgid "Geographical areas covered"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:243
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:254
 msgid "Period of time covered"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:244
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:255
 msgid " to "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:249
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:260
 msgid "Publications based on this data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:255
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:266
 msgid "Dataset belongs to collection/series"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:261
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:272
 msgid "Other related datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:275
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:286
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:294
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:305
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr ""
@@ -5615,10 +6361,6 @@ msgstr ""
 msgid "Find language codes from: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_form.html:34
-msgid "Are you sure you want to delete this dataset?"
-msgstr ""
-
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:39
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:32
 msgid "Cancel"
@@ -5827,7 +6569,7 @@ msgid "eg. http://www.gnu.org/licenses/gpl.html or freeform"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/rdfgen.html:8
-msgid "Metadata export"
+msgid "Download metadata"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:5
@@ -6149,10 +6891,6 @@ msgstr ""
 msgid "Changes"
 msgstr ""
 
-#: ckanext/kata/theme/templates/revision/read.html:74
-msgid "Datasets' Tags"
-msgstr ""
-
 #: ckanext/kata/theme/templates/snippets/facet_list.html:57
 msgid "Clear All"
 msgstr ""
@@ -6177,10 +6915,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/snippets/package_item.html:36
 msgid "Deleted"
-msgstr ""
-
-#: ckanext/kata/theme/templates/snippets/package_item.html:47
-msgid "This dataset has no description"
 msgstr ""
 
 #: ckanext/kata/theme/templates/snippets/related.html:16
@@ -6351,16 +7085,8 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: ckanext/kata/theme/templates/user/read.html:51
-msgid "You haven't created any datasets."
-msgstr ""
-
 #: ckanext/kata/theme/templates/user/read.html:52
 msgid "Create one now?"
-msgstr ""
-
-#: ckanext/kata/theme/templates/user/read.html:56
-msgid "User hasn't created any datasets."
 msgstr ""
 
 #: ckanext/kata/theme/templates/user/read.html:70

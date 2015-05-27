@@ -3,16 +3,27 @@
 {% set urn_url = h.get_urn_fi_address(pkg_dict) %}
 <h3>{{ _('General information') }}</h3>
 
-{%- if urn_url -%}
-<p><a href="{{ urn_url }}">{{ urn_url }}</a></p>
-{%- endif -%}
+{% set permanent_url = h.full_current_url() %}
+
+<table class="table table-striped table-bordered table-condensed">
+  <tr>
+    <th class="dataset-label">{{ _('Permanent address for dataset') }}</th>
+    <td class="dataset-details"><a href="{{ permanent_url }}">{{ permanent_url }}</a></td>
+  </tr>
+  {%- if urn_url -%}
+  <tr>
+    <th class="dataset-label">{{ _('Uniform Resource Name') }}</th>
+    <td class="dataset-details"><a href="{{ urn_url }}">{{ urn_url }}</a></td>
+  </tr>
+  {%- endif -%}
+</table>
 
 {% if pkg_dict.language or pkg_dict.langdis %}
 <table class="table table-striped table-bordered table-condensed">
   <tbody>
     <tr>
       <th class="dataset-label">{{ _('Language') }}</th>
-      <td class="dataset-details">{% if pkg_dict.language != 'None' %}{{pkg_dict.language}}{% else %}{{ _('No language') }}{% endif%}</td>
+      <td class="dataset-details">{% if pkg_dict.language %}{{pkg_dict.language}}{% else %}{{ _('No language') }}{% endif%}</td>
     </tr>
   </tbody>
 </table>
