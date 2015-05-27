@@ -14,7 +14,7 @@ Example:
 
 #}
 
-{% set truncate = truncate or 180 %}
+{% set truncate = truncate or 360 %}
 {% set truncate_title = truncate_title or 80 %}
 {% set title = h.get_translation_from_extras(package) or package.name %}
 {% set notes = h.markdown_extract(h.get_description(package), extract_length=truncate) %}
@@ -54,6 +54,7 @@ Example:
       </p>
     {% endif %}
 
+    {#
     {% if package.resources and not hide_resources %}
       <ul class="dataset-resources unstyled">
         {% for resource in h.dict_list_reduce(package.resources, 'format') %}
@@ -63,6 +64,7 @@ Example:
         {% endfor %}
       </ul>
     {% endif %}
+    #}
 
   {% endblock %}
 </li>
