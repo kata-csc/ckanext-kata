@@ -624,7 +624,6 @@ def organization_create_converter(key, data, errors, context):
     :param context: context
     '''
 
-    errors_found = False
     for key, value in errors.iteritems():
         if value:
             return
@@ -634,7 +633,8 @@ def organization_create_converter(key, data, errors, context):
     if model.Group.get(org_id):
         return
 
-    org_name = re.sub(r'[^\w]+', '-', utils.slugify(org_id)).lower()
+    org_name = re.sub(r'[^a-zA-Z0-9]+', '-', utils.slugify(org_id)).lower()
+    org_name = re.sub(r'-$', '', org_name)
     group_own = model.Group.get(org_name)
     if not group_own:
         org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')
