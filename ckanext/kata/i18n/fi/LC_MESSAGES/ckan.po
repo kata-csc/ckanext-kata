@@ -7450,7 +7450,7 @@ msgstr "esim. CSV"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
 msgid "The format of the data file can be provided here."
-msgstr "Tähän kenttään voit syöttää tiedoston formaatin"
+msgstr "Tähän kenttään voit syöttää tiedoston muodon."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "hex string from eg. MD5, SHA-1"
