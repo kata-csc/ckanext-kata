@@ -36,6 +36,7 @@ TEST_ORGANIZATION_SELENIUM = {
 
 TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'algorithm': u'SHA',
+                 'format': u'CSV',
                  'hash': u'somehash',
                  'mimetype': u'application/csv',
                  'resource_type': 'file'}
@@ -81,6 +82,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                               }],
                  'direct_download_URL': u'http://www.tdata.fi/kata',
                  'discipline': u'Tietojenkäsittely ja informaatiotieteet',
+                 'format': u'CSV',
                  'geographic_coverage': u'Keilaniemi (populated place),Espoo (city)',
                  'langdis': 'False',
                  'langtitle': [

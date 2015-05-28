@@ -20,6 +20,17 @@
         {% endif %}
       {% endcall %}
     </div>
+
+    {% call form.input('format', label=_('Format'), id='format', placeholder=_('e.g. CSV'), value=data.format, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
+      {{ kata_form.tooltip(tooltip=_("The format of the data file can be provided here.")) }}
+      {% if errors.resources %}
+        {% if errors.resources[0].format %}
+          <span class="error-block kata-medium-error">
+            {{ errors.resources[0].format[0] }}
+          </span>
+        {% endif %}
+      {% endif %}
+    {% endcall %}
         
     {% call form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
       {{ kata_form.tooltip(tooltip=_("The checksum of the data file can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Checksums are a good way to enable verification of the content to ensure the file is unchanged and genuine.")) }}

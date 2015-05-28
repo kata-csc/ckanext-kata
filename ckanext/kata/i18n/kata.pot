@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-27 13:05+0000\n"
+"POT-Creation-Date: 2015-05-28 05:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3377,14 +3377,14 @@ msgid "Project name"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:323
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:296
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:300
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
 msgid "Algorithm"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:325
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:292
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:296
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Checksum"
 msgstr ""
 
@@ -3770,6 +3770,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/resource_read.html:92
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:15
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Format"
 msgstr ""
 
@@ -6071,10 +6072,14 @@ msgid "Other related datasets"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:286
+msgid "File format: MIME type"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:291
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:305
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:309
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr ""
@@ -6666,10 +6671,18 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
-msgid "hex string from eg. MD5, SHA-1"
+msgid "e.g. CSV"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
+msgid "The format of the data file can be provided here."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+msgid "hex string from eg. MD5, SHA-1"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid ""
 "The checksum of the data file can be provided here. This can be for example a"
 " fixed length hex string taken from the data generated with a hash algorithm,"
@@ -6677,11 +6690,11 @@ msgid ""
 "the content to ensure the file is unchanged and genuine."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
 msgid "eg. MD5"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid ""
 "If the checksum is provided above, the algorithm used for generating the hash"
 " should be provided here. There are many different hash algorithms with "

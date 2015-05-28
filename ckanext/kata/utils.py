@@ -155,6 +155,7 @@ def resource_to_dataset(data_dict):
             'direct_download_URL': resource.get('url', u''),
             'checksum': resource.get('hash', u''),
             'mimetype': resource.get('mimetype', u''),
+            'format': resource.get('format', u''),
             'algorithm': resource.get('algorithm', u''),
         })
 
@@ -199,6 +200,7 @@ def dataset_to_resource(data_dict):
     data_dict['resources'][resource_index] = {
         'url': data_dict.get('direct_download_URL', settings.DATASET_URL_UNKNOWN),
         'hash': data_dict.get('checksum', u''),
+        'format': data_dict.get('format', u''),
         'mimetype': data_dict.get('mimetype', u''),
         'algorithm': data_dict.get('algorithm', u''),
         'resource_type': settings.RESOURCE_TYPE_DATASET,

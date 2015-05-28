@@ -161,12 +161,12 @@
     {% if pkg_dict.availability == 'contact_owner' %}
         {{ _(' available by ') -}} {% link_for _('contacting the distributor'), controller='ckanext.kata.controllers:ContactController', action='render_request_form', pkg_id=pkg_dict.name, class_='download' %}.
     {% endif %}
-    {% if pkg_dict.availability == 'through_provider' %}{{ _(' available through ') }}<a href="{{pkg_dict.through_provider_URL}}" class="download">{{ _('data provider') }}</a>. {% endif %}
+    {% if pkg_dict.availability == 'through_provider' %}{{ _(' available through ') }}<a href="{{ pkg_dict.through_provider_URL }}" class="download">{{ _('data provider') }}</a>. {% endif %}
     {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}.{% endif %}
   </p>
   <p>
-    {% if pkg_dict.license_title %}{{ _('Dataset license: ') }}{{pkg_dict.license_title}}
-        {%- if pkg_dict.license_URL %}, {{pkg_dict.license_URL}}
+    {% if pkg_dict.license_title %}{{ _('Dataset license: ') }}{{ pkg_dict.license_title }}
+        {%- if pkg_dict.license_URL %}, {{ pkg_dict.license_URL }}
         {%- endif -%}
     {%- endif %}
   </p>
@@ -216,7 +216,7 @@
     <table class="table table-striped table-bordered table-condensed">
       <tr>
         <th class="dataset-label">{{ _('Last modified') }}</th>
-        <td class="dataset-details">{{pkg_dict.version}}</td>
+        <td class="dataset-details">{{ pkg_dict.version }}</td>
       </tr>
     </table>
   {% endif %}
@@ -224,7 +224,7 @@
   <table class="table table-striped table-bordered table-condensed">
     <tr>
       <th class="dataset-label">{{ _('Primary metadata identifier') }}</th>
-      <td class="dataset-details">{{pkg_dict.id}}</td>
+      <td class="dataset-details">{{ pkg_dict.id }}</td>
     </tr>
     <tr>
       <th class="dataset-label">{{ _('Primary data identifier') }}</th>
@@ -234,7 +234,7 @@
       {% for pid in h.get_pids_by_type(pid_type, pkg_dict, primary=False) %}
         <tr>
           <th class="dataset-label">{{ _(pid.get('type', '').capitalize() + ' identifier') }}</th>
-          <td class="dataset-details">{{pid.id}}</td>
+          <td class="dataset-details">{{ pid.id }}</td>
         </tr>
       {% endfor %}
     {% endfor %}
@@ -246,31 +246,31 @@
 {% if pkg_dict.geographic_coverage %}
 <tr>
   <th class="dataset-label">{{ _('Geographical areas covered') }}</th>
-  <td class="dataset-details">{{pkg_dict.geographic_coverage}}</td>
+  <td class="dataset-details">{{ pkg_dict.geographic_coverage }}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.temporal_coverage_begin and pkg_dict.temporal_coverage_end %}
 <tr>
   <th class="dataset-label">{{ _('Period of time covered') }}</th>
-  <td class="dataset-details">{{pkg_dict.temporal_coverage_begin}}{{_(' to ') }}{{pkg_dict.temporal_coverage_end}}</td>
+  <td class="dataset-details">{{ pkg_dict.temporal_coverage_begin }}{{_(' to ') }}{{ pkg_dict.temporal_coverage_end }}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.publications %}
 <tr>
   <td>{{ _('Publications based on this data') }}</td>
-  <td>{{pkg_dict.publications}}</td>
+  <td>{{ pkg_dict.publications }}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.collections %}
 <tr>
   <th class="dataset-label">{{ _('Dataset belongs to collection/series') }}</th>
-  <td class="dataset-details">{{pkg_dict.collections}}</td>
+  <td class="dataset-details">{{ pkg_dict.collections }}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.erelated %}
 <tr>
   <th class="dataset-label">{{ _('Other related datasets') }}</th>
-  <td class="dataset-details">{{pkg_dict.erelated}}</td>
+  <td class="dataset-details">{{ pkg_dict.erelated }}</td>
 </tr>
 {% endif %}
 {% if pkg_dict.discipline %}
@@ -283,18 +283,22 @@
 {% endif %}
 {% if pkg_dict.mimetype %}
 <tr>
-  <th class="dataset-label">{{ _('File format') }}</th>
-  <td class="dataset-details">{{pkg_dict.mimetype}}</td>
+  <th class="dataset-label">{{ _('File format: MIME type') }}</th>
+  <td class="dataset-details">{{ pkg_dict.mimetype }}</td>
 </tr>
+{% endif %}
+{%  if pkg_dict.format %}
+  <th class=dataset-label">{{ _('File format') }}</th>
+  <td class="dataset-details">{{ pkg_dict.format }}</td>
 {% endif %}
 {% if pkg_dict.algorithm and pkg_dict.checksum %}
 <tr>
   <th class="dataset-label">{{ _('Checksum') }}</th>
-  <td class="dataset-details">{{pkg_dict.checksum}}</td>
+  <td class="dataset-details">{{ pkg_dict.checksum }}</td>
 </tr>
 <tr>
   <th class="dataset-label">{{ _('Algorithm') }}</th>
-  <td class="dataset-details">{{pkg_dict.algorithm}}</td>
+  <td class="dataset-details">{{ pkg_dict.algorithm }}</td>
 </tr>
 {% endif %}
 

@@ -139,6 +139,7 @@
         </fp:generator>
       </fp:Checksum></fp:checksum>
       <dcat:mediaType py:if="c.pkg_dict.get('mimetype', False)">${ c.pkg_dict['mimetype'] }</dcat:mediaType>
+      <dct:format py:if="c.pkg_dict.get('format', False)">${ c.pkg_dict['format'] }</dct:format>
     </dcat:distribution>
 
     <dct:spatial py:if="c.pkg_dict.get('geographic_coverage', None)">${ c.pkg_dict['geographic_coverage'] }</dct:spatial>

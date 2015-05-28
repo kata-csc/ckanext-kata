@@ -152,6 +152,7 @@ class Schemas:
                                       unicode, va.validate_general]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
         schema['resources']['algorithm'] = [ignore_missing, unicode, va.validate_algorithm]
+        schema['resources']['format'].append(va.validate_general)
         schema['resources']['hash'].append(va.validate_general)
         schema['resources']['mimetype'].append(va.validate_mimetype)
         return schema

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-05-27 13:05+0000\n"
+"POT-Creation-Date: 2015-05-28 05:51+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -3967,14 +3967,14 @@ msgid "Project name"
 msgstr "Projektin nimi"
 
 #: ckanext/kata/theme/templates/kata/help.html:323
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:296
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:300
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
 msgid "Algorithm"
 msgstr "Algoritmi"
 
 #: ckanext/kata/theme/templates/kata/help.html:325
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:292
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:296
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Checksum"
 msgstr "Tarkistussumma"
 
@@ -4387,6 +4387,7 @@ msgstr "Luotu"
 
 #: ckanext/kata/theme/templates/package/resource_read.html:92
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:15
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
 msgid "Format"
 msgstr "Muoto"
 
@@ -6697,10 +6698,14 @@ msgid "Other related datasets"
 msgstr "Muut liittyvät aineistot"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:286
+msgid "File format: MIME type"
+msgstr "Tiedoston muoto: MIME-tyyppi"
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:291
 msgid "File format"
 msgstr "Tiedoston muoto"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:305
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:309
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr "Aineston elinkaaren tapahtumat:"
@@ -7440,10 +7445,18 @@ msgstr ""
 "stream, application/pdf ja text/plain."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+msgid "e.g. CSV"
+msgstr "esim. CSV"
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
+msgid "The format of the data file can be provided here."
+msgstr "Tähän kenttään voit syöttää tiedoston formaatin"
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "hex string from eg. MD5, SHA-1"
 msgstr "tarkistussumma (MD5, SHA-2) hexamuodossa"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid ""
 "The checksum of the data file can be provided here. This can be for "
 "example a fixed length hex string taken from the data generated with a "
@@ -7455,11 +7468,11 @@ msgstr ""
 "merkkijono.<br /><br />Tarkistussummat ovat hyvä tapa varmistaa, että "
 "sisältö on pysynyt samana ja että tiedosto on aito."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
 msgid "eg. MD5"
 msgstr "esim. MD5, SHA-2"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid ""
 "If the checksum is provided above, the algorithm used for generating the "
 "hash should be provided here. There are many different hash algorithms "
