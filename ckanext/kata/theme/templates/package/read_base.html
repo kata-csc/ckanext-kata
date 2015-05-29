@@ -1,5 +1,7 @@
 {% ckan_extends %}
 
+{% block subtitle %}{{ h.get_translation(pkg.title) or pkg.name }}{% endblock %}
+
 {% block content_action %}
   {% if h.check_access('package_update', {'id':pkg.id }) %}
     {% link_for _('Edit'), controller='package', action='edit', id=pkg.name, class_='btn', icon='wrench' %}
