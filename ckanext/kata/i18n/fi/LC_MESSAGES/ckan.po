@@ -391,7 +391,7 @@ msgstr "Ensimmäinen otsikko ei voi olla tyhjä"
 
 #: ckanext/kata/validators.py:326
 msgid "Duplicate fields for a language not permitted"
-msgstr "Et voi syöttää useampia otsikoita samalla kielellä"
+msgstr "Et voi syöttää useampia kenttiä samalla kielellä"
 
 #: ckanext/kata/validators.py:363
 msgid "Missing compulsory agent: {0}"
