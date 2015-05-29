@@ -21,7 +21,16 @@
   </rdf:Description>
 
   <rdf:Description rdf:about="${ h.get_primary_pid('data', c.pkg_dict) }">
-    <dct:description py:if="c.pkg_dict.get('notes', None)">${ c.pkg_dict['notes'] }</dct:description>
+
+    <py:if test="c.pkg_dict.get('notes')">
+        <py:for each="notes in h.json_to_list(c.pkg_dict.get('notes'))">
+          <py:with vars="language=h.convert_language_code(notes.get('lang'), 'alpha2', throw_exceptions=False) or notes.get('lang');">
+            <dct:description py:if="language and language != 'default'" xml:lang="${ language }">${ notes.get('value') }</dct:description>
+            <dct:description py:if="not language or language == 'default'">${ notes.get('value') }</dct:description>
+          </py:with>
+        </py:for>
+    </py:if>
+
     <py:for each="tag_dict in c.pkg_dict.get('tags', None)">
       <dct:subject>${ tag_dict.get('name') }</dct:subject>
     </py:for>
@@ -103,7 +112,7 @@
         </foaf:Agent>
       </nrd:distributor>
     </py:for>
-    
+
     <py:for each="agent in c.pkg_dict.get('agent', None)">
       <nrd:distributor py:if="agent.get('role', None)=='distributor'">
         <foaf:Agent>

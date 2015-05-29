@@ -312,7 +312,9 @@ def validate_title(key, data, errors, context):
 
 def validate_multilang_field(fieldkey, key, data, errors, context):
     '''
-    Checks that there is only one title per language
+    Checks that there is only one multilanguage field per language
+
+    :param fieldkey: 'langtitle' or 'langnotes' currently
     '''
     langs = []
     for k in data.keys():

@@ -93,7 +93,7 @@ def org_auth_from_extras(key, data, errors, context):
         if not orgauth in orgauths:
             orgauths.append(orgauth)
 
-def gen_translation_str_from_multilang_field(fieldkey, key, data, errors, context):
+def gen_translation_str_from_multilang_field(fieldkey, message, key, data, errors, context):
     '''
     Fetch all the lang* fields e.g. for fieldkey 'title' of type
     ('langtitle', n, 'lang'): u'en',
@@ -106,6 +106,7 @@ def gen_translation_str_from_multilang_field(fieldkey, key, data, errors, contex
     where the data is then stored.
 
     :param fieldkey: 'title' or 'notes' currently
+    :param message: translation string for parse error message
     :param key: key
     :param data: data
     :param errors: validation errors
@@ -123,7 +124,7 @@ def gen_translation_str_from_multilang_field(fieldkey, key, data, errors, contex
         try:
             json_data = json.loads(json_string)
         except ValueError:
-            errors[key].append(_('The given title string is not JSON parseable'))
+            errors[key].append(message)
 
         # we also need to validate the keys:
         for k in json_data.keys():
@@ -150,18 +151,25 @@ def gen_translation_str_from_multilang_field(fieldkey, key, data, errors, contex
     data[(fieldkey,)] = json.dumps(json_data)
 
 
-gen_translation_str_from_langtitle = functools.partial(gen_translation_str_from_multilang_field, 'title')
-functools.update_wrapper(gen_translation_str_from_langtitle, gen_translation_str_from_multilang_field)
-gen_translation_str_from_langnotes = functools.partial(gen_translation_str_from_multilang_field, 'notes')
-functools.update_wrapper(gen_translation_str_from_langnotes, gen_translation_str_from_multilang_field)
+def gen_translation_str_from_langtitle(key, data, errors, context):
+    return gen_translation_str_from_multilang_field('title',
+        _('The given title string is not JSON parseable'), key, data, errors, context)
+
+
+def gen_translation_str_from_langnotes(key, data, errors, context):
+    return gen_translation_str_from_multilang_field('notes',
+        _('The given notes string is not JSON parseable'), key, data, errors, context)
 
 
 def ensure_valid_notes(key, data, errors, context):
+    '''
+    Converts the notes field into a JSON string if it isn't already.
+    '''
     field = data.get(('notes',))
     try:
         json.loads(field)
     except (ValueError, TypeError):
-        data[('notes',)] = json.dumps({'fin': field})
+        data[('notes',)] = json.dumps({'default': field})
 
 
 def gen_translation_str_from_extras(key, data, errors, context):
