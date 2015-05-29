@@ -166,9 +166,13 @@
     {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}.{% endif %}
   </p>
   <p>
-    {% if pkg_dict.license_title %}{{ _('Dataset license: ') }}{{ pkg_dict.license_title }}
-        {%- if pkg_dict.license_URL %}, {{ pkg_dict.license_URL }}
-        {%- endif -%}
+    {% if pkg_dict.license_title %}
+      {{ _('Dataset license: ') }}
+      {% if 'license_url' in pkg_dict %}
+        <a href="{{ pkg_dict.license_url }}" rel="dc:rights" target="_blank">{{ pkg_dict.license_title }}</a>
+      {% else %}
+        <span property="dc:rights">{{ pkg_dict.license_title }}</span>
+      {% endif %}
     {%- endif %}
   </p>
 </div>
