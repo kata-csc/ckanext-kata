@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-05-29 06:41+0000\n"
+"POT-Creation-Date: 2015-05-29 09:37+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -7715,6 +7715,10 @@ msgstr "Poistettu"
 #: ckanext/kata/theme/templates/snippets/related.html:16
 msgid "Add Item"
 msgstr "Lisää kohde"
+
+#: ckanext/kata/theme/templates/snippets/social.html:3
+msgid "Share"
+msgstr "Jaa"
 
 #: ckanext/kata/theme/templates/user/dashboard.html:7
 msgid "News feed"
