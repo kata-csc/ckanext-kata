@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-29 09:37+0000\n"
+"POT-Creation-Date: 2015-06-02 06:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -718,7 +718,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/group/read_base.html:12
 #: ckanext/kata/theme/templates/organization/members.html:33
 #: ckanext/kata/theme/templates/package/edit.html:13
-#: ckanext/kata/theme/templates/package/read_base.html:5
+#: ckanext/kata/theme/templates/package/read_base.html:7
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
 #: ckanext/kata/theme/templates/package/resource_read.html:21
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:78
@@ -729,8 +729,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/group/read_base.html:19
 #: ckanext/kata/theme/templates/organization/read_base.html:10
+#: ckanext/kata/theme/templates/package/activity.html:3
+#: ckanext/kata/theme/templates/package/activity.html:6
 #: ckanext/kata/theme/templates/package/package_rights.html:9
-#: ckanext/kata/theme/templates/package/read_base.html:18
+#: ckanext/kata/theme/templates/package/read_base.html:20
 #: ckanext/kata/theme/templates/user/read.html:32
 msgid "Activity Stream"
 msgstr ""
@@ -758,7 +760,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:9
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:72
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:103
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:192
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:196
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:22
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:19
 msgid "URL"
@@ -1522,7 +1524,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/data-model.html:48
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:279
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:295
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:81
 msgid "Field of science"
 msgstr ""
@@ -1808,7 +1810,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/help.html:108
 #: ckanext/kata/theme/templates/kata/help.html:396
 #: ckanext/kata/theme/templates/package/package_rights.html:7
-#: ckanext/kata/theme/templates/package/read_base.html:16
+#: ckanext/kata/theme/templates/package/read_base.html:18
 msgid "Dataset"
 msgstr ""
 
@@ -3266,7 +3268,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:263
 #: ckanext/kata/theme/templates/kata/help.html:414
-#: ckanext/kata/theme/templates/package/read_base.html:60
+#: ckanext/kata/theme/templates/package/read_base.html:62
 msgid "Dataset administration"
 msgstr ""
 
@@ -3385,13 +3387,13 @@ msgid "Project name"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:323
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:301
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:317
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
 msgid "Algorithm"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:325
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:297
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:313
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Checksum"
 msgstr ""
@@ -3401,7 +3403,7 @@ msgid "Contact name"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:331
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:193
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:197
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:121
 msgid "Phone"
 msgstr ""
@@ -3614,8 +3616,14 @@ msgstr ""
 msgid "Save Organization"
 msgstr ""
 
+#: ckanext/kata/theme/templates/package/history.html:3
+#: ckanext/kata/theme/templates/package/history.html:6
+#: ckanext/kata/theme/templates/package/read_base.html:8
+msgid "History"
+msgstr ""
+
 #: ckanext/kata/theme/templates/package/package_rights.html:11
-#: ckanext/kata/theme/templates/package/read_base.html:20
+#: ckanext/kata/theme/templates/package/read_base.html:22
 #: ckanext/kata/theme/templates/snippets/related.html:2
 msgid "Related"
 msgstr ""
@@ -3703,21 +3711,17 @@ msgstr ""
 msgid "Metadata score {rating}/5"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read_base.html:6
-msgid "History"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/read_base.html:10
+#: ckanext/kata/theme/templates/package/read_base.html:12
 msgid "Request metadata editing rights"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read_base.html:34
+#: ckanext/kata/theme/templates/package/read_base.html:36
 #: ckanext/kata/theme/templates/user/read.html:37
 #: ckanext/kata/theme/templates/user/read.html:84
 msgid "Followers"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read_base.html:63
+#: ckanext/kata/theme/templates/package/read_base.html:65
 msgid "Administer dataset rights"
 msgstr ""
 
@@ -5933,7 +5937,7 @@ msgid "Agents"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:70
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:190
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:194
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:63
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:115
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:173
@@ -6010,84 +6014,94 @@ msgstr ""
 msgid " available freely or availability is not specified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:169
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:170
 msgid "Dataset license: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:179
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:183
 msgid "Distributors"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:191
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:195
 msgid "E-Mail"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:200
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:204
 msgid "Send a message"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:214
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:218
 msgid "Identification information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:216
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:220
 msgid "Last modification time of data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:219
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:223
 msgid "Last modified"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:224
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:228
 msgid "Permanent identifiers"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:227
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:231
 msgid "Primary metadata identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:231
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:235
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:27
 msgid "Primary data identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:245
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:249
 msgid "Additional information on dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:249
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:253
 msgid "Geographical areas covered"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:255
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:259
 msgid "Period of time covered"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:256
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:264
 msgid " to "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:261
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:267
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:28
+msgid "Begin"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:270
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:40
+msgid "End"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:277
 msgid "Publications based on this data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:267
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:283
 msgid "Dataset belongs to collection/series"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:273
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:289
 msgid "Other related datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:287
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:303
 msgid "File format: MIME type"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:292
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:308
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:310
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:326
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr ""
@@ -6444,19 +6458,19 @@ msgid ""
 "http://www.nationallibrary.fi for more information."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:117
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:118
 msgid "Modification date"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:121
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:124
 msgid ""
-"Field is compulsory but an automatically generated date is provided.<br /><br"
-" />The modification date tells when the data has last been modified. Click "
-"the field to open a calendar tool to choose the modification date and time "
-"for this dataset. Accept and insert the date to the field by pressing the "
-"Done button. By default, the time zone is Z (Zulu Time Zone), which "
-"corresponds to the UTC time zone.<br /><br />Note that this tool requires "
-"JavaScript to be enabled in the browser."
+"Field is compulsory but an automatically generated date is "
+"provided.<br><br>The modification date tells when the data has last been "
+"modified. Click the calendar icon to open a calendar tool to choose the "
+"modification date for this dataset. Time can be entered if \"use exact time\""
+" is chosen. The time zone Z (Zulu Time Zone) corresponds to the UTC time "
+"zone.<br><br>Note that this tool requires JavaScript to be enabled in the "
+"browser."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:21
@@ -6625,34 +6639,30 @@ msgstr ""
 msgid "Temporal coverage"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:27
-msgid "Begin"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:30
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:33
 msgid ""
 "Temporal coverage - begin - can be filled to include the starting time of the"
 " time period during which your data was collected or for example to tell what"
-" time period your data is linked to.<br /><br />Click the field to open a "
-"calendar tool to choose a modification date and time for this dataset. Accept"
-" and insert the date to the field by pressing the Done button. By default, "
-"the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br "
-"/><br />Note that this tool requires JavaScript to be enabled in the browser."
+" time period your data is linked to.<br><br>Click the calendar icon to select"
+" a date. If you wish to enter only year or month you can do so by typing "
+"directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally "
+"enter time with timezone information by choosing \"use exact time\". By "
+"default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time "
+"zone.<br><br>Note that this tool requires JavaScript to be enabled in the "
+"browser."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:35
-msgid "End"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:38
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:45
 msgid ""
 "Temporal coverage - end - can be filled to include the ending time of the "
 "time period during which your data was collected or for example to tell what "
-"time period your data is linked to.<br /><br />Click the field to open a "
-"calendar tool to choose a modification date and time for this dataset. Accept"
-" and insert the date to the field by pressing the Done button. By default, "
-"the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br "
-"/><br />Note that this tool requires JavaScript to be enabled in the browser."
+"time period your data is linked to.<br><br>Click the calendar icon to select "
+"a date. If you wish to enter only year or month you can do so by typing "
+"directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally "
+"enter time with timezone information by choosing \"use exact time\". By "
+"default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time "
+"zone.<br><br>Note that this tool requires JavaScript to be enabled in the "
+"browser."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:4

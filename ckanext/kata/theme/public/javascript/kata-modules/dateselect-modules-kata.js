@@ -91,8 +91,8 @@ this.ckan.module('kata-temporal-coverage', function ($, _) {
             }
             if (this.model[current] && this.model[other]) {
               var fn = isBegin ? 'isBefore' : 'isAfter';
-              var date1 = moment(this.model[current]);
-              var date2 = moment(this.model[other]);
+              var date1 = moment(new Date(this.model[current]));
+              var date2 = moment(new Date(this.model[other]));
               var isValid = date1.isSame(date2) || date1[fn](date2);
               this._onError({
                 name: current,
@@ -230,7 +230,7 @@ this.ckan.module('kata-datetimepicker', function ($, _) {
             return false;
           }
           // Then ensure that it is recognized as a valid time
-          return moment(datetime).isValid();
+          return moment(new Date(datetime)).isValid();
         },
 
         /**
@@ -266,6 +266,9 @@ this.ckan.module('kata-datetimepicker', function ($, _) {
          * or uses "now" time if data-module-defaultnow is true
          */
         _setInitialValue: function (value) {
+            if (typeof value === 'number') {
+              value = '' + value;
+            }
             if (!value || typeof value !== 'string') {
               if (!this.options.defaultnow) {
                 return;

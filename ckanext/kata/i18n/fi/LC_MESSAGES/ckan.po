@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-05-29 09:37+0000\n"
+"POT-Creation-Date: 2015-06-02 06:26+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -748,7 +748,7 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/group/read_base.html:12
 #: ckanext/kata/theme/templates/organization/members.html:33
 #: ckanext/kata/theme/templates/package/edit.html:13
-#: ckanext/kata/theme/templates/package/read_base.html:5
+#: ckanext/kata/theme/templates/package/read_base.html:7
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
 #: ckanext/kata/theme/templates/package/resource_read.html:21
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:78
@@ -759,8 +759,10 @@ msgstr "Muokkaa"
 
 #: ckanext/kata/theme/templates/group/read_base.html:19
 #: ckanext/kata/theme/templates/organization/read_base.html:10
+#: ckanext/kata/theme/templates/package/activity.html:3
+#: ckanext/kata/theme/templates/package/activity.html:6
 #: ckanext/kata/theme/templates/package/package_rights.html:9
-#: ckanext/kata/theme/templates/package/read_base.html:18
+#: ckanext/kata/theme/templates/package/read_base.html:20
 #: ckanext/kata/theme/templates/user/read.html:32
 msgid "Activity Stream"
 msgstr "Uutisvirta"
@@ -788,7 +790,7 @@ msgstr "Minun ryhmäni"
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:9
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:72
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:103
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:192
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:196
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:22
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:19
 msgid "URL"
@@ -1657,7 +1659,7 @@ msgstr ""
 "olla true"
 
 #: ckanext/kata/theme/templates/kata/data-model.html:48
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:279
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:295
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:81
 msgid "Field of science"
 msgstr "Tieteenala"
@@ -1948,7 +1950,7 @@ msgstr "Aineiston tiedostolinkki(t) virheellisiä"
 #: ckanext/kata/theme/templates/kata/help.html:108
 #: ckanext/kata/theme/templates/kata/help.html:396
 #: ckanext/kata/theme/templates/package/package_rights.html:7
-#: ckanext/kata/theme/templates/package/read_base.html:16
+#: ckanext/kata/theme/templates/package/read_base.html:18
 msgid "Dataset"
 msgstr "Aineisto"
 
@@ -3794,7 +3796,7 @@ msgstr "REMS:n käyttöohjeista"
 
 #: ckanext/kata/theme/templates/kata/help.html:263
 #: ckanext/kata/theme/templates/kata/help.html:414
-#: ckanext/kata/theme/templates/package/read_base.html:60
+#: ckanext/kata/theme/templates/package/read_base.html:62
 msgid "Dataset administration"
 msgstr "Aineiston hallinta"
 
@@ -3960,13 +3962,13 @@ msgid "Project name"
 msgstr "Projektin nimi"
 
 #: ckanext/kata/theme/templates/kata/help.html:323
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:301
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:317
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
 msgid "Algorithm"
 msgstr "Algoritmi"
 
 #: ckanext/kata/theme/templates/kata/help.html:325
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:297
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:313
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Checksum"
 msgstr "Tarkistussumma"
@@ -3976,7 +3978,7 @@ msgid "Contact name"
 msgstr "Kontaktin nimi"
 
 #: ckanext/kata/theme/templates/kata/help.html:331
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:193
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:197
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:121
 msgid "Phone"
 msgstr "Puhelinnumero"
@@ -4204,8 +4206,14 @@ msgstr ""
 msgid "Save Organization"
 msgstr "Tallenna organisaatio"
 
+#: ckanext/kata/theme/templates/package/history.html:3
+#: ckanext/kata/theme/templates/package/history.html:6
+#: ckanext/kata/theme/templates/package/read_base.html:8
+msgid "History"
+msgstr "Historia"
+
 #: ckanext/kata/theme/templates/package/package_rights.html:11
-#: ckanext/kata/theme/templates/package/read_base.html:20
+#: ckanext/kata/theme/templates/package/read_base.html:22
 #: ckanext/kata/theme/templates/snippets/related.html:2
 msgid "Related"
 msgstr "Liittyvä"
@@ -4305,21 +4313,17 @@ msgstr "Metatiedon laatu:"
 msgid "Metadata score {rating}/5"
 msgstr "Metatiedon laatu {rating}/5"
 
-#: ckanext/kata/theme/templates/package/read_base.html:6
-msgid "History"
-msgstr "Historia"
-
-#: ckanext/kata/theme/templates/package/read_base.html:10
+#: ckanext/kata/theme/templates/package/read_base.html:12
 msgid "Request metadata editing rights"
 msgstr "Pyydä metatiedon muokkausoikeuksia"
 
-#: ckanext/kata/theme/templates/package/read_base.html:34
+#: ckanext/kata/theme/templates/package/read_base.html:36
 #: ckanext/kata/theme/templates/user/read.html:37
 #: ckanext/kata/theme/templates/user/read.html:84
 msgid "Followers"
 msgstr "Seuraajat"
 
-#: ckanext/kata/theme/templates/package/read_base.html:63
+#: ckanext/kata/theme/templates/package/read_base.html:65
 msgid "Administer dataset rights"
 msgstr "Hallinnoi aineiston oikeuksia"
 
@@ -6544,7 +6548,7 @@ msgid "Agents"
 msgstr "Toimijat"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:70
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:190
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:194
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:63
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:115
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:173
@@ -6621,84 +6625,94 @@ msgstr "datan jakelijan kautta"
 msgid " available freely or availability is not specified"
 msgstr "saatavilla vapaasti tai saatavuutta ei ole määritetty"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:169
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:170
 msgid "Dataset license: "
 msgstr "Aineiston lisenssi: "
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:179
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:183
 msgid "Distributors"
 msgstr "Jakelijat"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:191
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:195
 msgid "E-Mail"
 msgstr "Sähköposti"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:200
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:204
 msgid "Send a message"
 msgstr "Lähetä viesti"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:214
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:218
 msgid "Identification information"
 msgstr "Tunnistetiedot"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:216
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:220
 msgid "Last modification time of data"
 msgstr "Datan viimeisin muokkausaika"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:219
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:223
 msgid "Last modified"
 msgstr "Viimeksi muokattu"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:224
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:228
 msgid "Permanent identifiers"
 msgstr "Pysyvät tunnisteet"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:227
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:231
 msgid "Primary metadata identifier"
 msgstr "Ensisijainen metadatan tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:231
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:235
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:27
 msgid "Primary data identifier"
 msgstr "Ensisijainen datan tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:245
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:249
 msgid "Additional information on dataset"
 msgstr "Lisätietoja aineistosta"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:249
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:253
 msgid "Geographical areas covered"
 msgstr "Maantieteellinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:255
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:259
 msgid "Period of time covered"
 msgstr "Ajallinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:256
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:264
 msgid " to "
 msgstr " - "
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:261
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:267
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:28
+msgid "Begin"
+msgstr "Alku"
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:270
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:40
+msgid "End"
+msgstr "Loppu"
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:277
 msgid "Publications based on this data"
 msgstr "Dataan perustuvat julkaisut"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:267
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:283
 msgid "Dataset belongs to collection/series"
 msgstr "Aineisto kuuluu kokoelmaan/sarjaan"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:273
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:289
 msgid "Other related datasets"
 msgstr "Muut liittyvät aineistot"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:287
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:303
 msgid "File format: MIME type"
 msgstr "Tiedoston muoto: MIME-tyyppi"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:292
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:308
 msgid "File format"
 msgstr "Tiedoston muoto"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:310
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:326
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr "Aineston elinkaaren tapahtumat:"
@@ -7142,27 +7156,26 @@ msgstr ""
 "kata[numerosarja]\". Lisää tietoa osoitteessa "
 "http://www.kansalliskirjasto.fi/."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:117
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:118
 msgid "Modification date"
 msgstr "Muokkauspvm"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:121
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:124
 msgid ""
-"Field is compulsory but an automatically generated date is provided.<br "
-"/><br />The modification date tells when the data has last been modified."
-" Click the field to open a calendar tool to choose the modification date "
-"and time for this dataset. Accept and insert the date to the field by "
-"pressing the Done button. By default, the time zone is Z (Zulu Time "
-"Zone), which corresponds to the UTC time zone.<br /><br />Note that this "
-"tool requires JavaScript to be enabled in the browser."
+"Field is compulsory but an automatically generated date is "
+"provided.<br><br>The modification date tells when the data has last been "
+"modified. Click the calendar icon to open a calendar tool to choose the "
+"modification date for this dataset. Time can be entered if \"use exact "
+"time\" is chosen. The time zone Z (Zulu Time Zone) corresponds to the UTC"
+" time zone.<br><br>Note that this tool requires JavaScript to be enabled "
+"in the browser."
 msgstr ""
 "Kenttä on pakollinen, mutta siihen tarjotaan automaattisesti generoitu "
-"päivämäärä.<br /><br />Muokkauspäivämäärä kertoo, milloin dataa on "
-"viimeksi muokattu. Klikkaa kenttää ja valitse aukeavasta "
-"kalenterityökalusta sopiva päivämäärä ja aika. Hyväksy valitsemasi aika "
-"\"Done\" -painikkeesta. Oletuksena aikavyöhyke on Z (Zulu-aikavyöhyke), "
-"joka vastaa UTC-aikavyöhykettä.<br /><br />Huomaa, että kalenteri vaatii "
-"toimiakseen JavaScriptin selaimeen."
+"päivämäärä.<br><br>Muokkauspäivämäärä kertoo, milloin dataa on "
+"viimeksi muokattu. Klikkaa kalenteri-ikonia ja valitse "
+"päivämäärä. Kellonaika voidaan syöttää valitsemalla \"käytä tarkkaa "
+" kellonaikaa\". Z-aikavyöhyke vastaa UTC-aikavyöhykettä.<br><br>Huomaa, "
+" että kalenteri vaatii toimiakseen JavaScriptin selaimeen."
 
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:21
 msgid "Choose an organisation..."
@@ -7367,49 +7380,49 @@ msgstr "esim. Suomi"
 msgid "Temporal coverage"
 msgstr "Ajallinen kattavuus"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:27
-msgid "Begin"
-msgstr "Alku"
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:30
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:33
 msgid ""
 "Temporal coverage - begin - can be filled to include the starting time of"
 " the time period during which your data was collected or for example to "
-"tell what time period your data is linked to.<br /><br />Click the field "
-"to open a calendar tool to choose a modification date and time for this "
-"dataset. Accept and insert the date to the field by pressing the Done "
-"button. By default, the time zone is Z (Zulu Time Zone), which "
-"corresponds the UTC time zone.<br /><br />Note that this tool requires "
+"tell what time period your data is linked to.<br><br>Click the calendar "
+"icon to select a date. If you wish to enter only year or month you can do"
+" so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You"
+" can optionally enter time with timezone information by choosing \"use "
+"exact time\". By default, the time zone is Z (Zulu Time Zone), which "
+"corresponds the UTC time zone.<br><br>Note that this tool requires "
 "JavaScript to be enabled in the browser."
 msgstr ""
 "Ajallinen kattavuus - alku - määrittelee alkupäivämäärän datasi "
-"ajalliselle kattavuudelle.<br /><br />Klikkaa kenttää avataksesi "
-"kalenterityökalun. Valitse haluamasi aika ja paina lopuksi "
-"'Done'-painiketta. Aikavyöhyke on oletuksena Z (Zulu-aikavyöhyke), joka "
-"vastaa UTC-vyöhykettä.<br /><br />Huomaa, että työkalu vaatii toimiakseen"
-" JavaScriptin."
+"ajalliselle kattavuudelle.<br><br>Klikkaa kalenteri-ikonia "
+"ja valitse päivämäärä. Voit syöttää pelkän vuoden tai kuukauden "
+"kirjoittamalla suoraan tekstikenttään esim. <em>2015</em> tai "
+"<em>2015-01</em>.<br><br>Voit halutessasi syöttää kellonajan "
+"ja aikavyöhykkeen valitsemalla \"käytä tarkkaa kellonaikaa\". "
+"Aikavyöhyke on oletuksena Z (Zulu-aikavyöhyke), joka vastaa "
+"UTC-vyöhykettä.<br><br>Huomaa, että työkalu vaatii "
+"toimiakseen JavaScriptin."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:35
-msgid "End"
-msgstr "Loppu"
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:38
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:45
 msgid ""
 "Temporal coverage - end - can be filled to include the ending time of the"
 " time period during which your data was collected or for example to tell "
-"what time period your data is linked to.<br /><br />Click the field to "
-"open a calendar tool to choose a modification date and time for this "
-"dataset. Accept and insert the date to the field by pressing the Done "
-"button. By default, the time zone is Z (Zulu Time Zone), which "
-"corresponds the UTC time zone.<br /><br />Note that this tool requires "
+"what time period your data is linked to.<br><br>Click the calendar icon "
+"to select a date. If you wish to enter only year or month you can do so "
+"by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can"
+" optionally enter time with timezone information by choosing \"use exact "
+"time\". By default, the time zone is Z (Zulu Time Zone), which "
+"corresponds the UTC time zone.<br><br>Note that this tool requires "
 "JavaScript to be enabled in the browser."
 msgstr ""
 "Ajallinen kattavuus - loppu - määrittelee loppupäivämäärän datasi "
-"ajalliselle kattavuudelle.<br /><br />Klikkaa kenttää avataksesi "
-"kalenterityökalun. Valitse haluamasi aika ja paina lopuksi "
-"'Done'-painiketta. Aikavyöhyke on oletuksena Z (Zulu-aikavyöhyke), joka "
-"vastaa UTC-vyöhykettä.<br /><br />Huomaa, että työkalu vaatii toimiakseen"
-" JavaScriptin."
+"ajalliselle kattavuudelle.<br><br>Klikkaa kalenteri-ikonia "
+"ja valitse päivämäärä. Voit syöttää pelkän vuoden tai kuukauden "
+"kirjoittamalla suoraan tekstikenttään esim. <em>2015</em> tai "
+"<em>2015-01</em>.<br><br>Voit halutessasi syöttää kellonajan "
+"ja aikavyöhykkeen valitsemalla \"käytä tarkkaa kellonaikaa\". "
+"Aikavyöhyke on oletuksena Z (Zulu-aikavyöhyke), joka vastaa "
+"UTC-vyöhykettä.<br><br>Huomaa, että työkalu vaatii "
+"toimiakseen JavaScriptin."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:4
 msgid "Free description"
@@ -7938,4 +7951,3 @@ msgstr "Ensimmäinen kirjautuminen"
 #: ckanext/kata/theme/templates/user/read.html:129
 msgid "API Key"
 msgstr "API-avain"
-
