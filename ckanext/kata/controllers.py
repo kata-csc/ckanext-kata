@@ -40,6 +40,7 @@ from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
 import ckanext.kata.settings as settings
 from ckanext.kata import utils
+import ckanext.kata.helpers as kata_helpers
 import os
 import difflib
 
@@ -359,7 +360,7 @@ class EditAccessRequestController(BaseController):
             if not self._have_pending_requests(pkg_id, user.id):
                 req = KataAccessRequest(user.id, pkg.id)
                 req.save()
-                h.flash_success(_("A request for editing privileges will be sent to the administrator of package %s") % pkg_title)
+                h.flash_success(_("A request for editing privileges will be sent to the administrator of package %s") % kata_helpers.get_translation(pkg_title))
                 redirect(url)
             else:
                 h.flash_error(_("A request is already pending"))
