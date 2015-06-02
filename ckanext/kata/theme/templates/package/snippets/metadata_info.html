@@ -156,15 +156,16 @@
 <div class="info-block{{ ' info-inline' if inline }}{{ " " ~ classes | join(' ') }}">
   <p>
     {{ _('This dataset is') }}
-    {% if pkg_dict.availability == 'access_application' %}{{ _(' available via an access form in ') }}<a href="{{ pkg_dict.access_application_URL }}" target="_blank" class="download icon-external-link">{{ _('this link')}}</a>. {% endif%}
-    {% if pkg_dict.availability == 'direct_download' %}{{ _(' available freely ') }}{% if pkg_dict.direct_download_URL %} <a href="{{pkg_dict.direct_download_URL}}" class="download">{{ _('from this address') }}</a> {% endif %}. {% endif %}
-    {% if pkg_dict.availability == 'access_request' %}{{ _(' available via login ') }}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}" class="download">{{ _('from this address') }}</a> {% endif %}. {% endif %}
+    {% if pkg_dict.availability == 'access_application' %}{{ _(' available via an access form in ') }}<a href="{{ pkg_dict.access_application_URL }}" target="_blank" class="download icon-external-link">{{ _('this link')}}</a> {% endif%}
+    {% if pkg_dict.availability == 'direct_download' %}{{ _(' available freely ') }}{% if pkg_dict.direct_download_URL %} <a href="{{pkg_dict.direct_download_URL}}" class="download">{{ _('from this address') }}</a> {% endif %} {% endif %}
+    {% if pkg_dict.availability == 'access_request' %}{{ _(' available via login ') }}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}" class="download">{{ _('from this address') }}</a> {% endif %} {% endif %}
     {% if pkg_dict.availability == 'contact_owner' %}
         {{ _(' available by ') -}} {% link_for _('contacting the distributor'), controller='ckanext.kata.controllers:ContactController', action='render_request_form', pkg_id=pkg_dict.name, class_='download' %}.
     {% endif %}
-    {% if pkg_dict.availability == 'through_provider' %}{{ _(' available through ') }}<a href="{{ pkg_dict.through_provider_URL }}" class="download">{{ _('data provider') }}</a>. {% endif %}
-    {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}.{% endif %}
+    {% if pkg_dict.availability == 'through_provider' %}{{ _(' available through ') }}<a href="{{ pkg_dict.through_provider_URL }}" class="download">{{ _('data provider') }}</a> {% endif %}
+    {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}{% endif %}
   </p>
+  <p>
   <p>
     {% if pkg_dict.license_title %}
       {{ _('Dataset license: ') }}
@@ -174,6 +175,13 @@
         <span property="dc:rights">{{ pkg_dict.license_title }}</span>
       {% endif %}
     {%- endif %}
+  </p>
+  <p>
+    {% if pkg_dict.license_URL %}
+      {{ _('Copyright notice') }}:
+      {{ pkg_dict.license_URL }}
+    {% endif %}
+  </p>
   </p>
 </div>
 </section>
