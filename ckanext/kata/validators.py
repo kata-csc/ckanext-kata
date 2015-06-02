@@ -552,3 +552,23 @@ def usage_terms_accepted(value, context):
     '''
     if not asbool(value):
         raise Invalid(_('Terms of use must be accepted'))
+
+
+def validate_license_url(key, data, errors, context):
+    '''
+    Check that more information about the license is provided, if license is not specific.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context:
+    :return: nothing. Raise invalid if length is less than 2 and lisense is not specific.
+    '''
+
+    value = data.get(key)
+    if data.get(('license_id',)) in ['notspecified', 'other-closed', 'other-nc', 'other-at', 'other-pd', 'other-open']:
+        if not value or len(value) < 2:
+            raise Invalid(_('Copyright notice is needed if license is not specified or '
+                            'is a variant of license type other.'))
+
+

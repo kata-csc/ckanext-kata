@@ -93,6 +93,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  ],
                  'language': u'eng, fin, swe',
                  'license_id': u'cc-by',
+                 'license_URL': u'Not to be distributed outside the Milky Way galaxy',
                  'mimetype': u'application/csv',
                  'name': u'',
                  'langnotes': [

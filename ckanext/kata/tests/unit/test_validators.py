@@ -12,7 +12,8 @@ from ckanext.kata.validators import validate_kata_date, \
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
-    validate_title_duplicates, validate_title, check_direct_download_url, check_pids
+    validate_title_duplicates, validate_title, check_direct_download_url, check_pids, \
+    validate_license_url
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict, StopOnError
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
     flattened_to_extras, flattened_from_extras, gen_translation_str_from_langtitle
@@ -356,6 +357,14 @@ class TestValidators(TestCase):
         check_pids(None, dada, errors, None)
         assert len(errors) == 0
 
+    def test_license_url(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('license_id',)] = u'notspecified'
+        self.assertRaises(Invalid, validate_license_url, ('license_URL',), dada, errors, None)
+        dada[('license_URL',)] = u'Only usable before collision with the Andromeda galaxy.'
+        validate_license_url(('license_URL',), dada, errors, None)
+        assert len(errors) == 0
 
 
 class TestResourceValidators(TestCase):
