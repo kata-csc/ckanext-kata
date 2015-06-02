@@ -43,6 +43,14 @@
 
   {% block package_additional_info %}
     {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
+
+
+    <section class="module-content">
+      <hr style="width:100%" />
+      <div class=" comments-container">
+        {% snippet "package/comment_list.html", pkg_id=c.pkg.id, pkg_name=c.pkg.name, userobj=c.userobj %}
+      </div>
+    </section>
   {% endblock %}
 
 {% endblock %}
