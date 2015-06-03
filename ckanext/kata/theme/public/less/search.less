@@ -10,3 +10,160 @@
     color: white;
   }
 }
+
+.search-terms {
+    /*background-color: #ebebec;
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: #ababac;
+    padding: 10px;
+    padding-top: 30px;
+    margin-bottom: 10px;*/
+}
+
+#dataset-search, #advanced-search {
+    /*border-bottom: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;*/
+}
+
+#search-results-kata {
+    /*border: 1px solid #DDDDDD;
+    margin-bottom: 20px;
+    padding: 20px;*/
+  margin-top: 20px;
+  .error {
+    color: @error-color;
+    font-size: 120%;
+    margin-bottom: 20px;
+  }
+
+  .number-of-results {
+    font-size: 160%;
+    font-weight: 700;
+  }
+
+}
+
+.search-results-facet {
+    //margin-bottom: 10px;
+}
+
+.search-form {
+  border-bottom: none;
+  padding-bottom: 0;
+
+  .search-terms {
+    .search-input {
+      margin-bottom: 15px;
+    }
+  }
+
+  .search-extras {
+    margin-bottom: 10px;
+    .since-year {
+      padding: 4px;
+      height: 16px;
+      line-height: 16px;
+      width: 6ex;
+      margin-left: 5px;
+    }
+    label {
+      font-weight: normal;
+      &:first-child {
+        margin-right: 15px;
+      }
+      input[type=checkbox] {
+        top: 4px;
+      }
+    }
+  }
+}
+
+.search-results-list {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  .dataset-list {
+    .dataset-heading {
+      font-size: @secondary-title-size;
+    }
+    .dataset-item {
+      border: 1px solid @border-color-bg;
+      padding: 15px;
+      background: white;
+      &.numbered {
+        .dataset-content {
+          margin-left: 35px;
+        }
+        .tag-list {
+          padding-left: 0;
+          margin-left: 35px;
+          .tag {
+            color: @brand-primary-color;
+            background-color: white;
+            border: 1px solid @brand-primary-color;
+            border-radius: 4px;
+            &:hover {
+              color: white;
+              border: 1px solid @brand-primary-color;
+              box-shadow: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .dataset-order-number {
+    float: left;
+    width: 30px;
+    font-size: @secondary-title-size;
+    font-weight: 700;
+  }
+}
+
+.search-results-tools {
+  margin-top: 10px;
+}
+
+#search-results-tools {
+  .accordion-heading {
+    font-size: @secondary-title-size;
+  }
+  .accordion-group {
+    border: 2px solid @border-color;
+    background: white;
+  }
+}
+
+#etsin-facet-list-toggle {
+  display: block;
+  margin-top: 15px;
+}
+
+.etsin-facet-list {
+  .facet-title {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .facet-pills {
+    & > li {
+      display: inline-block;
+    }
+    .facet-pill {
+      margin-bottom: 4px;
+      .pill {
+        color: @brand-primary-color;
+        background-color: white;
+        border: 1px solid @brand-primary-color;
+        border-radius: 4px;
+      }
+      &.active .pill {
+        color: white;
+        background-color: @brand-primary-color;
+        a {
+          color: white;
+        }
+      }
+    }
+  }
+}

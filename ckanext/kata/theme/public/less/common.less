@@ -10,9 +10,7 @@ a {
   }
 }
 body {
-    background-color: #FFF !important;
-    background: none !important;
-    font-family: Arial, Tahoma, sans-serif;
+  background: @body-background-color;
 }
 
 
@@ -75,4 +73,57 @@ body {
 
 i.chevron-alt {
   color: @link-alternative-color;
+}
+
+
+/**
+ * new layout -->
+ */
+
+#etsin-main {
+  width: 100%;
+}
+
+.etsin-container {
+  background-color: transparent;
+  .container {
+    max-width: 700px;
+  }
+}
+
+/* koko sivun levyinen container, eri taustaväri */
+.etsin-container-bg {
+  background-color: @body-background-secondary;
+  border-top: 1px solid @border-color-bg;
+  border-bottom: 1px solid @border-color-bg;
+}
+
+.etsin-secondary-title {
+  font-size: @secondary-title-size;
+}
+
+.action-link {
+  cursor: pointer;
+}
+
+.pagination {
+  ul {
+    box-shadow: none;
+  }
+  ul > li {
+    &.active > a {
+      background: transparent;
+      color: black;
+    }
+    a {
+      padding: 4px 8px;
+      font-size: @secondary-title-size;
+      font-weight: 700;
+      background: transparent;
+      border: none;
+      &:hover, &:focus {
+        background: transparent;
+      }
+    }
+  }
 }

@@ -1,0 +1,44 @@
+{#
+Custom facet list based on facet_list
+#}
+
+{% set label_function = h.format_facet_labels %}
+
+{% with items = items or h.get_facet_items_dict(name) %}
+{% set found = False %}
+  {% if within_tertiary %}
+    {% set nav_class = 'nav nav-pills nav-stacked' %}
+    {% set nav_item_class = ' ' %}
+    {% set wrapper_class = 'nav-facet nav-facet-tertiary' %}
+  {% endif %}
+
+  {% if items %}
+  <div class="etsin-facet-list {% if not is_visible %} collapse {% endif %} ">
+
+    <h3 class="facet-title">{{ title or h.get_facet_title(name) }}</h3>
+      <div id="{{ title or h.get_facet_title(name) }}">
+      <ul class="unstyled facet-pills">
+          {% for item in items %}
+            {% set href = h.remove_url_param(name, item.name, extras=extras) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
+            {% set label = label_function(item) if label_function else item.display_name %}
+            {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
+            {% set count = count_label(item['count']) if count_label else ('(%d)' % item['count']) %}
+            <li class="facet-pill {% if item.active %} active{% endif %}">
+                <a href="{{ href }}" title="{{ label if label != label_truncated else '' }}">
+                  <span class="pill">{{ label_truncated }} {{ count }}</span>
+                </a>
+            </li>
+          {% endfor %}
+          <li>
+            {% if h.get_param_int('_%s_limit' % name) %}
+              <a href="{{ h.remove_url_param('_%s_limit' % name, replace=0, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('More…') }}</a>
+            {% else %}
+              <a href="{{ h.remove_url_param('_%s_limit' % name, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Less…') }}</a>
+            {% endif %}
+          </li>
+      </ul>
+     </div>
+
+  </div>
+  {% endif %}
+{% endwith %}
