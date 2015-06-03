@@ -540,6 +540,13 @@ def to_licence_id(key, data, errors, context):
     '''
     Try to match licence to existing defined license, replace matched content with licence id.
 
+    The license converter is divided into two parts: the 'fuzzy' part and the lookup table part.
+    We will first try to check whether the license fits into any of the Creative Commons licenses
+    by trying to find certain keywords (i.e. 'cc', 'by', 'nd' etc.).
+
+    If the license wasn't of type CC, it is compared to the lookup table of known licenses in
+    license_id_map.json.
+
     :param key: key
     :param data: data
     :param errors: validation errors
@@ -547,13 +554,17 @@ def to_licence_id(key, data, errors, context):
     '''
 
     import os
-    log.debug('to_licence_id')
+
     map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/license_id_map.json'
+
     license_id = data.get(key)
     license_id_out = None
+    license_id_work = None
+
+    # Part 1: fuzzy search for Creative Common licenses
     if license_id:
-        license_id_lower = license_id.lower()
-        log.debug("raw licence id " + license_id + " lowered license id "+ license_id_lower)
+        license_id_lower = license_id.lower().strip()
+        log.debug("license: " + license_id)
         if 'cc' in license_id_lower or ('creative' in license_id_lower and 'commons' in license_id_lower):
             if 'by' in license_id_lower or 'attribution' in license_id_lower:
                 if 'nc' in license_id_lower or 'noncommercial' in license_id_lower:
@@ -570,6 +581,7 @@ def to_licence_id(key, data, errors, context):
                 else:
                     license_id_work = 'CC-BY'
 
+            # Try to figure out the Creative Commons version
             if license_id_work:
                 if '1' in license_id_lower:
                     license_id_out = license_id_work + "-1.0"
@@ -579,25 +591,28 @@ def to_licence_id(key, data, errors, context):
                     license_id_out = license_id_work + "-3.0"
                 elif '4' in license_id_lower:
                     license_id_out = license_id_work + "-4.0"
+                else:
+                    log.debug("CC-license found, but no version number given")
+
+            # CC-Zero license
             if 'cc0' in license_id_lower or 'zero' in license_id_lower:
                 license_id_out = 'CC0-1.0'
         if license_id_out:
-            log.debug("converted licence id" + license_id_out)
+            log.debug("--> " + license_id_out)
             data[key] = license_id_out
         else:
+
+            # Part 2: compare the licenses to license_id_map.json lookup
             with open(map_file_name) as map_file:
                 license_map = json.load(map_file)
-                log.debug("loaded  " + map_file_name)
 
             license_id_out = license_map.get(license_id_lower)
             if license_id_out:
-                log.debug("converted licence id" + license_id_out)
+                log.debug("--> licence_id_map.json: " + license_id_out)
                 data[key] = license_id_out
             else:
+                # no matching license found, do nothing
                 log.debug("No license ID in licence collection")
-                data[key] = "undefined"
     else:
         log.debug("No license ID in data")
         data[key] = "undefined"
-
-    log.debug('to_license_id end')
