@@ -519,7 +519,7 @@ def convert_languages_uri(key, data, errors, context):
             ret.append(uri.split("/")[-1])
 
     if ret:
-        data[key] = ','.join(ret)
+        data[key] = ', '.join(ret)
 
 
 
