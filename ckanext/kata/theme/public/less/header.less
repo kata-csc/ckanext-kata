@@ -1,28 +1,71 @@
+@logo-width: 63.5px;
+@logo-height: 43.5px;
+
 header.masthead {
-  background-color: #FFF !important;
+  /*background-color: #FFF !important;
   background-image: none !important;
   margin-bottom: 10px;
   height: 161px;
   width: 972px;
   margin: auto;
+  */
+  background: @body-background-color;
+  margin-bottom: 45px;
 
-  a.logo img {
-    height: 87px !important;
-    position: absolute;
-    padding-top: 10px;
+  .button-wrapper {
+    .btn-primary {
+      background-color: @brand-primary-color !important;
+      background-image: none !important;
+      border-color: @brand-primary-color !important;
+      box-shadow: none;
+      text-shadow: none;
+      font-size: 13px;
+    }
   }
 
-  .content {
+  .branding {
+    margin-top: 10px;
+    height: @logo-height;
+    .logo {
+      display: inline-block;
+      width: @logo-width;
+      height: @logo-height;
+      img {
+        width: @logo-width;
+        height: @logo-height;
+      }
+    }
+    .branding-description {
+      display: inline-block;
+      vertical-align: bottom;
+      color: @brand-primary-color;
+    }
+  }
+
+
+
+  /*.content {
     margin-top: 30px !important;
     top: 8px;
+  }*/
+
+  // TODO migrate container specifications to common.less for full layout changes
+  .container {
+    width: @content-max-width;
+  }
+
+  @media (max-width: @content-max-width) {
+    .container {
+      width: auto;
+    }
   }
 
   .container {
-    height: 100px;
+    /*height: 100px;
     background-image: none !important;
     background-size: 100% !important;
     width: 971px;
-    padding-top: 0px;
+    padding-top: 0px;*/
   }
 
   .content a,
@@ -66,10 +109,10 @@ header.masthead {
     }
   }
 
-  .dropup, .dropdown {
+  /*.dropup, .dropdown {
     display: inline-block;
     float: right;
-  }
+  }*/
 
   .user-dropdown-menu a {
     color: #000 !important;
@@ -98,13 +141,6 @@ header.masthead {
   }
 }
 
-#kata_navigation > li:last-child {
-  float:right !important;
-  a {
-    text-transform: none !important;
-  }
-}
-
 #help_navi {
   margin-bottom: 5px;
   float: right;
@@ -123,6 +159,102 @@ header.masthead {
     }
     .icon-large {
       margin-right: 8px;
+    }
+  }
+}
+
+@navi-text-color: #80898b;
+@navi-line-color: #d9d9d9;
+@navi-height: 32px;
+@navi-border-width: 4px;
+
+.navigation-wrapper {
+  margin-left: -20px;
+  margin-right: -20px;
+  //margin-top: 20px;
+  border-bottom: @navi-border-width solid @navi-line-color;
+}
+
+.etsin-navigation {
+  display: inline-block;
+  list-style: none;
+  font-size: 0;
+  li {
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-block;
+    & > a {
+      color: @navi-text-color;
+      background: transparent;
+      padding: 6px 15px;
+      &:hover {
+        color: @brand-primary-color;
+        background: transparent;
+      }
+      &:focus, &:active, &:hover {
+        text-decoration: none !important;
+      }
+    }
+  }
+}
+
+.primary-navigation {
+  position: relative;
+  bottom: -@navi-border-width;
+  margin: 20px 0 0 0;
+  padding: 0 10px;
+  //height: @navi-height;
+  /*width: 100%;
+  float: left;
+  margin: 0 0 20px 0;
+  background-color: #5a5a5c;
+  border: none*/
+  border-bottom: @navi-border-width solid @navi-line-color;
+  & > li {
+    //height: @navi-height;
+    position: relative;
+    bottom: -@navi-border-width;
+    & > a {
+      display: inline-block;
+      height: @navi-height - 6px - 6px;
+      text-transform: uppercase;
+      border-bottom: @navi-border-width solid @navi-line-color;
+      &:hover {
+        border-bottom-color: @brand-primary-color;
+        color: @brand-primary-color;
+        background: transparent;
+      }
+    }
+    .active > a {
+      border-bottom-color: @brand-primary-color;
+    }
+  }
+}
+
+.secondary-navigation {
+  margin: 0;
+  padding: 0;
+  float: right;
+  position: relative;
+  top: 23px;
+  & > li {
+    //float: right;
+  }
+  //position: relative;
+  //right: 0;
+  & > a {
+    text-transform: none !important;
+  }
+}
+
+.logged-in-actions {
+  color: @navi-text-color;
+  a {
+    color: @navi-text-color;
+  }
+  a[data-toggle] {
+    &:hover, &:active, &:focus {
+      text-decoration: none;
     }
   }
 }
