@@ -818,13 +818,27 @@ def resolve_org_name(org_id):
 @beaker_cache(type="dbm", expire=86400)
 def resolve_language_for_uri(uri, lang):
 
-    url = "http://finto.fi/rest/v1/lexvo/label?uri={uri}&lang={lang}".format(uri=uri, lang=lang)
-    data = urllib2.urlopen(url).read()
-    jsondata = json.loads(data)
+    uri = uri.strip()
 
-    print url
+    if uri.startswith("http://lexvo.org/id/iso639-3/"):
+        # for lexvo urls
+        url = "http://finto.fi/rest/v1/lexvo/label?uri={uri}&lang={lang}".format(uri=uri, lang=lang)
+    elif len(uri) == 3:
+        # try to fetch the language from lexvo with the 3-letter language code
+        url = url = "http://finto.fi/rest/v1/lexvo/label?uri=http://lexvo.org/id/iso639-3/{uri}&lang={lang}".format(uri=uri, lang=lang)
+    else:
+        return uri
 
-    return jsondata["prefLabel"].lower()
+    try:
+        data = urllib2.urlopen(url).read()
+        jsondata = json.loads(data)
+    except:
+        pass
+
+    log.debug(url)
+
+    return jsondata.get("prefLabel", uri).lower()
+
 
 def resolve_languages(languages, lang=None):
     """

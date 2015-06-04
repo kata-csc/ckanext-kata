@@ -111,7 +111,7 @@ class Schemas:
 
         # co.convert_languages, co.remove_disabled_languages
         schema['language'] = \
-            [ignore_missing, co.convert_to_extras_kata, unicode]
+            [ignore_missing, co.convert_languages_uri, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_begin'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \
