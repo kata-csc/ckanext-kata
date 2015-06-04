@@ -598,7 +598,6 @@ def has_json_content(data):
         return False
     return True
 
-
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
     '''
@@ -633,6 +632,8 @@ def get_labels_for_uri_nocache(uri, ontology=None):
             return None
     if not ontology:
         return None
+
+
 
     url = "http://finto.fi/rest/v1/{ontology}/data?uri={uri}&format=application/json".format(ontology=ontology, uri=uri)
     # Reverse DNS resolving can be extremely slow
@@ -813,3 +814,32 @@ def resolve_org_name(org_id):
     if not group:
         return org_id
     return group.title
+
+@beaker_cache(type="dbm", expire=86400)
+def resolve_language_for_uri(uri, lang):
+
+    url = "http://finto.fi/rest/v1/lexvo/label?uri={uri}&lang={lang}".format(uri=uri, lang=lang)
+    data = urllib2.urlopen(url).read()
+    jsondata = json.loads(data)
+
+    print url
+
+    return jsondata["prefLabel"].lower()
+
+def resolve_languages(languages, lang=None):
+    """
+    Resolves the given languages from the lexvo ontology and returns them as a comma-separated list.
+
+    :param languages: a comma-separated list of lexvo language uri's
+    :param lang: language the query the lexvo for (defaults to UI language)
+    :return: a comma-separated list of resolved languages (e.g. "suomen kieli, ranskan kieli, espanjan kieli")
+    """
+
+    langs = languages.split(",")
+
+    ret = []
+
+    for uri in langs:
+        ret.append(resolve_language_for_uri(uri, h.lang()))
+
+    return ", ".join(ret)

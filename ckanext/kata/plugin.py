@@ -144,6 +144,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action='organization_autocomplete')
+        map.connect('/api/2/util/language/autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action='language_autocomplete')
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")
@@ -312,6 +316,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'resolve_org_name': helpers.resolve_org_name,
+            'resolve_languages': helpers.resolve_languages,
             'split_disciplines': helpers.split_disciplines,
             'string_to_list': helpers.string_to_list,
             'organizations_available': helpers.organizations_available,

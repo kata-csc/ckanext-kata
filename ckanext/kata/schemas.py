@@ -109,8 +109,9 @@ class Schemas:
                                'lang': [unicode, co.convert_languages]}
         schema['notes'] = [co.gen_translation_str_from_langnotes]
 
+        # co.convert_languages, co.remove_disabled_languages
         schema['language'] = \
-            [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
+            [ignore_missing, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_begin'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = \

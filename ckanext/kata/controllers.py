@@ -313,6 +313,19 @@ class KATAApiController(ApiController):
             organization_list = get_action('organization_autocomplete')(context, data_dict)
         return self._finish_ok(organization_list)
 
+    def language_autocomplete(self):
+        '''
+        Suggestions for languages
+
+        :rtype: dictionary
+        '''
+        language = request.params.get('language', '')
+        query = request.params.get('incomplete', '')
+
+        result = self._onki_autocomplete_uri(query, "lexvo", language)
+
+        return result
+
 
 class EditAccessRequestController(BaseController):
     '''
