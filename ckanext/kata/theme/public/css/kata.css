@@ -1269,25 +1269,7 @@ a.download {
 .nav-facet .nav-item.active a {
   color: white;
 }
-.search-terms {
-  /*background-color: #ebebec;
-    border-radius: 4px;
-    border: 1px solid;
-    border-color: #ababac;
-    padding: 10px;
-    padding-top: 30px;
-    margin-bottom: 10px;*/
-}
-#dataset-search,
-#advanced-search {
-  /*border-bottom: 0px !important;
-    margin-bottom: 0px !important;
-    padding-bottom: 0px !important;*/
-}
 #search-results-kata {
-  /*border: 1px solid #DDDDDD;
-    margin-bottom: 20px;
-    padding: 20px;*/
   margin-top: 20px;
 }
 #search-results-kata .error {

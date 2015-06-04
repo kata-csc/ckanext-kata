@@ -1,6 +1,8 @@
 {#
 render a list of tags linking to the dataset search page
 tags: list of tags
+truncated: True/False, truncated mode for e.g. search results view,
+           should display only few relevant tags (currently just the first ones)
 #}
 {% set _class = _class or 'tag-list' %}
 {% set truncate = truncated or False %}
