@@ -85,6 +85,15 @@ i.chevron-alt {
 .etsin-container .container {
   max-width: 700px;
 }
+@media (max-width: 971px) {
+  .etsin-container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .etsin-container .container {
+    width: auto;
+  }
+}
 /* koko sivun levyinen container, eri taustaväri */
 .etsin-container-bg {
   background-color: #f7f7f7;
@@ -474,6 +483,9 @@ header.masthead .button-wrapper .btn-primary {
   text-shadow: none;
   font-size: 13px;
 }
+header.masthead .button-wrapper .btn-primary:hover {
+  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.2);
+}
 header.masthead .branding {
   margin-top: 10px;
   height: 43.5px;
@@ -508,8 +520,7 @@ header.masthead .container {
     padding-top: 0px;*/
 }
 header.masthead .content a,
-header.masthead .account a,
-header.masthead .user-dropdown-menu a {
+header.masthead .account a {
   /* Overwrite profile drop down menu color in main.css */
   color: #FFF;
   font-size: 85%;
@@ -544,11 +555,29 @@ header.masthead .account .dropdown .button:hover {
   /* Overwrite profile section buttons shadow color in main.css */
   box-shadow: 0 1px 0 #f2f2f2 inset;
 }
+header.masthead .user-dropdown-menu {
+  margin-top: 5px;
+}
 header.masthead .user-dropdown-menu a {
   color: #000 !important;
 }
 header.masthead .user-dropdown-menu a:hover {
   color: #fff !important;
+}
+header.masthead .dropdown-menu > li > a:hover,
+header.masthead .dropdown-menu > li > a:focus,
+header.masthead .dropdown-submenu:hover > a,
+header.masthead .dropdown-submenu:focus > a {
+  background: #3fa9f5;
+}
+header.masthead .dropdown .dropdown-toggle .icon-chevron-down {
+  margin-left: 3px;
+}
+header.masthead .dropdown .dropdown-toggle:hover {
+  color: #3fa9f5;
+}
+header.masthead .dropdown.open .icon-chevron-down {
+  color: #3fa9f5;
 }
 header.masthead .section.account {
   /* Overwrite profile avatar section alignment in main.css */
@@ -599,23 +628,23 @@ header.masthead .not-authed a {
   list-style: none;
   font-size: 0;
 }
-.etsin-navigation li {
+.etsin-navigation > li {
   font-size: 14px;
   font-weight: 700;
   display: inline-block;
 }
-.etsin-navigation li > a {
+.etsin-navigation > li > a {
   color: #80898b;
   background: transparent;
   padding: 6px 15px;
 }
-.etsin-navigation li > a:hover {
+.etsin-navigation > li > a:hover {
   color: #3fa9f5;
   background: transparent;
 }
-.etsin-navigation li > a:focus,
-.etsin-navigation li > a:active,
-.etsin-navigation li > a:hover {
+.etsin-navigation > li > a:focus,
+.etsin-navigation > li > a:active,
+.etsin-navigation > li > a:hover {
   text-decoration: none !important;
 }
 .primary-navigation {
@@ -639,14 +668,17 @@ header.masthead .not-authed a {
   height: 20px;
   text-transform: uppercase;
   border-bottom: 4px solid #d9d9d9;
+  transition: border-bottom-color 0.3s, color 0.3s;
 }
-.primary-navigation > li > a:hover {
+.primary-navigation > li > a:hover,
+.primary-navigation > li > a:active {
   border-bottom-color: #3fa9f5;
   color: #3fa9f5;
   background: transparent;
 }
-.primary-navigation > li .active > a {
+.primary-navigation > li.active > a {
   border-bottom-color: #3fa9f5;
+  color: #3fa9f5;
 }
 .secondary-navigation {
   margin: 0;
@@ -654,6 +686,9 @@ header.masthead .not-authed a {
   float: right;
   position: relative;
   top: 23px;
+}
+.secondary-navigation > li {
+  font-size: 12px;
 }
 .secondary-navigation > a {
   text-transform: none !important;
@@ -668,6 +703,149 @@ header.masthead .not-authed a {
 .logged-in-actions a[data-toggle]:active,
 .logged-in-actions a[data-toggle]:focus {
   text-decoration: none;
+}
+.small-display-menu-navi {
+  display: none;
+}
+.small-display-menu-navi .hamburger {
+  z-index: 100;
+  position: absolute;
+  right: 0px;
+  top: -6px;
+  cursor: pointer;
+  display: block;
+  height: 42px;
+  width: 42px;
+  color: white;
+  font-size: 56px;
+  text-align: center;
+  background: #3fa9f5;
+}
+.small-display-menu-navi .hamburger .icon-align-justify {
+  font-size: 22px;
+  width: 22px;
+}
+.small-display-menu-navi .hamburger:hover,
+.small-display-menu-navi .hamburger:active,
+.small-display-menu-navi .hamburger:focus {
+  outline: 0;
+  text-decoration: none;
+  color: white !important;
+}
+.small-display-menu-navi #main-navi-small {
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.small-display-menu-navi #main-navi-small li > a {
+  display: block;
+  margin-bottom: 7px;
+  color: #80898b;
+}
+.small-display-menu-navi #main-navi-small li > a:hover,
+.small-display-menu-navi #main-navi-small li > a:active,
+.small-display-menu-navi #main-navi-small li > a:focus {
+  outline: 0;
+  text-decoration: none;
+  color: #3fa9f5;
+}
+.small-display-menu-navi #main-navi-small .active > a {
+  color: #3fa9f5;
+}
+.small-display-menu-user {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.small-display-menu-user .dropdown.open .icon-chevron-down {
+  color: white !important;
+}
+.small-display-menu-user .usericon {
+  z-index: 100;
+  cursor: pointer;
+  display: block;
+  height: 42px;
+  width: 42px;
+  color: white;
+  font-size: 46px;
+  text-align: center;
+  background: #3fa9f5;
+}
+.small-display-menu-user .usericon .icon-user,
+.small-display-menu-user .usericon .icon-chevron-down {
+  margin: 0;
+}
+.small-display-menu-user .usericon:hover,
+.small-display-menu-user .usericon:active,
+.small-display-menu-user .usericon:focus {
+  outline: 0;
+  text-decoration: none;
+  color: white !important;
+}
+.small-display-menu-user .dropdown .dropdown-menu {
+  margin-top: 0;
+}
+.small-display-menu-user .dropdown .username {
+  color: #80898b;
+  padding: 3px 20px;
+  clear: both;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.small-display-language-selector {
+  position: absolute;
+  top: 11px;
+  right: 56px;
+  display: none;
+  color: #80898b;
+}
+.small-display-language-selector .language-selector-box {
+  border: 1px solid #c9c9c9;
+  border-radius: 3px;
+  font-weight: 700;
+}
+.small-display-language-selector .language-selector-box a {
+  color: #3fa9f5;
+}
+.small-display-language-selector .language-selector-box .lang-code {
+  padding: 3px;
+}
+.small-display-menu-navi {
+  display: none;
+}
+/* smaller screen size: user menu + other secondaries to upper corner */
+@media (max-width: 900px) {
+  .small-display-language-selector {
+    display: block;
+  }
+  .small-display-menu-user {
+    display: block;
+  }
+  .secondary-navigation {
+    float: none;
+    position: absolute;
+    top: -46px;
+    right: 120px;
+  }
+  .secondary-navigation .secnav {
+    display: none;
+  }
+}
+/* the smallest screen size: main navigation becomes a burger */
+@media (max-width: 600px) {
+  .primary-navigation {
+    display: none;
+  }
+  .secondary-navigation {
+    display: none;
+  }
+  .small-display-menu-navi {
+    margin-top: 36px;
+    display: block;
+  }
+  .branding-description {
+    display: none !important;
+  }
 }
 .tta-orange {
   color: #f1592a;
@@ -847,18 +1025,6 @@ button,
 select,
 textarea {
   font-family: Arial, Tahoma, sans-serif;
-}
-.dropdown-menu li > a:hover,
-.dropdown-menu .active > a,
-.dropdown-menu .active > a:hover {
-  background-color: #f1592a;
-}
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus,
-.dropdown-submenu:hover > a,
-.dropdown-submenu:focus > a {
-  background-color: #6ccff6;
-  background-image: linear-gradient(to bottom, #6ccff6, #0c8bbe);
 }
 #main-nav {
   background-color: #5a5a5c !important;

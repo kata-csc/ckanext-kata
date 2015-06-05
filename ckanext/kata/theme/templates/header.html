@@ -13,12 +13,31 @@
       </div>
     </div>
 
+    {% set current_url = request.environ.CKAN_CURRENT_URL %}
+    {% set current_lang = request.environ.CKAN_LANG %}
+
     <div class="navigation-wrapper">
       <div class="container">
 
+        <div class="small-display-menu-navi">
+          <a class="hamburger" data-toggle="collapse" href="#main-navi-small">
+            <i class="icon-align-justify"></i>
+          </a>
+          <div id="main-navi-small" class="collapse">
+            <ul role="menu">
+                {{ h.build_nav_main(
+                  ('home', _('Home')),
+                  ('search', _('Datasets')),
+                  ('organizations_index', _('Organizations')),
+                  ('about', _('About Etsin')),
+                )}}
+            </ul>
+          </div>
+        </div>
+
         <ul class="secondary-navigation etsin-navigation">
 
-          <li>
+          <li class="add-dataset-button">
             <div class="button-wrapper">
               {% if h.check_access('package_create') %}
                 {% link_for _('Add Dataset'), controller='package', action='new', class_='btn btn-primary' %}
@@ -26,25 +45,22 @@
             </div>
           </li>
 
-          {% set current_url = request.environ.CKAN_CURRENT_URL %}
-          {% set current_lang = request.environ.CKAN_LANG %}
-
-          <li>
+          <li class="secnav">
             {% if current_lang == 'en' %}
-              <a href="{% url_for current_url, locale='fi' %}">suomeksi</a>
+              <a href="{% url_for current_url, locale='fi' %}">FI</a>
             {% elif current_lang == 'fi' %}
-              <a href="{% url_for current_url, locale='en' %}">in English</a>
+              <a href="{% url_for current_url, locale='en' %}">EN</a>
             {% endif  %}
           </li>
 
           {% if not c.userobj %}
-            <li>
-              <a class="button" href="{{ h.url_for(controller='user', action='login') }}">{{ _('Log in') }}</a>
+            <li class="secnav">
+              <a href="{{ h.url_for(controller='user', action='login') }}">{{ _('Log in') }}</a>
             </li>
           {% endif %}
 
           {% if c.userobj %}
-            <li>
+            <li class="secnav">
               <div class="logged-in-actions" data-module="me">
 
                 <div class="dropdown">
@@ -57,7 +73,7 @@
                       <a href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}">{{ _('My Datasets') }}</a>
                     </li>
                     <li>
-                      <a href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}">{{ _('My Profile') }}</a>
+                      <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}">{{ _('Edit Profile') }}</a>
                     </li>
                     <li>
                       {% link_for _('Activity Stream'), controller='user', action='activity', id=c.userobj.name %}
@@ -68,18 +84,16 @@
               </div>
 
             </li>
-            <li>
+            <li class="secnav">
               <a href="{{ h.url_for('/user/_logout') }}">{{ _('Log out') }}</a>
             </li>
           {% endif %}
 
         </ul>
         <ul class="primary-navigation etsin-navigation">
-          <li class="active">
-            <a href={{ h.url('home') }}>{{ _('Home') }}</a>
-          </li>
           {{ h.build_nav_main(
-            ('search', _('Search Datasets')),
+            ('home', _('Home')),
+            ('search', _('Datasets')),
             ('organizations_index', _('Organizations')),
             ('about', _('About Etsin')),
           )}}
@@ -88,6 +102,45 @@
 
       </div>
 
+    </div>
+
+    <div class="small-display-menu-user">
+      <div class="dropdown">
+        <a class="usericon dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><i class="icon-chevron-down"></i></a>
+        <ul class="dropdown-menu pull-right" role="menu">
+          {% if not c.userobj %}
+            <li>
+              <a href="{{ h.url_for(controller='user', action='login') }}">{{ _('Log in') }}</a>
+            </li>
+          {% endif %}
+          {% if c.userobj %}
+            <li><div class="username">{{ c.userobj.fullname or c.userobj.name }}</div></li>
+            <li class="divider"></li>
+            <li>
+              <a href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}">{{ _('My Datasets') }}</a>
+            </li>
+            <li>
+              <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}">{{ _('Edit Profile') }}</a>
+            </li>
+            <li>
+              {% link_for _('Activity Stream'), controller='user', action='activity', id=c.userobj.name %}
+            </li>
+            <li>
+              <a href="{{ h.url_for('/user/_logout') }}">{{ _('Log out') }}</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="small-display-language-selector">
+      <div class="language-selector-box">
+        {% if current_lang == 'en' %}
+          <a class="lang-code" href="{% url_for current_url, locale='fi' %}">FI</a>|<span class="lang-code">EN</span>
+        {% elif current_lang == 'fi' %}
+          <span class="lang-code">FI</span>|<a class="lang-code" href="{% url_for current_url, locale='en' %}">EN</a>
+        {% endif  %}
+      </div>
     </div>
 
   </div>
