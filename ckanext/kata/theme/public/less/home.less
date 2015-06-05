@@ -1,0 +1,135 @@
+.dataset-fast-stats-wrapper {
+  margin: 20px auto 50px auto;
+  text-align: center;
+}
+
+.dataset-fast-stats {
+  display: inline-block;
+  margin: 0;
+  max-width: 480px;
+  border: 1px solid @border-color-bg;
+  border-radius: 4px;
+  list-style: none;
+  & > li {
+    display: inline-block;
+    padding: 24px 30px 20px 30px;
+    .stat-label {
+      padding-top: 10px;
+      font-size: 12px;
+      color: @brand-primary-color;
+    }
+    .stat-number {
+      font-size: 38px;
+    }
+  }
+}
+
+@steps-image-size: 160px;
+
+.etsin-steps-visualization {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  & > ul {
+    display: inline-block;
+    margin: 0;
+    list-style: none;
+    & > li {
+      max-width: @steps-image-size * 0.3 + @steps-image-size;
+      display: inline-block;
+      padding: 24px 30px 20px 30px;
+      &.steps-arrow {
+        padding-top: @steps-image-size / 2 + 10px;
+        padding-left: 0;
+        padding-right: 0;
+        vertical-align: top;
+        .icon-chevron-right {
+          color: @brand-primary-color;
+          font-size: 32px;
+          width: 32px;
+        }
+      }
+      .steps-image {
+        border: 0;
+        border-radius: @steps-image-size / 2;
+        margin-left: @steps-image-size * 0.1;
+        margin-right: @steps-image-size * 0.1;
+        background-color: @brand-primary-color;
+        content: ' ';
+        width: @steps-image-size;
+        height: @steps-image-size;
+      }
+      .steps-text {
+        margin-top: 15px;
+        text-align: left;
+        h2 {
+          font-size: @secondary-title-size;
+        }
+        p {
+          color: @text-color-light;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.container.experiences {
+  max-width: 1024px;
+}
+@media (max-width: 1024) {
+  .container.experiences {
+    width: auto;
+  }
+}
+
+.home-experiences-social {
+  padding: 50px;
+}
+
+@person-image-size: 130px;
+
+.home-experiences {
+  .story + .story {
+    margin-top: 30px;
+  }
+  .story {
+    margin-right: 40px;
+    max-width: 600px;
+    .person-image {
+      float: left;
+      content: ' ';
+      border: 0;
+      border-radius: @person-image-size / 2;
+      width: @person-image-size;
+      height: @person-image-size;
+      background-color: #555;
+      margin: 0 40px 0 0;
+    }
+    .person-story {
+      padding-left: @person-image-size + 40px;
+      h2 {
+        font-size: @secondary-title-size;
+        color: @text-color-light;
+      }
+      p {
+        font-size: 12px;
+        color: @text-color-light;
+      }
+      .person-name {
+        font-size: 12px;
+        color: black;
+      }
+    }
+  }
+}
+
+.home-social-picks {
+  min-width: 300px;
+  max-width: 450px;
+  float: right;
+  background-color: white;
+  border: 1px solid @border-color-bg;
+  padding: 25px;
+  margin-bottom: 40px;
+}
