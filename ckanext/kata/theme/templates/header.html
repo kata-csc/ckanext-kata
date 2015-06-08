@@ -39,9 +39,10 @@
 
           <li class="add-dataset-button">
             <div class="button-wrapper">
-              {% if h.check_access('package_create') %}
+              {# show add dataset button also to not logged in viewers #}
+              {# if h.check_access('package_create') #}
                 {% link_for _('Add Dataset'), controller='package', action='new', class_='btn btn-primary' %}
-              {% endif %}
+              {# endif #}
             </div>
           </li>
 

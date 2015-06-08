@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-06-08 09:58+0000\n"
+"POT-Creation-Date: 2015-06-08 11:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -511,7 +511,6 @@ msgstr ""
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:3
 #: ckanext/kata/theme/templates/datamining/read.html:7
 #: ckanext/kata/theme/templates/group/read_base.html:17
-#: ckanext/kata/theme/templates/home/index.html:68
 #: ckanext/kata/theme/templates/kata/dummy.html:111
 #: ckanext/kata/theme/templates/organization/read_base.html:8
 #: ckanext/kata/theme/templates/package/base.html:15
@@ -978,24 +977,27 @@ msgstr ""
 msgid "Since year"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:80
+#: ckanext/kata/theme/templates/home/index.html:69
+msgid "Aineistoa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:81
 msgid "Tags"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:92
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91
-msgid "Disciplines"
+#: ckanext/kata/theme/templates/home/index.html:93
+msgid "Tieteenalaa"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:110
+#: ckanext/kata/theme/templates/home/index.html:111
 msgid "Browse datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:120
+#: ckanext/kata/theme/templates/home/index.html:121
 msgid "Search datasets"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:130
+#: ckanext/kata/theme/templates/home/index.html:131
 #: ckanext/kata/theme/templates/kata/dummy.html:195
 msgid "Add datasets"
 msgstr ""
@@ -3743,12 +3745,12 @@ msgid ""
 "again.</p> "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:88
+#: ckanext/kata/theme/templates/package/search.html:89
 msgid "Limit search results"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:97
-msgid "More/less…"
+#: ckanext/kata/theme/templates/package/search.html:98
+msgid "More categories…"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:1
@@ -6198,6 +6200,10 @@ msgid ""
 "retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that "
 "you must have JavaScript enabled in your browser in order for the automatic "
 "suggestions to work."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91
+msgid "Disciplines"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91

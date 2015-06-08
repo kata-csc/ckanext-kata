@@ -14,6 +14,16 @@
   <div class="etsin-container">
     <div class="container">
       <div class="row-fluid">
+
+        <div class="extra-messages">
+          {{ self.flash() }}
+          {% if h.is_backup_instance() %}
+          <p class="maintenance-message">
+            {{ _('There is a maintenance break in service')}}. {{ _('You can not add or edit data during maintenance break')}}.
+          </p>
+          {% endif %}
+        </div>
+
         <h2 class="etsin-secondary-title">{{ _("Search for a Dataset") }}</h2>
 
         <form id="dataset-search" class="dataset-search clearfix search-form" action="{% url_for controller='package', action='search' %}" method="get" data-module="select-switch">
@@ -64,8 +74,9 @@
                 </a>
               </div>
               <div class="stat-label">
+                <!-- TODO: translation of same label: datasets - aineistot/aineistoa -->
                 <a href="{{ h.url_for(controller='package', action='search') }}">
-                  {{ _('Datasets') }}
+                  {{ _('Aineistoa') }}
                 </a>
               </div>
             </li>
@@ -89,7 +100,7 @@
               </div>
               <div class="stat-label">
                 <a href="{{ h.url_for(controller='package', action='search') }}">
-                  {{ _('Disciplines') }}
+                  {{ _('Tieteenalaa') }}
                 </a>
               </div>
             </li>
@@ -193,6 +204,19 @@
       </div>
     </div>
   </div>
+
+  {% set addinfo = g.site_intro_text %}
+  {% if addinfo %}
+  <div class="etsin-container additional-info">
+    <div class="container">
+      <div class="row-fluid">
+        <div class="index-additional-info">
+          {{ h.render_markdown(addinfo) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
 </div>
 

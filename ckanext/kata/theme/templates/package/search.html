@@ -79,9 +79,10 @@
           'remove_field': c.remove_field }
         %}
         {% set active_facets = h.get_active_facets(facets) %}
+        {% set lang = h.lang() %}
 
         <div class="search-results-tools">
-          <div class="accordion kata-accordion" id="search-results-tools" data-module="kata-facet-accordion" data-module-facets="{{ active_facets }}">
+          <div class="accordion kata-accordion" id="search-results-tools" data-module="kata-facet-accordion" data-module-facets="{{ active_facets }}" data-module-currentlang="{{ lang }}">
             <div class="accordion-group">
               <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#search-results-tools" href="#collapse0">
@@ -94,7 +95,7 @@
                     {% set is_active = h.is_active_facet(facet, active_facets) %}
                     {{ h.snippet('snippets/facet_list_new.html', title=c.facet_titles[facet], name=facet, fields=c.fields_grouped, limits=c.search_facets_limits, is_visible=is_active or loop.index0 < 3) }}
                   {% endfor %}
-                  <a class="action-link" id="etsin-facet-list-toggle">{{ _('More/less…')}}</a>
+                  <a class="action-link" id="etsin-facet-list-toggle">{{ _('More categories…')}}</a>
                 </div>
               </div>
             </div>
@@ -107,6 +108,7 @@
 
         {{ c.page.pager(q=c.q) }}
 
+      </div>
       </div> <!-- row-fluid -->
     </div> <!-- container -->
   </div>

@@ -2,6 +2,7 @@
 @logo-height: 43.5px;
 
 header.masthead {
+  font-family: Lato, Helvetica, Arial, sans-serif;
   /*background-color: #FFF !important;
   background-image: none !important;
   margin-bottom: 10px;
@@ -27,6 +28,7 @@ header.masthead {
   }
 
   .branding {
+    margin-left: 23px; /* align logo with first navi item left side */
     margin-top: 10px;
     height: @logo-height;
     .logo {
@@ -42,6 +44,12 @@ header.masthead {
       display: inline-block;
       vertical-align: bottom;
       color: @brand-primary-color;
+    }
+  }
+
+  @media(max-width: 1000px) {
+    .branding {
+      margin-left: 2px;
     }
   }
 
@@ -249,7 +257,7 @@ header.masthead {
       border-bottom: @navi-border-width solid @navi-line-color;
       transition: border-bottom-color @transition-length, color @transition-length;
       &:hover, &:active {
-        border-bottom-color: @brand-primary-color;
+        //border-bottom-color: @brand-primary-color;
         color: @brand-primary-color;
         background: transparent;
       }
@@ -268,7 +276,7 @@ header.masthead {
   position: relative;
   top: 23px;
   & > li {
-    font-size: 12px;
+    font-size: 13px;
     //float: right;
   }
   //position: relative;

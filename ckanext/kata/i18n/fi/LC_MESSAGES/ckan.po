@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-06-08 09:58+0000\n"
+"POT-Creation-Date: 2015-06-08 11:26+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -537,7 +537,6 @@ msgstr "Etusivu"
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:3
 #: ckanext/kata/theme/templates/datamining/read.html:7
 #: ckanext/kata/theme/templates/group/read_base.html:17
-#: ckanext/kata/theme/templates/home/index.html:68
 #: ckanext/kata/theme/templates/kata/dummy.html:111
 #: ckanext/kata/theme/templates/organization/read_base.html:8
 #: ckanext/kata/theme/templates/package/base.html:15
@@ -1041,7 +1040,7 @@ msgstr "Tervetuloa"
 #: ckanext/kata/theme/templates/package/search.html:4
 #: ckanext/kata/theme/templates/package/search.html:12
 msgid "Search for a Dataset"
-msgstr "Etsi aineistoa"
+msgstr "Hae aineistoja"
 
 #: ckanext/kata/theme/templates/home/index.html:23
 #: ckanext/kata/theme/templates/package/search.html:18
@@ -1063,24 +1062,29 @@ msgstr "Avoin data"
 msgid "Since year"
 msgstr "Vuodesta"
 
-#: ckanext/kata/theme/templates/home/index.html:80
+#: ckanext/kata/theme/templates/home/index.html:69
+msgid "Aineistoa"
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:81
 msgid "Tags"
 msgstr "Asiasanaa"
 
-#: ckanext/kata/theme/templates/home/index.html:92
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91
-msgid "Disciplines"
-msgstr "Tieteenalat"
+#: ckanext/kata/theme/templates/home/index.html:93
+#, fuzzy
+#| msgid "okm-tieteenala"
+msgid "Tieteenalaa"
+msgstr "OKM:n tieteenalaluokituksesta"
 
-#: ckanext/kata/theme/templates/home/index.html:110
+#: ckanext/kata/theme/templates/home/index.html:111
 msgid "Browse datasets"
 msgstr "Selaa aineistoja"
 
-#: ckanext/kata/theme/templates/home/index.html:120
+#: ckanext/kata/theme/templates/home/index.html:121
 msgid "Search datasets"
 msgstr "Etsi aineistoja"
 
-#: ckanext/kata/theme/templates/home/index.html:130
+#: ckanext/kata/theme/templates/home/index.html:131
 #: ckanext/kata/theme/templates/kata/dummy.html:195
 msgid "Add datasets"
 msgstr "Lisää aineistoja"
@@ -4324,13 +4328,13 @@ msgid ""
 "again.</p> "
 msgstr "<p><strong>Haussa tapahtui virhe.</strong> Ole hyvä ja yritä uudelleen</p>"
 
-#: ckanext/kata/theme/templates/package/search.html:88
+#: ckanext/kata/theme/templates/package/search.html:89
 msgid "Limit search results"
 msgstr "Rajaa hakutuloksia"
 
-#: ckanext/kata/theme/templates/package/search.html:97
-msgid "More/less…"
-msgstr "Lisää/vähemmän…"
+#: ckanext/kata/theme/templates/package/search.html:98
+msgid "More categories…"
+msgstr "Lisää kategorioita…"
 
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:1
 msgid "Hide/show"
@@ -6849,6 +6853,10 @@ msgstr ""
 "käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91
+msgid "Disciplines"
+msgstr "Tieteenalat"
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:91
 msgid "eg. Matematiikka"
 msgstr "esim. Matematiikka"
 
@@ -7776,6 +7784,6 @@ msgstr "Ensimmäinen kirjautuminen"
 msgid "API Key"
 msgstr "API-avain"
 
-#~ msgid "Search..."
-#~ msgstr "Haku..."
+#~ msgid "More/less…"
+#~ msgstr "Lisää/vähemmän…"
 

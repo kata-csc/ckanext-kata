@@ -27,6 +27,7 @@ this.ckan.module('kata-facet-accordion', function ($, translate) {
   return {
     initialize: function () {
       $.proxyAll(this, /_on/, /_bind/);
+      this.lang = this.options.currentlang || 'en';
 
       var el = this.el;
       var collapses = el.find('.collapse');
@@ -53,9 +54,22 @@ this.ckan.module('kata-facet-accordion', function ($, translate) {
       this.el.find('.etsin-facet-list.collapse').collapse('toggle');
     },
 
+    _onHidden: function () {
+      console.log(this.lang);
+      var label = this.lang === 'fi' ? 'Lisää kategorioita…' : 'More categories…';
+      this.el.find('#etsin-facet-list-toggle').html(label);
+    },
+
+    _onShown: function () {
+      var label = this.lang === 'fi' ? 'Vähemmän kategorioita…' : 'Less categories…';
+      this.el.find('#etsin-facet-list-toggle').html(label);
+    },
+
     _bindCollapses: function () {
       var collapses = this.el.find('.etsin-facet-list.collapse');
       collapses.collapse();
+      collapses.on('show', this._onShown);
+      collapses.on('hide', this._onHidden);
       var toggler = this.el.find('#etsin-facet-list-toggle');
       toggler.on('click', this._onToggle);
     }
