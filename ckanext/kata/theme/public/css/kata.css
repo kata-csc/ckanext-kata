@@ -1704,6 +1704,7 @@ a.download {
   max-width: 208px;
   display: inline-block;
   padding: 24px 30px 20px 30px;
+  vertical-align: top;
 }
 .etsin-steps-visualization > ul > li.steps-arrow {
   padding-top: 90px;
