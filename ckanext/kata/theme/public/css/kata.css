@@ -180,6 +180,9 @@ i.chevron-alt {
 .site-footer h1 {
   font-size: 14px;
 }
+.site-footer .etsin-container .container {
+  max-width: 1200px;
+}
 .footer-data {
   display: block;
 }
@@ -221,6 +224,17 @@ i.chevron-alt {
   /*text-align: center;*/
   margin: 24px auto;
   max-height: 80px;
+}
+@media (max-width: 900px) {
+  .footer-second,
+  .footer-third {
+    float: none;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
 }
 .kata-captcha-fix table {
   table-layout: auto !important;
@@ -1649,8 +1663,24 @@ a.download {
   font-size: 12px;
   color: #3fa9f5;
 }
+.dataset-fast-stats > li .stat-label a {
+  color: #3fa9f5;
+}
+.dataset-fast-stats > li .stat-label a:hover,
+.dataset-fast-stats > li .stat-label a:active,
+.dataset-fast-stats > li .stat-label a:focus {
+  text-decoration: none;
+}
 .dataset-fast-stats > li .stat-number {
   font-size: 38px;
+}
+.dataset-fast-stats > li .stat-number a {
+  color: #444444;
+}
+.dataset-fast-stats > li .stat-number a:hover,
+.dataset-fast-stats > li .stat-number a:active,
+.dataset-fast-stats > li .stat-number a:focus {
+  text-decoration: none;
 }
 .etsin-steps-visualization {
   margin-top: 20px;
@@ -1683,10 +1713,20 @@ a.download {
   border-radius: 80px;
   margin-left: 16px;
   margin-right: 16px;
-  background-color: #3fa9f5;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
   content: ' ';
   width: 160px;
   height: 160px;
+}
+.etsin-steps-visualization > ul > li .steps-image.step1 {
+  background-image: url("/base/images/step1.png");
+}
+.etsin-steps-visualization > ul > li .steps-image.step2 {
+  background-image: url("/base/images/step1.png");
+}
+.etsin-steps-visualization > ul > li .steps-image.step3 {
+  background-image: url("/base/images/step1.png");
 }
 .etsin-steps-visualization > ul > li .steps-text {
   margin-top: 15px;
@@ -1699,16 +1739,57 @@ a.download {
   color: #80898b;
   font-size: 12px;
 }
-.container.experiences {
-  max-width: 1024px;
-}
-@media (max-width: 1024) {
-  .container.experiences {
-    width: auto;
+@media (max-width: 900px) {
+  .etsin-steps-visualization .steps-arrow {
+    display: none;
   }
 }
-.home-experiences-social {
-  padding: 50px;
+@media (max-width: 800px) {
+  .etsin-steps-visualization ul > li {
+    max-width: 256px;
+  }
+}
+.container.experiences {
+  width: 1200px;
+  max-width: 1200px;
+}
+.home-experiences-social:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.home-experiences-social .home-experiences {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-left: 40px;
+  float: left;
+  width: 55%;
+}
+.home-experiences-social .home-social-picks {
+  margin-top: 50px;
+  padding-right: 40px;
+  float: right;
+  width: 35%;
+}
+@media (max-width: 1200px) {
+  .container.experiences {
+    width: auto;
+    max-width: auto;
+  }
+}
+@media (max-width: 900px) {
+  .home-experiences-social .home-experiences,
+  .home-experiences-social .home-social-picks {
+    padding-left: 0;
+    padding-right: 0;
+    float: none;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .home-experiences-social .home-social-picks {
+    max-width: 500px;
+  }
 }
 .home-experiences .story + .story {
   margin-top: 30px;
@@ -1717,15 +1798,32 @@ a.download {
   margin-right: 40px;
   max-width: 600px;
 }
+.home-experiences .story:after {
+  content: "";
+  display: table;
+  clear: left;
+}
 .home-experiences .story .person-image {
   float: left;
   content: ' ';
-  border: 0;
+  border: 1px solid #3fa9f5;
   border-radius: 65px;
+  box-shadow: 0 0 0 3px white inset;
   width: 130px;
   height: 130px;
-  background-color: #555;
+  background-image: url("/base/images/portrait_placeholder.png");
+  background-size: 130px auto;
+  background-repeat: no-repeat;
   margin: 0 40px 0 0;
+}
+.home-experiences .story .person-image.person1 {
+  background-image: url("/base/images/person1.png");
+}
+.home-experiences .story .person-image.person2 {
+  background-image: url("/base/images/person2.png");
+}
+.home-experiences .story .person-image.person3 {
+  background-image: url("/base/images/person3.png");
 }
 .home-experiences .story .person-story {
   padding-left: 170px;
@@ -1742,10 +1840,7 @@ a.download {
   font-size: 12px;
   color: black;
 }
-.home-social-picks {
-  min-width: 300px;
-  max-width: 450px;
-  float: right;
+.home-social-container {
   background-color: white;
   border: 1px solid #c9c9c9;
   padding: 25px;

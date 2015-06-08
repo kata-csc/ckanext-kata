@@ -6,6 +6,9 @@
 
 {% block content %}
 
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
 {# TODO: make search into a snippet so the same thing can be used in search page #}
 <div id="etsin-main">
   <div class="etsin-container">
@@ -48,20 +51,46 @@
         </form>
 
       </div>
+
+      <!-- TODO: real numbers, links to browse view -->
       <div class="row-fluid">
         <div class="dataset-fast-stats-wrapper">
           <ul class="dataset-fast-stats">
             <li>
-              <div class="stat-number">1203</div>
-              <div class="stat-label">{{ _('Datasets') }}</div>
+              <div class="stat-number">
+                <a href="{{ h.url_for(controller='package', action='search') }}">
+                  1203
+                </a>
+              </div>
+              <div class="stat-label">
+                <a href="{{ h.url_for(controller='package', action='search') }}">
+                  {{ _('Datasets') }}
+                </a>
+              </div>
             </li>
             <li>
-              <div class="stat-number">200</div>
-              <div class="stat-label">{{ _('Tags') }}</div>
+              <div class="stat-number">
+                <a href="{{ h.url_for(controller='package', action='search') }}">
+                  200
+                </a>
+              </div>
+              <div class="stat-label">
+                <a href="{{ h.url_for(controller='package', action='search') }}">
+                  {{ _('Tags') }}
+                </a>
+              </div>
             </li>
             <li>
-              <div class="stat-number">200</div>
-              <div class="stat-label">{{ _('Disciplines') }}</div>
+              <div class="stat-number">
+                <a href="{{ h.url_for(controller='package', action='search') }}">
+                  200
+                </a>
+              </div>
+              <div class="stat-label">
+                <a href="{{ h.url_for(controller='package', action='search') }}">
+                  {{ _('Disciplines') }}
+                </a>
+              </div>
             </li>
           </ul>
         </div>
@@ -111,56 +140,60 @@
     <div class="container experiences">
       <div class="row-fluid">
         <div class="home-experiences-social">
-          <div class="home-social-picks">
-            twitteri
-          </div>
+
           <div class="home-experiences">
 
             <div class="story">
-              <div class="person-image">
+              <div class="person-image person1">
 
               </div>
               <div class="person-story">
                 <h2>"Etsin auttoi löytämään tutkimusaiheen"</h2>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>
                 <div class="person-name">Jaana Jatko-opiskelija, Tampereen Yliopisto</div>
               </div>
-              <div class="clearfix"></div>
             </div>
 
             <div class="story">
-              <div class="person-image">
+              <div class="person-image person2">
 
               </div>
               <div class="person-story">
-                <h2>"Etsin auttoi löytämään tutkimusaiheen"</h2>
+                <h2>"Rahoittaja kiinnostui aineiston käytöstä"</h2>
                 <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                <div class="person-name">Jaana Jatko-opiskelija, Tampereen Yliopisto</div>
+                <div class="person-name">Taisto Tutkija, Helsingin Yliopisto</div>
               </div>
-              <div class="clearfix"></div>
             </div>
 
             <div class="story">
-              <div class="person-image">
+              <div class="person-image person3">
 
               </div>
               <div class="person-story">
-                <h2>"Etsin auttoi löytämään tutkimusaiheen"</h2>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                <div class="person-name">Jaana Jatko-opiskelija, Tampereen Yliopisto</div>
+                <h2>"Aineisto yhdessä paikassa"</h2>
+                <p>Nam feugiat enim sit amet sapien lacinia, eget pellentesque augue tristique. Donec non congue lacus, non maximus nulla. Phasellus tempus, velit nec interdum feugiat, odio diam tempus leo, sed varius enim neque vel velit. Etiam posuere, arcu eget sollicitudin pharetra, massa quam lobortis augue, in vestibulum nibh lorem vel nunc.</p>
+                <div class="person-name">Olli Opiskelija, Tampereen Yliopisto</div>
               </div>
-              <div class="clearfix"></div>
             </div>
 
           </div>
+
+          <div class="home-social-picks">
+            <div class="home-social-container">
+              <!-- TODO !!! replace with widget id created from the actual account !!! -->
+              <a class="twitter-timeline" href="https://twitter.com/CSCfi"
+                 data-widget-id="607800974212767744"
+                 data-chrome="noborders nofooter transparent noscrollbar"
+                 data-tweet-limit="3">@CSCfi</a>
+            </div>
+          </div>
+
         </div>
-        <div class="clearfix"></div>
       </div>
     </div>
   </div>
 
 </div>
-
 
 {% endblock %}
 

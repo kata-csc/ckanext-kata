@@ -17,9 +17,21 @@
       padding-top: 10px;
       font-size: 12px;
       color: @brand-primary-color;
+      a {
+        color: @brand-primary-color;
+        &:hover, &:active, &:focus {
+          text-decoration: none;
+        }
+      }
     }
     .stat-number {
       font-size: 38px;
+      a {
+        color: rgb(68,68,68);
+        &:hover, &:active, &:focus {
+          text-decoration: none;
+        }
+      }
     }
   }
 }
@@ -54,10 +66,20 @@
         border-radius: @steps-image-size / 2;
         margin-left: @steps-image-size * 0.1;
         margin-right: @steps-image-size * 0.1;
-        background-color: @brand-primary-color;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
         content: ' ';
         width: @steps-image-size;
         height: @steps-image-size;
+        &.step1 {
+          background-image: url("/base/images/step1.png");
+        }
+        &.step2 {
+          background-image: url("/base/images/step1.png");
+        }
+        &.step3 {
+          background-image: url("/base/images/step1.png");
+        }
       }
       .steps-text {
         margin-top: 15px;
@@ -74,17 +96,77 @@
   }
 }
 
-.container.experiences {
-  max-width: 1024px;
-}
-@media (max-width: 1024) {
-  .container.experiences {
-    width: auto;
+// Drop the arrows when steps don't fit into one row
+@media (max-width: 900px) {
+  .etsin-steps-visualization {
+    .steps-arrow {
+      display: none;
+    }
   }
 }
 
+// Allow more space for a step when not all in one row
+@media (max-width: 800px) {
+  .etsin-steps-visualization {
+    ul > li {
+      max-width: @steps-image-size * 0.6 + @steps-image-size;
+    }
+  }
+}
+
+.container.experiences {
+  width: 1200px;
+  max-width: 1200px;
+}
+
+
 .home-experiences-social {
-  padding: 50px;
+  //padding: 50px;
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .home-experiences {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding-left: 40px;
+    float: left;
+    width: 55%;
+  }
+
+  .home-social-picks {
+    margin-top: 50px;
+    padding-right: 40px;
+    float: right;
+    width: 35%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .container.experiences {
+    width: auto;
+    max-width: auto;
+  }
+}
+
+// Move experiences and social on top of each other on small display
+@media (max-width: 900px) {
+  .home-experiences-social {
+
+    .home-experiences, .home-social-picks {
+      padding-left: 0;
+      padding-right: 0;
+      float: none;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .home-social-picks {
+      max-width: 500px;
+    }
+  }
 }
 
 @person-image-size: 130px;
@@ -96,15 +178,33 @@
   .story {
     margin-right: 40px;
     max-width: 600px;
+    &:after {
+      content: "";
+      display: table;
+      clear: left;
+    }
     .person-image {
       float: left;
       content: ' ';
-      border: 0;
+      border: 1px solid @brand-primary-color;
       border-radius: @person-image-size / 2;
+      box-shadow: 0 0 0 3px white inset;
       width: @person-image-size;
       height: @person-image-size;
-      background-color: #555;
+      //background-color: #555;
+      background-image: url("/base/images/portrait_placeholder.png");
+      background-size: @person-image-size auto;
+      background-repeat: no-repeat;
       margin: 0 40px 0 0;
+      &.person1 {
+        background-image: url("/base/images/person1.png");
+      }
+      &.person2 {
+        background-image: url("/base/images/person2.png");
+      }
+      &.person3 {
+        background-image: url("/base/images/person3.png");
+      }
     }
     .person-story {
       padding-left: @person-image-size + 40px;
@@ -124,10 +224,7 @@
   }
 }
 
-.home-social-picks {
-  min-width: 300px;
-  max-width: 450px;
-  float: right;
+.home-social-container {
   background-color: white;
   border: 1px solid @border-color-bg;
   padding: 25px;
