@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-06-03 09:25+0000\n"
+"POT-Creation-Date: 2015-06-08 11:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgid "Required information missing"
 msgstr ""
 
 #: ckanext/kata/actions.py:514 ckanext/kata/actions.py:578
-#: ckanext/kata/controllers.py:730 ckanext/kata/controllers.py:808
+#: ckanext/kata/controllers.py:765 ckanext/kata/controllers.py:843
 msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:519 ckanext/kata/actions.py:523
-#: ckanext/kata/controllers.py:805
+#: ckanext/kata/controllers.py:840
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -90,112 +90,112 @@ msgstr ""
 msgid "User %s not authorized to add a dataset"
 msgstr ""
 
-#: ckanext/kata/controllers.py:354 ckanext/kata/controllers.py:406
-#: ckanext/kata/controllers.py:577 ckanext/kata/controllers.py:607
+#: ckanext/kata/controllers.py:389 ckanext/kata/controllers.py:441
+#: ckanext/kata/controllers.py:612 ckanext/kata/controllers.py:642
 #: ckanext/kata/theme/templates/kata/dummy.html:61
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:363
+#: ckanext/kata/controllers.py:398
 #, python-format
 msgid ""
 "A request for editing privileges will be sent to the administrator of package"
 " %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:366 ckanext/kata/controllers.py:415
+#: ckanext/kata/controllers.py:401 ckanext/kata/controllers.py:450
 msgid "A request is already pending"
 msgstr ""
 
-#: ckanext/kata/controllers.py:369 ckanext/kata/controllers.py:418
+#: ckanext/kata/controllers.py:404 ckanext/kata/controllers.py:453
 msgid "You must be logged in to request edit access"
 msgstr ""
 
-#: ckanext/kata/controllers.py:389
+#: ckanext/kata/controllers.py:424
 #, python-format
 msgid "%s now has editor rights to package %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:394
+#: ckanext/kata/controllers.py:429
 msgid "No such request found!"
 msgstr ""
 
-#: ckanext/kata/controllers.py:505
+#: ckanext/kata/controllers.py:540
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:522 ckanext/kata/controllers.py:764
+#: ckanext/kata/controllers.py:557 ckanext/kata/controllers.py:799
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:524 ckanext/kata/controllers.py:590
-#: ckanext/kata/controllers.py:620
+#: ckanext/kata/controllers.py:559 ckanext/kata/controllers.py:625
+#: ckanext/kata/controllers.py:655
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:526
+#: ckanext/kata/controllers.py:561
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:528 ckanext/kata/controllers.py:593
-#: ckanext/kata/controllers.py:623
+#: ckanext/kata/controllers.py:563 ckanext/kata/controllers.py:628
+#: ckanext/kata/controllers.py:658
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:660
+#: ckanext/kata/controllers.py:695
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:662
+#: ckanext/kata/controllers.py:697
 msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:674
+#: ckanext/kata/controllers.py:709
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:705 ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:740 ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:727
+#: ckanext/kata/controllers.py:762
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:747
+#: ckanext/kata/controllers.py:782
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:749 ckanext/kata/validators.py:140
+#: ckanext/kata/controllers.py:784 ckanext/kata/validators.py:140
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:769
+#: ckanext/kata/controllers.py:804
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:864
+#: ckanext/kata/controllers.py:899
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:889
+#: ckanext/kata/controllers.py:924
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:894
+#: ckanext/kata/controllers.py:929
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:897
+#: ckanext/kata/controllers.py:932
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:899
+#: ckanext/kata/controllers.py:934
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:903
+#: ckanext/kata/controllers.py:938
 msgid "Failed to load file"
 msgstr ""
 
@@ -6388,7 +6388,7 @@ msgid "eg. Matematiikka"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:96
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:101
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:104
 msgid "Languages"
 msgstr ""
 
@@ -6396,18 +6396,25 @@ msgstr ""
 msgid "This dataset contains non-textual data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:101
-msgid "eng, fin, swe ..."
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:103
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:102
 msgid ""
-"Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma "
-"separated list of languages, in ISO 639-2 T format, used in your data, for "
-"example \"eng, fin, swe\"."
+"Field is compulsory, if checkbox is unchecked.<br /><br />Add languages used "
+"in your data. Once you start typing, you will automatically get suggestions "
+"for matching languages. You can then select the appropriate suggestion with a"
+" mouse click, or you can enter your own languages. If you make a mistake, you"
+" can remove a keyword by clicking the 'x' next to it.<br /><br />The "
+"suggestions are retrieved from the Finto vocabulary service (see "
+"http://finto.fi/en/). Note that you must have JavaScript enabled in your "
+"browser in order for the automatic suggestions to work. <br /><br /> If you "
+"decide to enter your own languages, they must be given in ISO 639-2 T format,"
+" for example \"eng, fin, swe\"."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:107
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:104
+msgid "eg. eng, fin, swe"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:108
 msgid "Find language codes from: "
 msgstr ""
 

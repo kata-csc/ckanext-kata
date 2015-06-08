@@ -598,7 +598,6 @@ def has_json_content(data):
         return False
     return True
 
-
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
     '''
@@ -633,6 +632,8 @@ def get_labels_for_uri_nocache(uri, ontology=None):
             return None
     if not ontology:
         return None
+
+
 
     url = "http://finto.fi/rest/v1/{ontology}/data?uri={uri}&format=application/json".format(ontology=ontology, uri=uri)
     # Reverse DNS resolving can be extremely slow
