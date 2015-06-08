@@ -19,7 +19,8 @@
         <form id="dataset-search" class="dataset-search clearfix search-form" action="{% url_for controller='package', action='search' %}" method="get" data-module="select-switch">
           <div class="search-terms">
              <div class="search-input control-group search-giant">
-               <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('Search...') }}">
+               <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
+               placeholder="{{ _('Enter search term or query…') }}">
                <button type="submit" value="search">
                  <i class="icon-search"></i>
                  <span>{{ _('Submit') }}</span>
