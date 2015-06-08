@@ -103,7 +103,7 @@
 
           {% set autocomplete_source = '/api/2/util/language/autocomplete?incomplete=?&language=' ~ h.lang()  %}
           {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
-          {{ form.input('language', id='language', label=_('Lanugages'), placeholder=_('eg. english, finnish, french'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
+          {{ form.input('language', id='language', label=_('Lanugages'), placeholder=_('eg. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
 
           <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
           <span class="add-dataset-infotext">

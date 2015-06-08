@@ -316,7 +316,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'resolve_org_name': helpers.resolve_org_name,
-            'resolve_languages': helpers.resolve_languages,
             'split_disciplines': helpers.split_disciplines,
             'string_to_list': helpers.string_to_list,
             'organizations_available': helpers.organizations_available,

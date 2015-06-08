@@ -23,7 +23,7 @@
   <tbody>
     <tr>
       <th class="dataset-label">{{ _('Language') }}</th>
-      <td class="dataset-details">{% if pkg_dict.language %}{{ h.resolve_languages(pkg_dict.language) }}{% else %}{{ _('No language') }}{% endif%}</td>
+      <td class="dataset-details">{% if pkg_dict.language %}{{ pkg_dict.language }}{% else %}{{ _('No language') }}{% endif%}</td>
     </tr>
   </tbody>
 </table>
