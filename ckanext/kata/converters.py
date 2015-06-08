@@ -496,32 +496,6 @@ def convert_languages(key, data, errors, context):
     if new_languages:
         data[key] = ', '.join(new_languages)
 
-def convert_languages_uri(key, data, errors, context):
-    """
-    Converts the comma-separated list of lexvo-urls to a comma-separated list of language codes.
-
-    :param key: key
-    :param data: data
-    :param errors: errors
-    :param context: context
-    :return: a list of comma-separated language codes
-    """
-
-    value = data.get(key)
-    ret = []
-
-    if not isinstance(value, basestring):
-        return
-
-    for uri in value.split(','):
-        uri = uri.strip()
-        if uri.startswith("http://lexvo.org/id/iso639-3/"):
-            ret.append(uri.split("/")[-1])
-
-    if ret:
-        data[key] = ', '.join(ret)
-
-
 
 def from_extras_json(key, data, errors, context):
     '''

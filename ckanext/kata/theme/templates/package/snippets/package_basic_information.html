@@ -99,11 +99,10 @@
         <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
 
         <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
-
+          {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Add languages used in your data. Once you start typing, you will automatically get suggestions for matching languages. You can then select the appropriate suggestion with a mouse click, or you can enter your own languages. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). <br /><br /> If you decide to enter your own languages, they must be given in ISO 639-2 T format, for example \"eng, fin, swe\".')) }}
           {% set autocomplete_source = '/api/2/util/language/autocomplete?incomplete=?&language=' ~ h.lang()  %}
           {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
-          {{ form.input('language', id='language', label=_('Lanugages'), placeholder=_('eg. english, finnish, french'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
+          {{ form.input('language', id='language', label=_('Lanugages'), placeholder=_('eg. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
 
           <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
           <span class="add-dataset-infotext">

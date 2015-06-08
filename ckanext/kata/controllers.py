@@ -223,6 +223,40 @@ class KATAApiController(ApiController):
 
         return self._onki_autocomplete(query, "paikat")
 
+    def _query_finto(self, query, vocab, language=None):
+        '''
+        Queries Finto ontologies by returning the whole result set, which can
+        be parsed according to the needs (see _onki_autocomplete_uri)
+
+        :param query: the string to search for
+        :type query: string
+        :param vocab: the vocabulary/ontology, i.e. lexvo
+        :type vocab: string
+        :param language: the language of the query
+        :type query: string
+
+        :rtype: dictionary
+        '''
+
+        url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
+
+        if language:
+            url_template += "&lang={l}"
+
+        jsondata = {}
+
+        if query:
+            try:
+                url = url_template.format(q=query, v=vocab, l=language)
+            except UnicodeEncodeError:
+                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
+
+            data = urllib2.urlopen(url).read()
+            jsondata = json.loads(data)
+
+        return jsondata
+
+
     def _onki_autocomplete(self, query, vocab, language=None):
         '''
         Queries the remote ontology for suggestions and
@@ -237,22 +271,12 @@ class KATAApiController(ApiController):
 
         :rtype: dictionary
         '''
-        url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
-
-        if language:
-            url_template += "&lang={l}"
-
+        jsondata = self._query_finto(query, vocab, language)
         labels = []
-        if query:
-            try:
-                url = url_template.format(q=query, v=vocab, l=language)
-            except UnicodeEncodeError:
-                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
-            data = urllib2.urlopen(url).read()
-            jsondata = json.loads(data)
-            if u'results' in jsondata:
-                results = jsondata['results']
-                labels = [concept.get('prefLabel', '').encode('utf-8') for concept in results]
+
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [concept.get('prefLabel', '').encode('utf-8') for concept in results]
 
         result_set = {
             'ResultSet': {
@@ -278,22 +302,12 @@ class KATAApiController(ApiController):
         :rtype: dictionary
         '''
 
-        url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
-
-        if language:
-            url_template += "&lang={l}"
-
+        jsondata = self._query_finto(query, vocab, language)
         labels = []
-        if query:
-            try:
-                url = url_template.format(q=query, v=vocab, l=language)
-            except UnicodeEncodeError:
-                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
-            data = urllib2.urlopen(url).read()
-            jsondata = json.loads(data)
-            if u'results' in jsondata:
-                results = jsondata['results']
-                labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
+
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
 
@@ -315,16 +329,24 @@ class KATAApiController(ApiController):
 
     def language_autocomplete(self):
         '''
-        Suggestions for languages
+        Suggestions for languages.
 
         :rtype: dictionary
         '''
+
         language = request.params.get('language', '')
         query = request.params.get('incomplete', '')
 
-        result = self._onki_autocomplete_uri(query, "lexvo", language)
+        jsondata = self._query_finto(query, "lexvo", language)
+        labels = []
 
-        return result
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['localname'].encode('utf-8')) for concept in results]
+
+        result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
+
+        return self._finish_ok(result_set)
 
 
 class EditAccessRequestController(BaseController):
