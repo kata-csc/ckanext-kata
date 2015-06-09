@@ -3,12 +3,12 @@ body {
   min-width: 300px;
 }
 a {
-  color: #00b5ec;
+  color: #3fa9f5;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #008eb9;
+  color: #0f93f2;
   text-decoration: underline;
 }
 body {
@@ -65,13 +65,13 @@ body {
   background-image: linear-gradient(to bottom, #3ac34a, #53cc61);
 }
 .nav-simple .nav-item a {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .nav-simple .nav-item.active a {
   color: white;
 }
 i.chevron-alt {
-  color: #86e3ff;
+  color: #d0eafd;
 }
 /**
  * new layout -->
@@ -169,11 +169,11 @@ i.chevron-alt {
   border-bottom: 1px solid #c9c9c9;
 }
 .site-footer a {
-  color: #00b5ec !important;
+  color: #3fa9f5 !important;
 }
 .site-footer a:hover,
 .site-footer a:focus {
-  color: #008eb9 !important;
+  color: #0f93f2 !important;
 }
 .site-footer p {
   color: black;
@@ -188,7 +188,7 @@ i.chevron-alt {
   display: block;
 }
 .footer-data a {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .footer-first {
   margin: 0px;
@@ -495,9 +495,9 @@ header.masthead {
   }*/
 }
 header.masthead .button-wrapper .btn-primary {
-  background-color: #00b5ec !important;
+  background-color: #3fa9f5 !important;
   background-image: none !important;
-  border-color: #00b5ec !important;
+  border-color: #3fa9f5 !important;
   box-shadow: none;
   text-shadow: none;
   font-size: 13px;
@@ -523,7 +523,7 @@ header.masthead .branding .logo img {
 header.masthead .branding .branding-description {
   display: inline-block;
   vertical-align: bottom;
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 @media (max-width: 1000px) {
   header.masthead .branding {
@@ -594,16 +594,16 @@ header.masthead .dropdown-menu > li > a:hover,
 header.masthead .dropdown-menu > li > a:focus,
 header.masthead .dropdown-submenu:hover > a,
 header.masthead .dropdown-submenu:focus > a {
-  background: #00b5ec;
+  background: #3fa9f5;
 }
 header.masthead .dropdown .dropdown-toggle .icon-chevron-down {
   margin-left: 3px;
 }
 header.masthead .dropdown .dropdown-toggle:hover {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 header.masthead .dropdown.open .icon-chevron-down {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 header.masthead .section.account {
   /* Overwrite profile avatar section alignment in main.css */
@@ -629,7 +629,7 @@ header.masthead .not-authed a {
 #help_navi a {
   display: inline-block;
   margin-left: 18px;
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 #help_navi a:focus,
 #help_navi a:active,
@@ -665,7 +665,7 @@ header.masthead .not-authed a {
   padding: 6px 15px;
 }
 .etsin-navigation > li > a:hover {
-  color: #00b5ec;
+  color: #3fa9f5;
   background: transparent;
 }
 .etsin-navigation > li > a:focus,
@@ -698,12 +698,12 @@ header.masthead .not-authed a {
 }
 .primary-navigation > li > a:hover,
 .primary-navigation > li > a:active {
-  color: #00b5ec;
+  color: #3fa9f5;
   background: transparent;
 }
 .primary-navigation > li.active > a {
-  border-bottom-color: #00b5ec;
-  color: #00b5ec;
+  border-bottom-color: #3fa9f5;
+  color: #3fa9f5;
 }
 .secondary-navigation {
   margin: 0;
@@ -744,7 +744,7 @@ header.masthead .not-authed a {
   color: white;
   font-size: 56px;
   text-align: center;
-  background: #00b5ec;
+  background: #3fa9f5;
 }
 .small-display-menu-navi .hamburger .icon-align-justify {
   font-size: 22px;
@@ -771,10 +771,10 @@ header.masthead .not-authed a {
 .small-display-menu-navi #main-navi-small li > a:focus {
   outline: 0;
   text-decoration: none;
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .small-display-menu-navi #main-navi-small .active > a {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .small-display-menu-user {
   display: none;
@@ -794,7 +794,7 @@ header.masthead .not-authed a {
   color: white;
   font-size: 46px;
   text-align: center;
-  background: #00b5ec;
+  background: #3fa9f5;
 }
 .small-display-menu-user .usericon .icon-user,
 .small-display-menu-user .usericon .icon-chevron-down {
@@ -830,7 +830,7 @@ header.masthead .not-authed a {
   font-weight: 700;
 }
 .small-display-language-selector .language-selector-box a {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .small-display-language-selector .language-selector-box .lang-code {
   padding: 3px;
@@ -1019,14 +1019,14 @@ header.masthead .not-authed a {
   font-family: Arial, Tahoma, sans-serif;
 }
 .tag {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .add_action li {
   display: inline-block;
 }
 a.tag:hover {
-  background-color: #00b5ec !important;
-  border: 1px solid #008eb9 !important;
+  background-color: #3fa9f5 !important;
+  border: 1px solid #0f93f2 !important;
   box-shadow: #0c5e8b inset !important;
 }
 .wrapper {
@@ -1531,10 +1531,10 @@ a.download {
   font-size: 14px;
 }
 .dataset-heading a {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .nav-facet .nav-item a {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .nav-facet .nav-item.active a {
   color: white;
@@ -1597,14 +1597,14 @@ a.download {
   margin-left: 35px;
 }
 .search-results-list .dataset-list .dataset-item.numbered .tag-list .tag {
-  color: #00b5ec;
+  color: #3fa9f5;
   background-color: white;
-  border: 1px solid #00b5ec;
+  border: 1px solid #3fa9f5;
   border-radius: 4px;
 }
 .search-results-list .dataset-list .dataset-item.numbered .tag-list .tag:hover {
   color: white;
-  border: 1px solid #00b5ec;
+  border: 1px solid #3fa9f5;
   box-shadow: none;
 }
 .search-results-list .dataset-order-number {
@@ -1638,14 +1638,14 @@ a.download {
   margin-bottom: 4px;
 }
 .etsin-facet-list .facet-pills .facet-pill .pill {
-  color: #00b5ec;
+  color: #3fa9f5;
   background-color: white;
-  border: 1px solid #00b5ec;
+  border: 1px solid #3fa9f5;
   border-radius: 4px;
 }
 .etsin-facet-list .facet-pills .facet-pill.active .pill {
   color: white;
-  background-color: #00b5ec;
+  background-color: #3fa9f5;
 }
 .etsin-facet-list .facet-pills .facet-pill.active .pill a {
   color: white;
@@ -1669,10 +1669,10 @@ a.download {
 .dataset-fast-stats > li .stat-label {
   padding-top: 10px;
   font-size: 13px;
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .dataset-fast-stats > li .stat-label a {
-  color: #00b5ec;
+  color: #3fa9f5;
 }
 .dataset-fast-stats > li .stat-label a:hover,
 .dataset-fast-stats > li .stat-label a:active,
@@ -1713,7 +1713,7 @@ a.download {
   vertical-align: top;
 }
 .etsin-steps-visualization > ul > li.steps-arrow .icon-chevron-right {
-  color: #00b5ec;
+  color: #3fa9f5;
   font-size: 32px;
   width: 32px;
 }
@@ -1815,7 +1815,7 @@ a.download {
 .home-experiences .story .person-image {
   float: left;
   content: ' ';
-  border: 1px solid #00b5ec;
+  border: 1px solid #3fa9f5;
   border-radius: 65px;
   box-shadow: 0 0 0 3px white inset;
   width: 130px;
