@@ -20,9 +20,10 @@
           <div class="module-content">
             {% block home_primary %}
               <header>
-                {% if g.site_intro_text %}
-                  <div class=index-additional-info">
-                    {{ h.render_markdown(g.site_intro_text) }}
+                {% if True or g.site_intro_text %}
+                  <div class="index-additional-info">
+                    {# h.render_markdown(g.site_intro_text) #}
+                    {{ h.render_markdown('## aksdfs\n\noaijof ijew **foiawje** foiajewofi ja') }}
                   </div>
                 {% endif %}
                   {% block home_primary_content %}

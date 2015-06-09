@@ -1,6 +1,7 @@
 html, body {
-  min-width: 970px;
+  min-width: 300px;
 }
+
 a {
   color: @link-color;
   text-decoration: none;
@@ -9,12 +10,10 @@ a {
     text-decoration: underline;
   }
 }
-body {
-    background-color: #FFF !important;
-    background: none !important;
-    font-family: Arial, Tahoma, sans-serif;
-}
 
+body {
+  background: @body-background-color;
+}
 
 .form-actions {
   .action-info-kata {
@@ -75,4 +74,80 @@ body {
 
 i.chevron-alt {
   color: @link-alternative-color;
+}
+
+
+#etsin-main {
+  width: 100%;
+}
+
+.etsin-container {
+  background-color: transparent;
+  .container {
+    max-width: 700px;
+  }
+}
+
+@media (max-width: @content-max-width) {
+  .etsin-container {
+    padding-left: 15px;
+    padding-right: 15px;
+    .container {
+      width: auto;
+      }
+  }
+}
+
+
+/* koko sivun levyinen container, eri taustaväri */
+.etsin-container-bg {
+  background-color: @body-background-secondary;
+  border-top: 1px solid @border-color-bg;
+  border-bottom: 1px solid @border-color-bg;
+}
+
+.etsin-secondary-title {
+  font-size: @secondary-title-size;
+}
+
+.action-link {
+  cursor: pointer;
+}
+
+.pagination {
+  ul {
+    box-shadow: none;
+  }
+  ul > li {
+    &.active > a {
+      background: transparent;
+      color: black;
+    }
+    a {
+      padding: 4px 8px;
+      font-size: @secondary-title-size;
+      font-weight: 700;
+      background: transparent;
+      border: none;
+      &:hover, &:focus {
+        background: transparent;
+      }
+    }
+  }
+}
+
+.container-divider {
+  border-top: 1px solid @border-color-bg;
+}
+
+// for old layout front page
+.index-additional-info {
+  padding: 10px;
+  width: 90%;
+  border: 1px solid;
+  border-color: #6ccff6;
+  background-color: #fff;
+  margin: 20px;
+  padding: 0px;
+  float: left;
 }
