@@ -134,29 +134,6 @@ i.chevron-alt {
   padding: 0px;
   float: left;
 }
-.search-terms {
-  background-color: #ebebec;
-  border-radius: 4px;
-  border: 1px solid;
-  border-color: #ababac;
-  padding: 10px;
-  padding-top: 30px;
-  margin-bottom: 10px;
-}
-#dataset-search,
-#advanced-search {
-  border-bottom: 0px !important;
-  margin-bottom: 0px !important;
-  padding-bottom: 0px !important;
-}
-#search-results-kata {
-  border: 1px solid #DDDDDD;
-  margin-bottom: 20px;
-  padding: 20px;
-}
-.search-results-facet {
-  margin-bottom: 10px;
-}
 .kata-package-editor {
   border-bottom: 1px solid !important;
   padding-bottom: 25px !important;
@@ -1532,5 +1509,116 @@ a.download {
   color: #3fa9f5;
 }
 .nav-facet .nav-item.active a {
+  color: white;
+}
+#search-results-kata {
+  margin-top: 20px;
+}
+#search-results-kata .error {
+  color: #b55457;
+  font-size: 120%;
+  margin-bottom: 20px;
+}
+#search-results-kata .number-of-results {
+  font-size: 160%;
+  font-weight: 700;
+}
+.search-form {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.search-form .search-terms .search-input {
+  margin-bottom: 15px;
+}
+.search-form .search-extras {
+  margin-bottom: 10px;
+}
+.search-form .search-extras .since-year {
+  padding: 4px;
+  height: 16px;
+  line-height: 16px;
+  width: 6ex;
+  margin-left: 5px;
+}
+.search-form .search-extras label {
+  font-weight: normal;
+}
+.search-form .search-extras label:first-child {
+  margin-right: 15px;
+}
+.search-form .search-extras label input[type=checkbox] {
+  top: 4px;
+}
+.search-results-list {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+.search-results-list .dataset-list .dataset-heading {
+  font-size: 17px;
+}
+.search-results-list .dataset-list .dataset-item {
+  border: 1px solid #c9c9c9;
+  padding: 15px;
+  background: white;
+}
+.search-results-list .dataset-list .dataset-item.numbered .dataset-content {
+  margin-left: 35px;
+}
+.search-results-list .dataset-list .dataset-item.numbered .tag-list {
+  padding-left: 0;
+  margin-left: 35px;
+}
+.search-results-list .dataset-list .dataset-item.numbered .tag-list .tag {
+  color: #3fa9f5;
+  background-color: white;
+  border: 1px solid #3fa9f5;
+  border-radius: 4px;
+}
+.search-results-list .dataset-list .dataset-item.numbered .tag-list .tag:hover {
+  color: white;
+  border: 1px solid #3fa9f5;
+  box-shadow: none;
+}
+.search-results-list .dataset-order-number {
+  float: left;
+  width: 30px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.search-results-tools {
+  margin-top: 10px;
+}
+#search-results-tools .accordion-heading {
+  font-size: 17px;
+}
+#search-results-tools .accordion-group {
+  border: 2px solid #c4c7c8;
+  background: white;
+}
+#etsin-facet-list-toggle {
+  display: block;
+  margin-top: 15px;
+}
+.etsin-facet-list .facet-title {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.etsin-facet-list .facet-pills > li {
+  display: inline-block;
+}
+.etsin-facet-list .facet-pills .facet-pill {
+  margin-bottom: 4px;
+}
+.etsin-facet-list .facet-pills .facet-pill .pill {
+  color: #3fa9f5;
+  background-color: white;
+  border: 1px solid #3fa9f5;
+  border-radius: 4px;
+}
+.etsin-facet-list .facet-pills .facet-pill.active .pill {
+  color: white;
+  background-color: #3fa9f5;
+}
+.etsin-facet-list .facet-pills .facet-pill.active .pill a {
   color: white;
 }

@@ -1,13 +1,18 @@
 {#
 render a list of tags linking to the dataset search page
 tags: list of tags
+truncated: True/False, truncated mode for e.g. search results view,
+           should display only few relevant tags (currently just the first ones)
 #}
 {% set _class = _class or 'tag-list' %}
+{% set truncate = truncated or False %}
 <ul class="{{ _class }}">
   {% for tag in tags %}
-    {% set resolved_name = h.get_label_for_uri(tag.display_name) %}
-    <li>
-      <a class="tag" href="{% url_for controller='package', action='search', tags=tag.name %}">{{ h.truncate(resolved_name, 22) }}</a>
-    </li>
+    {% if not truncate or (truncate and loop.index0 < 2) %}
+      {% set resolved_name = h.get_label_for_uri(tag.display_name) %}
+      <li>
+        <a class="tag" href="{% url_for controller='package', action='search', tags=tag.name %}">{{ h.truncate(resolved_name, 22) }}</a>
+      </li>
+    {% endif %}
   {% endfor %}
 </ul>
