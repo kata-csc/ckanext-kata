@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-06-08 11:10+0000\n"
+"POT-Creation-Date: 2015-06-09 11:20+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -237,12 +237,12 @@ msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 msgid "New organisation \"{org}\" created automatically."
 msgstr "Uusi organisaatio \"{org}\" luotu automaattisesti."
 
-#: ckanext/kata/helpers.py:395
+#: ckanext/kata/helpers.py:396
 #: ckanext/kata/theme/templates/package/read.html:14
 msgid "Unpublished"
 msgstr "Julkaisematon"
 
-#: ckanext/kata/helpers.py:395
+#: ckanext/kata/helpers.py:396
 msgid "Published"
 msgstr "Julkaistu"
 
@@ -462,7 +462,7 @@ msgstr ""
 "Lisätietoja käyttöluvasta on esitettävä, jos lisenssiä ei ole määritetty "
 "(License not specified) tai on tyyppiä Muu (Other)."
 
-#: ckanext/kata/theme/templates/footer.html:12
+#: ckanext/kata/theme/templates/footer.html:14
 msgid ""
 " <p>Open science and research is an initiative funded by the Ministry of "
 "Education and Culture with the target of making Finland one of the "
@@ -473,154 +473,70 @@ msgstr ""
 "tavoitteena on, että vuoteen 2017 mennessä Suomi nousee yhdeksi "
 "johtavista maista tieteen ja tutkimuksen avoimuudessa.</p>"
 
-#: ckanext/kata/theme/templates/footer.html:22
+#: ckanext/kata/theme/templates/footer.html:24
 msgid "http://openscience.fi"
 msgstr "http://avointiede.fi"
 
-#: ckanext/kata/theme/templates/footer.html:24
+#: ckanext/kata/theme/templates/footer.html:26
 msgid "http://www.csc.fi/"
 msgstr "http://www.csc.fi/"
 
-#: ckanext/kata/theme/templates/footer.html:27
+#: ckanext/kata/theme/templates/footer.html:29
 msgid "http://okm.fi/OPM/?lang=en"
 msgstr "http://okm.fi/OPM/"
 
-#: ckanext/kata/theme/templates/footer.html:28
+#: ckanext/kata/theme/templates/footer.html:30
 msgid "/base/images/about_logo_okm_en.png"
 msgstr "/base/images/about_logo_okm_fi.gif"
 
-#: ckanext/kata/theme/templates/footer.html:28
+#: ckanext/kata/theme/templates/footer.html:30
 #: ckanext/kata/theme/templates/home/about.html:87
 msgid "Ministry of Education and Culture of Finland"
 msgstr "Opetus- ja kulttuuriministeriö"
 
-#: ckanext/kata/theme/templates/footer.html:29
+#: ckanext/kata/theme/templates/footer.html:31
 #: ckanext/kata/theme/templates/home/about.html:88
 msgid "http://openscience.fi/"
 msgstr "http://avointiede.fi"
 
-#: ckanext/kata/theme/templates/footer.html:30
+#: ckanext/kata/theme/templates/footer.html:32
 msgid "/base/images/about_logo_att_pysty_en.png"
 msgstr "/base/images/about_logo_att_pysty_fi.png"
 
-#: ckanext/kata/theme/templates/footer.html:30
+#: ckanext/kata/theme/templates/footer.html:32
 #: ckanext/kata/theme/templates/home/about.html:89
 msgid "Open Science and Research Initiative"
 msgstr "Avoin tiede ja tutkimus -hanke"
 
-#: ckanext/kata/theme/templates/footer.html:31
+#: ckanext/kata/theme/templates/footer.html:33
 #: ckanext/kata/theme/templates/home/about.html:90
 msgid "https://www.csc.fi/en"
 msgstr "http://www.csc.fi/fi"
 
-#: ckanext/kata/theme/templates/footer.html:32
+#: ckanext/kata/theme/templates/footer.html:34
 #: ckanext/kata/theme/templates/home/about.html:91
 msgid "CSC - IT Center for Science"
 msgstr "CSC - Tieteen tietotekniikan keskus Oy"
 
-#: ckanext/kata/theme/templates/header.html:12
-msgid "new notifications"
-msgstr "uudet viestit"
-
-#: ckanext/kata/theme/templates/header.html:14
-msgid "Notifications"
-msgstr "Viestit"
-
-#: ckanext/kata/theme/templates/header.html:20
-#: ckanext/kata/theme/templates/header.html:51
-msgid "Log out"
-msgstr "Kirjaudu ulos"
-
-#: ckanext/kata/theme/templates/header.html:33
-msgid "Dashboard"
-msgstr "Yhteenveto"
-
-#: ckanext/kata/theme/templates/header.html:39
-msgid "My Profile"
-msgstr "Oma profiili"
-
-#: ckanext/kata/theme/templates/header.html:45
-msgid "Edit Profile"
-msgstr "Muokkaa profiilia"
-
-#: ckanext/kata/theme/templates/header.html:59
-#: ckanext/kata/theme/templates/kata/dummy.html:182
-#: ckanext/kata/theme/templates/user/dashboard.html:8
-msgid "My Datasets"
-msgstr "Omat aineistot"
-
-#: ckanext/kata/theme/templates/header.html:64
-#: ckanext/kata/theme/templates/header.html:66
-msgid "Sysadmin settings"
-msgstr "Järjestelmän ylläpitäjän asetukset"
-
-#: ckanext/kata/theme/templates/header.html:73
+#: ckanext/kata/theme/templates/header.html:10
 msgid "Etsin"
 msgstr "Etsin"
 
-#: ckanext/kata/theme/templates/header.html:84
-#: ckanext/kata/theme/templates/header.html:120
-#: ckanext/kata/theme/templates/kata/dummy.html:112
-#: ckanext/kata/theme/templates/package/search.html:8
-msgid "Search Datasets"
-msgstr "Etsi aineistoja"
+#: ckanext/kata/theme/templates/header.html:12
+#, fuzzy
+#| msgid "Search datasets..."
+msgid "Research dataset catalog"
+msgstr "Etsi aineistoista..."
 
-#: ckanext/kata/theme/templates/header.html:85
-#: ckanext/kata/theme/templates/header.html:86
-#: ckanext/kata/theme/templates/home/index.html:104
-#: ckanext/kata/theme/templates/kata/faq.html:54
-#: ckanext/kata/theme/templates/kata/faq.html:92
-#: ckanext/kata/theme/templates/package/search.html:23
-#: ckanext/kata/theme/templates/package/search.html:175
-msgid "Search"
-msgstr "Etsi"
+#: ckanext/kata/theme/templates/header.html:29
+#: ckanext/kata/theme/templates/header.html:96
+#, fuzzy
+#| msgid "Phone"
+msgid "Home"
+msgstr "Puhelinnumero"
 
-#: ckanext/kata/theme/templates/header.html:94
-#: ckanext/kata/theme/templates/kata/help.html:6
-msgid "Help"
-msgstr "Ohjeet"
-
-#: ckanext/kata/theme/templates/header.html:98
-#: ckanext/kata/theme/templates/kata/faq.html:6
-#: ckanext/kata/theme/templates/kata/faq.html:79
-msgid "FAQ"
-msgstr "FAQ"
-
-#: ckanext/kata/theme/templates/header.html:102
-msgid "Stats"
-msgstr ""
-
-#: ckanext/kata/theme/templates/header.html:108
-#: ckanext/kata/theme/templates/user/logout_first.html:16
-msgid "Log in"
-msgstr "Kirjaudu sisään"
-
-#: ckanext/kata/theme/templates/header.html:121
-#: ckanext/kata/theme/templates/kata/dummy.html:114
-#: ckanext/kata/theme/templates/kata/help.html:124
-#: ckanext/kata/theme/templates/kata/help.html:400
-#: ckanext/kata/theme/templates/package/search.html:15
-#: ckanext/kata/theme/templates/user/read.html:14
-msgid "Add Dataset"
-msgstr "Lisää aineisto"
-
-#: ckanext/kata/theme/templates/header.html:122
-#: ckanext/kata/theme/templates/organization/index.html:3
-#: ckanext/kata/theme/templates/organization/index.html:6
-#: ckanext/kata/theme/templates/organization/index.html:18
-#: ckanext/kata/theme/templates/package/base.html:12
-msgid "Organizations"
-msgstr "Organisaatiot"
-
-#: ckanext/kata/theme/templates/header.html:123
-#: ckanext/kata/theme/templates/home/index.html:57
-msgid "About Etsin"
-msgstr "Tietoa Etsimestä"
-
-#: ckanext/kata/theme/templates/privacypolicy.html:2
-msgid "Tietosuojaseloste / Privacy Policy"
-msgstr ""
-
+#: ckanext/kata/theme/templates/header.html:30
+#: ckanext/kata/theme/templates/header.html:97
 #: ckanext/kata/theme/templates/contact/contact_form.html:4
 #: ckanext/kata/theme/templates/contact/edit_request_form.html:3
 #: ckanext/kata/theme/templates/datamining/read.html:7
@@ -637,6 +553,67 @@ msgstr ""
 #: ckanext/kata/theme/templates/user/read.html:88
 msgid "Datasets"
 msgstr "aineistot"
+
+#: ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/theme/templates/header.html:98
+#: ckanext/kata/theme/templates/organization/index.html:3
+#: ckanext/kata/theme/templates/organization/index.html:6
+#: ckanext/kata/theme/templates/organization/index.html:18
+#: ckanext/kata/theme/templates/package/base.html:12
+msgid "Organizations"
+msgstr "Organisaatiot"
+
+#: ckanext/kata/theme/templates/header.html:32
+#: ckanext/kata/theme/templates/header.html:99
+msgid "Help & About"
+msgstr "Ohjeet & info"
+
+#: ckanext/kata/theme/templates/header.html:44
+#: ckanext/kata/theme/templates/kata/dummy.html:114
+#: ckanext/kata/theme/templates/kata/help.html:124
+#: ckanext/kata/theme/templates/kata/help.html:400
+#: ckanext/kata/theme/templates/user/read.html:14
+msgid "Add Dataset"
+msgstr "Lisää aineisto"
+
+#: ckanext/kata/theme/templates/header.html:59
+#: ckanext/kata/theme/templates/header.html:114
+#: ckanext/kata/theme/templates/user/logout_first.html:16
+msgid "Log in"
+msgstr "Kirjaudu sisään"
+
+#: ckanext/kata/theme/templates/header.html:74
+#: ckanext/kata/theme/templates/header.html:121
+#: ckanext/kata/theme/templates/kata/dummy.html:182
+#: ckanext/kata/theme/templates/user/dashboard.html:8
+msgid "My Datasets"
+msgstr "Omat aineistot"
+
+#: ckanext/kata/theme/templates/header.html:77
+#: ckanext/kata/theme/templates/header.html:124
+msgid "Edit Profile"
+msgstr "Muokkaa profiilia"
+
+#: ckanext/kata/theme/templates/header.html:80
+#: ckanext/kata/theme/templates/header.html:127
+#: ckanext/kata/theme/templates/group/read_base.html:19
+#: ckanext/kata/theme/templates/organization/read_base.html:10
+#: ckanext/kata/theme/templates/package/activity.html:3
+#: ckanext/kata/theme/templates/package/activity.html:6
+#: ckanext/kata/theme/templates/package/package_rights.html:9
+#: ckanext/kata/theme/templates/package/read_base.html:20
+#: ckanext/kata/theme/templates/user/read.html:32
+msgid "Activity Stream"
+msgstr "Uutisvirta"
+
+#: ckanext/kata/theme/templates/header.html:89
+#: ckanext/kata/theme/templates/header.html:130
+msgid "Log out"
+msgstr "Kirjaudu ulos"
+
+#: ckanext/kata/theme/templates/privacypolicy.html:2
+msgid "Tietosuojaseloste / Privacy Policy"
+msgstr ""
 
 #: ckanext/kata/theme/templates/contact/contact_form.html:6
 msgid "Contact"
@@ -764,16 +741,6 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/user/read.html:8
 msgid "Edit"
 msgstr "Muokkaa"
-
-#: ckanext/kata/theme/templates/group/read_base.html:19
-#: ckanext/kata/theme/templates/organization/read_base.html:10
-#: ckanext/kata/theme/templates/package/activity.html:3
-#: ckanext/kata/theme/templates/package/activity.html:6
-#: ckanext/kata/theme/templates/package/package_rights.html:9
-#: ckanext/kata/theme/templates/package/read_base.html:20
-#: ckanext/kata/theme/templates/user/read.html:32
-msgid "Activity Stream"
-msgstr "Uutisvirta"
 
 #: ckanext/kata/theme/templates/group/read_base.html:21
 #: ckanext/kata/theme/templates/organization/read_base.html:12
@@ -1150,6 +1117,10 @@ msgstr ""
 "Suosittelemme myös itse datan julkaisemista avoimena. Lisätietoa saat "
 
 #: ckanext/kata/theme/templates/home/index.html:57
+msgid "About Etsin"
+msgstr "Tietoa Etsimestä"
+
+#: ckanext/kata/theme/templates/home/index.html:57
 msgid " page."
 msgstr " -sivulta"
 
@@ -1197,6 +1168,12 @@ msgstr "Hae dataa"
 #: ckanext/kata/theme/templates/home/index.html:101
 msgid "eg. climate"
 msgstr "esim. ilmasto"
+
+#: ckanext/kata/theme/templates/home/index.html:104
+#: ckanext/kata/theme/templates/kata/faq.html:54
+#: ckanext/kata/theme/templates/kata/faq.html:92
+msgid "Search"
+msgstr "Etsi"
 
 #: ckanext/kata/theme/templates/home/index.html:112
 msgid "Newest datasets"
@@ -2066,6 +2043,10 @@ msgstr "Käyttäjällä %s ei ole oikeuksia muuttaa aineiston tilaa %s"
 msgid "Valid API key needed to edit a package"
 msgstr "Aineiston muokkaukseen tarvitaan voimassaoleva API avain"
 
+#: ckanext/kata/theme/templates/kata/dummy.html:112
+msgid "Search Datasets"
+msgstr "Etsi aineistoja"
+
 #: ckanext/kata/theme/templates/kata/dummy.html:115
 msgid "Search datasets..."
 msgstr "Etsi aineistoista..."
@@ -2087,7 +2068,7 @@ msgid "Sorry no datasets found for \"{query}\""
 msgstr "Haulla \"{query}\" ei löytynyt aineistoja"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:122
-#: ckanext/kata/theme/templates/snippets/package_item.html:47
+#: ckanext/kata/theme/templates/snippets/package_item.html:51
 msgid "This dataset has no description"
 msgstr "Aineistolla ei ole kuvausta"
 
@@ -2214,6 +2195,7 @@ msgstr "Aineiston tiivistelmästä"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:174
 #: ckanext/kata/theme/templates/package/search.html:4
+#: ckanext/kata/theme/templates/package/search.html:12
 msgid "Search for a Dataset"
 msgstr "Etsi aineistoa"
 
@@ -2705,6 +2687,11 @@ msgstr ""
 msgid "Etsin FAQ"
 msgstr "Etsin FAQ"
 
+#: ckanext/kata/theme/templates/kata/faq.html:6
+#: ckanext/kata/theme/templates/kata/faq.html:79
+msgid "FAQ"
+msgstr "FAQ"
+
 #: ckanext/kata/theme/templates/kata/faq.html:12
 #: ckanext/kata/theme/templates/kata/faq.html:86
 msgid "Basic information on Etsin"
@@ -3124,6 +3111,10 @@ msgstr "asiakaspalvelu (at) csc.fi"
 #: ckanext/kata/theme/templates/kata/help.html:3
 msgid "Etsin instructions"
 msgstr "Etsimen käyttöohjeet"
+
+#: ckanext/kata/theme/templates/kata/help.html:6
+msgid "Help"
+msgstr "Ohjeet"
 
 #: ckanext/kata/theme/templates/kata/help.html:14
 #: ckanext/kata/theme/templates/kata/help.html:391
@@ -3940,7 +3931,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/help.html:287
 #: ckanext/kata/theme/templates/kata/help.html:421
-#: ckanext/kata/theme/templates/package/search.html:274
 msgid "API"
 msgstr "API"
 
@@ -4103,8 +4093,6 @@ msgstr ""
 "target=\"_blank\">Markdown</a> -muotoilua"
 
 #: ckanext/kata/theme/templates/macros/form.html:226
-#: ckanext/kata/theme/templates/package/search.html:141
-#: ckanext/kata/theme/templates/package/search.html:249
 msgid "Remove"
 msgstr "Poista"
 
@@ -4120,7 +4108,6 @@ msgstr "Lomakkeella on virheellisiä syötteitä:"
 
 #: ckanext/kata/theme/templates/macros/kata_form.html:30
 #: ckanext/kata/theme/templates/package/package_rights.html:63
-#: ckanext/kata/theme/templates/package/search.html:143
 msgid "Add"
 msgstr "Lisää"
 
@@ -4326,7 +4313,7 @@ msgstr ""
 "muokkausoikeuksien suhteen - ominaisuus vain lähettää sähköpostiviestin."
 
 #: ckanext/kata/theme/templates/package/read.html:21
-#: ckanext/kata/theme/templates/snippets/package_item.html:34
+#: ckanext/kata/theme/templates/snippets/package_item.html:38
 msgid "Draft"
 msgstr "Luonnos"
 
@@ -4418,128 +4405,35 @@ msgstr "Muoto"
 msgid "License"
 msgstr "Lisenssi"
 
-#: ckanext/kata/theme/templates/package/search.html:26
-msgid "Advanced search"
-msgstr "Tarkennettu haku"
+#: ckanext/kata/theme/templates/package/search.html:18
+msgid "Enter search term or query…"
+msgstr "Anna hakusana tai -lauseke…"
 
-#: ckanext/kata/theme/templates/package/search.html:39
-#: ckanext/kata/theme/templates/package/search.html:139
-msgid "Search..."
-msgstr "Haku..."
-
-#: ckanext/kata/theme/templates/package/search.html:42
+#: ckanext/kata/theme/templates/package/search.html:21
 msgid "Submit"
 msgstr "Lähetä"
 
-#: ckanext/kata/theme/templates/package/search.html:47
-#: ckanext/kata/theme/templates/package/search.html:173
-msgid "Use wildcard to search with various spellings, for example: cat*"
-msgstr "Käytä jokerimerkkiä hakeaksesi eri kirjoitusasuilla, esimerkiksi kissa*"
+#: ckanext/kata/theme/templates/package/search.html:38
+msgid "Open data"
+msgstr "Avoin data"
 
-#: ckanext/kata/theme/templates/package/search.html:60
-#: ckanext/kata/theme/templates/package/search.html:179
-msgid "Clear search"
-msgstr "Tyhjennä haku"
+#: ckanext/kata/theme/templates/package/search.html:41
+msgid "Since year"
+msgstr "Vuodesta"
 
-#: ckanext/kata/theme/templates/package/search.html:64
-#: ckanext/kata/theme/templates/package/search.html:183
-msgid "Relevance"
-msgstr "Relevanssi"
-
-#: ckanext/kata/theme/templates/package/search.html:65
-#: ckanext/kata/theme/templates/package/search.html:184
-msgid "Name Ascending"
-msgstr "Nimi (A-Ö)"
-
-#: ckanext/kata/theme/templates/package/search.html:66
-#: ckanext/kata/theme/templates/package/search.html:185
-msgid "Name Descending"
-msgstr "Nimi (Ö-A)"
-
-#: ckanext/kata/theme/templates/package/search.html:67
-#: ckanext/kata/theme/templates/package/search.html:186
-msgid "Last Modified"
-msgstr "Viimeksi muokattu"
-
-#: ckanext/kata/theme/templates/package/search.html:68
-#: ckanext/kata/theme/templates/package/search.html:187
-msgid "Popular"
-msgstr "Suosittu"
-
-#: ckanext/kata/theme/templates/package/search.html:72
-#: ckanext/kata/theme/templates/package/search.html:191
-msgid "Order by"
-msgstr "Järjestä"
-
-#: ckanext/kata/theme/templates/package/search.html:80
-#: ckanext/kata/theme/templates/package/search.html:199
-msgid "Go"
-msgstr "Mene"
-
-#: ckanext/kata/theme/templates/package/search.html:119
-msgid "AND"
-msgstr "AND"
-
-#: ckanext/kata/theme/templates/package/search.html:120
-msgid "OR"
-msgstr "OR"
-
-#: ckanext/kata/theme/templates/package/search.html:121
-msgid "NOT"
-msgstr "NOT"
-
-#: ckanext/kata/theme/templates/package/search.html:145
-msgid ""
-"Multiple search terms are bind together with ANDs and grouped with ORs. "
-"Example: (term1 AND term2) OR (term3) OR (term4 NOT term5)"
-msgstr ""
-"Useammat hakutermit sidotaan yhteen AND-operaattorilla ja ryhmitellään "
-"OR-operaattorilla. Esimerkiksi (term1 AND term2) OR (term3) OR (term4 NOT"
-" term5)"
-
-#: ckanext/kata/theme/templates/package/search.html:156
-msgid "Year"
-msgstr "Vuosi"
-
-#: ckanext/kata/theme/templates/package/search.html:161
-msgid "Start year"
-msgstr "Aloitusvuosi"
-
-#: ckanext/kata/theme/templates/package/search.html:166
-msgid "End year"
-msgstr "Lopetusvuosi"
-
-#: ckanext/kata/theme/templates/package/search.html:260
+#: ckanext/kata/theme/templates/package/search.html:59
 msgid ""
 " <p><strong>There was an error while searching.</strong> Please try "
 "again.</p> "
 msgstr "<p><strong>Haussa tapahtui virhe.</strong> Ole hyvä ja yritä uudelleen</p>"
 
-#: ckanext/kata/theme/templates/package/search.html:275
-msgid "API Docs"
-msgstr "API dokumentaatio"
+#: ckanext/kata/theme/templates/package/search.html:89
+msgid "Limit search results"
+msgstr "Rajaa hakutuloksia"
 
-#: ckanext/kata/theme/templates/package/search.html:277
-msgid "full {format} dump"
-msgstr "täysi {format} tuloste"
-
-#: ckanext/kata/theme/templates/package/search.html:278
-#, python-format
-msgid ""
-" You can also access this registry using the %(api_link)s (see "
-"%(api_doc_link)s) or download a %(dump_link)s. "
-msgstr ""
-"Palvelun data on saatavilla myös %(api_link)s:n kautta (katso "
-"%(api_doc_link)s) tai ladattavissa linkistä %(dump_link)s."
-
-#: ckanext/kata/theme/templates/package/search.html:282
-#, python-format
-msgid ""
-" You can also access this registry using the %(api_link)s (see "
-"%(api_doc_link)s). "
-msgstr ""
-"Palvelun data on saatavilla myös %(api_link)s:n kautta (katso "
-"%(api_doc_link)s)."
+#: ckanext/kata/theme/templates/package/search.html:98
+msgid "More categories…"
+msgstr "Lisää kategorioita…"
 
 #: ckanext/kata/theme/templates/package/snippets/additional_info.html:1
 msgid "Hide/show"
@@ -7754,17 +7648,25 @@ msgstr "Näytä lisää"
 msgid "Show Only Popular"
 msgstr "Näytä vain suositut"
 
-#: ckanext/kata/theme/templates/snippets/package_item.html:27
-#: ckanext/kata/theme/templates/snippets/package_item.html:52
-#: ckanext/kata/theme/templates/snippets/package_item.html:53
+#: ckanext/kata/theme/templates/snippets/facet_list_new.html:34
+msgid "More…"
+msgstr "Lisää…"
+
+#: ckanext/kata/theme/templates/snippets/facet_list_new.html:36
+msgid "Less…"
+msgstr "Vähemmän…"
+
+#: ckanext/kata/theme/templates/snippets/package_item.html:31
+#: ckanext/kata/theme/templates/snippets/package_item.html:56
+#: ckanext/kata/theme/templates/snippets/package_item.html:57
 msgid "Metadata completeness score"
 msgstr "Metatietojen kattavuuspisteet"
 
-#: ckanext/kata/theme/templates/snippets/package_item.html:27
+#: ckanext/kata/theme/templates/snippets/package_item.html:31
 msgid "Metadata: {rating}/5"
 msgstr "Metatiedot: {rating}/5"
 
-#: ckanext/kata/theme/templates/snippets/package_item.html:36
+#: ckanext/kata/theme/templates/snippets/package_item.html:40
 msgid "Deleted"
 msgstr "Poistettu"
 
@@ -7994,4 +7896,105 @@ msgstr "Ensimmäinen kirjautuminen"
 #: ckanext/kata/theme/templates/user/read.html:129
 msgid "API Key"
 msgstr "API-avain"
+
+#~ msgid "new notifications"
+#~ msgstr "uudet viestit"
+
+#~ msgid "Notifications"
+#~ msgstr "Viestit"
+
+#~ msgid "Dashboard"
+#~ msgstr "Yhteenveto"
+
+#~ msgid "My Profile"
+#~ msgstr "Oma profiili"
+
+#~ msgid "Sysadmin settings"
+#~ msgstr "Järjestelmän ylläpitäjän asetukset"
+
+#~ msgid "Stats"
+#~ msgstr ""
+
+#~ msgid "Advanced search"
+#~ msgstr "Tarkennettu haku"
+
+#~ msgid "Search..."
+#~ msgstr "Haku..."
+
+#~ msgid "Use wildcard to search with various spellings, for example: cat*"
+#~ msgstr "Käytä jokerimerkkiä hakeaksesi eri kirjoitusasuilla, esimerkiksi kissa*"
+
+#~ msgid "Clear search"
+#~ msgstr "Tyhjennä haku"
+
+#~ msgid "Relevance"
+#~ msgstr "Relevanssi"
+
+#~ msgid "Name Ascending"
+#~ msgstr "Nimi (A-Ö)"
+
+#~ msgid "Name Descending"
+#~ msgstr "Nimi (Ö-A)"
+
+#~ msgid "Last Modified"
+#~ msgstr "Viimeksi muokattu"
+
+#~ msgid "Popular"
+#~ msgstr "Suosittu"
+
+#~ msgid "Order by"
+#~ msgstr "Järjestä"
+
+#~ msgid "Go"
+#~ msgstr "Mene"
+
+#~ msgid "AND"
+#~ msgstr "AND"
+
+#~ msgid "OR"
+#~ msgstr "OR"
+
+#~ msgid "NOT"
+#~ msgstr "NOT"
+
+#~ msgid ""
+#~ "Multiple search terms are bind together"
+#~ " with ANDs and grouped with ORs. "
+#~ "Example: (term1 AND term2) OR (term3)"
+#~ " OR (term4 NOT term5)"
+#~ msgstr ""
+#~ "Useammat hakutermit sidotaan yhteen AND-"
+#~ "operaattorilla ja ryhmitellään OR-"
+#~ "operaattorilla. Esimerkiksi (term1 AND term2)"
+#~ " OR (term3) OR (term4 NOT term5)"
+
+#~ msgid "Year"
+#~ msgstr "Vuosi"
+
+#~ msgid "Start year"
+#~ msgstr "Aloitusvuosi"
+
+#~ msgid "API Docs"
+#~ msgstr "API dokumentaatio"
+
+#~ msgid "full {format} dump"
+#~ msgstr "täysi {format} tuloste"
+
+#~ msgid ""
+#~ " You can also access this registry"
+#~ " using the %(api_link)s (see "
+#~ "%(api_doc_link)s) or download a %(dump_link)s."
+#~ " "
+#~ msgstr ""
+#~ "Palvelun data on saatavilla myös "
+#~ "%(api_link)s:n kautta (katso %(api_doc_link)s) "
+#~ "tai ladattavissa linkistä %(dump_link)s."
+
+#~ msgid ""
+#~ " You can also access this registry"
+#~ " using the %(api_link)s (see "
+#~ "%(api_doc_link)s). "
+#~ msgstr ""
+#~ "Palvelun data on saatavilla myös "
+#~ "%(api_link)s:n kautta (katso %(api_doc_link)s)."
 
