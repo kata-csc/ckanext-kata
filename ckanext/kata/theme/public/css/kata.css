@@ -1244,6 +1244,28 @@ h3.question {
 .faq .module-heading a:focus {
   text-decoration: none !important;
 }
+#about .centered-container {
+  text-align: center;
+  margin: 24px auto;
+}
+#about .link-list li {
+  display: inline;
+  list-style-type: none;
+}
+#about {
+  text-align: justify;
+  padding-bottom: 20px;
+}
+#about .img-short img {
+  max-height: 48px;
+  max-width: 160px;
+  padding: 0px 16px;
+}
+#about .img-tall img {
+  max-height: 80px;
+  max-width: 200px;
+  padding: 0px 16px;
+}
 .onkiAutocomplete .onkiFinder {
   font-family: Lato, Helvetica, Arial, sans-serif;
 }
@@ -1286,32 +1308,6 @@ textarea {
 .new-dataset h3,
 .new-dataset a {
   color: white !important;
-}
-#about h2 {
-  font-size: 18px !important;
-  margin-top: 20px;
-}
-#about .centered-container {
-  text-align: center;
-  margin: 24px auto;
-}
-#about .link-list li {
-  display: inline;
-  list-style-type: none;
-}
-#about {
-  padding: 0px 128px;
-  text-align: justify;
-}
-#about .img-short img {
-  max-height: 48px;
-  max-width: 160px;
-  padding: 0px 16px;
-}
-#about .img-tall img {
-  max-height: 80px;
-  max-width: 200px;
-  padding: 0px 16px;
 }
 .floating-error {
   position: fixed;
