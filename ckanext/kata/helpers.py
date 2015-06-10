@@ -22,6 +22,7 @@ from ckan.lib.navl.dictization_functions import validate
 from ckan.lib import plugins
 from ckanext.kata.utils import get_pids_by_type
 from pylons.i18n.translation import gettext_noop as N_
+from ckan.common import request
 
 log = logging.getLogger(__name__)
 
@@ -598,7 +599,6 @@ def has_json_content(data):
         return False
     return True
 
-
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
     '''
@@ -633,6 +633,8 @@ def get_labels_for_uri_nocache(uri, ontology=None):
             return None
     if not ontology:
         return None
+
+
 
     url = "http://finto.fi/rest/v1/{ontology}/data?uri={uri}&format=application/json".format(ontology=ontology, uri=uri)
     # Reverse DNS resolving can be extremely slow
@@ -813,3 +815,48 @@ def resolve_org_name(org_id):
     if not group:
         return org_id
     return group.title
+
+def get_active_facets(facets):
+    '''
+    Constructs a summary of currently active facets for search view.
+    Resolves also if any "show more"/"show only top" toggles are on (limits).
+    '''
+    facet_info = dict()
+    facet_info['fields'] = facets['fields']
+    facet_info['search'] = dict()
+    limits = [k for k,v in request.params.items() if v and k.endswith('_limit')]
+    limits = [limit.rsplit('_', 1)[0].strip('_') for limit in limits]
+    for key in facets['search'].iterkeys():
+        facet_info['search'][key] = bool(key in limits)
+    return json.dumps(facet_info)
+
+
+def is_active_facet(facet, active_facets):
+    '''
+    Returns True if given facet is expanded or has selected items
+    :param facet: facet id string
+    :param active_facets: result of get_active_facets
+    '''
+    try:
+        data = json.loads(active_facets)
+    except (ValueError, TypeError):
+        return False
+    if not data:
+        return False
+    return facet in data['fields'] or data['search'][facet]
+
+
+def get_dataset_paged_order(index, per_page):
+    '''
+    Get index for a list with pagination (starting from 1)
+    :param index: current visible list index starting from 0
+    :param per_page: amount of items per page
+    '''
+    current_page = 1
+    page_param = [v for k,v in request.params.items() if k == 'page']
+    if page_param:
+        try:
+            current_page = int(page_param[0])
+        except ValueError:
+            pass
+    return (current_page - 1) * per_page + index + 1

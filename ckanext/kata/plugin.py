@@ -144,6 +144,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action='organization_autocomplete')
+        map.connect('/api/2/util/language/autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action='language_autocomplete')
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")
@@ -270,9 +274,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'disciplines_string_resolved': helpers.disciplines_string_resolved,
             'filter_system_users': helpers.filter_system_users,
             'format_facet_labels': helpers.format_facet_labels,
+            'get_active_facets': helpers.get_active_facets,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
             'get_contributors': helpers.get_contributors,
+            'get_dataset_paged_order': helpers.get_dataset_paged_order,
             'get_description': helpers.get_description,
             'get_dict_errors': helpers.get_dict_errors,
             'get_dict_field_errors': helpers.get_dict_field_errors,
@@ -302,6 +308,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'has_agents_field': helpers.has_agents_field,
             'has_contacts_field': helpers.has_contacts_field,
             'has_json_content': helpers.has_json_content,
+            'is_active_facet': helpers.is_active_facet,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'is_backup_instance': helpers.is_backup_instance,
             'is_url': helpers.is_url,

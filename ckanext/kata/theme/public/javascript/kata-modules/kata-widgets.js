@@ -1,4 +1,3 @@
-
 this.ckan.module('kata-accordion', function ($, _) {
   return {
     initialize: function () {
@@ -18,6 +17,59 @@ this.ckan.module('kata-accordion', function ($, _) {
       // fix style for the rest so the chevrons are shown correctly
       el.find('.accordion-toggle:lt(' + index + ')').addClass('collapsed');
       el.find('.accordion-toggle:gt(' + index + ')').addClass('collapsed');
+    }
+  };
+});
+
+this.ckan.module('kata-facet-accordion', function ($, translate) {
+  return {
+    initialize: function () {
+      $.proxyAll(this, /_on/, /_bind/);
+      this.lang = this.options.currentlang || 'en';
+
+      var el = this.el;
+      var collapses = el.find('.collapse');
+      collapses.collapse({toggle: false});
+      el.find('.accordion-toggle').addClass('collapsed');
+
+      var data = this.options.facets;
+      if (!data) {
+        return;
+      }
+
+      // Open the facet accordion if any facet choices are active
+      var limitsChanged = _.any(_.values(data.search));
+      var shouldBeOpen = _.any(data.fields) || limitsChanged;
+      if (shouldBeOpen) {
+        collapses.eq(0).collapse('show');
+      }
+
+      // Setup a toggler for the additional facets not shown initially
+      setTimeout(this._bindCollapses, 200);
+    },
+
+    _onToggle: function () {
+      this.el.find('.etsin-facet-list.collapse').collapse('toggle');
+    },
+
+    _onHidden: function () {
+      console.log(this.lang);
+      var label = this.lang === 'fi' ? 'Lisää kategorioita…' : 'More categories…';
+      this.el.find('#etsin-facet-list-toggle').html(label);
+    },
+
+    _onShown: function () {
+      var label = this.lang === 'fi' ? 'Vähemmän kategorioita…' : 'Less categories…';
+      this.el.find('#etsin-facet-list-toggle').html(label);
+    },
+
+    _bindCollapses: function () {
+      var collapses = this.el.find('.etsin-facet-list.collapse');
+      collapses.collapse();
+      collapses.on('show', this._onShown);
+      collapses.on('hide', this._onHidden);
+      var toggler = this.el.find('#etsin-facet-list-toggle');
+      toggler.on('click', this._onToggle);
     }
   };
 });

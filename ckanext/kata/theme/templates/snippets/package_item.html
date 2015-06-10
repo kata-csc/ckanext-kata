@@ -19,11 +19,15 @@ Example:
 {% set title = h.get_translation_from_extras(package) or package.name %}
 {% set notes = h.markdown_extract(h.get_description(package), extract_length=truncate) %}
 
-<li class="{{ item_class or "dataset-item" }}">
+<li class="{{ item_class or "dataset-item" }} {% if numbered %}numbered{% endif %}">
+  {% if numbered %}
+  {% set order = h.get_dataset_paged_order(index, g.datasets_per_page) %}
+  <div class="dataset-order-number">{{order}}.</div>
+  {% endif %}
   {% block package_item_content %}
   <div class="dataset-content">
     {% set (rating, stars)=h.get_package_ratings_for_data_dict(package) %}
-    {% if not small %}
+    {% if not small and not numbered %}
     <span class="rating-text" title="{{ _("Metadata completeness score") }}">{{ _('Metadata: {rating}/5').format(rating=rating) }}</span>
     {% endif %}
 
@@ -52,6 +56,10 @@ Example:
       <p class="rating-bottom" title="{{ _("Metadata completeness score") }}">
         {{ _("Metadata completeness score") ~ ": {rating}/5".format(rating=rating) }}
       </p>
+    {% endif %}
+
+    {% if numbered %}
+      {% snippet 'snippets/tag_list.html', tags=package.tags, _class='tag-list', truncated=True %}
     {% endif %}
 
     {#
