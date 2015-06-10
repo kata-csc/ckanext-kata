@@ -483,6 +483,7 @@ input[id="xmlfile"] {
 }
 .login-container {
   text-align: center;
+  color: #444444;
 }
 .login-wrapper {
   display: inline-block;
@@ -493,6 +494,7 @@ input[id="xmlfile"] {
   margin: 10px;
   border: 1px solid #c9c9c9;
   border-radius: 4px;
+  border-color: #3fa9f5;
 }
 .login-text {
   margin: 10px;
@@ -519,6 +521,13 @@ input[id="xmlfile"] {
 }
 .login-container input[type="checkbox"] {
   top: 4px;
+}
+.login-container .button-wrapper {
+  color: #ffffff;
+  text-shadow: none !important;
+  background-color: #3fa9f5 !important;
+  background-image: none !important;
+  border-color: #3fa9f5 !important;
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;

@@ -27,7 +27,7 @@
             <h2>{{ _('Need an Account?') }}</h2>
             <p>{% trans %}Then sign right up, it only takes a minute.{% endtrans %}</p>
           </div>
-            <a class="btn btn-padded" href="{{ h.url_for(controller='user', action='register') }}">{{ _('Create an Account') }}</a>
+            <a class="btn btn-padded button-wrapper" href="{{ h.url_for(controller='user', action='register') }}">{{ _('Create an Account') }}</a>
         </div>
 
         <!-- Password recovery -->
@@ -36,7 +36,7 @@
             <h2>{{ _('Forgotten your details?') }}</h2>
             <p>{% trans %}No problem, use our password recovery form to reset it.{% endtrans %}</p>
           </div>
-            <a class="btn btn-padded" href="{{ h.url_for(controller='user', action='request_reset') }}">{{ _('Forgot your password?') }}</a>
+            <a class="btn btn-padded button-wrapper" href="{{ h.url_for(controller='user', action='request_reset') }}">{{ _('Forgot your password?') }}</a>
         </div>
 
       </div>
