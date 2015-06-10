@@ -12,48 +12,4 @@
     </div>
     <a href="{{ logout_url }}" class="btn btn-padded">{{ _('Logout') }}</a>
   </div>
-
-
-{% if g.debug %}
-
-  <div class="login-wrapper">
-    <div class="login-text">
-      <h2>{{ _("Authentication by using local account") }} </h2>
-    </div>
-
-    <div class="form-group">
-      <input id="field-login" type="text" name="login" value="" placeholder="Username" tabindex="2">
-      <input id="field-password" type="password" name="password" value="" placeholder="Password" tabindex="3">
-
-      <label class="checkbox login-inline" for="field-remember">
-        <input id="field-remember" type="checkbox" name="remember" value="63072000" checked="" tabindex="4"> Remember me
-      </label>
-
-        {#{ form.input('login', label=_("Username"), id='field-login', value="", error=username_error, attrs={'tabindex':'2'}) }#}
-        {#{ form.input('password', label=_("Password"), id='field-password', type="password", value="", error=password_error, attrs={'tabindex':'3'}) }#}
-        {#{ form.checkbox('remember', label=_("Remember me"), id='field-remember', checked=true, value="63072000", attrs={'tabindex':'4'}) }#}
-      <button class="btn btn-primary login-inline" type="submit" tabindex="5">{{ _('Log in') }}</button>
-    </div>
-  </div>
-{#
-  <div class="form-horizontal">
-    {{ form.input('login', label=_('Username'), id='field-login', value="", error="", classes=["control-full"], attrs={"disabled": "disabled"}) }}
-    {{ form.input('password', label=_('Password'), id='field-password', type="password", value="", error="", classes=["control-full"], attrs={"disabled": "disabled"}) }}
-    {{ form.checkbox('remember', label=_('Remember me'), id='field-remember', checked=true, attrs={"disabled": "disabled"}) }}
-    <div class="form-actions">
-      <button class="btn btn-primary disabled" type="submit" disabled>{{ _('Log in') }}</button>
-    </div>
-  </div>
-#}
-{% endif %}
-{% endblock %}
-
-{% block secondary_content %}
-  <section class="module module-narrow module-shallow">
-    <h2 class="module-heading">{{ _("You're already logged in") }}</h2>
-    <div class="module-content">
-      <p>{{ _("You need to log out before you can log in with another account.") }}</p>
-      <p class="action"><a class="btn" href="{{ logout_url }}">{{ _("Log out now") }}</a></p>
-    </div>
-  </section>
 {% endblock %}
