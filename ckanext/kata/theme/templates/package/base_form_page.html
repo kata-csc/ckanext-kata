@@ -1,0 +1,33 @@
+{% extends "page.html" %}
+{% import 'macros/kata_form.html' as kata_form %}
+
+{% block content %}
+
+<div id="etsin-main">
+  <div class="etsin-container etsin-dataset-add">
+    <div class="container">
+      <div class="row-fluid">
+
+        <div class="actions-container">
+          <a class="btn btn-default">{{ _("Upload XML") }}</a>
+          <div class="tooltip-big">
+            {{ kata_form.tooltip(tooltip=_("General help for add dataset.")) }}
+          </div>
+        </div>
+
+        <h2 class="pagetitle">{{ _("Add Dataset") }}</h2>
+        <p>* = {{ _("required information") }}</p>
+
+        {% block form %}{{ c.form | safe }}{% endblock %}
+
+      </div>
+    </div> <!-- container -->
+  </div> <!-- etsin-container -->
+</div> <!-- main -->
+
+{% endblock %}
+
+{# block resources_module #}
+  {# TODO: Pass in a list of previously created resources and the current package dict #}
+  {# snippet "package/snippets/resources.html", pkg={}, action='new_resource' #}
+{# endblock #}

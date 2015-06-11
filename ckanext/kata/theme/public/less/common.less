@@ -151,3 +151,23 @@ i.chevron-alt {
   padding: 0px;
   float: left;
 }
+
+.nav-tabs {
+  a:focus {
+    outline: 0;
+  }
+}
+
+.btn {
+  border-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+  &.btn-primary {
+    background-color: @brand-primary-color !important;
+    background-image: none;
+  }
+  &.btn-default {
+    background-image: none;
+    background-color: @border-color-bg;
+  }
+}

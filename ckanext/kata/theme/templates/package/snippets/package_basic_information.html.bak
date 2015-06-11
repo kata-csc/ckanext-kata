@@ -1,61 +1,7 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<div class="tab-content-inner">
-  <div class="form-row">
-    <div class="form-label">{{ _("Dataset title") }}*</div>
-    <div class="form-content">
-      {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
-      <div class="etsin-multilang-field">
-        <ul class="nav nav-tabs multilang-tabs">
-          <li class="multilang-tab active">
-            <a>
-              suomeksi
-              <span class="closer"><i class="icon-remove"></i></span>
-            </a>
-          </li>
-          <li class="multilang-tab">
-            <a>
-              englanniksi
-              <span class="closer"><i class="icon-remove"></i></span>
-            </a>
-          </li>
-          <li class="multilang-tab">
-            <a class="adder"><i class="icon-plus"></i></a>
-          </li>
-        </ul>
-        <div class="multilang-input">
-          <input type="text" class="form-control">
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  {% snippet 'package/snippets/recommended_description.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
-
-  <div class="form-row">
-    <div class="form-label">{{ _('Languages') }}*</div>
-    <div class="form-content">
-      <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
-      <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
-
-      <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
-        {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Add languages used in your data. Once you start typing, you will automatically get suggestions for matching languages. You can then select the appropriate suggestion with a mouse click, or you can enter your own languages. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work. <br /><br /> If you decide to enter your own languages, they must be given in ISO 639-2 T format, for example \"eng, fin, swe\".')) }}  {% set autocomplete_source = '/api/2/util/language/autocomplete?incomplete=?&language=' ~ h.lang()  %}
-        {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
-        {{ form.input('language', id='language', label=_('Languages'), placeholder=_('eg. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
-
-        <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
-        <span class="add-dataset-infotext">
-          {{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<section class="module hidethisfornow">
+<section class="module">
   <h2 class="module-heading-add-dataset">{{ _('Basic information') }}</h2>
 
   <div class="module-content">
@@ -111,7 +57,7 @@
       </div>
     </div>
 
-
+    {% snippet 'package/snippets/recommended_description.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
 
     {# Autocomplete for keywords #}
 

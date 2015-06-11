@@ -1,26 +1,48 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
+
 {% if errors %}
   <div data-module="kata-notification-tools" class="floating-error" id="kata-error-window">
     <i class="icon-info-sign">&nbsp;</i>{{ _('You have errors in your metadata. Please, make the requested corrections.') }}
   </div>
 {% endif %}
 
-<div>
-    {% set agent_index = h.create_loop_index() %}
+<div class="etsin-dataset-form" data-module="etsin-dataset-form">
+  <ul class="nav nav-tabs dataset-tabs">
+    <li>
+      <a class="dataset-tab" href="#basic-information" data-toggle="tab">1. {{ _("Basic information") }}</a>
+    </li>
+    <li>
+      <a class="dataset-tab" href="#identification-info" data-toggle="tab">2. {{ _("Toimijat") }}</a>
+    </li>
+    <li>
+      <a class="dataset-tab" href="#usage-info" data-toggle="tab">3. {{ _("Usage information") }}</a>
+    </li>
+  </ul>
 
-    {% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+  <div class="form-tab-content">
+      {% set agent_index = h.create_loop_index() %}
 
-    {# If we have a default group then this wants remembering #}
-    {% if data.group_id %}
-      <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
-    {% endif %}
+      <div class="tab-pane" id="basic-information">
+        {% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+      </div>
 
-    {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
-    {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+      {# If we have a default group then this wants remembering #}
+      {% if data.group_id %}
+        <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
+      {% endif %}
 
-    <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />
-    <input type="hidden" value="True" id="private" name="private"/>
+      <div class="tab-pane" id="identification-info">
+        {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+      </div>
+      <div class="tab-pane" id="usage-info">
+        {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+      </div>
+
+      <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />
+      <input type="hidden" value="True" id="private" name="private"/>
+  </div>
+
 </div>
 
-{% snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
+{# snippet 'package/snippets/recommended_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name #}

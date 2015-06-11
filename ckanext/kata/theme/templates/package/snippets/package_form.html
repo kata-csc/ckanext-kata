@@ -6,7 +6,7 @@
 then itself be extended to add/remove blocks of functionality. #}
 <form class="dataset-form form-horizontal" method="post" action="{{ action }}" data-module="basic-form">
 
-{# 
+{#
   _ckan_phase was removed when integrating the ONKI selector
   Its existence lead to inconsistent functionalities when adding a new dataset
   or editing an old one. The problematic function can be found from:
@@ -25,22 +25,29 @@ then itself be extended to add/remove blocks of functionality. #}
   {% block metadata_fields %}
     {% snippet 'package/snippets/package_metadata_fields.html', data=data, errors=errors, roles=c.roles %}
   {% endblock %}
+  <div class="form-tab-content">
   {% snippet 'package/snippets/package_terms_of_use.html' %}
   {% if errors and errors.get('accept-terms') and errors.get('accept-terms') is iterable %}<span class="error-block-kata">{{ errors.get('accept-terms')|join('.') }}</span>{% endif %}
   {% block form_actions %}
-    <div class="form-actions">
-      {% block delete_button %}
-        {% if h.check_access('package_delete', {'id': data.id})  %}
-          {% set locale = h.dump_json({'content': _('Are you sure you want to delete this dataset?')}) %}
-          <a class="btn btn-danger pull-left" href="{% url_for controller='package', action='delete', id=data.id %}" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
-        {% endif %}
-      {% endblock %}
-      {% block cancel_button %}
-        <a class="btn" href="">{% block cancel_button_text %}{{ _('Cancel') }}{% endblock %}</a>
-      {% endblock %}
-      <button class="btn btn-primary" type="submit" value="finish" name="save">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
-      {# Changing the text of save and publish on edit can be done in new_package_form.html #}
-      <button class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled">{% block save_and_publish_button_text %}{{ _('Save and publish') }}{% endblock %}</button>
+    <div class="form-row">
+      <div class="form-content">
+        <div class="form-actions">
+          {% block delete_button %}
+            {% if h.check_access('package_delete', {'id': data.id})  %}
+              {% set locale = h.dump_json({'content': _('Are you sure you want to delete this dataset?')}) %}
+              <a class="btn btn-danger pull-left" href="{% url_for controller='package', action='delete', id=data.id %}" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
+            {% endif %}
+          {% endblock %}
+
+          <button class="btn btn-primary" type="submit" value="finish" name="save">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
+          {# Changing the text of save and publish on edit can be done in new_package_form.html #}
+          <button class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled">{% block save_and_publish_button_text %}{{ _('Save and publish') }}{% endblock %}</button>
+          {% block cancel_button %}
+            <a class="btn btn-default" href="">{% block cancel_button_text %}{{ _('Cancel') }}{% endblock %}</a>
+          {% endblock %}
+        </div>
+      </div>
     </div>
   {% endblock %}
+  </div>
 </form>

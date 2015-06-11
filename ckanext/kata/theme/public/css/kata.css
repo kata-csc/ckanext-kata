@@ -134,6 +134,22 @@ i.chevron-alt {
   padding: 0px;
   float: left;
 }
+.nav-tabs a:focus {
+  outline: 0;
+}
+.btn {
+  border-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+}
+.btn.btn-primary {
+  background-color: #3fa9f5 !important;
+  background-image: none;
+}
+.btn.btn-default {
+  background-image: none;
+  background-color: #c9c9c9;
+}
 .kata-package-editor {
   border-bottom: 1px solid !important;
   padding-bottom: 25px !important;
@@ -480,6 +496,175 @@ input[id="xmlfile"] {
 }
 #temporal_coverage .control-label:not(:first-of-type) {
   padding-top: 20px;
+}
+.etsin-dataset-add .container {
+  max-width: 1200px;
+  width: 1200px;
+}
+@media (max-width: 1200px) {
+  .etsin-dataset-add .container {
+    max-width: auto;
+    width: auto;
+  }
+}
+.etsin-dataset-add .actions-container {
+  float: right;
+  margin-top: -9px;
+}
+.etsin-dataset-add .actions-container > * {
+  display: inline-block;
+}
+.etsin-dataset-add .pagetitle {
+  width: 50%;
+}
+.etsin-dataset-add .dataset-form {
+  margin-top: 20px;
+}
+@media (min-width: 971px) and (max-width: 1215px) {
+  .etsin-dataset-add {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+.form-tab-content {
+  padding: 20px;
+  /* stack form label and content on small display */
+}
+.form-tab-content .tab-pane {
+  display: none;
+}
+.form-tab-content .tab-pane.active {
+  display: block;
+}
+.form-tab-content .form-actions {
+  margin: 0;
+  padding: 0;
+  float: none;
+  border-top: none;
+  text-align: left;
+}
+.form-tab-content .form-actions .btn {
+  padding: 10px 24px;
+}
+.form-tab-content .form-actions .btn + .btn {
+  margin-left: 15px;
+}
+.form-tab-content .form-row {
+  margin-bottom: 40px;
+}
+.form-tab-content .form-row .form-label {
+  float: left;
+  font-weight: 700;
+  width: 30%;
+}
+.form-tab-content .form-row .form-content {
+  position: relative;
+  margin-left: 30%;
+  width: 65%;
+  padding-right: 5%;
+}
+.form-tab-content .form-row .kata-tooltip {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+@media (max-width: 700px) {
+  .form-tab-content .form-row .form-label {
+    float: none;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .form-tab-content .form-row .form-content {
+    width: 91%;
+    margin-left: 7%;
+  }
+}
+.etsin-dataset-form {
+  border: 1px solid #c9c9c9;
+  /* stack tab headers on small display */
+}
+.etsin-dataset-form .dataset-tabs {
+  display: table;
+  width: 100%;
+  border-color: #c9c9c9;
+  border-bottom-color: transparent;
+}
+.etsin-dataset-form .dataset-tabs > li {
+  float: none;
+  display: table-cell;
+  width: 33.33333333%;
+  text-align: center;
+  white-space: nowrap;
+}
+.etsin-dataset-form .dataset-tabs > li > a {
+  padding: 15px 0;
+  margin: 0;
+}
+.etsin-dataset-form .dataset-tabs > li > a {
+  width: 100%;
+  border-radius: 0;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: 1px solid #c9c9c9 !important;
+  border-bottom: 1px solid #c9c9c9;
+}
+.etsin-dataset-form .dataset-tabs > li > a:hover,
+.etsin-dataset-form .dataset-tabs > li > a:active,
+.etsin-dataset-form .dataset-tabs > li > a:focus {
+  border-top: none !important;
+  background-color: transparent;
+}
+.etsin-dataset-form .dataset-tabs > .active > a {
+  font-weight: 700;
+  background-color: transparent;
+  border-bottom-color: transparent;
+}
+@media (max-width: 700px) {
+  .etsin-dataset-form .dataset-tabs {
+    display: block;
+  }
+  .etsin-dataset-form .dataset-tabs > li {
+    float: left;
+    display: inline-block;
+    width: 100%;
+  }
+  .etsin-dataset-form .dataset-tabs > li.active > a {
+    border-bottom-color: #c9c9c9;
+  }
+}
+.etsin-multilang-field .multilang-tabs {
+  margin-bottom: -1px;
+}
+.etsin-multilang-field .multilang-tabs > li > a {
+  border: 1px solid #c9c9c9;
+  border-radius: 0;
+}
+.etsin-multilang-field .multilang-tabs > li.active > a {
+  font-weight: 700;
+  border-bottom-color: white;
+  background-color: transparent;
+}
+.etsin-multilang-field .multilang-tabs > li.active > a:hover,
+.etsin-multilang-field .multilang-tabs > li.active > a:active,
+.etsin-multilang-field .multilang-tabs > li.active > a:focus {
+  background-color: transparent;
+  border-bottom-color: white;
+}
+.etsin-multilang-field .multilang-input {
+  padding: 15px;
+  border: 1px solid #c9c9c9;
+}
+.etsin-multilang-field .multilang-input > input,
+.etsin-multilang-field .multilang-input > textarea {
+  width: 95%;
+}
+.hidethisfornow {
+  display: none !important;
+}
+.tooltip-big .kata-tooltip {
+  font-size: 40px;
+  top: 16px;
+  width: 30px;
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;

@@ -166,3 +166,196 @@ input[id="xmlfile"] {
     padding-top: 20px;
   }
 }
+
+
+@etsin-form-max-width: 1200px;
+.etsin-dataset-add {
+  .container {
+    max-width: @etsin-form-max-width;
+    width: @etsin-form-max-width;
+  }
+  @media (max-width: @etsin-form-max-width) {
+    .container {
+      max-width: auto;
+      width: auto;
+    }
+  }
+  .actions-container {
+    float: right;
+    margin-top: -9px;
+    & > * {
+      display: inline-block;
+    }
+  }
+  .pagetitle {
+    width: 50%;
+  }
+  .dataset-form {
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: @content-max-width) and (max-width: (@etsin-form-max-width + 15px)) {
+  .etsin-dataset-add {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+.form-tab-content {
+  padding: 20px;
+  .tab-pane {
+    display: none;
+    &.active {
+      display: block;
+    }
+  }
+  .form-actions {
+    margin: 0;
+    padding: 0;
+    float: none;
+    border-top: none;
+    text-align: left;
+    .btn {
+      padding: 10px 24px;
+    }
+    .btn + .btn {
+      margin-left: 15px;
+    }
+  }
+
+  @form-label-width: 30%;
+  @form-help-spacer-width: 5%;
+
+  .form-row {
+    margin-bottom: 40px;
+    .form-label {
+      float: left;
+      font-weight: 700;
+      width: @form-label-width;
+    }
+    .form-content {
+      position: relative;
+      margin-left: @form-label-width;
+      width: 100% - @form-label-width - @form-help-spacer-width;
+      padding-right: @form-help-spacer-width;
+    }
+    .kata-tooltip {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  /* stack form label and content on small display */
+  @media (max-width: 700px) {
+    .form-row {
+      .form-label {
+        float: none;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .form-content {
+        width: 91%;
+        margin-left: 7%;
+      }
+    }
+  }
+}
+
+@form-border-color: @border-color-bg;
+@form-tabs-number-of-items: 3;
+.etsin-dataset-form {
+  border: 1px solid @form-border-color;
+  .dataset-tabs {
+    display: table;
+    width: 100%;
+    & > li {
+      float: none;
+      display: table-cell;
+      width: 100% / @form-tabs-number-of-items;
+      text-align: center;
+      white-space: nowrap;
+      & > a {
+        padding: 15px 0;
+        margin: 0;
+      }
+    }
+
+    border-color: @form-border-color;
+    border-bottom-color: transparent;
+    & > li > a {
+      width: 100%;
+      border-radius: 0;
+      border-top: none !important;
+      border-left: none !important;
+      border-right: 1px solid @form-border-color !important;
+      border-bottom: 1px solid @form-border-color;
+      &:hover, &:active, &:focus {
+        border-top: none !important;
+        background-color: transparent;
+      }
+    }
+    & > .active > a {
+      font-weight: 700;
+      background-color: transparent;
+      border-bottom-color: transparent;
+    }
+  }
+
+  /* stack tab headers on small display */
+  @media (max-width: 700px) {
+    .dataset-tabs {
+      display: block;
+      & > li {
+        float: left;
+        display: inline-block;
+        width: 100%;
+        &.active > a {
+          border-bottom-color: @form-border-color;
+        }
+      }
+    }
+  }
+
+}
+
+.etsin-multilang-field {
+  .multilang-tabs {
+    margin-bottom: -1px;
+    & > li {
+      & > a {
+        border: 1px solid @form-border-color;
+        border-radius: 0;
+      }
+      &.active > a {
+        font-weight: 700;
+        border-bottom-color: white;
+        background-color: transparent;
+        &:hover, &:active, &:focus {
+          background-color: transparent;
+          border-bottom-color: white;
+        }
+      }
+    }
+  }
+  .multilang-input {
+    padding: 15px;
+    border: 1px solid @form-border-color;
+    & > input, & > textarea {
+      width: 95%;
+    }
+  }
+}
+
+.hidethisfornow {
+  display: none !important;
+}
+
+.tooltip-big {
+  .kata-tooltip {
+    font-size: 40px;
+    top: 16px;
+    width: 30px;
+  }
+}
