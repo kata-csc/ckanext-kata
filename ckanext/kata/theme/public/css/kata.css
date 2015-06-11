@@ -1657,7 +1657,7 @@ a.download {
   font-size: 0.8em;
 }
 .comment-container .comment {
-  border-left: 2px solid #3fa9f5 ;
+  border-left: 2px solid #3fa9f5;
   padding-left: 10px;
   margin: 4px 0;
   font-size: 0.9em;
@@ -1688,10 +1688,10 @@ a.download {
 }
 .btn-blue:hover {
   color: #ffffff;
-  background-color: #3896D9 !important;
-  border-color: #3896D9 !important;
+  background-color: #0f93f2 !important;
+  border-color: #0f93f2 !important;
 }
 .btn-white:hover {
-  color: #3896D9;
-  border-color: #3896D9 !important;
+  color: #0f93f2;
+  border-color: #0f93f2 !important;
 }
