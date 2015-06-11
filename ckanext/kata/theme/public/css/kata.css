@@ -1686,3 +1686,12 @@ a.download {
   text-shadow: none;
   color: #3fa9f5;
 }
+.btn-blue:hover {
+  color: #ffffff;
+  background-color: #3896D9 !important;
+  border-color: #3896D9 !important;
+}
+.btn-white:hover {
+  color: #3896D9;
+  border-color: #3896D9 !important;
+}
