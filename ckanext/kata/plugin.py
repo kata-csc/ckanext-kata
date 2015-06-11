@@ -111,6 +111,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/dataset/{id:.*?}.{format:rdf}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action='read_rdf')
+        map.connect('/browse',
+                    controller="ckanext.kata.controllers:KataBrowseController",
+                    action='browse')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')

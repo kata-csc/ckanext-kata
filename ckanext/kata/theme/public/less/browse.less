@@ -1,0 +1,134 @@
+@switcher-height: 32px;
+.browse-search-switcher {
+  margin-bottom: 40px;
+  font-size: 0;
+  height: @switcher-height;
+  text-align: center;
+  width: 100%;
+  & > a {
+    font-size: @base-font-size;
+    height: @switcher-height;
+    line-height: @switcher-height;
+    display: inline-block;
+    padding: 0 16px;
+    border: 1px solid @brand-primary-color;
+    &:first-child {
+      border-top-left-radius: @switcher-height / 2;
+      border-bottom-left-radius: @switcher-height / 2;
+    }
+    &:not(:first-child) {
+      margin-left: -1px;
+      border-top-right-radius: @switcher-height / 2;
+      border-bottom-right-radius: @switcher-height / 2;
+    }
+    &.active {
+      background-color: @brand-primary-color;
+      color: white;
+    }
+  }
+}
+
+.browse-dropdowns {
+  margin-bottom: 30px;
+  display: table;
+  width: 100%;
+  & > li {
+    display: table-cell;
+    width: 33.3333%;
+    & > select {
+      width: 100%;
+    }
+    &:not(:first-child) {
+      padding-left: 20px;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .browse-dropdowns {
+    display: block;
+    width: 100%;
+    & > li {
+      display: block;
+      width: 100%;
+      & > select {
+        width: 100%;
+      }
+      &:not(:first-child) {
+        padding-left: 0;
+      }
+    }
+  }
+
+}
+
+
+.lower-title {
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+
+@result-image-size: 110px;
+@result-info-size: 62%;
+
+.browse-results {
+  margin-bottom: 60px;
+
+  .browse-result {
+    margin-bottom: 10px;
+    border: 1px solid @border-color-bg;
+    background-color: white;
+    padding: 15px;
+
+    .result-info {
+      width: @result-info-size;
+      float: left;
+      padding-right: 30px;
+      border-right: 1px solid @border-color-bg;
+    }
+    .result-image {
+      width: @result-image-size;
+      height: @result-image-size;
+      background-color: #888; /* placeholder */
+      float: left;
+    }
+    .result-text {
+      & > h3 {
+        margin-top: 0;
+      }
+      margin-left: @result-image-size + 30px;
+    }
+    .result-tags {
+      margin-left: @result-info-size + 6%;
+      .pill {
+        color: @brand-primary-color;
+        background-color: white;
+        border: 1px solid @brand-primary-color;
+        border-radius: 4px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .browse-results {
+    .browse-result {
+      .result-info {
+        float: none;
+        border: 0;
+        padding-right: 0;
+        width: 100%;
+      }
+      .result-tags {
+        clear: left;
+        padding-top: 15px;
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+.browse-lastrow {
+  padding-bottom: 40px;
+}

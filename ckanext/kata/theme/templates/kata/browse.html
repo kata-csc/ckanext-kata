@@ -1,0 +1,110 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _("Browse Datasets") }}{% endblock %}
+
+{% block content %}
+
+<div id="etsin-main">
+  <div class="etsin-container">
+    <div class="container container-wide">
+      <div class="row-fluid">
+        <div class="browse-search-switcher">
+          <a class="active" href="{{ h.url_for('/browse') }}">{{ _('Browse Datasets') }}</a>
+          <a href="{{ h.url_for('/dataset') }}">{{ _('Search Datasets') }}</a>
+        </div>
+      </div>
+      <div class="row-fluid">
+        <h2>{{ _("Datasets") }}</h2>
+
+        <ul class="unstyled browse-dropdowns">
+          <li>
+            <select class="form-control">
+              <option>Tieteenalan mukaan</option>
+            </select>
+          </li>
+          <li>
+            <select>
+              <option>Politiikan tutkimus (286)</option>
+            </select>
+          </li>
+          <li>
+            <select>
+              <option>Aakkosjärjestys (A-Ö)</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="etsin-container etsin-container-bg">
+    <div class="container container-wide">
+      <div class="row-fluid browse-lastrow">
+        <h2 class="lower-title">Politiikan tutkimus (286)</h2>
+
+        <ul class="unstyled browse-results">
+
+          <li class="browse-result">
+            <div class="inner-container">
+              <div class="result-info">
+                <div class="result-image">
+
+                </div>
+                <div class="result-text">
+                  <h3><a>Dataset title</a></h3>
+                  <p class="description">
+                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                  </p>
+                </div>
+              </div>
+              <div class="result-tags">
+                <ul class="unstyled">
+                  <li>
+                    <a><span class="pill">tag</span></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </li>
+
+          <li class="browse-result">
+            <div class="inner-container">
+              <div class="result-info">
+                <div class="result-image">
+
+                </div>
+                <div class="result-text">
+                  <h3><a>A very long title that will take a lot of space in the screen</a></h3>
+                  <p class="description">
+                    Short description.
+                  </p>
+                </div>
+              </div>
+              <div class="result-tags">
+                <ul class="unstyled">
+                  <li>
+                    <a><span class="pill">tag</span></a>
+                    <a><span class="pill">epäjärjestelmällistyttämättö...</span></a>
+                    <a><span class="pill">tag</span></a>
+                    <a><span class="pill">tag</span></a>
+                    <a><span class="pill">tag</span></a>
+                    <a><span class="pill">somewhat longer tag name</span></a>
+                    <a><span class="pill">tag</span></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </li>
+
+        </ul>
+
+        <div style="text-align: center">pager placeholder</div>
+
+      </div>
+    </div>
+
+</div>
+
+{% endblock %}
