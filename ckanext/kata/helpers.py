@@ -345,7 +345,7 @@ def resolve_agent_role(role):
     '''
     Get a non-translated role name.
     '''
-    return settings.AGENT_ROLES.get(role, None)
+    return settings.AGENT_ROLES.get(role, role.title())
 
 
 def get_funder(data_dict):
