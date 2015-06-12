@@ -166,3 +166,47 @@ input[id="xmlfile"] {
     padding-top: 20px;
   }
 }
+
+
+@form-label-width: 30%;
+@form-help-spacer-width: 5%;
+
+.form-tab-content {
+ padding: 20px;
+
+ .form-row {
+    margin-bottom: 40px;
+    .form-label {
+      float: left;
+      font-weight: 700;
+      width: @form-label-width;
+    }
+    .form-content {
+      min-height: 16px;
+      position: relative;
+      margin-left: @form-label-width;
+      width: 100% - @form-label-width - @form-help-spacer-width;
+      padding-right: @form-help-spacer-width;
+    }
+    .kata-tooltip {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  /* stack form label and content on small display */
+  @media (max-width: 700px) {
+    .form-row {
+      .form-label {
+        float: none;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .form-content {
+        width: 91%;
+        margin-left: 7%;
+      }
+    }
+  }
+}

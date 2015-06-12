@@ -1,71 +1,19 @@
-{% ckan_extends %}
+{% extends "page.html" %}
 
-{% block subtitle %}{{ h.get_translation(pkg.title) or pkg.name }}{% endblock %}
 
-{% block content_action %}
-  {% if h.check_access('package_update', {'id':pkg.id }) %}
-    {% link_for _('Edit'), controller='package', action='edit', id=pkg.name, class_='btn', icon='wrench' %}
-    {% link_for _('History'), controller='package', action='history', id=pkg.name, class_='btn', icon='sitemap' %}
-  {% else %}
-      <a href="{{ h.url_for(controller='ckanext.kata.controllers:EditAccessRequestController', action='render_edit_request', pkg_id=pkg.name) }}" class="btn btn-primary">
-      <i class="icon-plus-sign"></i>
-      {{ _('Request metadata editing rights') }}
-      </a>
-  {% endif %}
-{% endblock %}
+{% block content %}
 
-{% block content_primary_nav %}
-  {{ h.build_nav_icon('dataset_read', _('Dataset'), id=pkg.name) }}
-  {% if h.check_access('package_activity_list') %}
-    {{ h.build_nav_icon('dataset_activity', _('Activity Stream'), id=pkg.name) }}
-  {% endif %}
-  {{ h.build_nav_icon('related_list', _('Related'), id=pkg.name) }}
-{% endblock %}
+<div id="etsin-main">
+  <div class="etsin-container read-base-container">
+    <div class="container container-medium">
+      <div class="row-fluid">
+        {%- block inner_content %}
 
-{% block secondary_content %}
 
-  {% block secondary_help_content %} {{ super() }} {% endblock %}
-
-  {% block package_info %}
-
-    <div class="module context-info">
-      <div class="module-content">
-        <h1 class="heading">{{ h.get_translation(pkg.title) or pkg.name }}</h1>
-        <div class="nums">
-          <dl>
-            <dt>{{ _('Followers') }}</dt>
-            <dd>{{ h.SI_number_span(h.get_action('dataset_follower_count', {'id': pkg.id})) }}</dd>
-          </dl>
-        </div>
-        <div class="follow_button">
-          {{ h.follow_button('dataset', pkg.name) }}
-        </div>
+        {% endblock -%}
       </div>
     </div>
+  </div>
+</div>
 
-  {% endblock %}
-  
-  {% block package_metadata %}
-    {% snippet "package/snippets/rdfgen.html", pkg_name=pkg.name %}
-  {% endblock%}
-
-  {% block package_organization %} {{ super() }} {% endblock %}
-
-  {% block package_groups %} {{ super() }} {% endblock %}
-    
-  {% block package_social %} {{ super() }} {% endblock %}
-    
-  {% block package_license %} {{ super() }} {% endblock %}
-    
-  {% if h.check_access('package_update', {'id':pkg.id }) %}
-    <section class="module module-narrow">
-      <h2 class="module-heading">{{ _('Dataset administration') }}</h2>
-      <ul class="nav nav-simple">
-         <li class="nav-item">
-           <a href={{h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=pkg.name)}}><i class="icon-wrench"></i>{{ _('Administer dataset rights') }}</a>
-         </li>
-      </ul>
-    </section>
-  {% endif %}
-
-{% endblock secondary_content %}
+{% endblock %}
