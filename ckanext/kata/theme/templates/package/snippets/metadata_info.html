@@ -85,12 +85,12 @@
           {% if loop.index0 > 0 %}
             <br><br>
           {% endif %}
-          {{agent.name}}
+          {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{agent.organisation}}
+          <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{agent.URL}}
+          <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
@@ -135,12 +135,51 @@
           {% if loop.index0 > 0 %}
             <br><br>
           {% endif %}
-          {{agent.name}}
+          {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{agent.organisation}}
+          <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{agent.URL}}
+          <br>{{ agent.URL }}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-label">{{ _('Contributor') }}</div>
+    <div class="form-content">
+      {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+        {% for agent in role.list if agent.role == 'contributor' %}
+          {% if loop.index0 > 0 %}
+            <br><br>
+          {% endif %}
+          {{ agent.name }}
+          {% if agent.organisation %}
+          <br>{{ agent.organisation }}
+          {% endif %}
+          {% if agent.URL %}
+          <br>{{ agent.URL }}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-label">{{ _('Other') }}</div>
+    <div class="form-content">
+      {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+        {% for agent in role.list if agent.role not in ['contributor', 'owner', 'distributor', 'author', 'funder'] %}
+          {% if loop.index0 > 0 %}
+            <br><br>
+          {% endif %}
+          <b>{{ agent.role }}</b><br>
+          {{ agent.name }}
+          {% if agent.organisation %}
+          <br>{{ agent.organisation }}
+          {% endif %}
+          {% if agent.URL %}
+          <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
@@ -256,6 +295,15 @@
 
 </div>
 <div class="dataset-section form-tab-content">
+  <!-- Resources -->
+  <div class="form-row">
+    <div class="form-label">{{ _('Files') }}</div>
+    <div class="form-content">
+      <table class="form-inner-table">
+        {% snippet "package/snippets/resources_list.html", pkg=pkg_dict, resources=pkg_dict.resources %}
+      </table>
+    </div>
+  </div>
   <!-- IDs -->
 
   <div class="form-row">
@@ -294,6 +342,68 @@
 
 </div>
 <div class="dataset-section form-tab-content">
+<!-- Dataset lifecycle events -->
+
+  <div class="form-row">
+    <div class="form-label">{{ _('Dataset lifecycle events') }}</div>
+      {% if pkg_dict.event %}
+        <div class="form-content">
+          <table class="form-inner-table">
+            <colgroup>
+              <col width="25%">
+              <col width="25%">
+              <col width="25%">
+              <col width="25%">
+            </colgroup>
+          {% for ev in pkg_dict.event %}
+            <tr>
+              <td class="dataset-details">{{ _(ev.get('type', ' ')) }}</td>
+              <td class="dataset-details">{{ ev.get('who', ' ') }}</td>
+              <td class="dataset-details">{{ ev.get('when', ' ') }}</td>
+              <td class="dataset-details">{{ _(ev.get('descr', ' ')) }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>
+<div class="dataset-section form-tab-content">
+  <!-- Additional information / technical information about the data file -->
+    <div class="form-row">
+      <div class="form-label">{{ _('Additional information') }}</div>
+        <div class="form-content">
+          <table class="form-inner-table">
+            {% if pkg_dict.mimetype %}
+              <tr>
+                <th class="dataset-label">{{ _('File format: MIME type') }}</th>
+                <td class="dataset-details">{{ pkg_dict.mimetype }}</td>
+               </tr>
+            {% endif %}
+            {%  if pkg_dict.format %}
+              <tr>
+                <th class=dataset-label">{{ _('File format') }}</th>
+                <td class="dataset-details">{{ pkg_dict.format }}</td>
+              </tr>
+            {% endif %}
+            {% if pkg_dict.algorithm and pkg_dict.checksum %}
+              <tr>
+                <th class="dataset-label">{{ _('Checksum') }}</th>
+                <td class="dataset-details">{{ pkg_dict.checksum }}</td>
+              </tr>
+              <tr>
+                <th class="dataset-label">{{ _('Algorithm') }}</th>
+                <td class="dataset-details">{{ pkg_dict.algorithm }}</td>
+              </tr>
+            {% endif %}
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+{#
+<div class="dataset-section form-tab-content">
   <!-- Additional info -->
 
 </div>
+ #}

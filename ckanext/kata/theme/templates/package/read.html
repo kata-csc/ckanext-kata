@@ -22,7 +22,7 @@
     <div class="actions-and-ratings">
       <div class="button-container">
         <a class="btn btn-default" href={{h.url_for(controller='package', action='read', id=pkg.name, format='rdf')}}>
-          {{ _('Lataa RDF') }}
+          {{ _('Show in RDF format') }}
         </a>
         <div class="btn-group">
           <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -32,7 +32,7 @@
             {% set has_update_rights = h.check_access('package_update', {'id':pkg.id }) %}
             {% if has_update_rights %}
             <li>
-              {% link_for _('Muokkaa tietoja'), controller='package', action='edit', id=pkg.name, class_='', icon='' %}
+              {% link_for _('Edit metadata'), controller='package', action='edit', id=pkg.name, class_='', icon='' %}
             </li>
             {% else %}
             <li>
@@ -83,9 +83,9 @@
           <td>{{ h.follow_button('dataset', pkg.name) }}</td>
         </tr>
         <tr>
-          <td>{{ _('Aineistoa käytetty') }}</td>
-          <td>5 kertaa</td>
-          <td><a class="btn btn-default">{{ _('Ilmoita käytöstä') }}</a></td>
+          <td>{{ _('Data used') }}</td>
+          <td>{{ c.related_count }} {{ _('times') }}</td>
+          <td>{% link_for _('Advertise reuse'), controller='related', action='new', id=pkg.name, class_='btn btn-default' %}</td>
         </tr>
       </table>
 
