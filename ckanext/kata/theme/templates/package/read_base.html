@@ -6,6 +6,9 @@
 <div id="etsin-main">
   <div class="etsin-container read-base-container">
     <div class="container container-medium">
+      {% block flash %}
+        {{ super() }}
+      {% endblock %}
       <div class="row-fluid">
         {%- block inner_content %}
 
