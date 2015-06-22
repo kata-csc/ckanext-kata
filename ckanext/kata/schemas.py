@@ -381,7 +381,7 @@ class Schemas:
 
         # co.gen_translation_str_from_extras updates the title field to show the JSON
         # translation string if old format titles are found from extras
-        schema['title'] = [ignore_missing, co.gen_translation_str_from_extras]
+        schema['title'] = [ignore_missing, co.gen_translation_str_from_extras, co.set_language_for_title]
 
         schema['notes'] = [co.ensure_valid_notes]
 
