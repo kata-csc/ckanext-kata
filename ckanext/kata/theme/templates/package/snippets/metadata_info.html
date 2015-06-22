@@ -100,8 +100,10 @@
   <div class="form-row">
     <div class="form-label">{{ _('Organization') }}</div>
     <div class="form-content">
-      {% set organization=pkg_dict.organization %}
-      {% link_for organization.title or organization.name, controller='organization', action='about', id=organization.name %}
+      {% if pkg_dict.get('organization') %}
+        {% set organization=pkg_dict.organization %}
+        {% link_for organization.title or organization.name, controller='organization', action='about', id=organization.name %}
+      {% endif %}
     </div>
   </div>
 
