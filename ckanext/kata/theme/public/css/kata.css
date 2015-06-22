@@ -82,12 +82,32 @@ i.chevron-alt {
 .etsin-container .container {
   max-width: 700px;
 }
+.etsin-container .container-wide {
+  max-width: 1100px;
+  width: 1100px;
+}
+.etsin-container .container-medium {
+  max-width: 920px;
+  width: 920px;
+}
 @media (max-width: 971px) {
   .etsin-container {
     padding-left: 15px;
     padding-right: 15px;
   }
   .etsin-container .container {
+    width: auto;
+  }
+}
+@media (min-width: 971px) and (max-width: 1115px) {
+  .etsin-container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+@media (max-width: 1100px) {
+  .etsin-container .container-wide {
+    max-width: auto;
     width: auto;
   }
 }
@@ -133,6 +153,35 @@ i.chevron-alt {
   margin: 20px;
   padding: 0px;
   float: left;
+}
+.btn {
+  border-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+}
+.btn.btn-primary {
+  background-color: #3fa9f5 !important;
+  background-image: none;
+}
+.btn.btn-default,
+.btn.btn-success,
+.btn.btn-danger {
+  background-image: none;
+  border-color: #3fa9f5;
+  color: #3fa9f5;
+  background-color: white;
+}
+.btn .icon-chevron-down {
+  margin-left: 5px;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a {
+  background: #3fa9f5;
+}
+.btn-group.open .btn.dropdown-toggle {
+  background-color: white;
 }
 .kata-package-editor {
   border-bottom: 1px solid !important;
@@ -481,6 +530,41 @@ input[id="xmlfile"] {
 #temporal_coverage .control-label:not(:first-of-type) {
   padding-top: 20px;
 }
+.form-tab-content {
+  padding: 20px;
+  /* stack form label and content on small display */
+}
+.form-tab-content .form-row {
+  margin-bottom: 40px;
+}
+.form-tab-content .form-row .form-label {
+  float: left;
+  font-weight: 700;
+  width: 30%;
+}
+.form-tab-content .form-row .form-content {
+  min-height: 16px;
+  position: relative;
+  margin-left: 30%;
+  width: 65%;
+  padding-right: 5%;
+}
+.form-tab-content .form-row .kata-tooltip {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+@media (max-width: 700px) {
+  .form-tab-content .form-row .form-label {
+    float: none;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .form-tab-content .form-row .form-content {
+    width: 91%;
+    margin-left: 7%;
+  }
+}
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
   background: #ffffff;
@@ -574,12 +658,6 @@ header.masthead .user-dropdown-menu a {
 }
 header.masthead .user-dropdown-menu a:hover {
   color: #fff !important;
-}
-header.masthead .dropdown-menu > li > a:hover,
-header.masthead .dropdown-menu > li > a:focus,
-header.masthead .dropdown-submenu:hover > a,
-header.masthead .dropdown-submenu:focus > a {
-  background: #3fa9f5;
 }
 header.masthead .dropdown .dropdown-toggle .icon-chevron-down {
   margin-left: 3px;
@@ -1497,6 +1575,162 @@ a.download {
   color: #f1592a;
   font-weight: bold;
   font-size: 14px;
+}
+.dataset-view-header {
+  width: 100%;
+}
+.dataset-view-header .uses-and-followers {
+  margin-right: 300px;
+}
+.dataset-view-header .uses-and-followers > table td {
+  padding-right: 15px;
+}
+.dataset-view-header .social-share {
+  margin-top: 15px;
+}
+.dataset-view-header .social-share > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+.dataset-view-header .social-share .social-item {
+  margin-left: 5px;
+}
+.dataset-view-header .social-share .social-item i {
+  font-size: 28px;
+  width: 28px;
+}
+.dataset-view-header .actions-and-ratings {
+  float: right;
+  max-width: 300px;
+  text-align: right;
+}
+@media (max-width: 500px) {
+  .dataset-view-header .button-container > .btn,
+  .dataset-view-header .button-container > .btn-group {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+.completeness {
+  display: inline-block;
+  margin: 10px 0;
+  width: 100px;
+  height: 100px;
+}
+.completeness .meter {
+  border: 0;
+  border-radius: 50px;
+  box-shadow: 0 0 0 1px #3fa9f5 inset;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* these aren't accurate if we mask this with a circle */
+}
+.completeness .meter > span {
+  display: block;
+  height: 100%;
+  background-color: #3fa9f5;
+}
+.completeness .meter > .rating0 {
+  width: 0%;
+}
+.completeness .meter > .rating1 {
+  width: 20%;
+}
+.completeness .meter > .rating2 {
+  width: 40%;
+}
+.completeness .meter > .rating3 {
+  width: 60%;
+}
+.completeness .meter > .rating4 {
+  width: 80%;
+}
+.completeness .meter > .rating5 {
+  width: 100%;
+}
+.completeness .meter > p {
+  position: absolute;
+  line-height: 1.2em;
+  top: 20%;
+  color: #333;
+  font-size: 12px;
+  text-align: center;
+}
+.completeness .meter > p > .number {
+  line-height: 1.5em;
+  font-size: 20px;
+}
+.page-title {
+  margin-bottom: 20px;
+}
+.read-base-container {
+  padding-bottom: 60px;
+  border-bottom: 1px solid #c9c9c9;
+}
+.dataset-view-content {
+  margin-top: 20px;
+}
+.dataset-section {
+  border: 1px solid #c9c9c9;
+  background: white;
+}
+.dataset-section + .dataset-section {
+  margin-top: -1px;
+}
+.etsin-multilang-display > ul {
+  height: 32px;
+}
+.etsin-multilang-display > ul > li {
+  display: inline-block;
+  height: 32px;
+}
+.etsin-multilang-display > ul > li > a {
+  cursor: pointer;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 12px;
+  border: 1px solid #c9c9c9;
+}
+.etsin-multilang-display > ul > li > a:hover {
+  text-decoration: none;
+}
+.etsin-multilang-display > ul > li.active a {
+  font-weight: 700;
+  color: #444444;
+  border-bottom-color: white;
+}
+.etsin-multilang-display .multilang-field {
+  padding: 12px;
+  margin-top: -1px;
+  border: 1px solid #c9c9c9;
+}
+.form-content .tags .tag-list {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+.form-content .tags .tag-list li .tag {
+  background-color: transparent;
+  color: #3fa9f5;
+  border-color: #3fa9f5;
+  box-shadow: none;
+  border-radius: 4px;
+}
+.form-content .tags .tag-list li .tag:hover {
+  background: #3fa9f5;
+  color: white;
+}
+.form-inner-table td,
+.form-inner-table th {
+  vertical-align: top;
+  padding: 5px;
+}
+.form-inner-table th {
+  text-align: left;
 }
 .dataset-heading a {
   color: #3fa9f5;

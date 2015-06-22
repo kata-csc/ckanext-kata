@@ -169,7 +169,30 @@ def ensure_valid_notes(key, data, errors, context):
     try:
         json.loads(field)
     except (ValueError, TypeError):
-        data[('notes',)] = json.dumps({'default': field})
+        data[('notes',)] = json.dumps({'zxx': field})
+
+
+def set_language_for_title(key, data, errors, context):
+    '''
+    Some harvested datasets don't have title language attribute. Set it to Finnish
+    as we know it should be it.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    field = data.get(key)
+    try:
+        jsn = json.loads(field)
+        for k in jsn.keys():
+            if len(k) < 1 and not jsn.get('fin'):
+                jsn['fin'] = jsn.get(k)
+                del jsn['']
+        data[('title',)] = json.dumps(jsn)
+    except:
+        log.debug('Setting default language to title did not finish')
 
 
 def gen_translation_str_from_extras(key, data, errors, context):
