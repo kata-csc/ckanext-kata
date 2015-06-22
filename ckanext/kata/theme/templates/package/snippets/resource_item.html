@@ -1,31 +1,31 @@
-{% set url = h.url_for(controller='package', action='resource_read', id=pkg.name, resource_id=res.id) %}
-<tr>
-  {% block resource_item_title %}
+{% if res.url != 'http://' and h.resource_display_name(res) != 'http://' %}
+  {% set url = h.url_for(controller='package', action='resource_read', id=pkg.name, resource_id=res.id) %}
+    <tr>
+      {% block resource_item_title %}
 
-  {# This should be the same as in settings.py. TODO: remove latter comparison and use value from settings. #}
-  {% if res.url != 'http://' and h.resource_display_name(res) != 'http://' %}
-    <th class="heading" title="{{ res.name or res.description }}">
-      {# <span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ res.format }}</span> #}
-      {{ _(h.resource_display_name(res)) if _(h.resource_display_name(res)) != _('Unnamed resource') else res.url | truncate(50) }}
-      {# {{ h.popular('views', res.tracking_summary.total, min=10) if res.tracking_summary}} #}
-    </th>
-  {% endif %}
-  {% endblock %}
-  {#
-  <td class="description">
-  {% if res.url != 'http://' and h.resource_display_name(res) != 'http://' %}
-    {% if res.description %}
-      {{ h.markdown_extract(_(res.description), extract_length=80) }}
-    {% else %}
-      {#<span class="empty">{{ _('No description available') }}</span>#}
-    {#
-    {% endif %}
-  {% endif %}
-  </td> #}
-  {% if res.url != 'http://' and h.resource_display_name(res) != 'http://' %}
-  <td>
-    {#<a class="btn btn-primary" href="{{ url }}">{{ _('Explore') }}</a>#}
-    <a class="btn btn-primary" href="{{ res.url }}" target="_blank">{{ _('Download') }}</a>
-  </td>
-  {% endif %}
-</tr>
+        {# This should be the same as in settings.py. TODO: remove latter comparison and use value from settings. #}
+        <th class="heading" title="{{ res.name or res.description }}">
+          {# <span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ res.format }}</span> #}
+          {{ _(h.resource_display_name(res)) if _(h.resource_display_name(res)) != _('Unnamed resource') else res.url | truncate(50) }}
+           {# {{ h.popular('views', res.tracking_summary.total, min=10) if res.tracking_summary}} #}
+        </th>
+      {% endblock %}
+      {#
+      <td class="description">
+      {% if res.url != 'http://' and h.resource_display_name(res) != 'http://' %}
+        {% if res.description %}
+          {{ h.markdown_extract(_(res.description), extract_length=80) }}
+        {% else %}
+          {#<span class="empty">{{ _('No description available') }}</span>#}
+        {#
+        {% endif %}
+      {% endif %}
+      </td> #}
+
+      <td>
+        {#<a class="btn btn-primary" href="{{ url }}">{{ _('Explore') }}</a>#}
+        <a class="btn btn-primary" href="{{ res.url }}" target="_blank">{{ _('Download') }}</a>
+      </td>
+
+    </tr>
+{% endif %}
