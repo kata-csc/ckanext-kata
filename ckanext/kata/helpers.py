@@ -304,11 +304,16 @@ def get_rightscategory(license):
 
     :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
     '''
-    if license == 'other-pd':
+
+    # TODO: Add "CONTRACTUAL" for REMS datasets.
+
+    if license == 'other-pd' or license in settings.free_licenses:
         return "PUBLIC DOMAIN"
-    elif license and license not in ['notspecified', 'other-closed', 'other_closed', 'other-nc', 'other-at', 'other-open']:
+    # elif license and license not in ['notspecified', 'other-closed', 'other_closed', 'other-nc', 'other-at', 'other-open']:
+    #     return "LICENSED"
+    elif license in settings.conditional_licenses:
         return "LICENSED"
-    return "OTHER"
+    return "COPYRIGHTED"
 
 
 def get_authors(data_dict):
