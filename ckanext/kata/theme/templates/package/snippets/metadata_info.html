@@ -215,12 +215,13 @@
           <span property="dc:rights">{{ pkg_dict.license_title }}</span>
         {% endif %}
       </p>
-      {% if pkg_dict.license_URL %}
-        <p>
-          {{ _('Copyright notice') }}:
-          {{ pkg_dict.license_URL }}
-        </p>
-      {% endif %}
+
+    </div>
+    <div class="form-label">{{ _('Copyright notice') }}</div>
+    <div class="form-content">
+      <p>
+        {{ pkg_dict.license_URL }}
+      </p>
     </div>
   </div>
 
