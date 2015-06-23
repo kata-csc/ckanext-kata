@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF
+  xmlns:adms="http://www.w3.org/ns/adms#"
   xmlns:dcat="http://www.w3.org/ns/dcat#"
   xmlns:dct="http://purl.org/dc/terms/"
   xmlns:foaf="http://xmlns.com/foaf/0.1/"
   xmlns:fp="http://downlode.org/Code/RDF/File_Properties/schema#"
-  xmlns:nrd="http://purl.org/net/nrd#"
+  xmlns:frapo="http://purl.org/cerif/frapo/"
   xmlns:org="http://www.w3.org/ns/org#"
   xmlns:py="http://genshi.edgewall.org/"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 >
 
-  <nrd:MetadataRecord rdf:about="">
-    <nrd:metadataIdentifier>${ c.pkg_dict['id'] }</nrd:metadataIdentifier>
+  <dcat:CatalogRecord rdf:about="${ c.pkg_dict['id'] }">
+    <dct:identifier>${ c.pkg_dict['id'] }</dct:identifier>
     <py:for each="pid in h.get_pids_by_type('metadata', c.pkg_dict)">
-      <nrd:metadataIdentifier>${ pid.get('id', '') }</nrd:metadataIdentifier>
+      <dct:identifier>${ pid.get('id', '') }</dct:identifier>
     </py:for>
 
-    <nrd:metadataModified>${ c.pkg_dict['metadata_modified'] }</nrd:metadataModified>
-    <foaf:primaryTopic rdf:resource="${ c.pkg_dict['id'] }"/>
-  </nrd:MetadataRecord>
+    <dct:modified>${ c.pkg_dict['metadata_modified'] }</dct:modified>
+    <foaf:primaryTopic rdf:resource="${ h.get_primary_pid('data', c.pkg_dict) }"/>
+  </dcat:CatalogRecord>
 
-  <nrd:Dataset rdf:about="${ h.get_primary_pid('data', c.pkg_dict) }">
+
+  <dcat:Dataset rdf:about="${ h.get_primary_pid('data', c.pkg_dict) }">
 
     <py:if test="c.pkg_dict.get('notes')">
         <py:for each="notes in h.json_to_list(c.pkg_dict.get('notes'))">
@@ -33,15 +35,16 @@
     </py:if>
 
     <py:for each="tag_dict in c.pkg_dict.get('tags', None)">
-      <nrd:subject rdf:resource="${ tag_dict.get('name') }" />
+      <dcat:theme rdf:resource="${ tag_dict.get('name') }" />
     </py:for>
     <foaf:homepage rdf:resource="${ h.url_for(controller='package', action='read', id=c.pkg_dict['name'], qualified=True)}"/>
 
     <py:for each="pid in h.get_pids_by_type('data', c.pkg_dict)">
-      <nrd:datasetIdentifier>${ pid.get('id', None) }</nrd:datasetIdentifier>
+      <adms:identifier>${ pid.get('id', None) }</adms:identifier>
     </py:for>
     <py:for each="pid in h.get_pids_by_type('version', c.pkg_dict)">
       <dct:identifier>${ pid.get('id', None) }</dct:identifier>
+      <dct:isVersionOf>${ pid.get('id', None) }</dct:isVersionOf>
     </py:for>
 
     <py:if test="c.pkg_dict.get('langtitle')">
@@ -79,16 +82,16 @@
     </dct:rights>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <nrd:owner py:if="agent.get('role', None)=='owner' and not h.get_if_url(agent.get('name', None))">
+      <dct:rightsHolder py:if="agent.get('role', None)=='owner' and not h.get_if_url(agent.get('name', None))">
         <foaf:Agent>
           <foaf:name>${ agent.get('name', agent.get('organisation', '')) }</foaf:name>
         </foaf:Agent>
-      </nrd:owner>
-      <nrd:owner py:if="agent.get('role', None)=='owner' and h.get_if_url(agent.get('name', None))" rdf:resource="${ agent.get('name', None) }"/>
+      </dct:rightsHolder>
+      <dct:rightsHolder py:if="agent.get('role', None)=='owner' and h.get_if_url(agent.get('name', None))" rdf:resource="${ agent.get('name', None) }"/>
     </py:for>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <nrd:creator py:if="agent.get('role', None)=='author'">
+      <dct:creator py:if="agent.get('role', None)=='author'">
         <foaf:Agent>
           <foaf:name py:if="agent.get('name', None)">${ agent.get('name', None) }</foaf:name>
           <org:memberOf>
@@ -97,11 +100,11 @@
             </foaf:organization>
           </org:memberOf>
         </foaf:Agent>
-      </nrd:creator>
+      </dct:creator>
     </py:for>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <nrd:contributor py:if="agent.get('role', None)=='contributor'">
+      <dct:contributor py:if="agent.get('role', None)=='contributor'">
         <foaf:Agent>
           <foaf:name py:if="agent.get('name', None)">${ agent.get('name', None) }</foaf:name>
           <org:memberOf>
@@ -110,30 +113,30 @@
             </foaf:organization>
           </org:memberOf>
         </foaf:Agent>
-      </nrd:contributor>
+      </dct:contributor>
     </py:for>
 
     <py:for each="contact in c.pkg_dict.get('contact', None)">
-      <nrd:distributor py:if="contact.get('name', None)">
+      <dct:publisher py:if="contact.get('name', None)">
         <foaf:Agent>
           <foaf:name>${ contact.get('name', None) }</foaf:name>
           <foaf:mbox py:if="contact.get('email', None) != 'hidden'" rdf:resource="mailto:${ contact.get('email', None) }"/>
           <foaf:homepage py:if="contact.get('URL', None)" rdf:resource="${ contact.get('URL', None) }"/>
           <foaf:phone py:if="contact.get('phone', None)" rdf:resource="tel:${ contact.get('phone', None) }"/>
         </foaf:Agent>
-      </nrd:distributor>
+      </dct:publisher>
     </py:for>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <nrd:distributor py:if="agent.get('role', None)=='distributor'">
+      <dct:publisher py:if="agent.get('role', None)=='distributor'">
         <foaf:Agent>
           <foaf:name>${ agent.get('name', None) }</foaf:name>
         </foaf:Agent>
-      </nrd:distributor>
+      </dct:publisher>
     </py:for>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">
-      <dct:contributor py:if="agent.get('role', None)=='funder'">
+      <frapo:isOutputOf py:if="agent.get('role', None)=='funder'">
         <foaf:Project>
           <foaf:name>${ agent.get('name', None) }</foaf:name>
           <org:memberOf>
@@ -144,7 +147,7 @@
           <foaf:homepage  py:if="agent.get('URL', None)" rdf:resource="${ agent.get('URL', None) }"/>
           <rdfs:comment py:if="agent.get('fundingid', None)">${ agent.get('fundingid', None) }</rdfs:comment>
         </foaf:Project>
-      </dct:contributor>
+      </frapo:isOutputOf>
     </py:for>
 
     <py:for each="lang in h.string_to_list(c.pkg_dict.get('language', None))">
@@ -168,18 +171,18 @@
     <dct:temporal py:if="c.pkg_dict.get('temporal_coverage_begin', None)">start=${ c.pkg_dict.get('temporal_coverage_begin', None) }; end=${ c.pkg_dict.get('temporal_coverage_end', None) }; scheme=ISO-8601;</dct:temporal>
 
     <py:for each="disc in h.split_disciplines(c.pkg_dict.get('discipline', ''))">
-      <nrd:discipline py:if="h.is_url(disc)" rdf:resource="${ disc }"/>
-      <nrd:discipline py:if="h.is_url(disc)==False and disc">${ disc }</nrd:discipline>
+      <dct:subject py:if="h.is_url(disc)" rdf:resource="${ disc }"/>
+      <dct:subject py:if="h.is_url(disc)==False and disc">${ disc }</dct:subject>
     </py:for>
 
     <py:for each="tag in c.pkg_dict.get('tags', '')">
-      <nrd:keyword py:if="h.is_url(tag.get('display_name', ''))" rdf:resource="${ tag.get('display_name', '') }"/>
-      <nrd:keyword py:if="h.is_url(tag.get('display_name', ''))==False and tag">${ tag.get('display_name', '') }</nrd:keyword>
+      <!--! <dcat:keyword py:if="h.is_url(tag.get('display_name', ''))" rdf:resource="${ tag.get('display_name', '') }"/> -->
+      <dcat:keyword py:if="h.is_url(tag.get('display_name', ''))==False and tag">${ tag.get('display_name', '') }</dcat:keyword>
     </py:for>
 
     <py:for each="rel in h.get_related_urls(c.pkg)">
       <dct:isReferencedBy rdf:resource="${ rel }"/>
     </py:for>
 
-  </nrd:Dataset>
+  </dcat:Dataset>
 </rdf:RDF>
