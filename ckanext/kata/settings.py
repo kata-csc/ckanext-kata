@@ -228,10 +228,3 @@ REPLY_TO_SENDER_NOTE = u"\n    ---\n\nPlease do not reply directly to this e-mai
 If you need to reply to the sender, use the direct e-mail address above.\n\n\
 Älä vastaa suoraan tähän viestiin. Jos haluat vastata lähettäjälle, \
 käytä yllä olevaa sähköpostiosoitetta."
-
-free_licenses = ['CC0-1.0', 'ODC-PDDL-1.0']
-conditional_licenses = ['ODbL-1.0', 'ODC-BY-1.0',
-                        'CC-BY-1.0', 'CC-BY-ND-1.0', 'CC-BY-NC-SA-1.0', 'CC-BY-SA-1.0', 'CC-BY-NC-1.0', 'CC-BY-NC-ND-1.0',
-                        'CC-BY-2.0', 'CC-BY-ND-2.0', 'CC-BY-NC-SA-2.0', 'CC-BY-SA-2.0', 'CC-BY-NC-2.0', 'CC-BY-NC-ND-2.0',
-                        'CC-BY-3.0', 'CC-BY-ND-3.0', 'CC-BY-NC-SA-3.0', 'CC-BY-SA-3.0', 'CC-BY-NC-3.0', 'CC-BY-NC-ND-3.0',
-                        'CC-BY-4.0', 'CC-BY-ND-4.0', 'CC-BY-NC-SA-4.0', 'CC-BY-SA-4.0', 'CC-BY-NC-4.0', 'CC-BY-NC-ND-4.0']

@@ -48,37 +48,31 @@
     </py:for>
 
     <py:if test="c.pkg_dict.get('langtitle')">
-        <py:for each="title in c.pkg_dict.get('langtitle')">
-          <py:with vars="language=h.convert_language_code(title.get('lang'), 'alpha2', throw_exceptions=False) or title.get('lang');">
-            <dct:title py:if="language" xml:lang="${ language }">${ title.get('value') }</dct:title>
-            <dct:title py:if="not language">${ title.get('value') }</dct:title>
-          </py:with>
-        </py:for>
+      <py:for each="title in c.pkg_dict.get('langtitle')">
+        <py:with vars="language=h.convert_language_code(title.get('lang'), 'alpha2', throw_exceptions=False) or title.get('lang');">
+          <dct:title py:if="language" xml:lang="${ language }">${ title.get('value') }</dct:title>
+          <dct:title py:if="not language">${ title.get('value') }</dct:title>
+        </py:with>
+      </py:for>
     </py:if>
 
     <py:if test="not c.pkg_dict.get('langtitle') and c.pkg_dict.get('title')">
-        <py:for each="title in h.json_to_list(c.pkg_dict.get('title'))">
-          <py:with vars="language=h.convert_language_code(title.get('lang'), 'alpha2', throw_exceptions=False) or title.get('lang');">
-            <dct:title py:if="language" xml:lang="${ language }">${ title.get('value') }</dct:title>
-            <dct:title py:if="not language">${ title.get('value') }</dct:title>
-          </py:with>
-        </py:for>
+      <py:for each="title in h.json_to_list(c.pkg_dict.get('title'))">
+        <py:with vars="language=h.convert_language_code(title.get('lang'), 'alpha2', throw_exceptions=False) or title.get('lang');">
+          <dct:title py:if="language" xml:lang="${ language }">${ title.get('value') }</dct:title>
+          <dct:title py:if="not language">${ title.get('value') }</dct:title>
+        </py:with>
+      </py:for>
     </py:if>
 
     <dct:rights rdf:parseType="Literal" xmlns="http://www.loc.gov/METS/">
-      <RightsDeclarationMD RIGHTSCATEGORY="${ h.get_rightscategory(c.pkg_dict.get('license_id', None)) }">
-        <RightsDeclaration>
-          <py:if test="c.pkg_dict.get('license_url', None)">
-            ${ c.pkg_dict.get('license_url', None) }
-          </py:if>
-          <py:if test="not c.pkg_dict.get('license_url', None) and not c.pkg_dict.get('license_URL', None)">
-            ${ c.pkg_dict['license_id'] }
-          </py:if>
-          <py:if test="c.pkg_dict.get('license_URL', None)">
-            ${ c.pkg_dict.get('license_URL', None) }
-          </py:if>
-        </RightsDeclaration>
-      </RightsDeclarationMD>
+      <py:with vars="cat,declaration=h.get_rightscategory(c.pkg_dict)">
+        <RightsDeclarationMD RIGHTSCATEGORY="$cat">
+            <RightsDeclaration>
+              $declaration
+            </RightsDeclaration>
+        </RightsDeclarationMD>
+      </py:with>
     </dct:rights>
 
     <py:for each="agent in c.pkg_dict.get('agent', None)">

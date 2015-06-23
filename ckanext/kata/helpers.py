@@ -298,22 +298,37 @@ def get_first_admin(id):
     return False
 
 
-def get_rightscategory(license):
+def get_rightscategory(data_dict):
     '''
-    Return rightscategory based on license id
+    Return METS rights category and rights declaration for dataset
 
     :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
     '''
 
-    # TODO: Add "CONTRACTUAL" for REMS datasets.
+    license = data_dict.get('license_id')
+    availability = data_dict.get('availability')
 
-    if license == 'other-pd' or license in settings.free_licenses:
-        return "PUBLIC DOMAIN"
-    # elif license and license not in ['notspecified', 'other-closed', 'other_closed', 'other-nc', 'other-at', 'other-open']:
-    #     return "LICENSED"
-    elif license in settings.conditional_licenses:
-        return "LICENSED"
-    return "COPYRIGHTED"
+    if availability in ['access_application', 'access_request']:
+        category = "CONTRACTUAL"
+    elif license in ['other-pd', "ODC-PDDL-1.0", "CC0-1.0"]:
+        category = "PUBLIC DOMAIN"
+    elif license[:2] in ['CC', 'OD']:
+        category = "LICENSED"
+    else:
+        category = "COPYRIGHTED"
+
+    # TODO: Get license URL from licenses.json ?
+    # action license_list()
+
+    rights_declaration = data_dict.get('license_url', data_dict.get('license_URL'))
+
+    if not rights_declaration and availability in ['access_application', 'access_request']:
+        rights_declaration = data_dict.get('access_application_URL', data_dict.get('access_request_URL'))
+
+    if not rights_declaration:
+        rights_declaration = data_dict.get('license_id')
+
+    return category, rights_declaration
 
 
 def get_authors(data_dict):
