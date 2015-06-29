@@ -66,11 +66,13 @@
     </py:if>
 
     <dct:rights rdf:parseType="Literal" xmlns="http://www.loc.gov/METS/">
-      <py:with vars="cat,declaration=h.get_rightscategory(c.pkg_dict)">
+      <py:with vars="cat,declarations=h.get_rightscategory(c.pkg_dict)">
         <RightsDeclarationMD RIGHTSCATEGORY="$cat">
-            <RightsDeclaration>
-              $declaration
-            </RightsDeclaration>
+
+          <py:for each="declaration in declarations">
+              <RightsDeclaration>$declaration</RightsDeclaration>
+          </py:for>
+
         </RightsDeclarationMD>
       </py:with>
     </dct:rights>

@@ -308,27 +308,21 @@ def get_rightscategory(data_dict):
     license = data_dict.get('license_id')
     availability = data_dict.get('availability')
 
+    declarations = []
+
     if availability in ['access_application', 'access_request']:
         category = "CONTRACTUAL"
-    elif license in ['other-pd', "ODC-PDDL-1.0", "CC0-1.0"]:
+        declarations.append(data_dict.get('access_application_URL') or data_dict.get('access_request_URL'))
+    elif license in ['other-pd', "ODC-PDDL-1.0", "CC0-1.0", "cc-zero"]:
         category = "PUBLIC DOMAIN"
     elif license[:2] in ['CC', 'OD']:
         category = "LICENSED"
     else:
         category = "COPYRIGHTED"
 
-    # TODO: Get license URL from licenses.json ?
-    # action license_list()
+    declarations.append(data_dict.get('license_url') or data_dict.get('license_URL') or data_dict.get('license_id'))
 
-    rights_declaration = data_dict.get('license_url', data_dict.get('license_URL'))
-
-    if not rights_declaration and availability in ['access_application', 'access_request']:
-        rights_declaration = data_dict.get('access_application_URL', data_dict.get('access_request_URL'))
-
-    if not rights_declaration:
-        rights_declaration = data_dict.get('license_id')
-
-    return category, rights_declaration
+    return category, declarations
 
 
 def get_authors(data_dict):
