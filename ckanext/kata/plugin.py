@@ -289,6 +289,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_funders': helpers.get_funders,
             'get_ga_id': helpers.get_ga_id,
             'get_if_url': helpers.get_if_url,
+            'get_iso_datetime': helpers.get_iso_datetime,
             'get_label_for_uri': helpers.get_label_for_uri,
             'get_labels_for_uri': helpers.get_labels_for_uri,
             'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,

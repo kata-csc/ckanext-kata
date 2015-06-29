@@ -2,6 +2,7 @@
 '''
 Template helpers for Kata CKAN extension.
 '''
+import iso8601
 
 from paste.deploy.converters import asbool
 from pylons import config
@@ -874,3 +875,17 @@ def get_dataset_paged_order(index, per_page):
         except ValueError:
             pass
     return (current_page - 1) * per_page + index + 1
+
+
+def get_iso_datetime(datetime_string):
+    '''
+    Format given datetime string as ISO 8601 (or XSD) datetime.
+
+    :param datetime_string:
+    :return:
+    '''
+    try:
+        return iso8601.parse_date(datetime_string).isoformat()
+    except iso8601.iso8601.ParseError:
+        return datetime_string
+
