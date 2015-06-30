@@ -111,6 +111,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/dataset/{id:.*?}.{format:rdf}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action='read_rdf')
+        map.connect('/dataset/{id:.*?}.{format:ttl}',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action='read_ttl')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
@@ -289,6 +292,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_funders': helpers.get_funders,
             'get_ga_id': helpers.get_ga_id,
             'get_if_url': helpers.get_if_url,
+            'get_iso_datetime': helpers.get_iso_datetime,
             'get_label_for_uri': helpers.get_label_for_uri,
             'get_labels_for_uri': helpers.get_labels_for_uri,
             'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,

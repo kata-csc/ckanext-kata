@@ -4,6 +4,7 @@ Functional tests for Kata that use CKAN API.
 """
 
 import copy
+from rdflib import Graph, RDF, URIRef
 import testfixtures
 
 from ckan.lib.helpers import url_for
@@ -575,11 +576,18 @@ class TestDataReading(KataApiTestCase):
         res = self.app.get(offset)
         assert res.status == 200, 'Wrong HTTP status code: {0}'.format(res.status)
 
-        # TODO: Check some fields in result rdf, like agent and pids
+        g = Graph()
+        g.parse(data=res.body)
 
-        # print res
-        # for agent in self.TEST_DATADICT['agent']:
-        #     assert agent.get('name') in res.body
+        assert len(list(g.subjects(RDF.type, URIRef("http://www.w3.org/ns/dcat#CatalogRecord")))) == 1
+        assert len(list(g.subjects(RDF.type, URIRef("http://www.w3.org/ns/dcat#Dataset")))) == 1
+        assert len(list(g.subject_objects(URIRef("http://purl.org/dc/terms/contributor")))) == 2
+
+        # Test also turtle format
+        offset = url_for("/dataset/{0}.ttl".format(output['id']))
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code: {0}'.format(res.status)
+
 
 
 class TestSchema(KataApiTestCase):

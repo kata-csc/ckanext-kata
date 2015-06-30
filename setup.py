@@ -21,7 +21,7 @@ setup(
     zip_safe=False,
     install_requires=[
         # -*- Extra requirements: -*-
-        'rdflib >= 3.4.0',
+        'rdflib >= 4.2.0',
         'iso8601 >= 0.1.5',
         'pexpect >= 3.3',
         'pyClamd >= 0.3.10',

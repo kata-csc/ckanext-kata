@@ -2,6 +2,7 @@
 '''
 Template helpers for Kata CKAN extension.
 '''
+import iso8601
 
 from paste.deploy.converters import asbool
 from pylons import config
@@ -298,17 +299,31 @@ def get_first_admin(id):
     return False
 
 
-def get_rightscategory(license):
+def get_rightscategory(data_dict):
     '''
-    Return rightscategory based on license id
+    Return METS rights category and rights declaration for dataset
 
     :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
     '''
-    if license == 'other-pd':
-        return "PUBLIC DOMAIN"
-    elif license and license not in ['notspecified', 'other-closed', 'other_closed', 'other-nc', 'other-at', 'other-open']:
-        return "LICENSED"
-    return "OTHER"
+
+    license = data_dict.get('license_id')
+    availability = data_dict.get('availability')
+
+    declarations = []
+
+    if availability in ['access_application', 'access_request']:
+        category = "CONTRACTUAL"
+        declarations.append(data_dict.get('access_application_URL') or data_dict.get('access_request_URL'))
+    elif license in ['other-pd', "ODC-PDDL-1.0", "CC0-1.0", "cc-zero"]:
+        category = "PUBLIC DOMAIN"
+    elif license[:2] in ['CC', 'OD']:
+        category = "LICENSED"
+    else:
+        category = "COPYRIGHTED"
+
+    declarations.append(data_dict.get('license_url') or data_dict.get('license_URL') or data_dict.get('license_id'))
+
+    return category, declarations
 
 
 def get_authors(data_dict):
@@ -860,3 +875,17 @@ def get_dataset_paged_order(index, per_page):
         except ValueError:
             pass
     return (current_page - 1) * per_page + index + 1
+
+
+def get_iso_datetime(datetime_string):
+    '''
+    Format given datetime string as ISO 8601 (or XSD) datetime.
+
+    :param datetime_string:
+    :return:
+    '''
+    try:
+        return iso8601.parse_date(datetime_string).isoformat()
+    except iso8601.iso8601.ParseError:
+        return datetime_string
+
