@@ -8,6 +8,7 @@ from pylons import config
 
 from ckan.lib import helpers as h
 
+import os
 import re
 import logging
 from pylons.i18n import _
@@ -536,6 +537,8 @@ def organization_create_converter(key, data, errors, context):
         group_id = group_own.id
 
     data[('owner_org',)] = group_id
+
+
 def to_licence_id(key, data, errors, context):
     '''
     Try to match licence to existing defined license, replace matched content with licence id.
@@ -552,8 +555,6 @@ def to_licence_id(key, data, errors, context):
     :param errors: validation errors
     :param context: context
     '''
-
-    import os
 
     map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/license_id_map.json'
 
