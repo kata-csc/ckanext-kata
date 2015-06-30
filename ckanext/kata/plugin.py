@@ -10,7 +10,7 @@ import datetime
 import iso8601
 
 from ckan import logic
-from ckan.lib.base import g, c, _
+from ckan.lib.base import c
 from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
@@ -468,9 +468,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param data_dict: data_dict to modify
         '''
 
-        if data_dict.has_key('sort') and data_dict['sort'] is None:
+        if 'sort' in data_dict and data_dict['sort'] is None:
             data_dict['sort'] = settings.DEFAULT_SORT_BY
-            c.sort_by_selected = settings.DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
+
+            # This is to get the correct one pre-selected on the HTML form.
+            c.sort_by_selected = settings.DEFAULT_SORT_BY
 
         c.search_fields = settings.SEARCH_FIELDS
         c.translated_field_titles = utils.get_field_titles(toolkit._)
