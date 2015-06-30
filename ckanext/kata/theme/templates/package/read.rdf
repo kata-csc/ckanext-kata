@@ -37,7 +37,7 @@
     </py:if>
 
     <py:for each="tag_dict in c.pkg_dict.get('tags', None)">
-      <dcat:theme rdf:resource="${ tag_dict.get('name') }" />
+      <dcat:theme py:if="h.is_url(tag_dict.get('name', ''))" rdf:resource="${ tag_dict.get('name') }" />
     </py:for>
     <foaf:homepage rdf:resource="${ h.url_for(controller='package', action='read', id=c.pkg_dict['name'], qualified=True)}"/>
 
@@ -197,7 +197,7 @@
 
     <py:for each="tag in c.pkg_dict.get('tags', '')">
       <!--! <dcat:keyword py:if="h.is_url(tag.get('display_name', ''))" rdf:resource="${ tag.get('display_name', '') }" /> -->
-      <dcat:keyword py:if="h.is_url(tag.get('display_name', ''))==False and tag">${ tag.get('display_name', '') }</dcat:keyword>
+      <dcat:keyword py:if="h.is_url(tag.get('display_name', '')) == False and tag">${ tag.get('display_name', '') }</dcat:keyword>
     </py:for>
 
     <py:for each="rel in h.get_related_urls(c.pkg)">
