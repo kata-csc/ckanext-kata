@@ -148,7 +148,8 @@ def gen_translation_str_from_multilang_field(fieldkey, message, key, data, error
             json_data[lval] = rval
         i+=1
 
-    data[(fieldkey,)] = json.dumps(json_data)
+    if json_data:
+        data[(fieldkey,)] = json.dumps(json_data)
 
 
 def gen_translation_str_from_langtitle(key, data, errors, context):

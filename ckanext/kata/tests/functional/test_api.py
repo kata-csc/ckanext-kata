@@ -86,7 +86,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data = copy.deepcopy(self.TEST_DATADICT)
 
         # Make sure we will get a validation error
-        data.pop('langtitle')
+        data.pop('langtitle', None)
         data.pop('language')
         data.pop('availability')
 
@@ -394,6 +394,7 @@ class TestDataReading(KataApiTestCase):
         self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
 
         data_dict['langtitle'] = [{'lang': u'fin', 'value': u'Test Data'}]
+        data_dict['title'] = u''
         data_dict['owner_org'] = data['owner_org']
         output = self.api_user_joe.action.package_create(**data_dict)
         if '__type' in output:
@@ -863,7 +864,7 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
         '''Create dataset with a new organization.'''
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        data_dict['title'] = 'A new dataset to create'
+        data_dict['title'] = u'{"fin": "A new dataset to create"}'
         data_dict['owner_org'] = 'A New Org for create'
         pkg_dict = self.api_user_joe.action.package_create(**data_dict)
 

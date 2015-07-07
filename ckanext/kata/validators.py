@@ -391,9 +391,7 @@ def check_langtitle(key, data, errors, context):
     '''
     Check that langtitle field exists
     '''
-    # import pprint
-    # pprint.pprint(data)
-    if data.get(('langtitle', 0, 'value'), None) is None:
+    if not (data.get(('langtitle', 0, 'value')) or data.get(('title',))):
         raise Invalid({'key': 'langtitle', 'value': _('Missing dataset title')})
 
 
