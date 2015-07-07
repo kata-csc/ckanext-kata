@@ -389,13 +389,27 @@ class TestDataReading(KataApiTestCase):
             'owner_org': u'',
             'private': u'True',
             'langtitle': [{}],
+            'title': [{}]
         }
 
         self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
 
-        data_dict['langtitle'] = [{'lang': u'fin', 'value': u'Test Data'}]
-        data_dict['title'] = u''
         data_dict['owner_org'] = data['owner_org']
+
+        self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
+
+        data_dict['langtitle'] = [{'lang': u'fin', 'value': u'Test Data'}]
+        output = self.api_user_joe.action.package_create(**data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        data_dict['langtitle'] = [{}]
+        data_dict['title'] = u'{"fin": "Test Data", "abk": "Title 2", "swe": "Title 3", "tlh": \
+                  "\\u143c\\u1450\\u1464\\u1478\\u148c\\u14a0\\u14b4\\u14c8\\u14dc\\u14f0\\u1504\\u1518\\u152c"}'
+
+        output = self.api_user_joe.action.package_create(**data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
         output = self.api_user_joe.action.package_create(**data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
