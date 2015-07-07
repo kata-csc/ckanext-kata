@@ -1,0 +1,37 @@
+{#
+Renders a media item for a organization. This should be used in a list.
+
+organization - A organization dict.
+
+Example:
+
+    <ul class="media-grid">
+      {% for organization in organizations %}
+        {% snippet "organization/snippets/organization_item.html", organization=organization %}
+      {% endfor %}
+    </ul>
+#}
+
+{% set url = h.url_for(organization.type + '_read', action='read', id=organization.name) %}
+<li class="organization-item">
+  <div class="organization-item-wrapper">
+    <div class="organization-item-left">
+
+      {% block title %}
+        <h3 class="organization-heading"><a href="{{ url }}">{{ organization.display_name }}</a></h3>
+      {% endblock %}
+
+      </div>
+      <div class="organization-item-right">
+
+      {% block datasets %}
+        {% if organization.packages %}
+          <strong class="count">{{ ungettext('{num} Dataset', '{num} Datasets', organization.packages).format(num=organization.packages) }}</strong>
+        {% else %}
+          <span class="count">{{ _('0 Datasets') }}</span>
+        {% endif %}
+      {% endblock %}
+
+    </div>
+  </div>
+</li>
