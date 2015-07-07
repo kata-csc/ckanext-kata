@@ -84,7 +84,11 @@
         </tr>
         <tr>
           <td>{{ _('Data used') }}</td>
-          <td>{{ c.related_count }} {{ _('times') }}</td>
+          {% if c.related_count > 0 %}
+            <td>{% link_for c.related_count, controller='related', action='list', id=pkg.name %} {{ _('times') }}</td>
+          {% else %}
+            <td>{{ c.related_count }} {{ _('times') }}</td>
+          {% endif %}
           <td>{% link_for _('Advertise reuse'), controller='related', action='new', id=pkg.name, class_='btn btn-default' %}</td>
         </tr>
       </table>
