@@ -10,7 +10,7 @@ import datetime
 import iso8601
 
 from ckan import logic
-from ckan.lib.base import g, c, _
+from ckan.lib.base import c
 from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
@@ -111,6 +111,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/dataset/{id:.*?}.{format:rdf}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action='read_rdf')
+        map.connect('/dataset/{id:.*?}.{format:ttl}',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action='read_ttl')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
@@ -289,6 +292,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_funders': helpers.get_funders,
             'get_ga_id': helpers.get_ga_id,
             'get_if_url': helpers.get_if_url,
+            'get_iso_datetime': helpers.get_iso_datetime,
             'get_label_for_uri': helpers.get_label_for_uri,
             'get_labels_for_uri': helpers.get_labels_for_uri,
             'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,
@@ -464,9 +468,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param data_dict: data_dict to modify
         '''
 
-        if data_dict.has_key('sort') and data_dict['sort'] is None:
+        if 'sort' in data_dict and data_dict['sort'] is None:
             data_dict['sort'] = settings.DEFAULT_SORT_BY
-            c.sort_by_selected = settings.DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
+
+            # This is to get the correct one pre-selected on the HTML form.
+            c.sort_by_selected = settings.DEFAULT_SORT_BY
 
         c.search_fields = settings.SEARCH_FIELDS
         c.translated_field_titles = utils.get_field_titles(toolkit._)
