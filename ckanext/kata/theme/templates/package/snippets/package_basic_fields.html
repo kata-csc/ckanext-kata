@@ -13,10 +13,13 @@
       <a class="dataset-tab" href="#basic-information" data-toggle="tab">1. {{ _("Basic information") }}</a>
     </li>
     <li>
-      <a class="dataset-tab" href="#identification-info" data-toggle="tab">2. {{ _("Identifiers") }}</a>
+      <a class="dataset-tab" href="#actor-info" data-toggle="tab">2. {{ _("Actors") }}</a>
     </li>
     <li>
-      <a class="dataset-tab" href="#usage-info" data-toggle="tab">3. {{ _("Usage information") }}</a>
+      <a class="dataset-tab" href="#identification-info" data-toggle="tab">3. {{ _("Identifiers") }}</a>
+    </li>
+    <li>
+      <a class="dataset-tab" href="#usage-info" data-toggle="tab">4. {{ _("Usage information") }}</a>
     </li>
   </ul>
 
@@ -32,6 +35,9 @@
         <input type="hidden" name="groups__0__id" value="{{ data.group_id }}" />
       {% endif %}
 
+      <div class="tab-pane" id="actor-info">
+        {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+      </div>
       <div class="tab-pane" id="identification-info">
         {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
       </div>
