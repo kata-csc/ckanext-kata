@@ -21,6 +21,9 @@
     <li>
       <a class="dataset-tab" href="#usage-info" data-toggle="tab">4. {{ _("Usage information") }}</a>
     </li>
+    <li>
+      <a class="dataset-tab" href="#additional-info" data-toggle="tab">5. {{ _("Additional information") }}</a>
+    </li>
   </ul>
 
   <div class="form-tab-content">
@@ -43,6 +46,9 @@
       </div>
       <div class="tab-pane" id="usage-info">
         {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+      </div>
+        <div class="tab-pane" id="additional-info">
+        {% snippet 'package/snippets/recommended_coverage.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
       </div>
 
       <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />

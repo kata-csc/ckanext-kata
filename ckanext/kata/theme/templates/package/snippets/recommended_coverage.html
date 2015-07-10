@@ -1,14 +1,14 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<section class="module">
-  <h2 class="module-heading-add-dataset optional">{{ _('Coverage') }}{{ kata_form.optional() }}</h2>
-  <div class="module-content">
+
+<div class="tab-content-inner">
+  <div class="form-row">
 
   {# Autocomplete for spatial data #}
 
     <div class="kata-autocomplete">
-      <h3 class="module-heading-add-dataset optional">{{ _('Spatial coverage') }}</h3>
+      <h3>{{ _('Spatial coverage') }}</h3>
 
       <p style="margin-left: 10px;">
         {{ _('Search location from location name database, select locations with enter or mouse click.') }}
@@ -20,7 +20,7 @@
     <br />
 
     <div>
-      <h3 class="module-heading-add-dataset optional">{{ _('Temporal coverage') }}</h3>
+      <h3>{{ _('Temporal coverage') }}</h3>
 
       {% set lang = h.lang() %}
       <div data-module="kata-temporal-coverage" data-module-currentlang="{{ lang }}">
@@ -54,4 +54,4 @@
       </div>
     </div>
   </div>
-</section>
+</div>
