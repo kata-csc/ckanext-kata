@@ -592,6 +592,7 @@ input[id="xmlfile"] {
   float: left;
   font-weight: 700;
   width: 30%;
+  text-align: right;
 }
 .form-tab-content .form-row .form-content {
   min-height: 16px;
@@ -599,6 +600,7 @@ input[id="xmlfile"] {
   margin-left: 30%;
   width: 65%;
   padding-right: 5%;
+  padding-left: 10px;
 }
 .form-tab-content .form-row .kata-tooltip {
   position: absolute;
@@ -615,6 +617,23 @@ input[id="xmlfile"] {
     width: 91%;
     margin-left: 7%;
   }
+}
+.form-horizontal {
+  padding: 20px;
+}
+.form-horizontal .control-label {
+  float: left;
+  font-weight: 700;
+  width: 30%;
+  text-align: right;
+}
+.form-horizontal .controls {
+  min-height: 16px;
+  position: relative;
+  margin-left: 30%;
+  width: 65%;
+  padding-right: 5%;
+  padding-left: 10px;
 }
 .etsin-dataset-form {
   border: 1px solid #c9c9c9;
