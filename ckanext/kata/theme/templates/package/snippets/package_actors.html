@@ -214,12 +214,9 @@
     </div>
   </div>
 
-</div>
 
-
-
-  <h3 class="module-heading-add-dataset">{{ _('Owner information') }} {{ kata_form.required() }}</h3>
-  <div class="module-content">
+  <h3>{{ _('Owner information') }}</h3>
+  <div class="form-row">
     {% set owners = h.get_owners(data) %}
 
     {% if owners|length == 0 %}
@@ -234,7 +231,7 @@
           {% set index = agent_index.increase() %}
           {% set agent_prefix = "agent__" ~ index ~ "__" %}
 
-            {% call form.input('agent__' ~ index ~ '__name', label=_('Owner'), id='agent__' ~ index ~ '__name_id', placeholder=_('name or ID such as ORCID'),
+            {% call form.input('agent__' ~ index ~ '__name', label=_('Owner')+" * ", id='agent__' ~ index ~ '__name_id', placeholder=_('name or ID such as ORCID'),
                            value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
                            control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
 
@@ -253,5 +250,6 @@
       {% if owner_errors and owner_errors is iterable %}<span class="error-block-kata">{{ owner_errors|join('. ') }}</span>{% endif %}
     </div>
     {% snippet 'package/snippets/package_organization.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+  </div>
 
 </div>
