@@ -21,7 +21,7 @@
 <div class="tab-content-inner">
 
   <div class="form-row">
-    <div class="form-label">{{ _("Primary data identifier") }}*</div>
+    <label class="form-label" for="pids__{{ index }}__id">{{ _("Primary data identifier") }}*</label>
     <div class="form-content">
       <ul class="kata">
         <li class="kata">
@@ -47,7 +47,7 @@
 
   {% for pid_type in pid_types %}
   <div class="form-row">
-    <div class="form-label">{% if pid_type == 'data' %} {{ _("Additional data identifiers") }} {% else %}{{ _(pid_type | capitalize) }}{{ _(' identifiers') }}{% endif %}</div>
+    <label class="form-label" for="pids__{{ index }}__id">{% if pid_type == 'data' %} {{ _("Additional data identifiers") }} {% else %}{{ _(pid_type | capitalize) }}{{ _(' identifiers') }}{% endif %}</label>
     <div class="form-content">
 
       <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block">
