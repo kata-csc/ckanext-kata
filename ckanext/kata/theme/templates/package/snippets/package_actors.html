@@ -1,19 +1,22 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<h3 class="module-heading-add-dataset">{{ _('Authors') }} {{ kata_form.required() }}</h3>
-<div class="module-content">
+<div class="tab-content-inner">
+
+  <h3>{{ _('Authors') }}</h3>
   {% set authors = h.get_authors(data) %}
   {% if authors|length == 0 %}
     {% do authors.append(dict(role='author',)) %}
   {% endif %}
-  <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields="{{ authors|length }}" data-module-index="agent-index" id="agent">
+
+  <div class="form-row">
+    <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields="{{ authors|length }}" data-module-index="agent-index" id="agent">
     {% set author_errors = h.get_dict_errors(errors, '__extras', 'author') %}
     {% for agent in authors %}
       {% set index = agent_index.increase() %}
       <div class="control-group control-custom{{ " error" if author_errors }}">
         <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
-        {% call form.input('agent__' ~ index ~ '__name', label=_('Author'), id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'),
+        {% call form.input('agent__' ~ index ~ '__name', label=_('Author')+' *', id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'),
                            value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'],
                            label_classes=['kata-input-comp'], control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
           {% if loop.index0 == 0 %}
@@ -29,7 +32,7 @@
           {% endif %}
         {% endcall %}
 
-        {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation'), id='agent__' ~ index ~ '__organisation_id',
+        {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation')+' *', id='agent__' ~ index ~ '__organisation_id',
                            placeholder=_('University. Faculty. Department.'), value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'),
                            classes=['control-custom'], label_classes=['kata-input-comp'], control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
           {% if loop.index0 == 0 %}
@@ -41,56 +44,58 @@
       </div>
     {% endfor %}
     {% if author_errors and author_errors is iterable %}<span class="error-block-kata">{{ author_errors|join('. ') }}</span>{% endif %}
+    </div>
   </div>
+
+
+  <h3>{{ _('Contributors') }}</h3>
+    {% set contributors = h.get_contributors(data) %}
+    {% if contributors|length == 0 %}
+      {% do contributors.append(dict(role='contributor',)) %}
+    {% endif %}
+
+  <div class="form-row">
+    <div data-module="custom-fields-kata" data-module-id="contributors" data-module-numfields="{{ contributors|length }}" data-module-index="agent-index" id="contributors">
+      {% set contributor_errors = h.get_dict_errors(errors, '__extras', 'contributors') %}
+      {% for agent in contributors %}
+        <div class="control-group control-custom{{ " error" if owner_errors }}">
+          {% set index = agent_index.increase() %}
+          {% set agent_prefix = "agent__" ~ index ~ "__" %}
+
+            {% call form.input('agent__' ~ index ~ '__name', label=_('Name'), id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'), value=agent.name,
+                               error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
+                               control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
+              {% if loop.index0 == 0 %}
+                {{ kata_form.tooltip(tooltip=_("Contributor is a person or an organisation who, in addition to the author, has contributed significantly to the dataset.<br /><br />Type names of contributors and organisations to the corresponding fields. You can also add an identifier. You can add more contributors by pressing the \'+\' button. If you leave an added contributor field empty, it is discarded.")) }}
+              {% endif %}
+            {% endcall %}
+
+            {% call form.input('agent__' ~ index ~ '__id', label=_('Identifier'), id='agent__' ~ index ~ '__id_id', placeholder=_('http://orcid.org/'), value=agent.name,
+                               error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
+                               control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
+              {% if loop.index0 == 0 %}
+                {{ kata_form.tooltip(tooltip=_("Optionally you can provide contributor's identifier, such as an ORCID identifier.")) }}
+              {% endif %}
+            {% endcall %}
+
+            {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation'), id='agent__' ~ index ~ '__organisation_id', placeholder=_('University. Faculty. Department.'),
+                               value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'],
+                               control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
+              {% if loop.index0 == 0 %}
+                {{ kata_form.plusbutton(id="contributors_add", onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+              {% endif %}
+            {% endcall %}
+
+            <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="contributor" />
+            <input style="display: none;" type="checkbox" id="obtn__{{ index }}__value_id" name="obtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
+        </div>
+      {% endfor %}
+      {% if owner_errors and owner_errors is iterable %}<span class="error-block-kata">{{ contributor_errors|join('. ') }}</span>{% endif %}
+    </div>
+  </div>
+
 </div>
 
-<h3 class="module-heading-add-dataset optional">{{ _('Contributors') }}{{ kata_form.optional() }}</h3>
-<div class="module-content optional">
-  {% set contributors = h.get_contributors(data) %}
-
-  {% if contributors|length == 0 %}
-    {% do contributors.append(dict(role='contributor',)) %}
-  {% endif %}
-
-  <div data-module="custom-fields-kata" data-module-id="contributors" data-module-numfields="{{ contributors|length }}" data-module-index="agent-index" id="contributors">
-    {% set contributor_errors = h.get_dict_errors(errors, '__extras', 'contributors') %}
-
-    {% for agent in contributors %}
-      <div class="control-group control-custom{{ " error" if owner_errors }}">
-        {% set index = agent_index.increase() %}
-        {% set agent_prefix = "agent__" ~ index ~ "__" %}
-
-          {% call form.input('agent__' ~ index ~ '__name', label=_('Name'), id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'), value=agent.name,
-                             error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
-                             control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
-            {% if loop.index0 == 0 %}
-              {{ kata_form.tooltip(tooltip=_("Contributor is a person or an organisation who, in addition to the author, has contributed significantly to the dataset.<br /><br />Type names of contributors and organisations to the corresponding fields. You can also add an identifier. You can add more contributors by pressing the \'+\' button. If you leave an added contributor field empty, it is discarded.")) }}
-            {% endif %}
-          {% endcall %}
-
-          {% call form.input('agent__' ~ index ~ '__id', label=_('Identifier'), id='agent__' ~ index ~ '__id_id', placeholder=_('http://orcid.org/'), value=agent.name,
-                             error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
-                             control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
-            {% if loop.index0 == 0 %}
-              {{ kata_form.tooltip(tooltip=_("Optionally you can provide contributor's identifier, such as an ORCID identifier.")) }}
-            {% endif %}
-          {% endcall %}
-
-          {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation'), id='agent__' ~ index ~ '__organisation_id', placeholder=_('University. Faculty. Department.'),
-                             value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'), classes=['control-custom'], label_classes=['kata-input-comp'],
-                             control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
-            {% if loop.index0 == 0 %}
-              {{ kata_form.plusbutton(id="contributors_add", onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
-            {% endif %}
-          {% endcall %}
-
-          <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="contributor" />
-          <input style="display: none;" type="checkbox" id="obtn__{{ index }}__value_id" name="obtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
-      </div>
-    {% endfor %}
-    {% if owner_errors and owner_errors is iterable %}<span class="error-block-kata">{{ contributor_errors|join('. ') }}</span>{% endif %}
-  </div>
-</div>
 
 {% set distributor = h.get_distributor(data) %}
 {% if distributor or data.id %}
@@ -146,7 +151,7 @@
       <span class="error-block-kata">{{ distributor_errors|join('. ') }}</span>
     {% endif %}
     </div>
-  </div>
+</div>
   <h3 class="module-heading-add-dataset">{{ _('Project') }} {{ kata_form.required() }}</h3>
   <div class="module-content">
     <input id="projdis" type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />

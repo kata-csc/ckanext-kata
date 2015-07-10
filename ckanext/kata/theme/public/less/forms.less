@@ -229,23 +229,30 @@ input[id="xmlfile"] {
 
   .form-row {
     margin-bottom: 40px;
+//    .form-label, .control-label {
     .form-label {
       float: left;
       font-weight: 700;
       width: @form-label-width;
+      text-align: right;
     }
+//    .form-content, .controls {
     .form-content {
       min-height: 16px;      
       position: relative;
       margin-left: @form-label-width;
       width: 100% - @form-label-width - @form-help-spacer-width;
       padding-right: @form-help-spacer-width;
+      padding-left: 10px;
     }
     .kata-tooltip {
       position: absolute;
       right: 0;
       top: 0;
     }
+//    input {
+//      margin-left: 10px;
+//    }
   }
 
   /* stack form label and content on small display */
@@ -263,6 +270,30 @@ input[id="xmlfile"] {
     }
   }
 }
+
+.form-horizontal {
+  @form-label-width: 30%;
+  @form-help-spacer-width: 5%;
+  padding: 20px;
+  .control-label {
+    float: left;
+    font-weight: 700;
+    width: @form-label-width;
+    text-align: right;
+  }
+  .controls {
+    min-height: 16px;
+    position: relative;
+    margin-left: @form-label-width;
+    width: 100% - @form-label-width - @form-help-spacer-width;
+    padding-right: @form-help-spacer-width;
+    padding-left: 10px;
+  }
+//  input {
+//    margin-left: 10px;
+//  }
+}
+
 
 @form-border-color: @border-color-bg;
 @form-tabs-number-of-items: 3;
