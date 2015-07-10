@@ -151,17 +151,14 @@
     </div>
   </div>
 
-</div>
 
-
-
-  <h3 class="module-heading-add-dataset">{{ _('Project') }} {{ kata_form.required() }}</h3>
-  <div class="module-content">
+  <h3>{{ _('Project') }}</h3>
+  <div class="form-row">
     <input id="projdis" type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />
-    <label for="projdis" class="kata-checkbox-label">{{ _('This dataset was produced in a project.') }}</label>
+    <label for="projdis" class="kata-checkbox-label">{{ _('This dataset was produced in a project.') }} * </label>
   </div>
 
-  <div class="module-content" id="projdiv"{% if not h.get_funder(data) %} style="display: none;"{% endif %}>
+  <div id="projdiv"{% if not h.get_funder(data) %} style="display: none;"{% endif %}>
     {% set funders = h.get_funders(data) %}
 
     {% if funders|length == 0 %}
@@ -216,6 +213,10 @@
       {% if funder_errors and funder_errors is iterable %}<span class="error-block-kata">{{ funder_errors|join('. ') }}</span>{% endif %}
     </div>
   </div>
+
+</div>
+
+
 
   <h3 class="module-heading-add-dataset">{{ _('Owner information') }} {{ kata_form.required() }}</h3>
   <div class="module-content">
