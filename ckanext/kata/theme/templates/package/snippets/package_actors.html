@@ -16,7 +16,7 @@
       {% set index = agent_index.increase() %}
       <div class="control-group control-custom{{ " error" if author_errors }}">
         <input  type="hidden" id="agent__{{ index }}__role" name="agent__{{ index }}__role" value="author" />
-        {% call form.input('agent__' ~ index ~ '__name', label=_('Author')+' *', id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'),
+        {% call form.input('agent__' ~ index ~ '__name', label=_('Author')+' * ', id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'),
                            value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'), classes=['control-custom'],
                            label_classes=['kata-input-comp'], control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
           {% if loop.index0 == 0 %}
@@ -32,7 +32,7 @@
           {% endif %}
         {% endcall %}
 
-        {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation')+' *', id='agent__' ~ index ~ '__organisation_id',
+        {% call form.input('agent__' ~ index ~ '__organisation', label=_('Organisation')+' * ', id='agent__' ~ index ~ '__organisation_id',
                            placeholder=_('University. Faculty. Department.'), value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'),
                            classes=['control-custom'], label_classes=['kata-input-comp'], control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
           {% if loop.index0 == 0 %}
@@ -94,17 +94,15 @@
     </div>
   </div>
 
-</div>
 
-
-{% set distributor = h.get_distributor(data) %}
-{% if distributor or data.id %}
-  <input type="hidden" name="agent__999__role" value="distributor" />
-  <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
-  <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation or '' }}" />
-{% endif %}
-<h3 class="module-heading-add-dataset">{{ _('Distributor') }} {{ kata_form.required() }}</h3>
-<div class="module-content">
+  {% set distributor = h.get_distributor(data) %}
+  {% if distributor or data.id %}
+    <input type="hidden" name="agent__999__role" value="distributor" />
+    <input type="hidden" name="agent__999__name" value="{{ distributor.name }}" />
+    <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation or '' }}" />
+  {% endif %}
+  <h3>{{ _('Distributor') }}</h3>
+  <div class="form-row">
     {% set contacts = h.get_contacts(data) %}
 
     {% if contacts|length == 0 %}
@@ -117,7 +115,7 @@
       <div class="control-group control-custom{% if distributor_errors %} error{% endif %}">
 
         {% set index = loop.index0 %}
-        {% call form.input('contact__' ~ index ~ '__name', label=_('Name'), id='contact__' ~ index ~ '__name', placeholder=_('John Doe'), value=contact.name,
+        {% call form.input('contact__' ~ index ~ '__name', label=_('Name')+" * ", id='contact__' ~ index ~ '__name', placeholder=_('John Doe'), value=contact.name,
                            error=h.get_dict_field_errors(errors, 'contact', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
                            control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
           {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the distributor. Distributor is a person or an organisation who has the right to distribute the dataset or has published the dataset.')) }}
@@ -129,7 +127,7 @@
           {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact phone number. The phone number must be in form \"+35812341234\".')) }}
         {% endcall %}
 
-        {% call form.input('contact__' ~ index ~ '__email', label=_('Email'), id='contact__' ~ index ~ '__email', placeholder=_('john.doe@example.com'), value=contact.email,
+        {% call form.input('contact__' ~ index ~ '__email', label=_('Email')+" * ", id='contact__' ~ index ~ '__email', placeholder=_('john.doe@example.com'), value=contact.email,
                            error=h.get_dict_field_errors(errors, 'contact', index, 'email'), type='email', classes=['control-custom'], label_classes=['kata-input-comp'],
                            control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
           {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly but it can be used to send e-mails in this service.')) }}
@@ -151,7 +149,12 @@
       <span class="error-block-kata">{{ distributor_errors|join('. ') }}</span>
     {% endif %}
     </div>
+  </div>
+
 </div>
+
+
+
   <h3 class="module-heading-add-dataset">{{ _('Project') }} {{ kata_form.required() }}</h3>
   <div class="module-content">
     <input id="projdis" type="checkbox" style="top: 0px;" name="projdis" onchange="$('#projdiv').toggle()" {% if h.get_funder(data) %}checked {% endif %}value="True" />
