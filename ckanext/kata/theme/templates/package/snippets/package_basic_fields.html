@@ -48,7 +48,11 @@
         {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
       </div>
         <div class="tab-pane" id="additional-info">
-        {% snippet 'package/snippets/recommended_coverage.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+          <div class="tab-content-inner">
+            {% snippet 'package/snippets/recommended_coverage.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+            {% snippet 'package/snippets/recommended_lifecycle_events.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+            {% snippet 'package/snippets/recommended_file_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+          </div>
       </div>
 
       <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />
