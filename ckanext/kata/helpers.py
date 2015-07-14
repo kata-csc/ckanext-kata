@@ -304,7 +304,7 @@ def get_rightscategory(data_dict):
     '''
     Return METS rights category and rights declaration for dataset
 
-    :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
+    :returns: CONTRACTUAL, LICENSED, COPYRIGHTED or PUBLIC DOMAIN
     '''
 
     license = data_dict.get('license_id')
@@ -317,7 +317,7 @@ def get_rightscategory(data_dict):
         declarations.append(data_dict.get('access_application_URL') or data_dict.get('access_request_URL'))
     elif license in ['other-pd', "ODC-PDDL-1.0", "CC0-1.0", "cc-zero"]:
         category = "PUBLIC DOMAIN"
-    elif license[:2] in ['CC', 'OD']:
+    elif license and license[:2] in ['CC', 'OD']:
         category = "LICENSED"
     else:
         category = "COPYRIGHTED"
