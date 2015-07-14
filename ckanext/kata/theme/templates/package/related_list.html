@@ -3,7 +3,7 @@
 {% set pkg = c.pkg %}
 
 {% block inner_content %}
-  <h2 class="page-title">{{ title or pkg.name }}
+  <h2 class="page-title">{{ h.get_translation(pkg.title) or pkg.name }}
     {% if pkg.state.startswith('draft') %}
       [{{ _('Draft') }}]
     {% endif %}
