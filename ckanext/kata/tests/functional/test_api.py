@@ -86,7 +86,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data = copy.deepcopy(self.TEST_DATADICT)
 
         # Make sure we will get a validation error
-        data.pop('langtitle')
+        data.pop('langtitle', None)
         data.pop('language')
         data.pop('availability')
 
@@ -184,6 +184,37 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data.pop('accept-terms')
 
         self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
+
+    def test_create_dataset_minimal(self):
+        '''
+        Create minimal dataset. Tests especially API usage, a case where a user drops the non-required fields
+        altogether.
+        '''
+        data = copy.copy(self.TEST_DATADICT)
+        data_dict = dict()
+        for key in data:
+            if key in settings.KATA_FIELDS_REQUIRED:
+                data_dict[key] = data.get(key)
+
+        data_dict['owner_org'] = u'New Horizons'
+        data_dict['accept-terms'] = u'True'
+        data_dict['title'] = u'{"fin": "Pluton ohitus 14.7.2015", "eng": "Passing Pluto 14.7.2015"}'
+        data_dict['version'] = u'2015-07-14T14:50:00+03:00'
+        data_dict['availability'] = u'direct_download'
+        data_dict['direct_download_URL'] = u'https://www.nasa.gov/mission_pages/newhorizons/main/index.html'
+        data_dict['tag_string'] = u'Space probe,New Horizons,Pluto,Charon,Space exploration,Solar system'
+        data_dict['license_id'] = u'cc-by'
+        data_dict['private'] = u'False'
+
+        output = self.api_user_anna.call_action('package_create', data_dict=data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
+        data_dict['private'] = u'True'
+        output = self.api_user_anna.call_action('package_create', data_dict=data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
 
 
 class TestUpdateDataset(KataApiTestCase):
@@ -384,17 +415,30 @@ class TestDataReading(KataApiTestCase):
         data = copy.deepcopy(self.TEST_DATADICT)
         data['private'] = True
         data_dict = {
-            'id': u'',
-            'name': u'',
             'owner_org': u'',
             'private': u'True',
             'langtitle': [{}],
+            'title': [{}]
         }
 
         self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
 
-        data_dict['langtitle'] = [{'lang': u'fin', 'value': u'Test Data'}]
         data_dict['owner_org'] = data['owner_org']
+
+        self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
+
+        data_dict['langtitle'] = [{'lang': u'fin', 'value': u'Test Data'}]
+        output = self.api_user_joe.action.package_create(**data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        data_dict['langtitle'] = [{}]
+        data_dict['title'] = u'{"fin": "Test Data", "abk": "Title 2", "swe": "Title 3", "tlh": \
+                  "\\u143c\\u1450\\u1464\\u1478\\u148c\\u14a0\\u14b4\\u14c8\\u14dc\\u14f0\\u1504\\u1518\\u152c"}'
+
+        output = self.api_user_joe.action.package_create(**data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
         output = self.api_user_joe.action.package_create(**data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -863,7 +907,7 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
         '''Create dataset with a new organization.'''
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        data_dict['title'] = 'A new dataset to create'
+        data_dict['title'] = u'{"fin": "A new dataset to create"}'
         data_dict['owner_org'] = 'A New Org for create'
         pkg_dict = self.api_user_joe.action.package_create(**data_dict)
 

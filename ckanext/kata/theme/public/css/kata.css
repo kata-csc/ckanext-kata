@@ -2010,3 +2010,87 @@ a.download {
 .etsin-facet-list .facet-pills .facet-pill.active .pill a {
   color: white;
 }
+.organization-item-wrapper {
+  overflow: hidden;
+}
+.organization-item-left {
+  float: left;
+  width: 80%;
+  padding-right: 10px;
+  border-right: 1px solid #c9c9c9;
+}
+.organization-item-right {
+  float: right;
+  padding-left: 10px;
+}
+.organization-item-right .count {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block;
+}
+.search-results-list {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+.search-results-list .organization-list .organization-heading {
+  font-size: 17px;
+}
+.search-results-list .organization-list .organization-item {
+  border: 1px solid #c9c9c9;
+  padding: 15px;
+  background: white;
+  margin-bottom: 20px;
+}
+.search-results-list .organization-list > li:first-child {
+  margin-top: 20px;
+}
+.etsin-organization-page {
+  text-align: center;
+}
+.search-results-list {
+  margin-top: 20px;
+}
+.search-results-list .number-of-results {
+  font-size: 160%;
+  font-weight: 700;
+}
+.organization-view-header {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.organization-view-header .uses-and-followers > table td {
+  padding-right: 15px;
+}
+.organization-view-header .actions-and-ratings {
+  float: right;
+  max-width: 300px;
+  text-align: right;
+}
+.organization-view-content {
+  margin-top: 20px;
+  border: 1px solid #c9c9c9;
+  padding: 20px;
+  margin-bottom: 60px;
+}
+.organization-about-wrapper {
+  overflow: hidden;
+}
+.organization-about-wrapper .organization-about-left {
+  float: left;
+  width: 60%;
+  padding-right: 10px;
+}
+.organization-about-wrapper .organization-about-right {
+  float: right;
+  padding-left: 10px;
+  padding-top: 20px;
+}
+.organization-about-wrapper .organization-about-right .image img {
+  display: block;
+}
+.organization-actions {
+  overflow: hidden;
+  padding-left: 130px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}

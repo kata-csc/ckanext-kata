@@ -148,7 +148,8 @@ def gen_translation_str_from_multilang_field(fieldkey, message, key, data, error
             json_data[lval] = rval
         i+=1
 
-    data[(fieldkey,)] = json.dumps(json_data)
+    if json_data:
+        data[(fieldkey,)] = json.dumps(json_data)
 
 
 def gen_translation_str_from_langtitle(key, data, errors, context):
@@ -460,7 +461,8 @@ def convert_to_extras_kata(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    extras.append({'key': key[-1], 'value': data[key]})
+    if data.get(key):
+        extras.append({'key': key[-1], 'value': data[key]})
 
 
 def xpath_to_extras(key, data, errors, context):

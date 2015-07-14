@@ -241,6 +241,7 @@ def get_related_urls(pkg):
         ret.append(rel.related.url)
     return ret
 
+
 def get_download_url(pkg_dict, type=''):
     '''
     :param pkg_dict: package dictionary
@@ -371,6 +372,7 @@ def get_funder(data_dict):
 def get_funders(data_dict):
     '''Get all funders from agent field in data_dict'''
     return utils.get_funders(data_dict)
+
 
 def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
     '''
@@ -562,6 +564,7 @@ def convert_language_code(lang, to_format, throw_exceptions=True):
             except catch[1]:
                 return ''
 
+
 def split_disciplines(disc):
     '''
     Split disciplines with the help of lookahead
@@ -579,6 +582,7 @@ def get_ga_id():
     :return: google analytics id
     '''
     return config.get('kata.ga_id', '')
+
 
 def json_to_list(pkg_dict):
 
@@ -613,6 +617,7 @@ def has_json_content(data):
     if len(json_data) == 0 or (isinstance(json_data, dict) and not any(json_data.values())):
         return False
     return True
+
 
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
@@ -699,6 +704,7 @@ def get_label_for_uri(uri, ontology=None, lang=None):
 
     return uri
 
+
 def get_translation(translation_json_string, lang=None):
     '''
     Returns the given JSON translation string in correct language.
@@ -727,6 +733,7 @@ def get_translation(translation_json_string, lang=None):
         translation = json_data.get(lang)
         if translation:
             return translation
+
 
 def get_language(lang):
     '''
@@ -809,6 +816,7 @@ def disciplines_string_resolved(disciplines, ontology=None, lang=None):
     else:
         return disciplines
 
+
 def format_facet_labels(facet_item):
     '''
     This function is used by facet_list.html to format the labels properly.
@@ -831,6 +839,7 @@ def resolve_org_name(org_id):
         return org_id
     return group.title
 
+
 def get_active_facets(facets):
     '''
     Constructs a summary of currently active facets for search view.
@@ -844,6 +853,23 @@ def get_active_facets(facets):
     for key in facets['search'].iterkeys():
         facet_info['search'][key] = bool(key in limits)
     return json.dumps(facet_info)
+
+
+def get_fields_grouped():
+    '''
+    Generates data equivalent to c.fields_grouped for organisation's search page
+    Needed by Limit search results feature
+
+    :return: Selected facets as a dict
+    '''
+    fields_grouped = {}
+    for (param, value) in request.params.items():
+        if param not in ['q', 'page', 'sort'] \
+                and len(value) and not param.startswith('_'):
+            if not param.startswith('ext_'):
+                if param not in fields_grouped:
+                    fields_grouped[param] = [value]
+    return fields_grouped
 
 
 def is_active_facet(facet, active_facets):

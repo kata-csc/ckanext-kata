@@ -149,7 +149,7 @@ KATA_FIELDS_REQUIRED = ['agent',
                         'contact',
                         # 'author',
                         #'langtitle',   # this is not required since the translation should be in title
-                        'title',
+                        # 'title',
                         # 'contact_phone',
                         # 'contact_URL',
                         # 'organization',
@@ -163,13 +163,13 @@ KATA_FIELDS_REQUIRED = ['agent',
 KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            'access_application_URL',
                            'access_request_URL',
-                           'through_provider_URL',
                            #'algorithm',
                            #'direct_download_URL',
                            'discipline',
                            'event',
                            'geographic_coverage',
                            'langdis',
+                           'langnotes',
                            'language',
                            'license_URL',
                            #'mimetype',
@@ -179,7 +179,8 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            # 'project_name',
                            'pids',
                            'temporal_coverage_begin',
-                           'temporal_coverage_end']
+                           'temporal_coverage_end',
+                           'through_provider_URL']
 
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
 
