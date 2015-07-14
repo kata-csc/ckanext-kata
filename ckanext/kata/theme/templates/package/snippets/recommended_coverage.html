@@ -33,6 +33,7 @@
           <span class="error-block kata-medium-error">{{ errors.temporal_coverage_begin[0] }}</span>
         {% endif %}
       </div>
+
       <label class="control-label kata-input-comp{% if errors and errors.temporal_coverage_end %} error{% endif %}" for="temporal_coverage_end">{{ _('End') }}</label>
       <div class="controls controls-row" data-module="kata-datetimepicker"
            data-module-currentlang="{{ lang }}" data-module-name="temporal_coverage_end"
