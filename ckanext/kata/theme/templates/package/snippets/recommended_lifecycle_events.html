@@ -1,14 +1,15 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-<section class="module">
-  <h2 class="module-heading-add-dataset optional">{{ _('Dataset lifecycle events') }} {{ kata_form.optional() }}</h2>
-  <div class="module-content">
-    <div data-module="custom-fields-kata" data-module-id="lifecycle" id="lifecycle">
-      <label class="control-label katalabel1"><span>{{ _('event') }}</span></label>
-      <label class="control-label katalabel"><span>{{ _('by whom') }}</span></label>
-      <label class="control-label katalabel"><span>{{ _('when') }}</span></label>
-      <label class="control-label katalabel"><span>{{ _('description') }}</span></label>
+  <h3>{{ _('Dataset lifecycle events') }}</h3>
+  <div class="form-row">
+    <div class="form-table" data-module="custom-fields-kata" data-module-id="lifecycle" id="lifecycle">
+      <ul class="kata">
+        <label class="control-label katalabel1"><span>{{ _('event') }}</span></label>
+        <label class="control-label katalabel"><span>{{ _('by whom') }}</span></label>
+        <label class="control-label katalabel"><span>{{ _('when') }}</span></label>
+        <label class="control-label katalabel"><span>{{ _('description') }}</span></label>
+      </ul>
 
       {% set lastevent = 0 %}
       {% if data.event %}
@@ -177,4 +178,3 @@
       {% endif %}
     </div>
   </div>
-</section>

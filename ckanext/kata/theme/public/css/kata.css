@@ -603,6 +603,11 @@ input[id="xmlfile"] {
   padding-right: 5%;
   padding-left: 10px;
 }
+.form-tab-content .form-row .form-table {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
 .form-tab-content .form-row .kata-tooltip {
   position: absolute;
   right: 0;

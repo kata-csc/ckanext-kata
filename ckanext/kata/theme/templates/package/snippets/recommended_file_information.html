@@ -3,9 +3,8 @@
 
 {# Todo: File information errors must be handled in helpers. This blind call to resource data's index won't necessarily work later on #}
 
-<section class="module">
-  <h2 class="module-heading-add-dataset optional">{{ _('Technical details of the data file') }} {{ kata_form.optional() }}</h2>
-  <div class="module-content">
+  <h3>{{ _('Technical details of the data file') }}</h3>
+  <div class="form-row">
     <div class="kata-autocomplete error-block-autocomplete">
       {% set mimetype_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/media_type_autocomplete?incomplete=?'} %}
       {% call form.input('mimetype', label=_('MIME type'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=mimetype_attrs) %}
@@ -54,4 +53,3 @@
       {% endif %}
     {% endcall %}
   </div>
-</section>
