@@ -130,7 +130,7 @@ class Schemas:
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
         schema['__extras'] = [va.check_agent, va.check_contact, va.check_pids, va.check_langtitle]
         schema['__junk'] = [va.check_junk]
-        schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
+        schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]
@@ -144,7 +144,8 @@ class Schemas:
                                           unicode, va.validate_general, co.convert_to_extras_kata]
         schema['discipline'] = [ignore_missing, va.validate_discipline, co.convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
-        schema['license_URL'] = [not_missing, va.validate_license_url, co.convert_to_extras_kata, unicode, va.validate_general]
+        schema['license_URL'] = [va.continue_if_missing, va.validate_license_url, co.convert_to_extras_kata, unicode,
+                                 va.validate_general]
         schema['owner_org'] = [va.kata_owner_org_validator, unicode]
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_direct_download_url,
                                       unicode, va.validate_general]

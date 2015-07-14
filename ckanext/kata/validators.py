@@ -570,3 +570,17 @@ def validate_license_url(key, data, errors, context):
                             'is a variant of license type other.'))
 
 
+def continue_if_missing(key, data, errors, context):
+    '''
+    Like ignore_missing but don't stop, instead run the other validators.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    value = data.get(key)
+
+    if value is missing or value is None:
+        data.pop(key, None)

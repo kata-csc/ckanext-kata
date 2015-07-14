@@ -185,6 +185,37 @@ class TestCreateDatasetAndResources(KataApiTestCase):
 
         self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
 
+    def test_create_dataset_minimal(self):
+        '''
+        Create minimal dataset. Tests especially API usage, a case where a user drops the non-required fields
+        altogether.
+        '''
+        data = copy.copy(self.TEST_DATADICT)
+        data_dict = dict()
+        for key in data:
+            if key in settings.KATA_FIELDS_REQUIRED:
+                data_dict[key] = data.get(key)
+
+        data_dict['owner_org'] = u'New Horizons'
+        data_dict['accept-terms'] = u'True'
+        data_dict['title'] = u'{"fin": "Pluton ohitus 14.7.2015", "eng": "Passing Pluto 14.7.2015"}'
+        data_dict['version'] = u'2015-07-14T14:50:00+03:00'
+        data_dict['availability'] = u'direct_download'
+        data_dict['direct_download_URL'] = u'https://www.nasa.gov/mission_pages/newhorizons/main/index.html'
+        data_dict['tag_string'] = u'Space probe,New Horizons,Pluto,Charon,Space exploration,Solar system'
+        data_dict['license_id'] = u'cc-by'
+        data_dict['private'] = u'False'
+
+        output = self.api_user_anna.call_action('package_create', data_dict=data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
+        data_dict['private'] = u'True'
+        output = self.api_user_anna.call_action('package_create', data_dict=data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
+
 
 class TestUpdateDataset(KataApiTestCase):
     """Tests for (mainly) dataset updating."""
@@ -384,8 +415,6 @@ class TestDataReading(KataApiTestCase):
         data = copy.deepcopy(self.TEST_DATADICT)
         data['private'] = True
         data_dict = {
-            'id': u'',
-            'name': u'',
             'owner_org': u'',
             'private': u'True',
             'langtitle': [{}],
