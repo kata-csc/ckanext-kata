@@ -1,3 +1,20 @@
+html, body {
+  min-width: 300px;
+}
+
+a {
+  color: @link-color;
+  text-decoration: none;
+  &:hover, &:focus {
+    color: @link-secondary-color;
+    text-decoration: underline;
+  }
+}
+
+body {
+  background: @body-background-color;
+}
+
 .form-actions {
   .action-info-kata {
     float: left;
@@ -44,4 +61,146 @@
 .control-custom.disabled .checkbox.btn {
     background-color: #53cc61 !important;
     background-image: linear-gradient(to bottom, #3ac34a, #53cc61);
+}
+
+.nav-simple {
+  .nav-item a {
+    color: @link-color;
+  }
+  .nav-item.active a {
+    color: white;
+  }
+}
+
+i.chevron-alt {
+  color: @link-alternative-color;
+}
+
+
+#etsin-main {
+  width: 100%;
+}
+
+@container-wide-size: 1100px;
+@container-medium-size: 920px;
+.etsin-container {
+  background-color: transparent;
+  .container {
+    max-width: 700px;
+  }
+  .container-wide {
+    max-width: @container-wide-size;
+    width: @container-wide-size;
+  }
+  .container-medium {
+    max-width: @container-medium-size;
+    width: @container-medium-size;
+  }
+}
+
+@media (max-width: @content-max-width) {
+  .etsin-container {
+    padding-left: 15px;
+    padding-right: 15px;
+    .container {
+      width: auto;
+      }
+  }
+}
+
+@media (min-width: @content-max-width) and (max-width: (@container-wide-size + 15px)) {
+  .etsin-container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media (max-width: @container-wide-size) {
+  .etsin-container {
+    .container-wide {
+      max-width: auto;
+      width: auto;
+    }
+  }
+}
+
+
+/* koko sivun levyinen container, eri taustaväri */
+.etsin-container-bg {
+  background-color: @body-background-secondary;
+  border-top: 1px solid @border-color-bg;
+  border-bottom: 1px solid @border-color-bg;
+}
+
+.etsin-secondary-title {
+  font-size: @secondary-title-size;
+}
+
+.action-link {
+  cursor: pointer;
+}
+
+.pagination {
+  ul {
+    box-shadow: none;
+  }
+  ul > li {
+    &.active > a {
+      background: transparent;
+      color: black;
+    }
+    a {
+      padding: 4px 8px;
+      font-size: @secondary-title-size;
+      font-weight: 700;
+      background: transparent;
+      border: none;
+      &:hover, &:focus {
+        background: transparent;
+      }
+    }
+  }
+}
+
+.container-divider {
+  border-top: 1px solid @border-color-bg;
+}
+
+// for old layout front page
+.index-additional-info {
+  padding: 10px;
+  width: 90%;
+  border: 1px solid;
+  border-color: #6ccff6;
+  background-color: #fff;
+  margin: 20px;
+  padding: 0px;
+  float: left;
+}
+
+.btn {
+  border-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+  &.btn-primary  {
+    background-color: @brand-primary-color !important;
+    background-image: none;
+  }
+  &.btn-default, &.btn-success, &.btn-danger {
+    background-image: none;
+    border-color: @brand-primary-color;
+    color: @brand-primary-color;
+    background-color: white;
+  }
+  .icon-chevron-down {
+    margin-left: 5px;
+  }
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+  background: @brand-primary-color;
+}
+
+.btn-group.open .btn.dropdown-toggle {
+  background-color: white;
 }

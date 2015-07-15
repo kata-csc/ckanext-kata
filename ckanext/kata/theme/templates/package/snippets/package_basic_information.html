@@ -9,9 +9,14 @@
 
     <div class="module-content">
       {% set titles = [] %}
+
       {% if data.langtitle %}
+        {# In case there are validation errors, the previous edits need to be fetched from the langtitle field #}
         {% set titles = data.langtitle %}
+      {% elif data.title %}
+        {% set titles = h.json_to_list(data.title) %}
       {% endif %}
+
       {% if (titles|length) == 0 %}
         {% for extra in range(1,2) %}
           {% do titles.append({'value': '', 'lang': ''}) %}
@@ -19,16 +24,17 @@
       {% endif %}
       <div data-module="custom-fields-kata" data-module-id="lastlang" data-module-numfields="{{ (titles|length) }}" id="lastlang">
         {# Render title fields #}
-        {% for langtitle in titles %}
+        {% for title in titles %}
           {% set index = loop.index0 %}
-          {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=langtitle.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+          {# langtitle deprecated, use title for the new type JSON translations #}
+          {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
             {% if index == 0 %}
               {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
             {% endif %}
             <label class="control-label kata-input-comp kata-field-title-language" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
             <div class="controls kata-input-comp kata-field-title-language">
               <select name="langtitle__{{ index }}__lang">
-                {% snippet 'package/snippets/languages.html', selected=langtitle.lang %}
+                {% snippet 'package/snippets/languages.html', selected=title.lang %}
               </select>
               {% if index == 0 %}
                 {{ kata_form.plusbutton(onclick="$(\'#lbtn__" ~ index ~ "__value_id\').change(); console.trace();", class="kata-title-add") }}
@@ -40,9 +46,14 @@
           {% endcall %}
         {% endfor %}
 
+        {# Include a hidden form to get a 'title' field to package #}
+        {# This field CANNOT be empty, otherwise the title converter is not ran #}
+        {{ form.hidden('title', '{"fin":""}') }}
+
         {% if errors.langtitle %}
-          <span class="error-block-kata">{{ errors.langtitle[0].value[0]}}</span>
+          <span class="error-block-kata">{{ errors.langtitle[0].value | join(". ") }}</span>
         {% endif %}
+
       </div>
     </div>
 
@@ -86,11 +97,12 @@
     <div class="module-content">
         <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
         <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
+
         <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
-          {% call form.input('language', label=_('Languages'), id='language', placeholder=_('eng, fin, swe ...'), value=data.language, error=errors.language,
-                             classes=['control-medium'], control_classes=["controls editor kata-medium"], label_classes=['control-label'], attrs={'class': "kata-medium-input"}) %}
-            {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Type a comma separated list of languages, in ISO 639-2 T format, used in your data, for example \"eng, fin, swe\".')) }}
-          {% endcall %}
+          {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Add languages used in your data. Once you start typing, you will automatically get suggestions for matching languages. You can then select the appropriate suggestion with a mouse click, or you can enter your own languages. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work. <br /><br /> If you decide to enter your own languages, they must be given in ISO 639-2 T format, for example \"eng, fin, swe\".')) }}  {% set autocomplete_source = '/api/2/util/language/autocomplete?incomplete=?&language=' ~ h.lang()  %}
+          {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
+          {{ form.input('language', id='language', label=_('Languages'), placeholder=_('eg. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
+
           <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
           <span class="add-dataset-infotext">
             {{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>

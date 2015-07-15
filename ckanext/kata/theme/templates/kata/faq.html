@@ -9,7 +9,7 @@
 
 {% block primary_content %}
   <section class="faq" id="kata_faq">
-   <section class="module"><h2 class="module-heading"><a id="faq-kata-metadata">{{ _('Basic information on Etsin') }}</a></h2>
+   <section class="module"><h2 class="module-heading" id="faq-kata-metadata">{{ _('Basic information on Etsin') }}</h2>
      <div class="module-content">
       <h3 class="question">{{ _('What is Etsin?') }}</h3>
       <p>{{ _('Etsin is a research data finder. The service is offered by the Finnish Ministry of Education and Culture and it is developed and maintained by CSC - IT Center for Science Ltd.') }}</p>
@@ -25,7 +25,7 @@
       <p>{% trans %}The data described in Etsin can be stored anywhere, e.g. <a href="https://www.tdata.fi/en/ida" target="_blank">IDA storage service</a>. Etsin is integrated with a Resource Entitlement Management System, through which access data can be managed. Open data found in Etsin may be accessed by the user in e.g. <a href="http://avaa.tdata.fi/web/avaa/etusivu" target="_blank">AVAA open data publishing portal</a>.{% endtrans %}</p>
      </div>
    </section>
-   <section class="module"><h2 class="module-heading"><a id="faq-add-dataset">{{ _('Adding and modifying metadata') }}</a></h2>
+   <section class="module"><h2 class="module-heading" id="faq-add-dataset">{{ _('Adding and modifying metadata') }}</h2>
      <div class="module-content">
        <h3 class="question">{{ _('What does metadata mean?') }}</h3>
        <p>{{ _('Metadata describes the data, e.g. title, language or description of the content.') }}</p>
@@ -51,7 +51,7 @@
        <p>{{ _('Currently URIs are not resolved so for instance an ORCID URL will be displayed in its given format on dataset and search pages instead of its resolved plain text format. On the other hand, currently the author and contributor fields collect URIs separately, so you can insert author information as plain text and as URI.') }}</p>
      </div>
    </section>
-   <section class="module"><h2 class="module-heading"><a id="faq-search">{{ _('Search') }}</a></h2>
+   <section class="module"><h2 class="module-heading" id="faq-search">{{ _('Search') }}</h2>
      <div class="module-content">
        <h3 class="question">{{ _('There are two search fields, why?') }}</h3>
        <p>{{ _('The search field in the upmost part makes it easier to search for data from anywhere in the site. You can use any search field you prefer.') }}</p>
@@ -62,7 +62,7 @@
        <p>{{ _('Facets are generated from the existing datasets in the search engine. If certain types of words are a majority in datasets, they will take the leading positions in facets too. Thus the facets may contain words in some specific language or from specific fields of science because they are so much more popular than others.') }}</p>
      </div>
    </section>
-   <section class="module"><h2 class="module-heading"><a id="faq-user">{{ _('Authentication and user rights') }}</a></h2>
+   <section class="module"><h2 class="module-heading" id="faq-user">{{ _('Authentication and user rights') }}</h2>
        <div class="module-content">
            <h3 class="question">{{ _('I opened Etsin and chose log in, then I was suddenly already logged in.') }}</h3>
            <p>{{ _('This may happen if you have previously logged in and then access Etsin via an unencrypted connection, e.g. using the address http://etsin.avointiede.fi. The identification cookie from your earlier login is only sent via an encrypted connection and thus you could not be identified. Choosing "Log in" redirected you to use an encrypted https connection. At the same time your identification cookie was sent and you were recognized.') }}</p>
@@ -79,8 +79,8 @@
       {{ _('FAQ') }}
     </h2>
     <div class="module-content faq-help-secondary">
-      
-      <div class="faq-toc">
+
+      <div class="help-toc">
         <ul>
         <li>
             <a href="#faq-kata-metadata">{{ _('Basic information on Etsin') }}</a>
@@ -105,4 +105,3 @@
     </div>
 </div>
 {% endblock %}
- 

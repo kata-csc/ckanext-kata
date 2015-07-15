@@ -209,6 +209,9 @@ class TestWithUser(TestCase):
             field = browser.find_element_by_xpath("//input[@name='agent__3__name']")
             field.send_keys('Selenium')
 
+            field = browser.find_element_by_xpath("//textarea[@id='license_URL']")
+            field.send_keys('Selenium license')
+
             # field = browser.find_element_by_xpath("//select[@id='field-kata-pr']/option[@value='False']")
             # field.click()
             # field.send_keys('Published')

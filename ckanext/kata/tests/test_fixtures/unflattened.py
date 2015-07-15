@@ -36,6 +36,7 @@ TEST_ORGANIZATION_SELENIUM = {
 
 TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'algorithm': u'SHA',
+                 'format': u'CSV',
                  'hash': u'somehash',
                  'mimetype': u'application/csv',
                  'resource_type': 'file'}
@@ -81,21 +82,26 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                               }],
                  'direct_download_URL': u'http://www.tdata.fi/kata',
                  'discipline': u'Tietojenkäsittely ja informaatiotieteet',
+                 'format': u'CSV',
                  'geographic_coverage': u'Keilaniemi (populated place),Espoo (city)',
                  'langdis': 'False',
-                 'langtitle': [
-                     {'lang': u'fin', 'value': u'Test Data'},
-                     {'lang': u'abk', 'value': u'Title 2'},
-                     {'lang': u'swe', 'value': u'Title 3'},
-                     {'lang': u'tlh', 'value': u'ᐼᑐᑤᑸᒌᒠᒴᓈᓜᓰᔄᔘᔬ'},
-                 ],
+                 # 'langtitle': [
+                 #     {'lang': u'fin', 'value': u'Test Data'},
+                 #     {'lang': u'abk', 'value': u'Title 2'},
+                 #     {'lang': u'swe', 'value': u'Title 3'},
+                 #     {'lang': u'tlh', 'value': u'ᐼᑐᑤᑸᒌᒠᒴᓈᓜᓰᔄᔘᔬ'},
+                 # ],
                  'language': u'eng, fin, swe',
                  'license_id': u'cc-by',
+                 'license_URL': u'Not to be distributed outside the Milky Way galaxy',
                  'mimetype': u'application/csv',
                  'name': u'',
-                 'notes': u'''This is a dataset used for testing Kata CKAN extension.
-                 This is entirely fictional data and any resemblance to anything is purely coincidental.
-                 No animals were harmed during this dataset creation.''',
+                 'langnotes': [
+                    {'lang': u'fin', 'value': u'''This is a dataset used for testing Kata CKAN extension.
+                    This is entirely fictional data and any resemblance to anything is purely coincidental.
+                    No animals were harmed during this dataset creation.'''}
+                 ],
+                 'notes': u'',
                  'owner_org': '',
                  'event': [
                      {
@@ -143,7 +149,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'tag_string': u'Python,ohjelmoitunut solukuolema,programming',
                  'temporal_coverage_begin': u'2003-07-10T06:36:27-12:00',
                  'temporal_coverage_end': u'2010-04-15T03:24:47+12:45',
-                 'title': u'',
+                 'title': u'{"fin": "Test Data", "abk": "Title 2", "swe": "Title 3", "tlh": "ᐼᑐᑤᑸᒌᒠᒴᓈᓜᓰᔄᔘᔬ"}',
                  'type': u'dataset',
                  'version': u'2013-11-18T12:25:53Z',
                  'private': False,  # Use Python boolean or fix _compare_datadicts() in tests to support 'True' == True
@@ -152,4 +158,3 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                      'xpath/path2': u'xpath_value2',
                  },
                  }
-

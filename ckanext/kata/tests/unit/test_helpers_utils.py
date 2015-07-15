@@ -95,6 +95,32 @@ class TestHelpers(TestCase):
         discipline = u'http://www.yso.fi/onto/okm-tieteenala/xyz1234'
         assert helpers.get_label_for_uri(discipline) == discipline
 
+    def test_get_translation(self):
+        translation_json = '{"fin":"otsikko", "eng":"title"}'
+
+        translation_fi = helpers.get_translation(translation_json, 'fi')
+        assert translation_fi == "otsikko"
+
+        translation_en = helpers.get_translation(translation_json, 'en')
+        assert translation_en == "title"
+
+        # this should default to en
+        translation_def_en = helpers.get_translation(translation_json, 'sv')
+        assert translation_def_en == "title"
+
+        translation_json = '{"fin":"otsikko"}'
+        translation_def_fi = helpers.get_translation(translation_json, 'sv')
+        assert translation_def_fi == "otsikko"
+
+    def test_has_json_content(self):
+        assert helpers.has_json_content(u'{}') == False
+        assert helpers.has_json_content(None) == False
+        assert helpers.has_json_content('') == False
+        assert helpers.has_json_content('{"fin": ""}') == False
+        assert helpers.has_json_content('{"fin": "", "eng": ""}') == False
+        assert helpers.has_json_content('{"fin": "jotain"}') == True
+        assert helpers.has_json_content('[1, 2, 3]') == True
+
 
 class TestUtils(TestCase):
     """Unit tests for functions in utils.py."""
@@ -237,4 +263,3 @@ class TestUtils(TestCase):
 
         pids = utils.get_pids_by_type('some_unknown_type', data_dict)
         assert len(pids) == 0
-

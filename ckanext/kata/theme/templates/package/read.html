@@ -1,47 +1,105 @@
 {% extends "package/read_base.html" %}
 
 {% set pkg = c.pkg_dict %}
+{% set title = h.get_translation(pkg.title) %}
 
-{% block subtitle %}{{ pkg.title or pkg.name }}{% endblock %}
+{% block subtitle %}{{ title or pkg.name }}{% endblock %}
 
-{% block primary_content_inner %}
-  {{ super() }}  
-  {% block package_description %}
-    {% if pkg.private %}
-      <span class="dataset-private label label-inverse pull-right">
-        <i class="icon-lock"></i>
-        {{ _('Unpublished') }}
-      </span>
+{% block inner_content %}
+  <h2 class="page-title">{{ title or pkg.name }}
+    {% if pkg.state.startswith('draft') %}
+      [{{ _('Draft') }}]
     {% endif %}
-    <h1>
-      {% block page_heading %}
+    {% if pkg.private %}
+    <span class="dataset-private label label-inverse pull-right">
+      <i class="icon-lock"></i>
+      {{ _('Unpublished') }}
+    </span>
+  {% endif %}</h2>
 
-      {% if pkg.state.startswith('draft') %}
-        [{{ _('Draft') }}]
-      {% endif %}
-      {% endblock %}
-    </h1>
-    {# FIXME why is this here? seems wrong #}
-    <span class="insert-comment-thread"></span>
+  <div class="dataset-view-header">
 
-    {% set (rating, stars)=h.get_package_ratings(pkg) %}
-    <div class="rating-container">
-      {{ _('Metadata score:') }}
-      <span class="rating" title="{{ _('Metadata score {rating}/5').format(rating=rating) }}">{{ stars }}</span>
+    <div class="actions-and-ratings">
+      <div class="button-container">
+        <a class="btn btn-default" href={{h.url_for(controller='package', action='read', id=pkg.name, format='rdf')}}>
+          {{ _('Show in RDF format') }}
+        </a>
+        <div class="btn-group">
+          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            {{ _('Edit') }}<i class="icon-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu pull-right">
+            {% set has_update_rights = h.check_access('package_update', {'id':pkg.id }) %}
+            {% if has_update_rights %}
+            <li>
+              {% link_for _('Edit metadata'), controller='package', action='edit', id=pkg.name, class_='', icon='' %}
+            </li>
+            {% else %}
+            <li>
+              <a href="{{ h.url_for(controller='ckanext.kata.controllers:EditAccessRequestController', action='render_edit_request', pkg_id=pkg.name) }}">
+              {{ _('Request metadata editing rights') }}
+              </a>
+            </li>
+            {% endif %}
+
+            {% if h.dataset_is_valid(pkg) %}
+            <li>
+              <a href="{{ h.url_for(controller='package', action='new_resource', id=pkg.name)  }}" class="">{{ _('Add new supplement') }}</a>
+            </li>
+            {% else %}
+              <!-- TODO should this be shown somewhere? -->
+              {# _('Dataset has invalid information. Please add all required information to add supplements.') #}
+            {% endif %}
+
+            {% if has_update_rights %}
+            <li>
+              <a href={{h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=pkg.name)}}>{{ _('Administer dataset rights') }}</a>
+            </li>
+            <li>
+              {% link_for _('History'), controller='package', action='history', id=pkg.name, class_='', icon='' %}
+            </li>
+            {% endif %}
+
+
+          </ul>
+        </div>
+      </div>
+
+      <div class="completeness">
+        {% set (rating, stars)=h.get_package_ratings(pkg) %}
+        <div class="meter">
+          <span class="rating{{rating}}"></span>
+          <p>{{ _('Metadata completeness') }}<br><span class="number">{{ rating * 100 / 5 }} %</span></p>
+        </div>
+      </div>
+
     </div>
 
-    <h2 class="module-content">{{pkg.title}}</h2>
+    <div class="uses-and-followers">
+      <table>
+        <tr>
+          <td>{{ _('Followers') }}</td>
+          <td>{{ h.SI_number_span(h.get_action('dataset_follower_count', {'id': pkg.id})) }}</td>
+          <td>{{ h.follow_button('dataset', pkg.name) }}</td>
+        </tr>
+        <tr>
+          <td>{{ _('Data used') }}</td>
+          {% if c.related_count > 0 %}
+            <td>{% link_for c.related_count, controller='related', action='list', id=pkg.name %} {{ _('times') }}</td>
+          {% else %}
+            <td>{{ c.related_count }} {{ _('times') }}</td>
+          {% endif %}
+          <td>{% link_for _('Advertise reuse'), controller='related', action='new', id=pkg.name, class_='btn btn-default' %}</td>
+        </tr>
+      </table>
 
-  {% endblock %}
+      {% snippet "snippets/social.html" %}
 
-  {% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj, pkg_notes_formatted=c.pkg_notes_formatted %}
+    </div>
 
-  {% block package_resources %}
-    {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}
-  {% endblock %}
-
-  {% block package_additional_info %}
-    {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
-  {% endblock %}
-
+    <div class="clearfix"></div>
+  </div>
+  <div class="dataset-view-content">
+    {% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj, pkg_notes_formatted=c.pkg_notes_formatted %}
+  </div>
 {% endblock %}

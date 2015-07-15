@@ -1,3 +1,61 @@
 .kata-captcha-fix table {
     table-layout: auto !important;
 }
+
+.kata-accordion {
+  .accordion-heading {
+    font-weight: 700;
+    position: relative;
+    .accordion-toggle {
+      &:after {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        content: "\f077"; // chevron-up
+        font-family: FontAwesome;
+        text-decoration: none;
+      }
+      &.collapsed:after {
+        content: "\f078"; // chevron-down
+      }
+      &:focus, &:active {
+        outline: 0;
+        text-decoration: none;
+      }
+    }
+  }
+  .accordion-inner {
+    border-top: none;
+  }
+}
+
+.kata-datepicker-container {
+  .time-details {
+    display: inline-block;
+    margin-left: 10px;
+  }
+}
+
+.kata-datepicker-error {
+  margin-top: 20px;
+}
+
+.kata-datepicker-date {
+  width: 12ex;
+}
+
+.kata-datepicker-time {
+  width: 10ex;
+}
+
+.kata-datepicker-tz {
+  width: 11ex;
+}
+
+.kata-datepicker-enabler {
+  margin-top: 3px;
+  input {
+    top: 5px;
+  }
+  display: block;
+}

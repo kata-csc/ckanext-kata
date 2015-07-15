@@ -21,6 +21,7 @@ from ckan.logic import get_action
 from ckan.model import User, Package, Session, PackageExtra
 from ckan.lib import helpers as h
 from ckanext.kata import settings
+import unicodedata
 
 
 log = logging.getLogger(__name__)
@@ -154,6 +155,7 @@ def resource_to_dataset(data_dict):
             'direct_download_URL': resource.get('url', u''),
             'checksum': resource.get('hash', u''),
             'mimetype': resource.get('mimetype', u''),
+            'format': resource.get('format', u''),
             'algorithm': resource.get('algorithm', u''),
         })
 
@@ -198,6 +200,7 @@ def dataset_to_resource(data_dict):
     data_dict['resources'][resource_index] = {
         'url': data_dict.get('direct_download_URL', settings.DATASET_URL_UNKNOWN),
         'hash': data_dict.get('checksum', u''),
+        'format': data_dict.get('format', u''),
         'mimetype': data_dict.get('mimetype', u''),
         'algorithm': data_dict.get('algorithm', u''),
         'resource_type': settings.RESOURCE_TYPE_DATASET,
@@ -477,3 +480,15 @@ def generate_ida_download_url(data_pid):
 
     ida_download_url_template = "http://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
     return ida_download_url_template.format(p=data_pid)
+
+
+def slugify(str):
+    '''
+    Converts string to a sane url format, e.g. ääöö to aaoo.
+
+    :param str: string to convert
+    :return: converted unicode string
+    '''
+
+    nkfd_form = unicodedata.normalize('NFKD', str)
+    return u"".join([c for c in nkfd_form if not unicodedata.combining(c)])

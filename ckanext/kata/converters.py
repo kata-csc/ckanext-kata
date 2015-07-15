@@ -11,6 +11,7 @@ from ckan.lib import helpers as h
 import os
 import re
 import logging
+import functools
 from pylons.i18n import _
 from ckan.lib.navl.dictization_functions import missing
 
@@ -93,6 +94,162 @@ def org_auth_from_extras(key, data, errors, context):
         if not orgauth in orgauths:
             orgauths.append(orgauth)
 
+def gen_translation_str_from_multilang_field(fieldkey, message, key, data, errors, context):
+    '''
+    Fetch all the lang* fields e.g. for fieldkey 'title' of type
+    ('langtitle', n, 'lang'): u'en',
+    ('langtitle', n, 'value'): u'translation'
+
+    and generate a JSON translation string of type
+    title: {'en':'translation', 'fi':'kaannos'}
+
+    This converter is called only once for the hidden field
+    where the data is then stored.
+
+    :param fieldkey: 'title' or 'notes' currently
+    :param message: translation string for parse error message
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    # For API requests, we need to validate if the
+    # data is already given in the new format, and
+    # no lang* fields given. In that case, do nothing.
+    langkey = 'lang' + fieldkey
+    if data.get((fieldkey,)) and not data.get((langkey, 0, 'lang')):
+        json_string = data.get((fieldkey,))
+
+        json_data = {}
+        try:
+            json_data = json.loads(json_string)
+        except ValueError:
+            errors[key].append(message)
+
+        # we also need to validate the keys:
+        for k in json_data.keys():
+            if k == "undefined":    # some harvesters don't have languages defined
+                continue
+            try:
+                languages.get(part3=k)
+            except KeyError:
+                errors[key].append(_('The language code is not in ISO639-3 format'))
+
+        return
+
+    json_data = {}
+
+    # loop through all the translations
+    i = 0
+    while data.get((langkey, i, 'lang'), []):
+        lval = data[(langkey, i, 'lang')]
+        rval = data[(langkey, i, 'value')]
+        if rval:    # skip a language without translation
+            json_data[lval] = rval
+        i+=1
+
+    if json_data:
+        data[(fieldkey,)] = json.dumps(json_data)
+
+
+def gen_translation_str_from_langtitle(key, data, errors, context):
+    return gen_translation_str_from_multilang_field('title',
+        _('The given title string is not JSON parseable'), key, data, errors, context)
+
+
+def gen_translation_str_from_langnotes(key, data, errors, context):
+    return gen_translation_str_from_multilang_field('notes',
+        _('The given notes string is not JSON parseable'), key, data, errors, context)
+
+
+def ensure_valid_notes(key, data, errors, context):
+    '''
+    Converts the notes field into a JSON string if it isn't already.
+    '''
+    field = data.get(('notes',))
+    try:
+        json.loads(field)
+    except (ValueError, TypeError):
+        data[('notes',)] = json.dumps({'zxx': field})
+
+
+def set_language_for_title(key, data, errors, context):
+    '''
+    Some harvested datasets don't have title language attribute. Set it to Finnish
+    as we know it should be it.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    field = data.get(key)
+    try:
+        jsn = json.loads(field)
+        for k in jsn.keys():
+            if len(k) < 1 and not jsn.get('fin'):
+                jsn['fin'] = jsn.get(k)
+                del jsn['']
+        data[('title',)] = json.dumps(jsn)
+    except:
+        log.debug('Setting default language to title did not finish')
+
+
+def gen_translation_str_from_extras(key, data, errors, context):
+    '''
+    This converter is only used for converting the
+    old format title fields from extras to the new JSON format
+    in order to retain the compatibility between the new and
+    the old format.
+
+    1)  Check that the title isn't already in new format
+    2)  If it's not, fetch the title translations from extras
+    3)  convert the data to the new JSON format
+    4)  dump the jason string to the data dict's
+        title field.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    # NOTE: the title isn't updated to the database in this case,
+    # should the whole conversion logic be done in actions.py instead?
+
+    # check that title isn't already of new JSON format
+    # otherwise, parse the JSON title from extras
+    json_string = data.get(('title',))
+    try:
+        json.loads(json_string)
+    except ValueError:
+        if not data.get(('langtitle',)):
+            # use the existing converter to fetch the data from the extras
+            # and create a langtitle field.
+            ltitle_from_extras(key, data, errors, context)
+            langtitles = data.get(('langtitle',))
+
+            # convert the extras to the new JSON format here
+            json_data = {}
+            for langtitle in langtitles:
+                json_data[langtitle['lang']] = langtitle['value']
+
+            data[('title',)] = json.dumps(json_data)
+
+
+def escape_quotes(key, data, errors, context):
+    '''
+    Escape double quotes, so that we can store the title in json
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    data[key] = data.get(key).replace('"', '\\"')
 
 def ltitle_to_extras(key, data, errors, context):
     '''
@@ -153,7 +310,7 @@ def ltitle_from_extras(key, data, errors, context):
                 data.pop((k[0], k[1], 'value'), None)
                 data.pop((k[0], k[1], '__extras'), None)
                 data.pop(k, None)
-                
+
     langs = sorted(langs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     titles = sorted(titles, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
     for lang, title in zip(langs, titles):
@@ -305,7 +462,8 @@ def convert_to_extras_kata(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    extras.append({'key': key[-1], 'value': data[key]})
+    if data.get(key):
+        extras.append({'key': key[-1], 'value': data[key]})
 
 
 def xpath_to_extras(key, data, errors, context):
@@ -500,7 +658,6 @@ def organization_create_converter(key, data, errors, context):
     :param context: context
     '''
 
-    errors_found = False
     for key, value in errors.iteritems():
         if value:
             return
@@ -510,7 +667,8 @@ def organization_create_converter(key, data, errors, context):
     if model.Group.get(org_id):
         return
 
-    org_name = re.sub(r'[^\w]+', '-', org_id).lower()
+    org_name = re.sub(r'[^a-zA-Z0-9]+', '-', utils.slugify(org_id)).lower()
+    org_name = re.sub(r'-$', '', org_name)
     group_own = model.Group.get(org_name)
     if not group_own:
         org_admin = config.get('kata.default_org_admin') or config.get('ckan.site_id', '')

@@ -22,7 +22,9 @@ test the translation easily, use this file #}
   {{ _('Event') }}<br />
   {{ _('Geographic coverage') }}<br />
   {{ _('Title + language') }}<br />
+  {{ _('Description + language') }}<br />
   {{ _('Access request URL') }}<br />
+  {{ _('Copyright notice') }}<br />
 
   {# search page #}
   {{ _('Discipline') }}<br />
@@ -35,6 +37,7 @@ test the translation easily, use this file #}
   {{ _('Data identifier') }}
   {{ _('Version identifier') }}
   {{ _('Metadata identifier') }}
+  {{ _('default') }}
 
   {# Error message for missing organization #}
   {{ _('Owner org') }}
@@ -51,5 +54,308 @@ test the translation easily, use this file #}
       members, giving individual users the right to publish datasets from
       that particular organisation (e.g. Office of National Statistics).</p>
   {% endtrans %}
+
+  {# 'Tietoaineisto' -> 'Aineisto' in ckan's translations #}
+
+  {{ _('Unable to add package to search index') }}<br />
+  {{ _('Dataset not found') }}<br />
+  {{ _('Unauthorized to read package %s') }}<br />
+  {{ _('CKAN Dataset Revision History') }}<br />
+  {{ _('Recent changes to CKAN Dataset: ') }}<br />
+  {{ _('Unauthorized to create a package') }}<br />
+  {{ _('Unauthorized to update dataset') }}<br />
+  {{ _('The dataset {id} could not be found.') }}<br />
+  {{ _('Unauthorized to delete package %s') }}<br />
+  {{ _('Dataset has been deleted.') }}<br />
+  {{ _('Unauthorized to read dataset %s') }}<br />
+  {{ _('Package not found') }}<br />
+  {{ _('Datasets affected: %s.\n') }}<br />
+  {{ _('{actor} added the tag {tag} to the dataset {dataset}') }}<br />
+  {{ _('{actor} updated the dataset {dataset}') }}<br />
+  {{ _('{actor} changed the extra {extra} of the dataset {dataset}') }}<br />
+  {{ _('{actor} updated the resource {resource} in the dataset {dataset}') }}<br />
+  {{ _('{actor} updated the {related_type} {related_item} of the dataset {dataset}') }}<br />
+  {{ _('{actor} deleted the dataset {dataset}') }}<br />
+  {{ _('{actor} deleted the extra {extra} from the dataset {dataset}') }}<br />
+  {{ _('{actor} deleted the resource {resource} from the dataset {dataset}') }}<br />
+  {{ _('{actor} created the dataset {dataset}') }}<br />
+  {{ _('{actor} added the extra {extra} to the dataset {dataset}') }}<br />
+  {{ _('{actor} added the resource {resource} to the dataset {dataset}') }}<br />
+  {{ _('{actor} removed the tag {tag} from the dataset {dataset}') }}<br />
+  {{ _('{actor} started following {dataset}') }}<br />
+  {{ _('{actor} added the {related_type} {related_item} to the dataset {dataset}') }}<br />
+  {{ _('Created new dataset.') }}<br />
+  {{ _('Edited resources.') }}<br />
+  {{ _('Package resource(s) invalid') }}<br />
+  {{ _('Dataset') }}<br />
+  {{ _('You cannot add a dataset to this organization') }}<br />
+  {{ _('Resource') }}<br />
+  {{ _("Datasets with no organization can't be private.") }}<br />
+  {{ _('REST API: Create package relationship: %s %s %s') }}<br />
+  {{ _('You must supply a package id or name (parameter "package").') }}<br />
+  {{ _('You must be logged in to follow a dataset.') }}<br />
+  {{ _('REST API: Delete Package: %s') }}<br />
+  {{ _('Resource was not found.') }}<br />
+  {{ _('Package was not found.') }}<br />
+  {{ _('REST API: Update package relationship: %s %s %s') }}<br />
+  {{ _('User %s not authorized to create packages') }}<br />
+  {{ _('User %s not authorized to add dataset to this organization') }}<br />
+  {{ _('Valid API key needed to create a package') }}<br />
+  {{ _('User %s not authorized to delete package %s') }}<br />
+  {{ _('No package found for this resource, cannot check auth.') }}<br />
+  {{ _('User %s not authorized to read these packages') }}<br />
+  {{ _('User %s not authorized to read package %s') }}<br />
+  {{ _('User %s not authorized to edit package %s') }}<br />
+  {{ _('User %s not authorized to change state of package %s') }}<br />
+  {{ _('Valid API key needed to edit a package') }}<br />
+  {{ _('Datasets') }}<br />
+  {{ _('Search Datasets') }}<br />
+  {{ _('Groups of Datasets') }}<br />
+  {{ _('Add Dataset') }}<br />
+  {{ _('Search datasets...') }}<br />
+  {{ _('{num} Dataset') }}<br />
+  {{ _('{num} Datasets') }}<br />
+  {{ _('0 Datasets') }}<br />
+  {{ _('Edit datasets') }}<br />
+  {{ _('Add dataset') }}<br />
+  {{ _('Sorry no datasets found for "{query}"') }}<br />
+  {{ _('This dataset has no description') }}<br />
+  {{ _('This organization has no datasets associated to it') }}<br />
+  {{ _('Create Dataset') }}<br />
+  {{ _('What are datasets?') }}<br />
+
+  {% trans %}
+   <p><strong>Admin:</strong> Can add/edit and delete datasets, as well as
+  manage group members.</p> <p><strong>Editor:</strong> Can add and edit
+  datasets, but not manage group members.</p> <p><strong>Member:</strong> Can
+  view the group's private datasets, but not add new datasets.</p>
+  {% endtrans %}<br />
+
+  {% trans %}
+   <p>Groups allow you to group together datasets under a community (for
+  example, Civil Liberty data) or topic (e.g. Transport, Health, Environment)
+  to make it easier for users to browse datasets by theme. Datasets can be
+  part of a group, but do not belong to the group for editing or authorisation
+   purposes.</p>
+  {% endtrans %}<br />
+
+  {% trans %}
+   <p><strong>Admin:</strong> Can add/edit and delete datasets, as well as
+  manage organization members.</p> <p><strong>Editor:</strong> Can add and
+  edit datasets, but not manage organization members.</p>
+  <p><strong>Member:</strong> Can view the organization's private datasets,
+  but not add new datasets.</p>
+  {% endtrans %}<br />
+
+  {% trans %}
+  Are you sure you want to delete this Organization? This will delete all the
+  public and private datasets belonging to this organization.
+  {% endtrans %}<br />
+
+  {% trans %}
+   Datasets are simply used to group related pieces of data. These can then be
+   found under a single url with a description and licensing information.
+  {% endtrans %}<br />
+
+  {% trans %}
+  Cannot purge package %s as associated revision %s includes non-deleted
+  packages %s
+  {% endtrans %}<br />
+
+  {{ _('Are you sure you want to delete dataset - {name}?') }}<br />
+  {{ _('View dataset') }}<br />
+  {{ _('Create dataset') }}<br />
+  {{ _('Update Dataset') }}<br />
+  {{ _('Add metadata to the dataset') }}<br />
+  {{ _('Add data to the dataset') }}<br />
+  {{ _('This is the current revision of this dataset, as edited at %(timestamp)s.') }}<br />
+  {{ _('Related Media for {dataset}') }}<br />
+  {{ _('From the dataset abstract') }}<br />
+  {{ _('Search for a Dataset') }}<br />
+  {{ _('Edit Dataset') }}<br />
+  {{ _('There is no description for this dataset') }}<br />
+  {{ _('Are you sure you want to delete this dataset?') }}<br />
+  {{ _('Read dataset as of %s') }}<br />
+  {{ _("Datasets' Tags") }}<br />
+  {{ _('This dataset satisfies the Open Definition.') }}<br />
+  {{ _('Sorry no datasets found') }}<br />
+  {{ _('My Datasets') }}<br />
+  {{ _("You haven't created any datasets.") }}<br />
+  {{ _("Create datasets, groups and other exciting things") }}<br />
+  {{ _("User hasn't created any datasets.") }}<br />
+  {{ _('Number of datasets') }}<br />
+  {{ _('View dataset resources') }}<br />
+  {{ _("Delete the resource '%name%'?") }}<br />
+  {{ _('Find datasets') }}<br />
+  {{ _('Add a dataset') }}<br />
+  {{ _('Deleted Datasets') }}<br />
+  {{ _('There are no datasets currently in this group.') }}<br />
+  {{ _('New Dataset...') }}<br />
+  {{ _('Existing Dataset...') }}<br />
+  {{ _('Add datasets') }}<br />
+  {{ _('[1:You searched for "%(query)s". ]%(number_of_results)s datasets found.') }}<br />
+  {{ _('Find data') }}<br />
+  {{ _('datasets') }}<br />
+  {{ _('Share data') }}<br />
+  {{ _('Create a dataset »') }}<br />
+  {{ _('datasets.') }}<br />
+  {{ _('Import Datasets') }}<br />
+  {{ _('dataset') }}<br />
+  {{ _('Further dataset previews not shown.') }}<br />
+  {{ _('- Datasets - History') }}<br />
+  {{ _('- Edit - Datasets') }}<br />
+  {{ _('- Edit Resources - Datasets') }}<br />
+  {{ _('- Datasets - Followers') }}<br />
+  {{ _('Dataset History') }}<br />
+  {{ _('Add - Datasets') }}<br />
+  {{ _('Add a Dataset') }}<br />
+  {{ _('A short descriptive title for the dataset') }}<br />
+  {{ _('The URL for the web page describing the data (not the data itself).') }}<br />
+  {{ _('when viewing the dataset.') }}<br />
+  {{ _('Do you really want to change the state of this dataset?') }}<br />
+  {{ _('This dataset is') }}<br />
+  {{ _('- Datasets') }}<br />
+  {{ _('Related Datasets') }}<br />
+  {{ _('This is an old revision of this dataset, as edited') }}<br />
+  {{ _('This is the current revision of this dataset, as edited') }}<br />
+  {{ _('- Dataset - Resource') }}<br />
+  {{ _('From the [1:Dataset]:') }}<br />
+  {{ _('Do you know of a dataset that should be added to') }}<br />
+  {{ _('You can also access this registry using the') }}<br />
+  {{ _('[1:%(item_count)s] datasets found') }}<br />
+  {{ _('Would you like to [1:create a new dataset?]') }}<br />
+  {{ _('Dataset -') }}<br />
+  {{ _('There are %(count)s datasets tagged with [1:%(tagname)s]:') }}<br />
+  {{ _('Add a new dataset') }}<br />
+  {{ _('Or simply browse the repository') }}<br />
+  {{ _('Total number of Datasets') }}<br />
+  {{ _('Total datasets') }}<br />
+  {{ _('Dataset Revisions per Week') }}<br />
+  {{ _('All dataset revisions') }}<br />
+  {{ _('New datasets') }}<br />
+  {{ _('Top Rated Datasets') }}<br />
+  {{ _('Most Edited Datasets') }}<br />
+  {{ _('No edited datasets') }}<br />
+  {{ _('Number of Datasets') }}<br />
+  {{ _('Users Owning Most Datasets') }}<br />
+  {{ _('Total Number of Datasets') }}<br />
+  {{ _('Revisions to Datasets per week') }}<br />
+  {{ _('Users owning most datasets') }}<br />
+  {{ _('Dataset Leaderboard') }}<br />
+
+  {% trans %}
+  This is an old revision of this dataset, as edited at %(timestamp)s. It may
+  differ significantly from the <a href="%(url)s">current revision</a>.
+  {% endtrans %}<br />
+
+  {% trans %}
+   <p class="empty">This dataset has no data, <a href="%(url)s">why not
+  add some?</a>
+  {% endtrans %}<br />
+
+  {% trans %}
+   These are applications built with the datasets as well as ideas for things
+  that could be done with them.
+  {% endtrans %}<br />
+
+  {% trans %}
+  No apps, ideas, news stories or images have been related to this dataset
+  yet.
+  {% endtrans %}<br />
+
+  {% trans %}
+  {number} dataset found for "{query}"
+  {number} datasets found for "{query}"
+  {% endtrans %}<br />
+
+  {% trans %}
+  {number} dataset found
+  {number} datasets found
+  {% endtrans %}<br />
+
+  {% trans %}
+  Whilst tags are great at collecting datasets together, there are occasions
+  when you want to restrict users from editing a collection. A [1:group] can
+  be set-up to specify which users have permission to add or remove datasets
+  from it.
+  {% endtrans %}<br />
+
+  {% trans %}
+  %(site_title)s is a community-run catalogue of useful sets of data on the
+  Internet. You can collect links here to data from around the web for
+  yourself and others to use, or search for data that others have collected.
+  Depending on the type of data (and its conditions of use), %(site_title)s
+  may also be able to store a copy of the data or host it in a database, and
+  provide some basic visualisation tools.
+  {% endtrans %}<br />
+
+  {% trans %}
+  This site is running a powerful piece of open-source data cataloguing
+  software called [1:CKAN], written and maintained by the [2:Open Knowledge
+  Foundation]. Each 'dataset' record on CKAN contains a description of the
+  data and other useful information, such as what formats it is available in,
+  who owns it and whether it is freely available, and what subject areas the
+  data is about. Other users can improve or add to this information (CKAN
+  keeps a fully versioned history).
+  {% endtrans %}<br />
+
+  {% trans %}
+  CKAN powers a number of data catalogues on the Internet. [1:The Data Hub] is
+   an openly editable open data catalogue, in the style of Wikipedia. The UK
+  Government uses CKAN to run [2:data.gov.uk], which currently lists 8,000
+  government datasets. Official public data from most European countries is
+  listed in a CKAN catalogue at [3:publicdata.eu]. There is a comprehensive
+  list of catalogues like these around the world at [4:datacatalogs.org],
+  which is itself powered by CKAN.
+  {% endtrans %}<br />
+
+  {% trans %}
+  Most of the data indexed at %(site_title)s is openly licensed, meaning
+  anyone is free to use or re-use it however they like. Perhaps someone will
+  take that nice dataset of a city's public art that you found, and add it to
+  a tourist map - or even make a neat app for your phone that'll help you find
+   artworks when you visit the city. Open data means more enterprise,
+  collaborative science and transparent government. You can read more about
+  open data in the [1:Open Data Handbook].
+  {% endtrans %}<br />
+
+  {% trans %}
+  Add your own datasets to share them with others and\n
+            to find other people interested in your data.
+  {% endtrans %}<br />
+
+  {% trans %}
+  Here you can supply an Excel file with details of multiple datasets and
+  import these into
+  {% endtrans %}<br />
+
+  {% trans %}
+  Comma-separated terms that may link this dataset to similar ones. For more
+  information on conventions, see [1:this wiki page].
+  {% endtrans %}<br />
+
+  {% trans %}
+  Upload or link data files, APIs and other materials related to your dataset.
+  {% endtrans %}<br />
+
+  {% trans %}
+  The name of the main contact, for enquiries about this particular dataset,
+  using the e-mail address in the following field.
+  {% endtrans %}<br />
+
+  {% trans %}
+  Adding custom fields to the dataset such as "location:uk" can help users
+  find it in the search engine. This data will also appear under
+  {% endtrans %}<br />
+
+  {% trans %}
+  [1:Dataset page] on \n
+              [2:%(harvest_catalogue_name)s]
+  {% endtrans %}<br />
+
+  {% trans %}
+  Choose a dataset attribute and find out which categories in that area have
+  the most datasets. E.g. tags, groups, license, res_format, country.
+  {% endtrans %}<br />
 
 {% endblock %}

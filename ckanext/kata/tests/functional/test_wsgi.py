@@ -73,21 +73,21 @@ class TestResources(KataWsgiTestCase):
     Test that resources are handled properly in WUI.
     """
 
-    def test_data_and_resources_not_rendered(self):
-        """
-        A package with no resources should not render Data and Resources section
-        """
-        offset = url_for(controller='package', action='read', id=u'warandpeace')
-        res = self.app.get(offset)
-        assert '<section id="dataset-resources"' not in res, 'A package with no resources should not render Data and Resources section'
-
-    def test_data_and_resources_rendered(self):
-        """
-        A package with resources should render Data and Resources section
-        """
-        offset = url_for(controller='package', action='read', id=u'annakarenina')
-        res = self.app.get(offset)
-        assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
+    # def test_data_and_resources_not_rendered(self):
+    #     """
+    #     A package with no resources should not render Data and Resources section
+    #     """
+    #     offset = url_for(controller='package', action='read', id=u'warandpeace')
+    #     res = self.app.get(offset)
+    #     assert '<section id="dataset-resources"' not in res, 'A package with no resources should not render Data and Resources section'
+    #
+    # def test_data_and_resources_rendered(self):
+    #     """
+    #     A package with resources should render Data and Resources section
+    #     """
+    #     offset = url_for(controller='package', action='read', id=u'annakarenina')
+    #     res = self.app.get(offset)
+    #     assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
 
     def test_hidden_edit_button(self):
         """
@@ -291,3 +291,39 @@ class TestKataApi(KataWsgiTestCase):
         result = self.app.get(url_for(controller= "ckanext.kata.controllers:KATAApiController", action='funder_autocomplete', incomplete=u'eu'))
         results = json.loads(unicode(result.body))['ResultSet']['Result']
         self.assertTrue({"Name": "EU muu rahoitus - EU other funding"} in results)
+
+class TestMetadataSupplements(KataWsgiTestCase):
+    '''
+    Test metadata supplements.
+    '''
+    def test_01_button(self):
+        '''
+        Test that button renders
+        '''
+        organization = get_action('organization_create')({'user': 'testsysadmin'},
+                                                         {'name': 'unseen-academy',
+                                                         'title': "Unseen Academy"})
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['name'] = 'metadata-supplement-testdataset'
+
+        package = get_action('package_create')({'user': 'testsysadmin'}, data)
+        offset = url_for(controller='package', action='edit', id=u'metadata-supplement-testdataset')
+        extra_environ = {'REMOTE_USER': 'testsysadmin'}
+        res = self.app.get(offset, extra_environ=extra_environ)
+        assert '/dataset/new_resource/' in res
+
+
+    def test_02_formpage(self):
+        '''
+        Test that metadata supplement form renders
+        '''
+        package = get_action('package_show')({'user': 'testsysadmin'},
+                                             {'id': 'metadata-supplement-testdataset'})
+        offset = url_for('/en/dataset/new_resource/{0}'.format(package['name']))
+        extra_environ = {'REMOTE_USER': 'testsysadmin'}
+        res = self.app.get(offset, extra_environ=extra_environ)
+        assert 'resource-upload-field' in res
+
+        get_action('package_delete')({'user': 'testsysadmin'}, package)

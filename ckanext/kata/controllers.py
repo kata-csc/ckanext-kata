@@ -8,6 +8,7 @@ import functionally as fn
 import json
 import logging
 import mimetypes
+import rdflib
 import re
 import string
 import urllib2
@@ -34,12 +35,14 @@ import ckan.model as model
 from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
 import ckan.plugins as plugins
+from ckan.common import response
 
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
 import ckanext.kata.settings as settings
 from ckanext.kata import utils
+import ckanext.kata.helpers as kata_helpers
 import os
 import difflib
 
@@ -222,6 +225,40 @@ class KATAApiController(ApiController):
 
         return self._onki_autocomplete(query, "paikat")
 
+    def _query_finto(self, query, vocab, language=None):
+        '''
+        Queries Finto ontologies by returning the whole result set, which can
+        be parsed according to the needs (see _onki_autocomplete_uri)
+
+        :param query: the string to search for
+        :type query: string
+        :param vocab: the vocabulary/ontology, i.e. lexvo
+        :type vocab: string
+        :param language: the language of the query
+        :type query: string
+
+        :rtype: dictionary
+        '''
+
+        url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
+
+        if language:
+            url_template += "&lang={l}"
+
+        jsondata = {}
+
+        if query:
+            try:
+                url = url_template.format(q=query, v=vocab, l=language)
+            except UnicodeEncodeError:
+                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
+
+            data = urllib2.urlopen(url).read()
+            jsondata = json.loads(data)
+
+        return jsondata
+
+
     def _onki_autocomplete(self, query, vocab, language=None):
         '''
         Queries the remote ontology for suggestions and
@@ -236,22 +273,12 @@ class KATAApiController(ApiController):
 
         :rtype: dictionary
         '''
-        url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
-
-        if language:
-            url_template += "&lang={l}"
-
+        jsondata = self._query_finto(query, vocab, language)
         labels = []
-        if query:
-            try:
-                url = url_template.format(q=query, v=vocab, l=language)
-            except UnicodeEncodeError:
-                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
-            data = urllib2.urlopen(url).read()
-            jsondata = json.loads(data)
-            if u'results' in jsondata:
-                results = jsondata['results']
-                labels = [concept.get('prefLabel', '').encode('utf-8') for concept in results]
+
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [concept.get('prefLabel', '').encode('utf-8') for concept in results]
 
         result_set = {
             'ResultSet': {
@@ -277,22 +304,12 @@ class KATAApiController(ApiController):
         :rtype: dictionary
         '''
 
-        url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
-
-        if language:
-            url_template += "&lang={l}"
-
+        jsondata = self._query_finto(query, vocab, language)
         labels = []
-        if query:
-            try:
-                url = url_template.format(q=query, v=vocab, l=language)
-            except UnicodeEncodeError:
-                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
-            data = urllib2.urlopen(url).read()
-            jsondata = json.loads(data)
-            if u'results' in jsondata:
-                results = jsondata['results']
-                labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
+
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
 
@@ -311,6 +328,27 @@ class KATAApiController(ApiController):
             data_dict = {'q': q, 'limit': limit}
             organization_list = get_action('organization_autocomplete')(context, data_dict)
         return self._finish_ok(organization_list)
+
+    def language_autocomplete(self):
+        '''
+        Suggestions for languages.
+
+        :rtype: dictionary
+        '''
+
+        language = request.params.get('language', '')
+        query = request.params.get('incomplete', '')
+
+        jsondata = self._query_finto(query, "lexvo", language)
+        labels = []
+
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['localname'].encode('utf-8')) for concept in results]
+
+        result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
+
+        return self._finish_ok(result_set)
 
 
 class EditAccessRequestController(BaseController):
@@ -359,7 +397,7 @@ class EditAccessRequestController(BaseController):
             if not self._have_pending_requests(pkg_id, user.id):
                 req = KataAccessRequest(user.id, pkg.id)
                 req.save()
-                h.flash_success(_("A request for editing privileges will be sent to the administrator of package %s") % pkg_title)
+                h.flash_success(_("A request for editing privileges will be sent to the administrator of package %s") % kata_helpers.get_translation(pkg_title))
                 redirect(url)
             else:
                 h.flash_error(_("A request is already pending"))
@@ -917,6 +955,14 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         by Genshi.
         '''
         return re.sub(r'(<[^<>]*)( lang=\".{2,3}")([^<>]*>)', r'\1\3', self.read(id, format))
+
+    def read_ttl(self, id, format):
+        '''
+        Render dataset in RDF using turtle format.
+        '''
+        g = rdflib.Graph().parse(data=self.read_rdf(id, 'rdf'))
+        response.headers['Content-Type'] = 'text/turtle'
+        return g.serialize(format='turtle')
 
 
 class KataInfoController(BaseController):

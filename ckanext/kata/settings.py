@@ -60,7 +60,7 @@ AGENT_ROLES = {
 }
 
 # Ordered list of facets used in dataset page.
-FACETS = ['tags', 'extras_discipline', 'authorstring', 'organizationstring', 'license_id', 'mimetypestring', 'extras_language']
+FACETS = ['tags', 'extras_discipline', 'organizationstring', 'authorstring', 'license_id', 'mimetypestring', 'extras_language']
 
 # Default sorting method. Pre-selects the corresponding option on search form.
 DEFAULT_SORT_BY = u'metadata_modified desc'
@@ -148,7 +148,8 @@ KATA_FIELDS_REQUIRED = ['agent',
                         'availability',
                         'contact',
                         # 'author',
-                        'langtitle',
+                        #'langtitle',   # this is not required since the translation should be in title
+                        # 'title',
                         # 'contact_phone',
                         # 'contact_URL',
                         # 'organization',
@@ -162,13 +163,13 @@ KATA_FIELDS_REQUIRED = ['agent',
 KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            'access_application_URL',
                            'access_request_URL',
-                           'through_provider_URL',
                            #'algorithm',
                            #'direct_download_URL',
                            'discipline',
                            'event',
                            'geographic_coverage',
                            'langdis',
+                           'langnotes',
                            'language',
                            'license_URL',
                            #'mimetype',
@@ -178,7 +179,8 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            # 'project_name',
                            'pids',
                            'temporal_coverage_begin',
-                           'temporal_coverage_end']
+                           'temporal_coverage_end',
+                           'through_provider_URL']
 
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
 
@@ -195,6 +197,8 @@ ERRORS = {
     u'Yhteydenotto': N_(u'Distributor'),
     u'Organisaatio': N_(u'Owner organization'),
     u'Accept-terms': N_(u'Terms of use'),
+    u'Langnotes': u'Description + language',
+    u'License URL': u'Copyright notice',
 }
 
 TRANSLATION_DUMMIES = [  # Dynamically created strings that should be translated

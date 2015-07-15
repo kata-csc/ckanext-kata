@@ -14,21 +14,26 @@ Example:
 
 #}
 
-{% set truncate = truncate or 180 %}
+{% set truncate = truncate or 360 %}
 {% set truncate_title = truncate_title or 80 %}
-{% set title = package.title or package.name %}
-{% set notes = h.markdown_extract(package.notes, extract_length=truncate) %}
+{% set title = h.get_translation_from_extras(package) or package.name %}
+{% set notes = h.markdown_extract(h.get_description(package), extract_length=truncate) %}
 
-<li class="{{ item_class or "dataset-item" }}">
+<li class="{{ item_class or "dataset-item" }} {% if numbered %}numbered{% endif %}">
+  {% if numbered %}
+  {% set order = h.get_dataset_paged_order(index, g.datasets_per_page) %}
+  <div class="dataset-order-number">{{order}}.</div>
+  {% endif %}
   {% block package_item_content %}
   <div class="dataset-content">
     {% set (rating, stars)=h.get_package_ratings_for_data_dict(package) %}
-    {% if not small %}
+    {% if not small and not numbered %}
     <span class="rating-text" title="{{ _("Metadata completeness score") }}">{{ _('Metadata: {rating}/5').format(rating=rating) }}</span>
     {% endif %}
 
     <h3 class="dataset-heading">
       {{ h.link_to(h.truncate(title, truncate_title), h.url_for(controller='package', action='read', id=package.name)) }}
+
       {% if package.get(state, '').startswith('draft') %}
         <span class="label label-info">{{ _('Draft') }}</span>
       {% elif package.get(state, '').startswith('deleted') %}
@@ -53,6 +58,11 @@ Example:
       </p>
     {% endif %}
 
+    {% if numbered %}
+      {% snippet 'snippets/tag_list.html', tags=package.tags, _class='tag-list', truncated=True %}
+    {% endif %}
+
+    {#
     {% if package.resources and not hide_resources %}
       <ul class="dataset-resources unstyled">
         {% for resource in h.dict_list_reduce(package.resources, 'format') %}
@@ -62,6 +72,7 @@ Example:
         {% endfor %}
       </ul>
     {% endif %}
+    #}
 
   {% endblock %}
 </li>

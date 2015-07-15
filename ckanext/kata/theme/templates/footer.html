@@ -1,7 +1,9 @@
 <footer class="site-footer">
-  <div class="container">
+  <div class="etsin-container">
+    <div class="container">
+      <div class="row-fluid">
     {% block footer_content %}
-      
+
       <div class="footer-first">
         {% block footer_left %}
           &nbsp;
@@ -25,16 +27,18 @@
           -->
         <div class="img-container">
           <a href="{{ _('http://okm.fi/OPM/?lang=en') }}" target="_blank">
-              <img src="{{ _('../../base/images/about_logo_okm_en.png') }}" title="{{ _('Ministry of Education and Culture of Finland') }}"></a>
+              <img src="{{ _('/base/images/about_logo_okm_en.png') }}" title="{{ _('Ministry of Education and Culture of Finland') }}"></a>
           <a href="{{ _('http://openscience.fi/') }}" target="_blank">
-              <img src="{{ _('../../base/images/about_logo_att_pysty_en.png') }}" title="{{ _('Open Science and Research Initiative') }}"></a>
+              <img src="{{ _('/base/images/about_logo_att_pysty_en.png') }}" title="{{ _('Open Science and Research Initiative') }}"></a>
           <a href="{{ _('https://www.csc.fi/en') }}" target="_blank">
               <img src="/base/images/csc-logo-transp80.png" title="{{ _('CSC - IT Center for Science') }}"></a>
           </div>
         {% endblock %}
       </div>
-      
+
     {% endblock %}
+      </div>
+    </div>
   </div>
 
   {% block footer_debug %}
@@ -43,4 +47,3 @@
     {% endif %}
   {% endblock %}
 </footer>
-

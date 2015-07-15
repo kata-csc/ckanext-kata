@@ -310,18 +310,28 @@ def validate_title(key, data, errors, context):
             raise Invalid(_('First title can not be empty'))
 
 
-def validate_title_duplicates(key, data, errors, context):
+def validate_multilang_field(fieldkey, key, data, errors, context):
     '''
-    Checks that there is only one title per language
+    Checks that there is only one multilanguage field per language
+
+    :param fieldkey: 'langtitle' or 'langnotes' currently
     '''
     langs = []
     for k in data.keys():
-        if k[0] == 'langtitle' and k[2] == 'lang' and \
-                ('langtitle', k[1], 'value',) in data and \
-                len(data.get(('langtitle', k[1], 'value',))) > 0:
-                langs.append(data[k])
+        if len(k) > 2 and k[0] == fieldkey and k[2] == 'lang' and \
+                (fieldkey, k[1], 'value',) in data and \
+                len(data.get((fieldkey, k[1], 'value',))) > 0:
+            langs.append(data[k])
     if len(set(langs)) != len(langs):
-        raise Invalid(_('Duplicate titles for a language not permitted'))
+        raise Invalid(_('Duplicate fields for a language not permitted'))
+
+
+def validate_title_duplicates(key, data, errors, context):
+    return validate_multilang_field('langtitle', key, data, errors, context)
+
+
+def validate_notes_duplicates(key, data, errors, context):
+    return validate_multilang_field('langnotes', key, data, errors, context)
 
 
 def package_name_not_changed(key, data, errors, context):
@@ -381,9 +391,7 @@ def check_langtitle(key, data, errors, context):
     '''
     Check that langtitle field exists
     '''
-    # import pprint
-    # pprint.pprint(data)
-    if data.get(('langtitle', 0, 'value'), None) is None:
+    if not (data.get(('langtitle', 0, 'value')) or data.get(('title',))):
         raise Invalid({'key': 'langtitle', 'value': _('Missing dataset title')})
 
 
@@ -488,11 +496,12 @@ def kata_owner_org_validator(key, data, errors, context):
 
     if value is missing or not value:
         if not new_authz.check_config_permission('create_unowned_dataset'):
-            err = u'An organization must be supplied.'
-            err += u' If you do not find a suitable organization, please choose the default organization "'
-            err += u'Ei linkitetä organisaatioon - do not link to an organization'
-            err += u'" provided by the service.'
-            raise Invalid(_(err))
+            err = _(
+            u"An organization must be supplied. If you do not find a suitable organization, please choose the default organization "
+            u"'Ei linkitetä organisaatioon - do not link to an organization' or create a new one."
+            )
+
+            raise Invalid(err)
         data.pop(key, None)
         raise df.StopOnError
 
@@ -541,3 +550,37 @@ def usage_terms_accepted(value, context):
     '''
     if not asbool(value):
         raise Invalid(_('Terms of use must be accepted'))
+
+
+def validate_license_url(key, data, errors, context):
+    '''
+    Check that more information about the license is provided, if license is not specific.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context:
+    :return: nothing. Raise invalid if length is less than 2 and lisense is not specific.
+    '''
+
+    value = data.get(key)
+    if data.get(('license_id',)) in ['notspecified', 'other-closed', 'other-nc', 'other-at', 'other-pd', 'other-open']:
+        if not value or len(value) < 2:
+            raise Invalid(_('Copyright notice is needed if license is not specified or '
+                            'is a variant of license type other.'))
+
+
+def continue_if_missing(key, data, errors, context):
+    '''
+    Like ignore_missing but don't stop, instead run the other validators.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    value = data.get(key)
+
+    if value is missing or value is None:
+        data.pop(key, None)

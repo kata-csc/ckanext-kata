@@ -8,11 +8,12 @@
   margin-bottom: 0px;
   font-size: 90%;
   filter: 0 !important;
+  border-bottom: 1px solid @border-color-bg;
 
   a {
-    color: #0c8bbe !important;
+    color: @link-color !important;
     &:hover, &:focus {
-      color: #09688e !important;
+      color: @link-secondary-color !important;
     }
   }
 
@@ -23,13 +24,19 @@
   h1 {
     font-size: 14px;
   }
+
+  .etsin-container {
+    .container {
+      max-width: 1200px;
+    }
+  }
 }
 
 .footer-data {
   display: block;
 
   a {
-    color: #0c8bbe;
+    color: @link-color;
   }
 }
 
@@ -68,5 +75,16 @@
     /*text-align: center;*/
     margin: 24px auto;
     max-height: 80px;
+  }
+}
+
+@media (max-width: 900px) {
+  .footer-second, .footer-third {
+    float: none;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 50px;
+    padding-right: 50px;
   }
 }

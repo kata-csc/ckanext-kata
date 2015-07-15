@@ -4,6 +4,7 @@ Functional tests for Kata that use CKAN API.
 """
 
 import copy
+from rdflib import Graph, RDF, URIRef
 import testfixtures
 
 from ckan.lib.helpers import url_for
@@ -85,7 +86,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data = copy.deepcopy(self.TEST_DATADICT)
 
         # Make sure we will get a validation error
-        data.pop('langtitle')
+        data.pop('langtitle', None)
         data.pop('language')
         data.pop('availability')
 
@@ -184,6 +185,36 @@ class TestCreateDatasetAndResources(KataApiTestCase):
 
         self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
 
+    def test_create_dataset_minimal(self):
+        '''
+        Create minimal dataset. Tests especially API usage, a case where a user drops the non-required fields
+        altogether.
+        '''
+        data = copy.copy(self.TEST_DATADICT)
+        data_dict = dict()
+        for key in data:
+            if key in settings.KATA_FIELDS_REQUIRED:
+                data_dict[key] = data.get(key)
+
+        data_dict['owner_org'] = u'New Horizons'
+        data_dict['accept-terms'] = u'True'
+        data_dict['title'] = u'{"fin": "Pluton ohitus 14.7.2015", "eng": "Passing Pluto 14.7.2015"}'
+        data_dict['version'] = u'2015-07-14T14:50:00+03:00'
+        data_dict['availability'] = u'direct_download'
+        data_dict['direct_download_URL'] = u'https://www.nasa.gov/mission_pages/newhorizons/main/index.html'
+        data_dict['tag_string'] = u'Space probe,New Horizons,Pluto,Charon,Space exploration,Solar system'
+        data_dict['license_id'] = u'cc-by'
+        data_dict['private'] = u'False'
+
+        output = self.api_user_anna.call_action('package_create', data_dict=data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
+        data_dict['private'] = u'True'
+        output = self.api_user_anna.call_action('package_create', data_dict=data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
 
 
 class TestUpdateDataset(KataApiTestCase):
@@ -195,13 +226,15 @@ class TestUpdateDataset(KataApiTestCase):
         self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        data_dict['notes'] = "A new description"
+        data_dict['langnotes'] = [
+            {'lang': 'eng', 'value': 'A new description'}
+        ]
 
         output = self.api_user_normal.call_action('package_update', data_dict=data_dict)
 
         self.api_user_normal.call_action('package_show', data_dict=dict(id=output['id']))
 
-        assert output['notes'] == "A new description"
+        assert output['notes'] == '{"eng": "A new description"}'
 
     def test_update_by_data_pid_fail(self):
         '''Try to update a dataset with wrong PIDs'''
@@ -262,8 +295,7 @@ class TestSearchDataset(KataApiTestCase):
         self.api_user_normal.call_action('package_update', data_dict=data)
 
     def test_search_dataset_agent_id(self):
-        output = self.api.call_action('package_search',
-                                                           data_dict={'q': 'agent:lhywrt8y08536tq3yq'})
+        output = self.api.call_action('package_search', data_dict={'q': 'agent:lhywrt8y08536tq3yq'})
         print(output)
         assert output['count'] == 1
 
@@ -305,9 +337,15 @@ class TestDataReading(KataApiTestCase):
 
         data_dict = copy.deepcopy(original)
 
-        # name (data pid) and title are generated so they shouldn't match
+        # name (data pid), title and notes are generated so they shouldn't match
         data_dict.pop('name', None)
         data_dict.pop('title', None)
+        data_dict.pop('notes', None)
+
+        # lang* fields are converted to translation JSON strings and
+        # after that they are not needed anymore
+        data_dict.pop('langtitle', None)
+        data_dict.pop('langnotes', None)
 
         # Terms of usage acceptance is checked but not saved
         data_dict.pop('accept-terms', None)
@@ -377,17 +415,30 @@ class TestDataReading(KataApiTestCase):
         data = copy.deepcopy(self.TEST_DATADICT)
         data['private'] = True
         data_dict = {
-                     'id': u'',
-                     'name': u'',
-                     'owner_org': u'',
-                     'private': u'True',
-                     'langtitle': [{}],
-                     }
+            'owner_org': u'',
+            'private': u'True',
+            'langtitle': [{}],
+            'title': [{}]
+        }
+
+        self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
+
+        data_dict['owner_org'] = data['owner_org']
 
         self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
 
         data_dict['langtitle'] = [{'lang': u'fin', 'value': u'Test Data'}]
-        data_dict['owner_org'] = data['owner_org']
+        output = self.api_user_joe.action.package_create(**data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+        data_dict['langtitle'] = [{}]
+        data_dict['title'] = u'{"fin": "Test Data", "abk": "Title 2", "swe": "Title 3", "tlh": \
+                  "\\u143c\\u1450\\u1464\\u1478\\u148c\\u14a0\\u14b4\\u14c8\\u14dc\\u14f0\\u1504\\u1518\\u152c"}'
+
+        output = self.api_user_joe.action.package_create(**data_dict)
+        if '__type' in output:
+            assert output['__type'] != 'Validation Error'
+
         output = self.api_user_joe.action.package_create(**data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -395,7 +446,7 @@ class TestDataReading(KataApiTestCase):
         data['agent'] = [{'role': u'author',
                           'name': u'T. Tekijä',
                           'organisation': u'O-Org'
-                        }]
+                          }]
         data['accept-terms'] = u'False'
         data.pop('availability')
         data['direct_download_URL'] = u'http://'
@@ -567,11 +618,17 @@ class TestDataReading(KataApiTestCase):
         res = self.app.get(offset)
         assert res.status == 200, 'Wrong HTTP status code: {0}'.format(res.status)
 
-        # TODO: Check some fields in result rdf, like agent and pids
+        g = Graph()
+        g.parse(data=res.body)
 
-        # print res
-        # for agent in self.TEST_DATADICT['agent']:
-        #     assert agent.get('name') in res.body
+        assert len(list(g.subjects(RDF.type, URIRef("http://www.w3.org/ns/dcat#CatalogRecord")))) == 1
+        assert len(list(g.subjects(RDF.type, URIRef("http://www.w3.org/ns/dcat#Dataset")))) == 1
+        assert len(list(g.subject_objects(URIRef("http://purl.org/dc/terms/contributor")))) == 2
+
+        # Test also turtle format
+        offset = url_for("/dataset/{0}.ttl".format(output['id']))
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code: {0}'.format(res.status)
 
 
 class TestSchema(KataApiTestCase):
@@ -683,18 +740,18 @@ class TestOrganizationAdmin(KataApiTestCase):
 
         # admin can add an editor
         self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
-                                                                 username=self.user_joe.name,
-                                                                 role='editor')
+                                                               username=self.user_joe.name,
+                                                               role='editor')
 
         # admin can change editor to member
         self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
-                                                                 username=self.user_joe.name,
-                                                                 role='member')
+                                                               username=self.user_joe.name,
+                                                               role='member')
 
         # admin can change member to editor
         self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
-                                                                 username=self.user_joe.name,
-                                                                 role='editor')
+                                                               username=self.user_joe.name,
+                                                               role='editor')
 
         # admin can not add admin
         self.assertRaises(NotAuthorized, self.api_user_normal.action.organization_member_create,
@@ -850,14 +907,13 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
         '''Create dataset with a new organization.'''
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
-        data_dict['title'] = 'A new dataset to create'
+        data_dict['title'] = u'{"fin": "A new dataset to create"}'
         data_dict['owner_org'] = 'A New Org for create'
         pkg_dict = self.api_user_joe.action.package_create(**data_dict)
 
         neworg = model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first()
 
         assert neworg.title == data_dict['owner_org'], "%s != %s" % (neworg.title, data_dict['owner_org'])
-
 
     def test_update_owner_org_existing(self):
         '''Change owner organization to some existing organization.'''

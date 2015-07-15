@@ -1,33 +1,64 @@
+@logo-width: 63.5px;
+@logo-height: 43.5px;
+
 header.masthead {
-  background-color: #FFF !important;
-  background-image: none !important;
-  margin-bottom: 10px;
-  height: 161px;
-  width: 972px;
-  margin: auto;
+  font-family: @base-font;
+  background: @body-background-color;
+  margin-bottom: 45px;
 
-  a.logo img {
-    height: 87px !important;
-    position: absolute;
-    padding-top: 10px;
+  .button-wrapper {
+    .btn-primary {
+      background-color: @brand-primary-color !important;
+      background-image: none !important;
+      border-color: @brand-primary-color !important;
+      box-shadow: none;
+      text-shadow: none;
+      font-size: 13px;
+      &:hover {
+        box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.2);
+      }
+    }
   }
 
-  .content {
-    margin-top: 30px !important;
-    top: 8px;
+  .branding {
+    margin-left: 23px; /* align logo with first navi item left side */
+    margin-top: 10px;
+    height: @logo-height;
+    .logo {
+      display: inline-block;
+      width: @logo-width;
+      height: @logo-height;
+      img {
+        width: @logo-width;
+        height: @logo-height;
+      }
+    }
+    .branding-description {
+      display: inline-block;
+      vertical-align: bottom;
+      color: @brand-primary-color;
+    }
   }
 
+  @media(max-width: 1000px) {
+    .branding {
+      margin-left: 2px;
+    }
+  }
+
+  // TODO migrate container specifications to common.less for full layout changes
   .container {
-    height: 100px;
-    background-image: none !important;
-    background-size: 100% !important;
-    width: 971px;
-    padding-top: 0px;
+    width: @content-max-width;
+  }
+
+  @media (max-width: @content-max-width) {
+    .container {
+      width: auto;
+    }
   }
 
   .content a,
-  .account a,
-  .user-dropdown-menu a {
+  .account a {
   /* Overwrite profile drop down menu color in main.css */
     color: #FFF;
     font-size: 85%;
@@ -66,15 +97,30 @@ header.masthead {
     }
   }
 
-  .dropup, .dropdown {
-    display: inline-block;
-    float: right;
+  .user-dropdown-menu {
+    margin-top: 5px;
+    a {
+      color: #000 !important;
+      &:hover {
+        color: #fff !important;
+      }
+    }
   }
 
-  .user-dropdown-menu a {
-    color: #000 !important;
-    &:hover {
-      color: #fff !important;
+  
+  .dropdown {
+    .dropdown-toggle {
+      .icon-chevron-down {
+        margin-left: 3px;
+      }
+      &:hover {
+        color: @brand-primary-color;
+      }
+    }
+    &.open {
+      .icon-chevron-down {
+        color: @brand-primary-color;
+      }
     }
   }
 
@@ -98,9 +144,275 @@ header.masthead {
   }
 }
 
-#kata_navigation > li:last-child {
-  float:right !important;
+#help_navi {
+  margin-bottom: 5px;
+  float: right;
+  margin-right: 17px;
   a {
+    display: inline-block;
+    margin-left: 18px;
+    color: @link-color;
+    &:focus, &:active, &:hover {
+      text-decoration: none;
+    }
+    .linktext {
+      &:focus, &:active, &:hover {
+        text-decoration: underline;
+      }
+    }
+    .icon-large {
+      margin-right: 8px;
+    }
+  }
+}
+
+
+@navi-text-color: @text-color-light;
+@navi-line-color: #d9d9d9;
+@navi-height: 32px;
+@navi-border-width: 4px;
+
+.navigation-wrapper {
+  margin-left: -20px;
+  margin-right: -20px;
+  //margin-top: 20px;
+  border-bottom: @navi-border-width solid @navi-line-color;
+}
+
+.etsin-navigation {
+  display: inline-block;
+  list-style: none;
+  font-size: 0;
+  & > li {
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-block;
+    & > a {
+      color: @navi-text-color;
+      background: transparent;
+      padding: 6px 15px;
+      &:hover {
+        color: @brand-primary-color;
+        background: transparent;
+      }
+      &:focus, &:active, &:hover {
+        text-decoration: none !important;
+      }
+    }
+  }
+}
+
+@transition-length: 0.3s;
+
+.primary-navigation {
+  position: relative;
+  bottom: -@navi-border-width;
+  margin: 20px 0 0 0;
+  padding: 0 10px;
+  //height: @navi-height;
+  /*width: 100%;
+  float: left;
+  margin: 0 0 20px 0;
+  background-color: #5a5a5c;
+  border: none*/
+  border-bottom: @navi-border-width solid @navi-line-color;
+  & > li {
+    //height: @navi-height;
+    position: relative;
+    bottom: -@navi-border-width;
+    & > a {
+      display: inline-block;
+      height: @navi-height - 6px - 6px;
+      text-transform: uppercase;
+      border-bottom: @navi-border-width solid @navi-line-color;
+      transition: border-bottom-color @transition-length, color @transition-length;
+      &:hover, &:active {
+        //border-bottom-color: @brand-primary-color;
+        color: @brand-primary-color;
+        background: transparent;
+      }
+    }
+    &.active > a {
+      border-bottom-color: @brand-primary-color;
+      color: @brand-primary-color;
+    }
+  }
+}
+
+.secondary-navigation {
+  margin: 0;
+  padding: 0;
+  float: right;
+  position: relative;
+  top: 23px;
+  & > li {
+    font-size: 13px;
+    //float: right;
+  }
+  //position: relative;
+  //right: 0;
+  & > a {
     text-transform: none !important;
+  }
+}
+
+.logged-in-actions {
+  color: @navi-text-color;
+  a {
+    color: @navi-text-color;
+  }
+  a[data-toggle] {
+    &:hover, &:active, &:focus {
+      text-decoration: none;
+    }
+  }
+}
+
+.small-display-menu-navi {
+  display: none;
+  .hamburger {
+    z-index: 100;
+    position: absolute;
+    right: 0px;
+    top: -6px;
+    cursor: pointer;
+    display: block;
+    height: 42px;
+    width: 42px;
+    color: white;
+    font-size: 56px;
+    text-align: center;
+    background: @brand-primary-color;
+    .icon-align-justify {
+      font-size: 22px;
+      width: 22px;
+    }
+    &:hover, &:active, &:focus {
+      outline: 0;
+      text-decoration: none;
+      color: white !important;
+    }
+  }
+  #main-navi-small {
+    text-transform: uppercase;
+    font-weight: 700;
+    li > a {
+      display: block;
+      margin-bottom: 7px;
+      color: @navi-text-color;
+      &:hover, &:active, &:focus {
+        outline: 0;
+        text-decoration: none;
+        color: @brand-primary-color;
+      }
+    }
+    .active > a {
+      color: @brand-primary-color;
+    }
+  }
+}
+
+.small-display-menu-user {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  .dropdown.open {
+    .icon-chevron-down {
+      color: white !important;
+    }
+  }
+  .usericon {
+    z-index: 100;
+    cursor: pointer;
+    display: block;
+    height: 42px;
+    width: 42px;
+    color: white;
+    font-size: 46px;
+    text-align: center;
+    background: @brand-primary-color;
+    .icon-user, .icon-chevron-down {
+      margin: 0;
+    }
+    &:hover, &:active, &:focus {
+      outline: 0;
+      text-decoration: none;
+      color: white !important;
+    }
+  }
+  .dropdown {
+    .dropdown-menu {
+      margin-top: 0;
+    }
+    .username {
+      color: @navi-text-color;
+      padding: 3px 20px;
+      clear: both;
+      line-height: 20px;
+      white-space: nowrap;
+    }
+  }
+}
+
+.small-display-language-selector {
+  .language-selector-box {
+    border: 1px solid @border-color-bg;
+    border-radius: 3px;
+    font-weight: 700;
+    a {
+      color: @link-color;
+    }
+    .lang-code {
+      padding: 3px;
+    }
+  }
+  position: absolute;
+  top: 11px;
+  right: 56px;
+  display: none;
+  color: @navi-text-color;
+}
+
+.small-display-menu-navi {
+  display: none;
+}
+
+@small-menu-cutoff: 900px;
+@small-menu-cutoff-main-navi: 600px;
+
+/* smaller screen size: user menu + other secondaries to upper corner */
+@media (max-width: @small-menu-cutoff) {
+  .small-display-language-selector {
+    display: block;
+  }
+  .small-display-menu-user {
+    display: block;
+  }
+  .secondary-navigation {
+    float: none;
+    position: absolute;
+    top: -46px;
+    right: 120px;
+    .secnav {
+      display: none;
+    }
+  }
+}
+
+/* the smallest screen size: main navigation becomes a burger */
+@media (max-width: @small-menu-cutoff-main-navi) {
+  .primary-navigation {
+    display: none;
+  }
+  .secondary-navigation {
+    display: none;
+  }
+  .small-display-menu-navi {
+    margin-top: 36px;
+    display: block;
+  }
+  .branding-description {
+    display: none !important;
   }
 }

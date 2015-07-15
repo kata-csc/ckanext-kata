@@ -145,28 +145,7 @@ input[id="xmlfile"] {
 .ui-timepicker-rtl{ direction: rtl; }
 .ui-timepicker-rtl dl { text-align: right; }
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
-/* overwriting min.main*/
-html, body {
-    min-width: 970px;
-}
-a {
-    color: #0c8bbe;
-    text-decoration: none;
-}
-a:hover, a:focus {
-    color: #09688e;
-    text-decoration: underline;
-}
-a.download {
-    color: #f1592a;
-    font-weight: bold;
-    font-size: 14px;
-}
-body {
-    background-color: #FFF !important;
-    background: none !important;
-    font-family: Arial, Tahoma, sans-serif;
-}
+
 .error-block-kata {
     background: none repeat scroll 0 0 #C6898B;
     border-radius: 0 0 0px 0px;
@@ -176,4 +155,58 @@ body {
     padding: 6px 8px 6px;
     width: 100%;
     border-radius: 6px;
+}
+
+#temporal_coverage {
+  padding-top: 15px;
+  .controls-row:not(:first-of-type) {
+    margin-top: 15px;
+  }
+  .control-label:not(:first-of-type) {
+    padding-top: 20px;
+  }
+}
+
+
+@form-label-width: 30%;
+@form-help-spacer-width: 5%;
+
+.form-tab-content {
+ padding: 20px;
+
+ .form-row {
+    margin-bottom: 40px;
+    .form-label {
+      float: left;
+      font-weight: 700;
+      width: @form-label-width;
+    }
+    .form-content {
+      min-height: 16px;
+      position: relative;
+      margin-left: @form-label-width;
+      width: 100% - @form-label-width - @form-help-spacer-width;
+      padding-right: @form-help-spacer-width;
+    }
+    .kata-tooltip {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  /* stack form label and content on small display */
+  @media (max-width: 700px) {
+    .form-row {
+      .form-label {
+        float: none;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .form-content {
+        width: 91%;
+        margin-left: 7%;
+      }
+    }
+  }
 }

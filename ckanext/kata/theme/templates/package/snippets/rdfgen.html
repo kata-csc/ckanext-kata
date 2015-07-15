@@ -4,11 +4,10 @@ Renders a RDF link.
 pkg_name - A package name to render.
 #}
 
-<section class="module module-narrow">
-  <h2 class="module-heading"><i class="icon-medium icon-file"></i> {{ _('Metadata export') }}</h2>
-  <ul class="nav nav-simple">
-     <li class="nav-item">
-       <a href={{h.url_for(controller='package', action='read', id=pkg_name, format='rdf')}}>RDF</a>
-     </li>
-  </ul>
-</section>
+<div class="module module-narrow">
+  <h2 class="module-heading"><i class="icon-medium icon-file"></i> {{ _('Download metadata') }}</h2>
+  <section class="module-shallow module-content context-info">
+    <h1 class="heading"></h1>
+    <a class="label" href={{h.url_for(controller='package', action='read', id=pkg_name, format='rdf')}}> <i class="icon-download"></i> RDF </a>
+  </section>
+</div>

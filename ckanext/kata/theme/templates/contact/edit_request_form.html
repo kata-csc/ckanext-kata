@@ -1,7 +1,7 @@
 {% extends "page.html" %}
 {% block breadcrumb_content %}
   <li>{% link_for _('Datasets'), controller='package', action='search', highlight_actions = 'new index' %}</li>
-  <li>{% link_for h.dataset_display_name(c.package)|truncate(15), controller='package', action='read', id=c.pkg_id %}</li>
+  <li>{% link_for h.get_translation(h.dataset_display_name(c.package))|truncate(15), controller='package', action='read', id=c.pkg_id %}</li>
   <li class="active"><a href="">{{ _('Request edit rights') }}</a></li>
 {% endblock %}
 {% block primary_content %}

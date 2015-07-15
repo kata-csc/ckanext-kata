@@ -58,7 +58,7 @@
             {{ _('through data provider') }}
           </label>
             <div id="urlDiv_through_provider">
-              {{ form.input('through_provider_URL', label=_('Data provider\'s web address'), id="through_provider_URL", placeholder=_('http://mydata.com'), value=data.through_provider_URL, error=errors.through_provider_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+              {{ form.input('through_provider_URL', label=_("Data provider's web address"), id="through_provider_URL", placeholder=_('http://mydata.com'), value=data.through_provider_URL, error=errors.through_provider_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
             </div>
         {% endif%}
         {% if errors.availability %}
@@ -83,9 +83,10 @@
           <a target="_blank" href="{{ _('http://creativecommons.org/choose/?lang=en') }}">{{ _('Information about licenses') }}</a>
         </span>
       </div>
-      {% if data.license_URL %}
-        {{ form.input('license_URL', id='license_URL', label=_('License URL'), placeholder=_('eg. http://www.gnu.org/licenses/gpl.html or freeform'), value=data.license_URL, error=errors.license_URL, classes=['control-medium']) }}
-      {% endif %}
+      <div class="control-group control-custom">
+        {{ form.textarea('license_URL', id='license_URL', label=_('Copyright notice'), placeholder=_('e.g. additional information about the license'), value=data.license_URL, error=errors.license_URL, classes=['control-full']) }}
+        {{ kata_form.tooltip(tooltip=_("Provide detailed information about copyright notice, use constraints, referencing etc. Note that the field is required if license is set to License Not Specified or any variant of Other.")) }}
+      </div>
     </div>
   </div>
 </section>
