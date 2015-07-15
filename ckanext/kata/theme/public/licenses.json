@@ -423,8 +423,8 @@
     "is_osi_compliant": false,
     "is_okd_compliant": false,
     "status": "active",
-    "title": "CLARIN ACA+NC (Academic, Non-Commercial) End-User License1.0",
-    "url": "https://kitwiki.csc.fi/twiki/bin/view/FinCLARIN/ClarinEulaFinACANc"
+    "title": "CLARIN ACA+NC (Academic, Non-Commercial) End-User License 1.0",
+    "url": "https://kitwiki.csc.fi/twiki/bin/view/FinCLARIN/ClarinEulaAcaNCDep"
   },
   {
     "domain_content": true,

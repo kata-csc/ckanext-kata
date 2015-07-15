@@ -608,7 +608,7 @@ class TestLicenseConverters(TestCase):
         cls.test_data16 = {cls.key: "CC-ZERO"}
         cls.test_data17 = {cls.key: "CC0"}
         cls.test_data18 = {cls.key: "CC-BY-3.0"}
-        cls.test_data19= {cls.key: "https://creativecommons.org/licenses/by/4.0/"}
+        cls.test_data19 = {cls.key: "https://creativecommons.org/licenses/by/4.0/"}
 
     def test_license_conversion(self):
 
