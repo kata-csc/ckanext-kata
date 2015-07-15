@@ -73,7 +73,9 @@ class Schemas:
             schema[key] = [ignore_missing, co.convert_to_extras_kata, unicode, va.validate_general]
 
         schema['accept-terms'] = [va.usage_terms_accepted, ignore]
-        schema['__after'] = [co.organization_create_converter]
+        schema['__after'] = [co.organization_create_converter,
+                             co.gen_translation_str_from_langtitle,
+                             co.gen_translation_str_from_langnotes]
         schema['agent'] = {'role': [not_empty, va.check_agent_fields, va.validate_general, unicode, co.flattened_to_extras],
                            'name': [ignore_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
                            'id': [ignore_empty, va.validate_general, unicode, co.flattened_to_extras],
@@ -102,12 +104,12 @@ class Schemas:
         # The title field contains all the title translations in JSON format.
         # The converter gen_translation_str_from_langtitle
         # needs to be called to construct the JSON string from the UI's langtitle fields.
-        schema['title'] = [unicode, not_missing, co.gen_translation_str_from_langtitle]
+        schema['title'] = [ignore_empty]
 
         # Description (notes) is a multilanguage field similar to title
         schema['langnotes'] = {'value': [unicode, va.validate_notes_duplicates, co.escape_quotes],
                                'lang': [unicode, co.convert_languages]}
-        schema['notes'] = [co.gen_translation_str_from_langnotes]
+        schema['notes'] = [ignore_empty]
 
         schema['language'] = \
             [ignore_missing, co.convert_languages, co.remove_disabled_languages, co.convert_to_extras_kata, unicode]
@@ -123,16 +125,12 @@ class Schemas:
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, co.to_extras_json]
-        # these two can be missing from the first Kata end users
-        # TODO: version date validation should be tighter, see metadata schema
         schema['version'] = [not_empty, unicode, va.validate_kata_date]
         schema['availability'] = [not_missing, co.convert_to_extras_kata]
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
-        # TODO: MIKKO: __extras: check_langtitle needed? Its 'raise' seems to be unreachable
-        # va.check_langtitle removed
-        schema['__extras'] = [va.check_agent, va.check_contact, va.check_pids]
+        schema['__extras'] = [va.check_agent, va.check_contact, va.check_pids, va.check_langtitle]
         schema['__junk'] = [va.check_junk]
-        schema['name'] = [ignore_missing, unicode, co.default_name_from_id, package_name_validator,
+        schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]
@@ -146,8 +144,9 @@ class Schemas:
                                           unicode, va.validate_general, co.convert_to_extras_kata]
         schema['discipline'] = [ignore_missing, va.validate_discipline, co.convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
-        schema['license_URL'] = [not_missing, va.validate_license_url, co.convert_to_extras_kata, unicode, va.validate_general]
-        schema['owner_org'] = [ignore_missing, va.kata_owner_org_validator, unicode]
+        schema['license_URL'] = [va.continue_if_missing, va.validate_license_url, co.convert_to_extras_kata, unicode,
+                                 va.validate_general]
+        schema['owner_org'] = [va.kata_owner_org_validator, unicode]
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_direct_download_url,
                                       unicode, va.validate_general]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
@@ -161,21 +160,21 @@ class Schemas:
     def private_package_schema(cls):
         '''
         For a private dataset only a title and owner_org are required. The design is based on a principle,
-        that as little changes as possible are made - ignore_missing, ignore_empty are only added and the
+        that as little changes as possible are made - ignore_empty are only added and the
         rest'll stay the same, if possible.
+
+        The key lists should be updated according to schema changes.
 
         :return: schema, where only title and owner_org are required
         '''
 
         schema = cls.create_package_schema()
-        dicts = ['tags', 'contact']
-        passdicts = ['langtitle', 'langnotes', 'agent']
-        keystocheck = settings.KATA_FIELDS_REQUIRED + ['language', '__extras', 'tag_string',
-                                                       'accept-terms', 'version', 'license_URL']
+        dict_keys = ['tags', 'contact']
+        pass_keys = ['langtitle', 'langnotes', 'agent']
+        check_keys = settings.KATA_FIELDS_REQUIRED + ['language', '__extras', 'tag_string',
+                                                      'accept-terms', 'version', 'license_URL']
 
         def _clean_schema_item(val):
-            if ignore_missing not in val:
-                val.insert(0, ignore_missing)
             if ignore_empty not in val:
                 val.insert(0, ignore_empty)
             if not_empty in val:
@@ -184,7 +183,7 @@ class Schemas:
                 val.remove(not_missing)
 
         for key, value in schema.iteritems():
-            if key not in keystocheck or key in passdicts:
+            if key not in check_keys or key in pass_keys:
                 continue
             elif key == '__extras':
                 # Remove checks: no agent nor contact is required
@@ -195,7 +194,7 @@ class Schemas:
             elif key == 'accept-terms':
                 if va.usage_terms_accepted in value:
                     value.remove(va.usage_terms_accepted)
-            elif key in dicts:
+            elif key in dict_keys:
                 # Add validators to pass empty stuff and remove validators that check that stuff exists
                 for k, v in schema[key].iteritems():
                     _clean_schema_item(v)
@@ -381,12 +380,12 @@ class Schemas:
 
         # co.gen_translation_str_from_extras updates the title field to show the JSON
         # translation string if old format titles are found from extras
-        schema['title'] = [ignore_missing, co.gen_translation_str_from_extras]
+        schema['title'] = [ignore_missing, co.gen_translation_str_from_extras, co.set_language_for_title]
 
         schema['notes'] = [co.ensure_valid_notes]
 
-        #schema['langtitle'] = {'value': [unicode , co.gen_translation_str_from_langtitle],
-        #                       'lang': [unicode, co.convert_languages]}
+        # schema['langtitle'] = {'value': [unicode, co.gen_translation_str_from_langtitle],
+        #                        'lang': [unicode, co.convert_languages]}
 
         #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
         schema['xpaths'] = [co.from_extras_json, ignore_missing, unicode]

@@ -82,7 +82,7 @@ i.chevron-alt {
 }
 
 @container-wide-size: 1100px;
-
+@container-medium-size: 920px;
 .etsin-container {
   background-color: transparent;
   .container {
@@ -91,6 +91,10 @@ i.chevron-alt {
   .container-wide {
     max-width: @container-wide-size;
     width: @container-wide-size;
+  }
+  .container-medium {
+    max-width: @container-medium-size;
+    width: @container-medium-size;
   }
 }
 
@@ -102,6 +106,22 @@ i.chevron-alt {
     .container {
       width: auto;
       }
+  }
+}
+
+@media (min-width: @content-max-width) and (max-width: (@container-wide-size + 15px)) {
+  .etsin-container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media (max-width: @container-wide-size) {
+  .etsin-container {
+    .container-wide {
+      max-width: auto;
+      width: auto;
+    }
   }
 }
 
@@ -173,4 +193,31 @@ i.chevron-alt {
   margin: 20px;
   padding: 0px;
   float: left;
+}
+
+.btn {
+  border-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+  &.btn-primary  {
+    background-color: @brand-primary-color !important;
+    background-image: none;
+  }
+  &.btn-default, &.btn-success, &.btn-danger {
+    background-image: none;
+    border-color: @brand-primary-color;
+    color: @brand-primary-color;
+    background-color: white;
+  }
+  .icon-chevron-down {
+    margin-left: 5px;
+  }
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+  background: @brand-primary-color;
+}
+
+.btn-group.open .btn.dropdown-toggle {
+  background-color: white;
 }

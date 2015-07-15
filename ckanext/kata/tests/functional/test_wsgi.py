@@ -73,21 +73,21 @@ class TestResources(KataWsgiTestCase):
     Test that resources are handled properly in WUI.
     """
 
-    def test_data_and_resources_not_rendered(self):
-        """
-        A package with no resources should not render Data and Resources section
-        """
-        offset = url_for(controller='package', action='read', id=u'warandpeace')
-        res = self.app.get(offset)
-        assert '<section id="dataset-resources"' not in res, 'A package with no resources should not render Data and Resources section'
-
-    def test_data_and_resources_rendered(self):
-        """
-        A package with resources should render Data and Resources section
-        """
-        offset = url_for(controller='package', action='read', id=u'annakarenina')
-        res = self.app.get(offset)
-        assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
+    # def test_data_and_resources_not_rendered(self):
+    #     """
+    #     A package with no resources should not render Data and Resources section
+    #     """
+    #     offset = url_for(controller='package', action='read', id=u'warandpeace')
+    #     res = self.app.get(offset)
+    #     assert '<section id="dataset-resources"' not in res, 'A package with no resources should not render Data and Resources section'
+    #
+    # def test_data_and_resources_rendered(self):
+    #     """
+    #     A package with resources should render Data and Resources section
+    #     """
+    #     offset = url_for(controller='package', action='read', id=u'annakarenina')
+    #     res = self.app.get(offset)
+    #     assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
 
     def test_hidden_edit_button(self):
         """

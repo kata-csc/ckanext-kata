@@ -148,7 +148,8 @@ def gen_translation_str_from_multilang_field(fieldkey, message, key, data, error
             json_data[lval] = rval
         i+=1
 
-    data[(fieldkey,)] = json.dumps(json_data)
+    if json_data:
+        data[(fieldkey,)] = json.dumps(json_data)
 
 
 def gen_translation_str_from_langtitle(key, data, errors, context):
@@ -169,7 +170,30 @@ def ensure_valid_notes(key, data, errors, context):
     try:
         json.loads(field)
     except (ValueError, TypeError):
-        data[('notes',)] = json.dumps({'default': field})
+        data[('notes',)] = json.dumps({'zxx': field})
+
+
+def set_language_for_title(key, data, errors, context):
+    '''
+    Some harvested datasets don't have title language attribute. Set it to Finnish
+    as we know it should be it.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    field = data.get(key)
+    try:
+        jsn = json.loads(field)
+        for k in jsn.keys():
+            if len(k) < 1 and not jsn.get('fin'):
+                jsn['fin'] = jsn.get(k)
+                del jsn['']
+        data[('title',)] = json.dumps(jsn)
+    except:
+        log.debug('Setting default language to title did not finish')
 
 
 def gen_translation_str_from_extras(key, data, errors, context):
@@ -437,7 +461,8 @@ def convert_to_extras_kata(key, data, errors, context):
     extras = data.get(('extras',), [])
     if not extras:
         data[('extras',)] = extras
-    extras.append({'key': key[-1], 'value': data[key]})
+    if data.get(key):
+        extras.append({'key': key[-1], 'value': data[key]})
 
 
 def xpath_to_extras(key, data, errors, context):

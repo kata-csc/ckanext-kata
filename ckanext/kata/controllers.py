@@ -8,6 +8,7 @@ import functionally as fn
 import json
 import logging
 import mimetypes
+import rdflib
 import re
 import string
 import urllib2
@@ -36,6 +37,7 @@ import ckan.model as model
 from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
 import ckan.plugins as plugins
+from ckan.common import response
 from ckan.common import OrderedDict
 import ckan.plugins as p
 
@@ -968,6 +970,14 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         by Genshi.
         '''
         return re.sub(r'(<[^<>]*)( lang=\".{2,3}")([^<>]*>)', r'\1\3', self.read(id, format))
+
+    def read_ttl(self, id, format):
+        '''
+        Render dataset in RDF using turtle format.
+        '''
+        g = rdflib.Graph().parse(data=self.read_rdf(id, 'rdf'))
+        response.headers['Content-Type'] = 'text/turtle'
+        return g.serialize(format='turtle')
 
     def browse(self):
         '''
