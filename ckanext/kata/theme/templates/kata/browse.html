@@ -18,19 +18,54 @@
 
         <ul class="unstyled browse-dropdowns">
           <li>
-            <select class="form-control">
-              <option>Tieteenalan mukaan</option>
+            <form action="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='browse' %}" data-module="select-switch" method="GET">
+            <input type="hidden" name="sort" value="{{ c.sort_by_selected }}">
+            <select class="form-control" name="facet_choose_title">
+              {% for facet in c.facet_titles %}
+                <option value="{{ facet }}"{% if c.facet_choose_title == facet %} selected{% endif %}>{{ c.facet_titles[facet] }}</option>
+              {% endfor %}
             </select>
+            </form>
           </li>
           <li>
-            <select>
-              <option>Politiikan tutkimus (286)</option>
+            <form action="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='browse' %}" data-module="select-switch" method="GET">
+            <input type="hidden" name="facet_choose_title" value="{{ c.facet_choose_title }}">
+            <input type="hidden" name="sort" value="{{ c.sort_by_selected }}">
+            <select name="facet_choose_item">
+              <option value="">{{ _('No criteria') }}</option>
+              {% if c.facets.get(c.facet_choose_title) is iterable %}
+                {% for fac, num in c.facets.get(c.facet_choose_title).iteritems() %}
+                  {% if fac|length %}
+                    <option value="{{ fac }}"{% if c.facet_choose_item == fac %} selected{% endif %}>{{ h.get_label_for_uri(fac) }}</option>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <option>{{ _('No options available') }}</option>
+              {% endif %}
             </select>
+            </form>
           </li>
+          {% set sorting = [
+            (_('Relevance'), 'score desc, metadata_modified desc'),
+            (_('Name Ascending'), 'title_string asc'),
+            (_('Name Descending'), 'title_string desc'),
+            (_('Last Modified'), 'metadata_modified desc'),
+            (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
+          %}
           <li>
-            <select>
-              <option>Aakkosjärjestys (A-Ö)</option>
+          <form action="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='browse' %}" data-module="select-switch" method="GET">
+            <input type="hidden" name="facet_choose_title" value="{{ c.facet_choose_title }}">
+            {% if c.facet_choose_item %}<input type="hidden" name="facet_choose_item" value="{{ c.facet_choose_item }}">{% endif %}
+            <select name="sort">
+              {% if sorting %}
+                {% for label, value in sorting %}
+                  {% if label and value %}
+                    <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
             </select>
+          </form>
           </li>
         </ul>
       </div>
@@ -40,70 +75,55 @@
   <div class="etsin-container etsin-container-bg">
     <div class="container container-wide">
       <div class="row-fluid browse-lastrow">
-        <h2 class="lower-title">Politiikan tutkimus (286)</h2>
+        <h2 class="lower-title">{% if c.facet_choose_item %}{{ h.get_label_for_uri(c.facet_choose_item) }} ({{ c.facets.get(c.facet_choose_title).get(c.facet_choose_item) }}){% endif %}</h2>
 
         <ul class="unstyled browse-results">
 
+          {% for item in c.page.items %}
+            {% set truncate = truncate or 360 %}
+            {% set truncate_title = truncate_title or 80 %}
+            {% set title = h.get_translation_from_extras(item) or item.name %}
+            {% set notes = h.markdown_extract(h.get_description(item), extract_length=truncate) %}
+
           <li class="browse-result">
             <div class="inner-container">
               <div class="result-info">
-                <div class="result-image">
+                {# <div class="result-image">
 
-                </div>
+                </div> #}
                 <div class="result-text">
-                  <h3><a>Dataset title</a></h3>
+                  <h3>{{ h.link_to(h.truncate(title, truncate_title), h.url_for(controller='package', action='read', id=item.name)) }}</h3>
                   <p class="description">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                    {{ notes }}
                   </p>
                 </div>
               </div>
               <div class="result-tags">
                 <ul class="unstyled">
-                  <li>
-                    <a><span class="pill">tag</span></a>
-                  </li>
+                <li>
+                  {% for tag in item.tags %}
+
+                    <a href="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='browse',
+                      facet_choose_title='tags', facet_choose_item=tag.get('name'), sort=c.sort_by_selected %}"><span class="pill">
+                      {{ h.get_label_for_uri(tag.get('display_name')) }}</span></a>
+
+                    {% endfor %}
+                </li>
                 </ul>
               </div>
             </div>
             <div class="clearfix"></div>
           </li>
 
-          <li class="browse-result">
-            <div class="inner-container">
-              <div class="result-info">
-                <div class="result-image">
-
-                </div>
-                <div class="result-text">
-                  <h3><a>A very long title that will take a lot of space in the screen</a></h3>
-                  <p class="description">
-                    Short description.
-                  </p>
-                </div>
-              </div>
-              <div class="result-tags">
-                <ul class="unstyled">
-                  <li>
-                    <a><span class="pill">tag</span></a>
-                    <a><span class="pill">epäjärjestelmällistyttämättö...</span></a>
-                    <a><span class="pill">tag</span></a>
-                    <a><span class="pill">tag</span></a>
-                    <a><span class="pill">tag</span></a>
-                    <a><span class="pill">somewhat longer tag name</span></a>
-                    <a><span class="pill">tag</span></a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-          </li>
+          {% endfor %}
 
         </ul>
 
-        <div style="text-align: center">pager placeholder</div>
+        <div style="text-align: center">{{ c.page.pager(q=c.q) }}</div>
 
       </div>
     </div>
+  </div>
 
 </div>
 
