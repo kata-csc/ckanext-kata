@@ -78,18 +78,18 @@ class TestKataPlugin(TestCase):
 
     def test_before_index(self):
         pkg_dict = {'access_application_new_form': u'False',
-                     'agent_0_URL': u'www.csc.fi',
-                     'agent_0_fundingid': u'43096ertjgad\xf6sjgn89q3q4',
-                     'agent_0_name': u'F. Under',
-                     'agent_0_organisation': u'Agentti-Project',
-                     'agent_0_role': u'funder',
-                     'agent_1_name': u'o. oWNER',
-                     'agent_1_role': u'owner',
-                     'agent_2_name': u'M. Merger',
-                     'agent_2_role': u'author',
-                     'agent_3_name': u'juho',
-                     'agent_3_role': u'distributor',
-                     'data_dict': '{"dada": "dudu"}'}
+                    'agent_0_URL': u'www.csc.fi',
+                    'agent_0_fundingid': u'43096ertjgad\xf6sjgn89q3q4',
+                    'agent_0_name': u'F. Under',
+                    'agent_0_organisation': u'Agentti-Project',
+                    'agent_0_role': u'funder',
+                    'agent_1_name': u'o. oWNER',
+                    'agent_1_role': u'owner',
+                    'agent_2_name': u'M. Merger',
+                    'agent_2_role': u'author',
+                    'agent_3_name': u'juho',
+                    'agent_3_role': u'distributor',
+                    'data_dict': '{"dada": "dudu"}'}
 
         # output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))
         output = self.kata_plugin.before_index(pkg_dict)
@@ -117,7 +117,8 @@ class TestDatasetHandling(TestCase):
         model.repo.rebuild_db()
 
     def test_add_dataset_without_name(self):
-        organization = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
+        organization = get_action('organization_create')({'user': 'test_sysadmin'},
+                                                         {'name': 'test-organization', 'title': "Test organization"})
 
         data = copy.deepcopy(TEST_DATADICT)
         data['owner_org'] = organization['name']
@@ -127,12 +128,11 @@ class TestDatasetHandling(TestCase):
 
         pkg = get_action('package_create')({'user': 'test_sysadmin'}, data)
 
-        assert pkg.get('name').startswith('urn')    # Should be generated from package.id
+        assert pkg.get('name').startswith('urn')  # Should be generated from package.id
         assert pkg.get('name').count(':') == 0
 
 
 class TestKataSchemas(TestCase):
-
     @classmethod
     def setup_class(cls):
         cls.kata_plugin = KataPlugin()
@@ -173,6 +173,7 @@ class TestKataSchemas(TestCase):
         assert len(schema) > 0
 
 
+
 class TestResouceConverters(TestCase):
     """Unit tests for resource conversions in actions."""
 
@@ -191,28 +192,28 @@ class TestResouceConverters(TestCase):
         cls.test_data2 = {
             'id': u'test',
             'resources': [{
-                'url': u'http://www.csc.fi',
-                'algorithm': u'MD5',
-                'hash': u'f60e586509d99944e2d62f31979a802f',
-                'mimetype': u'application/pdf',
-                'resource_type': settings.RESOURCE_TYPE_DATASET,
-            }]}
+                              'url': u'http://www.csc.fi',
+                              'algorithm': u'MD5',
+                              'hash': u'f60e586509d99944e2d62f31979a802f',
+                              'mimetype': u'application/pdf',
+                              'resource_type': settings.RESOURCE_TYPE_DATASET,
+                          }]}
 
         cls.test_data3 = {
             'id': u'test',
             'resources': [{
-                'url': u'http://www.csc.fi',
-                'algorithm': u'MD5',
-                'hash': u'f60e586509d99944e2d62f31979a802f',
-                'mimetype': u'application/pdf',
-                'resource_type': settings.RESOURCE_TYPE_DATASET,
-            }, {
-                'url': u'http://www.helsinki.fi',
-                'algorithm': u'SHA',
-                'hash': u'somehash',
-                'format': u'application/csv',
-                'resource_type': 'file',
-            }]
+                              'url': u'http://www.csc.fi',
+                              'algorithm': u'MD5',
+                              'hash': u'f60e586509d99944e2d62f31979a802f',
+                              'mimetype': u'application/pdf',
+                              'resource_type': settings.RESOURCE_TYPE_DATASET,
+                          }, {
+                              'url': u'http://www.helsinki.fi',
+                              'algorithm': u'SHA',
+                              'hash': u'somehash',
+                              'format': u'application/csv',
+                              'resource_type': 'file',
+                          }]
         }
 
     def test_dataset_to_resource(self):
@@ -291,6 +292,7 @@ class TestActions(TestCase):
     '''
     Unit tests for action functions.
     '''
+
     @classmethod
     def setup_class(cls):
         '''Set up testing environment.'''
@@ -459,6 +461,7 @@ class TestActions(TestCase):
 
         return ctx
 
+
 class TestHarvestSource(TestCase):
     @classmethod
     def setup_class(cls):
@@ -468,7 +471,8 @@ class TestHarvestSource(TestCase):
         model.User(name='test', sysadmin=True).save()
         get_action('organization_create')({'user': 'test'}, {'name': 'test'})
         context = {'user': 'test'}
-        data_dict = {'url': "http://example.com/test", 'name': 'test', 'owner_org': 'test', 'source_type': 'oai-pmh', 'title': 'test'}
+        data_dict = {'url': "http://example.com/test", 'name': 'test', 'owner_org': 'test', 'source_type': 'oai-pmh',
+                     'title': 'test'}
         response = get_action('harvest_source_create')(context, data_dict)
         self.assertEquals(response.get('name', None), 'test')
         data_dict['id'] = response['id']
@@ -512,7 +516,7 @@ class TestAdvancedSearch(TestCase):
                                          'ext_tags-1': u'testkeywd',
                                          'ext_tags-2': u'testkeywd2',
                                          'ext_title-5': u'testtitle'}
-        }
+                              }
         cls.short_data_dict = {'sort': u'metadata_modified desc',
                                'fq': '',
                                'rows': 20,
@@ -525,7 +529,7 @@ class TestAdvancedSearch(TestCase):
                                                'extras_language'],
                                'q': u'',
                                'start': 0,
-        }
+                               }
         cls.test_q_terms = u' ((tags:testkeywd) OR ( tags:testkeywd2 AND ' + \
                            u'organization:testorg AND author:testauthor) OR ' + \
                            u'( title:testtitle NOT groups:testdiscipline))'
