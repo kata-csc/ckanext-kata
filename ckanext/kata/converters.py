@@ -113,28 +113,31 @@ def gen_translation_str_from_multilang_field(fieldkey, message, key, data, error
     :param errors: validation errors
     :param context: context
     '''
+    langkey = 'lang' + fieldkey
 
     # For API requests, we need to validate if the
     # data is already given in the new format, and
     # no lang* fields given. In that case, do nothing.
-    langkey = 'lang' + fieldkey
     if data.get((fieldkey,)) and not data.get((langkey, 0, 'lang')):
         json_string = data.get((fieldkey,))
 
         json_data = {}
         try:
             json_data = json.loads(json_string)
-        except ValueError:
+        except (ValueError, TypeError):
             errors[key].append(message)
 
         # we also need to validate the keys:
-        for k in json_data.keys():
-            if k == "undefined":    # some harvesters don't have languages defined
-                continue
-            try:
-                languages.get(part3=k)
-            except KeyError:
-                errors[key].append(_('The language code is not in ISO639-3 format'))
+        try:
+            for k in json_data.keys():
+                if k == "undefined":    # some harvesters don't have languages defined
+                    continue
+                try:
+                    languages.get(part3=k)
+                except KeyError:
+                    errors[key].append(_('The language code is not in ISO639-3 format'))
+        except AttributeError:
+            errors[key].append(_("The given {field} string is incorrectly formatted".format(field=fieldkey)))
 
         return
 
@@ -147,20 +150,20 @@ def gen_translation_str_from_multilang_field(fieldkey, message, key, data, error
         rval = data[(langkey, i, 'value')]
         if rval:    # skip a language without translation
             json_data[lval] = rval
-        i+=1
+        i += 1
 
     if json_data:
         data[(fieldkey,)] = json.dumps(json_data)
 
 
 def gen_translation_str_from_langtitle(key, data, errors, context):
-    return gen_translation_str_from_multilang_field('title',
-        _('The given title string is not JSON parseable'), key, data, errors, context)
+    return gen_translation_str_from_multilang_field('title', _('The given title string is not JSON parseable'),
+                                                    key, data, errors, context)
 
 
 def gen_translation_str_from_langnotes(key, data, errors, context):
-    return gen_translation_str_from_multilang_field('notes',
-        _('The given notes string is not JSON parseable'), key, data, errors, context)
+    return gen_translation_str_from_multilang_field('notes', _('The given notes string is not JSON parseable'),
+                                                    key, data, errors, context)
 
 
 def ensure_valid_notes(key, data, errors, context):
