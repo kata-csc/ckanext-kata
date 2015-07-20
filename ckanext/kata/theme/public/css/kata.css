@@ -441,7 +441,13 @@ ul.kata {
   width: 200px !important;
 }
 .kata-input-license {
-  width: 475px !important;
+  width: 100% !important;
+}
+@media (max-width: 700px) {
+  .select2-results,
+  .select2-drop {
+    min-width: 360px;
+  }
 }
 .kata-medium-input {
   width: 334px !important;
@@ -618,20 +624,20 @@ input[id="xmlfile"] {
     float: none;
     width: 100%;
     margin-bottom: 20px;
+    text-align: left;
   }
   .form-tab-content .form-row .form-content {
     width: 91%;
     margin-left: 7%;
   }
 }
+/* Juho: This maybe should be merged to above .form-tab-content block */
 .form-horizontal {
   padding: 20px;
 }
 .form-horizontal .control-label {
-  float: left;
   font-weight: 700;
   width: 30%;
-  text-align: right;
 }
 .form-horizontal .controls {
   min-height: 16px;
@@ -640,6 +646,18 @@ input[id="xmlfile"] {
   width: 65%;
   padding-right: 5%;
   padding-left: 10px;
+}
+@media (max-width: 700px) {
+  .form-horizontal .control-label {
+    float: none;
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  .form-horizontal .controls {
+    width: 91%;
+    margin-left: 7%;
+  }
 }
 .etsin-dataset-form {
   border: 1px solid #c9c9c9;

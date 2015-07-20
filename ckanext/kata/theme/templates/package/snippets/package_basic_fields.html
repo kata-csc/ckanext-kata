@@ -16,13 +16,13 @@
       <a class="dataset-tab" href="#actor-info" data-toggle="tab">2. {{ _("Actors") }}</a>
     </li>
     <li>
-      <a class="dataset-tab" href="#identification-info" data-toggle="tab">3. {{ _("Identifiers") }}</a>
+      <a class="dataset-tab" href="#usage-info" data-toggle="tab">3. {{ _("Usage information") }}</a>
     </li>
     <li>
-      <a class="dataset-tab" href="#usage-info" data-toggle="tab">4. {{ _("Usage information") }}</a>
+      <a class="dataset-tab" href="#additional-info" data-toggle="tab">4. {{ _("Additional information") }}</a>
     </li>
     <li>
-      <a class="dataset-tab" href="#additional-info" data-toggle="tab">5. {{ _("Additional information") }}</a>
+      <a class="dataset-tab" href="#identification-info" data-toggle="tab">5. {{ _("Identifiers") }}</a>
     </li>
   </ul>
 
@@ -41,9 +41,6 @@
       <div class="tab-pane" id="actor-info">
         {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
       </div>
-      <div class="tab-pane" id="identification-info">
-        {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
-      </div>
       <div class="tab-pane" id="usage-info">
         {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
       </div>
@@ -53,6 +50,9 @@
             {% snippet 'package/snippets/recommended_lifecycle_events.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
             {% snippet 'package/snippets/recommended_file_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
           </div>
+      </div>
+      <div class="tab-pane" id="identification-info">
+        {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
       </div>
 
       <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />

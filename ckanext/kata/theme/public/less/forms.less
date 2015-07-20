@@ -99,7 +99,12 @@ ul.kata {
     width: 200px !important;
 }
 .kata-input-license {
-    width: 475px !important;
+    width: 100% !important;
+}
+.select2-results, .select2-drop {
+  @media (max-width: 700px) {
+    min-width: 360px;
+  }
 }
 .kata-medium-input {
     width: 334px !important;
@@ -268,6 +273,7 @@ input[id="xmlfile"] {
         float: none;
         width: 100%;
         margin-bottom: 20px;
+        text-align: left;
       }
       .form-content {
         width: 91%;
@@ -277,15 +283,14 @@ input[id="xmlfile"] {
   }
 }
 
+/* Juho: This maybe should be merged to above .form-tab-content block */
 .form-horizontal {
   @form-label-width: 30%;
   @form-help-spacer-width: 5%;
   padding: 20px;
   .control-label {
-    float: left;
     font-weight: 700;
     width: @form-label-width;
-    text-align: right;
   }
   .controls {
     min-height: 16px;
@@ -294,6 +299,19 @@ input[id="xmlfile"] {
     width: 100% - @form-label-width - @form-help-spacer-width;
     padding-right: @form-help-spacer-width;
     padding-left: 10px;
+  }
+
+  @media (max-width: 700px) {
+    .control-label {
+        float: none;
+        width: 100%;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    .controls {
+        width: 91%;
+        margin-left: 7%;
+    }
   }
 //  input {
 //    margin-left: 10px;
