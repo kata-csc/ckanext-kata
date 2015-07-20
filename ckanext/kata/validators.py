@@ -319,8 +319,8 @@ def validate_multilang_field(fieldkey, key, data, errors, context):
     langs = []
     for k in data.keys():
         if len(k) > 2 and k[0] == fieldkey and k[2] == 'lang' and \
-                (fieldkey, k[1], 'value',) in data and \
-                len(data.get((fieldkey, k[1], 'value',))) > 0:
+                data.get((fieldkey, k[1], 'value',)) is not missing and \
+                len(data.get((fieldkey, k[1], 'value',), '')) > 0:
             langs.append(data[k])
     if len(set(langs)) != len(langs):
         raise Invalid(_('Duplicate fields for a language not permitted'))

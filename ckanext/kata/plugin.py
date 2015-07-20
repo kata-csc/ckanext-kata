@@ -10,7 +10,7 @@ import datetime
 import iso8601
 
 from ckan import logic
-from ckan.lib.base import c
+from ckan.lib.base import g, c, _
 from ckan.common import OrderedDict
 from ckan.lib.plugins import DefaultDatasetForm
 from ckan.plugins import (implements,
@@ -114,6 +114,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/dataset/{id:.*?}.{format:ttl}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action='read_ttl')
+        map.connect('/browse',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action='browse')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
