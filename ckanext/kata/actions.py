@@ -361,37 +361,6 @@ organization_update = _decorate(ckan.logic.action.update.organization_update, 'o
 organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'organization', 'delete')
 
 
-@side_effect_free
-def package_search(context, data_dict):
-    '''Return the metadata of a dataset (package) and its resources.
-
-    :param id: the id or name of the dataset
-    :type id: string
-    :param context: context
-    :type context: dictionary
-
-    :rtype: dictionary
-    '''
-    #Wraps around the CKAN package_search action to add customizations
-    #in some special cases.
-
-    if c.controller == "home" and c.action == "index":
-        data_dict['sort'] = "metadata_modified desc"
-        data_dict['rows'] = 5
-        # don't want harvest source packages
-        data_dict['fq'] += " +dataset_type:dataset"
-
-    sort = data_dict.get('sort', "")
-
-    if c.controller == "organization" and c.action == "read":
-        if not sort or sort == 'name asc':
-            data_dict['sort'] = 'title_string asc'
-        elif sort == 'name desc':
-            data_dict['sort'] = 'title_string desc'
-
-    return ckan.logic.action.get.package_search(context, data_dict)
-
-
 # def group_list(context, data_dict):
 #     '''
 #     Return a list of the names of the site's groups.

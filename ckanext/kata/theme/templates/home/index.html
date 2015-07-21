@@ -6,218 +6,206 @@
 
 {% block content %}
 
-<!-- Twitter -->
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  <!-- Twitter -->
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
-{# TODO: make search into a snippet so the same thing can be used in search page #}
-<div id="etsin-main">
-  <div class="etsin-container">
-    <div class="container">
-      <div class="row-fluid">
+  {# TODO: make search into a snippet so the same thing can be used in search page #}
+  <div id="etsin-main">
+    <div class="etsin-container">
+      <div class="container">
+        <div class="row-fluid">
 
-        <div class="extra-messages">
-          {{ self.flash() }}
-          {% if h.is_backup_instance() %}
-          <p class="maintenance-message">
-            {{ _('There is a maintenance break in service')}}. {{ _('You can not add or edit data during maintenance break')}}.
-          </p>
-          {% endif %}
+          <div class="extra-messages">
+            {{ self.flash() }}
+            {% if h.is_backup_instance() %}
+            <p class="maintenance-message">
+              {{ _('There is a maintenance break in service')}}. {{ _('You can not add or edit data during maintenance break')}}.
+            </p>
+            {% endif %}
+          </div>
+
+          <h2 class="etsin-secondary-title">{{ _("Search for a Dataset") }}</h2>
+
+          <form id="dataset-search" class="dataset-search clearfix search-form" action="{% url_for controller='package', action='search' %}" method="get" data-module="select-switch">
+            <div class="search-terms">
+               <div class="search-input control-group search-giant">
+                 <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
+                 placeholder="{{ _('Enter search term or query…') }}">
+                 <button type="submit" value="search">
+                   <i class="icon-search"></i>
+                   <span>{{ _('Submit') }}</span>
+                 </button>
+               </div>
+
+              {% if c.fields -%}
+                <span>
+                  {%- for k, v in c.fields -%}
+                    <input type="hidden" name="{{ k }}" value="{{ v }}"/>
+                  {% endfor -%}
+                </span>
+              {%- endif %}
+            </div>
+
+            {# TODO: functionality for quick selections: open data & time limiting #}
+            <!--
+            <div class="search-extras form-inline">
+              <label class="checkbox">
+                <input type="checkbox">{{ _('Open data') }}
+              </label>
+              <label class="checkbox">
+                <input type="checkbox">{{ _('Since year') }}
+              </label>
+              <input type="text" class="input-small since-year" value="2010">
+            </div>
+            -->
+
+          </form>
+
         </div>
 
-        <h2 class="etsin-secondary-title">{{ _("Search for a Dataset") }}</h2>
-
-        <form id="dataset-search" class="dataset-search clearfix search-form" action="{% url_for controller='package', action='search' %}" method="get" data-module="select-switch">
-          <div class="search-terms">
-             <div class="search-input control-group search-giant">
-               <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
-               placeholder="{{ _('Enter search term or query…') }}">
-               <button type="submit" value="search">
-                 <i class="icon-search"></i>
-                 <span>{{ _('Submit') }}</span>
-               </button>
-             </div>
-
-            {% if c.fields -%}
-              <span>
-                {%- for k, v in c.fields -%}
-                  <input type="hidden" name="{{ k }}" value="{{ v }}"/>
-                {% endfor -%}
-              </span>
-            {%- endif %}
+        <!-- TODO: real numbers, links to browse view -->
+        <div class="row-fluid">
+          <div class="dataset-fast-stats-wrapper">
+            <ul class="dataset-fast-stats">
+              <li>
+                <div class="stat-number">
+                  <a href="{{ h.url_for(controller='package', action='search') }}">
+                    {{ c.package_count }}
+                  </a>
+                </div>
+                <div class="stat-label">
+                  <!-- TODO: translation of same label: datasets - aineistot/aineistoa -->
+                  <a href="{{ h.url_for(controller='package', action='search') }}">
+                    {{ _('Aineistoa') }}
+                  </a>
+                </div>
+              </li>
+              <li>
+                <div class="stat-number">
+                  <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='tags') }}">
+                    {{ c.num_tags }}
+                  </a>
+                </div>
+                <div class="stat-label">
+                  <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='tags') }}">
+                    {{ _('Tags') }}
+                  </a>
+                </div>
+              </li>
+              <li>
+                <div class="stat-number">
+                  <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='extras_discipline') }}">
+                    {{ c.num_discipline }}
+                  </a>
+                </div>
+                <div class="stat-label">
+                  <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='extras_discipline') }}">
+                    {{ _('Tieteenalaa') }}
+                  </a>
+                </div>
+              </li>
+            </ul>
           </div>
-
-          {# TODO: functionality for quick selections: open data & time limiting #}
-          <!--
-          <div class="search-extras form-inline">
-            <label class="checkbox">
-              <input type="checkbox">{{ _('Open data') }}
-            </label>
-            <label class="checkbox">
-              <input type="checkbox">{{ _('Since year') }}
-            </label>
-            <input type="text" class="input-small since-year" value="2010">
-          </div>
-          -->
-
-        </form>
-
-      </div>
-
-      <!-- TODO: real numbers, links to browse view -->
-      <div class="row-fluid">
-        <div class="dataset-fast-stats-wrapper">
-          <ul class="dataset-fast-stats">
-            <li>
-              <div class="stat-number">
-                <a href="{{ h.url_for(controller='package', action='search') }}">
-                  1203
-                </a>
-              </div>
-              <div class="stat-label">
-                <!-- TODO: translation of same label: datasets - aineistot/aineistoa -->
-                <a href="{{ h.url_for(controller='package', action='search') }}">
-                  {{ _('Aineistoa') }}
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="stat-number">
-                <a href="{{ h.url_for(controller='package', action='search') }}">
-                  200
-                </a>
-              </div>
-              <div class="stat-label">
-                <a href="{{ h.url_for(controller='package', action='search') }}">
-                  {{ _('Tags') }}
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="stat-number">
-                <a href="{{ h.url_for(controller='package', action='search') }}">
-                  200
-                </a>
-              </div>
-              <div class="stat-label">
-                <a href="{{ h.url_for(controller='package', action='search') }}">
-                  {{ _('Tieteenalaa') }}
-                </a>
-              </div>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="etsin-container container-divider">
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="etsin-steps-visualization">
-          <ul>
-            <li>
-              <div class="steps-image step1"></div>
-              <div class="steps-text">
-                <h2>1. {{ _('Browse datasets') }}</h2>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-              </div>
-            </li>
-            <li class="steps-arrow">
-              <i class="icon-chevron-right"></i>
-            </li>
-            <li>
-              <div class="steps-image step2"></div>
-              <div class="steps-text">
-                <h2>2. {{ _('Search datasets') }}</h2>
-                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-              </div>
-            </li>
-            <li class="steps-arrow">
-              <i class="icon-chevron-right"></i>
-            </li>
-            <li>
-              <div class="steps-image step3"></div>
-              <div class="steps-text">
-                <h2>3. {{ _('Add datasets') }}</h2>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-              </div>
-            </li>
-          </ul>
+    <div class="etsin-container container-divider">
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="etsin-steps-visualization">
+            <ul>
+              <li>
+                <div class="steps-image step1"></div>
+                <div class="steps-text">
+                  <h2>{{ _('Describe your research dataset') }}</h2>
+                  <p>{{ _('Add metadata on your dataset to Etsin. This information documents the content and context of the data.') }}</p>
+                </div>
+              </li>
+              <li>
+                <div class="steps-image step2"></div>
+                <div class="steps-text">
+                  <h2>{{ _("Publish your dataset's description") }}</h2>
+                  <p>{{ _('Publish the metadata on your data. The descriptive information enables others to find your dataset in Etsin.') }}</p>
+                </div>
+              </li>
+              <li>
+                <div class="steps-image step3"></div>
+                <div class="steps-text">
+                  <h2>{{ _('Get a permanent identifier for your dataset') }}</h2>
+                  <p>{{ _('Receive a permanent identifier for your dataset. The identifier creates a permanent link to the dataset page in Etsin.') }}</p>
+                </div>
+              </li>
+              <li>
+                <div class="steps-image step4"></div>
+                <div class="steps-text">
+                  <h2>{{ _('Link to your dataset and share it') }}</h2>
+                  <p>{{ _('Link to your dataset from your publications and CV. Via Etsin you may also share your dataset with others as openly or based on applications.') }}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="etsin-container etsin-container-bg">
-    <div class="container experiences">
-      <div class="row-fluid">
-        <div class="home-experiences-social">
+    <div class="etsin-container etsin-container-bg">
+      <div class="container experiences">
+        <div class="row-fluid">
+          <div class="home-experiences-social">
 
-          <div class="home-experiences">
+            <div class="home-experiences">
 
-            <div class="story">
-              <div class="person-image person1">
+              <h3>
+                {{ _('Short user guide') }}
+              </h3>
+                <ol type="1">
+                  <li>
+                    {% trans %}
+                      You can <i>search</i> for datasets and <i>add</i> descriptive data, aka metadata, for a dataset.
+                    {% endtrans %}
+                  </li>
+                  <li>
+                      {{ _('You find datasets either by typing a keyword in the search field or via the advanced search.') }}
+                  </li>
+                  <li>
+                      {{ _('In order to add data you first need to authenticate yourself by') }} <a href="https://haka.funet.fi/shibboleth/help.php">{{ _('Haka login') }}</a>
+                  </li>
+                  <li>
+                      {{ _('A comprehensive description of your data makes it easier for others to find it and make use of it. Etsin will assist you in filling in the data.') }}
+                  </li>
+                </ol>
 
-              </div>
-              <div class="person-story">
-                <h2>"Etsin auttoi löytämään tutkimusaiheen"</h2>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>
-                <div class="person-name">Jaana Jatko-opiskelija, Tampereen Yliopisto</div>
-              </div>
             </div>
 
-            <div class="story">
-              <div class="person-image person2">
-
-              </div>
-              <div class="person-story">
-                <h2>"Rahoittaja kiinnostui aineiston käytöstä"</h2>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                <div class="person-name">Taisto Tutkija, Helsingin Yliopisto</div>
-              </div>
-            </div>
-
-            <div class="story">
-              <div class="person-image person3">
-
-              </div>
-              <div class="person-story">
-                <h2>"Aineisto yhdessä paikassa"</h2>
-                <p>Nam feugiat enim sit amet sapien lacinia, eget pellentesque augue tristique. Donec non congue lacus, non maximus nulla. Phasellus tempus, velit nec interdum feugiat, odio diam tempus leo, sed varius enim neque vel velit. Etiam posuere, arcu eget sollicitudin pharetra, massa quam lobortis augue, in vestibulum nibh lorem vel nunc.</p>
-                <div class="person-name">Olli Opiskelija, Tampereen Yliopisto</div>
+            <div class="home-social-picks">
+              <div class="home-social-container">
+                <a class="twitter-timeline" href="https://twitter.com/AvoinTiede"
+                   data-widget-id="454586361551392769"
+                   data-chrome="noborders nofooter transparent noscrollbar"
+                   data-tweet-limit="3">@AvoinTiede</a>
               </div>
             </div>
 
           </div>
+        </div>
+      </div>
+    </div>
 
-          <div class="home-social-picks">
-            <div class="home-social-container">
-              <a class="twitter-timeline" href="https://twitter.com/AvoinTiede"
-                 data-widget-id="454586361551392769"
-                 data-chrome="noborders nofooter transparent noscrollbar"
-                 data-tweet-limit="3">@AvoinTiede</a>
+    {% set addinfo = g.site_intro_text %}
+    {% if addinfo %}
+      <div class="etsin-container additional-info">
+        <div class="container">
+          <div class="row-fluid">
+            <div class="index-additional-info">
+              {{ h.render_markdown(addinfo) }}
             </div>
           </div>
-
         </div>
       </div>
-    </div>
-  </div>
+    {% endif %}
 
-  {% set addinfo = g.site_intro_text %}
-  {% if addinfo %}
-  <div class="etsin-container additional-info">
-    <div class="container">
-      <div class="row-fluid">
-        <div class="index-additional-info">
-          {{ h.render_markdown(addinfo) }}
-        </div>
-      </div>
-    </div>
   </div>
-  {% endif %}
-
-</div>
 
 {% endblock %}
 
