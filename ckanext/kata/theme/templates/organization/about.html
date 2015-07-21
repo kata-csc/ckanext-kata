@@ -1,0 +1,77 @@
+{% extends "organization/read_base.html" %}
+
+{% block inner_content %}
+
+  <div class="etsin-container">
+    <div class="container">
+      <div class="row-fluid">
+        <h2 class="page-title">{{ c.group_dict.display_name }}</h2>
+        <div class="organization-view-header">
+          <div class="actions-and-ratings">
+            <div class="button-container">
+              <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}> View organization </a>
+
+              {% if c.group_dict.is_organization and h.check_access('organization_update', {'id':c.group_dict.id }) %}
+                <div class="btn-group">
+                  <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    {{ _('Edit') }}<i class="icon-chevron-down"></i>
+                  </button>
+
+                  <ul class="dropdown-menu pull-right">
+                    <li>
+                      {% link_for _("Edit Organization"), controller='organization', action='edit', id=c.group_dict.name %}
+                    </li>
+                    <li>
+                      {% link_for _("Add Organization"), controller='organization', action='new' %}
+                    </li>
+                    <li>
+                      {% link_for _("Edit Members"), controller='organization', action='members', id=c.group_dict.name %}
+                    </li>
+                    <li>
+                      {% link_for _("Add Members"), controller='organization', action='member_new', id=c.group_dict.name %}
+                    </li>
+                  </ul>
+                </div>
+              {% endif %}
+
+            </div>
+
+          </div>
+          <div class="uses-and-followers">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Followers</td>
+                  <td>{{ h.SI_number_span(c.group_dict.num_followers) }}</td>
+                  <td>{{ h.follow_button('group', c.group_dict.id) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="organization-view-content">
+          <div class="organization-about-wrapper">
+            <div class="organization-about-left">
+              <h3>{{ c.group_dict.display_name }}</h3>
+
+              {% if c.group_dict.description %}
+		        {{ h.render_markdown(c.group_dict.description) }}
+              {% else %}
+		        <p class="empty">{{ _('There is no description for this organization') }}</p>
+	          {% endif %}
+
+            </div>
+            <div class="organization-about-right">
+              <div class="image">
+                <img src="{{ c.group_dict.image_url or h.url_for_static('/base/images/placeholder-organization.png') }}" alt="{{ c.group_dict.name }}" class="media-image" width="200" height="125">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

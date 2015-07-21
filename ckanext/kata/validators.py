@@ -319,8 +319,8 @@ def validate_multilang_field(fieldkey, key, data, errors, context):
     langs = []
     for k in data.keys():
         if len(k) > 2 and k[0] == fieldkey and k[2] == 'lang' and \
-                (fieldkey, k[1], 'value',) in data and \
-                len(data.get((fieldkey, k[1], 'value',))) > 0:
+                data.get((fieldkey, k[1], 'value',)) is not missing and \
+                len(data.get((fieldkey, k[1], 'value',), '')) > 0:
             langs.append(data[k])
     if len(set(langs)) != len(langs):
         raise Invalid(_('Duplicate fields for a language not permitted'))
@@ -391,9 +391,7 @@ def check_langtitle(key, data, errors, context):
     '''
     Check that langtitle field exists
     '''
-    # import pprint
-    # pprint.pprint(data)
-    if data.get(('langtitle', 0, 'value'), None) is None:
+    if not (data.get(('langtitle', 0, 'value')) or data.get(('title',))):
         raise Invalid({'key': 'langtitle', 'value': _('Missing dataset title')})
 
 
@@ -572,3 +570,17 @@ def validate_license_url(key, data, errors, context):
                             'is a variant of license type other.'))
 
 
+def continue_if_missing(key, data, errors, context):
+    '''
+    Like ignore_missing but don't stop, instead run the other validators.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+
+    value = data.get(key)
+
+    if value is missing or value is None:
+        data.pop(key, None)

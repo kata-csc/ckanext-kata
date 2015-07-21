@@ -1,0 +1,158 @@
+{% extends "organization/read_base.html" %}
+
+{% block inner_content %}
+
+  <div class="etsin-container">
+    <div class="container">
+      <div class="row-fluid">
+        <h2 class="page-title">{{ c.group_dict.display_name }}</h2>
+        <div class="organization-view-header">
+          <div class="actions-and-ratings">
+            <div class="button-container">
+              <a class="btn btn-default" href={{h.url_for(controller='organization', action='about', id=c.group_dict.name)}}> About organization </a>
+              {% if c.group_dict.is_organization and h.check_access('organization_update', {'id':c.group_dict.id }) %}
+                <div class="btn-group">
+                  <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    {{ _('Edit') }}<i class="icon-chevron-down"></i>
+                  </button>
+
+                  <ul class="dropdown-menu pull-right">
+                    <li>
+                      {% link_for _("Edit Organization"), controller='organization', action='edit', id=c.group_dict.name %}
+                    </li>
+                    <li>
+                      {% link_for _("Add Organization"), controller='organization', action='new' %}
+                    </li>
+                    <li>
+                      {% link_for _("Edit Members"), controller='organization', action='members', id=c.group_dict.name %}
+                    </li>
+                    <li>
+                      {% link_for _("Add Members"), controller='organization', action='member_new', id=c.group_dict.name %}
+                    </li>
+                  </ul>
+                </div>
+              {% endif %}
+            </div>
+
+          </div>
+          <div class="uses-and-followers">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Followers</td>
+                  <td>{{ h.SI_number_span(c.group_dict.num_followers) }}</td>
+                  <td>{{ h.follow_button('group', c.group_dict.id) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <h2 class="etsin-secondary-title">{{ _('Search for datasets') }}</h2>
+      <form id="dataset-search" class="dataset-search clearfix search-form" method="get" data-module="select-switch">
+        <div class="search-terms">
+          <div class="search-input control-group search-giant">
+            <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
+                   placeholder="{{ _('Enter search term or query…') }}">
+            <button type="submit" value="search">
+              <i class="icon-search"></i>
+              <span>{{ _('Submit') }}</span>
+            </button>
+          </div>
+
+          {% if c.fields -%}
+            <span>
+              {%- for k, v in c.fields -%}
+                <input type="hidden" name="{{ k }}" value="{{ v }}"/>
+              {% endfor -%}
+            </span>
+          {%- endif %}
+        </div>
+
+        {# TODO: functionality for quick selections: open data & time limiting #}
+        <!--
+        <div class="search-extras form-inline">
+          <label class="checkbox">
+            <input type="checkbox">{{ _('Open data') }}
+          </label>
+          <label class="checkbox">
+            <input type="checkbox">{{ _('Since year') }}
+          </label>
+          <input type="text" class="input-small since-year" value="2010">
+        </div>
+         -->
+
+      </form>
+
+    </div>
+
+    <div class="etsin-container etsin-container-bg">
+      <div class="container">
+        <div class="row-fluid">
+          <div id="search-results-kata">
+
+            {% if c.query_error %}
+              <div class="error">
+              {% trans %}
+              <p><strong>There was an error while searching.</strong> Please try again.</p>
+              {% endtrans %}
+              </div>
+            {% endif %}
+
+            {% block search_title %}
+              {% if not no_title %}
+                <span class="number-of-results">
+                  {% snippet 'snippets/search_result_text.html', query=c.q, count=c.page.item_count, type='dataset' %}
+                </span>
+              {% endif %}
+            {% endblock %}
+
+            {% set facets = {
+            'fields': c.fields_grouped or h.get_fields_grouped(),
+            'search': c.search_facets,
+            'titles': c.facet_titles,
+            'translated_fields': c.translated_fields,
+            'remove_field': c.remove_field }
+            %}
+            {% set active_facets = h.get_active_facets(facets) %}
+            {% set lang = h.lang() %}
+
+            <div class="search-results-tools">
+              <div class="accordion kata-accordion" id="search-results-tools" data-module="kata-facet-accordion" data-module-facets="{{ active_facets }}" data-module-currentlang="{{ lang }}">
+                <div class="accordion-group">
+                  <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#search-results-tools" href="#collapse0">
+                      {{ _('Limit search results') }}
+                    </a>
+                  </div>
+                  <div id="collapse0" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                      {% for facet in c.facet_titles %}
+                        {% set is_active = h.is_active_facet(facet, active_facets) %}
+                        {{ h.snippet('snippets/facet_list_new.html', title=c.facet_titles[facet], name=facet, extras={'id':c.group_dict.id}, is_visible=is_active or loop.index0 < 3) }}
+                      {% endfor %}
+                      <a class="action-link" id="etsin-facet-list-toggle">{{ _('More categories…')}}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="search-results-list">
+
+              {% block packages_list %}
+                {% if c.page.items %}
+                  {{ h.snippet('snippets/package_list.html', packages=c.page.items) }}
+                {% endif %}
+              {% endblock %}
+              {% block page_pagination %}
+                {{ c.page.pager(q=c.q) }}
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

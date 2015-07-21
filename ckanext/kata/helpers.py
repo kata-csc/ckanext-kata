@@ -2,6 +2,7 @@
 '''
 Template helpers for Kata CKAN extension.
 '''
+import iso8601
 
 from paste.deploy.converters import asbool
 from pylons import config
@@ -48,18 +49,19 @@ class LoopIndex(object):
     def __repr__(self):
         return str(self.index)
 
+
 def has_agents_field(data_dict, field):
     '''Return true if some of the data dict's agents has attribute given in field.'''
-    return [] != filter(lambda x : x.get(field), data_dict.get('agent', []))
+    return [] != filter(lambda x: x.get(field), data_dict.get('agent', []))
 
 
 def has_contacts_field(data_dict, field):
     '''Return true if some of the data dict's contacts has attribute given in field'.'''
-    return [] != filter(lambda x : x.get(field), data_dict.get('contact', []))
+    return [] != filter(lambda x: x.get(field), data_dict.get('contact', []))
 
 
 def reference_update(ref):
-    #@beaker_cache(type="dbm", expire=2678400)
+    # @beaker_cache(type="dbm", expire=2678400)
     def cached_url(url):
         return url
     return cached_url(ref)
@@ -70,22 +72,22 @@ def kata_sorted_extras(list_):
     Used for outputting package extras, skips package_hide_extras
     '''
     output = []
-    for extra in sorted(list_, key=lambda x:x['key']):
+    for extra in sorted(list_, key=lambda x: x['key']):
         if extra.get('state') == 'deleted':
             continue
         # Todo: fix. The ANDs make no sense
         key, val = extra['key'], extra['value']
-        if key in g.package_hide_extras and\
-            key in settings.KATA_FIELDS and\
-            key.startswith('author_') and\
-            key.startswith('organization_'):
+        if key in g.package_hide_extras and \
+           key in settings.KATA_FIELDS and \
+           key.startswith('author_') and \
+           key.startswith('organization_'):
             continue
 
-        if  key.startswith('title_') or\
-            key.startswith('lang_title_') or\
-            key == 'harvest_object_id' or\
-            key == 'harvest_source_id' or\
-            key == 'harvest_source_title':
+        if key.startswith('title_') or \
+           key.startswith('lang_title_') or \
+           key == 'harvest_object_id' or \
+           key == 'harvest_source_id' or \
+           key == 'harvest_source_title':
             continue
 
         found = False
@@ -154,7 +156,7 @@ def get_package_ratings(data):
     '''
     score = 0   # Scale 0-49
 
-    required_fields =['pids', 'version', 'contact', 'license_id', 'agent', 'language', 'availability']
+    required_fields = ['pids', 'version', 'contact', 'license_id', 'agent', 'language', 'availability']
     if all(data.get(field) for field in required_fields):
         score += 2
 
@@ -199,7 +201,8 @@ def get_package_ratings(data):
 
     # MAX 40
 
-    if filter(lambda con: con.get('name') and con.get('email') and con.get('URL') and con.get('phone'), data.get('contact', [])):
+    if filter(lambda con: con.get('name') and con.get('email') and con.get('URL') and con.get('phone'),
+              data.get('contact', [])):
         score += 4
 
     # MAX 44
@@ -240,6 +243,7 @@ def get_related_urls(pkg):
         ret.append(rel.related.url)
     return ret
 
+
 def get_download_url(pkg_dict, type=''):
     '''
     :param pkg_dict: package dictionary
@@ -255,10 +259,11 @@ def get_if_url(data):
     :param data: the data to check out
     :rtype: boolean
     '''
-    if data and (data.startswith('http://') or data.startswith('https://') or \
-    data.startswith('urn:')):
+    if data and (data.startswith('http://') or data.startswith('https://') or
+                 data.startswith('urn:')):
         return True
-    return False
+    else:
+        return False
 
 
 def string_to_list(data):
@@ -292,23 +297,37 @@ def get_first_admin(id):
                 profileurl = ""
                 if user:
                     profileurl = config.get('ckan.site_url', '') + \
-                                 h.url_for(controller="user", action="read",
-                                           id=user.name)
+                        h.url_for(controller="user", action="read",
+                                  id=user.name)
                     return profileurl
     return False
 
 
-def get_rightscategory(license):
+def get_rightscategory(data_dict):
     '''
-    Return rightscategory based on license id
+    Return METS rights category and rights declaration for dataset
 
-    :returns: LICENSED, COPYRIGHTED, OTHER or PUBLIC DOMAIN
+    :returns: CONTRACTUAL, LICENSED, COPYRIGHTED or PUBLIC DOMAIN
     '''
-    if license == 'other-pd':
-        return "PUBLIC DOMAIN"
-    elif license and license not in ['notspecified', 'other-closed', 'other_closed', 'other-nc', 'other-at', 'other-open']:
-        return "LICENSED"
-    return "OTHER"
+
+    license = data_dict.get('license_id')
+    availability = data_dict.get('availability')
+
+    declarations = []
+
+    if availability in ['access_application', 'access_request']:
+        category = "CONTRACTUAL"
+        declarations.append(data_dict.get('access_application_URL') or data_dict.get('access_request_URL'))
+    elif license in ['other-pd', "ODC-PDDL-1.0", "CC0-1.0", "cc-zero"]:
+        category = "PUBLIC DOMAIN"
+    elif license and license[:2] in ['CC', 'OD']:
+        category = "LICENSED"
+    else:
+        category = "COPYRIGHTED"
+
+    declarations.append(data_dict.get('license_url') or data_dict.get('license_URL') or data_dict.get('license_id'))
+
+    return category, declarations
 
 
 def get_authors(data_dict):
@@ -345,7 +364,7 @@ def resolve_agent_role(role):
     '''
     Get a non-translated role name.
     '''
-    return settings.AGENT_ROLES.get(role, None)
+    return settings.AGENT_ROLES.get(role, role.title())
 
 
 def get_funder(data_dict):
@@ -356,6 +375,7 @@ def get_funder(data_dict):
 def get_funders(data_dict):
     '''Get all funders from agent field in data_dict'''
     return utils.get_funders(data_dict)
+
 
 def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
     '''
@@ -380,7 +400,7 @@ def is_allowed_org_member_edit(group_dict, user_id, target_id, target_role):
         return True
 
     for possible_role in ['admin', 'editor', 'member']:
-        if settings.ORGANIZATION_MEMBER_PERMISSIONS.get((user_role, target_role, possible_role, user_id == target_id), False):
+        if settings.ORGANIZATION_MEMBER_PERMISSIONS.get((user_role, target_role, possible_role, user_id == target_id)):
             return True
 
     return False
@@ -419,7 +439,8 @@ def dataset_is_valid(package):
     """
     package['accept-terms'] = u'True'
     package_plugin = plugins.lookup_package_plugin(package['type'])
-    _, errors = validate(package, package_plugin.update_package_schema(), {'model': model, 'session': model.Session, 'user': c.user})
+    _, errors = validate(package, package_plugin.update_package_schema(),
+                         {'model': model, 'session': model.Session, 'user': c.user})
     return not bool(errors)
 
 
@@ -547,6 +568,7 @@ def convert_language_code(lang, to_format, throw_exceptions=True):
             except catch[1]:
                 return ''
 
+
 def split_disciplines(disc):
     '''
     Split disciplines with the help of lookahead
@@ -564,6 +586,7 @@ def get_ga_id():
     :return: google analytics id
     '''
     return config.get('kata.ga_id', '')
+
 
 def json_to_list(pkg_dict):
 
@@ -599,6 +622,7 @@ def has_json_content(data):
         return False
     return True
 
+
 @beaker_cache(type="dbm", expire=86400)
 def get_labels_for_uri(uri, ontology=None):
     '''
@@ -633,8 +657,6 @@ def get_labels_for_uri_nocache(uri, ontology=None):
             return None
     if not ontology:
         return None
-
-
 
     url = "http://finto.fi/rest/v1/{ontology}/data?uri={uri}&format=application/json".format(ontology=ontology, uri=uri)
     # Reverse DNS resolving can be extremely slow
@@ -684,6 +706,7 @@ def get_label_for_uri(uri, ontology=None, lang=None):
 
     return uri
 
+
 def get_translation(translation_json_string, lang=None):
     '''
     Returns the given JSON translation string in correct language.
@@ -712,6 +735,7 @@ def get_translation(translation_json_string, lang=None):
         translation = json_data.get(lang)
         if translation:
             return translation
+
 
 def get_language(lang):
     '''
@@ -794,6 +818,7 @@ def disciplines_string_resolved(disciplines, ontology=None, lang=None):
     else:
         return disciplines
 
+
 def format_facet_labels(facet_item):
     '''
     This function is used by facet_list.html to format the labels properly.
@@ -816,6 +841,7 @@ def resolve_org_name(org_id):
         return org_id
     return group.title
 
+
 def get_active_facets(facets):
     '''
     Constructs a summary of currently active facets for search view.
@@ -824,11 +850,28 @@ def get_active_facets(facets):
     facet_info = dict()
     facet_info['fields'] = facets['fields']
     facet_info['search'] = dict()
-    limits = [k for k,v in request.params.items() if v and k.endswith('_limit')]
+    limits = [k for k, v in request.params.items() if v and k.endswith('_limit')]
     limits = [limit.rsplit('_', 1)[0].strip('_') for limit in limits]
     for key in facets['search'].iterkeys():
         facet_info['search'][key] = bool(key in limits)
     return json.dumps(facet_info)
+
+
+def get_fields_grouped():
+    '''
+    Generates data equivalent to c.fields_grouped for organisation's search page
+    Needed by Limit search results feature
+
+    :return: Selected facets as a dict
+    '''
+    fields_grouped = {}
+    for (param, value) in request.params.items():
+        if param not in ['q', 'page', 'sort'] \
+                and len(value) and not param.startswith('_'):
+            if not param.startswith('ext_'):
+                if param not in fields_grouped:
+                    fields_grouped[param] = [value]
+    return fields_grouped
 
 
 def is_active_facet(facet, active_facets):
@@ -853,10 +896,23 @@ def get_dataset_paged_order(index, per_page):
     :param per_page: amount of items per page
     '''
     current_page = 1
-    page_param = [v for k,v in request.params.items() if k == 'page']
+    page_param = [v for k, v in request.params.items() if k == 'page']
     if page_param:
         try:
             current_page = int(page_param[0])
         except ValueError:
             pass
     return (current_page - 1) * per_page + index + 1
+
+
+def get_iso_datetime(datetime_string):
+    '''
+    Format given datetime string as ISO 8601 (or XSD) datetime.
+
+    :param datetime_string:
+    :return:
+    '''
+    try:
+        return iso8601.parse_date(datetime_string).isoformat()
+    except iso8601.iso8601.ParseError:
+        return datetime_string

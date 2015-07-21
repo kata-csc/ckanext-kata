@@ -10,12 +10,7 @@ Example:
 
 #}
 {% if resources %}
-	<section id="dataset-resources" class="resources module-content">
-		<h3>{{ _('Downloadable resources') }}</h3>
-		<ul class="resource-list">
-		  {% for resource in resources %}
-		    {% snippet 'package/snippets/resource_item.html', pkg=pkg, res=resource %}
-		  {% endfor %}
-		</ul>
-	</section>
+  {% for resource in resources %}
+    {% snippet 'package/snippets/resource_item.html', pkg=pkg, res=resource %}
+  {% endfor %}
 {% endif %}
