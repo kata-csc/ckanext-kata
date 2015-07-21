@@ -21,7 +21,7 @@ setup(
     zip_safe=False,
     install_requires=[
         # -*- Extra requirements: -*-
-        'rdflib >= 3.4.0',
+        'rdflib >= 4.2.0',
         'iso8601 >= 0.1.5',
         'pexpect >= 3.3',
         'pyClamd >= 0.3.10',
@@ -29,10 +29,7 @@ setup(
         'functionally >= 1.0.1',
         'python-magic >= 0.4.6',
         'python-ldap >= 2.4.16',
-        'iso639 >= 0.4.0',
-    ],
-    dependency_links=[
-        "git+https://github.com/noumar/iso639.git#egg=iso639-0.4.1"
+        'iso-639 >= 0.4.0',
     ],
     package_data={
         'ckan': [

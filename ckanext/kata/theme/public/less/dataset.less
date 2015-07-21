@@ -1,12 +1,3 @@
-.index-additional-info {
-    /*width: 90%;
-    border: 1px solid;
-    border-color: #6ccff6;
-    background-color: #fff;
-    margin: 20px;
-    padding: 0px;
-    float: left;*/
-}
 .new-dataset {
     border: none !important;
     padding: 15px !important;
@@ -19,39 +10,6 @@
 .new-dataset h3, .new-dataset a {
     color: white !important;
 }
-#about h2 {
-    font-size: 18px !important;
-    margin-top: 20px;
-}
-
-#about .centered-container {
-    text-align: center;
-    margin: 24px auto;
-}
-
-#about .link-list li{
-    display: inline;
-    list-style-type: none;
-}
-
-#about {
-    padding: 0px 128px;
-    text-align: justify;
-}
-
-#about .img-short img {
-    max-height:48px;
-    max-width: 160px;
-    padding: 0px 16px;
-}
-
-#about .img-tall img {
-    max-height:80px;
-    max-width:200px;
-    padding: 0px 16px;
-}
-
-
 
 .floating-error {
     position: fixed;
@@ -265,4 +223,177 @@ a.download {
   color: #f1592a;
   font-weight: bold;
   font-size: 14px;
+}
+
+
+@actions-and-ratings-maxwidth: 300px;
+.dataset-view-header {
+  width: 100%;
+
+  .uses-and-followers {
+    & > table {
+      td {
+        padding-right: 15px;
+      }
+    }
+    margin-right: @actions-and-ratings-maxwidth;
+  }
+
+  .social-share {
+    margin-top: 15px;
+    & > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .social-item {
+      margin-left: 5px;
+      i {
+        font-size: 28px;
+        width: 28px;
+      }
+    }
+  }
+
+  .actions-and-ratings {
+    float: right;
+    max-width: @actions-and-ratings-maxwidth;
+    text-align: right;
+  }
+
+}
+
+@media (max-width: 500px) {
+  .dataset-view-header {
+    .button-container {
+      & > .btn, & > .btn-group {
+        display: block;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+}
+
+@completeness-size: 100px;
+.completeness {
+  display: inline-block;
+  margin: 10px 0;
+  width: @completeness-size;
+  height: @completeness-size;
+  .meter {
+    border: 0;
+    border-radius: @completeness-size / 2;
+    box-shadow: 0 0 0 1px @brand-primary-color inset;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    & > span {
+      display: block;
+      height: 100%;
+      background-color: @brand-primary-color;
+    }
+    /* these aren't accurate if we mask this with a circle */
+    & > .rating0 { width: 0%; }
+    & > .rating1 { width: 20%; }
+    & > .rating2 { width: 40%; }
+    & > .rating3 { width: 60%; }
+    & > .rating4 { width: 80%; }
+    & > .rating5 { width: 100%; }
+    & > p {
+      position: absolute;
+      line-height: 1.2em;
+      top: 20%;
+      color: #333;
+      font-size: 12px;
+      text-align: center;
+      & > .number {
+        line-height: 1.5em;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.page-title {
+  margin-bottom: 20px;
+}
+
+.read-base-container {
+  padding-bottom: 60px;
+  border-bottom: 1px solid @border-color-bg;
+}
+
+.dataset-view-content {
+  margin-top: 20px;
+}
+
+.dataset-section {
+  border: 1px solid @border-color-bg;
+  background: white;
+  & + .dataset-section {
+    margin-top: -1px;
+  }
+}
+
+@multilang-tab-height: 32px;
+.etsin-multilang-display {
+  & > ul {
+    height: @multilang-tab-height;
+    & > li {
+      display: inline-block;
+      height: @multilang-tab-height;
+      & > a {
+        cursor: pointer;
+        display: inline-block;
+        height: @multilang-tab-height - 2px;
+        line-height: @multilang-tab-height - 2px;
+        padding: 0 12px;
+        border: 1px solid @border-color-bg;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      &.active a {
+        font-weight: 700;
+        color: rgb(68, 68, 68);
+        border-bottom-color: white;
+      }
+    }
+  }
+  .multilang-field {
+    padding: 12px;
+    margin-top: -1px;
+    border: 1px solid @border-color-bg;
+  }
+}
+
+.form-content {
+  .tags .tag-list {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    li .tag {
+      background-color: transparent;
+      color: @brand-primary-color;
+      border-color: @brand-primary-color;
+      box-shadow: none;
+      border-radius: 4px;
+      &:hover {
+        background: @brand-primary-color;
+        color: white;
+      }
+    }
+  }
+}
+
+.form-inner-table {
+  td, th {
+    vertical-align: top;
+    padding: 5px;
+  }
+  th {
+    text-align: left;
+  }
 }

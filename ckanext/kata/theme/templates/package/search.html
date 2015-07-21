@@ -9,6 +9,12 @@
     <div class="etsin-container">
       <div class="container">
         <div class="row-fluid">
+          <div class="browse-search-switcher">
+            <a href="{{ h.url_for('/browse') }}">{{ _('Browse Datasets') }}</a>
+            <a class="active" href="{{ h.url_for('/dataset') }}">{{ _('Search Datasets') }}</a>
+          </div>
+        </div>
+        <div class="row-fluid">
           <h2 class="etsin-secondary-title">{{ _("Search for a Dataset") }}</h2>
 
           <form id="dataset-search" class="dataset-search clearfix search-form" method="get" data-module="select-switch">

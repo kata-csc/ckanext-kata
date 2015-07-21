@@ -1,0 +1,10 @@
+{% extends "organization/edit_base.html" %}
+
+{% block inner_content %}
+    <h2 class="{% block page_heading_class %}etsin-secondary-title{% endblock %}">
+      {% block page_heading %}{{ _('Organization Form') }}{% endblock %}
+    </h2>
+    {% block form %}
+      {{ c.form | safe }}
+    {% endblock %}
+{% endblock %}

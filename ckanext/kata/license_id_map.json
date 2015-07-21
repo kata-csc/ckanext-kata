@@ -1,0 +1,16 @@
+{
+  "": "notspecified",
+  "other": "other",
+  "notspecified": "notspecified",
+  "other-closed": "other-closed",
+  "other-nc": "other-nc",
+  "other-pd": "other-pd",
+  "other-open": "other-open",
+  "undernegotiation": "undernegotiation",
+  "apachelicence_2.0": "Apache-2.0",
+  "apache-2.0": "Apache-2.0",
+  "clarin_aca": "ClarinACA-1.0",
+  "clarin_aca-nc": "ClarinACA+NC-1.0",
+  "clarin_pub": "ClarinPUB-1.0",
+  "clarin_res": "ClarinRES-1.0"
+}

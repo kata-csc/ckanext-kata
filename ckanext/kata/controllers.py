@@ -8,11 +8,13 @@ import functionally as fn
 import json
 import logging
 import mimetypes
+import rdflib
 import re
 import string
 import urllib2
 import sqlalchemy
 from sqlalchemy.sql import select
+from urllib import urlencode
 
 from lxml import etree
 
@@ -28,12 +30,16 @@ import ckan.lib.i18n
 from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
 from ckan.lib import captcha, helpers
+import ckan.lib.maintain as maintain
 from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
 import ckan.logic as logic
 import ckan.model as model
 from ckan.model import Package, User, meta, Session
 from ckan.model.authz import add_user_to_role
 import ckan.plugins as plugins
+from ckan.common import response
+from ckan.common import OrderedDict
+import ckan.plugins as p
 
 import ckanext.harvest.interfaces as h_interfaces
 from ckanext.kata.model import KataAccessRequest
@@ -45,6 +51,7 @@ import os
 import difflib
 
 _get_or_bust = ckan.logic.get_or_bust
+check_access = logic.check_access
 
 log = logging.getLogger(__name__)
 t = plugins.toolkit
@@ -66,6 +73,16 @@ def get_package_owner(package):
             userid = role.user_id
             break
     return userid
+
+
+def _encode_params(params):
+    return [(k, v.encode('utf-8') if isinstance(v, basestring) else str(v))
+            for k, v in params]
+
+
+def url_with_params(url, params):
+    params = _encode_params(params)
+    return url + u'?' + urlencode(params)
 
 
 class MetadataController(BaseController):
@@ -223,6 +240,40 @@ class KATAApiController(ApiController):
 
         return self._onki_autocomplete(query, "paikat")
 
+    def _query_finto(self, query, vocab, language=None):
+        '''
+        Queries Finto ontologies by returning the whole result set, which can
+        be parsed according to the needs (see _onki_autocomplete_uri)
+
+        :param query: the string to search for
+        :type query: string
+        :param vocab: the vocabulary/ontology, i.e. lexvo
+        :type vocab: string
+        :param language: the language of the query
+        :type query: string
+
+        :rtype: dictionary
+        '''
+
+        url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
+
+        if language:
+            url_template += "&lang={l}"
+
+        jsondata = {}
+
+        if query:
+            try:
+                url = url_template.format(q=query, v=vocab, l=language)
+            except UnicodeEncodeError:
+                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
+
+            data = urllib2.urlopen(url).read()
+            jsondata = json.loads(data)
+
+        return jsondata
+
+
     def _onki_autocomplete(self, query, vocab, language=None):
         '''
         Queries the remote ontology for suggestions and
@@ -237,22 +288,12 @@ class KATAApiController(ApiController):
 
         :rtype: dictionary
         '''
-        url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}"
-
-        if language:
-            url_template += "&lang={l}"
-
+        jsondata = self._query_finto(query, vocab, language)
         labels = []
-        if query:
-            try:
-                url = url_template.format(q=query, v=vocab, l=language)
-            except UnicodeEncodeError:
-                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
-            data = urllib2.urlopen(url).read()
-            jsondata = json.loads(data)
-            if u'results' in jsondata:
-                results = jsondata['results']
-                labels = [concept.get('prefLabel', '').encode('utf-8') for concept in results]
+
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [concept.get('prefLabel', '').encode('utf-8') for concept in results]
 
         result_set = {
             'ResultSet': {
@@ -278,22 +319,12 @@ class KATAApiController(ApiController):
         :rtype: dictionary
         '''
 
-        url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
-
-        if language:
-            url_template += "&lang={l}"
-
+        jsondata = self._query_finto(query, vocab, language)
         labels = []
-        if query:
-            try:
-                url = url_template.format(q=query, v=vocab, l=language)
-            except UnicodeEncodeError:
-                url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
-            data = urllib2.urlopen(url).read()
-            jsondata = json.loads(data)
-            if u'results' in jsondata:
-                results = jsondata['results']
-                labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
+
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
 
@@ -312,6 +343,27 @@ class KATAApiController(ApiController):
             data_dict = {'q': q, 'limit': limit}
             organization_list = get_action('organization_autocomplete')(context, data_dict)
         return self._finish_ok(organization_list)
+
+    def language_autocomplete(self):
+        '''
+        Suggestions for languages.
+
+        :rtype: dictionary
+        '''
+
+        language = request.params.get('language', '')
+        query = request.params.get('incomplete', '')
+
+        jsondata = self._query_finto(query, "lexvo", language)
+        labels = []
+
+        if u'results' in jsondata:
+            results = jsondata['results']
+            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['localname'].encode('utf-8')) for concept in results]
+
+        result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
+
+        return self._finish_ok(result_set)
 
 
 class EditAccessRequestController(BaseController):
@@ -421,9 +473,9 @@ class EditAccessRequestController(BaseController):
 
 class ContactController(BaseController):
     """
-    Add features to contact the dataset's owner. 
-    
-    From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author. 
+    Add features to contact the dataset's owner.
+
+    From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author.
     The feature provides a form for message sending, and the message is sent via email.
     """
 
@@ -918,6 +970,166 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         by Genshi.
         '''
         return re.sub(r'(<[^<>]*)( lang=\".{2,3}")([^<>]*>)', r'\1\3', self.read(id, format))
+
+    def read_ttl(self, id, format):
+        '''
+        Render dataset in RDF using turtle format.
+        '''
+        g = rdflib.Graph().parse(data=self.read_rdf(id, 'rdf'))
+        response.headers['Content-Type'] = 'text/turtle'
+        return g.serialize(format='turtle')
+
+    def browse(self):
+        '''
+        List datasets, code is mostly the same as package search.
+        '''
+        from ckan.lib.search import SearchError
+        package_type = 'dataset'
+
+        # default to discipline
+        c.facet_choose_title = request.params.get('facet_choose_title') or 'extras_discipline'
+        c.facet_choose_item = request.params.get('facet_choose_item')
+
+        try:
+            context = {'model': model, 'user': c.user or c.author}
+            check_access('site_read', context)
+        except NotAuthorized:
+            abort(401, _('Not authorized to see this page'))
+
+        q = c.q = u''
+        c.query_error = False
+        try:
+            page = int(request.params.get('page', 1))
+        except ValueError, e:
+            abort(400, ('"page" parameter must be an integer'))
+
+        limit = 50
+
+        params_nopage = [(k, v) for k, v in request.params.items()
+                         if k != 'page']
+
+        def remove_field(key, value=None, replace=None):
+            return h.remove_url_param(key, value=value, replace=replace,
+                                      controller='ckanext.kata.controllers:KataPackageController', action='browse')
+
+        c.remove_field = remove_field
+
+        sort_by = request.params.get('sort', None)
+
+        params_nosort = [(k, v) for k, v in params_nopage if k != 'sort']
+
+        def _sort_by(fields):
+            """
+            Sort by the given list of fields.
+
+            Each entry in the list is a 2-tuple: (fieldname, sort_order)
+
+            eg - [('metadata_modified', 'desc'), ('name', 'asc')]
+
+            If fields is empty, then the default ordering is used.
+            """
+            params = params_nosort[:]
+
+            if fields:
+                sort_string = ', '.join('%s %s' % f for f in fields)
+                params.append(('sort', sort_string))
+            return url_with_params(h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse'), params)
+
+        c.sort_by = _sort_by
+        if sort_by is None:
+            c.sort_by_fields = []
+        else:
+            c.sort_by_fields = [field.split()[0]
+                                for field in sort_by.split(',')]
+
+        def pager_url(q=None, page=None):
+            params = list(params_nopage)
+            params.append(('page', page))
+            return url_with_params(h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse'), params)
+
+        c.search_url_params = urlencode(_encode_params(params_nopage))
+
+        try:
+            c.fields = []
+            # c.fields_grouped will contain a dict of params containing
+            # a list of values eg {'tags':['tag1', 'tag2']}
+            c.fields_grouped = {}
+            search_extras = {}
+            fq = ''
+
+            if c.facet_choose_item:
+                # Build query: in dataset browsing the query is limited to a single facet only
+                fq = ' %s:"%s"' % (c.facet_choose_title, c.facet_choose_item)
+                c.fields.append((c.facet_choose_title, c.facet_choose_item))
+                c.fields_grouped[c.facet_choose_title] = [c.facet_choose_item]
+
+            context = {'model': model, 'session': model.Session,
+                       'user': c.user or c.author, 'for_view': True}
+
+            if not asbool(config.get('ckan.search.show_all_types', 'False')):
+                fq += ' +dataset_type:dataset'
+
+            facets = OrderedDict()
+
+            default_facet_titles = {
+                    'organization': _('Organizations'),
+                    'groups': _('Groups'),
+                    'tags': _('Tags'),
+                    'res_format': _('Formats'),
+                    'license_id': _('License'),
+                    }
+
+            for facet in g.facets:
+                if facet in default_facet_titles:
+                    facets[facet] = default_facet_titles[facet]
+                else:
+                    facets[facet] = facet
+
+            # Facet titles
+            for plugin in p.PluginImplementations(p.IFacets):
+                facets = plugin.dataset_facets(facets, package_type)
+
+            c.facet_titles = facets
+
+            data_dict = {
+                'q': q,
+                'fq': fq.strip(),
+                'facet.field': facets.keys(),
+                'rows': limit,
+                'start': (page - 1) * limit,
+                'sort': sort_by,
+                'extras': search_extras
+            }
+
+            query = get_action('package_search')(context, data_dict)
+            c.sort_by_selected = query['sort']
+
+            c.page = h.Page(
+                collection=query['results'],
+                page=page,
+                url=pager_url,
+                item_count=query['count'],
+                items_per_page=limit
+            )
+            c.facets = query['facets']
+            c.search_facets = query['search_facets']
+            c.page.items = query['results']
+        except SearchError, se:
+            log.error('Dataset search error: %r', se.args)
+            c.query_error = True
+            c.facets = {}
+            c.search_facets = {}
+            c.page = h.Page(collection=[])
+        c.search_facets_limits = {}
+        for facet in c.search_facets.keys():
+            limit = 0
+            c.search_facets_limits[facet] = limit
+
+        maintain.deprecate_context_item(
+          'facets',
+          'Use `c.search_facets` instead.')
+
+        return render('kata/browse.html')
 
 
 class KataInfoController(BaseController):

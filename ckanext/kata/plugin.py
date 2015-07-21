@@ -111,6 +111,12 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/dataset/{id:.*?}.{format:rdf}',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action='read_rdf')
+        map.connect('/dataset/{id:.*?}.{format:ttl}',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action='read_ttl')
+        map.connect('/browse',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action='browse')
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
@@ -144,6 +150,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action='organization_autocomplete')
+        map.connect('/api/2/util/language/autocomplete',
+                    controller=api_controller,
+                    conditions=get,
+                    action='language_autocomplete')
         map.connect('/unlock_access/{id}',
                     controller="ckanext.kata.controllers:EditAccessRequestController",
                     action="unlock_access")
@@ -270,19 +280,23 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'disciplines_string_resolved': helpers.disciplines_string_resolved,
             'filter_system_users': helpers.filter_system_users,
             'format_facet_labels': helpers.format_facet_labels,
+            'get_active_facets': helpers.get_active_facets,
             'get_authors': helpers.get_authors,
             'get_contacts': helpers.get_contacts,
             'get_contributors': helpers.get_contributors,
+            'get_dataset_paged_order': helpers.get_dataset_paged_order,
             'get_description': helpers.get_description,
             'get_dict_errors': helpers.get_dict_errors,
             'get_dict_field_errors': helpers.get_dict_field_errors,
             'get_distributor': helpers.get_distributor,
             'get_download_url': helpers.get_download_url,
+            'get_fields_grouped': helpers.get_fields_grouped,
             'get_first_admin': helpers.get_first_admin,
             'get_funder': helpers.get_funder,
             'get_funders': helpers.get_funders,
             'get_ga_id': helpers.get_ga_id,
             'get_if_url': helpers.get_if_url,
+            'get_iso_datetime': helpers.get_iso_datetime,
             'get_label_for_uri': helpers.get_label_for_uri,
             'get_labels_for_uri': helpers.get_labels_for_uri,
             'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,
@@ -305,6 +319,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'has_agents_field': helpers.has_agents_field,
             'has_contacts_field': helpers.has_contacts_field,
             'has_json_content': helpers.has_json_content,
+            'is_active_facet': helpers.is_active_facet,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'is_backup_instance': helpers.is_backup_instance,
             'is_url': helpers.is_url,
@@ -460,9 +475,11 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         :param data_dict: data_dict to modify
         '''
 
-        if data_dict.has_key('sort') and data_dict['sort'] is None:
+        if 'sort' in data_dict and data_dict['sort'] is None:
             data_dict['sort'] = settings.DEFAULT_SORT_BY
-            c.sort_by_selected = settings.DEFAULT_SORT_BY  # This is to get the correct one pre-selected on the HTML form.
+
+            # This is to get the correct one pre-selected on the HTML form.
+            c.sort_by_selected = settings.DEFAULT_SORT_BY
 
         c.search_fields = settings.SEARCH_FIELDS
         c.translated_field_titles = utils.get_field_titles(toolkit._)

@@ -1,4 +1,3 @@
-
 this.ckan.module('kata-accordion', function ($, _) {
   return {
     initialize: function () {
@@ -21,7 +20,6 @@ this.ckan.module('kata-accordion', function ($, _) {
     }
   };
 });
-
 
 this.ckan.module('kata-facet-accordion', function ($, translate) {
   return {

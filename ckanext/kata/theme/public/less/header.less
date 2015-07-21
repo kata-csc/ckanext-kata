@@ -2,14 +2,7 @@
 @logo-height: 43.5px;
 
 header.masthead {
-  font-family: Lato, Helvetica, Arial, sans-serif;
-  /*background-color: #FFF !important;
-  background-image: none !important;
-  margin-bottom: 10px;
-  height: 161px;
-  width: 972px;
-  margin: auto;
-  */
+  font-family: @base-font;
   background: @body-background-color;
   margin-bottom: 45px;
 
@@ -53,13 +46,6 @@ header.masthead {
     }
   }
 
-
-
-  /*.content {
-    margin-top: 30px !important;
-    top: 8px;
-  }*/
-
   // TODO migrate container specifications to common.less for full layout changes
   .container {
     width: @content-max-width;
@@ -69,14 +55,6 @@ header.masthead {
     .container {
       width: auto;
     }
-  }
-
-  .container {
-    /*height: 100px;
-    background-image: none !important;
-    background-size: 100% !important;
-    width: 971px;
-    padding-top: 0px;*/
   }
 
   .content a,
@@ -119,11 +97,6 @@ header.masthead {
     }
   }
 
-  /*.dropup, .dropdown {
-    display: inline-block;
-    float: right;
-  }*/
-
   .user-dropdown-menu {
     margin-top: 5px;
     a {
@@ -134,11 +107,7 @@ header.masthead {
     }
   }
 
-  .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
-    background: @brand-primary-color;
-  }
-
-
+  
   .dropdown {
     .dropdown-toggle {
       .icon-chevron-down {
@@ -196,6 +165,7 @@ header.masthead {
     }
   }
 }
+
 
 @navi-text-color: @text-color-light;
 @navi-line-color: #d9d9d9;

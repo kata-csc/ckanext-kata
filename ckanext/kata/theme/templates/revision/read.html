@@ -1,24 +1,14 @@
 {% extends "revision/read_base.html" %}
 
 {% set rev = c.revision %}
-
-{% block subtitle %}{{ _('Revision') }} {{ rev.id }}{% endblock %}
-
-{% block breadcrumb_content %}
-  <li>{% link_for _('Revisions'), controller='revision', action='index' %}</li>
-  <li class="active"><a href="" title="{{ _('Revision') }} {{ rev.id }}">{{ rev.id |truncate(35) }}</a></li>
-{% endblock %}
-
+{#
 {% block add_action_content %}
   {% if c.revision_change_state_allowed %}
-    <form
-      method="POST"
-      action="{{ h.url_for(controller='revision',
+    <form method="POST"
+          action="{{ h.url_for(controller='revision',
           action='edit',
           id=c.revision.id) }}"
-      data-module="basic-form"
-      >
-      <li>
+          data-module="basic-form">
         {% if rev.state != 'deleted' %}
         <button type="submit" name="action" value="delete" class="btn btn-danger">
           <i class="icon-trash"></i> {{ _('Delete') }}
@@ -30,12 +20,13 @@
           {{ _('Undelete') }}
         </button>
         {% endif %}
-      </li>
     </form>
   {% endif %}
 {% endblock %}
+#}
 
-{% block primary_content_inner %}
+{% block inner_content %}
+
   <h1>{{ _('Revision') }}: {{ rev.id }}</h1>
 
   <div class="state-{{ rev.state }}">
