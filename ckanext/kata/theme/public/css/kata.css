@@ -577,6 +577,53 @@ input[id="xmlfile"] {
     margin-left: 7%;
   }
 }
+.login-wrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 40%;
+  min-width: 280px;
+  min-height: 246px;
+  margin: 10px;
+  border: 1px solid #c9c9c9;
+}
+.login-text {
+  margin: 10px;
+  min-height: 96px;
+}
+.login-inline {
+  display: inline-block;
+  margin: 10px;
+}
+.login-container {
+  text-align: center;
+  color: #444444;
+}
+.login-container .btn-padded {
+  display: block;
+  margin: 20px;
+  padding: 10px;
+}
+.login-container img {
+  margin: 28px;
+}
+.login-container form {
+  margin: 0;
+}
+.login-container a {
+  margin: 0;
+  display: block;
+}
+.login-container input[type="checkbox"] {
+  top: 4px;
+}
+.login-container .button-wrapper {
+  color: #ffffff;
+  text-shadow: none !important;
+  background-color: #3fa9f5 !important;
+  background-image: none !important;
+  border-color: #3fa9f5 !important;
+  border: 1px solid #c9c9c9;
+}
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
   background: #ffffff;
