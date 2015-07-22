@@ -606,6 +606,7 @@ input[id="xmlfile"] {
 }
 .form-tab-content .form-row {
   margin-bottom: 40px;
+  clear: both;
 }
 .form-tab-content .form-row .form-label {
   float: left;
@@ -616,10 +617,17 @@ input[id="xmlfile"] {
 .form-tab-content .form-row .form-content {
   min-height: 16px;
   position: relative;
-  margin-left: 30%;
-  width: 65%;
-  padding-right: 5%;
+  width: 50%;
   padding-left: 10px;
+  float: left;
+}
+.form-tab-content .form-row .form-instructions {
+  padding-left: 10px;
+  float: right;
+  width: 15%;
+}
+.form-tab-content .form-row .form-instructions i {
+  font-size: 20px;
 }
 .form-tab-content .form-row .form-table {
   margin-left: auto;
@@ -638,7 +646,8 @@ input[id="xmlfile"] {
     margin-bottom: 20px;
     text-align: left;
   }
-  .form-tab-content .form-row .form-content {
+  .form-tab-content .form-row .form-content,
+  .form-tab-content .form-row .form-instructions {
     width: 91%;
     margin-left: 7%;
   }
