@@ -1,0 +1,129 @@
+.comment-container {
+
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.comment-container ul {
+    margin: 0 0 10px 0;
+}
+
+.comment-container li {
+    display: inline;
+    text-transform: uppercase;
+    font-size: 10px;
+    margin: 0px 6px 0px 0px;
+}
+
+.comment-container .comment-wrapper {
+  padding-left: 15px;
+}
+
+.comment-container .comment-subject {
+    margin: 0px !important;
+    font-size: 14px;
+}
+
+.comment-container p {
+    margin: 0px !important;
+}
+
+.comment-container .comment-links a {
+    color: @text-color-light;
+}
+
+.comment-container .comment-wrapper .links {
+  margin: 8px 0 10px 0;
+}
+.comment-container .comment-wrapper h3 {
+  display: inline-block;
+}
+.comment-container .comment-wrapper .submitted {
+  float: right;
+  margin: 4px 0;
+  //font-size: 11px;
+  color: @text-color-light;
+}
+
+.comment-container .comment-wrapper .span-right {
+  float: right;
+}
+
+@media (max-width: 500px) {
+  .submitted {
+    display: block;
+    float: none !important;
+    margin: 0 !important;
+    //font-size: 10px;
+  }
+
+  .comment-container .comment-wrapper .span-right {
+    float: none !important;
+    margin-left: 0;
+  }
+
+  .comment-form {
+    margin: 16px auto;
+    padding: 16px;
+    width: inherit !important;
+    min-width: 280px;
+  }
+
+  .comment-container .comment-wrapper {
+    padding-left: 8px;
+  }
+
+}
+
+.comment-container .comment {
+  border-left: 2px solid @link-color ;
+  padding-left: 10px;
+  margin: 4px 0;
+  font-size: 12px;
+}
+
+.comment-form {
+    margin: 16px auto;
+    padding: 16px;
+    width: 400px;
+}
+
+.inline-form {
+    display: inline-block;
+    padding: 10px;
+    margin: 5px 0 5px 0;
+}
+
+.bordered {
+  border: 1px solid @border-color-bg;
+  border-radius: 4px;
+}
+
+.btn-blue {
+  background-color: @link-color !important;
+  background-image: none !important;
+  border-color: @link-color !important;
+  box-shadow: none;
+  text-shadow: none;
+  color: #ffffff;
+}
+
+.btn-white {
+  background-image: none !important;
+  border-color: @link-color !important;
+  background-color: #ffffff !important;
+  box-shadow: none;
+  text-shadow: none;
+  color: @link-color;
+}
+
+.btn-blue:hover {
+  color: #ffffff;
+  background-color: @link-secondary-color !important;
+  border-color: @link-secondary-color !important;
+}
+
+.btn-white:hover {
+  color: @link-secondary-color;
+  border-color: @link-secondary-color !important;
+}

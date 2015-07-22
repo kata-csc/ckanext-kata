@@ -26,10 +26,11 @@ from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.user import UserController
 from ckan.controllers.storage import StorageController
+from ckan.controllers.home import HomeController
 import ckan.lib.i18n
 from ckan.lib.base import BaseController, c, h, redirect, render, abort
 from ckan.lib.email_notifications import send_notification
-from ckan.lib import captcha, helpers
+from ckan.lib import captcha, helpers, search
 import ckan.lib.maintain as maintain
 from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
 import ckan.logic as logic
@@ -1193,3 +1194,49 @@ class MalwareScanningStorageController(StorageController):
             # TODO: produce a meaningful error message through javascript?
             abort(403)
 
+
+class KataHomeController(HomeController):
+    '''
+    KataHomeController rewrites features of CKAN's home controller.
+
+    '''
+    def index(self):
+        '''
+        Simplified index function compared to CKAN's original one.
+
+        :return: render home/index.html
+        '''
+
+        try:
+            # package search
+            context = {'model': model, 'session': model.Session,
+                       'user': c.user or c.author}
+            data_dict = {
+                'q': '*:*',
+                'facet.field': g.facets,
+                'rows': 0,
+                'start': 0,
+                'sort': 'title_string desc',
+                'fq': 'capacity:"public"'
+            }
+            query = logic.get_action('package_search')(
+                context, data_dict)
+            c.package_count = query['count']
+
+            c.facets = query['facets']
+            maintain.deprecate_context_item(
+                'facets',
+                'Use `c.search_facets` instead.')
+
+            c.search_facets = query['search_facets']
+
+            c.num_tags = len(c.facets.get('tags'))
+            c.num_discipline = len(c.facets.get('extras_discipline'))
+
+        except search.SearchError:
+            c.package_count = 0
+            c.groups = []
+            c.num_tags = 0
+            c.num_discipline = 0
+
+        return render("home/index.html", cache_force=True)

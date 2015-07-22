@@ -1,0 +1,257 @@
+.dataset-fast-stats-wrapper {
+  margin: 20px auto 50px auto;
+  text-align: center;
+}
+
+.dataset-fast-stats {
+  display: inline-block;
+  margin: 0;
+  max-width: 480px;
+  border: 1px solid @border-color-bg;
+  border-radius: 4px;
+  list-style: none;
+  & > li {
+    display: inline-block;
+    padding: 24px 30px 20px 30px;
+    .stat-label {
+      padding-top: 10px;
+      font-size: 13px;
+      color: @brand-primary-color;
+      a {
+        color: @brand-primary-color;
+        &:hover, &:active, &:focus {
+          text-decoration: none;
+        }
+      }
+    }
+    .stat-number {
+      font-size: 38px;
+      a {
+        color: rgb(68,68,68);
+        &:hover, &:active, &:focus {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+@steps-image-size: 160px;
+
+.etsin-steps-visualization {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  & > ul {
+    display: inline-block;
+    margin: 0;
+    list-style: none;
+    & > li {
+      max-width: @steps-image-size * 0.3 + @steps-image-size;
+      display: inline-block;
+      padding: 24px 30px 20px 30px;
+      vertical-align: top;
+      &.steps-arrow {
+        padding-top: @steps-image-size / 2 + 10px;
+        padding-left: 0;
+        padding-right: 0;
+        vertical-align: top;
+        .icon-chevron-right {
+          color: @brand-primary-color;
+          font-size: 32px;
+          width: 32px;
+        }
+      }
+      .steps-image {
+        border: 0;
+        /*border-radius: @steps-image-size / 2;*/
+        /*margin-left: @steps-image-size * 0.1;
+        margin-right: @steps-image-size * 0.1;
+        background-size: 100% auto;*/
+        background-size: 650px 787px;
+        background-repeat: no-repeat;
+        content: ' ';
+        width: @steps-image-size;
+        height: @steps-image-size;
+        &.step1 {
+          background-image: url("/base/images/big_index_icons.png");
+          background-position: -325px -190px;
+        }
+        &.step2 {
+          background-image: url("/base/images/big_index_icons.png");
+          background-position: -162px -360px;
+        }
+        &.step3 {
+          background-image: url("/base/images/big_index_icons.png");
+          background-position: -520px -190px;
+        }
+        &.step4 {
+          background-image: url("/base/images/big_index_icons.png");
+          background-position: -490px -370px;
+        }
+      }
+      .steps-text {
+        margin-top: 15px;
+        text-align: left;
+        h2 {
+          font-size: @secondary-title-size;
+        }
+        p {
+          color: @text-color-light;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+// Drop the arrows when steps don't fit into one row
+@media (max-width: 900px) {
+  .etsin-steps-visualization {
+    .steps-arrow {
+      display: none;
+    }
+  }
+}
+
+// Allow more space for a step when not all in one row
+@media (max-width: 800px) {
+  .etsin-steps-visualization {
+    ul > li {
+      max-width: @steps-image-size * 0.6 + @steps-image-size;
+    }
+  }
+}
+
+.container.experiences {
+  width: 1200px;
+  max-width: 1200px;
+}
+
+
+.home-experiences-social {
+  //padding: 50px;
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .home-experiences {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding-left: 80px;
+    float: left;
+    width: 50%;
+  }
+
+  .home-social-picks {
+    margin-top: 50px;
+    padding-right: 40px;
+    float: right;
+    width: 35%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .container.experiences {
+    width: auto;
+    max-width: auto;
+  }
+}
+
+// Move experiences and social on top of each other on small display
+@media (max-width: 900px) {
+  .home-experiences-social {
+
+    .home-experiences, .home-social-picks {
+      padding-left: 0;
+      padding-right: 0;
+      float: none;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .home-social-picks {
+      max-width: 500px;
+    }
+  }
+}
+
+@person-image-size: 130px;
+
+.home-experiences {
+  .story + .story {
+    margin-top: 30px;
+  }
+  .story {
+    margin-right: 40px;
+    max-width: 600px;
+    &:after {
+      content: "";
+      display: table;
+      clear: left;
+    }
+    .person-image {
+      float: left;
+      content: ' ';
+      border: 1px solid @brand-primary-color;
+      border-radius: @person-image-size / 2;
+      box-shadow: 0 0 0 3px white inset;
+      width: @person-image-size;
+      height: @person-image-size;
+      //background-color: #555;
+      background-image: url("/base/images/portrait_placeholder.png");
+      background-size: @person-image-size auto;
+      background-repeat: no-repeat;
+      margin: 0 40px 0 0;
+      &.person1 {
+        background-image: url("/base/images/person1.png");
+      }
+      &.person2 {
+        background-image: url("/base/images/person2.png");
+      }
+      &.person3 {
+        background-image: url("/base/images/person3.png");
+      }
+    }
+    .person-story {
+      padding-left: @person-image-size + 40px;
+      h2 {
+        font-size: @secondary-title-size;
+        color: @text-color-light;
+      }
+      p {
+        font-size: 13px;
+        color: @text-color-light;
+      }
+      .person-name {
+        font-size: 13px;
+        color: black;
+      }
+    }
+  }
+}
+
+.home-social-container {
+  background-color: white;
+  border: 1px solid @border-color-bg;
+  padding: 25px;
+  margin-bottom: 40px;
+}
+
+.extra-messages {
+  .maintenance-message {
+    font-weight: 700;
+    color: @important-notification-color;
+    margin-bottom: 50px;
+  }
+}
+
+.etsin-container.additional-info {
+  border-bottom: 1px solid @border-color-bg;
+}
+.index-additional-info {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}

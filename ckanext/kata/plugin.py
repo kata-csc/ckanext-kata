@@ -206,6 +206,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/dataset/new',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action="new")
+        map.connect('home',
+                    '/',
+                    controller="ckanext.kata.controllers:KataHomeController",
+                    action="index")
         return map
 
     def get_auth_functions(self):
@@ -252,7 +256,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'organization_update': actions.organization_update,
             'package_create': actions.package_create,
             'package_delete': actions.package_delete,
-            'package_search': actions.package_search,
             'package_show': actions.package_show,
             'package_update': actions.package_update,
             'related_create': actions.related_create,
@@ -310,6 +313,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_rightscategory': helpers.get_rightscategory,
             'get_translation': helpers.get_translation,
             'get_translation_from_extras': helpers.get_translation_from_extras,
+            'get_active_facets': helpers.get_active_facets,
+            'is_active_facet': helpers.is_active_facet,
+            'get_dataset_paged_order': helpers.get_dataset_paged_order,
             'get_language': helpers.get_language,
             'get_urn_fi_address': helpers.get_urn_fi_address,
             'get_visibility_options': helpers.get_visibility_options,

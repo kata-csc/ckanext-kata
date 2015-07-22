@@ -60,7 +60,6 @@
             </li>
             {% endif %}
 
-
           </ul>
         </div>
       </div>
@@ -101,5 +100,10 @@
   </div>
   <div class="dataset-view-content">
     {% snippet "package/snippets/metadata_info.html", pkg_dict=pkg, user=c.userobj, pkg_notes_formatted=c.pkg_notes_formatted %}
+
+    <section class="module-content">
+      <hr style="width:100%" />
+        {% snippet "package/comment_list.html", pkg_id=c.pkg.name, pkg_name=c.pkg.name, userobj=c.userobj %}
+    </section>
   </div>
 {% endblock %}
