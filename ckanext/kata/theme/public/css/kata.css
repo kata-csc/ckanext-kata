@@ -585,6 +585,7 @@ input[id="xmlfile"] {
   min-height: 246px;
   margin: 10px;
   border: 1px solid #c9c9c9;
+  border-radius: 4px;
 }
 .login-text {
   margin: 10px;
@@ -618,11 +619,11 @@ input[id="xmlfile"] {
 }
 .login-container .button-wrapper {
   color: #ffffff;
-  text-shadow: none !important;
-  background-color: #3fa9f5 !important;
-  background-image: none !important;
-  border-color: #3fa9f5 !important;
-  border: 1px solid #c9c9c9;
+  text-shadow: none;
+  background-color: #3fa9f5;
+  background-image: none;
+  border-color: #3fa9f5;
+  border: 1px solid #3fa9f5;
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
