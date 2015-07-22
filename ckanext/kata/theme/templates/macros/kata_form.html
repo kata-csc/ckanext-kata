@@ -84,3 +84,40 @@ Example:
 {% macro required() -%}
     <span class="optionality-indicator">{{ _("Required") }}</span>
 {%- endmacro %}
+
+{#
+Copied from CKAN form.html. Uses input_block2.
+#}
+{% macro textarea(name, id='', label='', value='', placeholder='', error="", classes=[], attrs={}) %}
+  {% set classes = (classes|list) %}
+{#  {% do classes.append('control-full') %}#}
+
+  {%- set extra_html = caller() if caller -%}
+  {% call input_block2(id or name, label or name, error, classes, extra_html=extra_html) %}
+    <textarea id="{{ id or name }}" name="{{ name }}" cols="20" rows="5" placeholder="{{ placeholder }}" {{ attributes(attrs) }}>{{ value | empty_and_escape }}</textarea>
+  {% endcall %}
+{% endmacro %}
+
+{#
+Copied from CKAN form.html. Removed a wrapping 'control-group' class. Renamed
+classes to form-*. 'error' class moved to 'form-content'. Removed input parameter
+'classes'.
+#}
+{% macro input_block2(for, label="", error="", control_classes=[], label_classes=[], extra_html="") %}
+  <label class="form-label{{ " " ~ label_classes | join(' ') }}" for="{{ for }}">{{ label or _('Custom') }}</label>
+  <div class="form-content{{ " " ~ control_classes | join(' ') }}{{ " error" if error }}">
+    {{ caller() }}
+    {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
+    {{ extra_html }}
+  </div>
+{% endmacro %}
+
+
+{#
+Copied from CKAN form.html.
+#}
+{%- macro attributes(attrs={}) -%}
+  {%- for key, value in attrs.items() -%}
+  {{ " " }}{{ key }}{% if value != "" %}="{{ value }}"{% endif %}
+  {%- endfor -%}
+{%- endmacro -%}

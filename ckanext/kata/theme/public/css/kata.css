@@ -608,18 +608,21 @@ input[id="xmlfile"] {
   margin-bottom: 40px;
   clear: both;
 }
-.form-tab-content .form-row .form-label {
+.form-tab-content .form-row .form-label,
+.form-tab-content .form-row .control-label {
   float: left;
   font-weight: 700;
   width: 30%;
   text-align: right;
 }
-.form-tab-content .form-row .form-content {
+.form-tab-content .form-row .form-content,
+.form-tab-content .form-row .controls {
   min-height: 16px;
-  position: relative;
+  margin-left: 0px;
   width: 50%;
+  padding-right: 0px;
   padding-left: 10px;
-  float: left;
+  display: inline-block;
 }
 .form-tab-content .form-row .form-instructions {
   padding-left: 10px;
@@ -629,53 +632,36 @@ input[id="xmlfile"] {
 .form-tab-content .form-row .form-instructions i {
   font-size: 20px;
 }
+.form-tab-content .form-row .form-instructions a {
+  float: inherit;
+}
+.form-tab-content .form-row .form-instructions .dropdown-menu {
+  left: -3.5em;
+  right: -1em;
+  padding: 5px 8px;
+}
 .form-tab-content .form-row .form-table {
   margin-left: auto;
   margin-right: auto;
   display: table;
 }
-.form-tab-content .form-row .kata-tooltip {
-  position: absolute;
-  right: 0;
-  top: 0;
+.form-tab-content .form-row .controls input {
+  width: 91%;
+}
+.form-tab-content .form-row textarea {
+  width: 100%;
 }
 @media (max-width: 700px) {
-  .form-tab-content .form-row .form-label {
+  .form-tab-content .form-row .form-label,
+  .form-tab-content .form-row .control-label {
     float: none;
     width: 100%;
     margin-bottom: 20px;
     text-align: left;
   }
   .form-tab-content .form-row .form-content,
-  .form-tab-content .form-row .form-instructions {
-    width: 91%;
-    margin-left: 7%;
-  }
-}
-/* Juho: This maybe should be merged to above .form-tab-content block */
-.form-horizontal {
-  padding: 20px;
-}
-.form-horizontal .control-label {
-  font-weight: 700;
-  width: 30%;
-}
-.form-horizontal .controls {
-  min-height: 16px;
-  position: relative;
-  margin-left: 30%;
-  width: 65%;
-  padding-right: 5%;
-  padding-left: 10px;
-}
-@media (max-width: 700px) {
-  .form-horizontal .control-label {
-    float: none;
-    width: 100%;
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  .form-horizontal .controls {
+  .form-tab-content .form-row .form-instructions,
+  .form-tab-content .form-row .controls {
     width: 91%;
     margin-left: 7%;
   }
