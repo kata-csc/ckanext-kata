@@ -593,6 +593,9 @@ def json_to_list(pkg_dict):
 
     langlist = []
 
+    if not pkg_dict:
+        return langlist
+
     try:
         json_data = json.loads(pkg_dict)
     except ValueError:
@@ -676,7 +679,7 @@ def get_labels_for_uri_nocache(uri, ontology=None):
 
     try:
         jsondata = json.loads(data)
-    except ValueError:
+    except (ValueError, TypeError):
         return None
 
     if jsondata.get('graph'):
