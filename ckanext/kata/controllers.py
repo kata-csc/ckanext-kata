@@ -1217,7 +1217,7 @@ class KataHomeController(HomeController):
                 'rows': 0,
                 'start': 0,
                 'sort': 'title_string desc',
-                'fq': 'capacity:"public"'
+                'fq': 'capacity:"public" +dataset_type:dataset'
             }
             query = logic.get_action('package_search')(
                 context, data_dict)
