@@ -1744,6 +1744,17 @@ a.download {
 .form-inner-table th {
   text-align: left;
 }
+.related-item-list {
+  border: 1px solid #c9c9c9;
+  padding: 20px 20px 0px 20px;
+  margin-bottom: 20px;
+}
+.related-item-list li.etsin-related-item {
+  background: white none repeat scroll 0 0;
+  border: 1px solid #c9c9c9;
+  padding: 15px;
+  margin-bottom: 20px;
+}
 .dataset-heading a {
   color: #3fa9f5;
 }
