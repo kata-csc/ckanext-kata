@@ -1,0 +1,124 @@
+.login-wrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 40%;
+  min-width: 280px;
+  min-height: 246px;
+  margin: 10px;
+  border: 1px solid @border-color-bg;
+  border-radius: 4px;
+}
+
+.login-text {
+  margin: 10px;
+  min-height: 96px;
+}
+
+.login-inline {
+  display: inline-block;
+  margin: 10px;
+}
+
+.login-container {
+  text-align: center;
+  color: #444444;
+  .btn-padded {
+    display: block;
+    margin: 20px;
+    padding: 10px;
+  }
+  img {
+    margin: 28px;
+  }
+  form {
+    margin: 0;
+  }
+  a {
+    margin: 0;
+    display: block;
+  }
+  input[type="checkbox"] {
+    top: 4px;
+  }
+  .button-wrapper {
+    color: #ffffff;
+    text-shadow: none;
+    background-color: @brand-primary-color;
+    background-image: none;
+    border-color: @brand-primary-color;
+    border: 1px solid @brand-primary-color;
+  }
+}
+
+.user-view-header {
+  width: 100%;
+  padding-bottom: 20px;
+  .user-information {
+    margin-right: 300px;
+    & > table td {
+      padding-right: 15px;
+    }
+  }
+  .user-gravatar {
+    float: right;
+    max-width: 100px;
+    text-align: right;
+    padding-bottom: 20px;
+  }
+}
+
+.user-results-list {
+  padding: 0px 20px 0px 20px;
+}
+
+.user-form-content {
+  overflow: hidden;
+  padding: 20px;
+  border: 1px solid @border-color-bg;
+}
+
+@form-tabs-number-of-items: 2;
+.etsin-user-content {
+  border: 1px solid @border-color-bg;
+  margin-bottom: 20px;
+  .user-tabs {
+    display: table;
+    width: 100%;
+    & > li {
+      float: none;
+      display: table-cell;
+      width: 100% / @form-tabs-number-of-items;
+      text-align: center;
+      white-space: nowrap;
+      & > a {
+        padding: 15px 0;
+        margin: 0;
+      }
+    }
+    border-color: @border-color-bg;
+    border-bottom-color: transparent;
+    & > li > a {
+      width: 100%;
+      border-radius: 0;
+      border-top: none !important;
+      border-left: none !important;
+      border-right: 1px solid @border-color-bg !important;
+      border-bottom: 1px solid @border-color-bg;
+      &:hover, &:active, &:focus {
+        border-top: none !important;
+        background-color: transparent;
+        border-color: @border-color-bg;
+      }
+    }
+    & > .active > a {
+      font-weight: 700;
+      background-color: transparent;
+      border-bottom-color: transparent;
+    }
+    & > .active:hover {
+      background-color: transparent !important;
+      border-bottom: none !important;
+    }
+  }
+}
+
