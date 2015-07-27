@@ -1755,6 +1755,9 @@ a.download {
   padding: 15px;
   margin-bottom: 20px;
 }
+.related-form {
+  overflow: hidden;
+}
 .dataset-heading a {
   color: #3fa9f5;
 }
