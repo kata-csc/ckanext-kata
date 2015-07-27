@@ -95,11 +95,12 @@
         </div>
       {% endblock %}
 
-    {% else %}
-      {{ _("You are not allowed to view other users' information.") }}
-    {% endif %}
+    <div>
+  </div>
 
-  <div>
+  {% else %}
+    {{ _("You are not allowed to view other users' information.") }}
+  {% endif %}
 
 {% endblock %}
 
