@@ -604,6 +604,9 @@ input[id="xmlfile"] {
 .form-tab-content .form-actions .btn + .btn {
   margin-left: 15px;
 }
+.form-tab-content .control-group .form-row {
+  margin-bottom: 20px;
+}
 .form-tab-content .form-row {
   margin-bottom: 40px;
   clear: both;
@@ -635,6 +638,10 @@ input[id="xmlfile"] {
 .form-tab-content .form-row .form-instructions a {
   float: inherit;
 }
+.form-tab-content .form-row .form-instructions a:hover,
+.form-tab-content .form-row .form-instructions a:focus {
+  text-decoration: none;
+}
 .form-tab-content .form-row .form-instructions .dropdown-menu {
   left: -3.5em;
   right: -1em;
@@ -650,6 +657,12 @@ input[id="xmlfile"] {
 }
 .form-tab-content .form-row textarea {
   width: 100%;
+}
+.form-tab-content .kata-add {
+  margin-left: 30%;
+  padding-left: 10px;
+  float: none;
+  color: #3FA9F5;
 }
 @media (max-width: 700px) {
   .form-tab-content .form-row .form-label,

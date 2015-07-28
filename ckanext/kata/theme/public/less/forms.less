@@ -233,6 +233,10 @@ input[id="xmlfile"] {
   @form-label-width: 30%;
   @form-help-spacer-width: 15%;
 
+  .control-group .form-row {
+      margin-bottom: 20px;
+  }
+
   .form-row {
     margin-bottom: 40px;
     clear: both;
@@ -259,6 +263,9 @@ input[id="xmlfile"] {
       }
       a {
         float: inherit;
+        &:hover, &:focus {
+          text-decoration: none;
+        }
       }
       .dropdown-menu {
         left: -3.5em;
@@ -277,6 +284,13 @@ input[id="xmlfile"] {
     textarea {
       width: 100%;
     }
+  }
+
+  .kata-add {
+    margin-left: @form-label-width;
+    padding-left: 10px;
+    float: none;
+    color: #3FA9F5;
   }
 
   /* stack form label and content on small display */

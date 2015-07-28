@@ -54,6 +54,9 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         return (css.match (/(^|\s)pids_\S+/g) || []).join(' ');
       });
 
+      // Remove tooltips
+      fields.find('.form-instructions').remove();
+
       this.el.append(fields);
     },
 
