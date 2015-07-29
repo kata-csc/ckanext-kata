@@ -91,10 +91,10 @@ Example:
 {#
 Copied from CKAN form.html. Uses input_block2.
 #}
-{% macro input(name, id='', label='', value='', placeholder='', type='text', error="", classes=[], control_classes=[], label_classes=[], attrs={}, instructions="") %}
+{% macro input(name, id='', label='', value='', placeholder='', type='text', error="", classes=[], control_classes=[], label_classes=[], attrs={}) %}
   {%- set extra_html = caller() if caller -%}
 
-  {% call input_block2(id or name, label or name, error, extra_html=extra_html, control_classes=control_classes, label_classes=label_classes, instructions=instructions) %}
+  {% call input_block2(id or name, label or name, error, extra_html=extra_html, control_classes=control_classes, label_classes=label_classes) %}
     <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}" value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}" {{ attributes(attrs) }} />
   {% endcall %}
 {% endmacro %}
@@ -117,7 +117,7 @@ Copied from CKAN form.html. Removed a wrapping 'control-group' class. Renamed
 classes to form-*. 'error' class moved to 'form-content'. Removed input parameter
 'classes'.
 #}
-{% macro input_block2(for, label="", error="", control_classes=[], label_classes=[], extra_html="", instructions="") %}
+{% macro input_block2(for, label="", error="", control_classes=[], label_classes=[], extra_html="") %}
   <div class="form-row">
     <label class="form-label{{ " " ~ label_classes | join(' ') }}" for="{{ for }}">{{ label or _('Custom') }}</label>
     <div class="form-content{{ " " ~ control_classes | join(' ') }}{{ " error" if error }}">
