@@ -64,7 +64,7 @@
         {% endcall %}
 
         {% if loop.index0 == 0 %}
-          {{ kata_form.plusbutton(id="authors_add", onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+          {{ kata_form.plusbutton(id="authors_add", text=_("Add author"), onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
         {% endif %}
         <input style="display: none;" type="checkbox" id="obtn__{{ index }}__value_id" name="obtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
       </div>
