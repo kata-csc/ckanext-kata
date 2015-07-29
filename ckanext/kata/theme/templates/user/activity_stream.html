@@ -1,0 +1,9 @@
+{% extends "user/read.html" %}
+
+{% block inner_user_content %}
+  {% block activity_stream %}
+    <div class="user-results-list">
+      {{ c.user_activity_stream | safe }}
+    </div>
+  {% endblock %}
+{% endblock %}

@@ -8,7 +8,6 @@ This template fixes input type='text' -> type='password' bug in core CKAN. Bug a
   {{ form.errors(error_summary) }}
 
   <fieldset>
-    <legend>{{ _('Change your details') }}</legend>
     <div class="edit-user-form-infotext">
       <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
       {{ _('Note that the changes in user information have no effect if you are using Haka login.') }}
@@ -43,7 +42,7 @@ This template fixes input type='text' -> type='password' bug in core CKAN. Bug a
     {{ form.input('password2', type='password', label=_('Confirm Password'), id='field-password-confirm', value=data.password2, error=errors.password2, classes=['control-medium']) }}
   </fieldset>
 
-  <div class="form-actions">
+  <div class="pull-right">
     <button class="btn btn-primary" type="submit" name="save">{{ _('Update Profile') }}</button>
   </div>
 </form>

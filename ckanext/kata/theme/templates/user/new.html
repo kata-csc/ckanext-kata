@@ -1,6 +1,5 @@
 {% extends "page.html" %}
 
-
 {% block content %}
 
   <div id="etsin-main">
@@ -10,13 +9,17 @@
           {{ super() }}
         {% endblock %}
         <div class="row-fluid">
-          {%- block inner_content %}
-            {% block form %}{{ c.form | safe }} {% endblock %}
-
-          {% endblock -%}
+          {% block inner_content %}
+            <div class="user-form-content">
+              {#<h2 class="etsin-secondary-title">
+                {{ _('Register for an Account') }}
+              </h2>#}
+              {{ c.form | safe }}
+            </div>
+          {% endblock %}
         </div>
       </div>
     </div>
   </div>
-
 {% endblock %}
+

@@ -13,6 +13,7 @@ import re
 from pylons.decorators.cache import beaker_cache
 import json
 import urllib2
+import httplib
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -592,6 +593,9 @@ def json_to_list(pkg_dict):
 
     langlist = []
 
+    if not pkg_dict:
+        return langlist
+
     try:
         json_data = json.loads(pkg_dict)
     except ValueError:
@@ -645,7 +649,7 @@ def get_labels_for_uri_nocache(uri, ontology=None):
     :return: dict of labels (fi, en, sv), [{u'lang': u'fi', u'value': u'Matematiikka},{u'lang': u'en'...}] or None
     '''
 
-    if not uri.startswith("http://www.yso.fi") or not isinstance(uri, basestring):
+    if not isinstance(uri, basestring) or not uri.startswith("http://www.yso.fi"):
         return None
 
     # try to find ontology, if it wasn't provided. Copes with some erratic inputs
@@ -659,9 +663,25 @@ def get_labels_for_uri_nocache(uri, ontology=None):
         return None
 
     url = "http://finto.fi/rest/v1/{ontology}/data?uri={uri}&format=application/json".format(ontology=ontology, uri=uri)
-    # Reverse DNS resolving can be extremely slow
-    data = urllib2.urlopen(url).read()
-    jsondata = json.loads(data)
+
+    try:
+        data = urllib2.urlopen(url).read()
+
+    except urllib2.HTTPError as e:
+        log.error("Can not connect to Finto: %s" % str(e.code))
+        return None
+    except urllib2.URLError as e:
+        log.error("Can not connect to Finto: %s" % str(e.reason))
+        return None
+    except httplib.HTTPException:
+        log.error('Can not connect to Finto: HTTPException')
+        return None
+
+    try:
+        jsondata = json.loads(data)
+    except (ValueError, TypeError):
+        return None
+
     if jsondata.get('graph'):
         for item in jsondata['graph']:
             if item.get('uri') == uri:
