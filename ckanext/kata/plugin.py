@@ -31,7 +31,7 @@ from ckan.plugins.core import unload
 
 from ckanext.kata.schemas import Schemas
 
-from ckanext.kata import actions, advanced_search, auth_functions, extractor, helpers, settings, utils
+from ckanext.kata import actions, auth_functions, extractor, helpers, settings, utils
 
 from ckanext.kata.middleware import NotAuthorizedMiddleware
 
@@ -487,19 +487,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         c.search_fields = settings.SEARCH_FIELDS
         c.translated_field_titles = utils.get_field_titles(toolkit._)
 
-        extras = data_dict.get('extras')
         data_dict['defType'] = 'edismax'
-
-        # Start advanced search parameter parsing
-        if extras:
-            data_dict['q'] = data_dict.get('q', '') + advanced_search.constrain_by_temporal_coverage(c, extras)
-
-            extra_terms, extra_ops, c.advanced_search = advanced_search.extract_search_params(data_dict)
-
-            if len(extra_terms) > 0:
-                advanced_search.parse_search_terms(c, data_dict, extra_terms, extra_ops)
-
-        # End advanced search parameter parsing
 
         data_dict['facet.field'] = settings.FACETS
 
