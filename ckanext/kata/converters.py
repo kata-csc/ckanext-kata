@@ -487,7 +487,7 @@ def xpath_to_extras(key, data, errors, context):
 
 def convert_languages(key, data, errors, context):
     '''
-    Convert ISO 639 language abbreviations to ISO 639-2 T.
+    Convert ISO 639-2 B and 639-3 language abbreviations to ISO 639-2 T.
     data['key'] may be a string with comma separated values or a single language code.
 
     :param key: key
