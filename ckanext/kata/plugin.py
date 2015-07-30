@@ -294,7 +294,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_distributor': helpers.get_distributor,
             'get_download_url': helpers.get_download_url,
             'get_fields_grouped': helpers.get_fields_grouped,
-            'get_first_admin': helpers.get_first_admin,
             'get_funder': helpers.get_funder,
             'get_funders': helpers.get_funders,
             'get_ga_id': helpers.get_ga_id,

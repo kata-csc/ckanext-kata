@@ -243,31 +243,6 @@ def string_to_list(data):
     return ''
 
 
-def get_first_admin(id):
-    '''
-    Get the url of the first one with an admin role
-
-    :param id: the package id
-    :returns: profile url
-    :rtype: string
-    '''
-    pkg = Package.get(id)
-    if pkg:
-        data = pkg.as_dict()
-        user = None
-        if pkg.roles:
-            owner = [role for role in pkg.roles if role.role == 'admin']
-            if len(owner):
-                user = User.get(owner[0].user_id)
-                profileurl = ""
-                if user:
-                    profileurl = config.get('ckan.site_url', '') + \
-                        h.url_for(controller="user", action="read",
-                                  id=user.name)
-                    return profileurl
-    return False
-
-
 def get_rightscategory(data_dict):
     '''
     Return METS rights category and rights declaration for dataset
