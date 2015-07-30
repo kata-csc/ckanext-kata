@@ -327,7 +327,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'is_backup_instance': helpers.is_backup_instance,
             'is_url': helpers.is_url,
             'json_to_list': helpers.json_to_list,
-            'kata_sorted_extras': helpers.kata_sorted_extras,
             'list_organisations': helpers.list_organisations,
             'modify_error_summary': helpers.modify_error_summary,
             'reference_update': helpers.reference_update,

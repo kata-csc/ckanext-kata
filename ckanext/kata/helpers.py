@@ -68,42 +68,6 @@ def reference_update(ref):
     return cached_url(ref)
 
 
-def kata_sorted_extras(list_):
-    '''
-    Used for outputting package extras, skips package_hide_extras
-    '''
-    output = []
-    for extra in sorted(list_, key=lambda x: x['key']):
-        if extra.get('state') == 'deleted':
-            continue
-        # Todo: fix. The ANDs make no sense
-        key, val = extra['key'], extra['value']
-        if key in g.package_hide_extras and \
-           key in settings.KATA_FIELDS and \
-           key.startswith('author_') and \
-           key.startswith('organization_'):
-            continue
-
-        if key.startswith('title_') or \
-           key.startswith('lang_title_') or \
-           key == 'harvest_object_id' or \
-           key == 'harvest_source_id' or \
-           key == 'harvest_source_title':
-            continue
-
-        found = False
-        for _key in g.package_hide_extras:
-            if extra['key'].startswith(_key):
-                found = True
-        if found:
-            continue
-
-        if isinstance(val, (list, tuple)):
-            val = ", ".join(map(unicode, val))
-        output.append((key, val))
-    return output
-
-
 def get_dict_field_errors(errors, field, index, name):
     '''Get errors correctly for fields that are represented as nested dict fields in data_dict.
 
