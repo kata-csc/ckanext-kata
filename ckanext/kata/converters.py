@@ -246,27 +246,6 @@ def export_as_related(key, data, errors, context):
                     related_create(context, data_dict)
 
 
-def add_to_group(key, data, errors, context):
-    '''
-    Add a new group if it doesn't yet exist.
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-    val = data.get(key)
-    if val:
-        repo.new_revision()
-        grp = Group.get(val)
-        # UI code needs group created if it does not match. Hence do so.
-        if not grp:
-            grp = Group(name=val, description=val, title=val)
-            setup_default_user_roles(grp)
-            grp.save()
-        repo.commit()
-
-
 def remove_disabled_languages(key, data, errors, context):
     '''
     If `langdis == 'True'`, remove all languages.
