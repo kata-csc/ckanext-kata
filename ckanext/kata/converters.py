@@ -185,30 +185,6 @@ def escape_quotes(key, data, errors, context):
 
     data[key] = data.get(key).replace('"', '\\"')
 
-def ltitle_to_extras(key, data, errors, context):
-    '''
-    Convert title & language pair from dataset form to db format and validate.
-    Title & language pairs will be stored in package_extra.
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
-
-    if len(data[key]) > 0:
-        # Get title's language from data dictionary. key[0] == 'title'.
-        lval = data[(key[0], key[1], 'lang')]
-
-        extras.append({'key': "title_%s" % key[1],
-                      'value': data[key]})
-        extras.append({'key': 'lang_title_%s' % key[1],
-                       'value': lval
-                       })
-
 
 def ltitle_from_extras(key, data, errors, context):
     '''
