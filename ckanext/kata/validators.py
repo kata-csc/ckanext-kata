@@ -519,28 +519,6 @@ def kata_owner_org_validator(key, data, errors, context):
         data[key] = group.id
 
 
-def check_private(key, data, errors, context):
-    '''
-    Changes to owner_org_validator requires checking of private value.
-
-    :param key: key
-    :param data: data
-    :param errors: errors
-    :param context: context
-    :return: nothing. Raise invalid if not organisation editor and private == False
-    '''
-
-    value = data.get(key)
-    is_editor = False
-    if not value or value == u'False':
-        user = context.get('user', False)
-        if user:
-            if utils.get_member_role(data.get((u'owner_org',)), User.get(user).id) in ('admin', 'editor'):
-                is_editor = True
-        if not is_editor:
-            raise Invalid(_('Only organization\'s editors and admins can create a public dataset'))
-
-
 def usage_terms_accepted(value, context):
     '''
     Check if a boolean value is true
