@@ -482,7 +482,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             # This is to get the correct one pre-selected on the HTML form.
             c.sort_by_selected = settings.DEFAULT_SORT_BY
 
-        c.search_fields = settings.SEARCH_FIELDS
         c.translated_field_titles = utils.get_field_titles(toolkit._)
 
         data_dict['defType'] = 'edismax'
