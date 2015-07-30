@@ -61,13 +61,6 @@
             </button>
           </div>
 
-          {% if c.fields -%}
-            <span>
-              {%- for k, v in c.fields -%}
-                <input type="hidden" name="{{ k }}" value="{{ v }}"/>
-              {% endfor -%}
-            </span>
-          {%- endif %}
         </div>
 
         {# TODO: functionality for quick selections: open data & time limiting #}
