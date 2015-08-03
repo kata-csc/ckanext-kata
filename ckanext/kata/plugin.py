@@ -325,6 +325,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'is_backup_instance': helpers.is_backup_instance,
             'is_url': helpers.is_url,
+            'kata_build_nav_main': helpers.kata_build_nav_main,
             'json_to_list': helpers.json_to_list,
             'list_organisations': helpers.list_organisations,
             'modify_error_summary': helpers.modify_error_summary,

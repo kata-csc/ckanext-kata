@@ -14,6 +14,7 @@ from pylons.decorators.cache import beaker_cache
 import json
 import urllib2
 import httplib
+import copy
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -25,6 +26,7 @@ from ckan.lib import plugins
 from ckanext.kata.utils import get_pids_by_type
 from pylons.i18n.translation import gettext_noop as N_
 from ckan.common import request
+from webhelpers.html import literal
 
 log = logging.getLogger(__name__)
 
@@ -923,3 +925,41 @@ def get_iso_datetime(datetime_string):
         return iso8601.parse_date(datetime_string).isoformat()
     except iso8601.iso8601.ParseError:
         return datetime_string
+
+
+def kata_build_nav_main(*args):
+    '''
+    Fix active links in main navigation. Basically merges build_main_nav and _make_menu_item. The latter especially is
+    modified.
+
+    :param args: (menu_item, title)
+    :return: <li><a href="..."></i> title</a></li>
+    '''
+
+    output = ''
+    routers = {
+        'home': ['ckanext.kata.controllers:KataHomeController'],
+        'search': ['ckanext.kata.controllers:KataPackageController', 'package'],
+        'organizations_index': ['organization'],
+        'about': ['home']
+    }
+
+    for item in args:
+        menu_item, title = item[:2]
+        if len(item) == 3 and not h.check_access(item[2]):
+            continue
+
+        _menu_items = config['routes.named_routes']
+        _menu_item = copy.copy(_menu_items[menu_item])
+        link = h._link_to(title, menu_item, suppress_active_class=True)
+        active = h._link_active(_menu_item)
+
+        if not active:
+            # Ensure the reply is iterable: needed if variable routers is not consistent
+            active = c.controller in routers.get(item[0], list())
+        if active:
+            output += literal('<li class="active">') + link + literal('</li>')
+        else:
+            output += literal('<li>') + link + literal('</li>')
+
+    return output
