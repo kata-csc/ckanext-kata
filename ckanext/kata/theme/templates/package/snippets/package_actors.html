@@ -163,12 +163,10 @@
     <input type="hidden" name="agent__999__organisation" value="{{ distributor.organisation or '' }}" />
   {% endif %}
   <h3>{{ _('Distributor') }}</h3>
-  <div class="form-row">
-    {% set contacts = h.get_contacts(data) %}
-
-    {% if contacts|length == 0 %}
-      {% do contacts.append(dict()) %}
-    {% endif %}
+  {% set contacts = h.get_contacts(data) %}
+  {% if contacts|length == 0 %}
+    {% do contacts.append(dict()) %}
+  {% endif %}
     <div data-module="custom-fields-kata" data-module-id="contacts" data-module-numfields="{{ contacts|length }}" id="contacts">
     {% set distributor_errors = h.get_dict_errors(errors, '__extras', 'contact') %}
 
@@ -176,32 +174,90 @@
       <div class="control-group control-custom{% if distributor_errors %} error{% endif %}">
 
         {% set index = loop.index0 %}
-        {% call form.input('contact__' ~ index ~ '__name', label=_('Name')+" * ", id='contact__' ~ index ~ '__name', placeholder=_('John Doe'), value=contact.name,
-                           error=h.get_dict_field_errors(errors, 'contact', index, 'name'), classes=['control-custom'], label_classes=['kata-input-comp'],
-                           control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the name of the distributor. Distributor is a person or an organisation who has the right to distribute the dataset or has published the dataset.')) }}
-        {% endcall %}
-
-        {% call form.input('contact__' ~ index ~ '__phone', label=_('Phone'), id='contact__' ~ index ~ '__phone', placeholder=_('+35844122123'), value=contact.phone,
-                           error=h.get_dict_field_errors(errors, 'contact', index, 'phone'), classes=['control-custom'], label_classes=['kata-input-comp'],
-                           control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact phone number. The phone number must be in form \"+35812341234\".')) }}
-        {% endcall %}
-
-        {% call form.input('contact__' ~ index ~ '__email', label=_('Email')+" * ", id='contact__' ~ index ~ '__email', placeholder=_('john.doe@example.com'), value=contact.email,
-                           error=h.get_dict_field_errors(errors, 'contact', index, 'email'), type='email', classes=['control-custom'], label_classes=['kata-input-comp'],
-                           control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type the contact e-mail address. The e-mail address is not shown publicly but it can be used to send e-mails in this service.')) }}
-        {% endcall %}
-
-        {% call form.input('contact__' ~ index ~ '__URL', label=_('Homepage'), id='contact__' ~ index ~ '__URL', placeholder=_('http://johndoe.com/contact'),
-                           value=contact.URL, error=h.get_dict_field_errors(errors, 'contact', index, 'URL'), classes=['control-custom'], label_classes=['kata-input-comp'],
-                           control_classes=['kata-medium'], attrs={'class': "kata-medium-input"}) %}
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Type a valid web address to your web page. In case you don\'t have one, you could for example give an address to your research group\'s site or any site that could make it possible to contact the origin of the dataset in case of need.')) }}
+        {% call kata_form.input(
+          'contact__' ~ index ~ '__name', label=_('Name')+" * ",
+          id='contact__' ~ index ~ '__name', placeholder=_('John Doe'), value=contact.name,
+          error=h.get_dict_field_errors(errors, 'contact', index, 'name'),
+          label_classes=['kata-input-comp'], control_classes=['kata-medium'],
+          attrs={'class': "kata-medium-input"})
+        %}
           {% if loop.index0 == 0 %}
-            {{ kata_form.plusbutton(id="contacts_add", onclick="$(\'#obtn__" ~ index ~ "__contact_id\').change();") }}
+            <div class="form-instructions dropdown">
+              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-question-sign"></i>
+              </a>
+              <div class="dropdown-menu">
+                {% trans %}
+                  Distributor is a person or an organisation who has the right to distribute the dataset or has published the dataset.
+                {% endtrans %}
+              </div>
+            </div>
           {% endif %}
         {% endcall %}
+
+        {% call kata_form.input('contact__' ~ index ~ '__phone', label=_('Phone'),
+          id='contact__' ~ index ~ '__phone', placeholder=_('+35844122123'),
+          value=contact.phone, error=h.get_dict_field_errors(errors, 'contact', index, 'phone'),
+          label_classes=['kata-input-comp'], control_classes=['kata-medium'],
+          attrs={'class': "kata-medium-input"})
+        %}
+          {% if loop.index0 == 0 %}
+            <div class="form-instructions dropdown">
+              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-question-sign"></i>
+              </a>
+              <div class="dropdown-menu">
+                {% trans %}
+                  The phone number must be in form "+35812341234".
+                {% endtrans %}
+              </div>
+            </div>
+          {% endif %}
+        {% endcall %}
+
+        {% call kata_form.input('contact__' ~ index ~ '__email',
+          label=_('Email')+" * ", id='contact__' ~ index ~ '__email',
+          placeholder=_('john.doe@example.com'), value=contact.email,
+          error=h.get_dict_field_errors(errors, 'contact', index, 'email'),
+          type='email', label_classes=['kata-input-comp'], control_classes=['kata-medium'],
+          attrs={'class': "kata-medium-input"})
+        %}
+          {% if loop.index0 == 0 %}
+            <div class="form-instructions dropdown">
+              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-question-sign"></i>
+              </a>
+              <div class="dropdown-menu">
+                {% trans %}
+                  The e-mail address is not shown publicly but it can be used to send e-mails in this service.
+                {% endtrans %}
+              </div>
+            </div>
+          {% endif %}
+        {% endcall %}
+
+        {% call kata_form.input('contact__' ~ index ~ '__URL', label=_('Homepage'),
+          id='contact__' ~ index ~ '__URL', placeholder=_('http://johndoe.com/contact'),
+          value=contact.URL, error=h.get_dict_field_errors(errors, 'contact', index, 'URL'),
+          label_classes=['kata-input-comp'], control_classes=['kata-medium'],
+          attrs={'class': "kata-medium-input"})
+        %}
+          {% if loop.index0 == 0 %}
+            <div class="form-instructions dropdown">
+              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-question-sign"></i>
+              </a>
+              <div class="dropdown-menu">
+                {% trans %}
+                  Type a valid web address to your web page. In case you don't have one, you could for example give an address to your research group's site or any site that could make it possible to contact the origin of the dataset in case of need.
+                {% endtrans %}
+              </div>
+            </div>
+          {% endif %}
+        {% endcall %}
+        {% if loop.index0 == 0 %}
+          {{ kata_form.plusbutton(id="contacts_add", text=_("Add distributor"), onclick="$(\'#obtn__" ~ index ~ "__contact_id\').change();") }}
+        {% endif %}
         <input style="display: none;" type="checkbox" id="obtn__{{ index }}__contact_id" name="obtn__{{ index }}__contact" class="btn btn-danger icon-plus-sign checkbox"/>
       </div>
     {% endfor %}
@@ -210,7 +266,6 @@
       <span class="error-block-kata">{{ distributor_errors|join('. ') }}</span>
     {% endif %}
     </div>
-  </div>
 
 
   <h3>{{ _('Project') }}</h3>
