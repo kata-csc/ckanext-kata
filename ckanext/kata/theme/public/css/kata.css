@@ -1758,6 +1758,16 @@ a.download {
 .related-form {
   overflow: hidden;
 }
+.related-form .form-actions {
+  border-top: 0px !important;
+}
+.resource-form > .form-content form {
+  margin-bottom: 0px !important;
+}
+.resource-form .form-actions {
+  padding-top: 0px !important;
+  margin-top: 0px !important;
+}
 .dataset-heading a {
   color: #3fa9f5;
 }
