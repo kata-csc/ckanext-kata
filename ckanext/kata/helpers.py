@@ -14,6 +14,7 @@ from pylons.decorators.cache import beaker_cache
 import json
 import urllib2
 import httplib
+import copy
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -25,6 +26,7 @@ from ckan.lib import plugins
 from ckanext.kata.utils import get_pids_by_type
 from pylons.i18n.translation import gettext_noop as N_
 from ckan.common import request
+from webhelpers.html import literal
 
 log = logging.getLogger(__name__)
 
@@ -66,42 +68,6 @@ def reference_update(ref):
     def cached_url(url):
         return url
     return cached_url(ref)
-
-
-def kata_sorted_extras(list_):
-    '''
-    Used for outputting package extras, skips package_hide_extras
-    '''
-    output = []
-    for extra in sorted(list_, key=lambda x: x['key']):
-        if extra.get('state') == 'deleted':
-            continue
-        # Todo: fix. The ANDs make no sense
-        key, val = extra['key'], extra['value']
-        if key in g.package_hide_extras and \
-           key in settings.KATA_FIELDS and \
-           key.startswith('author_') and \
-           key.startswith('organization_'):
-            continue
-
-        if key.startswith('title_') or \
-           key.startswith('lang_title_') or \
-           key == 'harvest_object_id' or \
-           key == 'harvest_source_id' or \
-           key == 'harvest_source_title':
-            continue
-
-        found = False
-        for _key in g.package_hide_extras:
-            if extra['key'].startswith(_key):
-                found = True
-        if found:
-            continue
-
-        if isinstance(val, (list, tuple)):
-            val = ", ".join(map(unicode, val))
-        output.append((key, val))
-    return output
 
 
 def get_dict_field_errors(errors, field, index, name):
@@ -277,31 +243,6 @@ def string_to_list(data):
     if data:
         return data.split(", ")
     return ''
-
-
-def get_first_admin(id):
-    '''
-    Get the url of the first one with an admin role
-
-    :param id: the package id
-    :returns: profile url
-    :rtype: string
-    '''
-    pkg = Package.get(id)
-    if pkg:
-        data = pkg.as_dict()
-        user = None
-        if pkg.roles:
-            owner = [role for role in pkg.roles if role.role == 'admin']
-            if len(owner):
-                user = User.get(owner[0].user_id)
-                profileurl = ""
-                if user:
-                    profileurl = config.get('ckan.site_url', '') + \
-                        h.url_for(controller="user", action="read",
-                                  id=user.name)
-                    return profileurl
-    return False
 
 
 def get_rightscategory(data_dict):
@@ -984,3 +925,41 @@ def get_iso_datetime(datetime_string):
         return iso8601.parse_date(datetime_string).isoformat()
     except iso8601.iso8601.ParseError:
         return datetime_string
+
+
+def kata_build_nav_main(*args):
+    '''
+    Fix active links in main navigation. Basically merges build_main_nav and _make_menu_item. The latter especially is
+    modified.
+
+    :param args: (menu_item, title)
+    :return: <li><a href="..."></i> title</a></li>
+    '''
+
+    output = ''
+    routers = {
+        'home': ['ckanext.kata.controllers:KataHomeController'],
+        'search': ['ckanext.kata.controllers:KataPackageController', 'package'],
+        'organizations_index': ['organization'],
+        'about': ['home']
+    }
+
+    for item in args:
+        menu_item, title = item[:2]
+        if len(item) == 3 and not h.check_access(item[2]):
+            continue
+
+        _menu_items = config['routes.named_routes']
+        _menu_item = copy.copy(_menu_items[menu_item])
+        link = h._link_to(title, menu_item, suppress_active_class=True)
+        active = h._link_active(_menu_item)
+
+        if not active:
+            # Ensure the reply is iterable: needed if variable routers is not consistent
+            active = c.controller in routers.get(item[0], list())
+        if active:
+            output += literal('<li class="active">') + link + literal('</li>')
+        else:
+            output += literal('<li>') + link + literal('</li>')
+
+    return output

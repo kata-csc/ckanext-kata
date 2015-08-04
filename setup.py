@@ -45,7 +45,6 @@ setup(
             ('kata/theme/templates/footer.html', 'ckan', None),
             ('kata/theme/templates/kata/**.html', 'ckan', None),
             ('kata/theme/templates/group/**.html', 'ckan', None),
-            ('kata/theme/templates/datamining/**.html', 'ckan', None),
             ('kata/theme/templates/macros/**.html', 'ckan', None),
             ('kata/theme/templates/related/**.html', 'ckan', None),
             ('kata/theme/templates/revision/**.html', 'ckan', None),

@@ -9,7 +9,7 @@ from unittest import TestCase
 from pylons.util import PylonsContext, pylons, AttribSafeContextObj
 
 from ckanext.kata.plugin import KataPlugin
-from ckanext.kata import advanced_search, settings, utils
+from ckanext.kata import settings, utils
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 import ckan.model as model
 from ckan.lib.create_test_data import CreateTestData
@@ -478,109 +478,3 @@ class TestHarvestSource(TestCase):
         data_dict['id'] = response['id']
         data_dict['title'] = 'test update'
         response = get_action('harvest_source_update')(context, data_dict)
-
-
-class TestAdvancedSearch(TestCase):
-    """
-    General tests for KataPlugin.
-
-    Provides a a dummy context object to test functions and methods that rely on it.
-    """
-
-    @classmethod
-    def setup_class(cls):
-        """Set up tests."""
-
-        cls.some_data_dict = {'sort': u'metadata_modified desc',
-                              'fq': '',
-                              'rows': 20,
-                              'facet.field': ['groups',
-                                              'tags',
-                                              'extras_fformat',
-                                              'license',
-                                              'authorstring',
-                                              'organizationstring',
-                                              'extras_language'],
-                              'q': u'',
-                              'start': 0,
-                              'extras': {'ext_author-4': u'testauthor',
-                                         'ext_temporal_coverage_begin': u'2000',
-                                         'ext_temporal_coverage_end': u'2013',
-                                         'ext_groups-6': u'testdiscipline',
-                                         'ext_operator-2': u'OR',
-                                         'ext_operator-3': u'AND',
-                                         'ext_operator-4': u'AND',
-                                         'ext_operator-5': u'OR',
-                                         'ext_operator-6': u'NOT',
-                                         'ext_organization-3': u'testorg',
-                                         'ext_tags-1': u'testkeywd',
-                                         'ext_tags-2': u'testkeywd2',
-                                         'ext_title-5': u'testtitle'}
-                              }
-        cls.short_data_dict = {'sort': u'metadata_modified desc',
-                               'fq': '',
-                               'rows': 20,
-                               'facet.field': ['groups',
-                                               'tags',
-                                               'extras_fformat',
-                                               'license',
-                                               'authorstring',
-                                               'organizationstring',
-                                               'extras_language'],
-                               'q': u'',
-                               'start': 0,
-                               }
-        cls.test_q_terms = u' ((tags:testkeywd) OR ( tags:testkeywd2 AND ' + \
-                           u'organization:testorg AND author:testauthor) OR ' + \
-                           u'( title:testtitle NOT groups:testdiscipline))'
-
-        # The Pylons globals are not available outside a request. This is a hack to provide context object.
-        c = AttribSafeContextObj()
-        py_obj = PylonsContext()
-        py_obj.tmpl_context = c
-        pylons.tmpl_context._push_object(c)
-
-        cls.kata_plugin = KataPlugin()
-
-        cls.c = c
-
-    @classmethod
-    def teardown_class(cls):
-        """Get away from testing environment."""
-
-        pylons.tmpl_context._pop_object()
-
-    def test_before_search(self):
-        """Test before_search() output type and more."""
-        test_dict = copy.deepcopy(self.some_data_dict)
-        result_dict = self.kata_plugin.before_search(test_dict)
-        assert isinstance(result_dict, dict), "KataPlugin.before_search() didn't output a dict"
-
-        # Test that no errors occur without 'extras'
-        self.kata_plugin.before_search(self.short_data_dict)
-
-    def test_extract_search_params(self):
-        """Test extract_search_params() output parameters number."""
-        test_dict = copy.deepcopy(self.some_data_dict)
-        test_dict['extras'].pop('ext_temporal_coverage_begin')
-        test_dict['extras'].pop('ext_temporal_coverage_end')
-
-        terms, ops, adv_search = advanced_search.extract_search_params(test_dict)
-        n_extracted = len(terms) + len(ops)
-        assert len(self.some_data_dict['extras']) - 2 == n_extracted
-        assert len(terms) == len(ops) + 1
-
-    def test_parse_search_terms(self):
-        """Test parse_search_terms() result string."""
-        test_dict = copy.deepcopy(self.some_data_dict)
-        terms, ops, adv_search = advanced_search.extract_search_params(test_dict)
-        advanced_search.parse_search_terms(self.c, test_dict, terms, ops)
-        assert test_dict['q'] == self.test_q_terms, \
-            "KataPlugin.parse_search_terms() error in query parsing q=%s, test_q_terms=%s" % (
-                test_dict['q'], self.test_q_terms)
-
-    def test_constrain_by_temporal_coverage(self):
-        test_dict = copy.deepcopy(self.some_data_dict)
-        q = advanced_search.constrain_by_temporal_coverage(self.c, test_dict['extras'])
-        assert q
-

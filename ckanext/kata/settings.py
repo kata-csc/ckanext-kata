@@ -97,21 +97,6 @@ _FIELD_TITLES = {'organizationstring': 'Organization',
                  'ext_text': 'All fields',
                  }
 
-# Ordered list of fields for advanced search. First one will be used as the default search field.
-SEARCH_FIELDS = ['ext_text',
-                 'ext_author',
-                 'ext_title',
-                 #'ext_tags',
-                 'ext_pids',
-                 'ext_agent',
-                 'ext_organization',
-                 #'ext_groups',
-                 'ext_funder',
-                 #'ext_licensetext',
-                 #'ext_extras_fformat',
-                 #'ext_fformatstring',
-                 #'ext_extras_language',
-                 ]
 
 # File types and converters used for extracting plain text from structured documents.
 # The 'args' member can be used for passing extra arguments to the program in addition
@@ -147,24 +132,12 @@ AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
 KATA_FIELDS_REQUIRED = ['agent',
                         'availability',
                         'contact',
-                        # 'author',
-                        #'langtitle',   # this is not required since the translation should be in title
-                        # 'title',
-                        # 'contact_phone',
-                        # 'contact_URL',
-                        # 'organization',
-                        # 'owner',
-                        # 'projdis',
-                        #'maintainer_email',
-                        #'version_PID'
                         ]
 
 # Recommended extras fields
 KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            'access_application_URL',
                            'access_request_URL',
-                           #'algorithm',
-                           #'direct_download_URL',
                            'discipline',
                            'event',
                            'geographic_coverage',
@@ -172,15 +145,11 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            'langnotes',
                            'language',
                            'license_URL',
-                           #'mimetype',
-                           # 'project_funder',
-                           # 'project_funding',
-                           # 'project_homepage',
-                           # 'project_name',
                            'pids',
                            'temporal_coverage_begin',
                            'temporal_coverage_end',
-                           'through_provider_URL']
+                           'through_provider_URL'
+                           ]
 
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
 

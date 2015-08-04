@@ -25,75 +25,6 @@ from ckanext.kata import settings, utils
 log = logging.getLogger('ckanext.kata.converters')
 
 
-def org_auth_to_extras(key, data, errors, context):
-    '''
-    Convert author and organization to extras
-    '''
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
-    if len(data[key]) > 0:
-        if key[0] == 'orgauth':
-            if (not ('orgauth', key[1], 'org') in data or
-                    len(data[('orgauth', key[1], 'org')]) == 0):
-                errors[key].append(_('Organisation is missing'))
-            if (not ('orgauth', key[1], 'value') in data or
-                    len(data[('orgauth', key[1], 'value')]) == 0):
-                errors[key].append(_('Author is missing'))
-
-        oval = data[(key[0], key[1], 'org')]
-
-        extras.append({'key': "author_%s" % key[1],
-                      'value': data[key]})
-        extras.append({'key': 'organization_%s' % key[1],
-                       'value': oval
-                       })
-
-
-def org_auth_from_extras(key, data, errors, context):
-    '''
-    Convert (author, organization) pairs from `package.extra` to `orgauths` dict
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-    orgauths = data.get(('orgauth',), [])
-    if not orgauths:
-        data[('orgauth',)] = orgauths
-    authors = []
-    orgs = []
-    for k in data.keys():
-        if 'extras' in k and 'key' in k:
-            if re.search('^(author_)\d+$', data[k]):
-                val = data[(k[0], k[1], 'value')]
-                author = {'key': data[k], 'value': val}
-                if author not in authors:
-                    authors.append(author)
-                data.pop((k[0], k[1], 'value'), None)
-                data.pop((k[0], k[1], '__extras'), None)
-                data.pop(k, None)
-                continue
-
-            if re.search('^(organization_)\d+$', data[k]):
-                val = data[(k[0], k[1], 'value')]
-                org = {'key': data[k], 'org': val}
-                if org not in orgs:
-                    orgs.append(org)
-                data.pop((k[0], k[1], 'value'), None)
-                data.pop((k[0], k[1], '__extras'), None)
-                data.pop(k, None)
-
-    orgs = sorted(orgs, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
-    authors = sorted(authors, key=lambda ke: int(ke['key'].rsplit('_', 1)[1]))
-    for org, author in zip(orgs, authors):
-        orgauth = {}
-        orgauth.update({'value': author['value']})
-        orgauth.update({'org': org['org']})
-        if not orgauth in orgauths:
-            orgauths.append(orgauth)
-
 def gen_translation_str_from_multilang_field(fieldkey, message, key, data, errors, context):
     '''
     Fetch all the lang* fields e.g. for fieldkey 'title' of type
@@ -254,30 +185,6 @@ def escape_quotes(key, data, errors, context):
 
     data[key] = data.get(key).replace('"', '\\"')
 
-def ltitle_to_extras(key, data, errors, context):
-    '''
-    Convert title & language pair from dataset form to db format and validate.
-    Title & language pairs will be stored in package_extra.
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-    extras = data.get(('extras',), [])
-    if not extras:
-        data[('extras',)] = extras
-
-    if len(data[key]) > 0:
-        # Get title's language from data dictionary. key[0] == 'title'.
-        lval = data[(key[0], key[1], 'lang')]
-
-        extras.append({'key': "title_%s" % key[1],
-                      'value': data[key]})
-        extras.append({'key': 'lang_title_%s' % key[1],
-                       'value': lval
-                       })
-
 
 def ltitle_from_extras(key, data, errors, context):
     '''
@@ -337,27 +244,6 @@ def export_as_related(key, data, errors, context):
                                  'type': _("Paper"),
                                  'dataset_id': data[('__extras',)]['id']}
                     related_create(context, data_dict)
-
-
-def add_to_group(key, data, errors, context):
-    '''
-    Add a new group if it doesn't yet exist.
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-    val = data.get(key)
-    if val:
-        repo.new_revision()
-        grp = Group.get(val)
-        # UI code needs group created if it does not match. Hence do so.
-        if not grp:
-            grp = Group(name=val, description=val, title=val)
-            setup_default_user_roles(grp)
-            grp.save()
-        repo.commit()
 
 
 def remove_disabled_languages(key, data, errors, context):

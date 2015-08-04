@@ -31,7 +31,7 @@ from ckan.plugins.core import unload
 
 from ckanext.kata.schemas import Schemas
 
-from ckanext.kata import actions, advanced_search, auth_functions, extractor, helpers, settings, utils
+from ckanext.kata import actions, auth_functions, extractor, helpers, settings, utils
 
 from ckanext.kata.middleware import NotAuthorizedMiddleware
 
@@ -294,7 +294,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_distributor': helpers.get_distributor,
             'get_download_url': helpers.get_download_url,
             'get_fields_grouped': helpers.get_fields_grouped,
-            'get_first_admin': helpers.get_first_admin,
             'get_funder': helpers.get_funder,
             'get_funders': helpers.get_funders,
             'get_ga_id': helpers.get_ga_id,
@@ -326,8 +325,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
             'is_backup_instance': helpers.is_backup_instance,
             'is_url': helpers.is_url,
+            'kata_build_nav_main': helpers.kata_build_nav_main,
             'json_to_list': helpers.json_to_list,
-            'kata_sorted_extras': helpers.kata_sorted_extras,
             'list_organisations': helpers.list_organisations,
             'modify_error_summary': helpers.modify_error_summary,
             'reference_update': helpers.reference_update,
@@ -484,22 +483,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             # This is to get the correct one pre-selected on the HTML form.
             c.sort_by_selected = settings.DEFAULT_SORT_BY
 
-        c.search_fields = settings.SEARCH_FIELDS
         c.translated_field_titles = utils.get_field_titles(toolkit._)
 
-        extras = data_dict.get('extras')
         data_dict['defType'] = 'edismax'
-
-        # Start advanced search parameter parsing
-        if extras:
-            data_dict['q'] = data_dict.get('q', '') + advanced_search.constrain_by_temporal_coverage(c, extras)
-
-            extra_terms, extra_ops, c.advanced_search = advanced_search.extract_search_params(data_dict)
-
-            if len(extra_terms) > 0:
-                advanced_search.parse_search_terms(c, data_dict, extra_terms, extra_ops)
-
-        # End advanced search parameter parsing
 
         data_dict['facet.field'] = settings.FACETS
 
