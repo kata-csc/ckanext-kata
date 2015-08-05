@@ -1,32 +1,44 @@
 {% extends "page.html" %}
-{% block breadcrumb_content %}
-  <li>{% link_for _('Datasets'), controller='package', action='search', highlight_actions = 'new index' %}</li>
-  <li>{% link_for h.get_translation(h.dataset_display_name(c.package))|truncate(15), controller='package', action='read', id=c.pkg_id %}</li>
-  <li class="active"><a href="">{{ _('Request edit rights') }}</a></li>
-{% endblock %}
-{% block primary_content %}
-<section class="module">
-<h2 class="module-heading">{{ _('Request edit rights') }}</h2>
-<div class="module-content">
 
-{% if c.package_owner %}
-  <p>
-  {{ _('If you wish, you can click the button below, and a request for editing access will be sent to the owner of the dataset.') }}
-  </p>
-  <p>
-  <a href="{{ h.url_for(controller='ckanext.kata.controllers:EditAccessRequestController', action='create_request', pkg_id=c.pkg_id) }}" class="btn btn-success">
-  	
-  	{{ _('Send') }}
-  </a>
-  </p>
-{% else %}
-  <p>
-  <b>
-  {{ _('This dataset does not have an owner. No request for editing access can be sent. Sorry.') }}
-  </b>
-  </p>
-{% endif %}
-</div>
-</div>
-</section>
+{% block content %}
+
+  <div id="etsin-main">
+    <div class="etsin-container read-base-container">
+      <div class="container container-small">
+
+        {% block flash %}
+          {{ super() }}
+        {% endblock %}
+
+        <div class="row-fluid">
+          {%- block inner_content %}
+
+            <div class="dataset-view-content">
+              <h2 class="page-title">{{ _('Request edit rights') }}</h2>
+              <div class="dataset-section form-tab-content">
+
+                {% if c.package_owner %}
+                  <p>
+                    {{ _('If you wish, you can click the button below, and a request for editing access will be sent to the owner of the dataset.') }}
+                  </p>
+                  <p>
+                    <a href="{{ h.url_for(controller='ckanext.kata.controllers:EditAccessRequestController', action='create_request', pkg_id=c.pkg_id) }}" class="btn btn-success">
+    	                {{ _('Send') }}
+                    </a>
+                  </p>
+                {% else %}
+                  <p>
+                    <b>
+                      {{ _('This dataset does not have an owner. No request for editing access can be sent. Sorry.') }}
+                    </b>
+                  </p>
+                {% endif %}
+
+              </div>
+            </div>
+          {% endblock -%}
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
