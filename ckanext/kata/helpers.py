@@ -963,3 +963,22 @@ def kata_build_nav_main(*args):
             output += literal('<li>') + link + literal('</li>')
 
     return output
+
+
+def get_autocomplete_format(data):
+    '''
+    Splits and resolves
+
+    :param data: string of uris
+    :return: json: [{"id": "value", "text": "label"}...]
+    '''
+
+    rets = list()
+    if data:
+        items = [x.strip() for x in data.split(',')]
+        if items:
+            for item in items:
+                label = get_label_for_uri(item)
+                rets.append({"id": item, "text": label})
+    return json.dumps(rets)
+

@@ -70,8 +70,8 @@
       </p>
       
       {% set autocomplete_source = '/api/2/util/tag/autocomplete?incomplete=?&language=' ~ h.lang()  %}
-      {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
-      {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
+      {% set tag_attrs = {'data-module': 'kata-autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label', 'data-module-getlabels': 'true'} %}
+      {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=h.get_autocomplete_format(data.tag_string), error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
     </div>
     <br />
 
@@ -87,8 +87,8 @@
         {{ kata_form.tooltip(tooltip=_("Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
       </p>
       {% set autocomplete_source = '/api/2/util/discipline_autocomplete?incomplete=?&language=' ~ h.lang()  %}
-      {% set disc_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source , 'data-module-key': 'key', 'data-module-label': 'label'} %}
-      {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=data.discipline, error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=disc_attrs) }}
+      {% set disc_attrs = {'data-module': 'kata-autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source , 'data-module-key': 'key', 'data-module-label': 'label', 'data-module-getlabels': 'true'} %}
+      {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=h.get_autocomplete_format(data.discipline), error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=disc_attrs) }}
       </div>
     </div>
     {# Languages #}
