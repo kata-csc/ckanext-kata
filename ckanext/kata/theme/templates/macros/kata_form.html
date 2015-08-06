@@ -28,7 +28,7 @@ onclick     - Javascript content for onclick element.
 #}
 {% macro plusbutton(onclick='', id='', class='', text='') %}
   <div class="kata-plus-btn">
-    <i class="icon-plus-sign kata-add{% if class %} {{ class }}{% endif %}" onclick="{{ onclick }}" }}"{% if id %} id="{{ id }}"{% endif %}></i>
+    <i class="icon-plus-sign kata-add{% if class %} {{ class }}{% endif %}" onclick="{{ onclick }}" {% if id %} id="{{ id }}"{% endif %}></i>
     <p class="search-infotext inline-form">{{ text }}</p>
   </div>
 {% endmacro %}
