@@ -693,7 +693,7 @@ input[id="xmlfile"] {
 .etsin-dataset-form .dataset-tabs > li {
   float: none;
   display: table-cell;
-  width: 50%;
+  width: 20%;
   text-align: center;
   white-space: nowrap;
 }
