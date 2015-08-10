@@ -1,23 +1,25 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
+{% set lang = h.lang() %}
+
 <div class="tab-content-inner">
   <div class="form-row">
     <label class="form-label" for="multilang-id">{{ _("Dataset title") }}*</label>
-{#    <div class="form-label">{{ _("Dataset title") }}*</div>#}
     <div class="form-content">
       {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
-      <div class="etsin-multilang-field">
+      <div class="etsin-multilang-field" data-module="etsin-multilang-input" data-module-currentlang="{{ lang }}">
+
         <ul class="nav nav-tabs multilang-tabs">
-          <li class="multilang-tab active">
+          <li class="multilang-tab" data-value="fin">
             <a>
-              suomeksi
+              {{ _('In Finnish') }}
               <span class="closer"><i class="icon-remove"></i></span>
             </a>
           </li>
-          <li class="multilang-tab">
+          <li class="multilang-tab" data-value="eng">
             <a>
-              englanniksi
+              {{ _('In English') }}
               <span class="closer"><i class="icon-remove"></i></span>
             </a>
           </li>
@@ -25,8 +27,12 @@
             <a class="adder"><i class="icon-plus"></i></a>
           </li>
         </ul>
-        <div class="multilang-input">
-          <input type="text" class="form-control" id="multilang-id">
+        <div class="multilang-input" data-value="fin">
+          <input type="text" class="form-control" id="multilang-id-fin" value={{ h.get_translation(data.title, 'fin') }}>
+{#          <input type="text" class="form-control">#}
+        </div>
+        <div class="multilang-input" data-value="eng">
+          <input type="text" class="form-control" id="multilang-id-eng" value={{ h.get_translation(data.title, 'eng') }}>
 {#          <input type="text" class="form-control">#}
         </div>
       </div>

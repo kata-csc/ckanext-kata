@@ -10,13 +10,13 @@
       <div class="etsin-multilang-display" data-module="etsin-multilang-display" data-module-currentlang="{{lang}}">
 
         <ul class="unstyled">
-          {% for title in h.json_to_list(pkg_dict.title) %}
+        {% for title in h.json_to_list(pkg_dict.title) %}
           {% set langvalue = h.get_language(title.lang) %}
           <li data-value="{{title.lang}}"><a>{{langvalue}}</a></li>
-          {% endfor %}
+        {% endfor %}
         </ul>
         {% for title in h.json_to_list(pkg_dict.title) %}
-        <div class="multilang-field hidden" data-value="{{title.lang}}">{{ title.value }}</div>
+          <div class="multilang-field hidden" data-value="{{title.lang}}">{{ title.value }}</div>
         {% endfor %}
 
       </div>
