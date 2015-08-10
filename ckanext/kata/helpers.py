@@ -12,6 +12,7 @@ import re
 from pylons.decorators.cache import beaker_cache
 import json
 import urllib2
+import httplib
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -604,9 +605,25 @@ def get_labels_for_uri_nocache(uri, ontology=None):
         return None
 
     url = "http://finto.fi/rest/v1/{ontology}/data?uri={uri}&format=application/json".format(ontology=ontology, uri=uri)
-    # Reverse DNS resolving can be extremely slow
-    data = urllib2.urlopen(url).read()
-    jsondata = json.loads(data)
+
+    try:
+        data = urllib2.urlopen(url).read()
+
+    except urllib2.HTTPError as e:
+        log.error("Can not connect to Finto: %s" % str(e.code))
+        return None
+    except urllib2.URLError as e:
+        log.error("Can not connect to Finto: %s" % str(e.reason))
+        return None
+    except httplib.HTTPException:
+        log.error('Can not connect to Finto: HTTPException')
+        return None
+
+    try:
+        jsondata = json.loads(data)
+    except ValueError:
+        return None
+
     if jsondata.get('graph'):
         for item in jsondata['graph']:
             if item.get('uri') == uri:
