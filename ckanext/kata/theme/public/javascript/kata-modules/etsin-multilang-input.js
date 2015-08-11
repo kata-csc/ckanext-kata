@@ -4,7 +4,8 @@ this.ckan.module('etsin-multilang-input', function ($, translate) {
       $.proxyAll(this, /_on/, /_activate/);
       this.tabs = this.el.find('li.multilang-tab');
       this.fields = this.el.find('.multilang-input');
-      this.plustab = this.el.find('li.multilang-tab:first-child.adder');
+      //this.plustab = this.el.find('li.multilang-tab:first-child.adder');
+      this.plustab = this.tabs.filter('[data-value="adder"]')
 
       var currentlang = this.options.currentlang || 'en';
       if (currentlang === 'en') {
@@ -41,6 +42,8 @@ this.ckan.module('etsin-multilang-input', function ($, translate) {
       this._activateTab(lang);
     },
 
+
+
     _addTab: function (event) {
       var lang = _selectLanguage();
       this._newTab(lang);
@@ -49,7 +52,10 @@ this.ckan.module('etsin-multilang-input', function ($, translate) {
     },
 
     _selectLanguage: function () {
-
+      this.plustab.removeClass('active').addClass('hidden');
+      this._activateTab('selector');
+      //this.fields.addClass('hidden');
+      //this.el.find('.multilang-selector').removeClass('hidden');
     }
   };
 });

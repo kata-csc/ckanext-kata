@@ -23,10 +23,20 @@
               <span class="closer"><i class="icon-remove"></i></span>
             </a>
           </li>
-          <li class="multilang-tab">
+
+          <li class="multilang-tab" data-value="adder">
             <a class="adder"><i class="icon-plus"></i></a>
           </li>
+          <li class="multilang-tab hidden" data-value="selector">
+            <a>
+              <label class="" for="temp_lang_select">
+                {{ _('New language') }}
+              </label>
+            </a>
+          </li>
+
         </ul>
+
         <div class="multilang-input" data-value="fin">
           <input type="text" class="form-control" id="multilang-id-fin" value={{ h.get_translation(data.title, 'fin') }}>
 {#          <input type="text" class="form-control">#}
@@ -35,8 +45,19 @@
           <input type="text" class="form-control" id="multilang-id-eng" value={{ h.get_translation(data.title, 'eng') }}>
 {#          <input type="text" class="form-control">#}
         </div>
-      </div>
 
+        <div class="multilang-input hidden" data-value="selector">
+{#          <input type="text" class="form-control" id="multilang-id-eng" value={{ h.get_translation(data.title, 'eng') }}>#}
+
+          <div class="controls kata-input-comp kata-field-title-language">
+            <select id="temp_lang_select">
+              {% set selected = "swe" if lang == "fin" or lang == "swe" else "abk" %}
+              {% snippet 'package/snippets/languages.html', selected=selected %}
+            </select>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
