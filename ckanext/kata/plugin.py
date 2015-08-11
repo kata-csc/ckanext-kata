@@ -521,7 +521,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     keys_to_remove = list()
                     for key, value in pkg_dict.items():
                         if re.search(r'^title_[\d]+$', key):
-                            print key
                             items = key.split("_")
                             d = "lang_title_" + items[-1]
                             keys_to_remove.extend([d, key])
@@ -529,7 +528,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                             dictkey = "title_" + (pkg_dict.get(d) or 'fin')
                             pkg_dict[dictkey] = value
                             titles.append(value)
-                    pkg_dict['title'] = ", ".join(titles)
+                    # handle titles of harvest sources with 'else'
+                    pkg_dict['title'] = ", ".join(titles) if titles else title
                     pkg_dict['title_string'] = pkg_dict['title']
 
                     # Remove duplicate entries from index
