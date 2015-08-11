@@ -504,44 +504,41 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def _handle_titles(self, pkg_dict):
 
         title = pkg_dict.get('title')
-        if title:
-            titles = list()
+        if not title:
+            return
+        titles = list()
+        try:
+            titlejson = json.loads(title)
+            for key, value in titlejson.items():
+                dictkey = "title_" + (key if len(key) > 0 else 'fin')
+                pkg_dict[dictkey] = value
+                titles.append(value)
+            pkg_dict['title'] = ", ".join(titles)
+            pkg_dict['title_string'] = pkg_dict['title']
+        except (ValueError, TypeError):
             try:
-                titlejson = json.loads(title)
-                for key, value in titlejson.items():
-                    dictkey = "title_" + (key if len(key) > 0 else 'fin')
-                    pkg_dict[dictkey] = value
-                    titles.append(value)
-                pkg_dict['title'] = ", ".join(titles)
+                titles = list()
+                keys_to_remove = list()
+                for key, value in pkg_dict.items():
+                    if re.search(r'^title_[\d]+$', key):
+                        items = key.split("_")
+                        d = "lang_title_" + items[-1]
+                        keys_to_remove.extend([d, key])
+                        dictkey = "title_" + (pkg_dict.get(d) or 'fin')
+                        pkg_dict[dictkey] = value
+                        titles.append(value)
+                # handle titles of harvest sources with 'else'
+                pkg_dict['title'] = ", ".join(titles) if titles else title
                 pkg_dict['title_string'] = pkg_dict['title']
-
-            except (ValueError, TypeError):
-                try:
-                    titles = list()
-                    keys_to_remove = list()
-                    for key, value in pkg_dict.items():
-                        if re.search(r'^title_[\d]+$', key):
-                            items = key.split("_")
-                            d = "lang_title_" + items[-1]
-                            keys_to_remove.extend([d, key])
-
-                            dictkey = "title_" + (pkg_dict.get(d) or 'fin')
-                            pkg_dict[dictkey] = value
-                            titles.append(value)
-                    # handle titles of harvest sources with 'else'
-                    pkg_dict['title'] = ", ".join(titles) if titles else title
-                    pkg_dict['title_string'] = pkg_dict['title']
-
-                    # Remove duplicate entries from index
-                    for rem in keys_to_remove:
-                        if rem in pkg_dict:
-                            del pkg_dict[rem]
-                        if "extras_" + rem in pkg_dict:
-                            del pkg_dict["extras_" + rem]
-
-                except:
-                    return
+                 # Remove duplicate entries from index
+                for rem in keys_to_remove:
+                    if rem in pkg_dict:
+                        del pkg_dict[rem]
+                    if "extras_" + rem in pkg_dict:
+                        del pkg_dict["extras_" + rem]
+            except:
                 return
+            return
 
     def before_index(self, pkg_dict):
         '''
