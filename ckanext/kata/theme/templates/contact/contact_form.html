@@ -1,32 +1,44 @@
 {% extends "page.html" %}
 
-{% block breadcrumb_content %}
-  <li>{% link_for _('Datasets'), controller='package', action='search', highlight_actions = 'new index' %}</li>
-  <li>{% link_for h.get_translation(h.dataset_display_name(c.package))|truncate(15), controller='package', action='read', id=c.pkg_id %}</li>
-  <li class="active"><a href="">{{ _("Contact") }}</a></li>
-{% endblock %}
-{% block primary_content %}
-<section class="module">
-<h2 class="module-heading">{{ _('Contact distributor') }}</h2>
-<div class="module-content">
+{% block content %}
 
-{% block contact_form %}
-  {% set form_post_url = h.url_for(controller='ckanext.kata.controllers:ContactController', action='send_contact_message', pkg_id=c.package.id) %}
-  <form class="dataset-form form-horizontal" method="post" action={{form_post_url}} data-module="basic-form">
-  {#<p>{{ _("On this page you can send a message to the owner of the dataset.") }}</p>#}
+<div id="etsin-main">
+  <div class="etsin-container read-base-container">
+    <div class="container container-small">
+      {% block flash %}
+        {{ super() }}
+      {% endblock %}
+      <div class="row-fluid">
+        {%- block inner_content %}
 
-  <label for="contact-recipient">{{ _("Recipient") }}</label>
-  <select id="contact-recipient" name="recipient">
-    {% for recipient in c.recipient_options %}
-      <option value="{{ recipient.value }}" {% if loop.index0|string == c.recipient_index %}selected{% endif %}>{{ recipient.text }}</option>
-    {% endfor %}
-  </select>
-  <label for="msg">{{ _("Message") }}</label>
-  <textarea name="msg" rows="10" cols="50"></textarea>
-  <br /><br />
-  <p><input type="submit" value="{{ _('Send') }}" class="btn btn-success"/></p>
-  </form>
-{% endblock %}
+          <div class="dataset-view-content">
+            <h2 class="page-title">{{ _('Contact distributor') }}</h2>
+            <div class="dataset-section form-tab-content">
+
+             {% block contact_form %}
+               {% set form_post_url = h.url_for(controller='ckanext.kata.controllers:ContactController', action='send_contact_message', pkg_id=c.package.id) %}
+               <form class="dataset-form form-horizontal" method="post" action={{form_post_url}} data-module="basic-form">
+                 {#<p>{{ _("On this page you can send a message to the owner of the dataset.") }}</p>#}
+
+                 <label for="contact-recipient">{{ _("Recipient") }}</label>
+                 <select id="contact-recipient" name="recipient">
+                   {% for recipient in c.recipient_options %}
+                     <option value="{{ recipient.value }}" {% if loop.index0|string == c.recipient_index %}selected{% endif %}>{{ recipient.text }}</option>
+                   {% endfor %}
+                 </select>
+                 <label for="msg">{{ _("Message") }}</label>
+                 <textarea name="msg" rows="10" cols="50"></textarea>
+                 <br /><br />
+                 <p><input type="submit" value="{{ _('Send') }}" class="btn btn-success"/></p>
+               </form>
+             {% endblock %}
+            </div>
+          </div>
+
+        {% endblock -%}
+      </div>
+    </div>
+  </div>
 </div>
-</section>
+
 {% endblock %}
