@@ -61,6 +61,8 @@
     </div>
   </div>
 
+  {{ kata_form.multilang_field('title-field', _('Dataset title'), lang=lang) }}
+
   {% snippet 'package/snippets/recommended_description.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
 
   <div class="form-row">

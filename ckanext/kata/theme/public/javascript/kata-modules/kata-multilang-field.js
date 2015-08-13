@@ -22,6 +22,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
 
       this._setTabs();
     },
+
     _getLangFromEl: function(event, tag) {
       var el = $(event.target);
       if (!el.eq(0).is(tag)) {
@@ -37,6 +38,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
         return _.last(el.attr('id').split('_'));
       }
     },
+
     _setValues: function () {
       var model = this.model;
       var callback = this._onInputChange;
@@ -47,6 +49,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
         input.on('input change', callback);
       });
     },
+
     _setDropdown: function (ulEl, lang) {
       function generateLangOption(code) {
         return '<li data-langcode="' + code + '"><a>' + KataLanguages.get(code, lang) + '</a></li>';
@@ -61,6 +64,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
         '</li>');
         this.el.find('.addnew-options li').on('click', this._onMenuSelect);
     },
+
     _setTabs: function () {
       var ulEl = this.el.find('.nav-tabs');
       var lang = this.options.current;
@@ -86,6 +90,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
       this.el.find('.' + this.selectors.tab).on('click', this._onTabClick);
       this.el.find('.' + this.selectors.tab + ' .icon-remove').on('click', this._onLangRemove);
     },
+
     _onMenuSelect: function (event) {
       var langcode = $(event.target).closest('li').data('langcode');
       if (langcode === 'other') {
@@ -96,6 +101,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
         this._addNewLanguage(langcode);
       }
     },
+
     _setActiveTab: function (langcode, el) {
       if (!el) {
         el = this.el.find('.' + this.selectors.tab + '-' + langcode);
@@ -109,6 +115,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
         input.closest('.multilang-input-wrapper')[lang === langcode ? 'removeClass' : 'addClass']('multilang-hidden');
       });
     },
+
     _onLangRemove: function (event) {
       var langcode = this._getLangFromEl(event, 'a');
       if (!langcode) {
@@ -122,10 +129,12 @@ ckan.module('kata-multilang-field', function ($, translate) {
         this._setTabs();
       }
     },
+
     _onOtherSelected: function () {
       $(this.selectors.modal).modal({});
       $(this.selectors.modal + ' .btn-primary').on('click', this._onModalClose);
     },
+
     _onTabClick: function (event) {
       var langcode = this._getLangFromEl(event, 'a');
       if (!langcode || langcode === 'addnew') {
@@ -133,6 +142,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
       }
       this._setActiveTab(langcode);
     },
+
     _onInputChange: function (event) {
       var langcode = this._getLangFromEl(event, 'input');
       if (!langcode) {
@@ -140,11 +150,13 @@ ckan.module('kata-multilang-field', function ($, translate) {
       }
       this.model[langcode] = $(event.target).val();
     },
+
     _addNewLanguage: function (langcode) {
       this.model[langcode] = '';
       this.current = langcode;
       this._setTabs();
     },
+
     _onModalClose: function () {
       var newLang = $(this.selectors.modalvalue).val();
       var isValidChoice = !_.isEmpty(newLang);
@@ -154,5 +166,6 @@ ckan.module('kata-multilang-field', function ($, translate) {
         $(this.selectors.modalvalue).select2('val', '');
       }
     }
+
   };
 });

@@ -137,18 +137,42 @@ Copied from CKAN form.html.
   {%- endfor -%}
 {%- endmacro -%}
 
-{% macro multilang_field(name, label, model={}, current='') -%}
+{#
+ Builds a multi-language input field.
+
+ name    - Name is used deeper in element for...
+ label   - Label text for field. '*' appended to notify required field.
+ model   - WTF?!?
+ lang    - The current language of the user interface.
+ classes - A list of classes to apply to the wrapper (default: [])
+#}
+{% macro multilang_field(name, label, model={}, lang='', classes='') -%}
   {# set currentlang = h.lang() #}
-  <div data-module="kata-multilang-field" data-module-model="{{ model }}" data-module-current="{{ current }}" data-module-name="{{ name }}">
+  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-model="{{ model }}" data-module-current="{{ lang }}" data-module-name="{{ name }}">
 
     <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
-      <label class="control-label{{ " " ~ label_classes | join(' ') }}" for="{{ name }}">{{ label }}</label>
-      <div class="controls{{ " " ~ control_classes | join(' ') }}">
-        <ul class="nav nav-tabs"></ul>
-        <div class="multilang-input-area"></div>
-        {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
+
+      <div class="form-row">
+        <label class="form-label{{ " " ~ label_classes | join(' ') }}" for="{{ name }}">{{ label }}*</label>
+{#      <label class="control-label{{ " " ~ label_classes | join(' ') }}" for="{{ name }}">{{ label }}</label>#}
+
+        <div class="form-content{{ " " ~ control_classes | join(' ') }}{{ " error" if error }}">
+
+          <ul class="nav nav-tabs multilang-tabs"></ul>
+
+          <div class="multilang-input-area"></div>
+
+          {% if error and error is iterable %}
+            <span class="error-block">{{ error|join(', ') }}</span>
+          {% endif %}
+
+{#          {{ caller() }}#}
+          {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
+        </div>
+        {{ extra_html }}
       </div>
     </div>
+
     <div id="add-new-lang-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -163,5 +187,6 @@ Copied from CKAN form.html.
         <button type="button" class="btn btn-primary">{{ _('Add') }}</button>
       </div>
     </div>
+
   </div>
 {%- endmacro %}
