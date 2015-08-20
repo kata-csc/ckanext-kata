@@ -612,6 +612,7 @@ header.masthead .branding .branding-description {
   display: inline-block;
   vertical-align: bottom;
   color: #0095ca;
+  margin-left: 31.75px;
 }
 @media (max-width: 1000px) {
   header.masthead .branding {
