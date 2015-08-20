@@ -2,14 +2,14 @@
 
 {% block inner_content %}
 
-  <div class="etsin-container">
+  <div class="etsin-container organization-container">
     <div class="container">
       <div class="row-fluid">
         <h2 class="page-title">{{ c.group_dict.display_name }}</h2>
         <div class="organization-view-header">
           <div class="actions-and-ratings">
             <div class="button-container">
-              <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}> View organization </a>
+              <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}>{{ _('View organization') }}</a>
 
               {% if c.group_dict.is_organization and h.check_access('organization_update', {'id':c.group_dict.id }) %}
                 <div class="btn-group">
