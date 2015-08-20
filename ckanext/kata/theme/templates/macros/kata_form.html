@@ -142,31 +142,49 @@ Copied from CKAN form.html.
 
  name    - Name is used deeper in element for...
  label   - Label text for field. '*' appended to notify required field.
- model   - WTF?!?
+ model   - WTF?!?   {
+                      'fin': 'Otsikko suomeksi wäää "qwerty"', 'eng': 'Title in English 算盤爾後'
+                    }
  lang    - The current language of the user interface.
  classes - A list of classes to apply to the wrapper (default: [])
 #}
-{% macro multilang_field(name, label, model={}, lang='', classes='') -%}
-  {# set currentlang = h.lang() #}
-  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-model="{{ model }}" data-module-current="{{ lang }}" data-module-name="{{ name }}">
+{% macro multilang_field(name, label, model={}, values={}, lang='', classes='') -%}
+  {%- set extra_html = caller() if caller -%}
+
+  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-model="{{ model }}" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}">
 
     <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
 
       <div class="form-row">
+
         <label class="form-label{{ " " ~ label_classes | join(' ') }}" for="{{ name }}">{{ label }}*</label>
-{#      <label class="control-label{{ " " ~ label_classes | join(' ') }}" for="{{ name }}">{{ label }}</label>#}
 
         <div class="form-content{{ " " ~ control_classes | join(' ') }}{{ " error" if error }}">
 
-          <ul class="nav nav-tabs multilang-tabs"></ul>
+          <ul class="nav nav-tabs multilang-tabs">
+            <li class="dropdown">
+              <a class="multilang-tab multilang-tab-addnew dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-plus"></i>
+              </a>
+              <ul class="dropdown-menu addnew-options" role="menu">
+                <li>
+                  <input id="tab-language-selection2" data-module="kata-language-selection" data-module-current="{{ lang }}" />
+                </li>
+              </ul>
+            </li>
+          </ul>
 
-          <div class="multilang-input-area"></div>
+          <div class="multilang-input-area">
+{#            <div class="multilang-input hidden">#}
+{#              <input id="title-field__0__eng" class="input-block-level" type="text" placeholder="placeholder" value="" name="title-field__0__eng"></input>#}
+{#              <input id="tab-language-selection2" class="input-block-level" data-module="kata-language-selection" data-module-current="{{ lang }}" />#}
+{#            </div>#}
+          </div>
 
           {% if error and error is iterable %}
             <span class="error-block">{{ error|join(', ') }}</span>
           {% endif %}
 
-{#          {{ caller() }}#}
           {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
         </div>
         {{ extra_html }}
@@ -180,7 +198,7 @@ Copied from CKAN form.html.
       </div>
       <div class="modal-body">
         <p>Modal body</p>
-        <input id="tab-language-selection" data-module="kata-language-selection" data-module-current="{{ current }}" />
+        <input id="tab-language-selection" data-module="kata-language-selection" data-module-current="{{ lang }}" />
       </div>
       <div class="modal-footer">
         <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">{{ _('Cancel') }}</button>

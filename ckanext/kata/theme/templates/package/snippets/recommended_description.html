@@ -24,10 +24,19 @@
       {% for description in descriptions %}
         {% set index = loop.index0 %}
         {% set prefix = "langnotes__" ~ index ~ "__" %}
-        {% call form.markdown(prefix ~ 'value', id=prefix ~ 'value_id', label=_('Description'),
-           placeholder=_('a freeform description'), value=description.value,
-           classes=['control-group control-custom kata-field-description'],) %}
-          <label class="control-label kata-input-comp kata-field-title-language" for="{{prefix ~ 'lang'}}">{{ _('Language') }}</label>
+
+        {% call form.markdown(
+          prefix ~ 'value',
+          id=prefix ~ 'value_id',
+          label=_('Description'),
+          placeholder=_('a freeform description'),
+          value=description.value,
+          classes=['control-group control-custom kata-field-description'],)
+        %}
+
+          <label class="control-label kata-input-comp kata-field-title-language" for="{{prefix ~ 'lang'}}">
+            {{ _('Language') }}
+          </label>
           <div class="controls kata-input-comp kata-field-title-language">
             <select name="{{prefix ~ 'lang'}}">
               {% snippet 'package/snippets/languages.html', selected=description.lang %}
@@ -39,6 +48,7 @@
               <input style="display: none;" type="checkbox" id="description_btn__{{ index }}__value_id" name="description_btn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
             {#% endif %#}
           </div>
+
         {% endcall %}
       {% endfor %}
 

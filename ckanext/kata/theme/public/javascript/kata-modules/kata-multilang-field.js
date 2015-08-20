@@ -13,6 +13,8 @@ ckan.module('kata-multilang-field', function ($, translate) {
 
       this.inputDiv = this.el.find(this.selectors.inputarea);
 
+      this.values = _.isObject(this.options.values) ? this.options.values : {};
+
       // hax the lang code alpha2->alpha3
       var current = this.options.current;
       if (current === 'fi') current = 'fin';
@@ -20,6 +22,8 @@ ckan.module('kata-multilang-field', function ($, translate) {
       this.current = current;
       // end hax
 
+      this.model = this.values;
+      this.model[this.current] = this.model[this.current] ? this.model[this.current] : '';
       this._setTabs();
     },
 
@@ -39,56 +43,58 @@ ckan.module('kata-multilang-field', function ($, translate) {
       }
     },
 
+    _onInputChange: function (event) {
+      var langcode = this._getLangFromEl(event, 'input');
+      if (!langcode) {
+        return;
+      }
+      this.model[langcode] = $(event.target).val();
+    },
+
     _setValues: function () {
       var model = this.model;
       var callback = this._onInputChange;
       this.inputDiv.find('input').each(function () {
         var input = $(this);
-        var lang = _.last(input.attr('name').split('_'));
+        var lang = _.last(input.attr('id').split('_'));
         input.val(model[lang]);
         input.on('input change', callback);
       });
     },
 
-    _setDropdown: function (ulEl, lang) {
-      function generateLangOption(code) {
-        return '<li data-langcode="' + code + '"><a>' + KataLanguages.get(code, lang) + '</a></li>';
+    _setActiveTab: function (langcode, el) {
+      if (!el) {
+        el = this.el.find('.' + this.selectors.tab + '-' + langcode);
       }
-      var otherLabel = lang === 'fi' ? 'Muu…' : 'Other…';
-      ulEl.append('<li class="dropdown"><a class="' + this.selectors.tab + ' ' + this.selectors.tab +
-        '-addnew dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i></a>' +
-        '<ul class="dropdown-menu addnew-options" role="menu">' +
-        generateLangOption('fin') + generateLangOption('eng') + generateLangOption('swe') +
-        '<li class="divider"></li><li data-langcode="other"><a>' + otherLabel + '</a></li>' +
-        '</ul>' +
-        '</li>');
-        this.el.find('.addnew-options li').on('click', this._onMenuSelect);
+      el.closest('ul').find('li').removeClass('active');
+      el.closest('li').addClass('active');
+      this.current = langcode;
+      this.inputDiv.find('input').each(function () {
+        var input = $(this);
+        var lang = _.last(input.attr('id').split('_'));
+        input.closest('.multilang-input')[lang === langcode ? 'removeClass' : 'addClass']('hidden');
+      });
     },
 
-    _setTabs: function () {
-      var ulEl = this.el.find('.nav-tabs');
-      var lang = this.options.current;
-      ulEl.empty();
-      if (!_.isEmpty(this.model)) {
-        var inputs = [];
-        _.each(_.keys(this.model), function (langcode) {
-          var closer = _.size(this.model) > 1 ? '<span class="langtab-close"><i class="icon-remove"></i></span>' : '';
-          var liEl = '<li><a class="' + this.selectors.tab + ' ' + this.selectors.tab + '-' + langcode + '">' +
-            KataLanguages.get(langcode, lang) + closer + '</a></li>';
-          ulEl.append(liEl);
-          var elId = this.options.name + '__0__' + langcode;
-          var inputEl = '<div class="multilang-input-wrapper">' +
-            '<input id="'+elId+'" type="text" name="'+elId+'" class="input-block-level" value="" placeholder="placeholder" />' +
-            '</div>';
-          inputs.push(inputEl);
-        }, this);
-        this.inputDiv.empty().append(inputs.join(''));
-        this._setValues();
-        this._setActiveTab(this.current);
+    _onModalClose: function () {
+      var newLang = $(this.selectors.modalvalue).val();
+      var isValidChoice = !_.isEmpty(newLang);
+      if (isValidChoice) {
+        $(this.selectors.modal).modal('hide');
+        this._addNewLanguage(newLang);
+        $(this.selectors.modalvalue).select2('val', '');
       }
-      this._setDropdown(ulEl, lang);
-      this.el.find('.' + this.selectors.tab).on('click', this._onTabClick);
-      this.el.find('.' + this.selectors.tab + ' .icon-remove').on('click', this._onLangRemove);
+    },
+
+    _onOtherSelected: function () {
+      $(this.selectors.modal).modal({});
+      $(this.selectors.modal + ' .btn-primary').on('click', this._onModalClose);
+    },
+
+    _addNewLanguage: function (langcode) {
+      this.model[langcode] = '';
+      this.current = langcode;
+      this._setTabs();
     },
 
     _onMenuSelect: function (event) {
@@ -102,18 +108,48 @@ ckan.module('kata-multilang-field', function ($, translate) {
       }
     },
 
-    _setActiveTab: function (langcode, el) {
-      if (!el) {
-        el = this.el.find('.' + this.selectors.tab + '-' + langcode);
+    _onNewAddLang: function () {
+      var newLang = $('#tab-language-selection2').val();
+      var isValidChoice = !_.isEmpty(newLang);
+      if (isValidChoice) {
+        //$(this.selectors.modal).modal('hide');
+        this._addNewLanguage(newLang);
+        $('#tab-language-selection2').select2('val', '');
       }
-      el.closest('ul').find('li').removeClass('active');
-      el.closest('li').addClass('active');
-      this.current = langcode;
-      this.inputDiv.find('input').each(function () {
-        var input = $(this);
-        var lang = _.last(input.attr('name').split('_'));
-        input.closest('.multilang-input-wrapper')[lang === langcode ? 'removeClass' : 'addClass']('multilang-hidden');
-      });
+    },
+
+    _setDropdown: function (ulEl, lang) {
+      //function generateLangOption(code) {
+      //  return '<li data-langcode="' + code + '"><a>' + KataLanguages.get(code, lang) + '</a></li>';
+      //}
+      //var otherLabel = lang === 'fi' ? 'Muu…' : 'Other…';
+      //ulEl.append('<li class="dropdown"><a class="' + this.selectors.tab + ' ' + this.selectors.tab +
+      //  '-addnew dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i></a>' +
+      //  '<ul class="dropdown-menu addnew-options" role="menu">' +
+      //  //generateLangOption('fin') + generateLangOption('eng') + generateLangOption('swe') +
+      //  '<input id="tab-language-selection" data-module="kata-language-selection" data-module-current="' + lang + '" />' +
+      //  '<li class="divider"></li><li data-langcode="other"><a>' + otherLabel + '</a></li>' +
+      //  '</ul>' +
+      //  '</li>');
+      //  this.el.find('.addnew-options li').on('click', this._onMenuSelect);
+
+      //$('.select2-container').select2({
+      //$('.select2-input').select2({
+      //$('.select2-drop').select2({
+      //$('.select2-choise').select2({
+      //$('.select2-search').select2({
+      //  placeholder: "Select a state",
+      //  allowClear: true
+      //});
+      this.el.find('.addnew-options li input').on('change click', this._onNewAddLang);
+    },
+
+    _onTabClick: function (event) {
+      var langcode = this._getLangFromEl(event, 'a');
+      if (!langcode || langcode === 'addnew') {
+        return;
+      }
+      this._setActiveTab(langcode);
     },
 
     _onLangRemove: function (event) {
@@ -130,41 +166,49 @@ ckan.module('kata-multilang-field', function ($, translate) {
       }
     },
 
-    _onOtherSelected: function () {
-      $(this.selectors.modal).modal({});
-      $(this.selectors.modal + ' .btn-primary').on('click', this._onModalClose);
-    },
+    _setTabs: function () {
+      var ulEl = this.el.find('.nav-tabs');
+      var liEls = this.el.find('.nav-tabs > li').not('.dropdown');
+      var dropdown = this.el.find('.nav-tabs > li.dropdown');
+      var lang = this.options.current;
+      liEls.remove();
+      if (!_.isEmpty(this.model)) {
+        console.log('this.model: ' + _.keys(this.model));
+        var inputs = [];
+        _.each(_.keys(this.model), function (langcode) {
 
-    _onTabClick: function (event) {
-      var langcode = this._getLangFromEl(event, 'a');
-      if (!langcode || langcode === 'addnew') {
-        return;
+          // FIXME: HUOM! tässä modelia käytetään sen tarkastamiseen että edes yksi otsikko jää
+          var closer = _.size(this.model) > 1 ? '<span class="langtab-close"><i class="icon-remove"></i></span>' : '';
+
+          var elLangId = this.options.name + '__0__lang';
+          var liEl = $('<li>').append(
+            $('<a>', {
+              'class': this.selectors.tab + ' ' + this.selectors.tab + '-' + langcode,
+              'name': elLangId,
+              'id': elLangId + '_id',
+              'id': elLangId + langcode,
+              'value': langcode
+            }).html(KataLanguages.get(langcode, lang) + closer)
+          );
+          //var liEl = '<li><a class="' + this.selectors.tab + ' ' + this.selectors.tab + '-' + langcode +
+          //    '" name="' + elLangId + ' >' +
+          //  KataLanguages.get(langcode, lang) + closer + '</a></li>';
+          dropdown.before(liEl);
+
+          // FIXME: muuta name vastaamaan oikeaa muotoa
+          var elValueId = this.options.name + '__0__value';
+          var inputEl = '<div class="multilang-input">' +
+            '<input id="' + elValueId + '_' + langcode + '" type="text" name="'+elValueId+'" class="input-block-level" value="" placeholder="placeholder" />' +
+            '</div>';
+          inputs.push(inputEl);
+        }, this);
+        this.inputDiv.empty().append(inputs.join(''));
+        this._setValues();
+        this._setActiveTab(this.current);
       }
-      this._setActiveTab(langcode);
-    },
-
-    _onInputChange: function (event) {
-      var langcode = this._getLangFromEl(event, 'input');
-      if (!langcode) {
-        return;
-      }
-      this.model[langcode] = $(event.target).val();
-    },
-
-    _addNewLanguage: function (langcode) {
-      this.model[langcode] = '';
-      this.current = langcode;
-      this._setTabs();
-    },
-
-    _onModalClose: function () {
-      var newLang = $(this.selectors.modalvalue).val();
-      var isValidChoice = !_.isEmpty(newLang);
-      if (isValidChoice) {
-        $(this.selectors.modal).modal('hide');
-        this._addNewLanguage(newLang);
-        $(this.selectors.modalvalue).select2('val', '');
-      }
+      this._setDropdown(ulEl, lang);
+      this.el.find('.' + this.selectors.tab).on('click', this._onTabClick);
+      this.el.find('.' + this.selectors.tab + ' .icon-remove').on('click', this._onLangRemove);
     }
 
   };
