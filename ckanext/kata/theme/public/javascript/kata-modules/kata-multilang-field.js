@@ -168,11 +168,11 @@ ckan.module('kata-multilang-field', function ($, translate) {
       if (!_.isEmpty(this.model)) {
         console.log('this.model: ' + _.keys(this.model));
         this.inputDiv.empty();
-        _.each(_.keys(this.model), function (langcode) {
+        _.each(_.keys(this.model), function (langcode, index) {
 
           var closer = _.size(this.model) > 1 ? '<span class="langtab-close"><i class="icon-remove"></i></span>' : '';
 
-          var elLangId = this.options.name + '__0__lang';
+          var elLangId = this.options.name + '__' + index +'__lang';
           var liEl = $('<li>').append(
             $('<a>', {
               'class': this.selectors.tab + ' ' + this.selectors.tab + '-' + langcode,
@@ -184,7 +184,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
           );
           dropdown.before(liEl);
 
-          var elValueId = this.options.name + '__0__value';
+          var elValueId = this.options.name + '__' + index +'__value';
           var inputEl = $('<div>', { 'class': 'multilang-input' });
           inputEl.append( $('<input>', {
             'id': elValueId + '_' + langcode,

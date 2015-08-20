@@ -51,9 +51,9 @@
     <div class="module-content">
       {% set titles = [] %}
 
-      {% if data.langtitle %}
+      {% if data.langtitleOLD %}
         {# In case there are validation errors, the previous edits need to be fetched from the langtitle field #}
-        {% set titles = data.langtitle %}
+        {% set titles = data.langtitleOLD %}
       {% elif data.title %}
         {% set titles = h.json_to_list(data.title) %}
       {% endif %}
@@ -68,13 +68,13 @@
         {% for title in titles %}
           {% set index = loop.index0 %}
           {# langtitle deprecated, use title for the new type JSON translations #}
-          {% call form.input('langtitle__' ~ index ~ '__value', id='langtitle__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
+          {% call form.input('langtitleOLD__' ~ index ~ '__value', id='langtitleOLD__' ~ index ~ '__value_id', label=_('Title'), placeholder='', value=title.value, classes=['control-group control-custom kata-field-title'], label_classes=['control-label kata-input-comp'], control_classes=['controls editor'], attrs={'class': "kata-medium-input"}) %}
             {% if index == 0 %}
               {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Type an informative title for the research data. Choose the title\'s language from the language menu. You can add several titles in different languages using the \'+\' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
             {% endif %}
-            <label class="control-label kata-input-comp kata-field-title-language" for="langtitle__{{ index }}__lang">{{ _('Language') }}</label>
+            <label class="control-label kata-input-comp kata-field-title-language" for="langtitleOLD__{{ index }}__lang">{{ _('Language') }}</label>
             <div class="controls kata-input-comp kata-field-title-language">
-              <select name="langtitle__{{ index }}__lang">
+              <select name="langtitleOLD__{{ index }}__lang">
                 {% snippet 'package/snippets/languages.html', selected=title.lang %}
               </select>
               {% if index == 0 %}
@@ -91,8 +91,8 @@
         {# This field CANNOT be empty, otherwise the title converter is not ran #}
         {{ form.hidden('title', '{"fin":""}') }}
 
-        {% if errors.langtitle %}
-          <span class="error-block-kata">{{ errors.langtitle[0].value | join(". ") }}</span>
+        {% if errors.langtitleOLD %}
+          <span class="error-block-kata">{{ errors.langtitleOLD[0].value | join(". ") }}</span>
         {% endif %}
 
       </div>
@@ -146,7 +146,7 @@
         <div id="langdiv" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
           {{ kata_form.tooltip(tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Add languages used in your data. Once you start typing, you will automatically get suggestions for matching languages. You can then select the appropriate suggestion with a mouse click, or you can enter your own languages. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work. <br /><br /> If you decide to enter your own languages, they must be given in ISO 639-2 T format, for example \"eng, fin, swe\".')) }}  {% set autocomplete_source = '/api/2/util/language/autocomplete?incomplete=?&language=' ~ h.lang()  %}
           {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
-          {{ form.input('language', id='language', label=_('Languages'), placeholder=_('eg. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
+          {{ form.input('languageOLD', id='languageOLD', label=_('Languages'), placeholder=_('eg. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
 
           <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
           <span class="add-dataset-infotext">
@@ -154,7 +154,7 @@
           </span>
         </div>
     </div>
-    {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+{#    {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}#}
 
   </div>
 </section>
