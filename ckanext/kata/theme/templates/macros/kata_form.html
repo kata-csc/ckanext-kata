@@ -175,6 +175,7 @@ Copied from CKAN form.html.
           </ul>
 
           <div class="multilang-input-area">
+            {# TODO: Input area could maybe be used to show language select2 element. Unless basic floating dropdown menu from '+' is preferred. #}
 {#            <div class="multilang-input hidden">#}
 {#              <input id="title-field__0__eng" class="input-block-level" type="text" placeholder="placeholder" value="" name="title-field__0__eng"></input>#}
 {#              <input id="tab-language-selection2" class="input-block-level" data-module="kata-language-selection" data-module-current="{{ lang }}" />#}
@@ -188,21 +189,6 @@ Copied from CKAN form.html.
           {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
         </div>
         {{ extra_html }}
-      </div>
-    </div>
-
-    <div id="add-new-lang-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">{{ _('Add new language field') }}</h3>
-      </div>
-      <div class="modal-body">
-        <p>Modal body</p>
-        <input id="tab-language-selection" data-module="kata-language-selection" data-module-current="{{ lang }}" />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">{{ _('Cancel') }}</button>
-        <button type="button" class="btn btn-primary">{{ _('Add') }}</button>
       </div>
     </div>
 

@@ -2,8 +2,6 @@ ckan.module('kata-multilang-field', function ($, translate) {
   return {
     initialize: function () {
       this.selectors = {
-        modal: '#add-new-lang-modal',
-        modalvalue: '#tab-language-selection',
         tab: 'multilang-tab',
         tabregex: /multilang-tab-\w+/,
         inputarea: '.multilang-input-area'
@@ -15,6 +13,8 @@ ckan.module('kata-multilang-field', function ($, translate) {
 
       this.values = _.isObject(this.options.values) ? this.options.values : {};
 
+      // TODO: Use helper in template to get current lang in alpha3 form and pass as data-module-current to here.
+      // TODO... Write a new one or expand ckanext-rems' convert.py or ckanext-kata's convert_languages()
       // hax the lang code alpha2->alpha3
       var current = this.options.current;
       if (current === 'fi') current = 'fin';
@@ -34,6 +34,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
         el = el.closest(tag);
       }
       if (tag === 'a') {
+        // TODO: Use 'id' attribute to identify elements, not class.
         var tabId = el.attr('class').match(this.selectors.tabregex);
         if (!tabId) {
           return;
@@ -104,7 +105,6 @@ ckan.module('kata-multilang-field', function ($, translate) {
       var newLang = $('#tab-language-selection2').val();
       var isValidChoice = !_.isEmpty(newLang);
       if (isValidChoice) {
-        //$(this.selectors.modal).modal('hide');
         this._addNewLanguage(newLang);
         // FIXME: don't clear existing title if existing language is chosen again
         $('#tab-language-selection2').select2('val', '');
@@ -161,13 +161,12 @@ ckan.module('kata-multilang-field', function ($, translate) {
     },
 
     _setTabs: function () {
-      var ulEl = this.el.find('.nav-tabs');
       var liEls = this.el.find('.nav-tabs > li').not('.dropdown');
       var dropdown = this.el.find('.nav-tabs > li.dropdown');
       var lang = this.options.current;
       liEls.remove();
       if (!_.isEmpty(this.model)) {
-        console.log('this.model: ' + _.keys(this.model));
+
         this.inputDiv.empty();
         _.each(_.keys(this.model), function (langcode, index) {
 
