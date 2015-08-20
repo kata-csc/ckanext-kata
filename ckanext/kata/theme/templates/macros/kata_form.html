@@ -140,18 +140,18 @@ Copied from CKAN form.html.
 {#
  Builds a multi-language input field.
 
- name    - Name is used deeper in element for...
+ name    - Name is used with 'label' element. FIXME: should be id of input field.
+            TODO: Actually name is passed to kata-multilang-field js module which needs it. Maybe pass id for <label>??
  label   - Label text for field. '*' appended to notify required field.
- model   - WTF?!?   {
-                      'fin': 'Otsikko suomeksi wäää "qwerty"', 'eng': 'Title in English 算盤爾後'
-                    }
+ values  - A JSON dictionary containing "lang": "title" entrys:
+            { "fin": "Otsikko suomeksi", "eng": "Title in English 算盤爾後" }
  lang    - The current language of the user interface.
  classes - A list of classes to apply to the wrapper (default: [])
 #}
-{% macro multilang_field(name, label, model={}, values={}, lang='', classes='') -%}
+{% macro multilang_field(name, label, values={}, lang='', classes='') -%}
   {%- set extra_html = caller() if caller -%}
 
-  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-model="{{ model }}" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}">
+  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}">
 
     <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
 

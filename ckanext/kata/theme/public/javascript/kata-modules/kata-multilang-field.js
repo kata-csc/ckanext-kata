@@ -7,11 +7,9 @@ ckan.module('kata-multilang-field', function ($, translate) {
         inputarea: '.multilang-input-area'
       };
       $.proxyAll(this, /_add/, /_get/, /_set/, /_on/);
-      this.model = _.isObject(this.options.model) ? this.options.model : {};
+      this.values = _.isObject(this.options.values) ? this.options.values : {};
 
       this.inputDiv = this.el.find(this.selectors.inputarea);
-
-      this.values = _.isObject(this.options.values) ? this.options.values : {};
 
       // TODO: Use helper in template to get current lang in alpha3 form and pass as data-module-current to here.
       // TODO... Write a new one or expand ckanext-rems' convert.py or ckanext-kata's convert_languages()
@@ -22,8 +20,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
       this.current = current;
       // end hax
 
-      this.model = this.values;
-      this.model[this.current] = this.model[this.current] ? this.model[this.current] : '';
+      this.values[this.current] = this.values[this.current] ? this.values[this.current] : '';
       this._setTabs();
       this._setDropdown();
     },
@@ -50,7 +47,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
       if (!langcode) {
         return;
       }
-      this.model[langcode] = $(event.target).val();
+      this.values[langcode] = $(event.target).val();
     },
 
     // TODO: Modify & use this (from autocomplete.js) to prevent [enter] in title input field to send form. Instead trigger [tab] key.
@@ -71,12 +68,12 @@ ckan.module('kata-multilang-field', function ($, translate) {
     },
 
     _setValues: function () {
-      var model = this.model;
+      var values = this.values;
       var callback = this._onInputChange;
       this.inputDiv.find('input').each(function () {
         var input = $(this);
         var lang = _.last(input.attr('id').split('_'));
-        input.val(model[lang]);
+        input.val(values[lang]);
         input.on('change', callback);
       });
     },
@@ -96,7 +93,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
     },
 
     _addNewLanguage: function (langcode) {
-      this.model[langcode] = '';
+      this.values[langcode] = '';
       this.current = langcode;
       this._setTabs();
     },
@@ -151,10 +148,10 @@ ckan.module('kata-multilang-field', function ($, translate) {
       if (!langcode) {
         return;
       }
-      if (_.has(this.model, langcode) && _.size(this.model) > 1) {
-        delete this.model[langcode];
-        if (!_.has(this.model, this.current)) {
-          this.current = _.first(_.keys(this.model));
+      if (_.has(this.values, langcode) && _.size(this.values) > 1) {
+        delete this.values[langcode];
+        if (!_.has(this.values, this.current)) {
+          this.current = _.first(_.keys(this.values));
         }
         this._setTabs();
       }
@@ -165,12 +162,12 @@ ckan.module('kata-multilang-field', function ($, translate) {
       var dropdown = this.el.find('.nav-tabs > li.dropdown');
       var lang = this.options.current;
       liEls.remove();
-      if (!_.isEmpty(this.model)) {
+      if (!_.isEmpty(this.values)) {
 
         this.inputDiv.empty();
-        _.each(_.keys(this.model), function (langcode, index) {
+        _.each(_.keys(this.values), function (langcode, index) {
 
-          var closer = _.size(this.model) > 1 ? '<span class="langtab-close"><i class="icon-remove"></i></span>' : '';
+          var closer = _.size(this.values) > 1 ? '<span class="langtab-close"><i class="icon-remove"></i></span>' : '';
 
           var elLangId = this.options.name + '__' + index +'__lang';
           var liEl = $('<li>');
