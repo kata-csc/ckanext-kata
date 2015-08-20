@@ -293,12 +293,13 @@ a.download {
       height: 100%;
       background-color: @brand-primary-color;
     }
-    /* these aren't accurate if we mask this with a circle */
+    /* These are now calculated by approximating (+- 0.5%) line length relative to the area covered so far in the circle  */
+    /* https://en.wikipedia.org/wiki/Circular_segment. If interested, ask Juha-Matti for more info */
     & > .rating0 { width: 0%; }
-    & > .rating1 { width: 20%; }
-    & > .rating2 { width: 40%; }
-    & > .rating3 { width: 60%; }
-    & > .rating4 { width: 80%; }
+    & > .rating1 { width: 25%; }
+    & > .rating2 { width: 42%; }
+    & > .rating3 { width: 58%; }
+    & > .rating4 { width: 75%; }
     & > .rating5 { width: 100%; }
     & > p {
       position: absolute;

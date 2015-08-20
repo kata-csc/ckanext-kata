@@ -1638,7 +1638,8 @@ a.download {
   width: 100%;
   height: 100%;
   position: relative;
-  /* these aren't accurate if we mask this with a circle */
+  /* These are now calculated by approximating (+- 0.5%) line length relative to the area covered so far in the circle  */
+  /* https://en.wikipedia.org/wiki/Circular_segment. If interested, ask Juha-Matti for more info */
 }
 .completeness .meter > span {
   display: block;
@@ -1649,16 +1650,16 @@ a.download {
   width: 0%;
 }
 .completeness .meter > .rating1 {
-  width: 20%;
+  width: 25%;
 }
 .completeness .meter > .rating2 {
-  width: 40%;
+  width: 42%;
 }
 .completeness .meter > .rating3 {
-  width: 60%;
+  width: 58%;
 }
 .completeness .meter > .rating4 {
-  width: 80%;
+  width: 75%;
 }
 .completeness .meter > .rating5 {
   width: 100%;
