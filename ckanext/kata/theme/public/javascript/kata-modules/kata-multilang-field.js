@@ -53,6 +53,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
     },
 
     // TODO: Modify & use this (from autocomplete.js) to prevent [enter] in title input field to send form. Instead trigger [tab] key.
+    // TODO ... and better yet focus to '+' (add new lang tab) with [tab] key.
     /* Called when a key is pressed.  If the key is a comma we block it and
      * then simulate pressing return.
      *
@@ -173,13 +174,17 @@ ckan.module('kata-multilang-field', function ($, translate) {
           var closer = _.size(this.model) > 1 ? '<span class="langtab-close"><i class="icon-remove"></i></span>' : '';
 
           var elLangId = this.options.name + '__' + index +'__lang';
-          var liEl = $('<li>').append(
+          var liEl = $('<li>');
+          liEl.append(
+              $('<input>', {
+                'type': 'hidden',
+                'name': elLangId,
+                'value': langcode
+              }));
+          liEl.append(
             $('<a>', {
               'class': this.selectors.tab + ' ' + this.selectors.tab + '-' + langcode,
-              'name': elLangId,
-              'id': elLangId + '_id',
-              'id': elLangId + langcode,
-              'value': langcode
+              'id': elLangId + '_' + langcode
             }).html(KataLanguages.get(langcode, lang) + closer)
           );
           dropdown.before(liEl);
