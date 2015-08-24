@@ -7,14 +7,29 @@
   <h3>{{ _('Spatial coverage') }}</h3>
   {# Autocomplete for spatial data #}
   <div class="kata-autocomplete">
-    <p style="margin-left: 10px;">
-      {{ _('Search location from location name database, select locations with enter or mouse click.') }}
-      {{ kata_form.tooltip(tooltip=_('Specify the geographical areas or locations that your dataset pertains to. This could be for example the location where the data has been collected or the region where the research subjects live.<br /><br />Once you start typing, you will automatically get suggestions for matching geographical names. You can then select the appropriate location from the list of suggestions with a mouse click, or you can enter one of your own. If you make a mistake, you can remove a location by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.')) }}
-    </p>
-    {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/location_autocomplete?incomplete=?'} %}
-    {{ form.input('geographic_coverage', id='geographic_coverage_field', label=_('Locations'), placeholder=_('eg. Finland'), value=data.geographic_coverage, error=errors.geographic_coverage, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
+
+    {# {{ _('Search location from location name database, select locations with enter or mouse click.') }} #}
+    {% set tag_attrs = {'class': 'kata-input-license', 'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/location_autocomplete?incomplete=?'} %}
+    {% call kata_form.input(
+      'geographic_coverage', id='geographic_coverage_field',
+      label=_('Locations'), placeholder=_('eg. Finland'),
+      value=data.geographic_coverage, error=errors.geographic_coverage,
+      classes=['control-medium'], control_classes=['error-block-autocomplete'],
+      attrs=tag_attrs)
+    %}
+      <div class="form-instructions dropdown">
+        <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+          <i class="icon-question-sign"></i>
+        </a>
+        <div class="dropdown-menu">
+          {% trans %}
+            Specify the geographical areas or locations that your dataset pertains to. This could be for example the location where the data has been collected or the region where the research subjects live.<br /><br />Once you start typing, you will automatically get suggestions for matching geographical names. You can then select the appropriate location from the list of suggestions with a mouse click, or you can enter one of your own. If you make a mistake, you can remove a location by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.
+          {% endtrans %}
+        </div>
+      </div>
+    {% endcall %}
+
   </div>
-  <br />
 
 
   <h3>{{ _('Temporal coverage') }}</h3>
@@ -26,7 +41,16 @@
            data-module-currentlang="{{ lang }}" data-module-name="temporal_coverage_begin"
            data-module-value="{{data.temporal_coverage_begin}}">
 
-        {{ kata_form.tooltip(tooltip=_('Temporal coverage - begin - can be filled to include the starting time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br><br>Click the calendar icon to select a date. If you wish to enter only year or month you can do so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally enter time with timezone information by choosing "use exact time". By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br><br>Note that this tool requires JavaScript to be enabled in the browser.')) }}
+        <div class="form-instructions dropdown">
+          <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-question-sign"></i>
+          </a>
+          <div class="dropdown-menu">
+            {% trans %}
+              Temporal coverage - begin - can be filled to include the starting time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br><br>Click the calendar icon to select a date. If you wish to enter only year or month you can do so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally enter time with timezone information by choosing "use exact time". By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br><br>Note that this tool requires JavaScript to be enabled in the browser.
+            {% endtrans %}
+          </div>
+        </div>
         <div class="kata-datetimepicker-parent"></div>
 
         {% if errors.temporal_coverage_begin %}
@@ -39,7 +63,16 @@
            data-module-currentlang="{{ lang }}" data-module-name="temporal_coverage_end"
            data-module-value="{{data.temporal_coverage_end}}">
 
-        {{ kata_form.tooltip(tooltip=_('Temporal coverage - end - can be filled to include the ending time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br><br>Click the calendar icon to select a date. If you wish to enter only year or month you can do so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally enter time with timezone information by choosing "use exact time". By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br><br>Note that this tool requires JavaScript to be enabled in the browser.')) }}
+        <div class="form-instructions dropdown">
+          <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-question-sign"></i>
+          </a>
+          <div class="dropdown-menu">
+            {% trans %}
+              Temporal coverage - end - can be filled to include the ending time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br><br>Click the calendar icon to select a date. If you wish to enter only year or month you can do so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally enter time with timezone information by choosing "use exact time". By default, the time zone is Z (Zulu Time Zone), which corresponds the UTC time zone.<br><br>Note that this tool requires JavaScript to be enabled in the browser.
+            {% endtrans %}
+          </div>
+        </div>
         <div class="kata-datetimepicker-parent"></div>
 
         {% if errors.temporal_coverage_end %}
