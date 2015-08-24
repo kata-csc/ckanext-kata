@@ -74,21 +74,6 @@ class Kata(CkanCommand):
         #                    type='OAI-PMH')
         #oai.save()
 
-    def send_emails(self):
-        all_reqs = model.Session.query(KataAccessRequest).all()
-        curdate = datetime.datetime.utcnow()
-        for req in all_reqs:
-            try:
-                if (curdate - req.created) < timedelta(days=1):
-                    send_edit_access_request_email(req)
-                    req.delete()
-                    model.Session.flush()
-                else:
-                    req.delete()
-                    model.Session.flush()
-            except Exception, me:
-                print "Couldn't send email! Details:\n%s" % me
-
     def sphinx(self):
         import sphinx
         from pkg_resources import load_entry_point
