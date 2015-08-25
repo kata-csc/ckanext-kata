@@ -9,7 +9,15 @@ tooltip - Tooltip help text to be displayed on the question mark icon.
 #}
 
 {% macro tooltip(id='', tooltip='', attrs={}, class='') %}
-  <i class="icon-question-sign kata-plus-btn kata-tooltip{% if class %} {{ class }}{% endif %}" title="{{ tooltip }}"></i>
+  {# <i class="icon-question-sign kata-plus-btn kata-tooltip{% if class %} {{ class }}{% endif %}" title="{{ tooltip }}"></i> #}
+  <div class="form-instructions dropdown {{ class if class else '' }}">
+    <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-question-sign"></i>
+    </a>
+    <div class="dropdown-menu">
+      {{ tooltip | safe }}
+    </div>
+  </div>
 {% endmacro %}
 
 {#
@@ -48,7 +56,7 @@ Example:
 #}
 {% macro kataerrors(errors={}, h=False, type="error", classes=[]) %}
   {% if errors %}
-    <div class="error-explanation alert alert-{{ type }}{{ " " ~ classes | join(' ') }}" data-module="kata-leave-info" data-module-message="{{ _("You have unsaved changes. Make sure to click 'Save Changes' below before leaving this page.") }}">
+    <div class="error-explanation alert alert-{{ type }}{{ " " ~ classes | join(' ') }}" data-module="kata-leave-info" data-module-message="{{ _("You have unsaved changes. Make sure to click 'Save Changes' below before leaving this page.") }}">
       <p>{{ _('The form contains invalid entries:') }}</p>
       <ul>
         {# Awful hack for error messages. 'errors' is a summary and has only
