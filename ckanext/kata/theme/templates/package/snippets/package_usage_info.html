@@ -63,16 +63,7 @@
         <span class="error-block kata-error-non-input">{{ errors.availability[0] }}</span>
       {% endif %}
     </div>
-    <div class="form-instructions dropdown">
-      <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-        <i class="icon-question-sign"></i>
-      </a>
-      <div class="dropdown-menu">
-        {% trans %}
-          Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.
-        {% endtrans %}
-      </div>
-    </div>
+    {{ kata_form.tooltip(tooltip=_("Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.")) }}
   </div>
 
 
@@ -87,14 +78,7 @@
       </select>
       {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
     </div>
-    <div class="form-instructions dropdown">
-        <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-          <i class="icon-question-sign"></i>
-        </a>
-        <div class="dropdown-menu">
-            {{ _('Information about licenses') }}: <a href="{{ _('http://creativecommons.org/choose/?lang=en') }}">creativecommons.org</a>
-        </div>
-    </div>
+      {{ kata_form.tooltip(tooltip=_('Information about licenses') ~ ': <a href="' ~ _('http://creativecommons.org/choose/?lang=en') ~ '" target="_blank">creativecommons.org</a>') }}
   </div>
 
   <div class="form-row">

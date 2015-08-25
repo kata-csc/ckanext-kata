@@ -24,16 +24,7 @@
            attrs={'class': "kata-medium-input"})%}
 
           {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Field is compulsory.<br /><br />Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields. You can also add an identifier. You can add more authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded.
-                {%  endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields. You can also add an identifier. You can add more authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded.')) }}
           {% endif %}
         {% endcall %}
 
@@ -47,16 +38,7 @@
           control_classes=['kata-medium'], attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Optionally you can provide author's identifier, such as an ORCID identifier.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_("Optionally you can provide author's identifier, such as an ORCID identifier.")) }}
           {% endif %}
         {% endcall %}
 
@@ -103,16 +85,7 @@
           attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Contributor is a person or an organisation who, in addition to the author, has contributed significantly to the dataset.<br /><br />Type names of contributors and organisations to the corresponding fields. You can also add an identifier. You can add more contributors by pressing the \'+\' button. If you leave an added contributor field empty, it is discarded.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_('Contributor is a person or an organisation who, in addition to the author, has contributed significantly to the dataset.<br /><br />Type names of contributors and organisations to the corresponding fields. You can also add an identifier. You can add more contributors by pressing the \'+\' button. If you leave an added contributor field empty, it is discarded.')) }}
           {% endif %}
         {% endcall %}
 
@@ -124,16 +97,7 @@
           attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Optionally you can provide contributor's identifier, such as an ORCID identifier.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_("Optionally you can provide contributor's identifier, such as an ORCID identifier.")) }}
           {% endif %}
         {% endcall %}
 
@@ -183,16 +147,7 @@
           attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Distributor is a person or an organisation who has the right to distribute the dataset or has published the dataset.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_("Distributor is a person or an organisation who has the right to distribute the dataset or has published the dataset.")) }}
           {% endif %}
         {% endcall %}
 
@@ -203,16 +158,7 @@
           attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  The phone number must be in form "+35812341234".
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_('The phone number must be in form "+35812341234".')) }}
           {% endif %}
         {% endcall %}
 
@@ -224,16 +170,7 @@
           attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  The e-mail address is not shown publicly but it can be used to send e-mails in this service.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_('The e-mail address is not shown publicly but it can be used to send e-mails in this service.')) }}
           {% endif %}
         {% endcall %}
 
@@ -244,16 +181,7 @@
           attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Type a valid web address to your web page. In case you don't have one, you could for example give an address to your research group's site or any site that could make it possible to contact the origin of the dataset in case of need.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_("Type a valid web address to your web page. In case you don't have one, you could for example give an address to your research group's site or any site that could make it possible to contact the origin of the dataset in case of need.")) }}
           {% endif %}
         {% endcall %}
         {% if loop.index0 == 0 %}
@@ -296,16 +224,7 @@
             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
             attrs={'class': "kata-medium-input"})
           %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }}
           {% endcall %}
 
           {% call kata_form.input(
@@ -315,16 +234,7 @@
             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
             attrs={'class': "kata-medium-input"})
           %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }}
           {% endcall %}
         {% endif %}
 
@@ -337,16 +247,7 @@
             label_classes=['kata-input-comp'], control_classes=['kata-select2-error-control'],
             attrs=format_attrs)
           %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }}
           {% endcall %}
 
           {% call kata_form.input(
@@ -356,16 +257,7 @@
             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
             attrs={'class': "kata-medium-input"})
           %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.
-                {% endtrans %}
-              </div>
-            </div>
+            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }}
           {% endcall %}
           {% if loop.index0 == 0 %}
             {{ kata_form.plusbutton(id="funders_add", text=_("Add funder"), onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
@@ -403,16 +295,7 @@
             attrs={'class': "kata-medium-input"})
           %}
             {% if loop.index0 == 0 %}
-            <div class="form-instructions dropdown">
-              <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-question-sign"></i>
-              </a>
-              <div class="dropdown-menu">
-                {% trans %}
-                  Owner is a person or an organisation who decides upon the use of the dataset.<br /><br />Type the owner's name or ID, such as an ORCID identifier.
-                {% endtrans %}
-              </div>
-            </div>
+              {{ kata_form.tooltip(tooltip=_("Owner is a person or an organisation who decides upon the use of the dataset.<br /><br />Type the owner's name or ID, such as an ORCID identifier.")) }}
             {% endif %}
           {% endcall %}
           {% if loop.index0 == 0 %}
