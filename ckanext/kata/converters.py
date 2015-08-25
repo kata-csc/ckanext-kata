@@ -105,7 +105,7 @@ def ensure_valid_notes(key, data, errors, context):
     try:
         json.loads(field)
     except (ValueError, TypeError):
-        data[('notes',)] = json.dumps({'zxx': field})
+        data[('notes',)] = json.dumps({'und': field})
 
 
 def set_language_for_title(key, data, errors, context):
