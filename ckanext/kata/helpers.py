@@ -697,6 +697,12 @@ def get_translation(translation_json_string, lang=None):
         if translation:
             return translation
 
+    if not translation:
+        try:
+            return json_data.itervalues().next()
+        except StopIteration:
+            return
+
 
 def get_language(lang):
     '''
