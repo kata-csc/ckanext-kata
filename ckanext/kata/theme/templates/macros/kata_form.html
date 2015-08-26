@@ -156,10 +156,10 @@ Copied from CKAN form.html.
  lang    - The current language of the user interface.
  classes - A list of classes to apply to the wrapper (default: [])
 #}
-{% macro multilang_field(name, label, values={}, lang='', classes='') -%}
+{% macro multilang_field(name, label, tabid, values={}, lang='', classes='') -%}
   {%- set extra_html = caller() if caller -%}
 
-  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}">
+  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}" data-module-tabid="{{ tabid }}">
 
     <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
 
@@ -176,7 +176,7 @@ Copied from CKAN form.html.
               </a>
               <ul class="dropdown-menu addnew-options" role="menu">
                 <li>
-                  <input id="tab-language-selection2" data-module="kata-language-selection" data-module-current="{{ lang }}" />
+                  <input id="{{ tabid }}" data-module="kata-language-selection" data-module-current="{{ lang }}" />
                 </li>
               </ul>
             </li>
