@@ -18,7 +18,7 @@
 
         {% call kata_form.input(
           'agent__' ~ index ~ '__name', label=_('Author')+' * ',
-           id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'),
+           id='agent__' ~ index ~ '__name_id', placeholder=_('Firstname Familyname'),
            value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'),
            label_classes=['kata-input-comp'], control_classes=['kata-medium'],
            attrs={'class': "kata-medium-input"})%}
@@ -79,7 +79,7 @@
 
         {% call kata_form.input(
           'agent__' ~ index ~ '__name', label=_('Name'),
-          id='agent__' ~ index ~ '__name_id', placeholder=_('Familyname Firstname'),
+          id='agent__' ~ index ~ '__name_id', placeholder=_('Firstname Familyname'),
           value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'),
           label_classes=['kata-input-comp'], control_classes=['kata-medium'],
           attrs={'class': "kata-medium-input"})
@@ -141,7 +141,7 @@
         {% set index = loop.index0 %}
         {% call kata_form.input(
           'contact__' ~ index ~ '__name', label=_('Name')+" * ",
-          id='contact__' ~ index ~ '__name', placeholder=_('John Doe'), value=contact.name,
+          id='contact__' ~ index ~ '__name', placeholder=_('Firstname Familyname'), value=contact.name,
           error=h.get_dict_field_errors(errors, 'contact', index, 'name'),
           label_classes=['kata-input-comp'], control_classes=['kata-medium'],
           attrs={'class': "kata-medium-input"})
@@ -295,7 +295,7 @@
             attrs={'class': "kata-medium-input"})
           %}
             {% if loop.index0 == 0 %}
-              {{ kata_form.tooltip(tooltip=_("Owner is a person or an organisation who decides upon the use of the dataset.<br /><br />Type the owner's name or ID, such as an ORCID identifier.")) }}
+              {{ kata_form.tooltip(tooltip=_("Owner is a person or an organisation who decides upon the use of the dataset.<br /><br />Type the owner's name (firstname familyname) or ID, such as an ORCID identifier.")) }}
             {% endif %}
           {% endcall %}
           {% if loop.index0 == 0 %}
