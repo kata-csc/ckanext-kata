@@ -20,7 +20,6 @@ ckan.module('kata-multilang-field', function ($, translate) {
       this.current = current;
       // end hax
 
-      // TODO: Don't add current lang field if dataset already has a title.;
       if (_.isEmpty(this.values)) {
         this.values[this.current] = this.values[this.current] ? this.values[this.current] : '';
       }
