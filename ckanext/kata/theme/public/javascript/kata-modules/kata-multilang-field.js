@@ -71,7 +71,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
     _setValues: function () {
       var values = this.values;
       var callback = this._onInputChange;
-      this.inputDiv.find('input').each(function () {
+      this.inputDiv.find(this.options.inputtype).each(function () {
         var input = $(this);
         var lang = _.last(input.attr('id').split('_'));
         input.val(values[lang]);
@@ -86,7 +86,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
       el.closest('ul').find('li').removeClass('active');
       el.closest('li').addClass('active');
       this.current = langcode;
-      this.inputDiv.find('input').each(function () {
+      this.inputDiv.find(this.options.inputtype).each(function () {
         var input = $(this);
         var lang = _.last(input.attr('id').split('_'));
         input.closest('.multilang-input')[lang === langcode ? 'removeClass' : 'addClass']('hidden');
@@ -188,7 +188,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
 
           var elValueId = this.options.name + '__' + index +'__value';
           var inputEl = $('<div>', { 'class': 'multilang-input' });
-          inputEl.append( $('<input>', {
+          inputEl.append( $('<' + this.options.inputtype + '>', {
             'id': elValueId + '_' + langcode,
             'type': 'text',
             'name': elValueId,
