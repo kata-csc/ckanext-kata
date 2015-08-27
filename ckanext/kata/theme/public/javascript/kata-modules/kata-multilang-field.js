@@ -20,8 +20,10 @@ ckan.module('kata-multilang-field', function ($, translate) {
       this.current = current;
       // end hax
 
-      // TODO: Don't add current lang field if dataset already has a title.
-      this.values[this.current] = this.values[this.current] ? this.values[this.current] : '';
+      // TODO: Don't add current lang field if dataset already has a title.;
+      if (_.isEmpty(this.values)) {
+        this.values[this.current] = this.values[this.current] ? this.values[this.current] : '';
+      }
       this._setTabs();
       this._setDropdown();
     },
@@ -198,7 +200,14 @@ ckan.module('kata-multilang-field', function ($, translate) {
           this.inputDiv.append(inputEl);
         }, this);
         this._setValues();
-        this._setActiveTab(this.current);
+
+        if (this.values[lang]) {
+          this._setActiveTab(this.current);
+        }
+        else {
+          this._setActiveTab(Object.keys(this.values)[0]);
+        }
+
       }
       this.el.find('.' + this.selectors.tab).on('click', this._onTabClick);
       this.el.find('.' + this.selectors.tab + ' .icon-remove').on('click', this._onLangRemove);
