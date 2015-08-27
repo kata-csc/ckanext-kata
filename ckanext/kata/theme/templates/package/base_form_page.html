@@ -7,12 +7,18 @@
   <div class="etsin-container etsin-dataset-add">
     <div class="container">
       <div class="row-fluid">
-
         <div class="actions-container">
-          <a class="btn btn-default">{{ _("Upload XML") }}</a>
-          <div class="tooltip-big">
-            {{ kata_form.tooltip(tooltip=_("General help for add dataset.")) }}
+          <div class="import-xml dropdown {{ class if class else '' }}">
+            <a href="#" class="btn btn-default" data-toggle="dropdown">
+              {{ _('Upload XML') }}
+            </a>
+            <div class="dropdown-menu">
+              {% snippet "package/snippets/import_xml.html" %}
+            </div>
           </div>
+          <div class="tooltip-big">
+              {{ kata_form.tooltip(tooltip=_("Fill in the fields or use a xml file of format from the option to prefill the form.")) }}
+            </div>
         </div>
 
         <h2 class="pagetitle">{{ _("Add Dataset") }}</h2>

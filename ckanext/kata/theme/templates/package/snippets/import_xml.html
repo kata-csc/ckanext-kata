@@ -3,8 +3,7 @@
 #}
 {% import 'macros/form.html' as form %}
 
-<section class="module module-narrow module-shallow">
-  <h2 class="module-heading"><i class="icon-upload-alt"></i> {{ _("Upload XML") }}</h2>
+
     <form enctype="multipart/form-data" class="module-content form-vertical" method="post" action="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='new' %}">
       {{ form.input('url', label=_('URL'), placeholder=_('http://myurl.to/file.xml'), value='', error=error, classes=['control-full']) }}
       <div class="control-group">
@@ -13,6 +12,6 @@
       </div>
       {% set options = [ {'value': 'ddi', 'text': 'DDI2'}, {'value': 'oai-pmh', 'text': 'OAI-PMH/OAI DC'}, {'value': 'ida', 'text': 'OAI-PMH IDA'}, {'value': 'cmdi', 'text': 'OAI-PMH CMDI'}] %}
       {{ form.select('format', label=_('Format'), options=options, selected='ddi', error=error, classes=['control-full']) }}
-      <button class='btn' name='upload' value='metadata' type='submit' onclick="window.onbeforeunload = null; return true;">{{ _("Upload") }}</button>
+      <button class='btn btn-default' name='upload' value='metadata' type='submit' onclick="window.onbeforeunload = null; return true;">{{ _("Upload") }}</button>
     </form>
-</section>
+
