@@ -5,7 +5,7 @@
 
 <div class="tab-content-inner">
 
-  {% call kata_form.multilang_field('langtitle', _('Dataset title'), 'langtitle-language-selection2', "input", values=data.title, lang=currentlang) %}
+  {% call kata_form.multilang_field('langtitle', _('Dataset title'), 'langtitle-language-selection2', "input", values=data.title, lang=currentlang, classes="", error=errors.langtitle) %}
     {{ kata_form.tooltip(tooltip=_("Type an informative title for the research data. Choose the title's language from the language menu. You can add several titles in different languages using the '+' button. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
   {% endcall %}
 

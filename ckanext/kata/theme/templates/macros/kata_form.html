@@ -157,7 +157,7 @@ Copied from CKAN form.html.
  lang    - The current language of the user interface.
  classes - A list of classes to apply to the wrapper (default: [])
 #}
-{% macro multilang_field(name, label, fieldid, type, values={}, lang='', classes='') -%}
+{% macro multilang_field(name, label, fieldid, type, values={}, lang='', classes='', error='') -%}
   {%- set extra_html = caller() if caller -%}
 
   <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}" data-module-fieldid="{{ fieldid }}" data-module-inputtype="{{ type }}">
@@ -190,12 +190,9 @@ Copied from CKAN form.html.
 {#              <input id="tab-language-selection2" class="input-block-level" data-module="kata-language-selection" data-module-current="{{ lang }}" />#}
 {#            </div>#}
           </div>
-
           {% if error and error is iterable %}
-            <span class="error-block">{{ error|join(', ') }}</span>
+            <span class="error-block">{{ error[0].value|join(', ') }}</span>
           {% endif %}
-
-          {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
         </div>
         {{ extra_html }}
       </div>
