@@ -93,8 +93,8 @@ ckan.module('kata-multilang-field', function ($, translate) {
       });
     },
 
-    _addNewLanguage: function (langcode) {
-      this.values[langcode] = '';
+    _addNewLanguage: function (langcode, val) {
+      this.values[langcode] = val;
       this.current = langcode;
       this._setTabs();
     },
@@ -103,8 +103,8 @@ ckan.module('kata-multilang-field', function ($, translate) {
       var newLang = $('#' + this.options.fieldid).val();
       var isValidChoice = !_.isEmpty(newLang);
       if (isValidChoice) {
-        this._addNewLanguage(newLang);
-        // FIXME: don't clear existing title if existing language is chosen again
+        var val = this.values[newLang];
+        this._addNewLanguage(newLang, val);
         $('#' + this.options.fieldid).select2('val', '');
       }
     },
