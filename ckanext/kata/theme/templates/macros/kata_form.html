@@ -151,15 +151,16 @@ Copied from CKAN form.html.
  name    - Name is used with 'label' element. FIXME: should be id of input field.
             TODO: Actually name is passed to kata-multilang-field js module which needs it. Maybe pass id for <label>??
  label   - Label text for field. '*' appended to notify required field.
+ fieldid - Unique id for the input id
  values  - A JSON dictionary containing "lang": "title" entrys:
             { "fin": "Otsikko suomeksi", "eng": "Title in English 算盤爾後" }
  lang    - The current language of the user interface.
  classes - A list of classes to apply to the wrapper (default: [])
 #}
-{% macro multilang_field(name, label, tabid, values={}, lang='', classes='') -%}
+{% macro multilang_field(name, label, fieldid, values={}, lang='', classes='') -%}
   {%- set extra_html = caller() if caller -%}
 
-  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}" data-module-tabid="{{ tabid }}">
+  <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}" data-module-fieldid="{{ fieldid }}">
 
     <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
 
@@ -176,7 +177,7 @@ Copied from CKAN form.html.
               </a>
               <ul class="dropdown-menu addnew-options" role="menu">
                 <li>
-                  <input id="{{ tabid }}" data-module="kata-language-selection" data-module-current="{{ lang }}" />
+                  <input id="{{ fieldid }}" data-module="kata-language-selection" data-module-current="{{ lang }}" />
                 </li>
               </ul>
             </li>

@@ -15,7 +15,6 @@ ckan.module('kata-multilang-field', function ($, translate) {
       // TODO... Write a new one or expand ckanext-rems' convert.py or ckanext-kata's convert_languages()
       // hax the lang code alpha2->alpha3
       var current = this.options.current;
-      var tabId = this.options.name + "language-selection2"
       if (current === 'fi') current = 'fin';
       if (current === 'en') current = 'eng';
       this.current = current;
@@ -101,12 +100,12 @@ ckan.module('kata-multilang-field', function ($, translate) {
     },
 
     _onNewAddLang: function () {
-      var newLang = $('#' + this.options.tabid).val();
+      var newLang = $('#' + this.options.fieldid).val();
       var isValidChoice = !_.isEmpty(newLang);
       if (isValidChoice) {
         this._addNewLanguage(newLang);
         // FIXME: don't clear existing title if existing language is chosen again
-        $('#' + this.options.tabid).select2('val', '');
+        $('#' + this.options.fieldid).select2('val', '');
       }
     },
 
