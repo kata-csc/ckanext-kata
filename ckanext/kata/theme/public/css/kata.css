@@ -543,6 +543,9 @@ input[id="xmlfile"] {
   width: 100%;
   border-radius: 6px;
 }
+.tab-error {
+  color: #b55457 !important;
+}
 #temporal_coverage {
   padding-top: 15px;
 }
@@ -766,6 +769,16 @@ input[id="xmlfile"] {
   font-size: 40px;
   top: 16px;
   width: 30px;
+}
+.multilang-hidden {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  font-size: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: -1px;
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;

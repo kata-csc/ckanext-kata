@@ -973,3 +973,33 @@ def kata_build_nav_main(*args):
             output += literal('<li>') + link + literal('</li>')
 
     return output
+
+
+def get_tab_errors(errors, tab):
+    '''
+    Check if there are errors somewhere in the given tab
+
+    :param errors: errors dict
+    :param tab: tab number
+    :return: "tab-error" or "" if now errors are found in tab
+    '''
+    if not errors:
+        return ''
+
+    tabs = {'1': ['langtitle', 'langnotes', 'language', 'tag_string'],
+            '2': ['__extras', 'agent', 'contact', 'owner_org'],
+            '3': ['license', 'license_URL', 'availability', 'direct_download_URL', 'access_application_URL', 'through_provider_URL', 'access_request_URL'],
+            '4': ['geographic_coverage', 'temporal_coverage_begin', 'temporal_coverage_end', 'event', 'mimetype', 'format', 'hash', 'algorithm'],
+            '5': ['pids', 'version'],
+            'resources': ['mimetype', 'format', 'hash', 'algorithm']}
+
+    for key in errors.keys():
+        if key in tabs.get(tab):
+            return "tab-error"
+    # Todo: find a better way to handle resources, the availability thingy related resources error doesn't always work
+    # and this solution here in general is basically brute-forced to work for mimetype, hash etc.
+    if 'resources' in errors:
+        for key in errors.get('resources')[0].keys():
+            if key in tabs.get('resources') and key in tabs.get(tab):
+                return "tab-error"
+    return ''
