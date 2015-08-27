@@ -194,7 +194,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
             'type': 'text',
             'name': elValueId,
             'class': 'input-block-level',
-            'placeholder': 'placeholder'
+            'placeholder': ''
           }));
           this.inputDiv.append(inputEl);
         }, this);
