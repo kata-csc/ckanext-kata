@@ -8,7 +8,7 @@
     <div class="kata-autocomplete error-block-autocomplete">
       {% set mimetype_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/media_type_autocomplete?incomplete=?'} %}
       {% call form.input('mimetype', label=_('MIME type'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=mimetype_attrs) %}
-        {{ kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain.")) }}
+        {{ kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain. Automatic suggestions are given when you start typing though, this feature requires JavaScript to be enabled in your browser.")) }}
         {% if errors.resources %}
           {# Todo: these indices don't necessarily match, index 0 might be a metadata supplement #}
           {% if errors.resources[0].mimetype %}
