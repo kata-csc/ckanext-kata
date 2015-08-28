@@ -24,7 +24,7 @@
            attrs={'class': "kata-medium-input"})%}
 
           {% if loop.index0 == 0 %}
-            {{ kata_form.tooltip(tooltip=_('Field is compulsory.<br /><br />Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields. You can also add an identifier. You can add more authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded.')) }}
+            {{ kata_form.tooltip(tooltip=_('Note, that you have to fill either the Author field or the Organisation field, not necessarily both of them.<br /><br />Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields. You can also add an identifier. You can add more authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded.')) }}
           {% endif %}
         {% endcall %}
 
@@ -158,7 +158,7 @@
           attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            {{ kata_form.tooltip(tooltip=_('The phone number must be in form "+35812341234".')) }}
+            {{ kata_form.tooltip(tooltip=_('The phone number must be in form "+35812341234" or "12341234".')) }}
           {% endif %}
         {% endcall %}
 
@@ -224,7 +224,7 @@
             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
             attrs={'class': "kata-medium-input"})
           %}
-            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }}
+            {{ kata_form.tooltip(tooltip=_("Fill these fields if checkbox 'This dataset was produced in a project.' is checked. You can add more funders from the '+' button. Some automatic suggestions are given for funders when you start typing in the funder field, but you can also give a funder not found in the list.")) }}
           {% endcall %}
 
           {% call kata_form.input(
@@ -234,7 +234,7 @@
             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
             attrs={'class': "kata-medium-input"})
           %}
-            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }}
+            {# { kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }#}
           {% endcall %}
         {% endif %}
 
@@ -247,7 +247,7 @@
             label_classes=['kata-input-comp'], control_classes=['kata-select2-error-control'],
             attrs=format_attrs)
           %}
-            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }}
+            {# { kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }#}
           {% endcall %}
 
           {% call kata_form.input(
@@ -257,7 +257,7 @@
             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
             attrs={'class': "kata-medium-input"})
           %}
-            {{ kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }}
+            {# { kata_form.tooltip(tooltip=_("Field is compulsory if checkbox 'This dataset was produced in a project.' is checked.")) }#}
           {% endcall %}
           {% if loop.index0 == 0 %}
             {{ kata_form.plusbutton(id="funders_add", text=_("Add funder"), onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
