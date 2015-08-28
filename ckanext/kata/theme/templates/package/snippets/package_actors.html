@@ -28,8 +28,6 @@
           {% endif %}
         {% endcall %}
 
-        {% set index = agent_index.increase() %}
-
         {% call kata_form.input(
           'agent__' ~ index ~ '__id', label=_('Identifier'),
           id='agent__' ~ index ~ '__id_id', placeholder=_('http://orcid.org/'),
