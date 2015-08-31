@@ -265,10 +265,12 @@ class KATAApiController(ApiController):
                 url = url_template.format(q=query, v=vocab, l=language)
             except UnicodeEncodeError:
                 url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
+
+            try:
+                data = urllib2.urlopen(url).read()
             except (urllib2.HTTPError, urllib2.URLError, httplib.HTTPException):
                 return None
 
-            data = urllib2.urlopen(url).read()
             jsondata = json.loads(data)
 
         return jsondata
