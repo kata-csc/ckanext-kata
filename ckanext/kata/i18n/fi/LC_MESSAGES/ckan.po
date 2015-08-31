@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-08-31 09:10+0000\n"
+"POT-Creation-Date: 2015-08-31 09:53+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -606,7 +606,6 @@ msgid "Message"
 msgstr "Viesti"
 
 #: ckanext/kata/theme/templates/contact/contact_form.html:32
-#: ckanext/kata/theme/templates/contact/edit_request_form.html:26
 #: ckanext/kata/theme/templates/package/package_rights.html:190
 msgid "Send"
 msgstr "Lähetä"
@@ -618,26 +617,6 @@ msgid ""
 msgstr ""
 "Tältä sivulta voit lähettää viestin aineiston omistajalle saadaksesi "
 "datan käyttöösi."
-
-#: ckanext/kata/theme/templates/contact/edit_request_form.html:17
-msgid "Request edit rights"
-msgstr "Pyydä muokkausoikeuksia"
-
-#: ckanext/kata/theme/templates/contact/edit_request_form.html:22
-msgid ""
-"If you wish, you can click the button below, and a request for editing "
-"access will be sent to the owner of the dataset."
-msgstr ""
-"Halutessasi voit klikata alla olevaa painiketta, jolloin aineiston "
-"omistajalle lähtee pyyntö antaa sinulle muokkausoikeudet."
-
-#: ckanext/kata/theme/templates/contact/edit_request_form.html:32
-msgid ""
-"This dataset does not have an owner. No request for editing access can be"
-" sent. Sorry."
-msgstr ""
-"Tällä aineistolla ei ole omistajaa. Viestiä ei valitettavasti voitu "
-"lähettää."
 
 #: ckanext/kata/theme/templates/group/base_form_page.html:7
 msgid "Add a Group"
@@ -693,7 +672,7 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/package/related_list.html:26
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
 #: ckanext/kata/theme/templates/package/resource_read.html:21
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:74
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:71
 #: ckanext/kata/theme/templates/related/snippets/related_item.html:23
 msgid "Edit"
 msgstr "Muokkaa"
@@ -6445,7 +6424,7 @@ msgid "Primary metadata identifier"
 msgstr "Ensisijainen metadatan tunniste"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:333
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:24
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:27
 msgid "Primary data identifier"
 msgstr "Ensisijainen datan tunniste"
 
@@ -6799,7 +6778,7 @@ msgid ""
 "Enter the academic discipline or disciplines to which your dataset "
 "belongs.<br /><br />Type the name of the discipline in the search box "
 "below. Once you start typing, you will automatically get suggestions for "
-"matching discipline names. The disciplines you enter must be selected "
+"matching discipline names. The disciplines you enter should be selected "
 "from the given suggestions. You can select the appropropriate discipline "
 "from the list of suggestions with a mouse click. If you make a mistake, "
 "you can remove a discipline by clicking the 'x' next to it.<br /><br "
@@ -6819,7 +6798,7 @@ msgstr ""
 "käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:48
-msgid "eg. Matematiikka"
+msgid "e.g. Mathematics"
 msgstr "esim. Matematiikka"
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:44
@@ -6831,7 +6810,7 @@ msgstr "Tallenna ja julkaise"
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:28
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:34
 msgid ""
 "Field is compulsory but an automatically generated primary data "
 "identifier is provided if left empty.<br /><br />PID is a permanent "
@@ -6851,7 +6830,7 @@ msgstr ""
 "kata[numerosarja]\". Saadaksesi lisätietoa, vieraile kansalliskirjaston "
 "sivulla osoitteessa http://www.kansalliskirjasto.fi."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:31
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:35
 msgid ""
 "Note that the primary data identifier can NOT be edited after saving the "
 "dataset."
@@ -6859,31 +6838,31 @@ msgstr ""
 "Huomaa, että ensisijaista datan tunnistetta EI voi muokata aineiston "
 "tallennuksen jälkeen."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:50
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:52
 msgid "Additional data identifiers"
 msgstr "Datan muut tunnisteet"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:50
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:54
 msgid " identifiers"
 msgstr "tunnisteet"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:73
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:70
 msgid "Check this to correct errors in an existing PID"
 msgstr "Valitse ruutu korjataksesi virheen tunnisteessa"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:75
 msgid "PID is a permanent identifier, preferably an HTTP URI."
 msgstr "PID on pysyvä tunniste, mieluiten HTTP URI."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:111
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:101
 msgid "Generate new version identifier"
 msgstr "Luo uusi versiotunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:112
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:102
 msgid "Check to automatically generate a permanent identifier."
 msgstr "Ruksimalla ruudun palvelu generoi pysyvän tunnisteen automaattisesti."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:113
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:103
 msgid ""
 "Generate a new permanent identifier (PID) for a version of the data.<br "
 "/><br />PID is a permanent, unique, identifier, preferably a URI. This "
@@ -6903,11 +6882,11 @@ msgstr ""
 "href=\"http://www.kansalliskirjasto.fi/\" "
 "target=\"_blank\">http://www.kansalliskirjasto.fi/</a>."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:116
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:109
 msgid "Modification date"
 msgstr "Muokkauspvm"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:122
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:109
 msgid ""
 "Field is compulsory but an automatically generated date is "
 "provided.<br><br>The modification date tells when the data has last been "
@@ -6939,15 +6918,15 @@ msgid ""
 "dataset is published it is visible in the organization page. "
 "Additionally, the organization's editors can also modify this dataset. "
 msgstr ""
-"Valitse organisaatio linkittääksesi "
-"aineiston kyseiseen organisaatioon. Saat automaattisesti ehdotuksia "
-"saatavilla olevista organisaatioista ryhtyessäsi kirjoittamaan tekstiä "
-"kenttään. Valitse haluamasi klikkaamalla ehdotusta hiirellä tai "
-"painamalla enteriä. Jos et löydä organisaatiotasi listalta, voit "
-"kirjoittaa kenttään uuden organisaation nimen, joka luodaan "
-"automaattisesti tallentaessasi aineistosi. <br /><br />Kun aineisto on "
-"julkaistu, se näytetään valitsemasi organisaation sivulla. Myös "
-"organisaation käyttöoikeuden haltijat voivat muokata tätä aineistoa."
+"Valitse organisaatio linkittääksesi aineiston kyseiseen organisaatioon. "
+"Saat automaattisesti ehdotuksia saatavilla olevista organisaatioista "
+"ryhtyessäsi kirjoittamaan tekstiä kenttään. Valitse haluamasi "
+"klikkaamalla ehdotusta hiirellä tai painamalla enteriä. Jos et löydä "
+"organisaatiotasi listalta, voit kirjoittaa kenttään uuden organisaation "
+"nimen, joka luodaan automaattisesti tallentaessasi aineistosi. <br /><br "
+"/>Kun aineisto on julkaistu, se näytetään valitsemasi organisaation "
+"sivulla. Myös organisaation käyttöoikeuden haltijat voivat muokata tätä "
+"aineistoa."
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:7
 msgid ""
@@ -7044,17 +7023,15 @@ msgid ""
 " distributor, choose the last option. In this case data requests are sent"
 " by email to the address you provided in distributor section."
 msgstr ""
-"Valitse, miten"
-" dataan pääsee käsiksi. Kirjoita web-osoitetiedot, jos niitä kysytään "
-"(riippuu valinnastasi). Jos data on ladattavissa verkosta, valitse "
-"ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data on "
-"saatavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy määrittelemäsi "
-"ehdot jossain ulkopuolisessa palvelussa, valitse kolmas vaihtoehto. Jos "
-"dataan pääsee käsiksi vain ottamalla suoraan yhteyttä jakelijaan, valitse"
-" viimeinen vaihtoehto. Tässä tapauksessa datapyynnöt lähetetään edellä "
-"antamaasi jakelijan sähköpostiosoitteeseen.<br /><br />Valitse lisenssi "
-"annetuista vaihtoehdoista."
-
+"Valitse, miten dataan pääsee käsiksi. Kirjoita web-osoitetiedot, jos "
+"niitä kysytään (riippuu valinnastasi). Jos data on ladattavissa verkosta,"
+" valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data"
+" on saatavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy "
+"määrittelemäsi ehdot jossain ulkopuolisessa palvelussa, valitse kolmas "
+"vaihtoehto. Jos dataan pääsee käsiksi vain ottamalla suoraan yhteyttä "
+"jakelijaan, valitse viimeinen vaihtoehto. Tässä tapauksessa datapyynnöt "
+"lähetetään edellä antamaasi jakelijan sähköpostiosoitteeseen.<br /><br "
+"/>Valitse lisenssi annetuista vaihtoehdoista."
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:80
 msgid "Information about licenses"
@@ -7588,4 +7565,25 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
+#~ msgid "Request edit rights"
+#~ msgstr "Pyydä muokkausoikeuksia"
+
+#~ msgid ""
+#~ "If you wish, you can click the "
+#~ "button below, and a request for "
+#~ "editing access will be sent to the"
+#~ " owner of the dataset."
+#~ msgstr ""
+#~ "Halutessasi voit klikata alla olevaa "
+#~ "painiketta, jolloin aineiston omistajalle "
+#~ "lähtee pyyntö antaa sinulle muokkausoikeudet."
+
+#~ msgid ""
+#~ "This dataset does not have an "
+#~ "owner. No request for editing access "
+#~ "can be sent. Sorry."
+#~ msgstr ""
+#~ "Tällä aineistolla ei ole omistajaa. "
+#~ "Viestiä ei valitettavasti voitu lähettää."
 
