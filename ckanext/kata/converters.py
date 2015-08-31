@@ -93,7 +93,7 @@ def gen_translation_str_from_langtitle(key, data, errors, context):
 
 
 def gen_translation_str_from_langnotes(key, data, errors, context):
-    return gen_translation_str_from_multilang_field('notes', _('The given notes string is not JSON parseable'),
+    return gen_translation_str_from_multilang_field('notes', _('The given description string is not JSON parseable'),
                                                     key, data, errors, context)
 
 
