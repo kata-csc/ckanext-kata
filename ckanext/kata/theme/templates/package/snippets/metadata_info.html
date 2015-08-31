@@ -12,11 +12,11 @@
         <ul class="unstyled">
         {% for title in h.json_to_list(pkg_dict.title) %}
           {% set langvalue = h.get_language(title.lang) %}
-          <li data-value="{{title.lang}}"><a>{{langvalue}}</a></li>
+          <li data-value="{{ title.lang }}"><a>{{ _(langvalue) }}</a></li>
         {% endfor %}
         </ul>
         {% for title in h.json_to_list(pkg_dict.title) %}
-          <div class="multilang-field hidden" data-value="{{title.lang}}">{{ title.value }}</div>
+          <div class="multilang-field hidden" data-value="{{ title.lang}}">{{ title.value }}</div>
         {% endfor %}
 
       </div>
@@ -27,16 +27,16 @@
     <div class="form-label">{{ _('Description') }}</div>
     <div class="form-content">
       {% if h.has_json_content(pkg_dict.notes) %}
-        <div class="etsin-multilang-display" data-module="etsin-multilang-display" data-module-currentlang="{{lang}}">
+        <div class="etsin-multilang-display" data-module="etsin-multilang-display" data-module-currentlang="{{ lang }}">
 
           <ul class="unstyled">
             {%- for description in h.json_to_list(pkg_dict.notes) -%}
             {% set langvalue = h.get_language(description.lang) %}
-            <li data-value="{{description.lang}}"><a>{{langvalue}}</a></li>
+            <li data-value="{{ description.lang }}"><a>{{ _(langvalue) }}</a></li>
             {% endfor %}
           </ul>
           {%- for description in h.json_to_list(pkg_dict.notes) -%}
-          <div class="multilang-field hidden" data-value="{{description.lang}}">{{ h.render_markdown(description.value) }}</div>
+          <div class="multilang-field hidden" data-value="{{ description.lang }}">{{ h.render_markdown(description.value) }}</div>
           {% endfor %}
 
         </div>
