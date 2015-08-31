@@ -183,7 +183,7 @@ Copied from CKAN form.html.
  lang    - The current language of the user interface.
  classes - A list of classes to apply to the wrapper (default: [])
 #}
-{% macro multilang_field(name, label, fieldid, type, values={}, lang='', classes='', error='') -%}
+{% macro multilang_field(name, label, fieldid, type, values={}, lang='', classes='', error='', label_classes=[]) -%}
   {%- set extra_html = caller() if caller -%}
 
   <div class="etsin-multilang-field" data-module="kata-multilang-field" data-module-values="{{ values }}" data-module-current="{{ lang }}" data-module-name="{{ name }}" data-module-fieldid="{{ fieldid }}" data-module-inputtype="{{ type }}">
