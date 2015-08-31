@@ -5,24 +5,25 @@ Controllers for Kata.
 from cgi import FieldStorage
 import datetime
 import httplib
-import functionally as fn
 import json
 import logging
 import mimetypes
-import rdflib
-import re
 import string
 import urllib2
-import sqlalchemy
-from sqlalchemy.sql import select
 from urllib import urlencode
+import difflib
 
+import functionally as fn
+import rdflib
+import re
+import sqlalchemy
 from lxml import etree
-
 from paste.deploy.converters import asbool
-from pylons import config, request, session, g, response
+from pylons import config, request, session, g
 from pylons.decorators.cache import beaker_cache
 from pylons.i18n import _
+import os
+
 from ckan.controllers.api import ApiController
 from ckan.controllers.package import PackageController
 from ckan.controllers.user import UserController
@@ -36,7 +37,7 @@ import ckan.lib.maintain as maintain
 from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
 import ckan.logic as logic
 import ckan.model as model
-from ckan.model import Package, User, meta, Session
+from ckan.model import Package
 from ckan.model.authz import add_user_to_role
 import ckan.plugins as plugins
 from ckan.common import response
@@ -44,13 +45,9 @@ from ckan.common import OrderedDict
 import ckan.plugins as p
 
 import ckanext.harvest.interfaces as h_interfaces
-from ckanext.kata.model import KataAccessRequest
 import ckanext.kata.clamd_wrapper as clamd_wrapper
 import ckanext.kata.settings as settings
 from ckanext.kata import utils
-import ckanext.kata.helpers as kata_helpers
-import os
-import difflib
 
 _get_or_bust = ckan.logic.get_or_bust
 check_access = logic.check_access
@@ -238,7 +235,6 @@ class KATAApiController(ApiController):
         :rtype: dictionary
         '''
         query = request.params.get('incomplete', '')
-        language = request.params.get('language', '')
 
         return self._onki_autocomplete(query, "paikat")
 
@@ -277,7 +273,6 @@ class KATAApiController(ApiController):
 
         return jsondata
 
-
     def _onki_autocomplete(self, query, vocab, language=None):
         '''
         Queries the remote ontology for suggestions and
@@ -295,7 +290,7 @@ class KATAApiController(ApiController):
         jsondata = self._query_finto(query, vocab, language)
         labels = []
 
-        if u'results' in jsondata:
+        if jsondata and u'results' in jsondata:
             results = jsondata['results']
             labels = [concept.get('prefLabel', '').encode('utf-8') for concept in results]
 
@@ -326,9 +321,10 @@ class KATAApiController(ApiController):
         jsondata = self._query_finto(query, vocab, language)
         labels = []
 
-        if u'results' in jsondata:
+        if jsondata and u'results' in jsondata:
             results = jsondata['results']
-            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['uri'].encode('utf-8')) for concept in results]
+            labels = [(concept.get('prefLabel', '').encode('utf-8'),
+                       concept['uri'].encode('utf-8')) for concept in results]
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
 
@@ -363,7 +359,8 @@ class KATAApiController(ApiController):
 
         if jsondata and u'results' in jsondata:
             results = jsondata['results']
-            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept.get('localname', '').encode('utf-8')) for concept in results]
+            labels = [(concept.get('prefLabel', '').encode('utf-8'),
+                       concept.get('localname', '').encode('utf-8')) for concept in results]
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
 
