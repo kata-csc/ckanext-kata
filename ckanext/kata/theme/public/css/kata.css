@@ -825,6 +825,9 @@ input[id="xmlfile"] {
 .custom-fields-container {
   margin-bottom: 70px;
 }
+.custom-fields-container .no-label-controls {
+  margin-left: 30% !important;
+}
 .autocomplete-input-container .select2-choices {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
