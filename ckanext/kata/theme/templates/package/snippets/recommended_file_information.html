@@ -5,10 +5,9 @@
 
   <h3>{{ _('Technical details of the data file') }}</h3>
   <div class="form-row">
-    <div class="kata-autocomplete error-block-autocomplete">
+    <div class="kata-autocomplete error-block-autocomplete autocomplete-input-container">
       {% set mimetype_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/media_type_autocomplete?incomplete=?'} %}
-      {% call form.input('mimetype', label=_('MIME type'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=mimetype_attrs) %}
-        {{ kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain. Automatic suggestions are given when you start typing though, this feature requires JavaScript to be enabled in your browser.")) }}
+      {% call kata_form.input3('mimetype', label=_('MIME type'), id='mimetype', placeholder=_('MIME. eg. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=mimetype_attrs, notification_html=kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain. Automatic suggestions are given when you start typing though, this feature requires JavaScript to be enabled in your browser."))) %}
         {% if errors.resources %}
           {# Todo: these indices don't necessarily match, index 0 might be a metadata supplement #}
           {% if errors.resources[0].mimetype %}
@@ -19,9 +18,10 @@
         {% endif %}
       {% endcall %}
     </div>
+  </div>
 
-    {% call form.input('format', label=_('Format'), id='format', placeholder=_('e.g. CSV'), value=data.format, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-      {{ kata_form.tooltip(tooltip=_("The format of the data file can be provided here.")) }}
+  <div class="form-row">
+    {% call kata_form.input3('format', label=_('Format'), id='format', placeholder=_('e.g. CSV'), value=data.format, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}, notification_html=kata_form.tooltip(tooltip=_("The format of the data file can be provided here."))) %}
       {% if errors.resources %}
         {% if errors.resources[0].format %}
           <span class="error-block kata-medium-error">
@@ -30,9 +30,9 @@
         {% endif %}
       {% endif %}
     {% endcall %}
-        
-    {% call form.input('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-      {{ kata_form.tooltip(tooltip=_("The checksum of the data file can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Checksums are a good way to enable verification of the content to ensure the file is unchanged and genuine.")) }}
+  </div>
+  <div class="form-row">
+    {% call kata_form.input3('checksum', label=_('Checksum'), id='checksum', placeholder=_('hex string from eg. MD5, SHA-1'), value=data.checksum, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}, notification_html=kata_form.tooltip(tooltip=_("The checksum of the data file can be provided here. This can be for example a fixed length hex string taken from the data generated with a hash algorithm, like SHA-2.<br /><br />Checksums are a good way to enable verification of the content to ensure the file is unchanged and genuine."))) %}
       {% if errors.resources %}
         {% if errors.resources[0].hash %}
           <span class="error-block kata-medium-error">
@@ -41,9 +41,9 @@
         {% endif %}
       {% endif %}
     {% endcall %}
-        
-    {% call form.input('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_('eg. MD5'), value=data.algorithm, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}) %}
-      {{ kata_form.tooltip(tooltip=_('If the checksum is provided above, the algorithm used for generating the hash should be provided here. There are many different hash algorithms with varying levels of security.')) }}
+  </div>
+  <div class="form-row">
+    {% call kata_form.input3('algorithm', label=_('Algorithm'), id='algorithm', placeholder=_('eg. MD5'), value=data.algorithm, classes=['control-medium'], label_classes=['kata-input-comp'], attrs={'class': "kata-medium-input"}, notification_html=kata_form.tooltip(tooltip=_('If the checksum is provided above, the algorithm used for generating the hash should be provided here. There are many different hash algorithms with varying levels of security.'))) %}
       {% if errors.resources %}
         {% if errors.resources[0].algorithm %}
           <span class="error-block kata-medium-error">

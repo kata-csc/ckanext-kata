@@ -108,6 +108,17 @@ Copied from CKAN form.html. Uses input_block2.
 {% endmacro %}
 
 {#
+Copied from CKAN form.html. Uses input_block3.
+#}
+{% macro input3(name, id='', label='', value='', placeholder='', type='text', error="", classes=[], control_classes=[], label_classes=[], attrs={}, notification_html='') %}
+  {%- set extra_html = caller() if caller -%}
+
+  {% call input_block3(id or name, label or name, error, extra_html=extra_html, control_classes=control_classes, label_classes=label_classes, notification_html=notification_html) %}
+    <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}" value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}" {{ attributes(attrs) }} />
+  {% endcall %}
+{% endmacro %}
+
+{#
 Copied from CKAN form.html. Uses input_block2.
 #}
 {% macro textarea(name, id='', label='', value='', placeholder='', error="", classes=[], attrs={}) %}
@@ -133,6 +144,21 @@ classes to form-*. 'error' class moved to 'form-content'. Removed input paramete
       {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
     </div>
     {{ extra_html }}
+  </div>
+{% endmacro %}
+
+{#
+Copied from CKAN form.html. Added placeholder for notification html.
+#}
+{% macro input_block3(for, label="", error="", classes=[], control_classes=[], label_classes=[], extra_html="", notification_html="") %}
+  <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
+    <label class="control-label{{ " " ~ label_classes | join(' ') }}" for="{{ for }}">{{ label or _('Custom') }}</label>
+    <div class="controls{{ " " ~ control_classes | join(' ') }}">
+      {{ caller() }}
+      {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
+      {{ extra_html }}
+    </div>
+    {{ notification_html }}
   </div>
 {% endmacro %}
 
