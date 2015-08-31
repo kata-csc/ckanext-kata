@@ -4,6 +4,7 @@ Controllers for Kata.
 """
 from cgi import FieldStorage
 import datetime
+import httplib
 import functionally as fn
 import json
 import logging
@@ -268,6 +269,8 @@ class KATAApiController(ApiController):
                 url = url_template.format(q=query, v=vocab, l=language)
             except UnicodeEncodeError:
                 url = url_template.format(q=query.encode('utf-8'), v=vocab, l=language)
+            except (urllib2.HTTPError, urllib2.URLError, httplib.HTTPException):
+                return None
 
             data = urllib2.urlopen(url).read()
             jsondata = json.loads(data)
@@ -358,9 +361,9 @@ class KATAApiController(ApiController):
         jsondata = self._query_finto(query, "lexvo", language)
         labels = []
 
-        if u'results' in jsondata:
+        if jsondata and u'results' in jsondata:
             results = jsondata['results']
-            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept['localname'].encode('utf-8')) for concept in results]
+            labels = [(concept.get('prefLabel', '').encode('utf-8'), concept.get('localname', '').encode('utf-8')) for concept in results]
 
         result_set = [{'key': l[1], 'label': l[0], 'name': l[0]} for l in labels]
 
