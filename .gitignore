@@ -34,3 +34,6 @@ pip-log.txt
 
 #Other
 .DS_Store
+
+#Compiled css
+kata.css

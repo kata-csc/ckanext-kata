@@ -20,82 +20,74 @@
 
 <div class="tab-content-inner">
 
-  <div class="form-row">
-    <label class="form-label" for="pids__{{ index }}__id">{{ _("Primary data identifier") }}*</label>
-    <div class="form-content">
-      <ul class="kata">
-        <li class="kata">
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated primary data identifier is provided if left empty.<br /><br />PID is a permanent identifier, preferably an HTTP URI. Note that if your data is accessible via access application like REMS, the primary identifier is sent to the service as the data identifier.<br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi for more information.')) }}
-        </li>
-        <li class="kata">
-          {{ kata_form.warning_tooltip(tooltip=_('Note that the primary data identifier can NOT be edited after saving the dataset.')) }}
-        </li>
-      </ul>
-      <div class="input-prepend">
-        <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
-        <input type="hidden" name="pids__{{ index }}__type" value="data" />
-        <input placeholder="http://www.pid.com/1234" class="pid kata-pid-input-wide pids_{{ index }}" {{ 'readonly' if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index] }} type="text" id="pids__{{ index }}__id" name="pids__{{ index }}__id" value="{{ primary_pid.id }}" />
-        {% if errors.pids and errors.pids[index.index] %}
-          <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
-        {% endif %}
-      </div>
+  {# NOTE: Parameter "error" passed to kata_form.input macro needs to be corrected in all cases since it is same as in package_actors.html #}
+
+  {% set primary_pid_readonly = " readonly" if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index]%}
+  {% call kata_form.input(
+    'pids__' ~ index ~ '__id', label=_('Primary data identifier')+' * ',
+     id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
+     value=primary_pid.id,
+     label_classes=['kata-input-comp'], control_classes=['kata-medium'],
+     attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, primary_pid_readonly:''})%}
+
+    <div class="form-double-instructions-container"">
+      {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated primary data identifier is provided if left empty.<br /><br />PID is a permanent identifier, preferably an HTTP URI. Note that if your data is accessible via access application like REMS, the primary identifier is sent to the service as the data identifier.<br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi for more information.')) }}
+      {{ kata_form.warning_tooltip(tooltip=_('Note that the primary data identifier can NOT be edited after saving the dataset.')) }}
     </div>
-  </div>
+
+    <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
+    <input type="hidden" name="pids__{{ index }}__type" value="data" />
+
+    {% if errors.pids and errors.pids[index.index] %}
+      <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
+    {% endif %}
+  {% endcall %}
 
   {% do index.increase() %}
   <input type="hidden" id="name" name="name" value="" />
 
   {% for pid_type in pid_types %}
-  <div class="form-row">
-    <label class="form-label" for="pids__{{ index }}__id">{% if pid_type == 'data' %} {{ _("Additional data identifiers") }} {% else %}{{ _(pid_type | capitalize) }}{{ _(' identifiers') }}{% endif %}</label>
-    <div class="form-content">
 
-      <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block">
-        {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
+    {% if pid_type == 'data' %}
+      {% set additional_data_identifier_label = _('Additional data identifiers') %}
+    {% else %}
+      {% set additional_data_identifier_label = _(pid_type | capitalize) + _(' identifiers') %}
+    {% endif %}
 
-        {% for pid in pids %}
-          <div class="control-group control-custom">
-            <ul class="kata">
-              <li class="kata">
-                <div class="input-prepend">
-                  <input type="hidden" name="pids__{{ index }}__type" value="{{ pid_type }}" />
-                  <input placeholder="http://www.pid.com/1234"  class="pid kata-pid-input-wide pids_{{ index }}" {{ 'readonly' if pid.id and not (h.asbool(pid.get('primary')) and errors and not data.id) }} type="text" id="pids__{{ index }}__id" name="pids__{{ index }}__id" value="{{ pid.id }}" />
-                  {% if errors.pids and errors.pids[index.index] %}
-                    <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
-                  {% endif %}
-                </div>
-              </li>
+    <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="custom-fields-container">
+      {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
+      {% for pid in pids %}
+        {% set pid_readonly = " readonly" if pid.id and not (h.asbool(pid.get('primary')) and errors and not data.id) %}
+        <div class="control-custom">
+          {% call kata_form.input(
+            'pids__' ~ index ~ '__id', label=additional_data_identifier_label,
+             id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
+             value=pid.id,
+             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
+             attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, pid_readonly:''})%}
 
-              <li class="kata" style="width: 76px;">
-                <div class="input-prepend">
-                {# <input class="pid kata-pid-input pids_{{ index }}" {{ 'readonly' if pid.id }} type="text" id="pids__{{ index }}__provider" name="pids__{{ index }}__provider" value="{{ pid.provider }}" /> #}
-                {% if pid.id and not h.asbool(pid.get('primary')) %}
-                  <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
-                  <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));">{{ _('Edit') if pids[0].id }}</label>
-                {% else %}
-                    &nbsp;
-                {% endif %}
-                </div>
-              </li>
+            {% if pid.id and not h.asbool(pid.get('primary')) %}
+              <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
+              <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));">{{ _('Edit') if pids[0].id }}</label>
+            {% endif %}
 
-              {% if loop.first %}
-              <li class="kata">
-                {{ kata_form.tooltip(tooltip=_('PID is a permanent identifier, preferably an HTTP URI.')) }}
-                <input style="display: none;" type="checkbox" id="pids__{{index}}__value" name="pids__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
-              </li>
-              <li class="kata">
-                {{ kata_form.plusbutton(id='pids_add-{{ pid_type }}', onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
-                <input style="display: none;" type="checkbox" id="pid_btn__{{ index }}__value_id" name="pid_btn__{{ index }}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-        {% do index.increase() %}
-        {% endfor %}
-      </div>
+            {% if loop.first %}
+              {{ kata_form.tooltip(tooltip=_('PID is a permanent identifier, preferably an HTTP URI.')) }}
+              <input style="display: none;" type="checkbox" id="pids__{{index}}__value" name="pids__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
+              {{ kata_form.plusbutton(id='pids_add-{{ pid_type }}', text="Needs text", onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
+              <input style="display: none;" type="checkbox" id="pid_btn__{{ index }}__value_id" name="pid_btn__{{ index }}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
+            {% endif %}
 
+            <input type="hidden" name="pids__{{ index }}__type" value="{{ pid_type }}" />
+            {% if errors.pids and errors.pids[index.index] %}
+              <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
+            {% endif %}
+          {% endcall %}
+        </div>
+      {% set additional_data_identifier_label = '' %}
+      {% do index.increase() %}
+      {% endfor %}
     </div>
-  </div>
   {% endfor %}
 
   {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
@@ -106,25 +98,24 @@
   <input type="hidden" value="{{ index }}" id="pid-index" />
 
   <div class="form-row">
-    <div class="form-content">
-      <div class="control-group control-custom">
-        <label class="control-label kata-input-comp kata-wide-label" for="generate_version_pid">{{ _('Generate new version identifier') }}</label>
-        <input type='checkbox' id='generate_version_pid' name='generate_version_pid' class='checkbox checkbox-generate' {{ 'checked' if not pids[0].id }} title='{{ _("Check to automatically generate a permanent identifier.") }}'/>
-        {{ kata_form.tooltip(tooltip=_('Generate a new permanent identifier (PID) for a version of the data.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version. You can add your own identifier or use one generated by the service by checking this checkbox.<br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit <a href=\"http://www.nationallibrary.fi\" target=\"_blank\">http://www.nationallibrary.fi</a> for more information.')) }}
-      </div>
-      {% set lang = h.lang() %}
-      {% call form.input_block("last_modified", _('Modification date'), error=errors.version, control_classes=['controls-row', 'controls-wide'], label_classes=['kata-input-comp', 'kata-wide-label']) %}
-        <div data-module="kata-datetimepicker"
-             data-module-currentlang="{{ lang }}" data-module-name="version"
-             data-module-value="{{data.version}}" data-module-defaultnow="true"
-             data-module-disabled="true">
+    <label for="generate_version_pid" class="control-label kata-input-comp kata-wide-label">{{ _('Generate new version identifier') }}</label>
+    <input id="generate_version_pid" type="checkbox" name="generate_version_pid" class="checkbox checkbox-generate" {{ 'checked' if not pids[0].id }} title='{{ _("Check to automatically generate a permanent identifier.") }}'/>
+    {{ kata_form.tooltip(tooltip=_('Generate a new permanent identifier (PID) for a version of the data.<br /><br />PID is a permanent, unique, identifier, preferably a URI. This specific PID is for the current data version. You can add your own identifier or use one generated by the service by checking this checkbox.<br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit <a href=\"http://www.nationallibrary.fi\" target=\"_blank\">http://www.nationallibrary.fi</a> for more information.')) }}
+  </div>
 
-          {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br><br>The modification date tells when the data has last been modified. Click the calendar icon to open a calendar tool to choose the modification date for this dataset. Time can be entered if "use exact time" is chosen.<br><br>Note that this tool requires JavaScript to be enabled in the browser.')) }}
-          <div class="kata-datetimepicker-parent"></div>
+  {% set lang = h.lang() %}
 
-          <div class="kata-datepicker-error"></div>
-        </div>
-      {% endcall %}
+  <div class="form-row">
+  {% call kata_form.input_block2("last_modified", _('Modification date'), error=errors.version, control_classes=['controls-row', 'controls-wide', 'modification-date-controls'], label_classes=['kata-input-comp', 'kata-wide-label'], extra_html=kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br><br>The modification date tells when the data has last been modified. Click the calendar icon to open a calendar tool to choose the modification date for this dataset. Time can be entered if "use exact time" is chosen.<br><br>Note that this tool requires JavaScript to be enabled in the browser.'))) %}
+    <div data-module="kata-datetimepicker"
+         data-module-currentlang="{{ lang }}" data-module-name="version"
+         data-module-value="{{data.version}}" data-module-defaultnow="true"
+         data-module-disabled="true">
+
+      <div class="kata-datetimepicker-parent"></div>
+
+      <div class="kata-datepicker-error"></div>
     </div>
+  {% endcall %}
   </div>
 </div>
