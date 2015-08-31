@@ -12,7 +12,7 @@
   {% snippet 'package/snippets/recommended_description.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
 
   <div class="form-row">
-    <label class="form-label top-padding center-align" for="language">{{ _('Languages') }}*</label>
+    <label class="form-label center-align" for="language">{{ _('Languages') }}*</label>
     <div class="form-content">
       <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
       <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
@@ -41,7 +41,7 @@
   <div class="form-row">
     {% set autocomplete_source = '/api/2/util/discipline_autocomplete?incomplete=?&language=' ~ h.lang()  %}
     {% set disc_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source , 'data-module-key': 'key', 'data-module-label': 'label'} %}
-    {{ kata_form.tooltip(class='top-padding', tooltip=_("Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter should be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see <a href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
-    {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('e.g. Mathematics'), value=data.discipline, error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=disc_attrs, label_classes=['top-padding', 'center-align']) }}
+    {{ kata_form.tooltip(tooltip=_("Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter should be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see <a href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
+    {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('e.g. Mathematics'), value=data.discipline, error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=disc_attrs, label_classes=['center-align']) }}
   </div>
 </div>

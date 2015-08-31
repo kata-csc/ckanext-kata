@@ -662,11 +662,53 @@ input[id="xmlfile"] {
 .form-tab-content .form-row textarea {
   width: 100%;
 }
+.form-tab-content .form-row .modification-date-controls {
+  width: 50%;
+}
+.form-tab-content .form-row .modification-date-controls .kata-datetimepicker-parent {
+  margin-left: 10px;
+}
+.form-tab-content .form-row .modification-date-controls .kata-datetimepicker-parent .kata-datepicker-date {
+  width: 50%;
+}
+.form-tab-content .form-row .modification-date-controls .kata-datetimepicker-parent .time-details {
+  margin-left: initial !important;
+}
+.form-tab-content .form-row .modification-date-controls .kata-datetimepicker-parent .time-details input.kata-datepicker-time {
+  width: 15% !important;
+}
+.form-tab-content .form-row .modification-date-controls .kata-datetimepicker-parent .time-details select.kata-datepicker-tz {
+  margin-left: 10px;
+}
+.form-tab-content .form-row .modification-date-controls .kata-datetimepicker-parent .kata-datepicker-enabler {
+  padding-left: initial !important;
+}
+.form-tab-content .form-row .modification-date-controls .kata-datetimepicker-parent .kata-datepicker-enabler input {
+  width: initial !important;
+  margin-right: 10px;
+  margin-left: initial !important;
+}
+.form-tab-content .form-row .form-double-instructions-container {
+  display: inline-block;
+  float: right;
+}
+.form-tab-content .form-row #generate_version_pid {
+  margin-left: 20px;
+}
 .form-tab-content .kata-add {
   margin-left: 30%;
   padding-left: 10px;
   float: none;
   color: #3FA9F5;
+}
+.form-tab-content .top-padding {
+  padding-top: 30px !important;
+}
+.form-tab-content .center-align {
+  text-align: center !important;
+}
+.form-tab-content .hide {
+  display: none;
 }
 @media (max-width: 700px) {
   .form-tab-content .form-row .form-label,
@@ -779,6 +821,16 @@ input[id="xmlfile"] {
   position: absolute;
   top: 0;
   right: -1px;
+}
+.custom-fields-container {
+  margin-bottom: 70px;
+}
+.autocomplete-input-container .select2-choices {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.autocomplete-input-container .select2-search-field input {
+  height: 15px !important;
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
