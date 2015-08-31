@@ -28,7 +28,7 @@
      id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
      value=primary_pid.id,
      label_classes=['kata-input-comp'], control_classes=['kata-medium'],
-     attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index ~ primary_pid_readonly})%}
+     attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, primary_pid_readonly:''})%}
 
     <div class="form-double-instructions-container"">
       {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated primary data identifier is provided if left empty.<br /><br />PID is a permanent identifier, preferably an HTTP URI. Note that if your data is accessible via access application like REMS, the primary identifier is sent to the service as the data identifier.<br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi for more information.')) }}
@@ -54,17 +54,17 @@
       {% set additional_data_identifier_label = _(pid_type | capitalize) + _(' identifiers') %}
     {% endif %}
 
-    <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block">
+    <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="custom-fields-container">
       {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
       {% for pid in pids %}
         {% set pid_readonly = " readonly" if pid.id and not (h.asbool(pid.get('primary')) and errors and not data.id) %}
-        <div class="control-group control-custom">
+        <div class="control-custom">
           {% call kata_form.input(
             'pids__' ~ index ~ '__id', label=additional_data_identifier_label,
              id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
              value=pid.id,
              label_classes=['kata-input-comp'], control_classes=['kata-medium'],
-             attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index ~ pid_readonly})%}
+             attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, pid_readonly:''})%}
 
             {% if pid.id and not h.asbool(pid.get('primary')) %}
               <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
