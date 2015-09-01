@@ -39,7 +39,7 @@
     <input type="hidden" name="pids__{{ index }}__type" value="data" />
 
     {% if errors.pids and errors.pids[index.index] %}
-      <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
+      <span class="error-block kata-pid-field-error separate-error error-block-margin">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
     {% endif %}
   {% endcall %}
 
@@ -63,7 +63,7 @@
           <div class="form-row">
             <div class="form-content kata-medium{{ ' error' if errors }}{{ ' no-label-controls' if not hasLabel}}">
               <input id="pids__{{ index }}__id" type="text" name="pids__{{ index }}__id" value="{{ pid.id | empty_and_escape }}" placeholder="http://www.pid.com/1234" class="kata-medium-input pid kata-pid-input-wide pids_{{ index }}" {{ pid_readonly }} />
-              {% if errors and errors is iterable %}<span class="error-block">{{ errors|join(', ') }}</span>{% endif %}
+              {# {% if errors and errors is iterable %}<span class="error-block">{{ errors|join(', ') }}</span>{% endif %}#}
             </div>
              {% if pid.id and not h.asbool(pid.get('primary')) %}
                 <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
@@ -79,7 +79,7 @@
 
               <input type="hidden" name="pids__{{ index }}__type" value="{{ pid_type }}" />
               {% if errors.pids and errors.pids[index.index] %}
-                <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
+                <span class="error-block kata-pid-field-error separate-error error-block-margin">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
               {% endif %}
           </div>
 
@@ -119,7 +119,7 @@
 
   {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
   {% if pid_errors and pid_errors is iterable %}
-    <span class="separate-error error-block">{{ pid_errors|join('. ') }}</span>
+    <span class="separate-error error-block error-block-margin">{{ pid_errors|join('. ') }}</span>
   {% endif %}
 
   <input type="hidden" value="{{ index }}" id="pid-index" />

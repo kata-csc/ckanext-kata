@@ -80,7 +80,7 @@
       {{ kata_form.tooltip(tooltip=_('Information about licenses') ~ ': <a href="' ~ _('http://creativecommons.org/choose/?lang=en') ~ '" target="_blank">creativecommons.org</a>') }}
   </div>
 
-  {% call kata_form.textarea('license_URL', id='license_URL', label=_('Copyright notice'), placeholder=_('e.g. additional information about the license'), value=data.license_URL, error=errors.license_URL) %}
+  {% call kata_form.textarea('license_URL', id='license_URL', label=_('Copyright notice'), placeholder=_('e.g. additional information about the license'), value=data.license_URL, error=errors.license_URL, classes=['error-block-fullwidth']) %}
     {{ kata_form.tooltip(tooltip=_("Provide detailed information about copyright notice, use constraints, referencing etc. Note that the field is required if license is set to License Not Specified or any variant of Other.")) }}
   {% endcall %}
 </div>
