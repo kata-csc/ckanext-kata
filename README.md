@@ -12,6 +12,7 @@ Requirements
 
 * CKAN 2.1.2
 * Some additional Python packages that will be installed using `pip install`
+* Extension ckanext-ytp-comments is required: https://github.com/kata-csc/ckanext-ytp-comments/tree/etsin
 
 Configuration
 =============

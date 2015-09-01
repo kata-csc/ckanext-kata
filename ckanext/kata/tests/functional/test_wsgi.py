@@ -309,7 +309,7 @@ class TestMetadataSupplements(KataWsgiTestCase):
         data['name'] = 'metadata-supplement-testdataset'
 
         package = get_action('package_create')({'user': 'testsysadmin'}, data)
-        offset = url_for(controller='package', action='edit', id=u'metadata-supplement-testdataset')
+        offset = url_for(controller='package', action='read', id=u'metadata-supplement-testdataset')
         extra_environ = {'REMOTE_USER': 'testsysadmin'}
         res = self.app.get(offset, extra_environ=extra_environ)
         assert '/dataset/new_resource/' in res

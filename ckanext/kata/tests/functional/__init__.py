@@ -13,6 +13,7 @@ from ckan.lib.create_test_data import CreateTestData
 
 import ckanext.kata.model as kata_model
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_ORGANIZATION_COMMON, TEST_DATADICT
+import ckanext.ytp.comments.model as comments_model
 
 # Note: all ORM model changes must be imported before WsgiAppCase
 from ckan import model, tests
@@ -29,6 +30,7 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
 
         kata_model.setup()
         CreateTestData.create()
+        comments_model.init_tables()
 
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
