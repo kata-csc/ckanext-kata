@@ -12,7 +12,7 @@ a:focus {
   text-decoration: underline;
 }
 body {
-  background: white;
+  background: #ffffff;
 }
 .form-actions .action-info-kata {
   float: left;
@@ -662,6 +662,13 @@ input[id="xmlfile"] {
 .form-tab-content .form-row textarea {
   width: 100%;
 }
+.form-tab-content .form-row .etsin-actions {
+  width: 100%;
+  overflow: hidden;
+}
+.form-tab-content .form-row .etsin-actions .form-actions {
+  float: right;
+}
 .form-tab-content .form-row .modification-date-controls {
   width: 50%;
 }
@@ -859,9 +866,16 @@ input[id="xmlfile"] {
 .tooltip-big a:focus {
   text-decoration: none !important;
 }
+.supplement-form .form-actions {
+  overflow: hidden;
+}
+.supplement-form .form-actions .btn {
+  float: right;
+  padding: 4px 12px !important;
+}
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
-  background: white;
+  background: #ffffff;
   margin-bottom: 45px;
 }
 header.masthead .button-wrapper .btn-primary {

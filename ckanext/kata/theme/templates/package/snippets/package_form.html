@@ -30,7 +30,7 @@ then itself be extended to add/remove blocks of functionality. #}
   {% if errors and errors.get('accept-terms') and errors.get('accept-terms') is iterable %}<span class="error-block-kata">{{ errors.get('accept-terms')|join('.') }}</span>{% endif %}
   {% block form_actions %}
     <div class="form-row">
-      <div class="form-content">
+      <div class="form-content etsin-actions">
         <div class="form-actions">
           {% block delete_button %}
             {% if h.check_access('package_delete', {'id': data.id})  %}
