@@ -1060,11 +1060,9 @@ class MalwareScanningStorageController(StorageController):
         field_storage = params.get('file')
         buffer = field_storage.file
 
-        do_scan = config.get('kata.storage.malware_scan', False)
+        do_scan = asbool(config.get('kata.storage.malware_scan', False))
 
-        if not do_scan:
-            passed = True
-        else:
+        if do_scan:
             try:
                 passed = clamd_wrapper.scan_for_malware(buffer)
                 # reset the stream so that the data can be properly read again
@@ -1072,6 +1070,8 @@ class MalwareScanningStorageController(StorageController):
             except clamd_wrapper.MalwareCheckError as err:
                 passed = False
                 log.error(str(err))
+        else:
+            passed = True
 
         if passed:
             return StorageController.upload_handle(self)
