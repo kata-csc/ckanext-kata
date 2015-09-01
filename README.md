@@ -12,7 +12,8 @@ Requirements
 
 * CKAN 2.1.2
 * Some additional Python packages that will be installed using `pip install`
-* Extension ckanext-ytp-comments is required: https://github.com/kata-csc/ckanext-ytp-comments/tree/etsin
+* CKAN extension ckanext-ytp-comments: https://github.com/kata-csc/ckanext-ytp-comments/tree/etsin
+* ClamAV (if kata.storage.malware_scan=true): http://www.clamav.net/index.html
 
 Configuration
 =============
