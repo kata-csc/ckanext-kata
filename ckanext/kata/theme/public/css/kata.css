@@ -841,6 +841,24 @@ input[id="xmlfile"] {
 .autocomplete-input-container .select2-search-field input {
   height: 15px !important;
 }
+.tooltip-big {
+  width: 30px;
+  float: right;
+  padding-left: 5px;
+}
+.tooltip-big .dropdown-menu {
+  font-size: small;
+  left: -3.5em;
+  padding: 5px 8px;
+  right: -1em;
+}
+.tooltip-big .icon-question-sign {
+  font-size: 30px;
+}
+.tooltip-big a:hover,
+.tooltip-big a:focus {
+  text-decoration: none !important;
+}
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
   background: #ffffff;
