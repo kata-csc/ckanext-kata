@@ -253,7 +253,7 @@ class KATAApiController(ApiController):
         :rtype: dictionary
         '''
 
-        url_template = "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
+        url_template = "http://dev.finto.fi/rest/v1/search?query={q}*&vocab={v}" if vocab == 'paikat' else "http://api.finto.fi/rest/v1/search?query={q}*&vocab={v}"
 
         if language:
             url_template += "&lang={l}"
