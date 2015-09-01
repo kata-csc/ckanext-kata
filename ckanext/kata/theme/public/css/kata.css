@@ -12,7 +12,7 @@ a:focus {
   text-decoration: underline;
 }
 body {
-  background: #ffffff;
+  background: white;
 }
 .form-actions .action-info-kata {
   float: left;
@@ -861,7 +861,7 @@ input[id="xmlfile"] {
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
-  background: #ffffff;
+  background: white;
   margin-bottom: 45px;
 }
 header.masthead .button-wrapper .btn-primary {

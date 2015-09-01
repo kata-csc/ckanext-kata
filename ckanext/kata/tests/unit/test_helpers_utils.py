@@ -121,6 +121,10 @@ class TestHelpers(TestCase):
         assert helpers.has_json_content('{"fin": "jotain"}') == True
         assert helpers.has_json_content('[1, 2, 3]') == True
 
+    def test_multilang_to_json(self):
+        datadict = {'langtitle': [{'lang': u'fin', 'value': u'foobar'}]}
+        assert helpers.multilang_to_json(datadict, 'langtitle', 'title') == '{"fin": "foobar"}'
+        assert datadict.get('title') == '{"fin": "foobar"}'
 
 class TestUtils(TestCase):
     """Unit tests for functions in utils.py."""

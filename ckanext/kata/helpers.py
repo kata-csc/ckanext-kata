@@ -1003,3 +1003,25 @@ def get_tab_errors(errors, tab):
             if key in tabs.get('resources') and key in tabs.get(tab):
                 return "tab-error"
     return ''
+
+
+def multilang_to_json(datadict, from_field, to_field):
+    '''
+    Convert langtitle list (HTML form format) to title JSON string (DB format). Creates title field to datadict and
+    returns title value.
+
+    :param datadict: CKAN datadict
+    :return:
+    '''
+    json_data = {}
+
+    # loop through all the translations
+    for langtitle in datadict.get(from_field, []):
+        lval = langtitle.get('lang')
+        rval = langtitle.get('value')
+        json_data[lval] = rval
+
+    if json_data:
+        datadict[to_field] = json.dumps(json_data)
+
+    return datadict.get(to_field, '')
