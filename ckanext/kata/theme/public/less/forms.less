@@ -351,6 +351,13 @@ input[id="xmlfile"] {
   .hide {
     display: none;
   }
+  // Select2: without these the complete placeholder isn't shown, https://github.com/select2/select2/issues/291
+  .select2-container-multi .select2-choices .select2-search-field {
+    width: 100%;
+  }
+  .select2-input {
+    width: 100% !important;
+  }
 
   /* stack form label and content on small display */
   @media (max-width: 700px) {
@@ -495,3 +502,4 @@ input[id="xmlfile"] {
     height: 15px !important;
   }
 }
+

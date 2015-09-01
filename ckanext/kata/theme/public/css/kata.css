@@ -12,7 +12,7 @@ a:focus {
   text-decoration: underline;
 }
 body {
-  background: white;
+  background: #ffffff;
 }
 .form-actions .action-info-kata {
   float: left;
@@ -710,6 +710,12 @@ input[id="xmlfile"] {
 .form-tab-content .hide {
   display: none;
 }
+.form-tab-content .select2-container-multi .select2-choices .select2-search-field {
+  width: 100%;
+}
+.form-tab-content .select2-input {
+  width: 100% !important;
+}
 @media (max-width: 700px) {
   .form-tab-content .form-row .form-label,
   .form-tab-content .form-row .control-label {
@@ -837,7 +843,7 @@ input[id="xmlfile"] {
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
-  background: white;
+  background: #ffffff;
   margin-bottom: 45px;
 }
 header.masthead .button-wrapper .btn-primary {
