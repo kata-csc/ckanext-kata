@@ -69,9 +69,8 @@
 
     <div data-module="custom-fields-kata" data-module-id="contributors" data-module-numfields="{{ contributors|length }}" data-module-index="agent-index" id="contributors">
     {% set contributor_errors = h.get_dict_errors(errors, '__extras', 'contributors') %}
-
     {% for agent in contributors %}
-      <div class="control-group control-custom{{ " error" if owner_errors }}">
+      <div class="control-group control-custom{{ " error" if contributor_errors }}">
       {% set index = agent_index.increase() %}
       {% set agent_prefix = "agent__" ~ index ~ "__" %}
 
@@ -90,7 +89,7 @@
         {% call kata_form.input(
           'agent__' ~ index ~ '__id', label=_('Identifier'),
           id='agent__' ~ index ~ '__id_id', placeholder=_('http://orcid.org/'),
-          value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'),
+          value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'id'),
           label_classes=['kata-input-comp'], control_classes=['kata-medium'],
           attrs={'class': "kata-medium-input"})
         %}
