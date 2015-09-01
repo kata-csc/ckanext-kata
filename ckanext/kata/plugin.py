@@ -308,8 +308,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_urn_fi_address': helpers.get_urn_fi_address,
             'get_dummy_title': helpers.get_dummy_title,
             'get_visibility_options': helpers.get_visibility_options,
-            'has_agents_field': helpers.has_agents_field,
-            'has_contacts_field': helpers.has_contacts_field,
             'has_json_content': helpers.has_json_content,
             'is_active_facet': helpers.is_active_facet,
             'is_allowed_org_member_edit': helpers.is_allowed_org_member_edit,
@@ -342,23 +340,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         if error_dict and error_dict[index]:
             error = error_dict[index].get(name)
         return error
-
-    # Todo: some of these can be found from helpers, too. This shouldn't be
-    def has_agents_field(self, data_dict, field):
-        '''
-        Return true if some of the data dict's agents has attribute given in field.
-
-        :rtype: boolean
-        '''
-        return [] != filter(lambda x: x.get(field), data_dict.get('agent', []))
-
-    def has_contacts_field(self, data_dict, field):
-        '''
-        Return true if some of the data dict's contacts has attribute given in field'.
-
-        :rtype: boolean
-        '''
-        return [] != filter(lambda x: x.get(field), data_dict.get('contact', []))
 
     def reference_update(self, ref):
         # Todo: this can be found from helpers as well!

@@ -53,16 +53,6 @@ class LoopIndex(object):
         return str(self.index)
 
 
-def has_agents_field(data_dict, field):
-    '''Return true if some of the data dict's agents has attribute given in field.'''
-    return [] != filter(lambda x: x.get(field), data_dict.get('agent', []))
-
-
-def has_contacts_field(data_dict, field):
-    '''Return true if some of the data dict's contacts has attribute given in field'.'''
-    return [] != filter(lambda x: x.get(field), data_dict.get('contact', []))
-
-
 def reference_update(ref):
     # @beaker_cache(type="dbm", expire=2678400)
     def cached_url(url):
