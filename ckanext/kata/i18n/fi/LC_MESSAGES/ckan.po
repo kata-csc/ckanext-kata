@@ -987,7 +987,7 @@ msgstr "Etsi aineistoja"
 
 #: ckanext/kata/theme/templates/kata/browse.html:35
 msgid "No criteria"
-msgstr ""
+msgstr "Ei hakukriteeriä"
 
 #: ckanext/kata/theme/templates/kata/browse.html:43
 msgid "No options available"
