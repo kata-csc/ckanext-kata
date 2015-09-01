@@ -22,9 +22,6 @@
                       {% link_for _("Edit Organization"), controller='organization', action='edit', id=c.group_dict.name %}
                     </li>
                     <li>
-                      {% link_for _("Add Organization"), controller='organization', action='new' %}
-                    </li>
-                    <li>
                       {% link_for _("Edit Members"), controller='organization', action='members', id=c.group_dict.name %}
                     </li>
                     <li>
@@ -41,7 +38,7 @@
             <table>
               <tbody>
                 <tr>
-                  <td>Followers</td>
+                  <td>{{ _('Followers') }}</td>
                   <td>{{ h.SI_number_span(c.group_dict.num_followers) }}</td>
                   <td>{{ h.follow_button('group', c.group_dict.id) }}</td>
                 </tr>

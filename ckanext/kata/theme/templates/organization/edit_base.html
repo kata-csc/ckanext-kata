@@ -16,7 +16,7 @@
             <div class="button-container">
 
               {% if c.group_dict %}
-                <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}> View organization </a>
+                <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}> {{ _('View organization') }} </a>
 
                 {% if c.group_dict.is_organization and h.check_access('organization_update', {'id':c.group_dict.id }) %}
                   <div class="btn-group">
@@ -26,9 +26,6 @@
                     <ul class="dropdown-menu pull-right">
                       <li>
                         {% link_for _("Edit Organization"), controller='organization', action='edit', id=c.group_dict.name %}
-                      </li>
-                      <li>
-                        {% link_for _("Add Organization"), controller='organization', action='new' %}
                       </li>
                       <li>
                         {% link_for _("Edit Members"), controller='organization', action='members', id=c.group_dict.name %}
@@ -50,7 +47,7 @@
               <table>
                 <tbody>
                   <tr>
-                    <td>Followers</td>
+                    <td>{{ _('Followers') }}</td>
                     <td>{{ h.SI_number_span(c.group_dict.num_followers) }}</td>
                     <td>{{ h.follow_button('group', c.group_dict.id) }}</td>
                   </tr>
