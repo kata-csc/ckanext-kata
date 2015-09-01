@@ -172,14 +172,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/user/logged_out_redirect',
                     controller="ckanext.kata.controllers:KataUserController",
                     action='logged_out_page')
-        map.connect('help',
-                    '/help',
-                    controller="ckanext.kata.controllers:KataInfoController",
-                    action="render_help")
-        map.connect('faq',
-                    '/faq',
-                    controller="ckanext.kata.controllers:KataInfoController",
-                    action="render_faq")
         map.connect('data-model',
                     '/data-model',
                     controller="ckanext.kata.controllers:KataInfoController",

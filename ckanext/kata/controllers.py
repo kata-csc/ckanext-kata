@@ -1036,18 +1036,6 @@ class KataInfoController(BaseController):
     are non-dynamic and visible for all
     '''
 
-    def render_help(self):
-        '''
-        Provides the help page
-        '''
-        return render('kata/help.html')
-
-    def render_faq(self):
-        '''
-        Provides the FAQ page
-        '''
-        return render('kata/faq.html')
-
     def render_data_model(self):
         '''
         Provides the data-model as a separate page
