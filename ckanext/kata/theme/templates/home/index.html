@@ -76,7 +76,7 @@
                 <div class="stat-label">
                   <!-- TODO: translation of same label: datasets - aineistot/aineistoa -->
                   <a href="{{ h.url_for(controller='package', action='search') }}">
-                    {{ _('Datasets') }}
+                    {{ _('Datasets ') }}
                   </a>
                 </div>
               </li>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="stat-label">
                   <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='tags') }}">
-                    {{ _('Tags') }}
+                    {{ _('Tags ') }}
                   </a>
                 </div>
               </li>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="stat-label">
                   <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='extras_discipline') }}">
-                    {{ _('Disciplines') }}
+                    {{ _('Disciplines ') }}
                   </a>
                 </div>
               </li>

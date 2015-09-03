@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-01 08:41+0000\n"
+"POT-Creation-Date: 2015-09-03 09:53+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -192,7 +192,6 @@ msgid "Groups"
 msgstr "Ryhmät"
 
 #: ckanext/kata/controllers.py:975
-#: ckanext/kata/theme/templates/home/index.html:91
 msgid "Tags"
 msgstr "Asiasanat"
 
@@ -242,7 +241,6 @@ msgid "New organisation \"{org}\" created automatically."
 msgstr "Uusi organisaatio \"{org}\" luotu automaattisesti."
 
 #: ckanext/kata/helpers.py:348
-#: ckanext/kata/theme/templates/package/package_rights.html:14
 #: ckanext/kata/theme/templates/package/read.html:16
 #: ckanext/kata/theme/templates/package/related_list.html:13
 msgid "Unpublished"
@@ -266,19 +264,19 @@ msgstr "Avustaja"
 
 #: ckanext/kata/settings.py:56 ckanext/kata/settings.py:166
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:111
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:128
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:127
 msgid "Distributor"
 msgstr "Jakelija"
 
 #: ckanext/kata/settings.py:57
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:279
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:242
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:241
 msgid "Funder"
 msgstr "Rahoittaja"
 
 #: ckanext/kata/settings.py:58
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:133
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:289
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:288
 msgid "Owner"
 msgstr "Omistaja"
 
@@ -533,7 +531,6 @@ msgstr "Koti"
 #: ckanext/kata/theme/templates/header.html:30
 #: ckanext/kata/theme/templates/header.html:97
 #: ckanext/kata/theme/templates/group/read_base.html:17
-#: ckanext/kata/theme/templates/home/index.html:79
 #: ckanext/kata/theme/templates/kata/browse.html:17
 #: ckanext/kata/theme/templates/kata/dummy.html:111
 #: ckanext/kata/theme/templates/package/base.html:15
@@ -604,7 +601,7 @@ msgid "Message"
 msgstr "Viesti"
 
 #: ckanext/kata/theme/templates/contact/contact_form.html:32
-#: ckanext/kata/theme/templates/package/package_rights.html:190
+#: ckanext/kata/theme/templates/package/package_rights.html:181
 msgid "Send"
 msgstr "Lähetä"
 
@@ -665,7 +662,7 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/organization/members.html:28
 #: ckanext/kata/theme/templates/organization/read.html:16
 #: ckanext/kata/theme/templates/package/edit.html:13
-#: ckanext/kata/theme/templates/package/package_rights.html:26
+#: ckanext/kata/theme/templates/package/package_rights.html:17
 #: ckanext/kata/theme/templates/package/read.html:31
 #: ckanext/kata/theme/templates/package/related_list.html:26
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
@@ -736,7 +733,7 @@ msgstr "Oletko varma että haluat poistaa tämän ryhmän?"
 #: ckanext/kata/theme/templates/organization/member_new.html:32
 #: ckanext/kata/theme/templates/organization/members.html:31
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:57
-#: ckanext/kata/theme/templates/package/package_rights.html:133
+#: ckanext/kata/theme/templates/package/package_rights.html:124
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:38
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:33
 msgid "Delete"
@@ -856,10 +853,17 @@ msgstr "Avoin data"
 msgid "Since year"
 msgstr "Vuodesta"
 
+#: ckanext/kata/theme/templates/home/index.html:79
+msgid "Datasets "
+msgstr "Aineistoa"
+
+#: ckanext/kata/theme/templates/home/index.html:91
+msgid "Tags "
+msgstr "Asiasanaa"
+
 #: ckanext/kata/theme/templates/home/index.html:103
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:45
-msgid "Disciplines"
-msgstr "Tieteenalat"
+msgid "Disciplines "
+msgstr "Tieteenalaa"
 
 #: ckanext/kata/theme/templates/home/index.html:121
 msgid "Describe your research dataset"
@@ -1420,7 +1424,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/data-model.html:42
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:281
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:252
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:251
 msgid "Funding id"
 msgstr "Rahoitustunniste"
 
@@ -2573,7 +2577,7 @@ msgstr "Lisää jäseniä"
 #: ckanext/kata/theme/templates/organization/about.html:41
 #: ckanext/kata/theme/templates/organization/edit_base.html:50
 #: ckanext/kata/theme/templates/organization/read.html:39
-#: ckanext/kata/theme/templates/package/package_rights.html:80
+#: ckanext/kata/theme/templates/package/package_rights.html:71
 #: ckanext/kata/theme/templates/package/read.html:73
 #: ckanext/kata/theme/templates/package/related_list.html:79
 msgid "Followers"
@@ -2610,12 +2614,12 @@ msgstr "Lisää jäsen"
 #: ckanext/kata/theme/templates/organization/member_new.html:20
 #: ckanext/kata/theme/templates/organization/member_new.html:23
 #: ckanext/kata/theme/templates/organization/members.html:12
-#: ckanext/kata/theme/templates/package/package_rights.html:118
+#: ckanext/kata/theme/templates/package/package_rights.html:109
 msgid "User"
 msgstr "Käyttäjä"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:23
-#: ckanext/kata/theme/templates/package/package_rights.html:149
+#: ckanext/kata/theme/templates/package/package_rights.html:140
 #: ckanext/kata/theme/templates/user/edit_user_form.html:16
 #: ckanext/kata/theme/templates/user/new_user_form.html:6
 #: ckanext/kata/theme/templates/user/read.html:35
@@ -2624,7 +2628,7 @@ msgstr "Käyttäjätunnus"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:27
 #: ckanext/kata/theme/templates/organization/members.html:13
-#: ckanext/kata/theme/templates/package/package_rights.html:119
+#: ckanext/kata/theme/templates/package/package_rights.html:110
 #: ckanext/kata/theme/templates/package/role_fields.html:13
 #: ckanext/kata/theme/templates/package/role_fields.html:40
 msgid "Role"
@@ -2632,7 +2636,7 @@ msgstr "Rooli"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:31
 #: ckanext/kata/theme/templates/organization/members.html:26
-#: ckanext/kata/theme/templates/package/package_rights.html:131
+#: ckanext/kata/theme/templates/package/package_rights.html:122
 msgid "Are you sure you want to delete this member?"
 msgstr "Oletko varma että haluat poistaa tämän jäsenen?"
 
@@ -2643,7 +2647,7 @@ msgid "Save"
 msgstr "Tallenna"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:38
-#: ckanext/kata/theme/templates/package/package_rights.html:154
+#: ckanext/kata/theme/templates/package/package_rights.html:145
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:76
 msgid "Add"
 msgstr "Lisää"
@@ -2727,55 +2731,48 @@ msgstr "pakollinen tieto"
 
 #: ckanext/kata/theme/templates/package/history.html:3
 #: ckanext/kata/theme/templates/package/history.html:6
-#: ckanext/kata/theme/templates/package/package_rights.html:58
+#: ckanext/kata/theme/templates/package/package_rights.html:49
 #: ckanext/kata/theme/templates/package/read.html:52
 #: ckanext/kata/theme/templates/package/related_list.html:58
 msgid "History"
 msgstr "Historia"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:9
-#: ckanext/kata/theme/templates/package/read.html:11
-#: ckanext/kata/theme/templates/package/related_list.html:8
-#: ckanext/kata/theme/templates/snippets/package_item.html:38
-msgid "Draft"
-msgstr "Luonnos"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:22
+#: ckanext/kata/theme/templates/package/package_rights.html:13
 #: ckanext/kata/theme/templates/package/related_list.html:22
 msgid "Show dataset"
 msgstr "Näytä aineisto"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:32
+#: ckanext/kata/theme/templates/package/package_rights.html:23
 #: ckanext/kata/theme/templates/package/read.html:36
 #: ckanext/kata/theme/templates/package/related_list.html:32
 msgid "Edit metadata"
 msgstr "Muokkaa metatietoja"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:37
+#: ckanext/kata/theme/templates/package/package_rights.html:28
 #: ckanext/kata/theme/templates/package/related_list.html:37
 msgid "Request metadata editing rights"
 msgstr "Pyydä metatiedon muokkausoikeuksia"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:44
+#: ckanext/kata/theme/templates/package/package_rights.html:35
 #: ckanext/kata/theme/templates/package/read.html:41
 #: ckanext/kata/theme/templates/package/related_list.html:45
 #: ckanext/kata/theme/templates/package/snippets/info.html:36
 msgid "Add new supplement"
 msgstr "Lisää liite"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:71
+#: ckanext/kata/theme/templates/package/package_rights.html:62
 #: ckanext/kata/theme/templates/package/read.html:64
 #: ckanext/kata/theme/templates/package/related_list.html:70
 msgid "Metadata completeness"
 msgstr "Metatietojen kattavuus"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:85
+#: ckanext/kata/theme/templates/package/package_rights.html:76
 #: ckanext/kata/theme/templates/package/read.html:78
 #: ckanext/kata/theme/templates/package/related_list.html:84
 msgid "Data used"
 msgstr "Dataa käytetty"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:86
+#: ckanext/kata/theme/templates/package/package_rights.html:77
 #: ckanext/kata/theme/templates/package/read.html:80
 #: ckanext/kata/theme/templates/package/read.html:82
 #: ckanext/kata/theme/templates/package/related_list.html:86
@@ -2783,35 +2780,35 @@ msgstr "Dataa käytetty"
 msgid "times"
 msgstr "kertaa"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:87
+#: ckanext/kata/theme/templates/package/package_rights.html:78
 #: ckanext/kata/theme/templates/package/read.html:84
 #: ckanext/kata/theme/templates/package/related_list.html:90
 msgid "Advertise reuse"
 msgstr "Kerro uudelleenkäytöstä"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:104
+#: ckanext/kata/theme/templates/package/package_rights.html:95
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:8
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:8
 msgid "Dataset title"
 msgstr "Aineiston otsikko"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:110
+#: ckanext/kata/theme/templates/package/package_rights.html:101
 msgid "{0} named roles"
 msgstr "{0} nimettyä roolia"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:144
+#: ckanext/kata/theme/templates/package/package_rights.html:135
 msgid "Add a user for role"
 msgstr "Lisää käyttäjä rooliin"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:151
+#: ckanext/kata/theme/templates/package/package_rights.html:142
 msgid "User role"
 msgstr "Käyttäjärooli"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:165
+#: ckanext/kata/theme/templates/package/package_rights.html:156
 msgid "Send invitation"
 msgstr "Lähetä kutsu"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:167
+#: ckanext/kata/theme/templates/package/package_rights.html:158
 msgid ""
 "Did not find the user you were searching for? Send her or him an email "
 "invitation to log in to Etsin."
@@ -2819,30 +2816,36 @@ msgstr ""
 "Etkö löytänyt etsimääsi käyttäjää? Lähetä hänelle kutsu kirjautumaan "
 "Etsin-palveluun sähköpostitse"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:168
+#: ckanext/kata/theme/templates/package/package_rights.html:159
 msgid "If you want to, you can add your own message to be sent to the person."
 msgstr ""
 "Jos haluat, voit lisätä oman viestisi henkilölle menevään "
 "sähköpostiviestiin."
 
-#: ckanext/kata/theme/templates/package/package_rights.html:169
+#: ckanext/kata/theme/templates/package/package_rights.html:160
 msgid ""
 "After the person has logged in to the service, she or he can be added to "
 "a role."
 msgstr "Kun henkilö on kirjautunut palveluun, hänet voi lisätä rooliin."
 
-#: ckanext/kata/theme/templates/package/package_rights.html:172
+#: ckanext/kata/theme/templates/package/package_rights.html:163
 msgid "Email address"
 msgstr "Sähköpostiosoite"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:172
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:165
+#: ckanext/kata/theme/templates/package/package_rights.html:163
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:164
 msgid "john.doe@example.com"
 msgstr "matti.meikalainen@esimerkki.fi"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:173
+#: ckanext/kata/theme/templates/package/package_rights.html:164
 msgid "Your message"
 msgstr "Viestisi"
+
+#: ckanext/kata/theme/templates/package/read.html:11
+#: ckanext/kata/theme/templates/package/related_list.html:8
+#: ckanext/kata/theme/templates/snippets/package_item.html:38
+msgid "Draft"
+msgstr "Luonnos"
 
 #: ckanext/kata/theme/templates/package/read.html:25
 msgid "Show in RDF format"
@@ -5066,8 +5069,8 @@ msgid "Authors"
 msgstr "Tekijät"
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:21
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:80
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:142
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:79
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:141
 msgid "Firstname Familyname"
 msgstr "Etunimi Sukunimi"
 
@@ -5088,12 +5091,12 @@ msgstr ""
 "huomiotta."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:32
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:91
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:90
 msgid "Identifier"
 msgstr "Tunniste"
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:33
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:92
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:91
 msgid "http://orcid.org/"
 msgstr ""
 
@@ -5106,13 +5109,13 @@ msgstr ""
 "tunnisteen."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:44
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:103
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:102
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:22
 msgid "Organisation"
 msgstr "Organisaatio"
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:45
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:104
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:103
 msgid "University. Faculty. Department."
 msgstr "Yliopisto. Tiedekunta. Laitos."
 
@@ -5124,15 +5127,15 @@ msgstr "Lisää tekijä"
 msgid "Contributors"
 msgstr "Muut tekijät"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:79
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:141
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:219
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:78
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:140
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:218
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:27
 #: ckanext/kata/theme/templates/user/read.html:27
 msgid "Name"
 msgstr "Nimi"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:86
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:85
 msgid ""
 "Contributor is a person or an organisation who, in addition to the "
 "author, has contributed significantly to the dataset.<br /><br />Type "
@@ -5148,7 +5151,7 @@ msgstr ""
 " rivin tyhjäksi, se jätetään huomiotta.<br /><br />Voit antaa joko nimen "
 "tai tunnisteen, kuten ORCID-tunnisteen."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:98
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:97
 msgid ""
 "Optionally you can provide contributor's identifier, such as an ORCID "
 "identifier."
@@ -5156,11 +5159,11 @@ msgstr ""
 "Voit vaihtoehtoisesti antaa myös muun tekijän tunnisteen, kuten ORCID-"
 "tunnisteen."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:111
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:110
 msgid "Add contributor"
 msgstr "Lisää avustaja"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:148
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:147
 msgid ""
 "Distributor is a person or an organisation who has the right to "
 "distribute the dataset or has published the dataset."
@@ -5168,26 +5171,26 @@ msgstr ""
 "Jakelija on henkilö tai organisaatio, jolla on oikeus jakaa aineistoa "
 "edelleen tai joka on asettanut aineiston julkisesti saataville."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:152
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:151
 msgid "Phone"
 msgstr "Puhelinnumero"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:153
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:152
 msgid "+35844122123"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:159
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:158
 msgid "The phone number must be in form \"+35812341234\" or \"12341234\"."
 msgstr "Puhelinnumeron on oltava muotoa \"+35812341234\" tai \"12341234\"."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:164
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:163
 #: ckanext/kata/theme/templates/user/edit_user_form.html:26
 #: ckanext/kata/theme/templates/user/new_user_form.html:11
 #: ckanext/kata/theme/templates/user/read.html:31
 msgid "Email"
 msgstr "Sähköposti"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:171
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:170
 msgid ""
 "The e-mail address is not shown publicly but it can be used to send "
 "e-mails in this service."
@@ -5195,16 +5198,16 @@ msgstr ""
 "Sähköpostiosoitetta ei näytetä julkisesti mutta järjestelmän kautta "
 "siihen voidaan lähettää sähköpostiviestejä."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:175
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:229
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:174
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:228
 msgid "Homepage"
 msgstr "Kotisivu"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:176
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:175
 msgid "http://johndoe.com/contact"
 msgstr "http://esimerkki.fi/contact"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:182
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:181
 msgid ""
 "Type a valid web address to your web page. In case you don't have one, "
 "you could for example give an address to your research group's site or "
@@ -5215,23 +5218,23 @@ msgstr ""
 "esimerkiksitutkimusryhmäsi osoitteen tai osoitteen, jonka avulla voidaan "
 "ottaa yhteyttä aineistosta vastaavaan tahoon tarvittaessa."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:186
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:185
 msgid "Add distributor"
 msgstr "Lisää jakelija"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:198
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:197
 msgid "Project"
 msgstr "Projekti"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:200
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:199
 msgid "This dataset was produced in a project."
 msgstr "Tämä aineisto on tuotettu projektissa."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:220
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:219
 msgid "my project"
 msgstr "oma projekti"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:225
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:224
 msgid ""
 "Fill these fields if checkbox 'This dataset was produced in a project.' "
 "is checked. You can add more funders from the '+' button. Some automatic "
@@ -5244,31 +5247,31 @@ msgstr ""
 "täyttää kenttää. Voit antaa myös omia rahoittajia, joita ei löydy "
 "listalta."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:230
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:229
 msgid "http://myproject"
 msgstr "http://omaprojektini"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:243
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:242
 msgid "my funder"
 msgstr "oma rahoittaja"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:253
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:252
 msgid "1234"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:261
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:260
 msgid "Add funder"
 msgstr "Lisää rahoittaja"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:274
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:273
 msgid "Owner information"
 msgstr "Omistajatiedot"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:290
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:289
 msgid "name or ID such as ORCID"
 msgstr "nimi tai tunniste, kuten ORCID"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:296
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:295
 msgid ""
 "Owner is a person or an organisation who decides upon the use of the "
 "dataset.<br /><br />Type the owner's name (firstname familyname) or ID, "
@@ -5278,7 +5281,7 @@ msgstr ""
 " /><br />Anna omistajan nimi (etunimi sukunimi) tai tunniste, kuten "
 "ORCID-tunniste."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:300
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:299
 msgid "Add owner"
 msgstr "Lisää omistaja"
 
@@ -5403,6 +5406,10 @@ msgstr ""
 "sanastopalvelusta (katso <a href=\"http://finto.fi/fi\" "
 "target=\"_blank\">http://finto.fi/fi/</a>). JavaScript-tuen on oltava "
 "käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
+
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:45
+msgid "Disciplines"
+msgstr "Tieteenalat"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:45
 msgid "e.g. Mathematics"
@@ -6176,3 +6183,4 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
