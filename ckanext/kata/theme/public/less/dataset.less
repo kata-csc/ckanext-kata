@@ -443,3 +443,32 @@ a.download {
     margin-top: 0px !important;
   }
 }
+
+@form-label-width: 30%;
+@form-help-spacer-width: 15%;
+.dataset-administration {
+  padding: 20px;
+  .form-row {
+    margin-bottom: 15px;
+  }
+  .form-label, .control-label {
+    float: left;
+    font-weight: 700;
+    width: @form-label-width;
+    text-align: right;
+    width: 20%;
+  }
+  .form-content, .controls {
+    min-height: 16px;
+    margin-left: 0px;
+    width: 100% - @form-label-width - @form-help-spacer-width - 5%;
+    padding-right: 0px;
+    padding-left: 10px;
+    display: inline-block;
+    width: 60%;
+  }
+}
+
+.controls.kata-captcha-fix {
+  padding-left: 11% !important;
+}

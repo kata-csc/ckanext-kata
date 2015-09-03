@@ -2080,6 +2080,33 @@ a.download {
   padding-top: 0px !important;
   margin-top: 0px !important;
 }
+.dataset-administration {
+  padding: 20px;
+}
+.dataset-administration .form-row {
+  margin-bottom: 15px;
+}
+.dataset-administration .form-label,
+.dataset-administration .control-label {
+  float: left;
+  font-weight: 700;
+  width: 30%;
+  text-align: right;
+  width: 20%;
+}
+.dataset-administration .form-content,
+.dataset-administration .controls {
+  min-height: 16px;
+  margin-left: 0px;
+  width: 50%;
+  padding-right: 0px;
+  padding-left: 10px;
+  display: inline-block;
+  width: 60%;
+}
+.controls.kata-captcha-fix {
+  padding-left: 11% !important;
+}
 .dataset-heading a {
   color: #0095ca;
 }

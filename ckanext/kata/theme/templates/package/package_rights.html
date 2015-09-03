@@ -4,16 +4,7 @@
 {% block inner_content %}
   {% set pkg = c.pkg_dict %}
 
-  <h2 class="page-title">{{ h.get_translation(c.pkg.title) or pkg.name }}
-    {% if pkg.state.startswith('draft') %}
-      [{{ _('Draft') }}]
-    {% endif %}
-    {% if pkg.private %}
-    <span class="dataset-private label label-inverse pull-right">
-      <i class="icon-lock"></i>
-      {{ _('Unpublished') }}
-    </span>
-  {% endif %}</h2>
+  <h2 class="page-title">{{ h.get_translation(c.pkg.title) or pkg.name }}</h2>
 
   <div class="dataset-view-header">
     <div class="actions-and-ratings">
@@ -97,7 +88,7 @@
 
   <div class="dataset-view-content">
 
-    <div class="dataset-section form-tab-content">
+    <div class="dataset-section dataset-administration">
 
       {% set filtered_members = h.filter_system_users(c.members) %}
       <div class="form-row">
