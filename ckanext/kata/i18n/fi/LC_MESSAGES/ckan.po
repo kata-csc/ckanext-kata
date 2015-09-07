@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-03 09:53+0000\n"
+"POT-Creation-Date: 2015-09-07 05:08+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -5325,7 +5325,7 @@ msgid "This dataset contains non-textual data"
 msgstr "Aineisto ei sisällä tekstimuotoista dataa"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:23
-msgid "eg. eng, fin, swe"
+msgid "e.g. eng, fin, swe"
 msgstr "esim. eng, fin, swe"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:27
@@ -5380,7 +5380,7 @@ msgstr ""
 "käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:38
-msgid "eg. economy, mental health, government"
+msgid "e.g. economy, mental health, government"
 msgstr "esim. talous, mielenterveys, hallitus"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:44
@@ -5432,8 +5432,9 @@ msgid ""
 "via access application like REMS, the primary identifier is sent to the "
 "service as the data identifier.<br /><br />The automatically generated "
 "PID is a URN identifier from the national library of Finland, of form "
-"\"urn:nbn:fi:csc-kata[unique number]\". Visit "
-"http://www.nationallibrary.fi for more information."
+"\"urn:nbn:fi:csc-kata[unique number]\". Visit <a "
+"href=\"http://www.nationallibrary.fi\" "
+"target=\"_blank\">http://www.nationallibrary.fi</a> for more information."
 msgstr ""
 "Kenttä on pakollinen mutta jos jätät kentän tyhjäksi siihen generoidaan "
 "automaattisesti tunniste.<br /><br />PID on pysytä tunniste, mieluiten "
@@ -5442,7 +5443,8 @@ msgstr ""
 "tälle palvelulle.<br /><br />Automaattinen tunniste on URN-tunniste "
 "kansalliskirjaston nimiavaruudesta ja se on muotoa \"urn:nbn:fi:csc-"
 "kata[numerosarja]\". Saadaksesi lisätietoa, vieraile kansalliskirjaston "
-"sivulla osoitteessa http://www.kansalliskirjasto.fi."
+"sivulla osoitteessa <a href=\"http://www.kansalliskirjasto.fi\" "
+"target=\"_blank\">http://www.kansalliskirjasto.fi</a>."
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:35
 msgid ""
@@ -5682,7 +5684,7 @@ msgid "Locations"
 msgstr "Paikat"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:15
-msgid "eg. Finland"
+msgid "e.g. Finland"
 msgstr "esim. Suomi"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:20
@@ -5778,7 +5780,7 @@ msgid "MIME type"
 msgstr "MIME-tyyppi"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:10
-msgid "MIME. eg. application/pdf, application/txt"
+msgid "MIME. e.g. application/pdf, application/txt"
 msgstr "MIME. esim. application/pdf, application/txt"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:10
@@ -5804,8 +5806,8 @@ msgid "The format of the data file can be provided here."
 msgstr "Tähän kenttään voit syöttää tiedoston muodon."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
-msgid "hex string from eg. MD5, SHA-1"
-msgstr "tarkistussumma (MD5, SHA-2) hexamuodossa"
+msgid "hex string from e.g. MD5, SHA-1"
+msgstr "tarkistussumma (MD5, SHA-2) heksamuodossa"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid ""
@@ -5820,7 +5822,7 @@ msgstr ""
 "sisältö on pysynyt samana ja että tiedosto on aito."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
-msgid "eg. MD5"
+msgid "e.g. MD5"
 msgstr "esim. MD5, SHA-2"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
@@ -5949,7 +5951,7 @@ msgid "Automatically generated"
 msgstr "Luodaan automaattisesti"
 
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:27
-msgid "eg. Description of variables"
+msgid "e.g. Description of variables"
 msgstr "esim. Muuttujien kuvaukset"
 
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:9

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-03 09:53+0000\n"
+"POT-Creation-Date: 2015-09-07 05:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5076,7 +5076,7 @@ msgid "This dataset contains non-textual data"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:23
-msgid "eg. eng, fin, swe"
+msgid "e.g. eng, fin, swe"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:27
@@ -5112,7 +5112,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:38
-msgid "eg. economy, mental health, government"
+msgid "e.g. economy, mental health, government"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:44
@@ -5155,7 +5155,8 @@ msgid ""
 "like REMS, the primary identifier is sent to the service as the data "
 "identifier.<br /><br />The automatically generated PID is a URN identifier "
 "from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique "
-"number]\". Visit http://www.nationallibrary.fi for more information."
+"number]\". Visit <a href=\"http://www.nationallibrary.fi\" "
+"target=\"_blank\">http://www.nationallibrary.fi</a> for more information."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:35
@@ -5354,7 +5355,7 @@ msgid "Locations"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:15
-msgid "eg. Finland"
+msgid "e.g. Finland"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:20
@@ -5421,7 +5422,7 @@ msgid "MIME type"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:10
-msgid "MIME. eg. application/pdf, application/txt"
+msgid "MIME. e.g. application/pdf, application/txt"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:10
@@ -5442,7 +5443,7 @@ msgid "The format of the data file can be provided here."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
-msgid "hex string from eg. MD5, SHA-1"
+msgid "hex string from e.g. MD5, SHA-1"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
@@ -5454,7 +5455,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
-msgid "eg. MD5"
+msgid "e.g. MD5"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
@@ -5574,7 +5575,7 @@ msgid "Automatically generated"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:27
-msgid "eg. Description of variables"
+msgid "e.g. Description of variables"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:9

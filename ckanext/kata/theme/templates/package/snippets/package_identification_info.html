@@ -31,7 +31,7 @@
      attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, primary_pid_readonly:''})%}
 
     <div class="form-double-instructions-container"">
-      {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated primary data identifier is provided if left empty.<br /><br />PID is a permanent identifier, preferably an HTTP URI. Note that if your data is accessible via access application like REMS, the primary identifier is sent to the service as the data identifier.<br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit http://www.nationallibrary.fi for more information.')) }}
+      {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated primary data identifier is provided if left empty.<br /><br />PID is a permanent identifier, preferably an HTTP URI. Note that if your data is accessible via access application like REMS, the primary identifier is sent to the service as the data identifier.<br /><br />The automatically generated PID is a URN identifier from the national library of Finland, of form \"urn:nbn:fi:csc-kata[unique number]\". Visit <a href="http://www.nationallibrary.fi" target="_blank">http://www.nationallibrary.fi</a> for more information.')) }}
       {{ kata_form.warning_tooltip(tooltip=_('Note that the primary data identifier can NOT be edited after saving the dataset.')) }}
     </div>
 

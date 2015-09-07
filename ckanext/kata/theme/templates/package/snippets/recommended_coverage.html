@@ -12,7 +12,7 @@
     {% set tag_attrs = {'class': 'kata-input-license', 'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/location_autocomplete?incomplete=?'} %}
     {% call kata_form.input(
       'geographic_coverage', id='geographic_coverage_field',
-      label=_('Locations'), placeholder=_('eg. Finland'),
+      label=_('Locations'), placeholder=_('e.g. Finland'),
       value=data.geographic_coverage, error=errors.geographic_coverage,
       classes=['control-medium'], control_classes=['error-block-autocomplete error-block-fullwidth'],
       attrs=tag_attrs)

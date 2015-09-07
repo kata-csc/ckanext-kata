@@ -20,7 +20,7 @@
       <div id="langdiv" class="top-padding" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
         {% set autocomplete_source = '/api/2/util/language/autocomplete?incomplete=?&language=' ~ currentlang  %}
         {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
-        {{ form.input('language', id='language', label=_('Languages'), placeholder=_('eg. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-85'], attrs=tag_attrs, label_classes=['hide']) }}
+        {{ form.input('language', id='language', label=_('Languages'), placeholder=_('e.g. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-85'], attrs=tag_attrs, label_classes=['hide']) }}
 
         <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
         <span class="add-dataset-infotext">
@@ -35,7 +35,7 @@
     {% set autocomplete_source = '/api/2/util/tag/autocomplete?incomplete=?&language=' ~ h.lang()  %}
     {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
     {{ kata_form.tooltip(tooltip=_("Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see <a href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
-    {{ form.input('tag_string', id='field-tags', label=_('Keywords') ~ '*', placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=tag_attrs, label_classes=['center-align']) }}
+    {{ form.input('tag_string', id='field-tags', label=_('Keywords') ~ '*', placeholder=_('e.g. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=tag_attrs, label_classes=['center-align']) }}
   </div>
 
   <div class="form-row">
