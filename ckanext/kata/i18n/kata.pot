@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-08 04:08+0000\n"
+"POT-Creation-Date: 2015-09-08 05:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2356,6 +2356,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/macros/kata_form.html:96
 msgid "Required"
+msgstr ""
+
+#: ckanext/kata/theme/templates/macros/kata_form.html:208
+msgid "Choose a language..."
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/about.html:12

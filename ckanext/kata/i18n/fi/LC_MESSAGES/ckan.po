@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-08 04:08+0000\n"
+"POT-Creation-Date: 2015-09-08 05:02+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -2555,6 +2555,10 @@ msgstr "Valinnainen"
 #: ckanext/kata/theme/templates/macros/kata_form.html:96
 msgid "Required"
 msgstr "Pakollinen"
+
+#: ckanext/kata/theme/templates/macros/kata_form.html:208
+msgid "Choose a language..."
+msgstr "Valitse kieli..."
 
 #: ckanext/kata/theme/templates/organization/about.html:12
 #: ckanext/kata/theme/templates/organization/edit_base.html:19
