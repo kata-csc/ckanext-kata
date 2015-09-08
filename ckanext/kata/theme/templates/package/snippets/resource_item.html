@@ -25,6 +25,9 @@
       <td>
         {#<a class="btn btn-primary" href="{{ url }}">{{ _('Explore') }}</a>#}
         <a class="btn btn-primary" href="{{ res.url }}" target="_blank">{{ _('Download') }}</a>
+        {% if h.check_access('resource_update', {'id' : res.id, 'resource_type' : res.resource_type }) %}
+          {% link_for _('Edit'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn btn-primary', icon='wrench' %}
+        {% endif %}
       </td>
 
     </tr>
