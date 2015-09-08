@@ -3,7 +3,7 @@
 {% set pkg_dict = c.pkg_dict %}
 {% set res = c.resource %}
 
-{% block subtitle %}{{ h.dataset_display_name(pkg_dict) }} - {{ h.resource_display_name(res) }}{% endblock %}
+{% block subtitle %}{{ h.get_translation(h.dataset_display_name(pkg_dict)) }} - {{ h.resource_display_name(res) }}{% endblock %}
 
 {% block breadcrumb_content_selected %}{% endblock %}
 
