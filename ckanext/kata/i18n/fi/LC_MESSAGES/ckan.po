@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-07 05:08+0000\n"
+"POT-Creation-Date: 2015-09-08 04:08+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -542,6 +542,7 @@ msgstr "Aineistot"
 
 #: ckanext/kata/theme/templates/header.html:32
 #: ckanext/kata/theme/templates/header.html:99
+#: ckanext/kata/theme/templates/home/index.html:178
 msgid "Help & About"
 msgstr "Ohjeet & info"
 
@@ -969,8 +970,12 @@ msgstr ""
 "mahdollista. Etsin on riippumaton itse aineiston tallennuspaikasta."
 
 #: ckanext/kata/theme/templates/home/index.html:178
-msgid "You will find more information on the Help & About page."
-msgstr "Lisätietoa saat Ohjeet & info-sivulta."
+msgid "You will find more information on the "
+msgstr "Lisätietoa saat "
+
+#: ckanext/kata/theme/templates/home/index.html:178
+msgid " page."
+msgstr "-sivulta"
 
 #: ckanext/kata/theme/templates/kata/browse.html:3
 #: ckanext/kata/theme/templates/kata/browse.html:12

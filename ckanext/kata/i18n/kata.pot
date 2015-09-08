@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-07 05:08+0000\n"
+"POT-Creation-Date: 2015-09-08 04:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -516,6 +516,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:32
 #: ckanext/kata/theme/templates/header.html:99
+#: ckanext/kata/theme/templates/home/index.html:178
 msgid "Help & About"
 msgstr ""
 
@@ -904,7 +905,11 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:178
-msgid "You will find more information on the Help & About page."
+msgid "You will find more information on the "
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:178
+msgid " page."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/browse.html:3
