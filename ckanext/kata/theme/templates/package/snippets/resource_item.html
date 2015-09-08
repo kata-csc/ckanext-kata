@@ -1,5 +1,5 @@
 {% if res.url != 'http://' and h.resource_display_name(res) != 'http://' %}
-  {% set url = h.url_for(controller='package', action='resource_read', id=pkg.name, resource_id=res.id) %}
+  {#% set url = h.url_for(controller='package', action='resource_read', id=pkg.name, resource_id=res.id) %#}
     <tr>
       {% block resource_item_title %}
 
