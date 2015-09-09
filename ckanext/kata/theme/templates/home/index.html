@@ -80,24 +80,28 @@
               </li>
               <li>
                 <div class="stat-number">
-                  <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='tags') }}">
+                  {#<a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='tags') }}">#}
+                  <a href="{{ h.url_for(controller='package', action='search') }}">
                     {{ c.num_tags }}
                   </a>
                 </div>
                 <div class="stat-label">
-                  <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='tags') }}">
+                  {#<a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='tags') }}">#}
+                  <a href="{{ h.url_for(controller='package', action='search') }}">
                     {{ _('Tags ') }}
                   </a>
                 </div>
               </li>
               <li>
                 <div class="stat-number">
-                  <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='extras_discipline') }}">
+                  {#<a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='extras_discipline') }}">#}
+                  <a href="{{ h.url_for(controller='package', action='search') }}">
                     {{ c.num_discipline }}
                   </a>
                 </div>
                 <div class="stat-label">
-                  <a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='extras_discipline') }}">
+                  {#<a href="{{ h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='browse', facet_choose_title='extras_discipline') }}">#}
+                  <a href="{{ h.url_for(controller='package', action='search') }}">
                     {{ _('Disciplines ') }}
                   </a>
                 </div>
