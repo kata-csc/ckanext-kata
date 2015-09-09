@@ -284,7 +284,7 @@
           <tr>
             <td>{{ f.name }}</td>
             <td>{{ f.organisation }}</td>
-            <td><a href={{ f.URL }}>{{ f.URL }}</a></td>
+            <td><a href="{{ f.URL }}">{{ f.URL }}</a></td>
             <td>{{ f['fundingid'] }}</td>
           </tr>
         {% endfor %}
@@ -394,7 +394,7 @@
             {% endif %}
             {%  if pkg_dict.format %}
               <tr>
-                <th class=dataset-label">{{ _('File format') }}</th>
+                <th class="dataset-label">{{ _('File format') }}</th>
                 <td class="dataset-details">{{ pkg_dict.format }}</td>
               </tr>
             {% endif %}

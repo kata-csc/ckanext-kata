@@ -21,7 +21,7 @@
 
     <div class="actions-and-ratings">
       <div class="button-container">
-        <a class="btn btn-default" href={{h.url_for(controller='package', action='read', id=pkg.name, format='rdf')}}>
+        <a class="btn btn-default" href="{{h.url_for(controller='package', action='read', id=pkg.name, format='rdf')}}">
           {{ _('Show in RDF format') }}
         </a>
         {% set has_update_rights = h.check_access('package_update', {'id':pkg.id }) %}
@@ -61,7 +61,7 @@
         {% set (rating, stars)=h.get_package_ratings(pkg) %}
         <div class="meter">
           <span class="rating{{rating}}"></span>
-          <p>{{ _('Metadata completeness') }}<br><span class="number">{{ rating * 100 / 5 }} %</span></p>
+          <p>{{ _('Metadata completeness') }}<br /><span class="number">{{ rating * 100 / 5 }} %</span></p>
         </div>
       </div>
 
