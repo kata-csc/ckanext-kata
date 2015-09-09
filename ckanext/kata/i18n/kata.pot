@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-08 05:02+0000\n"
+"POT-Creation-Date: 2015-09-09 09:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -200,7 +200,6 @@ msgid "Formats"
 msgstr ""
 
 #: ckanext/kata/controllers.py:977
-#: ckanext/kata/theme/templates/package/resource_read.html:96
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:71
 msgid "License"
@@ -639,8 +638,8 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/read.html:31
 #: ckanext/kata/theme/templates/package/related_list.html:26
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
-#: ckanext/kata/theme/templates/package/resource_read.html:21
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:70
+#: ckanext/kata/theme/templates/package/snippets/resource_item.html:29
 #: ckanext/kata/theme/templates/related/snippets/related_item.html:23
 msgid "Edit"
 msgstr ""
@@ -966,7 +965,6 @@ msgid "Parent field"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/data-model.html:15
-#: ckanext/kata/theme/templates/package/resource_read.html:78
 #: ckanext/kata/theme/templates/revision/diff.html:29
 msgid "Field"
 msgstr ""
@@ -1888,7 +1886,6 @@ msgid "Related Media for {dataset}"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:173
-#: ckanext/kata/theme/templates/package/resource_read.html:55
 msgid "From the dataset abstract"
 msgstr ""
 
@@ -2669,60 +2666,9 @@ msgstr ""
 msgid "View resource"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/resource_read.html:27
-msgid "View"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:29
-msgid "API Endpoint"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:31
-#: ckanext/kata/theme/templates/package/snippets/resource_item.html:27
-msgid "Download"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:45
-msgid "URL:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:52
-msgid "There is no description for this resource"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:57
-#, python-format
-msgid "Source: <a href=\"%(url)s\">%(dataset)s</a>"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:74
-msgid "Additional Information"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:79
 #: ckanext/kata/theme/templates/package/role_fields.html:25
 #: ckanext/kata/theme/templates/package/role_fields.html:48
 msgid "Value"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:84
-msgid "Last updated"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:85
-#: ckanext/kata/theme/templates/package/resource_read.html:89
-#: ckanext/kata/theme/templates/package/resource_read.html:93
-msgid "unknown"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:88
-msgid "Created"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:92
-#: ckanext/kata/theme/templates/package/snippets/import_xml.html:14
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
-msgid "Format"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:8
@@ -2731,6 +2677,11 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:10
 msgid "File"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/import_xml.html:14
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+msgid "Format"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:15
@@ -5589,6 +5540,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:9
 msgid "Unnamed resource"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/resource_item.html:27
+msgid "Download"
 msgstr ""
 
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:22
