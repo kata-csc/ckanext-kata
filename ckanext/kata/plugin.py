@@ -193,6 +193,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/',
                     controller="ckanext.kata.controllers:KataHomeController",
                     action="index")
+
+        # Hide resource_read page
+        map.redirect('/dataset/{id}/resource/{resource_id}', '/dataset/{id}')
         return map
 
     def get_auth_functions(self):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-08 05:02+0000\n"
+"POT-Creation-Date: 2015-09-09 09:16+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -200,7 +200,6 @@ msgid "Formats"
 msgstr "Formaatit"
 
 #: ckanext/kata/controllers.py:977
-#: ckanext/kata/theme/templates/package/resource_read.html:96
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:71
 msgid "License"
@@ -667,8 +666,8 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/package/read.html:31
 #: ckanext/kata/theme/templates/package/related_list.html:26
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
-#: ckanext/kata/theme/templates/package/resource_read.html:21
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:70
+#: ckanext/kata/theme/templates/package/snippets/resource_item.html:29
 #: ckanext/kata/theme/templates/related/snippets/related_item.html:23
 msgid "Edit"
 msgstr "Muokkaa"
@@ -1033,7 +1032,6 @@ msgid "Parent field"
 msgstr "Yläkenttä"
 
 #: ckanext/kata/theme/templates/kata/data-model.html:15
-#: ckanext/kata/theme/templates/package/resource_read.html:78
 #: ckanext/kata/theme/templates/revision/diff.html:29
 msgid "Field"
 msgstr "Kenttä"
@@ -2013,7 +2011,6 @@ msgid "Related Media for {dataset}"
 msgstr "Aineistoon {dataset} liittyvät mediat"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:173
-#: ckanext/kata/theme/templates/package/resource_read.html:55
 msgid "From the dataset abstract"
 msgstr "Aineiston tiivistelmästä"
 
@@ -2767,7 +2764,7 @@ msgstr "Pyydä metatiedon muokkausoikeuksia"
 #: ckanext/kata/theme/templates/package/related_list.html:45
 #: ckanext/kata/theme/templates/package/snippets/info.html:36
 msgid "Add new supplement"
-msgstr "Lisää liite"
+msgstr "Lisää kuvailutiedosto"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:62
 #: ckanext/kata/theme/templates/package/read.html:64
@@ -2877,61 +2874,10 @@ msgstr "Ei liittyviä kohteita"
 msgid "View resource"
 msgstr "Katsele resurssia"
 
-#: ckanext/kata/theme/templates/package/resource_read.html:27
-msgid "View"
-msgstr "Näytä"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:29
-msgid "API Endpoint"
-msgstr "API osoite"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:31
-#: ckanext/kata/theme/templates/package/snippets/resource_item.html:27
-msgid "Download"
-msgstr "Lataa"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:45
-msgid "URL:"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_read.html:52
-msgid "There is no description for this resource"
-msgstr "Tällä resurssilla ei ole kuvausta"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:57
-#, python-format
-msgid "Source: <a href=\"%(url)s\">%(dataset)s</a>"
-msgstr "Lähde: <a href=\"%(url)s\">%(dataset)s</a>"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:74
-msgid "Additional Information"
-msgstr "Lisätietoa"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:79
 #: ckanext/kata/theme/templates/package/role_fields.html:25
 #: ckanext/kata/theme/templates/package/role_fields.html:48
 msgid "Value"
 msgstr "Arvo"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:84
-msgid "Last updated"
-msgstr "Viimeksi päivitetty"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:85
-#: ckanext/kata/theme/templates/package/resource_read.html:89
-#: ckanext/kata/theme/templates/package/resource_read.html:93
-msgid "unknown"
-msgstr "tuntematon"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:88
-msgid "Created"
-msgstr "Luotu"
-
-#: ckanext/kata/theme/templates/package/resource_read.html:92
-#: ckanext/kata/theme/templates/package/snippets/import_xml.html:14
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
-msgid "Format"
-msgstr "Muoto"
 
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:8
 msgid "http://myurl.to/file.xml"
@@ -2941,13 +2887,18 @@ msgstr "http://osoite/tiedosto.xml"
 msgid "File"
 msgstr "Tiedosto"
 
+#: ckanext/kata/theme/templates/package/snippets/import_xml.html:14
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+msgid "Format"
+msgstr "Tiedostomuoto"
+
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:15
 msgid "Upload"
 msgstr "Lataa"
 
 #: ckanext/kata/theme/templates/package/snippets/info.html:24
 msgid "Metadata supplements"
-msgstr "Metatietoliitteet"
+msgstr "Aineistoon liittyvät kuvailutiedostot"
 
 #: ckanext/kata/theme/templates/package/snippets/info.html:39
 msgid ""
@@ -2955,7 +2906,7 @@ msgid ""
 "add supplements."
 msgstr ""
 "Aineisto sisältää virheellistä tietoa. Lisää kaikki vaaditut tiedot "
-"lisätäksesi liitteitä."
+"lisätäksesi kuvailutiedostoja."
 
 #: ckanext/kata/theme/templates/package/snippets/languages.html:2
 msgid "Finnish"
@@ -5949,7 +5900,7 @@ msgstr "Relaatiot"
 
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:8
 msgid "Supplement"
-msgstr "Liite"
+msgstr "Aineistoon liittyvä kuvailutiedosto"
 
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:13
 msgid "You must be logged in to upload a file."
@@ -5966,6 +5917,10 @@ msgstr "esim. Muuttujien kuvaukset"
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:9
 msgid "Unnamed resource"
 msgstr "Nimeämätön resurssi"
+
+#: ckanext/kata/theme/templates/package/snippets/resource_item.html:27
+msgid "Download"
+msgstr "Lataa"
 
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:22
 msgid "My Related Item"
@@ -6194,4 +6149,31 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
+#~ msgid "View"
+#~ msgstr "Näytä"
+
+#~ msgid "API Endpoint"
+#~ msgstr "API osoite"
+
+#~ msgid "URL:"
+#~ msgstr ""
+
+#~ msgid "There is no description for this resource"
+#~ msgstr "Tällä resurssilla ei ole kuvausta"
+
+#~ msgid "Source: <a href=\"%(url)s\">%(dataset)s</a>"
+#~ msgstr "Lähde: <a href=\"%(url)s\">%(dataset)s</a>"
+
+#~ msgid "Additional Information"
+#~ msgstr "Lisätietoa"
+
+#~ msgid "Last updated"
+#~ msgstr "Viimeksi päivitetty"
+
+#~ msgid "unknown"
+#~ msgstr "tuntematon"
+
+#~ msgid "Created"
+#~ msgstr "Luotu"
 
