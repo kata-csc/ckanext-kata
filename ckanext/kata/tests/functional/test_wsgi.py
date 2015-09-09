@@ -20,6 +20,7 @@ from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 import lxml.etree
 
 
+# TODO: A WSGI test to parse pages with lxml to make sure there are no tag errors.
 
 class TestPages(KataWsgiTestCase):
     """
@@ -73,9 +74,9 @@ class TestResources(KataWsgiTestCase):
     #     res = self.app.get(offset)
     #     assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
 
-    def test_hidden_edit_button(self):
+    def test_resource_read_redirect(self):
         """
-        Resource type settings.RESOURCE_TYPE_DATASET should not render Edit-button.
+        resource_read should redirect to dataset page.
         """
         res_id = None
 
@@ -93,12 +94,26 @@ class TestResources(KataWsgiTestCase):
         extra_environ = {'REMOTE_USER': 'tester'}
         result = self.app.get(offset, extra_environ=extra_environ)
 
-        assert 'Full text.' in result.body
+        # Redirect should redirect to dataset page
+        result = result.follow()
 
-        regex = re.compile(r'<a.*href.*>.*Edit\w*</a>')
-        assert not regex.search(result.body), "%r" % result.body
+        assert result.body.count('Full text.') == 1
 
-        assert 'Edit Profile' in result.body    # Sanity check
+        # resources_obj = etree.lxml.etree.fromstring(result.body).xpath("//u:identifier", namespaces=self.namespaces)
+        # with open('/var/www/foo.txt', mode='wt') as f:
+        #     f.write(result.body)
+        # resources_obj = etree.fromstring(result.body).xpath("//div[div[text()='Files']]", namespaces=self.namespaces)
+        # res_table = resources_obj.xpath("/div/table/tbody")
+
+        # import pprint
+        # pprint.pprint(dir(res_table))
+
+#         assert 'Full text.' in result.body
+
+        # regex = re.compile(r'<a.*href.*>.*Edit\w*</a>')
+        # assert not regex.search(result.body), "%r" % result.body
+
+        # assert 'Edit Profile' in result.body    # Sanity check
 
 
 class TestRdfExport(KataWsgiTestCase):
