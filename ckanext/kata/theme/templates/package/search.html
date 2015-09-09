@@ -30,17 +30,15 @@
             </div>
 
             {# TODO: functionality for quick selections: open data & time limiting #}
-            <!--
             <div class="search-extras form-inline">
               <label class="checkbox">
-                <input type="checkbox">{{ _('Open data') }}
+                <input type="checkbox" name="isopen" value="true"{% if c.fields_grouped.get('isopen') %} checked{% endif %}>{{ _('Open data') }}
               </label>
               <label class="checkbox">
-                <input type="checkbox">{{ _('Since year') }}
+                {{ _('Since year') }}
               </label>
-              <input type="text" class="input-small since-year" value="2010">
+              <input type="number" pattern="[0-9]{1,4}" class="input-small since-year" value="{{ c.current_search_limiters['temporal_coverage_begin'] }}" name="ext_temporal_coverage_begin">
             </div>
-            -->
 
           </form>
 

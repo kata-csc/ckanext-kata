@@ -433,6 +433,44 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         """ See :meth:`ckan.plugins.IFacets.organization_facets`. """
         return self._get_common_facets()
 
+    def constrain_by_temporal_coverage(self, extras):
+        """
+        Add temporal coverage constraint to Solr query if fields are given in extras
+        -(-temporal_coverage_begin:[* TO 2100-01-01T00:00:00Z] AND temporal_coverage_begin:[* TO *]) AND
+        -(-temporal_coverage_end:[1600-01-01T00:00:00Z TO *] AND temporal_coverage_end:[* TO *])
+        --------------------------
+        :param extras: data_dict['extras']
+        :returns: Solr query that constrains by temporal coverage
+        :rtype : str
+        """
+        START_FIELD = 'temporal_coverage_begin'
+        END_FIELD = 'temporal_coverage_end'
+        EXTRAS_START_FIELD = 'ext_' + START_FIELD
+        EXTRAS_END_FIELD = 'ext_' + END_FIELD
+
+        if not c.current_search_limiters:
+            c.current_search_limiters = {}
+
+        start_date = extras.get(EXTRAS_START_FIELD)
+        end_date = extras.get(EXTRAS_END_FIELD)
+
+        query = ''
+
+        if start_date or end_date:
+            if start_date:
+                c.current_search_limiters[START_FIELD] = extras.pop(EXTRAS_START_FIELD)
+            if end_date:
+                c.current_search_limiters[END_FIELD] = extras.pop(EXTRAS_END_FIELD)
+
+            start_date = start_date + '-01-01T00:00:00Z' if start_date else '*'
+            end_date = end_date + '-12-31T23:59:59.999Z' if end_date else '*'
+
+            query = ('-(-{sf}:[* TO {e}] AND {sf}:[* TO *]) AND '
+                     '-(-{ef}:[{s} TO *] AND {ef}:[* TO *])').\
+                format(s=start_date, e=end_date, sf=START_FIELD, ef=END_FIELD)
+
+        return query
+
     def before_search(self, data_dict):
         '''
         Things to do before querying Solr. Basically used by
@@ -440,6 +478,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         :param data_dict: data_dict to modify
         '''
+
+        extras = data_dict.get('extras')
+        if extras:
+            data_dict['q'] = data_dict.get('q', '') + self.constrain_by_temporal_coverage(extras)
 
         if 'sort' in data_dict and data_dict['sort'] is None:
             data_dict['sort'] = settings.DEFAULT_SORT_BY
@@ -522,6 +564,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         # We do not want owner_org to organization facets. Note that owner_org.name
         # is an id in our case and thus not human readable
         pkg_dict['organization'] = ''
+        pkg_dict['isopen'] = data.get('isopen')
 
         res_mimetype = []
         for resource in data.get('resources', []):

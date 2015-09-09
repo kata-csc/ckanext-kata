@@ -9,7 +9,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "CC0 1.0",
     "url": "https://creativecommons.org/publicdomain/zero/1.0/"
@@ -24,7 +24,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution 4.0",
     "url": "https://creativecommons.org/licenses/by/4.0/"
@@ -39,7 +39,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution Share-Alike 4.0",
     "url": "https://creativecommons.org/licenses/by-sa/4.0/"
@@ -54,7 +54,7 @@
     "od_conformance": "rejected",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution-NonCommercial 4.0",
     "url": "https://creativecommons.org/licenses/by-nc/4.0/"
@@ -69,7 +69,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Open Data Commons Public Domain Dedication and Licence 1.0",
     "url": "http://www.opendefinition.org/licenses/odc-pddl"
@@ -84,7 +84,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Open Data Commons Open Database License 1.0",
     "url": "http://www.opendefinition.org/licenses/odc-odbl"
@@ -99,7 +99,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Open Data Commons Attribution License 1.0",
     "url": "http://www.opendefinition.org/licenses/odc-by"
@@ -130,7 +130,7 @@
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
     "status": "active",
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "title": "Creative Commons Attribution 3.0",
     "url": "https://creativecommons.org/licenses/by/3.0/"
   },
@@ -144,7 +144,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution Share-Alike 3.0",
     "url": "https://creativecommons.org/licenses/by-sa/3.0/"
@@ -159,7 +159,7 @@
     "od_conformance": "rejected",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution-NonCommercial 3.0",
     "url": "https://creativecommons.org/licenses/by-nc/3.0/"
@@ -174,7 +174,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution 2.0",
     "url": "https://creativecommons.org/licenses/by/2.0/"
@@ -189,7 +189,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution Share-Alike 2.0",
     "url": "https://creativecommons.org/licenses/by-sa/2.0/"
@@ -204,7 +204,7 @@
     "od_conformance": "rejected",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution-NonCommercial 2.0",
     "url": "https://creativecommons.org/licenses/by-nc/2.0/"
@@ -219,7 +219,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution 1.0",
     "url": "https://creativecommons.org/licenses/by/1.0/"
@@ -234,7 +234,7 @@
     "od_conformance": "approved",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution Share-Alike 1.0",
     "url": "https://creativecommons.org/licenses/by-sa/1.0/"
@@ -249,7 +249,7 @@
     "od_conformance": "rejected",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution-NonCommercial 1.0",
     "url": "https://creativecommons.org/licenses/by-nc/1.0/"
@@ -451,7 +451,7 @@
     "od_conformance": "rejected",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution-NoDerivatives 3.0",
     "url": "https://creativecommons.org/licenses/by-nd/3.0/"
@@ -466,7 +466,7 @@
     "od_conformance": "rejected",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0",
     "url": "https://creativecommons.org/licenses/by-nc-sa/3.0/"
@@ -481,7 +481,7 @@
     "od_conformance": "rejected",
     "osd_conformance": "not reviewed",
     "is_osi_compliant": false,
-    "is_okd_compliant": false,
+    "is_okd_compliant": true,
     "status": "active",
     "title": "Creative Commons Attribution-NonCommercial-NoDerivatives 3.0",
     "url": "https://creativecommons.org/licenses/by-nc-nd/3.0/"
