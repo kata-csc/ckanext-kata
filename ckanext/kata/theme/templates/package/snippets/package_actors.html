@@ -89,7 +89,7 @@
         {% call kata_form.input(
           'agent__' ~ index ~ '__id', label=_('Identifier'),
           id='agent__' ~ index ~ '__id_id', placeholder=_('http://orcid.org/'),
-          value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'id'),
+          value=agent.id, error=h.get_dict_field_errors(errors, 'agent', index, 'id'),
           label_classes=['kata-input-comp'], control_classes=['kata-medium'],
           attrs={'class': "kata-medium-input"})
         %}
