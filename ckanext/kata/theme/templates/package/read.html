@@ -2,6 +2,7 @@
 
 {% set pkg = c.pkg_dict %}
 {% set title = h.get_translation(pkg.title) %}
+{% set has_update_rights = h.check_access('package_update', {'id':pkg.id }) %}
 
 {% block subtitle %}{{ title or pkg.name }}{% endblock %}
 
@@ -13,7 +14,11 @@
     {% if pkg.private %}
     <span class="dataset-private label label-inverse pull-right">
       <i class="icon-lock"></i>
+      {% if has_update_rights %}
+        <a href="{{ h.url_for(controller='package', action='edit', id=pkg.name) }}">
+      {% endif %}
       {{ _('Unpublished') }}
+      {% if has_update_rights %}</a>{% endif %}
     </span>
   {% endif %}</h2>
 
@@ -24,7 +29,6 @@
         <a class="btn btn-default" href="{{h.url_for(controller='package', action='read', id=pkg.name, format='rdf')}}">
           {{ _('Show in RDF format') }}
         </a>
-        {% set has_update_rights = h.check_access('package_update', {'id':pkg.id }) %}
         {% if has_update_rights %}
           <div class="btn-group">
             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">

@@ -2113,6 +2113,13 @@ a.download {
 .controls.kata-captcha-fix {
   padding-left: 11% !important;
 }
+.row-fluid .dataset-private a {
+  color: #31c9ff;
+}
+.row-fluid .dataset-private a:hover,
+.row-fluid .dataset-private a:focus {
+  color: #00bbfd;
+}
 .dataset-heading a {
   color: #0095ca;
 }
