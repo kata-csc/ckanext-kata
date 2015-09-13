@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-13 09:58+0000\n"
+"POT-Creation-Date: 2015-09-13 10:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -741,17 +741,28 @@ msgstr ""
 #: ckanext/kata/theme/templates/home/about.html:23
 msgid ""
 " is a research data finder that contains descriptive information – that is, "
-"metadata – on research datasets. In the service you can search and find data "
-"from various fields of research. "
+"metadata – on research datasets. The metadata stored in Etsin includes "
+"information on the author, subject, format and licensing of the dataset. In "
+"the service you can search and find data from various fields of research. "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:30
 msgid ""
-" A researcher, research group or organisation can also use Etsin to publish "
-"information on their datasets and offer them for wider use. "
+" Researchers, research groups or organisations can also use Etsin to publish "
+"information on their datasets and offer them for wider use. Haka-"
+"authenticated users may enter information on their own datasets, and of "
+"others' datasets with their permission. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/about.html:36
+#: ckanext/kata/theme/templates/home/about.html:37
+msgid ""
+" The published metadata on the dataset is open to everyone. The data rights "
+"owner decides how the underlying research data can be accessed and by whom. "
+"Sharing your data openly is recommended whenever possible. Etsin works "
+"independently of actual data storage location. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/about.html:44
 msgid ""
 " Further <a href=\"http://openscience.fi/etsin\" target=\"_blank\">service "
 "information</a> as well as <a href=\"http://openscience.fi/etsin-user-"
@@ -759,11 +770,12 @@ msgid ""
 "openscience.fi website. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/about.html:43
+#: ckanext/kata/theme/templates/home/about.html:51
 msgid ""
 " You can send inquiries or feedback concerning Etsin via the <a "
 "href=\"http://openscience.fi/contact-form\" target=\"_blank\">contact "
-"form</a>. "
+"form</a>. Should you find any erroneous information in the service, you may "
+"request their removal or correction via the same form. "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:3
