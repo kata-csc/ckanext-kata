@@ -42,7 +42,7 @@
           {{ _('Create a new access request form automatically') }}
         </label>
         <div id="access_application_URL_box" {% if new_form_chk %} style="display: none" {%endif%}>
-          {{ form.input('access_application_URL', label=_('Web address of access application form'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+          {{ form.input('access_application_URL', label=_('Or enter the address of an existing application form'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
         </div>
       </div>
 

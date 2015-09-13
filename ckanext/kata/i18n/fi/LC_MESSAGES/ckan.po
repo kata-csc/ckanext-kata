@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-13 09:46+0000\n"
+"POT-Creation-Date: 2015-09-13 09:58+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -5567,8 +5567,8 @@ msgid "Create a new access request form automatically"
 msgstr "Luo uusi lupahakemuslomake automaattisesti"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:45
-msgid "Web address of access application form"
-msgstr "hakemuksen osoite"
+msgid "Or enter the address of an existing application form"
+msgstr "Tai anna valmiin lupahakemuksen osoite"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:45
 msgid "http://remsid/"
@@ -6146,7 +6146,4 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
-
-#~ msgid "Usage information"
-#~ msgstr "Käyttötiedot"
 

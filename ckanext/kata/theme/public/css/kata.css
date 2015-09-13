@@ -874,6 +874,11 @@ input[id="xmlfile"] {
   float: right;
   padding: 4px 12px !important;
 }
+#access_application_URL_box .control-label {
+  text-align: left !important;
+  float: left !important;
+  width: 190px !important;
+}
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
   background: #ffffff;
