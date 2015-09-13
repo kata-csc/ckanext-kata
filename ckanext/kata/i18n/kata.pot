@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-13 10:19+0000\n"
+"POT-Creation-Date: 2015-09-13 10:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -515,7 +515,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/header.html:32
 #: ckanext/kata/theme/templates/header.html:99
-#: ckanext/kata/theme/templates/home/index.html:182
 msgid "Help & About"
 msgstr ""
 
@@ -907,14 +906,6 @@ msgid ""
 "decides how the underlying research data can be accessed and by whom. "
 "Nevertheless, sharing your data openly is recommended whenever possible. "
 "Etsin works independently of actual data storage location."
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/index.html:182
-msgid "You will find more information on the "
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/index.html:182
-msgid " page."
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/browse.html:3

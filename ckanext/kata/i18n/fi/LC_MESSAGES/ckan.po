@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-13 10:19+0000\n"
+"POT-Creation-Date: 2015-09-13 10:22+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -541,7 +541,6 @@ msgstr "Aineistot"
 
 #: ckanext/kata/theme/templates/header.html:32
 #: ckanext/kata/theme/templates/header.html:99
-#: ckanext/kata/theme/templates/home/index.html:182
 msgid "Help & About"
 msgstr "Ohjeet & info"
 
@@ -985,14 +984,6 @@ msgstr ""
 "omistaja päättää miten ja kuka itse tutkimusaineistoon pääsee käsiksi. "
 "Suosittelemme myös itse tutkimusdatan julkaisemista avoimena aina kun "
 "mahdollista. Etsin on riippumaton itse aineiston tallennuspaikasta."
-
-#: ckanext/kata/theme/templates/home/index.html:182
-msgid "You will find more information on the "
-msgstr "Lisätietoa saat "
-
-#: ckanext/kata/theme/templates/home/index.html:182
-msgid " page."
-msgstr "-sivulta"
 
 #: ckanext/kata/theme/templates/kata/browse.html:3
 #: ckanext/kata/theme/templates/kata/browse.html:12
@@ -6170,4 +6161,10 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
+#~ msgid "You will find more information on the "
+#~ msgstr "Lisätietoa saat "
+
+#~ msgid " page."
+#~ msgstr "-sivulta"
 
