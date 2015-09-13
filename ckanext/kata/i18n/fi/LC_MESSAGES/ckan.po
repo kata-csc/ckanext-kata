@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-13 10:22+0000\n"
+"POT-Creation-Date: 2015-09-13 12:20+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -240,7 +240,7 @@ msgid "New organisation \"{org}\" created automatically."
 msgstr "Uusi organisaatio \"{org}\" luotu automaattisesti."
 
 #: ckanext/kata/helpers.py:348
-#: ckanext/kata/theme/templates/package/read.html:16
+#: ckanext/kata/theme/templates/package/read.html:21
 #: ckanext/kata/theme/templates/package/related_list.html:13
 msgid "Unpublished"
 msgstr "Julkaisematon"
@@ -662,7 +662,7 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/organization/read.html:16
 #: ckanext/kata/theme/templates/package/edit.html:13
 #: ckanext/kata/theme/templates/package/package_rights.html:17
-#: ckanext/kata/theme/templates/package/read.html:31
+#: ckanext/kata/theme/templates/package/read.html:36
 #: ckanext/kata/theme/templates/package/related_list.html:26
 #: ckanext/kata/theme/templates/package/resource_edit.html:12
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:70
@@ -2591,7 +2591,7 @@ msgstr "Lisää jäseniä"
 #: ckanext/kata/theme/templates/organization/edit_base.html:50
 #: ckanext/kata/theme/templates/organization/read.html:39
 #: ckanext/kata/theme/templates/package/package_rights.html:71
-#: ckanext/kata/theme/templates/package/read.html:73
+#: ckanext/kata/theme/templates/package/read.html:78
 #: ckanext/kata/theme/templates/package/related_list.html:79
 msgid "Followers"
 msgstr "Seuraajat"
@@ -2750,7 +2750,7 @@ msgstr "pakollinen tieto"
 #: ckanext/kata/theme/templates/package/history.html:3
 #: ckanext/kata/theme/templates/package/history.html:6
 #: ckanext/kata/theme/templates/package/package_rights.html:49
-#: ckanext/kata/theme/templates/package/read.html:52
+#: ckanext/kata/theme/templates/package/read.html:57
 #: ckanext/kata/theme/templates/package/related_list.html:58
 msgid "History"
 msgstr "Historia"
@@ -2761,7 +2761,7 @@ msgid "Show dataset"
 msgstr "Näytä aineisto"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:23
-#: ckanext/kata/theme/templates/package/read.html:36
+#: ckanext/kata/theme/templates/package/read.html:41
 #: ckanext/kata/theme/templates/package/related_list.html:32
 msgid "Edit metadata"
 msgstr "Muokkaa metatietoja"
@@ -2772,34 +2772,34 @@ msgid "Request metadata editing rights"
 msgstr "Pyydä metatiedon muokkausoikeuksia"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:35
-#: ckanext/kata/theme/templates/package/read.html:41
+#: ckanext/kata/theme/templates/package/read.html:46
 #: ckanext/kata/theme/templates/package/related_list.html:45
 #: ckanext/kata/theme/templates/package/snippets/info.html:36
 msgid "Add new supplement"
 msgstr "Lisää kuvailutiedosto"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:62
-#: ckanext/kata/theme/templates/package/read.html:64
+#: ckanext/kata/theme/templates/package/read.html:69
 #: ckanext/kata/theme/templates/package/related_list.html:70
 msgid "Metadata completeness"
 msgstr "Metatietojen kattavuus"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:76
-#: ckanext/kata/theme/templates/package/read.html:78
+#: ckanext/kata/theme/templates/package/read.html:83
 #: ckanext/kata/theme/templates/package/related_list.html:84
 msgid "Data used"
 msgstr "Dataa käytetty"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:77
-#: ckanext/kata/theme/templates/package/read.html:80
-#: ckanext/kata/theme/templates/package/read.html:82
+#: ckanext/kata/theme/templates/package/read.html:85
+#: ckanext/kata/theme/templates/package/read.html:87
 #: ckanext/kata/theme/templates/package/related_list.html:86
 #: ckanext/kata/theme/templates/package/related_list.html:88
 msgid "times"
 msgstr "kertaa"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:78
-#: ckanext/kata/theme/templates/package/read.html:84
+#: ckanext/kata/theme/templates/package/read.html:89
 #: ckanext/kata/theme/templates/package/related_list.html:90
 msgid "Advertise reuse"
 msgstr "Kerro uudelleenkäytöstä"
@@ -2859,20 +2859,34 @@ msgstr "matti.meikalainen@esimerkki.fi"
 msgid "Your message"
 msgstr "Viestisi"
 
-#: ckanext/kata/theme/templates/package/read.html:11
+#: ckanext/kata/theme/templates/package/read.html:13
 #: ckanext/kata/theme/templates/package/related_list.html:8
 #: ckanext/kata/theme/templates/snippets/package_item.html:38
 msgid "Draft"
 msgstr "Luonnos"
 
-#: ckanext/kata/theme/templates/package/read.html:25
+#: ckanext/kata/theme/templates/package/read.html:31
 msgid "Show in RDF format"
 msgstr "Näytä RDF-muodossa"
 
-#: ckanext/kata/theme/templates/package/read.html:49
+#: ckanext/kata/theme/templates/package/read.html:54
 #: ckanext/kata/theme/templates/package/related_list.html:55
 msgid "Administer dataset rights"
 msgstr "Hallinnoi aineiston oikeuksia"
+
+#: ckanext/kata/theme/templates/package/read.html:91
+msgid ""
+"If you are logged in, you can click the button to fill a submittable form"
+" about reuse. After submitting the information about reuse, anyone can "
+"view it using the number link on the left hand side. If there are no "
+"advertised reuses, a plain 0 is displayed."
+msgstr ""
+"Jos olet sisäänkirjautuneena, pääset täyttämään nappulaa painamalla "
+"lomakkeen, jolla kerätään tietoa uudelleenkäytön kohteesta. Kun olet "
+"tallentanut tiedot, kuka tahansa voi katsella uudelleenkäytön tietoja "
+"vasemmalla puolella olevasta linkistä numeron kohdalta. Jos "
+"uudelleenkäyttöjä ei ole vielä raportoitu, näkyy vasemmalla linkin sijaan"
+" pelkkä 0."
 
 #: ckanext/kata/theme/templates/package/related_list.html:100
 msgid "Add Related Item"
@@ -6161,10 +6175,4 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
-
-#~ msgid "You will find more information on the "
-#~ msgstr "Lisätietoa saat "
-
-#~ msgid " page."
-#~ msgstr "-sivulta"
 

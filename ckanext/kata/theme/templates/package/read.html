@@ -1,4 +1,5 @@
 {% extends "package/read_base.html" %}
+{% import 'macros/kata_form.html' as kata_form %}
 
 {% set pkg = c.pkg_dict %}
 {% set title = h.get_translation(pkg.title) %}
@@ -86,6 +87,9 @@
             <td>{{ c.related_count }} {{ _('times') }}</td>
           {% endif %}
           <td>{% link_for _('Advertise reuse'), controller='related', action='new', id=pkg.name, class_='btn btn-default' %}</td>
+          <td><div class="tooltip-big">
+            {{ kata_form.tooltip(tooltip=_("If you are logged in, you can click the button to fill a submittable form about reuse. After submitting the information about reuse, anyone can view it using the number link on the left hand side. If there are no advertised reuses, a plain 0 is displayed.")) }}
+          </div></td>
         </tr>
       </table>
 
