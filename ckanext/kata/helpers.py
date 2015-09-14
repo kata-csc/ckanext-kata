@@ -857,11 +857,12 @@ def get_active_facets(facets):
     Resolves also if any "show more"/"show only top" toggles are on (limits).
     '''
     facet_info = dict()
-    facet_info['fields'] = facets['fields']
+    facet_info['fields'] = facets.get('fields')
+    facet_info['fields'].pop('isopen', None)
     facet_info['search'] = dict()
     limits = [k for k, v in request.params.items() if v and k.endswith('_limit')]
     limits = [limit.rsplit('_', 1)[0].strip('_') for limit in limits]
-    for key in facets['search'].iterkeys():
+    for key in facets.get('search').iterkeys():
         facet_info['search'][key] = bool(key in limits)
     return json.dumps(facet_info)
 
@@ -895,7 +896,7 @@ def is_active_facet(facet, active_facets):
         return False
     if not data:
         return False
-    return facet in data['fields'] or data['search'][facet]
+    return facet in data.get('fields') or data.get('search').get(facet)
 
 
 def get_dataset_paged_order(index, per_page):
