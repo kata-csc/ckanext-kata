@@ -2320,19 +2320,19 @@ a.download {
   height: 160px;
 }
 .etsin-steps-visualization > ul > li .steps-image.step1 {
-  background-image: url("/base/images/big_index_icons.png");
+  background-image: url("/base/images/big_index_icons.jpeg");
   background-position: -325px -190px;
 }
 .etsin-steps-visualization > ul > li .steps-image.step2 {
-  background-image: url("/base/images/big_index_icons.png");
+  background-image: url("/base/images/big_index_icons.jpeg");
   background-position: -162px -360px;
 }
 .etsin-steps-visualization > ul > li .steps-image.step3 {
-  background-image: url("/base/images/big_index_icons.png");
+  background-image: url("/base/images/big_index_icons.jpeg");
   background-position: -520px -190px;
 }
 .etsin-steps-visualization > ul > li .steps-image.step4 {
-  background-image: url("/base/images/big_index_icons.png");
+  background-image: url("/base/images/big_index_icons.jpeg");
   background-position: -490px -370px;
 }
 .etsin-steps-visualization > ul > li .steps-text {
