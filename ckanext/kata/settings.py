@@ -170,17 +170,6 @@ ERRORS = {
     u'License URL': u'Copyright notice',
 }
 
-TRANSLATION_DUMMIES = [  # Dynamically created strings that should be translated
-    N_('Go to API'),
-    N_('Go to Application'),
-    N_('Go to Idea'),
-    N_('Go to News Article'),
-    N_('Go to Paper'),
-    N_('Go to Post'),
-    N_('Go to Visualization'),
-]
-
-
 # Message strings to be automatically included in emails sent by users
 
 # Template for the message included at the beginning of emails sent through the contact form
