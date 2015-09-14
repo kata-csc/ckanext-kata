@@ -19,7 +19,7 @@ Example:
   {% else %}
     <p class="empty">{{ _('This item has no description') }}</p>
   {% endif %}
-  {% if pkg_id %}
+  {% if pkg_id and h.check_access('related_update', {'id':related.id}) %}
     {{ h.nav_link(_('Edit'), controller='related', action='edit', id=pkg_id, related_id=related.id, class_='btn btn-primary btn-small media-edit') }}
   {% endif %}
   </div>
