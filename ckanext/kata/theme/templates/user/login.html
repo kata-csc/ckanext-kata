@@ -8,6 +8,9 @@
 
   <div class="etsin-container">
     <div class="container">
+      {% block flash %}
+        {{ super() }}
+      {% endblock %}
 
       <!-- Top row -->
       <div class="login-container">
@@ -42,7 +45,7 @@
       </div>
 
       {% endif %}
-
+    </div>
 
   </div>
 

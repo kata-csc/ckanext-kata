@@ -475,7 +475,7 @@ class ContactController(BaseController):
             else:
                 h.flash_error(_("No message"))
         else:
-            h.flash_error(_("Please login"))
+            abort(401, _('Please login'))
 
         url = h.url_for(controller='package', action='read', id=pkg_id)
 
@@ -540,8 +540,7 @@ class ContactController(BaseController):
                 h.flash_error(_("Already contacted"))
                 return redirect(url)
         else:
-            h.flash_error(_("Please login"))
-            return redirect(url)
+            abort(401, _('Please login'))
 
     def render_request_form(self, pkg_id):
         """
@@ -570,8 +569,7 @@ class ContactController(BaseController):
                 h.flash_error(_("Already contacted"))
                 return redirect(url)
         else:
-            h.flash_error(_("Please login"))
-            return redirect(url)
+            abort(401, _('Please login'))
 
 
 class KataUserController(UserController):
