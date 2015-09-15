@@ -620,7 +620,7 @@ def get_labels_for_uri_nocache(uri, ontology=None):
     if jsondata.get('graph'):
         for item in jsondata['graph']:
             if item.get('uri') == uri:
-                translations = item['prefLabel']
+                translations = item.get('prefLabel')
 
                 # When FINTO has only one translation for a word
                 # it returns a singular dict item. In this case we need
