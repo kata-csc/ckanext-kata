@@ -19,7 +19,7 @@
   {% set org_attrs = {'class': 'kata-input-license', 'data-module': 'autocomplete', 'data-module-tags': 'false', 'data-module-source': '/api/2/util/organization/autocomplete?incomplete=?', 'data-module-label': 'title', 'data-module-key': 'id'} %}
   <div class="kata-autocomplete error-block-autocomplete">
     {% call kata_form.input(
-      'owner_org', id='field-organizations', label=_('Organisation')+" * ",
+      'owner_org', id='field-organizations', label=_('Organisation') + '*',
       placeholder=_('Choose an organisation...'), value=selected_org,
       control_classes=['kata-medium-input'], label_classes=['kata-input-comp'],
       attrs=org_attrs)

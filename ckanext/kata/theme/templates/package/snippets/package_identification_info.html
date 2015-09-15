@@ -24,7 +24,7 @@
 
   {% set primary_pid_readonly = " readonly" if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index]%}
   {% call kata_form.input(
-    'pids__' ~ index ~ '__id', label=_('Primary data identifier')+' * ',
+    'pids__' ~ index ~ '__id', label=_('Primary data identifier') + '*',
      id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
      value=primary_pid.id,
      label_classes=['kata-input-comp'], control_classes=['kata-medium'],
