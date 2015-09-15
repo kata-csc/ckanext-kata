@@ -817,7 +817,7 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
             bffr = field_storage.file
             xmlfile = bffr.read()
         url = request.params.get('url', u'')
-        xmltype = request.params.get('format', u'')
+        xmltype = request.params.get('xml-format', u'')
         log.info('Importing from {src}'.format(
             src='file: ' + field_storage.filename if field_storage else 'url: ' + url))
         for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
