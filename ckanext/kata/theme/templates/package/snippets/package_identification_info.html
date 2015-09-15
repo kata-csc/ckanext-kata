@@ -73,7 +73,7 @@
               {% if loop.first %}
                 {{ kata_form.tooltip(tooltip=_('PID is a permanent identifier, preferably an HTTP URI.')) }}
                 <input style="display: none;" type="checkbox" id="pids__{{index}}__value" name="pids__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
-                {{ kata_form.plusbutton(id='pids_add-{{ pid_type }}', text=_('Add'), onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
+                {{ kata_form.plusbutton(id='pids_add-' ~ pid_type, text=_('Add'), onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
                 <input style="display: none;" type="checkbox" id="pid_btn__{{ index }}__value_id" name="pid_btn__{{ index }}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
               {% endif %}
 
