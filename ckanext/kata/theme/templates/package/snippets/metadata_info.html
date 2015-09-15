@@ -351,29 +351,28 @@
 
   <div class="form-row">
     <div class="form-label">{{ _('Dataset lifecycle events') }}</div>
-      {% if pkg_dict.event %}
-        <div class="form-content">
-          <!--<table class="form-inner-table">-->
-          <table class="table table-bordered table-condensed">
-            <colgroup>
-              <col width="20%">
-              <col width="25%">
-              <col width="30%">
-              <col width="25%">
-            </colgroup>
-            <tr>
-              <th>{{ _('Event') }}</th>
-              <th>{{ _('Who') }}</th>
-              <th>{{ _('When') }}</th>
-              <th>{{ _('Description') }}</th>
-            </tr>
-            {% for ev in pkg_dict.event %}
-            <tr>
-              <td class="dataset-details">{{ _(ev.get('type', ' ')) }}</td>
-              <td class="dataset-details">{{ ev.get('who', ' ') }}</td>
-              <td class="dataset-details">{{ ev.get('when', ' ') }}</td>
-              <td class="dataset-details">{{ _(ev.get('descr', ' ')) }}</td>
-            </tr>
+    {% if pkg_dict.event %}
+      <div class="form-content">
+        <!--<table class="form-inner-table">-->
+        <table class="table table-bordered table-condensed">
+          <colgroup>
+            <col width="20%">
+            <col width="25%">
+            <col width="30%">
+            <col width="25%">
+          </colgroup>
+          <tr>
+            <th>{{ _('Event') }}</th>
+            <th>{{ _('Who') }}</th>
+            <th>{{ _('When') }}</th>
+            <th>{{ _('Description') }}</th>
+          </tr>
+          {% for ev in pkg_dict.event %}<tr>
+            <td class="dataset-details">{{ _(ev.get('type', ' ')) }}</td>
+            <td class="dataset-details">{{ ev.get('who', ' ') }}</td>
+            <td class="dataset-details">{{ ev.get('when', ' ') }}</td>
+            <td class="dataset-details">{{ _(ev.get('descr', ' ')) }}</td>
+          </tr>
           {% endfor %}
         </table>
       </div>
@@ -381,35 +380,34 @@
   </div>
 </div>
 <div class="dataset-section form-tab-content">
-  <!-- Additional information / technical information about the data file -->
+    <!-- Additional information / technical information about the data file -->
     <div class="form-row">
       <div class="form-label">{{ _('Additional information') }}</div>
-        <div class="form-content">
-          <table class="form-inner-table">
-            {% if pkg_dict.mimetype %}
-              <tr>
-                <th class="dataset-label">{{ _('File format: MIME type') }}</th>
-                <td class="dataset-details">{{ pkg_dict.mimetype }}</td>
-               </tr>
-            {% endif %}
-            {%  if pkg_dict.format %}
-              <tr>
-                <th class="dataset-label">{{ _('File format') }}</th>
-                <td class="dataset-details">{{ pkg_dict.format }}</td>
-              </tr>
-            {% endif %}
-            {% if pkg_dict.algorithm and pkg_dict.checksum %}
-              <tr>
-                <th class="dataset-label">{{ _('Checksum') }}</th>
-                <td class="dataset-details">{{ pkg_dict.checksum }}</td>
-              </tr>
-              <tr>
-                <th class="dataset-label">{{ _('Algorithm') }}</th>
-                <td class="dataset-details">{{ pkg_dict.algorithm }}</td>
-              </tr>
-            {% endif %}
-          </table>
-        </div>
+      <div class="form-content">
+        <table class="form-inner-table">
+          {% if pkg_dict.mimetype %}
+            <tr>
+              <th class="dataset-label">{{ _('File format: MIME type') }}</th>
+              <td class="dataset-details">{{ pkg_dict.mimetype }}</td>
+            </tr>
+          {% endif %}
+          {%  if pkg_dict.format %}
+            <tr>
+              <th class="dataset-label">{{ _('File format') }}</th>
+              <td class="dataset-details">{{ pkg_dict.format }}</td>
+            </tr>
+          {% endif %}
+          {% if pkg_dict.algorithm and pkg_dict.checksum %}
+            <tr>
+              <th class="dataset-label">{{ _('Checksum') }}</th>
+              <td class="dataset-details">{{ pkg_dict.checksum }}</td>
+            </tr>
+            <tr>
+              <th class="dataset-label">{{ _('Algorithm') }}</th>
+              <td class="dataset-details">{{ pkg_dict.algorithm }}</td>
+            </tr>
+          {% endif %}
+        </table>
       </div>
     </div>
 </div>

@@ -107,7 +107,7 @@
         %}
         {% endcall %}
         {% if loop.index0 == 0 %}
-          {{ kata_form.plusbutton(id="authors_add", text=_("Add contributor"), onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
+          {{ kata_form.plusbutton(id="contributors_add", text=_("Add contributor"), onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
         {% endif %}
 
         <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="contributor" />
