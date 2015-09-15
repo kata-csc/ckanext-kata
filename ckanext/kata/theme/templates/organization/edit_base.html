@@ -16,7 +16,7 @@
             <div class="button-container">
 
               {% if c.group_dict %}
-                <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}> {{ _('View organization') }} </a>
+                <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}> {{ _('Back to organization') }} </a>
 
                 {% if c.group_dict.is_organization and h.check_access('organization_update', {'id':c.group_dict.id }) %}
                   <div class="btn-group">
