@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-14 08:55+0000\n"
+"POT-Creation-Date: 2015-09-15 06:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2354,8 +2354,7 @@ msgid "Choose a language..."
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/about.html:12
-#: ckanext/kata/theme/templates/organization/edit_base.html:19
-msgid "View organization"
+msgid "Back to organization"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/about.html:22
@@ -2391,6 +2390,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/organization/base_form_page.html:5
 msgid "Organization Form"
+msgstr ""
+
+#: ckanext/kata/theme/templates/organization/edit_base.html:19
+msgid "View organization"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/index.html:11
@@ -2463,7 +2466,7 @@ msgid "Create Organization"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/read.html:12
-msgid "About organization"
+msgid "Organization info"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/read.html:49

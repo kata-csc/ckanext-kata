@@ -9,7 +9,7 @@
         <div class="organization-view-header">
           <div class="actions-and-ratings">
             <div class="button-container">
-              <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}>{{ _('View organization') }}</a>
+              <a class="btn btn-default" href={{h.url_for(controller='organization', action='read', id=c.group_dict.name)}}>{{ _('Back to organization') }}</a>
 
               {% if c.group_dict.is_organization and h.check_access('organization_update', {'id':c.group_dict.id }) %}
                 <div class="btn-group">

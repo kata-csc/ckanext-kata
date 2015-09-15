@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-14 08:55+0000\n"
+"POT-Creation-Date: 2015-09-15 06:39+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -2564,9 +2564,8 @@ msgid "Choose a language..."
 msgstr "Valitse kieli..."
 
 #: ckanext/kata/theme/templates/organization/about.html:12
-#: ckanext/kata/theme/templates/organization/edit_base.html:19
-msgid "View organization"
-msgstr "Katsele organisaatiota"
+msgid "Back to organization"
+msgstr "Takaisin organisaatioon"
 
 #: ckanext/kata/theme/templates/organization/about.html:22
 #: ckanext/kata/theme/templates/organization/edit_base.html:28
@@ -2602,6 +2601,10 @@ msgstr "Tälle organisaatiolle ei ole kuvausta"
 #: ckanext/kata/theme/templates/organization/base_form_page.html:5
 msgid "Organization Form"
 msgstr "Organisaation lomake"
+
+#: ckanext/kata/theme/templates/organization/edit_base.html:19
+msgid "View organization"
+msgstr "Katsele organisaatiota"
 
 #: ckanext/kata/theme/templates/organization/index.html:11
 msgid "Add Organization"
@@ -2673,8 +2676,8 @@ msgid "Create Organization"
 msgstr "Luo organisaatio"
 
 #: ckanext/kata/theme/templates/organization/read.html:12
-msgid "About organization"
-msgstr "Tietoa organisaatiosta"
+msgid "Organization info"
+msgstr "Organisaation kuvaus"
 
 #: ckanext/kata/theme/templates/organization/read.html:49
 msgid "Search for datasets"

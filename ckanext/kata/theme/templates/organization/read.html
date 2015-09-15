@@ -9,7 +9,7 @@
         <div class="organization-view-header">
           <div class="actions-and-ratings">
             <div class="button-container">
-              <a class="btn btn-default" href={{h.url_for(controller='organization', action='about', id=c.group_dict.name)}}>{{ _('About organization') }}</a>
+              <a class="btn btn-default" href={{h.url_for(controller='organization', action='about', id=c.group_dict.name)}}>{{ _('Organization info') }}</a>
               {% if c.group_dict.is_organization and h.check_access('organization_update', {'id':c.group_dict.id }) %}
                 <div class="btn-group">
                   <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
