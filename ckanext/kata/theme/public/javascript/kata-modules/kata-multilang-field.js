@@ -45,7 +45,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
     },
 
     _onInputChange: function (event) {
-      var langcode = this._getLangFromEl(event, 'input');
+      var langcode = this._getLangFromEl(event, this.options.inputtype);
       if (!langcode) {
         return;
       }
