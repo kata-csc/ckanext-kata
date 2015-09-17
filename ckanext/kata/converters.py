@@ -13,7 +13,7 @@ import re
 import logging
 import functools
 from pylons.i18n import _
-from ckan.lib.navl.dictization_functions import missing
+from ckan.lib.navl.dictization_functions import missing, Invalid
 
 from ckan.logic.action.create import related_create
 from ckan.model import Related, Session, Group, repo
@@ -552,6 +552,16 @@ def organization_create_converter(key, data, errors, context):
             return
 
     org_id = data.get(('owner_org',))
+
+    # Fix legacy datasets without organization, applies especially to h.dataset_is_valid
+    if not org_id:
+        err = _(
+            u"An organization must be supplied. If you do not find a suitable organization, please choose the default organization "
+            u"'Ei linkitetä organisaatioon - do not link to an organization' or create a new one."
+            )
+
+        raise Invalid(err)
+
     model = context['model']
     if model.Group.get(org_id):
         return
