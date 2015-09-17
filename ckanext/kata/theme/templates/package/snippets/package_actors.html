@@ -17,7 +17,7 @@
       <div class="control-group control-custom{{ " error" if author_errors }}">
 
         {% call kata_form.input(
-          'agent__' ~ index ~ '__name', label=_('Author')+' * ',
+          'agent__' ~ index ~ '__name', label=_('Author')+'*',
            id='agent__' ~ index ~ '__name_id', placeholder=_('Firstname Familyname'),
            value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'),
            label_classes=['kata-input-comp'], control_classes=['kata-medium'],
@@ -41,7 +41,7 @@
         {% endcall %}
 
         {% call kata_form.input(
-          'agent__' ~ index ~ '__organisation', label=_('Organisation')+' * ',
+          'agent__' ~ index ~ '__organisation', label=_('Organisation') + '*',
           id='agent__' ~ index ~ '__organisation_id', placeholder=_('University. Faculty. Department.'),
           value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'),
           classes=['control-custom'], label_classes=['kata-input-comp'],
@@ -137,7 +137,7 @@
 
         {% set index = loop.index0 %}
         {% call kata_form.input(
-          'contact__' ~ index ~ '__name', label=_('Name')+" * ",
+          'contact__' ~ index ~ '__name', label=_('Name') + '*',
           id='contact__' ~ index ~ '__name', placeholder=_('Firstname Familyname'), value=contact.name,
           error=h.get_dict_field_errors(errors, 'contact', index, 'name'),
           label_classes=['kata-input-comp'], control_classes=['kata-medium'],
@@ -160,7 +160,7 @@
         {% endcall %}
 
         {% call kata_form.input('contact__' ~ index ~ '__email',
-          label=_('Email')+" * ", id='contact__' ~ index ~ '__email',
+          label=_('Email') + '*', id='contact__' ~ index ~ '__email',
           placeholder=_('john.doe@example.com'), value=contact.email,
           error=h.get_dict_field_errors(errors, 'contact', index, 'email'),
           type='email', label_classes=['kata-input-comp'], control_classes=['kata-medium'],
@@ -285,7 +285,7 @@
         {% set agent_prefix = "agent__" ~ index ~ "__" %}
 
           {% call kata_form.input(
-            'agent__' ~ index ~ '__name', label=_('Owner')+" * ",
+            'agent__' ~ index ~ '__name', label=_('Owner') + '*',
             id='agent__' ~ index ~ '__name_id', placeholder=_('name or ID such as ORCID'),
             value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'),
             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
