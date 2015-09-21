@@ -6,7 +6,7 @@
   <h3>{{ _('Authors') }}</h3>
   {% set authors = h.get_authors(data) %}
   {% if authors|length == 0 %}
-    {% do authors.append(dict(role='author',)) %}
+    {% do authors.append(dict(role='author')) %}
   {% endif %}
 
     <div data-module="custom-fields-kata" data-module-id="agent" data-module-numfields="{{ authors|length }}" data-module-index="agent-index" id="agent">
@@ -24,7 +24,7 @@
            attrs={'class': "kata-medium-input"})%}
 
           {% if loop.index0 == 0 %}
-            {{ kata_form.tooltip(tooltip=_('Note, that you have to fill either the Author field or the Organisation field, not necessarily both of them.<br /><br />Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields. You can also add an identifier. You can add more authors by pressing the \'+\' button. If you leave an added author field empty, it is discarded.')) }}
+            {{ kata_form.tooltip(tooltip=_("Note, that you have to fill either the Author field or the Organisation field, not necessarily both of them.<br /><br />Author is a person or an organisation who has authored the dataset.<br /><br />Type names of authors and organisations to the corresponding fields. You can also add an identifier. You can add more authors by pressing the '+' button. If you leave an added author field empty, it is discarded.")) }}
           {% endif %}
         {% endcall %}
 
@@ -64,7 +64,7 @@
   <h3>{{ _('Contributors') }}</h3>
   {% set contributors = h.get_contributors(data) %}
   {% if contributors|length == 0 %}
-    {% do contributors.append(dict(role='contributor',)) %}
+    {% do contributors.append(dict(role='contributor')) %}
   {% endif %}
 
     <div data-module="custom-fields-kata" data-module-id="contributors" data-module-numfields="{{ contributors|length }}" data-module-index="agent-index" id="contributors">
@@ -82,7 +82,7 @@
           attrs={'class': "kata-medium-input"})
         %}
           {% if loop.index0 == 0 %}
-            {{ kata_form.tooltip(tooltip=_('Contributor is a person or an organisation who, in addition to the author, has contributed significantly to the dataset.<br /><br />Type names of contributors and organisations to the corresponding fields. You can also add an identifier. You can add more contributors by pressing the \'+\' button. If you leave an added contributor field empty, it is discarded.')) }}
+            {{ kata_form.tooltip(tooltip=_("Contributor is a person or an organisation who, in addition to the author, has contributed significantly to the dataset.<br /><br />Type names of contributors and organisations to the corresponding fields. You can also add an identifier. You can add more contributors by pressing the '+' button. If you leave an added contributor field empty, it is discarded.")) }}
           {% endif %}
         {% endcall %}
 
@@ -110,7 +110,7 @@
           {{ kata_form.plusbutton(id="contributors_add", text=_("Add contributor"), onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
         {% endif %}
 
-        <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="contributor" />
+        <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="contributor" />
         <input style="display: none;" type="checkbox" id="obtn__{{ index }}__value_id" name="obtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
       </div>
     {% endfor %}
@@ -201,7 +201,7 @@
   <div id="projdiv"{% if not h.get_funder(data) %} style="display: none;"{% endif %}>
   {% set funders = h.get_funders(data) %}
   {% if funders|length == 0 %}
-    {% do funders.append(dict(role='funder',)) %}
+    {% do funders.append(dict(role='funder')) %}
   {% endif %}
 
     <div data-module="custom-fields-kata" data-module-id="funders" data-module-numfields="{{ funders|length }}" data-module-index="agent-index" id="funders" data-module-remove=".select2-container">
@@ -273,7 +273,7 @@
   <h3>{{ _('Owner information') }}</h3>
   {% set owners = h.get_owners(data) %}
   {% if owners|length == 0 %}
-    {% do owners.append(dict(role='owner',)) %}
+    {% do owners.append(dict(role='owner')) %}
   {% endif %}
 
   <div data-module="custom-fields-kata" data-module-id="owner" data-module-numfields="{{ owners|length }}" data-module-index="agent-index" id="owner">
@@ -299,7 +299,7 @@
             {{ kata_form.plusbutton(id="owners_add", text=_("Add owner"), onclick="$(\'#obtn__" ~ index ~ "__value_id\').change();") }}
           {% endif %}
 
-          <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="owner" />
+          <input type="hidden" id="{{ agent_prefix }}role" name="{{ agent_prefix }}role" value="owner" />
 
         <input style="display: none;" type="checkbox" id="obtn__{{ index }}__value_id" name="obtn__{{ index }}__value" class="btn btn-danger icon-plus-sign checkbox"/>
 
