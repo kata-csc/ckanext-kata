@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-21 12:12+0000\n"
+"POT-Creation-Date: 2015-09-21 12:33+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -1130,7 +1130,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/data-model.html:21
 #: ckanext/kata/theme/templates/kata/dummy.html:27
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:222
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
 msgid "Copyright notice"
 msgstr "Lisätietoja käyttöluvasta"
 
@@ -2912,7 +2912,7 @@ msgid "File"
 msgstr "Tiedosto"
 
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:14
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
 msgid "Format"
 msgstr "Tiedostomuoto"
 
@@ -4966,7 +4966,7 @@ msgid "Begin"
 msgstr "Alku"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:255
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:45
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:44
 msgid "End"
 msgstr "Loppu"
 
@@ -5039,12 +5039,12 @@ msgid "File format"
 msgstr "Tiedoston muoto"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:402
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid "Checksum"
 msgstr "Tarkistussumma"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:406
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid "Algorithm"
 msgstr "Algoritmi"
 
@@ -5590,11 +5590,11 @@ msgstr "Tietoa lisensseistä"
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr "http://creativecommons.org/choose/?lang=fi"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
 msgid "e.g. additional information about the license"
 msgstr "esim. lisätietoa lisenssistä"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:85
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
 msgid ""
 "Provide detailed information about copyright notice, use constraints, "
 "referencing etc. Note that the field is required if license is set to "
@@ -5623,28 +5623,21 @@ msgstr "esim. Suomi"
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:20
 msgid ""
 "Specify the geographical areas or locations that your dataset pertains "
-"to. This could be for example the location where the data has been "
-"collected or the region where the research subjects live.<br /><br />Once"
-" you start typing, you will automatically get suggestions for matching "
-"geographical names. You can then select the appropriate location from the"
-" list of suggestions with a mouse click, or you can enter one of your "
-"own. If you make a mistake, you can remove a location by clicking the 'x'"
-" next to it.<br /><br />The suggestions are retrieved from the Finto "
-"vocabulary service (see <a href=\"http://finto.fi/en/\" "
-"target=\"_blank\">http://finto.fi/en/</a>). Note that you must have "
-"JavaScript enabled in your browser in order for the automatic suggestions"
-" to work."
+"to.<br /><br />When you start typing, you will get suggestions for "
+"matching geographical names. You can select a suggested location with a "
+"mouse click, or you can write a location name and press enter to add it. "
+"You can remove a location by clicking the 'x' next to it."
 msgstr ""
-"Määritä maantieteelliset alueet tai paikat, joita datasi käsittelee. Tämä"
-" voi olla esimerkiksi alue, jolta tiedot on kerätty tai alue, jolla "
-"tutkimuskohteena olevat henkilöt asuvat.<br /><br />Kun alat kirjoittaa "
-"paikannimeä, saat automaattisesti ehdotuksia maantieteellisistä nimistä. "
-"Voit valita ehdotuksista sopivan klikkaamalla sitä hiirellä. Voit myös "
-"kirjoittaa omasi, jos ehdotetuista vaihtoehdoista ei löydy sopivaa. Voit "
-"poistaa jo syöttämäsi paikannimen 'x'-painikkeesta.<br /><br />Ehdotukset"
-" haetaan Finto-sanastopalvelusta (katso <a href=\"http://finto.fi/fi/\" "
-"target=\"_blank\">http://finto.fi/fi/</a>). JavaScript-tuen on oltava "
-"käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
+"Määritä maantieteelliset alueet tai paikat,"
+" joita datasi käsittelee.<br /><br />Kun "
+"alat kirjoittaa, saat "
+"ehdotuksia maantieteellisistä "
+"nimistä. Voit valita ehdotuksista sopivan "
+"klikkaamalla sitä hiirellä. Voit myös "
+"kirjoittaa omasi, jos ehdotetuista "
+"vaihtoehdoista ei löydy sopivaa. Voit "
+"poistaa jo syöttämäsi paikannimen "
+"'x'-painikkeesta."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:27
 msgid "Temporal coverage"
@@ -5652,41 +5645,16 @@ msgstr "Ajallinen kattavuus"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:43
 msgid ""
-"Temporal coverage - begin - can be filled to include the starting time of"
-" the time period during which your data was collected or for example to "
-"tell what time period your data is linked to.<br><br>Click the calendar "
-"icon to select a date. If you wish to enter only year or month you can do"
-" so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You"
-" can optionally enter time with timezone information by choosing \"use "
-"exact time\".<br><br>Note that this tool requires JavaScript to be "
-"enabled in the browser."
+"You can add the beginning and ending times of the dataset's temporal "
+"coverage. You can use a date picker by clicking the calendar icon next to"
+" a date field, or you can write the date to the date field (e.g. 2015 or "
+"2015-12)."
 msgstr ""
-"Ajallinen kattavuus - alku - määrittelee alkupäivämäärän datasi "
-"ajalliselle kattavuudelle.<br><br>Klikkaa kalenteri-ikonia ja valitse "
-"päivämäärä. Voit syöttää pelkän vuoden tai kuukauden kirjoittamalla "
-"suoraan tekstikenttään esim. <em>2015</em> tai "
-"<em>2015-01</em>.<br><br>Voit halutessasi syöttää kellonajan ja "
-"aikavyöhykkeen valitsemalla \"käytä tarkkaa kellonaikaa\". "
-"<br><br>Huomaa, että työkalu vaatii toimiakseen JavaScriptin."
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:58
-msgid ""
-"Temporal coverage - end - can be filled to include the ending time of the"
-" time period during which your data was collected or for example to tell "
-"what time period your data is linked to.<br><br>Click the calendar icon "
-"to select a date. If you wish to enter only year or month you can do so "
-"by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can"
-" optionally enter time with timezone information by choosing \"use exact "
-"time\".<br><br>Note that this tool requires JavaScript to be enabled in "
-"the browser."
-msgstr ""
-"Ajallinen kattavuus - loppu - määrittelee loppupäivämäärän datasi "
-"ajalliselle kattavuudelle.<br><br>Klikkaa kalenteri-ikonia ja valitse "
-"päivämäärä. Voit syöttää pelkän vuoden tai kuukauden kirjoittamalla "
-"suoraan tekstikenttään esim. <em>2015</em> tai "
-"<em>2015-01</em>.<br><br>Voit halutessasi syöttää kellonajan ja "
-"aikavyöhykkeen valitsemalla \"käytä tarkkaa kellonaikaa\".<br><br>Huomaa,"
-" että työkalu vaatii toimiakseen JavaScriptin."
+"Voit valita aineistosi ajallisen kattavuuden alku- ja loppupäivämäärät ja "
+"halutessasi ilmoittaa myös ajankohtien kellonajat. Päivämääräkentän oikealla "
+"puolella olevasta kalenteri-ikonista aukeaa päivämäärävalitsin. "
+"oit syöttää pelkän vuoden tai kuukauden kirjoittamalla suoraan tekstikenttään "
+"esim. 2015 tai 2015-01."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:5
 msgid "Free description"
@@ -5714,33 +5682,28 @@ msgstr "MIME-tyyppi"
 msgid "MIME. e.g. application/pdf, application/txt"
 msgstr "MIME. esim. application/pdf, application/txt"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:10
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:11
 msgid ""
-"The file format of the research data can be provided here by typing the "
-"MIME type information to this field. Examples of MIME types are: "
-"application/octet-stream, application/pdf and text/plain. Automatic "
-"suggestions are given when you start typing though, this feature requires"
-" JavaScript to be enabled in your browser."
+"The format of the data can be provided here by typing the MIME type "
+"information to this field. Examples of MIME types are: application/pdf "
+"and text/plain. Suggestions are given when you start typing."
 msgstr ""
-"Datan tiedostomuoto voidaan kertoa tässä kentässä kirjoittamalla siihen "
-"oikea MIME-tyyppi. MIME-tyyppejä ovat esimerkiksi: application/octet-"
-"stream, application/pdf ja text/plain. Kentän sisältöön annetaan "
-"automaattisesti ehdotuksia alkaessasi kirjoittaa siihen. Automaattiset "
-"ehdotukset vaativat toimiakseen JavaScript-tuen selaimessasi."
+"Tähän voi antaa datan MIME-tyypin. MIME-tyyppejä ovat esimerkiksi: application/pdf "
+"ja text/plain. Kun alat kirjoittamaan, saat ehdotuksia MIME-tyypeistä."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
 msgid "e.g. CSV"
 msgstr "esim. CSV"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
 msgid "The format of the data file can be provided here."
 msgstr "Tähän kenttään voit syöttää tiedoston muodon."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid "hex string from e.g. MD5, SHA-1"
 msgstr "tarkistussumma (MD5, SHA-2) heksamuodossa"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid ""
 "The checksum of the data file can be provided here. This can be for "
 "example a fixed length hex string taken from the data generated with a "
@@ -5752,11 +5715,11 @@ msgstr ""
 "merkkijono.<br /><br />Tarkistussummat ovat hyvä tapa varmistaa, että "
 "sisältö on pysynyt samana ja että tiedosto on aito."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid "e.g. MD5"
 msgstr "esim. MD5, SHA-2"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid ""
 "If the checksum is provided above, the algorithm used for generating the "
 "hash should be provided here. There are many different hash algorithms "

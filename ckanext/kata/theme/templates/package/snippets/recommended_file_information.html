@@ -7,7 +7,8 @@
   <div class="form-row">
     <div class="kata-autocomplete error-block-autocomplete autocomplete-input-container">
       {% set mimetype_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': '/api/2/util/media_type_autocomplete?incomplete=?'} %}
-      {% call kata_form.input3('mimetype', label=_('MIME type'), id='mimetype', placeholder=_('MIME. e.g. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=mimetype_attrs, notification_html=kata_form.tooltip(tooltip=_("The file format of the research data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/octet-stream, application/pdf and text/plain. Automatic suggestions are given when you start typing though, this feature requires JavaScript to be enabled in your browser."))) %}
+      {% call kata_form.input3('mimetype', label=_('MIME type'), id='mimetype', placeholder=_('MIME. e.g. application/pdf, application/txt'), value=data.mimetype, classes=['control-medium'], label_classes=['kata-input-comp'], attrs=mimetype_attrs,
+              notification_html=kata_form.tooltip(tooltip=_("The format of the data can be provided here by typing the MIME type information to this field. Examples of MIME types are: application/pdf and text/plain. Suggestions are given when you start typing."))) %}
         {% if errors.resources %}
           {# Todo: these indices don't necessarily match, index 0 might be a metadata supplement #}
           {% if errors.resources[0].mimetype %}

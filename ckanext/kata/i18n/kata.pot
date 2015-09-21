@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-21 12:12+0000\n"
+"POT-Creation-Date: 2015-09-21 12:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1047,7 +1047,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/data-model.html:21
 #: ckanext/kata/theme/templates/kata/dummy.html:27
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:222
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
 msgid "Copyright notice"
 msgstr ""
 
@@ -2686,7 +2686,7 @@ msgid "File"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:14
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
 msgid "Format"
 msgstr ""
 
@@ -4738,7 +4738,7 @@ msgid "Begin"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:255
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:45
+#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:44
 msgid "End"
 msgstr ""
 
@@ -4811,12 +4811,12 @@ msgid "File format"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:402
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid "Checksum"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:406
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid "Algorithm"
 msgstr ""
 
@@ -5275,11 +5275,11 @@ msgstr ""
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
 msgid "e.g. additional information about the license"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:85
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
 msgid ""
 "Provide detailed information about copyright notice, use constraints, "
 "referencing etc. Note that the field is required if license is set to License"
@@ -5304,17 +5304,11 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:20
 msgid ""
-"Specify the geographical areas or locations that your dataset pertains to. "
-"This could be for example the location where the data has been collected or "
-"the region where the research subjects live.<br /><br />Once you start "
-"typing, you will automatically get suggestions for matching geographical "
-"names. You can then select the appropriate location from the list of "
-"suggestions with a mouse click, or you can enter one of your own. If you make"
-" a mistake, you can remove a location by clicking the 'x' next to it.<br "
-"/><br />The suggestions are retrieved from the Finto vocabulary service (see "
-"<a href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>). "
-"Note that you must have JavaScript enabled in your browser in order for the "
-"automatic suggestions to work."
+"Specify the geographical areas or locations that your dataset pertains to.<br"
+" /><br />When you start typing, you will get suggestions for matching "
+"geographical names. You can select a suggested location with a mouse click, "
+"or you can write a location name and press enter to add it. You can remove a "
+"location by clicking the 'x' next to it."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:27
@@ -5323,26 +5317,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:43
 msgid ""
-"Temporal coverage - begin - can be filled to include the starting time of the"
-" time period during which your data was collected or for example to tell what"
-" time period your data is linked to.<br><br>Click the calendar icon to select"
-" a date. If you wish to enter only year or month you can do so by typing "
-"directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally "
-"enter time with timezone information by choosing \"use exact "
-"time\".<br><br>Note that this tool requires JavaScript to be enabled in the "
-"browser."
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_coverage.html:58
-msgid ""
-"Temporal coverage - end - can be filled to include the ending time of the "
-"time period during which your data was collected or for example to tell what "
-"time period your data is linked to.<br><br>Click the calendar icon to select "
-"a date. If you wish to enter only year or month you can do so by typing "
-"directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally "
-"enter time with timezone information by choosing \"use exact "
-"time\".<br><br>Note that this tool requires JavaScript to be enabled in the "
-"browser."
+"You can add the beginning and ending times of the dataset's temporal "
+"coverage. You can use a date picker by clicking the calendar icon next to a "
+"date field, or you can write the date to the date field (e.g. 2015 or "
+"2015-12)."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:5
@@ -5368,28 +5346,26 @@ msgstr ""
 msgid "MIME. e.g. application/pdf, application/txt"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:10
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:11
 msgid ""
-"The file format of the research data can be provided here by typing the MIME "
-"type information to this field. Examples of MIME types are: application"
-"/octet-stream, application/pdf and text/plain. Automatic suggestions are "
-"given when you start typing though, this feature requires JavaScript to be "
-"enabled in your browser."
+"The file format of the data can be provided here by typing the MIME type "
+"information to this field. Examples of MIME types are: application/pdf and "
+"text/plain. Suggestions are given when you start typing."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
 msgid "e.g. CSV"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:24
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:25
 msgid "The format of the data file can be provided here."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid "hex string from e.g. MD5, SHA-1"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid ""
 "The checksum of the data file can be provided here. This can be for example a"
 " fixed length hex string taken from the data generated with a hash algorithm,"
@@ -5397,11 +5373,11 @@ msgid ""
 "the content to ensure the file is unchanged and genuine."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid "e.g. MD5"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
+#: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid ""
 "If the checksum is provided above, the algorithm used for generating the hash"
 " should be provided here. There are many different hash algorithms with "

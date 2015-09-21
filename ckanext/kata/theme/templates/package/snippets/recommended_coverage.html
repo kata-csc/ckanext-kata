@@ -17,7 +17,7 @@
       classes=['control-medium'], control_classes=['error-block-autocomplete error-block-fullwidth'],
       attrs=tag_attrs)
     %}
-    {{ kata_form.tooltip(tooltip=_('Specify the geographical areas or locations that your dataset pertains to. This could be for example the location where the data has been collected or the region where the research subjects live.<br /><br />Once you start typing, you will automatically get suggestions for matching geographical names. You can then select the appropriate location from the list of suggestions with a mouse click, or you can enter one of your own. If you make a mistake, you can remove a location by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see <a href="http://finto.fi/en/" target="_blank">http://finto.fi/en/</a>). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.')) }}
+    {{ kata_form.tooltip(tooltip=_("Specify the geographical areas or locations that your dataset pertains to.<br /><br />When you start typing, you will get suggestions for matching geographical names. You can select a suggested location with a mouse click, or you can write a location name and press enter to add it. You can remove a location by clicking the 'x' next to it.")) }}
     {% endcall %}
 
   </div>
@@ -40,8 +40,7 @@
           <span class="error-block kata-medium-error">{{ errors.temporal_coverage_begin[0] }}</span>
         {% endif %}
       </div>
-      {{ kata_form.tooltip(tooltip=_('Temporal coverage - begin - can be filled to include the starting time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br><br>Click the calendar icon to select a date. If you wish to enter only year or month you can do so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally enter time with timezone information by choosing "use exact time".<br><br>Note that this tool requires JavaScript to be enabled in the browser.')) }}
-
+      {{ kata_form.tooltip(tooltip=_("You can add the beginning and ending times of the dataset's temporal coverage. You can use a date picker by clicking the calendar icon next to a date field, or you can write the date to the date field (e.g. 2015 or 2015-12).")) }}
       <label class="control-label kata-input-comp{% if errors and errors.temporal_coverage_end %} error{% endif %}" for="temporal_coverage_end">{{ _('End') }}</label>
       <div class="controls controls-row modification-date-controls" data-module="kata-datetimepicker"
            data-module-currentlang="{{ lang }}" data-module-name="temporal_coverage_end"
@@ -55,7 +54,6 @@
         {% endif %}
         <div class="kata-datepicker-error"></div>
       </div>
-      {{ kata_form.tooltip(tooltip=_('Temporal coverage - end - can be filled to include the ending time of the time period during which your data was collected or for example to tell what time period your data is linked to.<br><br>Click the calendar icon to select a date. If you wish to enter only year or month you can do so by typing directly e.g. <em>2015</em> or <em>2015-01</em>.<br><br>You can optionally enter time with timezone information by choosing "use exact time".<br><br>Note that this tool requires JavaScript to be enabled in the browser.')) }}
     </div>
   </div>
 </div>
