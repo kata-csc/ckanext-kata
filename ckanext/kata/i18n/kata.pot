@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-21 12:03+0000\n"
+"POT-Creation-Date: 2015-09-21 12:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1047,7 +1047,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/data-model.html:21
 #: ckanext/kata/theme/templates/kata/dummy.html:27
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:222
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
 msgid "Copyright notice"
 msgstr ""
 
@@ -5264,6 +5264,10 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:80
+msgid "Choose a license from the given options."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:80
 msgid "Information about licenses"
 msgstr ""
 
@@ -5271,11 +5275,11 @@ msgstr ""
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
 msgid "e.g. additional information about the license"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:85
 msgid ""
 "Provide detailed information about copyright notice, use constraints, "
 "referencing etc. Note that the field is required if license is set to License"
