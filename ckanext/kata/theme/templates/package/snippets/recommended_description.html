@@ -3,5 +3,5 @@
 
 {% set currentlang = h.lang() %}
 {% call kata_form.multilang_field('langnotes', _('Free description'), 'langnotes-language-selection2', "textarea", values=data.notes or h.multilang_to_json(data, 'langnotes', 'notes'), lang=currentlang, classes=['error-block-fullwidth'], error=errors.langnotes, label_classes=['top-padding', 'center-align']) %}
-  {{ kata_form.tooltip(class='top-padding', tooltip=_("Describe your research data. You can add several descriptions in different languages using the '+' button. You can remove a description field from the 'x' button if there are more than one fields inserted. If you leave an added description field empty it is discarded.")) }}
+  {{ kata_form.tooltip(class='top-padding', tooltip=_("Describe your data. You can add descriptions in different languages using the '+' button. You can remove a description from the 'x' button if there are multiple descriptions.")) }}
 {% endcall %}

@@ -6,7 +6,7 @@
 <div class="tab-content-inner">
 
   {% call kata_form.multilang_field('langtitle', _('Dataset title'), 'langtitle-language-selection2', "input", values=data.title or h.multilang_to_json(data, 'langtitle', 'title'), lang=currentlang, classes=['error-block-fullwidth'], error=errors.langtitle, label_classes=['top-padding', 'center-align']) %}
-    {{ kata_form.tooltip(class='top-padding', tooltip=_("Type an informative title for the research data. You can add several titles in different languages using the '+' button. You can remove a title field from 'x' if there are more than one fields inserted. If you leave an added title field empty it is discarded. However, at least the first title field must have a value.")) }}
+    {{ kata_form.tooltip(class='top-padding', tooltip=_("Give a title for your data. You can add titles in different languages by using the '+' button. You can remove a title from 'x' button if there are multiple titles. Giving at least one title is mandatory.")) }}
   {% endcall %}
 
   {% snippet 'package/snippets/recommended_description.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
@@ -28,20 +28,20 @@
         </span>
       </div>
     </div>
-    {{ kata_form.tooltip(class='top-padding', tooltip=_('Field is compulsory, if checkbox is unchecked.<br /><br />Add languages used in your data. Once you start typing, you will automatically get suggestions for matching languages. You can then select the appropriate suggestion with a mouse click, or you can enter your own languages. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see <a href="http://finto.fi/en/" target="_blank">http://finto.fi/en/</a>). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work. <br /><br /> If you decide to enter your own languages, they must be given in ISO 639-2 T format, for example \"eng, fin, swe\".')) }}
+    {{ kata_form.tooltip(class='top-padding', tooltip=_('Give the languages used in your data, if the data contains textual information. Otherwise select "This dataset contains non-textual data".<br /><br />When you start typing, you will get suggestions for matching languages names. You can select a suggested language with a mouse click. To remove a language, click the \'x\' symbol on the language tag. You can also write language codes manually in ISO 639-2 T format.')) }}
   </div>
 
   <div class="form-row">
     {% set autocomplete_source = '/api/2/util/tag/autocomplete?incomplete=?&language=' ~ h.lang()  %}
     {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
-    {{ kata_form.tooltip(tooltip=_("Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see <a href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
+    {{ kata_form.tooltip(tooltip=_("Add keywords that describe your data. When you start typing, you will get suggestions for matching keywords. You can select a suggested keyword with a mouse click, or you can write your own keyword and select it with enter key. To remove a keyword, click the \'x\' symbol on the keyword tag.")) }}
     {{ form.input('tag_string', id='field-tags', label=_('Keywords') ~ '*', placeholder=_('e.g. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=tag_attrs, label_classes=['center-align']) }}
   </div>
 
   <div class="form-row">
     {% set autocomplete_source = '/api/2/util/discipline_autocomplete?incomplete=?&language=' ~ h.lang()  %}
     {% set disc_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source , 'data-module-key': 'key', 'data-module-label': 'label'} %}
-    {{ kata_form.tooltip(tooltip=_("Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter should be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see <a href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
+    {{ kata_form.tooltip(tooltip=_("Select scientific disciplines the dataset belongs to. When you start typing, you will get suggestions for matching discipline names. You can select a suggested keyword with a mouse click, or you can write your own keyword and select it with enter key. To remove a keyword, click the \'x\' symbol on the keyword tag. The disciplines you enter should be selected from the given suggestions.")) }}
     {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('e.g. Mathematics'), value=data.discipline, error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=disc_attrs, label_classes=['center-align']) }}
   </div>
 </div>

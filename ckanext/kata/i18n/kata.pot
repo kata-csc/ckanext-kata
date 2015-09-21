@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-15 06:39+0000\n"
+"POT-Creation-Date: 2015-09-21 09:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -235,7 +235,14 @@ msgstr ""
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
 
-#: ckanext/kata/converters.py:581
+#: ckanext/kata/converters.py:558 ckanext/kata/validators.py:499
+msgid ""
+"An organization must be supplied. If you do not find a suitable organization,"
+" please choose the default organization 'Ei linkitetä organisaatioon - do not"
+" link to an organization' or create a new one."
+msgstr ""
+
+#: ckanext/kata/converters.py:591
 msgid "New organisation \"{org}\" created automatically."
 msgstr ""
 
@@ -380,13 +387,6 @@ msgstr ""
 #: ckanext/kata/validators.py:444 ckanext/kata/validators.py:480
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:18
 msgid "Missing value"
-msgstr ""
-
-#: ckanext/kata/validators.py:499
-msgid ""
-"An organization must be supplied. If you do not find a suitable organization,"
-" please choose the default organization 'Ei linkitetä organisaatioon - do not"
-" link to an organization' or create a new one."
 msgstr ""
 
 #: ckanext/kata/validators.py:509
@@ -2354,6 +2354,7 @@ msgid "Choose a language..."
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/about.html:12
+#: ckanext/kata/theme/templates/organization/edit_base.html:19
 msgid "Back to organization"
 msgstr ""
 
@@ -2390,10 +2391,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/organization/base_form_page.html:5
 msgid "Organization Form"
-msgstr ""
-
-#: ckanext/kata/theme/templates/organization/edit_base.html:19
-msgid "View organization"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/index.html:11
@@ -2566,21 +2563,21 @@ msgid "Metadata completeness"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/package_rights.html:76
-#: ckanext/kata/theme/templates/package/read.html:83
+#: ckanext/kata/theme/templates/package/read.html:84
 #: ckanext/kata/theme/templates/package/related_list.html:84
 msgid "Data used"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/package_rights.html:77
-#: ckanext/kata/theme/templates/package/read.html:85
-#: ckanext/kata/theme/templates/package/read.html:87
+#: ckanext/kata/theme/templates/package/read.html:86
+#: ckanext/kata/theme/templates/package/read.html:88
 #: ckanext/kata/theme/templates/package/related_list.html:86
 #: ckanext/kata/theme/templates/package/related_list.html:88
 msgid "times"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/package_rights.html:78
-#: ckanext/kata/theme/templates/package/read.html:89
+#: ckanext/kata/theme/templates/package/read.html:90
 #: ckanext/kata/theme/templates/package/related_list.html:90
 msgid "Advertise reuse"
 msgstr ""
@@ -2651,7 +2648,7 @@ msgstr ""
 msgid "Administer dataset rights"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read.html:91
+#: ckanext/kata/theme/templates/package/read.html:92
 msgid ""
 "If you are logged in, you can click the button to fill a submittable form "
 "about reuse. After submitting the information about reuse, anyone can view it"
@@ -4800,25 +4797,25 @@ msgstr ""
 msgid "When"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:386
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:385
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:22
 msgid "Additional information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:391
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:390
 msgid "File format: MIME type"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:397
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:396
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:403
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:402
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Checksum"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:407
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:406
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
 msgid "Algorithm"
 msgstr ""
@@ -5028,11 +5025,9 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:9
 msgid ""
-"Type an informative title for the research data. You can add several titles "
-"in different languages using the '+' button. You can remove a title field "
-"from 'x' if there are more than one fields inserted. If you leave an added "
-"title field empty it is discarded. However, at least the first title field "
-"must have a value."
+"Give a title for your data. You can add titles in different languages by "
+"using the '+' button. You can remove a title from 'x' button if there are "
+"multiple titles. Giving at least one title is mandatory."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:15
@@ -5054,30 +5049,20 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:31
 msgid ""
-"Field is compulsory, if checkbox is unchecked.<br /><br />Add languages used "
-"in your data. Once you start typing, you will automatically get suggestions "
-"for matching languages. You can then select the appropriate suggestion with a"
-" mouse click, or you can enter your own languages. If you make a mistake, you"
-" can remove a keyword by clicking the 'x' next to it.<br /><br />The "
-"suggestions are retrieved from the Finto vocabulary service (see <a "
-"href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>). Note"
-" that you must have JavaScript enabled in your browser in order for the "
-"automatic suggestions to work. <br /><br /> If you decide to enter your own "
-"languages, they must be given in ISO 639-2 T format, for example \"eng, fin, "
-"swe\"."
+"Give the languages used in your data, if the data contains textual "
+"information. Otherwise select \"This dataset contains non-textual data\".<br "
+"/><br />When you start typing, you will get suggestions for matching "
+"languages names. You can select a suggested language with a mouse click. To "
+"remove a language, click the 'x' symbol on the language tag. You can also "
+"write language codes manually in ISO 639-2 T format."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:37
 msgid ""
-"Add keywords that describe your data. Once you start typing, you will "
-"automatically get suggestions for matching keywords. You can then select the "
-"appropriate suggestion with a mouse click, or you can enter your own "
-"keywords. If you make a mistake, you can remove a keyword by clicking the 'x'"
-" next to it.<br /><br />The suggestions are retrieved from the Finto "
-"vocabulary service (see <a href=\"http://finto.fi/en/\" "
-"target=\"_blank\">http://finto.fi/en/</a>). Note that you must have "
-"JavaScript enabled in your browser in order for the automatic suggestions to "
-"work."
+"Add keywords that describe your data. When you start typing, you will get "
+"suggestions for matching keywords. You can select a suggested keyword with a "
+"mouse click, or you can write your own keyword and select it with enter key. "
+"To remove a keyword, click the 'x' symbol on the keyword tag."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:38
@@ -5086,17 +5071,12 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:44
 msgid ""
-"Enter the academic discipline or disciplines to which your dataset "
-"belongs.<br /><br />Type the name of the discipline in the search box below. "
-"Once you start typing, you will automatically get suggestions for matching "
-"discipline names. The disciplines you enter should be selected from the given"
-" suggestions. You can select the appropropriate discipline from the list of "
-"suggestions with a mouse click. If you make a mistake, you can remove a "
-"discipline by clicking the 'x' next to it.<br /><br />The suggestions are "
-"retrieved from the Finto vocabulary service (see <a "
-"href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>). Note"
-" that you must have JavaScript enabled in your browser in order for the "
-"automatic suggestions to work."
+"Select scientific disciplines the dataset belongs to. When you start typing, "
+"you will get suggestions for matching discipline names. You can select a "
+"suggested keyword with a mouse click, or you can write your own keyword and "
+"select it with enter key. To remove a keyword, click the 'x' symbol on the "
+"keyword tag. The disciplines you enter should be selected from the given "
+"suggestions."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:45
@@ -5376,10 +5356,9 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:6
 msgid ""
-"Describe your research data. You can add several descriptions in different "
-"languages using the '+' button. You can remove a description field from the "
-"'x' button if there are more than one fields inserted. If you leave an added "
-"description field empty it is discarded."
+"Describe your data. You can add descriptions in different languages using the"
+" '+' button. You can remove a description from the 'x' button if there are "
+"multiple descriptions."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:6

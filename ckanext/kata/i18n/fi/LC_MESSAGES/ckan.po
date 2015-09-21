@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-09-15 06:39+0000\n"
+"POT-Creation-Date: 2015-09-21 09:12+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: Pinja Koskinen <kata-project@postit.csc.fi>\n"
 "Language-Team: Finnish <kata-project@postit.csc.fi>\n"
@@ -235,7 +235,17 @@ msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/converters.py:581
+#: ckanext/kata/converters.py:558 ckanext/kata/validators.py:499
+msgid ""
+"An organization must be supplied. If you do not find a suitable "
+"organization, please choose the default organization 'Ei linkitetä "
+"organisaatioon - do not link to an organization' or create a new one."
+msgstr ""
+"Organisaatio on syötettävä. Käytä oletusorganisaatiota 'Ei linkitetä "
+"organisaatioon - do not link to an organization', jos et löydä sopivaa "
+"listalta tai luo uusi organisaatio."
+
+#: ckanext/kata/converters.py:591
 msgid "New organisation \"{org}\" created automatically."
 msgstr "Uusi organisaatio \"{org}\" luotu automaattisesti."
 
@@ -398,16 +408,6 @@ msgstr "Ensisijaista datan tunnistetta ei voi muuttaa"
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:18
 msgid "Missing value"
 msgstr "Puuttuva arvo"
-
-#: ckanext/kata/validators.py:499
-msgid ""
-"An organization must be supplied. If you do not find a suitable "
-"organization, please choose the default organization 'Ei linkitetä "
-"organisaatioon - do not link to an organization' or create a new one."
-msgstr ""
-"Organisaatio on syötettävä. Käytä oletusorganisaatiota 'Ei linkitetä "
-"organisaatioon - do not link to an organization', jos et löydä sopivaa "
-"listalta tai luo uusi organisaatio."
 
 #: ckanext/kata/validators.py:509
 #, python-format
@@ -2564,6 +2564,7 @@ msgid "Choose a language..."
 msgstr "Valitse kieli..."
 
 #: ckanext/kata/theme/templates/organization/about.html:12
+#: ckanext/kata/theme/templates/organization/edit_base.html:19
 msgid "Back to organization"
 msgstr "Takaisin organisaatioon"
 
@@ -2601,10 +2602,6 @@ msgstr "Tälle organisaatiolle ei ole kuvausta"
 #: ckanext/kata/theme/templates/organization/base_form_page.html:5
 msgid "Organization Form"
 msgstr "Organisaation lomake"
-
-#: ckanext/kata/theme/templates/organization/edit_base.html:19
-msgid "View organization"
-msgstr "Katsele organisaatiota"
 
 #: ckanext/kata/theme/templates/organization/index.html:11
 msgid "Add Organization"
@@ -2782,21 +2779,21 @@ msgid "Metadata completeness"
 msgstr "Metatietojen kattavuus"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:76
-#: ckanext/kata/theme/templates/package/read.html:83
+#: ckanext/kata/theme/templates/package/read.html:84
 #: ckanext/kata/theme/templates/package/related_list.html:84
 msgid "Data used"
 msgstr "Dataa käytetty"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:77
-#: ckanext/kata/theme/templates/package/read.html:85
-#: ckanext/kata/theme/templates/package/read.html:87
+#: ckanext/kata/theme/templates/package/read.html:86
+#: ckanext/kata/theme/templates/package/read.html:88
 #: ckanext/kata/theme/templates/package/related_list.html:86
 #: ckanext/kata/theme/templates/package/related_list.html:88
 msgid "times"
 msgstr "kertaa"
 
 #: ckanext/kata/theme/templates/package/package_rights.html:78
-#: ckanext/kata/theme/templates/package/read.html:89
+#: ckanext/kata/theme/templates/package/read.html:90
 #: ckanext/kata/theme/templates/package/related_list.html:90
 msgid "Advertise reuse"
 msgstr "Kerro uudelleenkäytöstä"
@@ -2871,7 +2868,7 @@ msgstr "Näytä RDF-muodossa"
 msgid "Administer dataset rights"
 msgstr "Hallinnoi aineiston oikeuksia"
 
-#: ckanext/kata/theme/templates/package/read.html:91
+#: ckanext/kata/theme/templates/package/read.html:92
 msgid ""
 "If you are logged in, you can click the button to fill a submittable form"
 " about reuse. After submitting the information about reuse, anyone can "
@@ -5028,25 +5025,25 @@ msgstr "Kuka"
 msgid "When"
 msgstr "Milloin"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:386
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:385
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:22
 msgid "Additional information"
 msgstr "Lisätietoa"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:391
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:390
 msgid "File format: MIME type"
 msgstr "Tiedoston muoto: MIME-tyyppi"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:397
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:396
 msgid "File format"
 msgstr "Tiedoston muoto"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:403
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:402
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:35
 msgid "Checksum"
 msgstr "Tarkistussumma"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:407
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:406
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:46
 msgid "Algorithm"
 msgstr "Algoritmi"
@@ -5290,17 +5287,13 @@ msgstr "Saatavuus"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:9
 msgid ""
-"Type an informative title for the research data. You can add several "
-"titles in different languages using the '+' button. You can remove a "
-"title field from 'x' if there are more than one fields inserted. If you "
-"leave an added title field empty it is discarded. However, at least the "
-"first title field must have a value."
+"Give a title for your data. You can add titles in different languages by "
+"using the '+' button. You can remove a title from 'x' button if there are"
+" multiple titles. Giving at least one title is mandatory."
 msgstr ""
-"Lisää tutkimusaineistosi otsikko. Voit lisätä useampia otsikoita eri "
-"kielillä käyttäen '+' -painiketta. Voit poistaa otsikkokentän 'x' "
-"-painikkeesta, jos esillä on useampi kuin yksi kenttä. Jos jätät "
-"otsikkokentän tyhjäksi, se jätetään huomiotta. Huomaa kuitenkin, että "
-"vähintään yksi otsikko vaaditaan."
+"Syötä aineistosi otsikko. Voit lisätä otsikoita eri kielillä käyttäen '+'"
+" -painiketta. Voit poistaa otsikon 'x' -painikkeesta, jos otsikoita on "
+"useita. Otsikko tulee syöttää vähintään yhdellä kielellä."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:15
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:23
@@ -5321,50 +5314,31 @@ msgstr "Löydät kielikoodit osoitteesta: "
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:31
 msgid ""
-"Field is compulsory, if checkbox is unchecked.<br /><br />Add languages "
-"used in your data. Once you start typing, you will automatically get "
-"suggestions for matching languages. You can then select the appropriate "
-"suggestion with a mouse click, or you can enter your own languages. If "
-"you make a mistake, you can remove a keyword by clicking the 'x' next to "
-"it.<br /><br />The suggestions are retrieved from the Finto vocabulary "
-"service (see <a href=\"http://finto.fi/en/\" "
-"target=\"_blank\">http://finto.fi/en/</a>). Note that you must have "
-"JavaScript enabled in your browser in order for the automatic suggestions"
-" to work. <br /><br /> If you decide to enter your own languages, they "
-"must be given in ISO 639-2 T format, for example \"eng, fin, swe\"."
+"Give the languages used in your data, if the data contains textual "
+"information. Otherwise select \"This dataset contains non-textual "
+"data\".<br /><br />When you start typing, you will get suggestions for "
+"matching languages names. You can select a suggested language with a "
+"mouse click. To remove a language, click the 'x' symbol on the language "
+"tag. You can also write language codes manually in ISO 639-2 T format."
 msgstr ""
-"Kenttä on pakollinen, jos valintaruutua ei ole valittu<br /><br />Lisää "
-"aineistostasi löytyviä kieliä. Kun alat kirjoittaa, saat automaattisesti "
-"ehdotuksia kieliksi. Voit valita ehdotuksista sopivan klikkaamalla sitä "
-"hiirellä. Voit myös kirjoittaa oman sanasi, jos ehdotetuista "
-"vaihtoehdoista ei löydy sopivaa. Voit poistaa jo syöttämäsi asiasanan "
-"'x'-painikkeesta.<br /><br />Ehdotukset haetaan Finto-sanastopalvelusta "
-"(katso <a href=\"http://finto.fi/fi\" "
-"target=\"_blank\">http://finto.fi/fi/</a>). JavaScript-tuen on oltava "
-"käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat. <br "
-"/><br /> Jos päätät syöttää suoraan kieliä, anna ne ISO 638-2 -muodossa, "
-"esimerkiksi \"eng, fin, swe\"."
+"Anna aineistossa käytetty kieli tai kielet, jos aineisto sisältää tekstiä"
+" jollain kielellä. Kun alat kirjoittaa, saat ehdotuksia kieleksi. Voit "
+"valita ehdotuksen klikkaamalla sitä hiirellä. Voit poistaa syöttämäsi "
+"kielen sen edessä olevasta 'x'-painikkeesta. Jos aineisto ei sisällä "
+"tekstiä millään kielellä, valitse \"Aineisto ei sisällä tekstimuotoista "
+"dataa\"."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:37
 msgid ""
-"Add keywords that describe your data. Once you start typing, you will "
-"automatically get suggestions for matching keywords. You can then select "
-"the appropriate suggestion with a mouse click, or you can enter your own "
-"keywords. If you make a mistake, you can remove a keyword by clicking the"
-" 'x' next to it.<br /><br />The suggestions are retrieved from the Finto "
-"vocabulary service (see <a href=\"http://finto.fi/en/\" "
-"target=\"_blank\">http://finto.fi/en/</a>). Note that you must have "
-"JavaScript enabled in your browser in order for the automatic suggestions"
-" to work."
+"Add keywords that describe your data. When you start typing, you will get"
+" suggestions for matching keywords. You can select a suggested keyword "
+"with a mouse click, or you can write your own keyword and select it with "
+"enter key. To remove a keyword, click the 'x' symbol on the keyword tag."
 msgstr ""
-"Lisää asiasanoja jotka kuvailevat dataasi. Kun alat kirjoittaa sanaa, "
-"saat automaattisesti ehdotuksia asiasanoiksi. Voit valita ehdotuksista "
-"sopivan klikkaamalla sitä hiirellä. Voit myös kirjoittaa oman sanasi, jos"
-" ehdotetuista vaihtoehdoista ei löydy sopivaa. Voit poistaa jo syöttämäsi"
-" asiasanan 'x'-painikkeesta.<br /><br />Ehdotukset haetaan Finto-"
-"sanastopalvelusta (katso <a href=\"http://finto.fi/fi\" "
-"target=\"_blank\">http://finto.fi/fi/</a>). JavaScript-tuen on oltava "
-"käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
+"Valitse aineistoa kuvailevia asiasanoja. Kun alat kirjoittaa, saat "
+"ehdotuksia asiasanaksi. Voit valita ehdotuksen klikkaamalla sitä hiirellä. Voit "
+"myös kirjoittaa oman asiasanan, jos ehdotetuista vaihtoehdoista ei löydy "
+"sopivaa. Voit poistaa valitun asiasanan 'x'-painikkeesta."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:38
 msgid "e.g. economy, mental health, government"
@@ -5372,27 +5346,16 @@ msgstr "esim. talous, mielenterveys, hallitus"
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:44
 msgid ""
-"Enter the academic discipline or disciplines to which your dataset "
-"belongs.<br /><br />Type the name of the discipline in the search box "
-"below. Once you start typing, you will automatically get suggestions for "
-"matching discipline names. The disciplines you enter should be selected "
-"from the given suggestions. You can select the appropropriate discipline "
-"from the list of suggestions with a mouse click. If you make a mistake, "
-"you can remove a discipline by clicking the 'x' next to it.<br /><br "
-"/>The suggestions are retrieved from the Finto vocabulary service (see <a"
-" href=\"http://finto.fi/en/\" target=\"_blank\">http://finto.fi/en/</a>)."
-" Note that you must have JavaScript enabled in your browser in order for "
-"the automatic suggestions to work."
+"Select scientific disciplines the dataset belongs to. When you start "
+"typing, you will get suggestions for matching discipline names. You can "
+"select a suggested keyword with a mouse click, or you can write your own "
+"keyword and select it with enter key. To remove a keyword, click the 'x' "
+"symbol on the keyword tag. The disciplines you enter should be selected "
+"from the given suggestions."
 msgstr ""
-"Syötä tieteenala, johon datasi liittyy.<br /><br />Voit kirjoittaa "
-"tieteenalan nimen alla olevaan hakukenttään. Kun alat kirjoittaa nimeä, "
-"saat automaattisesti ehdotuksia tieteenalaksi. Alat tulisi valita "
-"annetuista ehdotuksista. Voit valita sopivan tieteenalan ehdotettujen "
-"joukosta klikkaamalla sitä hiirellä. Voit poistaa jo valitsemasi "
-"tieteenalan 'x'-painikkeesta.<br /><br />Ehdotukset haetaan Finto-"
-"sanastopalvelusta (katso <a href=\"http://finto.fi/fi\" "
-"target=\"_blank\">http://finto.fi/fi/</a>). JavaScript-tuen on oltava "
-"käytössä selaimessasi, jotta automaattiset ehdotukset toimisivat."
+"Valitse tieteenalat, joihin aineisto liittyy. Kun alat kirjoittaa, saat "
+"automaatisesti ehdotuksia tieteenalaksi. Voit valita ehdotuksen "
+"klikkaamalla sitä hiirellä. Voit poistaa valitun tieteenalan 'x'-painikkeesta."
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:45
 msgid "Disciplines"
@@ -5748,15 +5711,13 @@ msgstr "Vapaa kuvaus"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_description.html:6
 msgid ""
-"Describe your research data. You can add several descriptions in "
-"different languages using the '+' button. You can remove a description "
-"field from the 'x' button if there are more than one fields inserted. If "
-"you leave an added description field empty it is discarded."
+"Describe your data. You can add descriptions in different languages using"
+" the '+' button. You can remove a description from the 'x' button if "
+"there are multiple descriptions."
 msgstr ""
-"Kuvaile tutkimusdataasi. Voit lisätä useampia kuvauksia eri kielillä '+' "
-"-painikkeesta. Voit poistaa kuvauskentän 'x' -painikkeesta, jos "
-"kuvauskenttiä on lisättynä enemmän kuin yksi. Jos jätät kuvauskentän "
-"sisällön tyhjäksi, se jätetään huomiotta."
+"Kirjoita vapaamuotoinen kuvaus aineistostasi. Voit lisätä kuvauksia eri "
+"kielillä '+' -painikkeesta. Voit poistaa kuvauksen 'x' -painikkeesta, jos"
+" kuvauksia on useita."
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:6
 msgid "Technical details of the data file"
