@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-21 09:12+0000\n"
+"POT-Creation-Date: 2015-09-21 12:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4832,12 +4832,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:27
 msgid ""
-"Note, that you have to fill either the Author field or the Organisation "
-"field, not necessarily both of them.<br /><br />Author is a person or an "
-"organisation who has authored the dataset.<br /><br />Type names of authors "
-"and organisations to the corresponding fields. You can also add an "
-"identifier. You can add more authors by pressing the '+' button. If you leave"
-" an added author field empty, it is discarded."
+"The person or organisation that originally created the dataset should be "
+"added as author. You can add more authors by pressing the '+' button and "
+"remove authors by leaving their fields empty. For each author you must give "
+"atleast a name or an organisation."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:32
@@ -4851,7 +4849,7 @@ msgid "http://orcid.org/"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:39
-msgid "Optionally you can provide author's identifier, such as an ORCID identifier."
+msgid "You may provide an identifier (e.g. ORCID) for the author."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:44
@@ -4883,17 +4881,14 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:85
 msgid ""
-"Contributor is a person or an organisation who, in addition to the author, "
-"has contributed significantly to the dataset.<br /><br />Type names of "
-"contributors and organisations to the corresponding fields. You can also add "
-"an identifier. You can add more contributors by pressing the '+' button. If "
-"you leave an added contributor field empty, it is discarded."
+"Contributor is a person or an organisation who has contributed significantly "
+"to the dataset.<br /><br />Type names of contributors and organisations to "
+"the corresponding fields. You can add more contributors by pressing the '+' "
+"button and remove contributors by leaving their fields empty."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:97
-msgid ""
-"Optionally you can provide contributor's identifier, such as an ORCID "
-"identifier."
+msgid "You may provide an identifier (e.g. ORCID) for the contributor."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:110
@@ -5170,15 +5165,11 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:32
 msgid ""
-" Select an organization to link the dataset to the organization within this "
-"service. The service automatically gives suggestions of available "
-"organizations when you start typing on the field. Select the correct "
-"organization with a mouse click or by selecting the correct one and pressing "
-"enter. If you can not find your organization from the selection list, you can"
-" type down a new organization and it will be automatically created to the "
-"service when you save your dataset. <br /><br />Once the dataset is published"
-" it is visible in the organization page. Additionally, the organization's "
-"editors can also modify this dataset. "
+"Select an organisation to which this dataset will be linked. When you start "
+"typing, you will get suggestions for matching organisations. Select the "
+"correct organization with a mouse click. If you can not find your "
+"organisation from the selection list, you can add a new organisation by "
+"writing it's name to this field."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:7

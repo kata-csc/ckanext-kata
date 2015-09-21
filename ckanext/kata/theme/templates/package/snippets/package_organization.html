@@ -29,9 +29,7 @@
           <i class="icon-question-sign"></i>
         </a>
         <div class="dropdown-menu">
-          {% trans %}
-            Select an organization to link the dataset to the organization within this service. The service automatically gives suggestions of available organizations when you start typing on the field. Select the correct organization with a mouse click or by selecting the correct one and pressing enter. If you can not find your organization from the selection list, you can type down a new organization and it will be automatically created to the service when you save your dataset. <br /><br />Once the dataset is published it is visible in the organization page. Additionally, the organization's editors can also modify this dataset.
-          {% endtrans %}
+          {{ _("Select an organisation to which this dataset will be linked. When you start typing, you will get suggestions for matching organisations. Select the correct organization with a mouse click. If you can not find your organisation from the selection list, you can add a new organisation by writing it's name to this field.") }}
         </div>
       </div>
       {% if errors.owner_org %}
