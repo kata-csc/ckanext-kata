@@ -121,7 +121,7 @@
                   <td>
                     {% set locale = h.dump_json({'content': _('Are you sure you want to delete this member?')}) %}
                     <div class="btn-group pull-right">
-                      <a class="btn btn-danger btn-small" href="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_delete', name=c.pkg.id, username=usr.user_id, role=usr.role %}" data-module="confirm-action" data-module-i18n="{{ locale }}" title="{{ _('Delete') }}">{% block delete_button_text %}<i class="icon-remove"></i>{% endblock %}</a>
+                      <a class="btn btn-danger btn-small" href="{% url_for controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_delete', name=c.pkg.name, username=usr.user_id, role=usr.role %}" data-module="confirm-action" data-module-i18n="{{ locale }}" title="{{ _('Delete') }}">{% block delete_button_text %}<i class="icon-remove"></i>{% endblock %}</a>
                     </div>
                   </td>
                 </tr>
