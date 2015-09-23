@@ -495,7 +495,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         c.translated_field_titles = utils.get_field_titles(toolkit._)
 
-        if 'owner_org' not in data_dict['q']:
+        if data_dict.get('q') and 'owner_org' not in data_dict['q']:
             data_dict['defType'] = 'edismax'
 
         data_dict['facet.field'] = settings.FACETS
