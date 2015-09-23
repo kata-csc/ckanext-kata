@@ -5015,7 +5015,7 @@ msgstr "Ensisijainen datan tunniste"
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:353
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:4
 msgid "Dataset lifecycle events"
-msgstr "Aineston elinkaaren tapahtumat:"
+msgstr "Aineston elinkaaren tapahtumat"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:366
 msgid "Who"
