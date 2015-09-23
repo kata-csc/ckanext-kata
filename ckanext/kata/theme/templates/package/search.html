@@ -102,7 +102,7 @@
         {% endif %}
 
         <div class="search-results-list">
-          {{ h.snippet('snippets/package_list.html', packages=c.page.items, numbered=True) }}
+          {{ h.snippet('snippets/package_list.html', packages=c.page.items, numbered=False) }}
         </div>
 
         {{ c.page.pager(q=c.q) }}
