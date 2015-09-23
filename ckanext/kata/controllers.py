@@ -1097,6 +1097,7 @@ class KataHomeController(HomeController):
             data_dict = {
                 'q': '*:*',
                 'facet.field': g.facets,
+                'facet.limit': 10000,
                 'rows': 0,
                 'start': 0,
                 'sort': 'title_string desc',
