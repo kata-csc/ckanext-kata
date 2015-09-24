@@ -382,7 +382,9 @@ def check_agent_fields(key, data, errors, context):
 
     if not (data.get((key[0], key[1], 'name')) or
             data.get((key[0], key[1], 'organisation')) or
-            data.get((key[0], key[1], 'URL'))):
+            data.get((key[0], key[1], 'URL')) or
+            data.get((key[0], key[1], 'id')) or
+            data.get((key[0], key[1], 'fundingid'))):
         data.pop(key, None)
         raise StopOnError
 
