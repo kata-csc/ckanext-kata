@@ -2466,8 +2466,12 @@ a.download {
   margin-bottom: 50px;
 }
 .comment-container {
+  word-wrap: break-word;
   max-width: 640px;
   margin: 0 auto;
+}
+.comment-container p {
+  margin: 0px !important;
 }
 .comment-container ul {
   margin: 0 0 10px 0;
@@ -2478,18 +2482,14 @@ a.download {
   font-size: 10px;
   margin: 0px 6px 0px 0px;
 }
+.comment-container .comment {
+  border-left: 2px solid #0095ca;
+  padding-left: 10px;
+  margin: 4px 0;
+  font-size: 12px;
+}
 .comment-container .comment-wrapper {
   padding-left: 15px;
-}
-.comment-container .comment-subject {
-  margin: 0px !important;
-  font-size: 14px;
-}
-.comment-container p {
-  margin: 0px !important;
-}
-.comment-container .comment-links a {
-  color: #80898b;
 }
 .comment-container .comment-wrapper .links {
   margin: 8px 0 10px 0;
@@ -2504,6 +2504,13 @@ a.download {
 }
 .comment-container .comment-wrapper .span-right {
   float: right;
+}
+.comment-container .comment-subject {
+  margin: 0px !important;
+  font-size: 14px;
+}
+.comment-container .comment-links a {
+  color: #80898b;
 }
 @media (max-width: 500px) {
   .submitted {
@@ -2524,12 +2531,6 @@ a.download {
   .comment-container .comment-wrapper {
     padding-left: 8px;
   }
-}
-.comment-container .comment {
-  border-left: 2px solid #0095ca;
-  padding-left: 10px;
-  margin: 4px 0;
-  font-size: 12px;
 }
 .comment-form {
   margin: 16px auto;
