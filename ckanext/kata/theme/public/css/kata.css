@@ -2120,6 +2120,14 @@ a.download {
 .row-fluid .dataset-private a:focus {
   color: #00bbfd;
 }
+.dataset-section.form-tab-content .form-row .form-label {
+  width: 25% !important;
+  padding-right: 15px !important;
+}
+.dataset-section.form-tab-content .form-inner-table th,
+.dataset-section.form-tab-content .form-inner-table td {
+  padding-top: 0px !important;
+}
 .dataset-heading a {
   color: #0095ca;
 }
