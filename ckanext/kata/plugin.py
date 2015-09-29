@@ -577,7 +577,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 res_mimetype.append(u'')
             else:
                 res_mimetype.append(resource['mimetype'])
-        pkg_dict['res_type'] = res_mimetype
+        pkg_dict['res_mimetype'] = res_mimetype
 
         # Extract plain text from resources and add to the data dict for indexing
         for resource in data.get('resources', []):
