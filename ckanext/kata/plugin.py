@@ -571,13 +571,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         pkg_dict['organization'] = ''
         pkg_dict['isopen'] = data.get('isopen')
 
-        res_mimetype = []
-        for resource in data.get('resources', []):
-            if resource['mimetype'] is None:
-                res_mimetype.append(u'')
-            else:
-                res_mimetype.append(resource['mimetype'])
-        pkg_dict['res_mimetype'] = res_mimetype
+        pkg_dict['res_mimetype'] = [res['mimetype'] for res in data.get('resources', []) if res.get('mimetype')]
 
         # Extract plain text from resources and add to the data dict for indexing
         for resource in data.get('resources', []):
@@ -599,20 +593,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key, value in pkg_dict.iteritems():
             tokens = key.split('_')
             if tokens[0] == 'agent' and tokens[2] == 'role':
-                role = value
-                role_idx = role + '_' + tokens[1]
-                role_idx = str(role_idx)        # Must not be unicode
-                org_idx = 'organization_' + tokens[1]
+                role_idx = '{role}_{id}'.format(role=value, id=tokens[1])        # Must not be unicode
+                org_idx = 'organization_{id}'.format(id=tokens[1])
 
-                agent_name = pkg_dict.get('_'.join((tokens[0], tokens[1], 'name')), '')
-                agent_org = pkg_dict.get('_'.join((tokens[0], tokens[1], 'organisation')), '')
-                agent_id = pkg_dict.get('_'.join((tokens[0], tokens[1], 'id')), '')
+                agent_name = pkg_dict.get('agent_{id}_name'.format(id=tokens[1]))
+                agent_org = pkg_dict.get('agent_{id}_organisation'.format(id=tokens[1]))
+                agent_id = pkg_dict.get('agent_{id}_id'.format(id=tokens[1]))
 
-                new_items[role_idx] = agent_name
-                new_items[org_idx] = agent_org
-                new_items['agent_name_' + tokens[1]] = agent_name
-                new_items['agent_name_' + tokens[1] + '_org'] = agent_org
-                new_items['agent_name_' + tokens[1] + '_id'] = agent_id
+                if agent_name:
+                    new_items[role_idx] = agent_name
+                    new_items['agent_name_' + tokens[1]] = agent_name
+                if agent_org:
+                    new_items[org_idx] = agent_org
+                    new_items['agent_name_' + tokens[1] + '_org'] = agent_org
+                if agent_id:
+                    new_items['agent_name_' + tokens[1] + '_id'] = agent_id
 
             # hide sensitive data
             if EMAIL.match(key):
