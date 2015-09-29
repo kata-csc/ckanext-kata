@@ -589,59 +589,8 @@ def organization_list(context, data_dict):
     """ Modified from ckan.logic.action.get._group_or_org_list.
         Sort by title instead of name and lower case ordering.
     """
-
-    model = context['model']
-    api = context.get('api_version')
-    groups = data_dict.get('groups')
-    ref_group_by = 'id' if api == 2 else 'name'
-
-    sort = data_dict.get('sort', 'title')
-    q = data_dict.get('q')
-
-    # order_by deprecated in ckan 1.8
-    # if it is supplied and sort isn't use order_by and raise a warning
-    order_by = data_dict.get('order_by', '')
-    if order_by:
-        log.warn('`order_by` deprecated please use `sort`')
-        if not data_dict.get('sort'):
-            sort = order_by
-    # if the sort is packages and no sort direction is supplied we want to do a
-    # reverse sort to maintain compatibility.
-    if sort.strip() == 'packages':
-        sort = 'packages desc'
-
-    sort_info = ckan.logic.action.get._unpick_search(sort,
-                                                     allowed_fields=['name', 'packages', 'title'],
-                                                     total=1)
-
-    all_fields = data_dict.get('all_fields', None)
-
-
-    query = model.Session.query(model.Group).join(model.GroupRevision)
-    query = query.filter(model.GroupRevision.state=='active')
-    query = query.filter(model.GroupRevision.current==True)
-    if groups:
-        query = query.filter(model.GroupRevision.name.in_(groups))
-    if q:
-        q = u'%{0}%'.format(q)
-        query = query.filter(_or_(
-            model.GroupRevision.name.ilike(q),
-            model.GroupRevision.title.ilike(q),
-            model.GroupRevision.description.ilike(q),
-        ))
-
-
-    query = query.filter(model.GroupRevision.is_organization==True)
-
-    groups = query.all()
-    group_list = model_dictize.group_list_dictize(groups, context,
-                                                  lambda x:x[sort_info[0][0]].lower(),
-                                                  sort_info[0][1] == 'desc')
-
-    if not all_fields:
-        group_list = [group[ref_group_by] for group in group_list]
-
-    return group_list
+    data_dict['sort'] = 'title'
+    return ckan.logic.action.get.organization_list(context, data_dict)
 
 
 # TODO Juho: Temporary organisation autocomplete implementation in
