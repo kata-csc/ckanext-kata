@@ -202,7 +202,3 @@ def member_list(context, data_dict):
     else:
         return {'success': False}
 
-# TODO Juho: Temporary organisation autocomplete implementation in
-# kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
-def organization_autocomplete(context, data_dict):
-    return logic_auth.get.organization_list(context, data_dict)

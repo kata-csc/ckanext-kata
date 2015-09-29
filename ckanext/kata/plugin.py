@@ -120,10 +120,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
-        map.connect('/api/2/util/organization_autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action="organization_autocomplete")
         map.connect('/api/2/util/discipline_autocomplete',
                     controller=api_controller,
                     conditions=get,
@@ -144,12 +140,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action="funder_autocomplete")
-        # TODO Juho: Temporary organisation autocomplete implementation in
-        # kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
-        map.connect('/api/2/util/organization/autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action='organization_autocomplete')
         map.connect('/api/2/util/language/autocomplete',
                     controller=api_controller,
                     conditions=get,
@@ -217,7 +207,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_activity_list': logic.auth.get.sysadmin,
             'group_activity_list': logic.auth.get.sysadmin,
             'organization_activity_list': logic.auth.get.sysadmin,
-            'organization_autocomplete': auth_functions.organization_autocomplete,
             'member_list': auth_functions.member_list,
         }
 
@@ -233,7 +222,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'member_create': actions.member_create,
             'member_delete': actions.member_delete,
             'member_list': actions.member_list,
-            'organization_autocomplete': actions.organization_autocomplete,
             'organization_create': actions.organization_create,
             'organization_delete': actions.organization_delete,
             'organization_list': actions.organization_list,
