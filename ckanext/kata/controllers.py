@@ -47,6 +47,7 @@ import ckan.plugins as p
 import ckanext.harvest.interfaces as h_interfaces
 import ckanext.kata.clamd_wrapper as clamd_wrapper
 import ckanext.kata.settings as settings
+from ckanext.kata.schemas import Schemas as kata_schemas
 from ckanext.kata import utils
 
 _get_or_bust = ckan.logic.get_or_bust
@@ -1093,11 +1094,11 @@ class KataHomeController(HomeController):
         try:
             # package search
             context = {'model': model, 'session': model.Session,
-                       'user': c.user or c.author}
+                       'user': c.user or c.author, 'schema': kata_schemas.package_search_schema()}
             data_dict = {
                 'q': '*:*',
                 'facet.field': g.facets,
-                'facet.limit': 10000,
+                'facet.limit': -1,
                 'rows': 0,
                 'start': 0,
                 'sort': 'title_string desc',

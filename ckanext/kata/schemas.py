@@ -5,13 +5,15 @@ from ckan.lib.navl.validators import (default,
                                       not_empty,
                                       not_missing)
 from ckan.logic.schema import (default_create_package_schema,
-                               default_show_package_schema)
+                               default_show_package_schema,
+                               default_package_search_schema)
 from ckan.logic.validators import (owner_org_validator,
                                    package_id_not_changed,
                                    package_name_validator,
                                    tag_length_validator,
                                    url_validator,
-                                   vocabulary_id_exists)
+                                   vocabulary_id_exists,
+                                   int_validator)
 import ckanext.kata.validators as va
 import ckanext.kata.converters as co
 import ckanext.kata.settings as settings
@@ -390,6 +392,18 @@ class Schemas:
         #schema['version_PID'] = [version_pid_from_extras, ignore_missing, unicode]
         schema['xpaths'] = [co.from_extras_json, ignore_missing, unicode]
         #schema['resources']['resource_type'] = [from_resource]
+
+        return schema
+
+    @classmethod
+    def package_search_schema(cls):
+        '''
+        Allow negative facet.limit, which stands for unlimited
+        :return: schema
+        '''
+
+        schema = default_package_search_schema()
+        schema['facet.limit'] = [ignore_missing, int_validator]
 
         return schema
 
