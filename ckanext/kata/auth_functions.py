@@ -9,6 +9,7 @@ from ckan import authz
 from ckan.logic.auth.create import _check_group_auth
 
 import ckan.new_authz as new_authz
+import ckan.logic
 import ckan.logic.auth as logic_auth
 from ckan.logic.auth import get_package_object, update
 from ckan.model import User, Package
@@ -144,6 +145,7 @@ def package_create(context, data_dict=None):
     return {'success': True}
 
 
+@ckan.logic.auth_allow_anonymous_access
 def package_show(context, data_dict):
     '''
     Modified from CKAN's original check. Package's owner
