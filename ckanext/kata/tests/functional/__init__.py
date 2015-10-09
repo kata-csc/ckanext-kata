@@ -28,6 +28,7 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
     def setup_class(cls):
         """Set up testing environment."""
 
+        model.repo.rebuild_db()
         kata_model.setup()
         CreateTestData.create()
         comments_model.init_tables()
@@ -41,6 +42,7 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
 
         kata_model.delete_tables()
         CreateTestData.delete()
+        model.repo.rebuild_db()
 
 
 class KataApiTestCase(unittest.TestCase):
@@ -52,6 +54,7 @@ class KataApiTestCase(unittest.TestCase):
     def setup_class(cls):
         """Setup for all tests."""
 
+        model.repo.rebuild_db()
         kata_model.setup()
         CreateTestData.create()
 
