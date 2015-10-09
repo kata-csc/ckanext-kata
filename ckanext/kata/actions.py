@@ -56,6 +56,8 @@ def package_show(context, data_dict):
     if data_dict.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_show_package_schema()
 
+    context['use_cache'] = False  # Disable package retrieval directly from Solr as contact.email is not there.
+
     if not data_dict.get('id') and not data_dict.get('name'):
         # Get package by data PIDs
         data_dict['id'] = utils.get_package_id_by_data_pids(data_dict)
