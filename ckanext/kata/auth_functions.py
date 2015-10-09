@@ -5,12 +5,14 @@ Custom authorization functions for actions.
 import logging
 
 from pylons.i18n import _
+from ckan import authz
+from ckan.logic.auth.create import _check_group_auth
 
 import ckan.new_authz as new_authz
+import ckan.logic.auth as logic_auth
 from ckan.logic.auth import get_package_object, update
 from ckan.model import User, Package
 import ckanext.kata.settings as settings
-import ckan.logic.auth as logic_auth
 
 
 log = logging.getLogger(__name__)
@@ -114,7 +116,32 @@ def package_create(context, data_dict=None):
     elif org_id and kata_has_user_permission_for_org(org_id, user, 'create_dataset'):
         return {'success': True}
 
-    return logic_auth.create.package_create(context, data_dict)
+    # Below is copy-pasted from CKAN auth.create.package_create
+    # to allow dataset creation without explicit organization permissions.
+
+    if authz.auth_is_anon_user(context):
+        check1 = all(authz.check_config_permission(p) for p in (
+            'anon_create_dataset',
+            'create_dataset_if_not_in_organization',
+            'create_unowned_dataset',
+            ))
+    else:
+        check1 = True  # Registered users may create datasets
+
+    if not check1:
+        return {'success': False, 'msg': _('User %s not authorized to create packages') % user}
+
+    check2 = _check_group_auth(context,data_dict)
+    if not check2:
+        return {'success': False, 'msg': _('User %s not authorized to edit these groups') % user}
+
+    # If an organization is given are we able to add a dataset to it?
+    data_dict = data_dict or {}
+    org_id = data_dict.get('owner_org')
+    if org_id and not authz.has_user_permission_for_group_or_org(
+            org_id, user, 'create_dataset'):
+        return {'success': False, 'msg': _('User %s not authorized to add dataset to this organization') % user}
+    return {'success': True}
 
 
 def package_show(context, data_dict):
