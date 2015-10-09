@@ -16,6 +16,7 @@ from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
 
+# TODO: Fix tests
 
 class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
@@ -376,6 +377,16 @@ class TestDataReading(KataApiTestCase):
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
         assert 'id' in output
+
+        import pprint
+        pprint.pprint(output)
+        print('##################')
+        print('##################')
+        print('##################')
+        print('##################')
+        print('##################')
+        print('##################')
+        print('##################')
 
         output = self.api_user_normal.action.package_show(id=output['id'])
 

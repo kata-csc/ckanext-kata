@@ -6,6 +6,7 @@ import unittest
 import ckanapi
 import paste.fixture
 from pylons import config
+from pylons.util import AttribSafeContextObj, PylonsContext, pylons
 from webtest import AppError
 
 from ckan.config.middleware import make_app
@@ -35,6 +36,12 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
 
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
+
+        # The Pylons globals are not available outside a request. This is a hack to provide context object.
+        c = AttribSafeContextObj()
+        py_obj = PylonsContext()
+        py_obj.tmpl_context = c
+        pylons.tmpl_context._push_object(c)
 
     @classmethod
     def teardown_class(cls):
