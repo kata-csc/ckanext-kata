@@ -48,7 +48,6 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
         """Get away from testing environment."""
 
         kata_model.delete_tables()
-        CreateTestData.delete()
         model.repo.rebuild_db()
 
 
