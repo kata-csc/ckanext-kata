@@ -19,7 +19,7 @@ from ckan.logic.validators import tag_length_validator, url_validator
 from ckan.model import Package, User
 from ckanext.kata import utils, converters, settings
 import ckan.lib.navl.dictization_functions as df
-import ckan.new_authz as new_authz
+import ckan.authz as authz
 import ckan.logic as logic
 
 log = logging.getLogger('ckanext.kata.validators')
@@ -497,7 +497,7 @@ def kata_owner_org_validator(key, data, errors, context):
     value = data.get(key)
 
     if value is missing or not value:
-        if not new_authz.check_config_permission('create_unowned_dataset'):
+        if not authz.check_config_permission('create_unowned_dataset'):
             err = _(
             u"An organization must be supplied. If you do not find a suitable organization, please choose the default organization "
             u"'Ei linkitetä organisaatioon - do not link to an organization' or create a new one."
