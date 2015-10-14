@@ -8,7 +8,7 @@ from pylons.i18n import _
 from ckan import authz
 from ckan.logic.auth.create import _check_group_auth
 
-import ckan.new_authz as new_authz
+import ckan.authz as authz
 import ckan.logic
 import ckan.logic.auth as logic_auth
 from ckan.logic.auth import get_package_object, update
@@ -43,7 +43,7 @@ def is_owner(context, data_dict):
 
     # Check if the user has editor rights to this dataset through an organization
     package = get_package_object(context, data_dict)
-    if new_authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset'):
+    if authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset'):
         return {'success': True}
 
     return {'success': False}
@@ -84,7 +84,7 @@ def package_delete(context, data_dict):
     # if h.check_access('package_delete', data_dict):
         return {'success': True}
     else:
-        authorized = new_authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset')
+        authorized = authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset')
         if not authorized:
             return {'success': False, 'msg': _('User %s not authorized to delete package %s') % (str(user), package.id)}
         else:
@@ -226,7 +226,7 @@ def member_list(context, data_dict):
     user_name = context.get('user')
     organization_id = data_dict.get('id')
 
-    if new_authz.has_user_permission_for_group_or_org(organization_id, user_name, 'editor'):
+    if authz.has_user_permission_for_group_or_org(organization_id, user_name, 'editor'):
         return {'success': True}
     else:
         return {'success': False}

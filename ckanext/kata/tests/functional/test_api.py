@@ -674,7 +674,7 @@ class TestOrganizationAdmin(KataApiTestCase):
                                                                  role='admin')
 
         # admin can create an editor for organization
-        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+        self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
                                                                  username=self.user_joe.name,
                                                                  role='editor')
 

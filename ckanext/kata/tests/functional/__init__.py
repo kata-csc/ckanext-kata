@@ -17,7 +17,8 @@ from ckanext.kata.tests.test_fixtures.unflattened import TEST_ORGANIZATION_COMMO
 import ckanext.ytp.comments.model as comments_model
 
 # Note: all ORM model changes must be imported before WsgiAppCase
-from ckan import model, tests
+from ckan import model
+import ckan.tests.legacy as tests
 
 
 class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
@@ -48,7 +49,6 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
         """Get away from testing environment."""
 
         kata_model.delete_tables()
-        CreateTestData.delete()
         model.repo.rebuild_db()
 
 
