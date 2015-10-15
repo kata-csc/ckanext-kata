@@ -94,7 +94,7 @@ class Schemas:
         # schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['event'] = {'type': [ignore_missing, va.check_events, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
-                           'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_date],
+                           'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_interval_date],
                            'descr': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric]}
         schema['id'] = [default(u''), co.update_pid, unicode]
 
