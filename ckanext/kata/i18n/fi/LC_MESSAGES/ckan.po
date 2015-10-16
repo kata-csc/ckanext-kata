@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2015-10-16 05:03+0000\n"
+"POT-Creation-Date: 2015-10-16 05:46+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -92,6 +92,7 @@ msgid "User %s not authorized to add a dataset"
 msgstr "Käyttäjällä %s ei ole oikeuksia lisätä aineistoa"
 
 #: ckanext/kata/auth_functions.py:230
+#, python-format
 msgid "Resource %s can not be deleted"
 msgstr "Resurssia %s ei voi poistaa"
 
@@ -103,6 +104,7 @@ msgstr ""
 "valtuutusta"
 
 #: ckanext/kata/auth_functions.py:245
+#, python-format
 msgid "User %s not authorized to delete resource %s"
 msgstr "Käyttäjällä %s ei ole oikeuksia poistaa resurssia %s"
 
@@ -2537,8 +2539,8 @@ msgid "Remove"
 msgstr "Poista"
 
 #: ckanext/kata/theme/templates/macros/form.html:255
-#: ckanext/kata/theme/templates/macros/kata_form.html:142
-#: ckanext/kata/theme/templates/macros/kata_form.html:157
+#: ckanext/kata/theme/templates/macros/kata_form.html:143
+#: ckanext/kata/theme/templates/macros/kata_form.html:158
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:56
 msgid "Custom"
 msgstr "Mukautettu"
@@ -2571,15 +2573,26 @@ msgstr ""
 "resurssiin liittyvät virheet saattavat olla käyttötietojen lisäksi "
 "suositeltavissa tiedoissa, esimerkiksi tiedostotyypissä ja algoritmissa."
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:92
+#: ckanext/kata/theme/templates/macros/kata_form.html:87
+msgid ""
+"If you are unable to fix an error, note that you can empty the fields "
+"showing errors and save the dataset as unpublished. This way you can "
+"return to the dataset later with correct data and publish it then."
+msgstr ""
+"Jos virheet tuottavat sinulle ongelmia, huomaa että voit poistaa "
+"virheellisten kenttien tiedot ja tallentaa metatietosi "
+"julkaisemattomana. Näin voit palata myöhemmin täyttämään ongelmia "
+"aiheuttaneet kentät."
+
+#: ckanext/kata/theme/templates/macros/kata_form.html:93
 msgid "Optional"
 msgstr "Valinnainen"
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:96
+#: ckanext/kata/theme/templates/macros/kata_form.html:97
 msgid "Required"
 msgstr "Pakollinen"
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:208
+#: ckanext/kata/theme/templates/macros/kata_form.html:209
 msgid "Choose a language..."
 msgstr "Valitse kieli..."
 

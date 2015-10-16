@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-16 05:03+0000\n"
+"POT-Creation-Date: 2015-10-16 05:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2327,8 +2327,8 @@ msgid "Remove"
 msgstr ""
 
 #: ckanext/kata/theme/templates/macros/form.html:255
-#: ckanext/kata/theme/templates/macros/kata_form.html:142
-#: ckanext/kata/theme/templates/macros/kata_form.html:157
+#: ckanext/kata/theme/templates/macros/kata_form.html:143
+#: ckanext/kata/theme/templates/macros/kata_form.html:158
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:56
 msgid "Custom"
 msgstr ""
@@ -2356,15 +2356,22 @@ msgid ""
 "and algorithm."
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:92
+#: ckanext/kata/theme/templates/macros/kata_form.html:87
+msgid ""
+"If you are unable to fix an error, note that you can empty the fields showing"
+" errors and save the dataset as unpublished. This way you can return to the "
+"dataset later with correct data and publish it then."
+msgstr ""
+
+#: ckanext/kata/theme/templates/macros/kata_form.html:93
 msgid "Optional"
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:96
+#: ckanext/kata/theme/templates/macros/kata_form.html:97
 msgid "Required"
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:208
+#: ckanext/kata/theme/templates/macros/kata_form.html:209
 msgid "Choose a language..."
 msgstr ""
 
