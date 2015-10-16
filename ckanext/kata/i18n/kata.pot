@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 1.3.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-15 13:09+0000\n"
+"POT-Creation-Date: 2015-10-16 05:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,20 +74,35 @@ msgstr ""
 msgid "You don't have permission to remove this user."
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:61
+#: ckanext/kata/auth_functions.py:64
 #, python-format
 msgid "Resource %s not editable"
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:86
+#: ckanext/kata/auth_functions.py:90
 #: ckanext/kata/theme/templates/kata/dummy.html:104
 #, python-format
 msgid "User %s not authorized to delete package %s"
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:113
+#: ckanext/kata/auth_functions.py:117
 #, python-format
 msgid "User %s not authorized to add a dataset"
+msgstr ""
+
+#: ckanext/kata/auth_functions.py:230
+#, python-format
+msgid "Resource %s can not be deleted"
+msgstr ""
+
+#: ckanext/kata/auth_functions.py:239
+#: ckanext/kata/theme/templates/kata/dummy.html:105
+msgid "No package found for this resource, cannot check auth."
+msgstr ""
+
+#: ckanext/kata/auth_functions.py:245
+#, python-format
+msgid "User %s not authorized to delete resource %s"
 msgstr ""
 
 #: ckanext/kata/controllers.py:456
@@ -792,68 +807,63 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:52
-#: ckanext/kata/theme/templates/package/search.html:36
-msgid "Open data"
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/index.html:79
+#: ckanext/kata/theme/templates/home/index.html:80
 msgid "Datasets "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:93
+#: ckanext/kata/theme/templates/home/index.html:94
 msgid "Tags "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:107
+#: ckanext/kata/theme/templates/home/index.html:108
 msgid "Disciplines "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:125
+#: ckanext/kata/theme/templates/home/index.html:126
 msgid "Describe your research dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:126
+#: ckanext/kata/theme/templates/home/index.html:127
 msgid ""
 "Add metadata on your dataset to Etsin. This information documents the content"
 " and context of the data."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:132
+#: ckanext/kata/theme/templates/home/index.html:133
 msgid "Publish your dataset's description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:133
+#: ckanext/kata/theme/templates/home/index.html:134
 msgid ""
 "Publish the metadata on your data. The descriptive information enables others"
 " to find your dataset in Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:139
+#: ckanext/kata/theme/templates/home/index.html:140
 msgid "Get a permanent identifier for your dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:140
+#: ckanext/kata/theme/templates/home/index.html:141
 msgid ""
 "Receive a permanent identifier for your dataset. The identifier creates a "
 "permanent link to the dataset page in Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:146
+#: ckanext/kata/theme/templates/home/index.html:147
 msgid "Link to your dataset and share it"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:147
+#: ckanext/kata/theme/templates/home/index.html:148
 msgid ""
 "Link to your dataset from your publications and CV. Via Etsin you may also "
 "share your dataset with others as openly or based on applications."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:164
+#: ckanext/kata/theme/templates/home/index.html:165
 msgid "What is Etsin?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:167
+#: ckanext/kata/theme/templates/home/index.html:168
 msgid ""
 "Etsin enables you to find research datasets and to make your own datasets "
 "discoverable to others. Etsin offers access to datasets in various fields via"
@@ -862,11 +872,11 @@ msgid ""
 "dataset."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:170
+#: ckanext/kata/theme/templates/home/index.html:171
 msgid "Who can use Etsin?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:173
+#: ckanext/kata/theme/templates/home/index.html:174
 msgid ""
 "Anyone can use Etsin to search for research datasets. Haka-authenticated "
 "users may enter information on their own datasets, and of others' datasets "
@@ -875,11 +885,11 @@ msgid ""
 " scientist or researcher in order use the service."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:176
+#: ckanext/kata/theme/templates/home/index.html:177
 msgid "Is all data in Etsin open?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:179
+#: ckanext/kata/theme/templates/home/index.html:180
 msgid ""
 "The published metadata on the dataset is open to everyone. The data owner "
 "decides how the underlying research data can be accessed and by whom. "
@@ -1713,10 +1723,6 @@ msgstr ""
 msgid "Valid API key needed to create a package"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:105
-msgid "No package found for this resource, cannot check auth."
-msgstr ""
-
 #: ckanext/kata/theme/templates/kata/dummy.html:106
 #, python-format
 msgid "User %s not authorized to read these packages"
@@ -2321,8 +2327,8 @@ msgid "Remove"
 msgstr ""
 
 #: ckanext/kata/theme/templates/macros/form.html:255
-#: ckanext/kata/theme/templates/macros/kata_form.html:142
-#: ckanext/kata/theme/templates/macros/kata_form.html:157
+#: ckanext/kata/theme/templates/macros/kata_form.html:143
+#: ckanext/kata/theme/templates/macros/kata_form.html:158
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:56
 msgid "Custom"
 msgstr ""
@@ -2350,15 +2356,22 @@ msgid ""
 "and algorithm."
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:92
+#: ckanext/kata/theme/templates/macros/kata_form.html:87
+msgid ""
+"If you are unable to fix an error, note that you can empty the fields showing"
+" errors and save the dataset as unpublished. This way you can return to the "
+"dataset later with correct data and publish it then."
+msgstr ""
+
+#: ckanext/kata/theme/templates/macros/kata_form.html:93
 msgid "Optional"
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:96
+#: ckanext/kata/theme/templates/macros/kata_form.html:97
 msgid "Required"
 msgstr ""
 
-#: ckanext/kata/theme/templates/macros/kata_form.html:208
+#: ckanext/kata/theme/templates/macros/kata_form.html:209
 msgid "Choose a language..."
 msgstr ""
 
@@ -2680,6 +2693,10 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/role_fields.html:25
 #: ckanext/kata/theme/templates/package/role_fields.html:48
 msgid "Value"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/search.html:36
+msgid "Open data"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/search.html:39
