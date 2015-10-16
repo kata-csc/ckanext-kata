@@ -38,7 +38,9 @@ EMAIL_REGEX = re.compile(
     [a-zA-Z]{2,6}$
     """,
     re.VERBOSE)
-TEL_REGEX = re.compile(r'^(tel:)?\+?\d+$')
+
+# Look for test_validators.py test_validate_phonenum_ functions to understand what TEL_REGEX really matches
+TEL_REGEX = re.compile(r'^(tel:)?\s?(\+?\d|\(\d+\)(\s|\d))(\d+|\s|\-\d|\(\d+\)(\s|\d)){1,30}$')
 # General regex to use in fields with no specific input
 GEN_REGEX = re.compile(r'^[^><]*$')
 HASH_REGEX = re.compile(r'^[\w\d\ \-(),]*$', re.U)
@@ -94,14 +96,37 @@ def validate_kata_date(key, data, errors, context):
     Validate a date string. Empty strings also pass.
     '''
     if isinstance(data[key], basestring) and data[key]:
-        try:
-            iso8601.parse_date(data[key])
-        except (iso8601.ParseError, TypeError):
-            errors[key].append(_('Invalid date format, must be ISO 8601.'
-                                 ' Example: 2001-01-01'))
-        except ValueError:
-            errors[key].append(_('Invalid date'))
+        __parse_iso8601_date(key, data[key], errors)
 
+def validate_kata_interval_date(key, data, errors, context):
+    '''
+    Validate a date interval string. Empty strings also pass. Separator character '/'
+    '''
+    if isinstance(data[key], basestring) and data[key]:
+        if '/' in data[key]:
+            if data[key].endswith('/'):
+                errors[key].append(_('Invalid date format, must be ISO 8601.'
+                             ' Example: 2001-01-01/2002-01-01'))
+            else:
+                dates = data[key].split('/')
+                from_date = __parse_iso8601_date(key, dates[0], errors)
+                to_date = __parse_iso8601_date(key, dates[1], errors)
+                if(from_date is not None and to_date is not None):
+                    if(to_date < from_date):
+                        errors[key].append(_('To date must be greater than from date.'
+                             ' Example: 2001-01-01/2002-01-01'))
+        else:
+            __parse_iso8601_date(key, data[key], errors)
+
+def __parse_iso8601_date(key, datestr, errors):
+    try:
+        return iso8601.parse_date(datestr)
+    except (iso8601.ParseError, TypeError):
+        errors[key].append(_('Invalid date format, must be ISO 8601.'
+                             ' Example: 2001-01-01'))
+    except ValueError:
+        errors[key].append(_('Invalid date'))
+    return None
 
 def validate_kata_date_relaxed(key, data, errors, context):
     '''
@@ -164,7 +189,7 @@ def validate_phonenum(key, data, errors, context):
     '''
     if isinstance(data[key], basestring) and data[key]:
         if not TEL_REGEX.match(data[key]):
-            errors[key].append(_('Invalid telephone number, must be like +13221221'))
+            errors[key].append(_('Invalid telephone number, must be e.g. +358 (45) 123 45 67 or 010-234567'))
 
 def validate_access_application_url(key, data, errors, context):
     '''

@@ -8,7 +8,7 @@ import json
 from unittest import TestCase
 from collections import defaultdict
 
-from ckanext.kata.validators import validate_kata_date, \
+from ckanext.kata.validators import validate_kata_date, validate_kata_interval_date, \
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
@@ -27,6 +27,41 @@ class TestValidators(TestCase):
     @classmethod
     def setup_class(cls):
         """Set up tests."""
+
+    def test_validate_kata_interval_date_valid(self):
+        errors = defaultdict(list)
+        validate_kata_interval_date('date', {'date': '2012-12-31T13:12:11/2013'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_kata_interval_date_valid_2(self):
+        errors = defaultdict(list)
+        validate_kata_interval_date('date', {'date': '2012-12-31T13:12:11/2013-01-01'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_kata_interval_date_valid_3(self):
+        errors = defaultdict(list)
+        validate_kata_interval_date('date', {'date': '2012-12-31T13:12:11/2013-01-01T12:00:00Z'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_kata_interval_date_invalid(self):
+        errors = defaultdict(list)
+        validate_kata_interval_date('date', {'date': '2012-12-31T13:12:11/'}, errors, None)
+        assert len(errors) > 0
+
+    def test_validate_kata_interval_date_invalid_2(self):
+        errors = defaultdict(list)
+        validate_kata_interval_date('date', {'date': '2012-12-31T13:12:11/ABC'}, errors, None)
+        assert len(errors) > 0
+
+    def test_validate_kata_interval_date_invalid_3(self):
+        errors = defaultdict(list)
+        validate_kata_interval_date('date', {'date': '2012-12-31T13:12:11/2011-01-01T12:00:00Z'}, errors, None)
+        assert len(errors) > 0
+
+    def test_validate_kata_interval_date_invalid_4(self):
+        errors = defaultdict(list)
+        validate_kata_interval_date('date', {'date': '2012-12-31/T13:12:11'}, errors, None)
+        assert len(errors) > 0
 
     def test_validate_kata_date_valid(self):
         errors = defaultdict(list)
@@ -237,19 +272,69 @@ class TestValidators(TestCase):
 
     def test_validate_phonenum_valid(self):
         errors = defaultdict(list)
-
         validate_phonenum(('contact', 0, 'phone'), TEST_DATA_FLATTENED, errors, None)
+        assert len(errors) == 0
 
+    def test_validate_phonenum_valid_2(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '+61 8 82326262'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_phonenum_valid_3(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '+61 8 8232-6262'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_phonenum_valid_4(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '(555) 123-4567'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_phonenum_valid_5(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '+1 555 123-4567'}, errors, None)
+        assert len(errors) == 0
+
+    def test_validate_phonenum_valid_6(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '61 (0)8 82326262'}, errors, None)
         assert len(errors) == 0
 
     def test_validate_phonenum_invalid(self):
         errors = defaultdict(list)
-
         dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('contact', 0, 'phone')] = u'123_notgood_456'
-
         validate_phonenum(('contact', 0, 'phone'), dada, errors, None)
+        assert len(errors) == 1
 
+    def test_validate_phonenum_invalid_2(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '+()1234'}, errors, None)
+        assert len(errors) == 1
+
+    def test_validate_phonenum_invalid_3(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '()1234'}, errors, None)
+        assert len(errors) == 1
+
+    def test_validate_phonenum_invalid_4(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '123('}, errors, None)
+        assert len(errors) == 1
+
+    def test_validate_phonenum_invalid_5(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '+-123'}, errors, None)
+        assert len(errors) == 1
+
+    def test_validate_phonenum_invalid_6(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '123-34(56'}, errors, None)
+        assert len(errors) == 1
+
+    def test_validate_phonenum_invalid_7(self):
+        errors = defaultdict(list)
+        validate_phonenum('phone', {'phone': '+23 (3) 45 (4)-22'}, errors, None)
         assert len(errors) == 1
 
     def test_general_validator_invalid(self):
