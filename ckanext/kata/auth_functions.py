@@ -11,6 +11,7 @@ from ckan.logic.auth import get_package_object, update
 from ckan.model import User, Package
 import ckanext.kata.settings as settings
 import ckan.logic.auth as logic_auth
+from ckan.logic import NotFound
 
 
 log = logging.getLogger(__name__)
@@ -57,8 +58,11 @@ def edit_resource(context, data_dict):
     '''
     auth_dict = update.resource_update(context, data_dict)
 
-    if data_dict['resource_type'] == settings.RESOURCE_TYPE_DATASET:
+    resource = logic_auth.get_resource_object(context, data_dict)
+
+    if resource.resource_type == settings.RESOURCE_TYPE_DATASET:
         return {'success': False, 'msg': _('Resource %s not editable') % (data_dict['id'])}
+
     else:
         return auth_dict
 
@@ -206,3 +210,38 @@ def member_list(context, data_dict):
 # kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
 def organization_autocomplete(context, data_dict):
     return logic_auth.get.organization_list(context, data_dict)
+
+
+def resource_delete(context, data_dict):
+    '''
+    Nearly plain copying of resource_delete: CKAN doesn't seem to call package_delete as it should
+    thus passing our local version of it
+
+    :param context: context
+    :param data_dict: data_dict
+    :return: dict with success and optional msg
+    '''
+
+    model = context['model']
+    user = context.get('user')
+    resource = logic_auth.get_resource_object(context, data_dict)
+
+    if resource.resource_type == settings.RESOURCE_TYPE_DATASET:
+        return {'success': False, 'msg': _('Resource %s can not be deleted') % (data_dict['id'])}
+
+    # check authentication against package
+    query = model.Session.query(model.Package)\
+        .join(model.ResourceGroup)\
+        .join(model.Resource)\
+        .filter(model.ResourceGroup.id == resource.resource_group_id)
+    pkg = query.first()
+    if not pkg:
+        raise NotFound(_('No package found for this resource, cannot check auth.'))
+
+    pkg_dict = {'id': pkg.id}
+    authorized = package_delete(context, pkg_dict).get('success')
+
+    if not authorized:
+        return {'success': False, 'msg': _('User %s not authorized to delete resource %s') % (user, resource.id)}
+    else:
+        return {'success': True}
