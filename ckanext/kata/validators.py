@@ -96,7 +96,7 @@ def validate_kata_date(key, data, errors, context):
     Validate a date string. Empty strings also pass.
     '''
     if isinstance(data[key], basestring) and data[key]:
-        __parse_iso8601_date(key, data[key], errors)
+        _parse_iso8601_date(key, data[key], errors)
 
 def validate_kata_interval_date(key, data, errors, context):
     '''
@@ -109,16 +109,16 @@ def validate_kata_interval_date(key, data, errors, context):
                              ' Example: 2001-01-01/2002-01-01'))
             else:
                 dates = data[key].split('/')
-                from_date = __parse_iso8601_date(key, dates[0], errors)
-                to_date = __parse_iso8601_date(key, dates[1], errors)
+                from_date = _parse_iso8601_date(key, dates[0], errors)
+                to_date = _parse_iso8601_date(key, dates[1], errors)
                 if(from_date is not None and to_date is not None):
                     if(to_date < from_date):
                         errors[key].append(_('To date must be greater than from date.'
                              ' Example: 2001-01-01/2002-01-01'))
         else:
-            __parse_iso8601_date(key, data[key], errors)
+            _parse_iso8601_date(key, data[key], errors)
 
-def __parse_iso8601_date(key, datestr, errors):
+def _parse_iso8601_date(key, datestr, errors):
     try:
         return iso8601.parse_date(datestr)
     except (iso8601.ParseError, TypeError):
