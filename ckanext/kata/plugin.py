@@ -486,7 +486,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         extras = data_dict.get('extras')
         if extras:
             query = data_dict.get('q', '')
-            data_dict['q'] = ('(({q})) '.format(q=query) if query else '') + self.constrain_by_temporal_coverage(extras)
+            data_dict['q'] = (u'(({q})) '.format(q=query) if query else '') + self.constrain_by_temporal_coverage(extras)
 
         if 'sort' in data_dict and data_dict['sort'] is None:
             data_dict['sort'] = settings.DEFAULT_SORT_BY
