@@ -6,6 +6,7 @@ import unittest
 import ckanapi
 import paste.fixture
 from pylons import config
+from pylons.util import AttribSafeContextObj, PylonsContext, pylons
 from webtest import AppError
 
 from ckan.config.middleware import make_app
@@ -16,7 +17,8 @@ from ckanext.kata.tests.test_fixtures.unflattened import TEST_ORGANIZATION_COMMO
 import ckanext.ytp.comments.model as comments_model
 
 # Note: all ORM model changes must be imported before WsgiAppCase
-from ckan import model, tests
+from ckan import model
+import ckan.tests.legacy as tests
 
 
 class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
@@ -28,6 +30,7 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
     def setup_class(cls):
         """Set up testing environment."""
 
+        model.repo.rebuild_db()
         kata_model.setup()
         CreateTestData.create()
         comments_model.init_tables()
@@ -35,12 +38,18 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
         wsgiapp = make_app(config['global_conf'], **config['app_conf'])
         cls.app = paste.fixture.TestApp(wsgiapp)
 
+        # The Pylons globals are not available outside a request. This is a hack to provide context object.
+        c = AttribSafeContextObj()
+        py_obj = PylonsContext()
+        py_obj.tmpl_context = c
+        pylons.tmpl_context._push_object(c)
+
     @classmethod
     def teardown_class(cls):
         """Get away from testing environment."""
 
         kata_model.delete_tables()
-        CreateTestData.delete()
+        model.repo.rebuild_db()
 
 
 class KataApiTestCase(unittest.TestCase):
@@ -52,6 +61,7 @@ class KataApiTestCase(unittest.TestCase):
     def setup_class(cls):
         """Setup for all tests."""
 
+        model.repo.rebuild_db()
         kata_model.setup()
         CreateTestData.create()
 

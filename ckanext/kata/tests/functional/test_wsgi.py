@@ -9,7 +9,7 @@ import json
 from lxml import etree
 from ckan.logic import get_action
 
-from ckan.tests import url_for
+from ckan.tests.legacy import url_for
 import ckan.model as model
 
 from ckanext.harvest import model as harvest_model

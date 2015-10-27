@@ -11,7 +11,7 @@ import ckanapi
 
 from ckan.model import user as user_model
 from ckan.model import repo as repo_model
-from ckan import tests
+import ckan.tests.legacy as tests
 from ckan.lib.create_test_data import CreateTestData
 from ckan.config.middleware import make_app
 

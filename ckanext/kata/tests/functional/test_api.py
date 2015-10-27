@@ -16,7 +16,6 @@ from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
 
-
 class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
 
@@ -675,7 +674,7 @@ class TestOrganizationAdmin(KataApiTestCase):
                                                                  role='admin')
 
         # admin can create an editor for organization
-        self.api_user_sysadmin.action.organization_member_create(id=NEW_ORG['name'],
+        self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
                                                                  username=self.user_joe.name,
                                                                  role='editor')
 

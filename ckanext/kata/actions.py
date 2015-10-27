@@ -6,7 +6,6 @@ import datetime
 import logging
 
 import re
-from pylons import c
 from pylons.i18n import _
 
 from paste.deploy.converters import asbool
@@ -22,12 +21,10 @@ from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
 from ckanext.kata import utils, settings
 from ckan.logic import get_action
-import ckan.new_authz
+from ckan import authz
 from ckanext.kata.schemas import Schemas
 import sqlalchemy
-import ckan.lib.dictization.model_dictize as model_dictize
 from ckan.common import request
-import ckan.new_authz as new_authz
 
 _or_ = sqlalchemy.or_
 
@@ -55,6 +52,8 @@ def package_show(context, data_dict):
 
     if data_dict.get('type') == 'harvest':
         context['schema'] = Schemas.harvest_source_show_package_schema()
+
+    context['use_cache'] = False  # Disable package retrieval directly from Solr as contact.email is not there.
 
     if not data_dict.get('id') and not data_dict.get('name'):
         # Get package by data PIDs
@@ -579,7 +578,7 @@ def organization_list_for_user(context, data_dict):
     :rtype: list of dicts
     '''
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
-    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+    authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     return ckan.logic.action.get.organization_list_for_user(context, data_dict)
 
@@ -589,94 +588,8 @@ def organization_list(context, data_dict):
     """ Modified from ckan.logic.action.get._group_or_org_list.
         Sort by title instead of name and lower case ordering.
     """
-
-    model = context['model']
-    api = context.get('api_version')
-    groups = data_dict.get('groups')
-    ref_group_by = 'id' if api == 2 else 'name'
-
-    sort = data_dict.get('sort', 'title')
-    q = data_dict.get('q')
-
-    # order_by deprecated in ckan 1.8
-    # if it is supplied and sort isn't use order_by and raise a warning
-    order_by = data_dict.get('order_by', '')
-    if order_by:
-        log.warn('`order_by` deprecated please use `sort`')
-        if not data_dict.get('sort'):
-            sort = order_by
-    # if the sort is packages and no sort direction is supplied we want to do a
-    # reverse sort to maintain compatibility.
-    if sort.strip() == 'packages':
-        sort = 'packages desc'
-
-    sort_info = ckan.logic.action.get._unpick_search(sort,
-                                                     allowed_fields=['name', 'packages', 'title'],
-                                                     total=1)
-
-    all_fields = data_dict.get('all_fields', None)
-
-
-    query = model.Session.query(model.Group).join(model.GroupRevision)
-    query = query.filter(model.GroupRevision.state=='active')
-    query = query.filter(model.GroupRevision.current==True)
-    if groups:
-        query = query.filter(model.GroupRevision.name.in_(groups))
-    if q:
-        q = u'%{0}%'.format(q)
-        query = query.filter(_or_(
-            model.GroupRevision.name.ilike(q),
-            model.GroupRevision.title.ilike(q),
-            model.GroupRevision.description.ilike(q),
-        ))
-
-
-    query = query.filter(model.GroupRevision.is_organization==True)
-
-    groups = query.all()
-    group_list = model_dictize.group_list_dictize(groups, context,
-                                                  lambda x:x[sort_info[0][0]].lower(),
-                                                  sort_info[0][1] == 'desc')
-
-    if not all_fields:
-        group_list = [group[ref_group_by] for group in group_list]
-
-    return group_list
-
-
-# TODO Juho: Temporary organisation autocomplete implementation in
-# kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
-def organization_autocomplete(context, data_dict):
-    '''
-    Return a list of organization names that contain a string.
-
-    :param q: the string to search for
-    :type q: string
-    :param limit: the maximum number of organizations to return (optional,
-        default: 20)
-    :type limit: int
-
-    :rtype: a list of organization dictionaries each with keys ``'name'``,
-        ``'title'``, and ``'id'``
-    '''
-
-    check_access('organization_autocomplete', context, data_dict)
-
-    q = data_dict['q']
-    limit = data_dict.get('limit', 20)
-    model = context['model']
-
-    query = model.Group.search_by_name_or_title(q, group_type=None, is_org=True)
-
-    organization_list = []
-    for organization in query.all():
-        result_dict = {}
-        for k in ['id', 'name', 'title']:
-            result_dict[k] = getattr(organization, k)
-        organization_list.append(result_dict)
-
-    log.debug("organization_list: {ol}".format(ol=organization_list))  # Remove this
-    return organization_list
+    data_dict['sort'] = 'title'
+    return ckan.logic.action.get.organization_list(context, data_dict)
 
 
 def member_create(context, data_dict=None):
@@ -688,10 +601,10 @@ def member_create(context, data_dict=None):
     _log_action('Member', 'create', context['user'], data_dict.get('id'))
 
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
-    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+    authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     user = context['user']
-    user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
+    user_id = authz.get_user_id_for_username(user, allow_none=True)
 
     group_id, obj_id, obj_type, capacity = _get_or_bust(data_dict, ['id', 'object', 'object_type', 'capacity'])
 
@@ -704,7 +617,7 @@ def member_create(context, data_dict=None):
         if target_role is None:
             target_role = capacity
 
-        if ckan.new_authz.is_sysadmin(user):
+        if authz.is_sysadmin(user):
             # Sysadmin can do anything
             pass
         elif not settings.ORGANIZATION_MEMBER_PERMISSIONS.get((user_role, target_role, capacity, user_id == obj_id), False):
@@ -722,10 +635,10 @@ def member_delete(context, data_dict=None):
     _log_action('Member', 'delete', context['user'], data_dict.get('id'))
 
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
-    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+    authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     user = context['user']
-    user_id = ckan.new_authz.get_user_id_for_username(user, allow_none=True)
+    user_id = authz.get_user_id_for_username(user, allow_none=True)
 
     group_id, target_name, obj_type = _get_or_bust(data_dict, ['id', 'object', 'object_type'])
 
@@ -733,12 +646,12 @@ def member_delete(context, data_dict=None):
         # get user's role for this group
         user_role = utils.get_member_role(group_id, user_id)
 
-        target_id = ckan.new_authz.get_user_id_for_username(target_name, allow_none=True)
+        target_id = authz.get_user_id_for_username(target_name, allow_none=True)
 
         # get target's role for this group
         target_role = utils.get_member_role(group_id, target_id)
 
-        if ckan.new_authz.is_sysadmin(user):
+        if authz.is_sysadmin(user):
             # Sysadmin can do anything.
             pass
         elif not settings.ORGANIZATION_MEMBER_PERMISSIONS.get((user_role, target_role, 'member', user_id == target_id), False):
@@ -752,7 +665,7 @@ def organization_member_create(context, data_dict):
     Wrapper for CKAN's group_member_create to modify organization permissions.
     '''
     # NOTE! CHANGING CKAN ORGANIZATION PERMISSIONS
-    ckan.new_authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
+    authz.ROLE_PERMISSIONS = settings.ROLE_PERMISSIONS
 
     return ckan.logic.action.create.group_member_create(context, data_dict)
 
@@ -836,7 +749,7 @@ def member_list(context, data_dict):
     if capacity:
         q = q.filter(model.Member.capacity == capacity)
 
-    trans = new_authz.roles_trans()
+    trans = authz.roles_trans()
 
     def translated_capacity(capacity):
         try:

@@ -5,12 +5,14 @@ Custom authorization functions for actions.
 import logging
 
 from pylons.i18n import _
+from ckan import authz
+from ckan.logic.auth.create import _check_group_auth
 
-import ckan.new_authz as new_authz
+import ckan.logic
+import ckan.logic.auth as logic_auth
 from ckan.logic.auth import get_package_object, update
 from ckan.model import User, Package
 import ckanext.kata.settings as settings
-import ckan.logic.auth as logic_auth
 from ckan.logic import NotFound
 
 
@@ -41,7 +43,7 @@ def is_owner(context, data_dict):
 
     # Check if the user has editor rights to this dataset through an organization
     package = get_package_object(context, data_dict)
-    if new_authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset'):
+    if authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset'):
         return {'success': True}
 
     return {'success': False}
@@ -62,7 +64,6 @@ def edit_resource(context, data_dict):
 
     if resource.resource_type == settings.RESOURCE_TYPE_DATASET:
         return {'success': False, 'msg': _('Resource %s not editable') % (data_dict['id'])}
-
     else:
         return auth_dict
 
@@ -85,7 +86,7 @@ def package_delete(context, data_dict):
     # if h.check_access('package_delete', data_dict):
         return {'success': True}
     else:
-        authorized = new_authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset')
+        authorized = authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset')
         if not authorized:
             return {'success': False, 'msg': _('User %s not authorized to delete package %s') % (str(user), package.id)}
         else:
@@ -118,9 +119,35 @@ def package_create(context, data_dict=None):
     elif org_id and kata_has_user_permission_for_org(org_id, user, 'create_dataset'):
         return {'success': True}
 
-    return logic_auth.create.package_create(context, data_dict)
+    # Below is copy-pasted from CKAN auth.create.package_create
+    # to allow dataset creation without explicit organization permissions.
+
+    if authz.auth_is_anon_user(context):
+        check1 = all(authz.check_config_permission(p) for p in (
+            'anon_create_dataset',
+            'create_dataset_if_not_in_organization',
+            'create_unowned_dataset',
+            ))
+    else:
+        check1 = True  # Registered users may create datasets
+
+    if not check1:
+        return {'success': False, 'msg': _('User %s not authorized to create packages') % user}
+
+    check2 = _check_group_auth(context,data_dict)
+    if not check2:
+        return {'success': False, 'msg': _('User %s not authorized to edit these groups') % user}
+
+    # If an organization is given are we able to add a dataset to it?
+    data_dict = data_dict or {}
+    org_id = data_dict.get('owner_org')
+    if org_id and not authz.has_user_permission_for_group_or_org(
+            org_id, user, 'create_dataset'):
+        return {'success': False, 'msg': _('User %s not authorized to add dataset to this organization') % user}
+    return {'success': True}
 
 
+@ckan.logic.auth_allow_anonymous_access
 def package_show(context, data_dict):
     '''
     Modified from CKAN's original check. Package's owner
@@ -201,16 +228,10 @@ def member_list(context, data_dict):
     user_name = context.get('user')
     organization_id = data_dict.get('id')
 
-    if new_authz.has_user_permission_for_group_or_org(organization_id, user_name, 'editor'):
+    if authz.has_user_permission_for_group_or_org(organization_id, user_name, 'editor'):
         return {'success': True}
     else:
         return {'success': False}
-
-# TODO Juho: Temporary organisation autocomplete implementation in
-# kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
-def organization_autocomplete(context, data_dict):
-    return logic_auth.get.organization_list(context, data_dict)
-
 
 def resource_delete(context, data_dict):
     '''

@@ -333,20 +333,6 @@ class KATAApiController(ApiController):
 
         return self._finish_ok(result_set)
 
-    # TODO Juho: Temporary organisation autocomplete implementation in
-    # kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
-    #  @jsonp.jsonpify
-    def organization_autocomplete(self):
-        q = request.params.get('incomplete', '')
-        limit = request.params.get('limit', 20)
-        organization_list = []
-
-        if q:
-            context = {'user': c.user, 'model': model}
-            data_dict = {'q': q, 'limit': limit}
-            organization_list = get_action('organization_autocomplete')(context, data_dict)
-        return self._finish_ok(organization_list)
-
     def language_autocomplete(self):
         '''
         Suggestions for languages.
@@ -607,9 +593,6 @@ class KataUserController(UserController):
             return h.redirect_to(controller='user', action='read', id=c.userobj.name)
         else:
             err = _('Login failed. Bad username or password.')
-            if g.openid_enabled:
-                err += _(' (Or if using OpenID, it hasn\'t been associated '
-                         'with a user account.)')
             if asbool(config.get('ckan.legacy_templates', 'false')):
                 h.flash_error(err)
                 h.redirect_to(controller='user',

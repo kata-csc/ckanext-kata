@@ -120,10 +120,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         map.connect('/urnexport',
                     controller=controller,
                     action='urnexport')
-        map.connect('/api/2/util/organization_autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action="organization_autocomplete")
         map.connect('/api/2/util/discipline_autocomplete',
                     controller=api_controller,
                     conditions=get,
@@ -144,12 +140,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action="funder_autocomplete")
-        # TODO Juho: Temporary organisation autocomplete implementation in
-        # kata..plugin.py, kata..controllers.py, kata/actions.py, kata/auth_functions.py
-        map.connect('/api/2/util/organization/autocomplete',
-                    controller=api_controller,
-                    conditions=get,
-                    action='organization_autocomplete')
         map.connect('/api/2/util/language/autocomplete',
                     controller=api_controller,
                     conditions=get,
@@ -218,7 +208,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_activity_list': logic.auth.get.sysadmin,
             'group_activity_list': logic.auth.get.sysadmin,
             'organization_activity_list': logic.auth.get.sysadmin,
-            'organization_autocomplete': auth_functions.organization_autocomplete,
             'member_list': auth_functions.member_list,
         }
 
@@ -234,7 +223,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'member_create': actions.member_create,
             'member_delete': actions.member_delete,
             'member_list': actions.member_list,
-            'organization_autocomplete': actions.organization_autocomplete,
             'organization_create': actions.organization_create,
             'organization_delete': actions.organization_delete,
             'organization_list': actions.organization_list,
@@ -572,13 +560,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         pkg_dict['organization'] = ''
         pkg_dict['isopen'] = data.get('isopen')
 
-        res_mimetype = []
-        for resource in data.get('resources', []):
-            if resource['mimetype'] is None:
-                res_mimetype.append(u'')
-            else:
-                res_mimetype.append(resource['mimetype'])
-        pkg_dict['res_mimetype'] = res_mimetype
+        pkg_dict['res_mimetype'] = [res['mimetype'] for res in data.get('resources', []) if res.get('mimetype')]
 
         # Extract plain text from resources and add to the data dict for indexing
         for resource in data.get('resources', []):
@@ -600,20 +582,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         for key, value in pkg_dict.iteritems():
             tokens = key.split('_')
             if tokens[0] == 'agent' and tokens[2] == 'role':
-                role = value
-                role_idx = role + '_' + tokens[1]
-                role_idx = str(role_idx)        # Must not be unicode
-                org_idx = 'organization_' + tokens[1]
+                role_idx = '{role}_{id}'.format(role=value, id=tokens[1])        # Must not be unicode
+                org_idx = 'organization_{id}'.format(id=tokens[1])
 
-                agent_name = pkg_dict.get('_'.join((tokens[0], tokens[1], 'name')), '')
-                agent_org = pkg_dict.get('_'.join((tokens[0], tokens[1], 'organisation')), '')
-                agent_id = pkg_dict.get('_'.join((tokens[0], tokens[1], 'id')), '')
+                agent_name = pkg_dict.get('agent_{id}_name'.format(id=tokens[1]))
+                agent_org = pkg_dict.get('agent_{id}_organisation'.format(id=tokens[1]))
+                agent_id = pkg_dict.get('agent_{id}_id'.format(id=tokens[1]))
 
-                new_items[role_idx] = agent_name
-                new_items[org_idx] = agent_org
-                new_items['agent_name_' + tokens[1]] = agent_name
-                new_items['agent_name_' + tokens[1] + '_org'] = agent_org
-                new_items['agent_name_' + tokens[1] + '_id'] = agent_id
+                if agent_name:
+                    new_items[role_idx] = agent_name
+                    new_items['agent_name_' + tokens[1]] = agent_name
+                if agent_org:
+                    new_items[org_idx] = agent_org
+                    new_items['agent_name_' + tokens[1] + '_org'] = agent_org
+                if agent_id:
+                    new_items['agent_name_' + tokens[1] + '_id'] = agent_id
 
             # hide sensitive data
             if EMAIL.match(key):

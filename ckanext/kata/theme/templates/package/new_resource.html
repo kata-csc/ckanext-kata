@@ -1,24 +1,3 @@
 {% ckan_extends %}
 
-{% block content %}
-
-<div id="etsin-main">
-  <div class="etsin-container read-base-container">
-    <div class="container container-small">
-      {% block flash %}
-        {{ super() }}
-      {% endblock %}
-      <div class="row-fluid">
-        {%- block inner_content %}
-          <div class="dataset-section form-tab-content related-form supplement-form resource-form">
-            <div class="form-content">
-              {% block form %}{{ super() }}{% endblock %}
-            </div>
-          </div>
-        {% endblock -%}
-      </div>
-    </div>
-  </div>
-</div>
-
-{% endblock %}
+{% block subtitle %}{{ _('Add metadata supplement') }}{% endblock %}
