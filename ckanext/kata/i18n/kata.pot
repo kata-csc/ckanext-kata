@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 1.3.5\n"
+"Project-Id-Version: ckanext-kata 2.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-20 11:20+0000\n"
+"POT-Creation-Date: 2015-10-28 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,186 +17,199 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:89 ckanext/kata/converters.py:244
+#: ckanext/kata/actions.py:88 ckanext/kata/converters.py:244
 msgid "Paper"
 msgstr ""
 
-#: ckanext/kata/actions.py:183
+#: ckanext/kata/actions.py:182
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:475 ckanext/kata/actions.py:539
+#: ckanext/kata/actions.py:474 ckanext/kata/actions.py:538
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:486 ckanext/kata/actions.py:550
-#: ckanext/kata/controllers.py:679 ckanext/kata/controllers.py:757
+#: ckanext/kata/actions.py:485 ckanext/kata/actions.py:549
+#: ckanext/kata/controllers.py:662 ckanext/kata/controllers.py:740
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:491 ckanext/kata/actions.py:495
-#: ckanext/kata/controllers.py:754
+#: ckanext/kata/actions.py:490 ckanext/kata/actions.py:494
+#: ckanext/kata/controllers.py:737
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:499
+#: ckanext/kata/actions.py:498
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:506
+#: ckanext/kata/actions.py:505
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:510
+#: ckanext/kata/actions.py:509
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:515
+#: ckanext/kata/actions.py:514
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:561
+#: ckanext/kata/actions.py:560
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:567
+#: ckanext/kata/actions.py:566
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:711
+#: ckanext/kata/actions.py:624
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:745
+#: ckanext/kata/actions.py:658
 msgid "You don't have permission to remove this user."
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:64
+#: ckanext/kata/auth_functions.py:66
 #, python-format
 msgid "Resource %s not editable"
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:90
+#: ckanext/kata/auth_functions.py:91
 #: ckanext/kata/theme/templates/kata/dummy.html:104
 #, python-format
 msgid "User %s not authorized to delete package %s"
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:117
+#: ckanext/kata/auth_functions.py:118
 #, python-format
 msgid "User %s not authorized to add a dataset"
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:230
+#: ckanext/kata/auth_functions.py:135
+#: ckanext/kata/theme/templates/kata/dummy.html:101
+#, python-format
+msgid "User %s not authorized to create packages"
+msgstr ""
+
+#: ckanext/kata/auth_functions.py:139
+#, python-format
+msgid "User %s not authorized to edit these groups"
+msgstr ""
+
+#: ckanext/kata/auth_functions.py:146
+#: ckanext/kata/theme/templates/kata/dummy.html:102
+#, python-format
+msgid "User %s not authorized to add dataset to this organization"
+msgstr ""
+
+#: ckanext/kata/auth_functions.py:251
 #, python-format
 msgid "Resource %s can not be deleted"
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:239
+#: ckanext/kata/auth_functions.py:260
 #: ckanext/kata/theme/templates/kata/dummy.html:105
 msgid "No package found for this resource, cannot check auth."
 msgstr ""
 
-#: ckanext/kata/auth_functions.py:245
+#: ckanext/kata/auth_functions.py:266
 #, python-format
 msgid "User %s not authorized to delete resource %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:456
+#: ckanext/kata/controllers.py:442
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:473 ckanext/kata/controllers.py:713
+#: ckanext/kata/controllers.py:459 ckanext/kata/controllers.py:696
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:475 ckanext/kata/controllers.py:541
-#: ckanext/kata/controllers.py:570
+#: ckanext/kata/controllers.py:461 ckanext/kata/controllers.py:527
+#: ckanext/kata/controllers.py:556
 msgid "Already contacted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:477
+#: ckanext/kata/controllers.py:463
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:479 ckanext/kata/controllers.py:544
-#: ckanext/kata/controllers.py:573
+#: ckanext/kata/controllers.py:465 ckanext/kata/controllers.py:530
+#: ckanext/kata/controllers.py:559
 msgid "Please login"
 msgstr ""
 
-#: ckanext/kata/controllers.py:528 ckanext/kata/controllers.py:557
+#: ckanext/kata/controllers.py:514 ckanext/kata/controllers.py:543
 #: ckanext/kata/theme/templates/kata/dummy.html:61
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:609
+#: ckanext/kata/controllers.py:595
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:611
-msgid " (Or if using OpenID, it hasn't been associated with a user account.)"
-msgstr ""
-
-#: ckanext/kata/controllers.py:623
+#: ckanext/kata/controllers.py:606
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:654 ckanext/kata/controllers.py:894
+#: ckanext/kata/controllers.py:637 ckanext/kata/controllers.py:877
 #: ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:676
+#: ckanext/kata/controllers.py:659
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:696
+#: ckanext/kata/controllers.py:679
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:698 ckanext/kata/validators.py:165
+#: ckanext/kata/controllers.py:681 ckanext/kata/validators.py:165
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:718
+#: ckanext/kata/controllers.py:701
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:813
+#: ckanext/kata/controllers.py:796
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:838
+#: ckanext/kata/controllers.py:821
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:843
+#: ckanext/kata/controllers.py:826
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:846
+#: ckanext/kata/controllers.py:829
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:848
+#: ckanext/kata/controllers.py:831
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:852
+#: ckanext/kata/controllers.py:835
 msgid "Failed to load file"
 msgstr ""
 
-#: ckanext/kata/controllers.py:972 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:955 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/controllers.py:973
+#: ckanext/kata/controllers.py:956
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -206,15 +219,15 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: ckanext/kata/controllers.py:974
+#: ckanext/kata/controllers.py:957
 msgid "Tags"
 msgstr ""
 
-#: ckanext/kata/controllers.py:975
+#: ckanext/kata/controllers.py:958
 msgid "Formats"
 msgstr ""
 
-#: ckanext/kata/controllers.py:976
+#: ckanext/kata/controllers.py:959
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:71
 msgid "License"
@@ -631,7 +644,6 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/package_rights.html:17
 #: ckanext/kata/theme/templates/package/read.html:36
 #: ckanext/kata/theme/templates/package/related_list.html:26
-#: ckanext/kata/theme/templates/package/resource_edit.html:12
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:70
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:29
 #: ckanext/kata/theme/templates/related/snippets/related_item.html:23
@@ -658,7 +670,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:19
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:8
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:280
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:22
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:19
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:23
 msgid "URL"
 msgstr ""
@@ -1710,16 +1722,6 @@ msgstr ""
 msgid "REST API: Update package relationship: %s %s %s"
 msgstr ""
 
-#: ckanext/kata/theme/templates/kata/dummy.html:101
-#, python-format
-msgid "User %s not authorized to create packages"
-msgstr ""
-
-#: ckanext/kata/theme/templates/kata/dummy.html:102
-#, python-format
-msgid "User %s not authorized to add dataset to this organization"
-msgstr ""
-
 #: ckanext/kata/theme/templates/kata/dummy.html:103
 msgid "Valid API key needed to create a package"
 msgstr ""
@@ -2556,6 +2558,11 @@ msgstr ""
 msgid "History"
 msgstr ""
 
+#: ckanext/kata/theme/templates/package/new_resource.html:3
+#: ckanext/kata/theme/templates/package/new_resource_not_draft.html:3
+msgid "Add metadata supplement"
+msgstr ""
+
 #: ckanext/kata/theme/templates/package/package_rights.html:13
 #: ckanext/kata/theme/templates/package/related_list.html:22
 msgid "Show dataset"
@@ -2685,10 +2692,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/related_list.html:114
 msgid "No related items"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/resource_edit.html:16
-msgid "View resource"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/role_fields.html:25
@@ -4881,7 +4884,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:44
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:102
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:22
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:25
 msgid "Organisation"
 msgstr ""
 
@@ -4901,7 +4904,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:78
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:140
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:218
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:27
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:25
 #: ckanext/kata/theme/templates/user/read.html:27
 msgid "Name"
 msgstr ""
@@ -5170,11 +5173,11 @@ msgid ""
 " is chosen."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:23
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:26
 msgid "Choose an organisation..."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:32
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:35
 msgid ""
 "Select an organisation to which this dataset will be linked. When you start "
 "typing, you will get suggestions for matching organisations. Select the "
@@ -5492,19 +5495,19 @@ msgstr ""
 msgid "Relations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:8
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:10
 msgid "Supplement"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:13
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:15
 msgid "You must be logged in to upload a file."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:22
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:19
 msgid "Automatically generated"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:27
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:25
 msgid "e.g. Description of variables"
 msgstr ""
 
