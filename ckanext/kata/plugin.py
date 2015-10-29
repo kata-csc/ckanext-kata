@@ -37,41 +37,6 @@ from ckanext.kata.middleware import NotAuthorizedMiddleware
 
 log = logging.getLogger('ckanext.kata')
 
-# ##### MONKEY PATCH FOR REPOZE.WHO ######
-# Enables secure setting for cookies
-# Part of repoze.who since version 2.0a4
-from repoze.who.plugins.auth_tkt import AuthTktCookiePlugin
-
-
-def _get_monkeys(self, environ, value, max_age=None):
-
-    if max_age is not None:
-        max_age = int(max_age)
-        later = datetime.datetime.now() + datetime.timedelta(seconds=max_age)
-        # Wdy, DD-Mon-YY HH:MM:SS GMT
-        expires = later.strftime('%a, %d %b %Y %H:%M:%S')
-        # the Expires header is *required* at least for IE7 (IE7 does
-        # not respect Max-Age)
-        max_age = "; Max-Age=%s; Expires=%s" % (max_age, expires)
-    else:
-        max_age = ''
-
-    secure = ''
-    if self.secure:
-        secure = '; secure; HttpOnly'
-
-    cur_domain = environ.get('HTTP_HOST', environ.get('SERVER_NAME'))
-    wild_domain = '.' + cur_domain
-    cookies = [
-        ('Set-Cookie', '%s="%s"; Path=/%s%s' % (self.cookie_name, value, max_age, secure)),
-        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (self.cookie_name, value, cur_domain, max_age, secure)),
-        ('Set-Cookie', '%s="%s"; Path=/; Domain=%s%s%s' % (self.cookie_name, value, wild_domain, max_age, secure))
-    ]
-    return cookies
-
-AuthTktCookiePlugin._get_cookies = _get_monkeys
-# ##### END OF MONKEY PATCH ######
-
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
