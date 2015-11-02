@@ -2037,6 +2037,9 @@ a.download {
   margin-top: -1px;
   border: 1px solid #c9c9c9;
 }
+.form-content {
+  word-wrap: break-word;
+}
 .form-content .tags .tag-list {
   background: transparent;
   box-shadow: none;
