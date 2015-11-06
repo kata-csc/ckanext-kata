@@ -28,6 +28,22 @@
                  </select>
                  <label for="msg">{{ _("Message") }}</label>
                  <textarea name="msg" rows="10" cols="50"></textarea>
+                 <label for="from_address">{{ _("Reply address") }}</label>
+                 {% set from = "" %}
+                 {% if c.userobj %}
+                   {% set from = c.userobj.email %}
+                 {% endif %}
+                 <input type="email" name="from_address" value="{{ from }}">
+                 <label for="from_name">{{ _("Reply (your) name") }}</label>
+                 <input type="text" name="from_name">
+                 <input type="hidden" name="check_this_out" value="{{ c.current_time }}">
+                 <div class="hidden">
+                   <label for="hp">{{ _('Leave this unchecked') }}</label>
+                   <input type="checkbox" name="hp">
+                 </div>
+                 <br />
+                 <label for="accept-rules">{{ _('I understand that by sending this form details like time, message and IP will be logged by the service to prevent abuse.') }}</label>
+                 <input type="checkbox" name="accept_logging">
                  <br /><br />
                  <p><input type="submit" value="{{ _('Send') }}" class="btn btn-success"/></p>
                </form>

@@ -29,6 +29,7 @@ setup(
         'python-magic >= 0.4.6',
         'python-ldap >= 2.4.16',
         'iso-639 >= 0.4.0',
+        'pycrypto == 2.6.1',
     ],
     package_data={
         'ckan': [
