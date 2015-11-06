@@ -21,6 +21,7 @@ setup(
     zip_safe=False,
     install_requires=[
         # -*- Extra requirements: -*-
+        'SPARQLWrapper <= 1.7.2',
         'rdflib >= 4.2.0',
         'iso8601 >= 0.1.5',
         'pyClamd >= 0.3.10',
