@@ -49,7 +49,7 @@ class Kata(CkanCommand):
             print 'Command %s not recognized' % cmd
 
     def _load_config(self):
-        super(Kata, self)._load_config()
+        super(Kata, self)._load_config(load_site_user=False)
 
     def initdb(self):
 #        kata = Group.get('KATA')
