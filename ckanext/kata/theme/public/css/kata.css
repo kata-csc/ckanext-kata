@@ -2131,6 +2131,21 @@ a.download {
 .dataset-section.form-tab-content .form-inner-table td {
   padding-top: 0px !important;
 }
+#usage-info #ida_direct_download_link {
+  cursor: pointer;
+}
+.ida-dialog .ui-dialog-titlebar {
+  display: none;
+}
+.ida-dialog button {
+  border-radius: 0px;
+}
+#ida-prefill-input {
+  width: 80%;
+}
+#ida-modal-tips.hide {
+  display: none;
+}
 .dataset-heading a {
   color: #0095ca;
 }

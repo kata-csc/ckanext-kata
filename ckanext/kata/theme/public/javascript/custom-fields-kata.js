@@ -160,7 +160,8 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
   };
 });
 
-KATA = function() {};
+KATA = function () {}
+
 KATA.toggleAccess = function(obj) {
     /* Shows and hides data access inputs according to selection */
     switch (obj.id) {
@@ -191,6 +192,7 @@ KATA.toggleAccess = function(obj) {
             break;
         }
 };
+
 KATA.checkLang = function(obj) {
     $('#langdiv').toggle();
     if ($(obj).val().length > 0 && !$('#langdiv').is(':visible')) {

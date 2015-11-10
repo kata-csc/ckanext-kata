@@ -13,7 +13,8 @@
         {{ _('directly downloadable') }}
       </label>
       {# Somewhat dirty solution. The resource error is *somewhere* in array as some indices may be for metadata documents #}
-      <div id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not (errors.resources and data.availability == 'direct_download') %}style="display:none"{% endif %}>
+      <div data-module="etsin-ida-prefill" id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not (errors.resources and data.availability == 'direct_download') %}style="display:none"{% endif %}>
+        <a id="ida_direct_download_link" onclick="openIdaPopup(); event.returnValue=false;">{{ _('directly downloadable from IDA') }}</a>
         {% if errors.resources and data.availability == 'direct_download' %}
           {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=[_('Missing value')], classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
         {% else %}
@@ -83,4 +84,18 @@
   {% call kata_form.textarea('license_URL', id='license_URL', label=_('Copyright notice'), placeholder=_('e.g. additional information about the license'), value=data.license_URL, error=errors.license_URL, classes=['error-block-fullwidth']) %}
     {{ kata_form.tooltip(tooltip=_("Provide detailed information about copyright notice, use constraints, referencing etc. Note that the field is required if license is set to License Not Specified or any variant of Other.")) }}
   {% endcall %}
+</div>
+<div id="ida-prefill-modal">
+  <div id="ida-prefill-description" class="modal-content-block">{{ _('Input IDA identifier related to the data in order to get download URL for the data') }}</div>
+  <div class="modal-content-block">
+    <fieldset>
+      <legend></legend>
+      <p id="ida-modal-tips" class="hide">{{ _('Input a valid IDA identifier') }}</p>
+      <div class="form-input-block">
+        <label id="ida-prefill-input-label" for="ida-prefill-input">{{ _('IDA data identifier') }}</label>
+          <input type="email" name="ida-prefill-input" id="ida-prefill-input" placeholder="urn:nbn:fi:csc-ida..." class="text ui-widget-content ui-corner-all" required>
+      </div>
+    </fieldset>
+    <p id="ida-preview-url"></p>
+  </div>
 </div>
