@@ -466,8 +466,12 @@ class ContactController(BaseController):
         user_msg = request.params.get('msg', '')
 
         ct = int(time.time())
-        check = self.crypto.decrypt(base64.b64decode(request.params.get('check_this_out')))
-        check = re.sub(' ', '', check)
+        try:
+            check = self.crypto.decrypt(base64.b64decode(request.params.get('check_this_out')))
+            check = re.sub(' ', '', check)
+        except TypeError:
+            h.flash_error(_(u"Couldn't confirm human interaction (spam bot control)"))
+            return redirect(url)
 
         hp = request.params.get('hp')
 
