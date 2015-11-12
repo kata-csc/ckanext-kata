@@ -32,18 +32,32 @@
                  {% set from = "" %}
                  {% if c.userobj %}
                    {% set from = c.userobj.email %}
+                   {% set fname = c.userobj.fullname %}
                  {% endif %}
                  <input type="email" name="from_address" value="{{ from }}">
-                 <label for="from_name">{{ _("Reply (your) name") }}</label>
-                 <input type="text" name="from_name">
+                 <label for="from_name">{{ _("Reply (your) full name") }}</label>
+                 <input type="text" name="from_name" value="{{ fname }}">
                  <input type="hidden" name="check_this_out" value="{{ c.current_time }}">
                  <div class="hidden">
                    <label for="hp">{{ _('Leave this unchecked') }}</label>
                    <input type="checkbox" name="hp">
                  </div>
                  <br />
-                 <label for="accept-rules">{{ _('I understand that by sending this form details like time, message and IP will be logged by the service to prevent abuse.') }}</label>
+                 <label for="accept_logging">{{ _('I understand that by sending this form details like time, message and IP will be logged by the service to prevent abuse.') }}</label>
                  <input type="checkbox" name="accept_logging">
+                 {% if g.recaptcha_publickey and h.get_contact_captcha %}
+                   <div class="control-group">
+                     <div class="controls kata-captcha-fix">
+                       <script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k={{g.recaptcha_publickey}}"></script>
+                       <noscript>
+                         <iframe src="http://www.google.com/recaptcha/api/noscript?k={{g.recaptcha_publickey}}"
+                           height="300" width="500" frameborder="0"></iframe><br/>
+                         <textarea name="recaptcha_challenge_field" rows="3" cols="40"> </textarea>
+                         <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
+                       </noscript>
+                     </div>
+                   </div>
+                 {% endif %}
                  <br /><br />
                  <p><input type="submit" value="{{ _('Send') }}" class="btn btn-success"/></p>
                </form>

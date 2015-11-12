@@ -2,31 +2,45 @@
 {% block contact_form %}
   {% set form_post_url = h.url_for(controller='ckanext.kata.controllers:ContactController', action='send_request_message', pkg_id=c.package.id) %}
   <form class="dataset-form form-horizontal" method="post" action={{form_post_url}} data-module="basic-form">
-  <p>{{ _("On this page you can send a message to the owner of the dataset to request access to the material.") }}</p>
-  <label for="request-recipient">{{ _("Recipient") }}</label>
-  <select id="request-recipient" name="recipient">
-    {% for recipient in c.recipient_options %}
-      <option value="{{ recipient.value }}" {% if loop.index0|string == c.recipient_index %}selected{% endif %}>{{ recipient.text }}</option>
-    {% endfor %}
-  </select>
-  <label for="msg">{{ _("Message") }}</label>
-  <textarea name="msg" rows="10" cols="50"></textarea>
-  <label for="from_address">{{ _("Reply address") }}</label>
-  {% set from = "" %}
-  {% if c.userobj %}
-    {% set from = c.userobj.email %}
-  {% endif %}
-  <input type="email" name="from_address" value="{{ from }}">
-  <label for="from_name">{{ _("Reply (your) name") }}</label>
-  <input type="text" name="from_name">
-  <input type="hidden" name="check_this_out" value="{{ c.current_time }}">
-  <div class="hidden">
-    <label for="hp">{{ _('Leave this unchecked') }}</label>
-    <input type="checkbox" name="hp">
-  </div>
-  <br />
-  <label for="accept-rules">{{ _('I understand that by sending this form details like time, message and IP will be logged by the service to prevent abuse.') }}</label>
-  <input type="checkbox" name="accept_logging">
+    <p>{{ _("On this page you can send a message to the owner of the dataset to request access to the material.") }}</p>
+    <label for="request-recipient">{{ _("Recipient") }}</label>
+    <select id="request-recipient" name="recipient">
+      {% for recipient in c.recipient_options %}
+        <option value="{{ recipient.value }}" {% if loop.index0|string == c.recipient_index %}selected{% endif %}>{{ recipient.text }}</option>
+      {% endfor %}
+    </select>
+    <label for="msg">{{ _("Message") }}</label>
+    <textarea name="msg" rows="10" cols="50"></textarea>
+    <label for="from_address">{{ _("Reply address") }}</label>
+    {% set from = "" %}
+    {% if c.userobj %}
+      {% set from = c.userobj.email %}
+      {% set fname = c.userobj.fullname %}
+    {% endif %}
+    <input type="email" name="from_address" value="{{ from }}">
+    <label for="from_name">{{ _("Reply (your) full name") }}</label>
+    <input type="text" name="from_name" value="{{ fname }}">
+    <input type="hidden" name="check_this_out" value="{{ c.current_time }}">
+    <div class="hidden">
+      <label for="hp">{{ _('Leave this unchecked') }}</label>
+      <input type="checkbox" name="hp">
+    </div>
+    <br />
+    <label for="accept_logging">{{ _('I understand that by sending this form details like time, message and IP will be logged by the service to prevent abuse.') }}</label>
+    <input type="checkbox" name="accept_logging">
+    {% if g.recaptcha_publickey and h.get_contact_captcha %}
+      <div class="control-group">
+        <div class="controls kata-captcha-fix">
+          <script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k={{g.recaptcha_publickey}}"></script>
+          <noscript>
+            <iframe src="http://www.google.com/recaptcha/api/noscript?k={{g.recaptcha_publickey}}"
+                    height="300" width="500" frameborder="0"></iframe><br/>
+            <textarea name="recaptcha_challenge_field" rows="3" cols="40"> </textarea>
+            <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
+          </noscript>
+        </div>
+      </div>
+    {% endif %}
   <br /><br />
   <input type="submit" value="Send"  class="btn btn-success"/>
   </form>

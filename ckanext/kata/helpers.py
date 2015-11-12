@@ -1016,3 +1016,7 @@ def multilang_to_json(datadict, from_field, to_field):
         datadict[to_field] = json.dumps(json_data)
 
     return datadict.get(to_field, '')
+
+
+def get_contact_captcha():
+    return asbool(config.get('kata.config_captcha', 'False'))

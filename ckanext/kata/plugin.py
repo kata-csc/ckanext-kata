@@ -225,6 +225,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'format_facet_labels': helpers.format_facet_labels,
             'get_active_facets': helpers.get_active_facets,
             'get_authors': helpers.get_authors,
+            'get_contact_captcha': helpers.get_contact_captcha,
             'get_contacts': helpers.get_contacts,
             'get_contributors': helpers.get_contributors,
             'get_dataset_paged_order': helpers.get_dataset_paged_order,

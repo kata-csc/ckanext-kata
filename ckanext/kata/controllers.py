@@ -369,8 +369,8 @@ class ContactController(BaseController):
     def __init__(self):
         if config.get('kata.bf') and len(config.get('kata.bf')) > 4 and len(config.get('kata.bf')) < 56:
             self.crypto = Blowfish.new('config.get("kata.bf")')
-            log.error('No encryption key (kata.bf) is set, falling back to beaker.session.secret!')
         else:
+            log.info('No encryption key (kata.bf) is set, falling back to beaker.session.secret!')
             self.crypto = Blowfish.new('config.get("beaker.session.secret")')
 
     def _pad(self, encr_str):
@@ -435,6 +435,24 @@ class ContactController(BaseController):
         :type suffix: unicode
         """
 
+        url = h.url_for(controller='package', action='read', id=pkg_id)
+
+        if asbool(config.get('kata.contact_captcha')):
+            try:
+                captcha.check_recaptcha(request)
+            except captcha.CaptchaError:
+                h.flash_error(_(u'Bad Captcha. Please try again.'))
+                redirect(url)
+
+        if not request.params.get('accept_logging'):
+            h.flash_error(_(u"Message not sent as logging wasn't permitted"))
+            return redirect(url)
+
+        if asbool(config.get('kata.disable_contact')):
+            h.flash_error(_(u"Sending contact emails is prohibited for now. "
+                            u"Please try again later or contact customer service."))
+            return redirect(url)
+
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
 
@@ -453,19 +471,8 @@ class ContactController(BaseController):
 
         hp = request.params.get('hp')
 
-        url = h.url_for(controller='package', action='read', id=pkg_id)
-
-        if not request.params.get('accept_logging'):
-            h.flash_error(_("Message not sent as logging wasn't permitted"))
-            return redirect(url)
-
         if hp or not check or (ct - int(check) < 20) or (ct - int(check) > 1200):
-            h.flash_error(_("Couldn't confirm human interaction (spam bot control)"))
-            return redirect(url)
-
-        if asbool(config.get('kata.disable_contact')):
-            h.flash_error(_("Sending contact emails is prohibited for now. "
-                            "Please try again later or contact customer service."))
+            h.flash_error(_(u"Couldn't confirm human interaction (spam bot control)"))
             return redirect(url)
 
         if sender_addr and sender_name and \
@@ -484,11 +491,11 @@ class ContactController(BaseController):
 
                 full_msg = u"{a}{b}{c}".format(a=prefix, b=user_msg, c=suffix)
                 self._send_message(subject, full_msg, recipient.get('email'), recipient.get('name'))
-                h.flash_success(_("Message sent"))
+                h.flash_success(_(u"Message sent"))
             else:
-                h.flash_error(_("No message"))
+                h.flash_error(_(u"No message"))
         else:
-            h.flash_error(_("Please, provide reply address and name. Name must contain at least five letters."))
+            h.flash_error(_(u"Please, provide reply address and name. Name must contain at least five letters."))
 
         return redirect(url)
 
@@ -535,15 +542,15 @@ class ContactController(BaseController):
         c.package = Package.get(pkg_id)
 
         if asbool(config.get('kata.disable_contact')):
-            h.flash_error(_("Sending contact emails is prohibited for now. "
-                            "Please try again later or contact customer service."))
+            h.flash_error(_(u"Sending contact emails is prohibited for now. "
+                            u"Please try again later or contact customer service."))
 
             return redirect(h.url_for(controller='package',
                                       action="read",
                                       id=c.package.name))
 
         if not c.package:
-            abort(404, _("Dataset not found"))
+            abort(404, _(u"Dataset not found"))
 
         contacts = utils.get_package_contacts(c.package.id)
         c.recipient_options = [{'text': contact['name'], 'value': contact['id']} for contact in contacts]
@@ -561,15 +568,15 @@ class ContactController(BaseController):
         c.package = Package.get(pkg_id)
 
         if asbool(config.get('kata.disable_contact')):
-            h.flash_error(_("Sending contact emails is prohibited for now. "
-                            "Please try again later or contact customer service."))
+            h.flash_error(_(u"Sending contact emails is prohibited for now. "
+                            u"Please try again later or contact customer service."))
 
             return redirect(h.url_for(controller='package',
                                       action="read",
                                       id=c.package.name))
 
         if not c.package:
-            abort(404, _("Dataset not found"))
+            abort(404, _(u"Dataset not found"))
 
         contacts = utils.get_package_contacts(c.package.id)
         c.recipient_options = [{'text': contact['name'], 'value': contact['id']} for contact in contacts]
