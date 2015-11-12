@@ -1020,9 +1020,9 @@ def multilang_to_json(datadict, from_field, to_field):
 
 def get_contact_captcha():
     '''
+    Return whether captcha should be used
 
-    :return:
+    :return: boolean
     '''
-    log.debug(config.get('kata.contact_captcha', 'False'))
-    log.debug('asdfasdfsfd')
+
     return asbool(config.get('kata.contact_captcha', 'False'))
