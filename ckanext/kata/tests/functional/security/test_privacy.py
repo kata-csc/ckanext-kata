@@ -16,6 +16,22 @@ class TestPrivacy(KataPrivacyTestCase):
 
         assert len(output) > 2
 
+    def test_organization_user_list_succeeds(self):
+        output = self.api_test_user.call_action('organization_show', data_dict={'id': 'test_organisation'})
+        assert output.get('users'), output
+
+    def test_organization_user_list_fails(self):
+        output = self.api_test_user2.call_action('organization_show', data_dict={'id': 'test_organisation'})
+        assert not output.get('users'), output
+
+    def test_group_user_list_succeeds(self):
+        output = self.api_test_user.call_action('group_show', data_dict={'id': 'test_group'})
+        assert output.get('users'), output
+
+    def test_group_user_list_fails(self):
+        output = self.api_test_user2.call_action('group_show', data_dict={'id': 'test_group'})
+        assert not output.get('users'), output
+
     def test_user_activity_stream_fails(self):
         data_dict = {'id': 'test_user2'}
         self.assertRaises(NotAuthorized, self.api_test_user.action.user_activity_list, **data_dict)

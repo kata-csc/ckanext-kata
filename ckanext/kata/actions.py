@@ -761,6 +761,20 @@ def member_list(context, data_dict):
             for m in q.all()]
 
 
+@side_effect_free
+def organization_show(context, data_dict):
+    if not authz.is_authorized('member_list', context, {'id': data_dict.get('id')}).get('success'):
+        data_dict['include_users'] = False
+    return ckan.logic.action.get.organization_show(context, data_dict)
+
+
+@side_effect_free
+def group_show(context, data_dict):
+    if not authz.is_authorized('member_list', context, {'id': data_dict.get('id')}).get('success'):
+        data_dict['include_users'] = False
+    return ckan.logic.action.get.group_show(context, data_dict)
+
+
 class _Capacity(object):
     """ Wrapper for capacity. In template view as translation,
         but the original capacity is accesible via original attribute.
