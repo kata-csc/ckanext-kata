@@ -140,7 +140,7 @@ class TestContactForm(KataWsgiTestCase):
         """
         offset = url_for("/contact/warandpeace")
         res = self.app.get(offset)
-        assert res.status == 302, 'Expecting a redirect when user not logged in'
+        assert res.status == 200, 'Everyone is allowed to contact'
 
     def test_contact_controller_user_logged_in(self):
         '''
