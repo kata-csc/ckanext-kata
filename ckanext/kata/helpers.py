@@ -1019,4 +1019,10 @@ def multilang_to_json(datadict, from_field, to_field):
 
 
 def get_contact_captcha():
-    return asbool(config.get('kata.config_captcha', 'False'))
+    '''
+
+    :return:
+    '''
+    log.debug(config.get('kata.contact_captcha', 'False'))
+    log.debug('asdfasdfsfd')
+    return asbool(config.get('kata.contact_captcha', 'False'))

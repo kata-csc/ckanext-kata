@@ -581,7 +581,7 @@ class ContactController(BaseController):
         contacts = utils.get_package_contacts(c.package.id)
         c.recipient_options = [{'text': contact['name'], 'value': contact['id']} for contact in contacts]
         c.recipient_index = request.params.get('recipient', '')
-        c.current_time = int(time.time())
+        c.current_time = base64.b64encode(self.crypto.encrypt(self._pad(str(int(time.time())))))
 
         return render('contact/dataset_request_form.html')
 
