@@ -447,9 +447,16 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             data_dict['sort'] = settings.DEFAULT_SORT_BY
 
             # This is to get the correct one pre-selected on the HTML form.
-            c.sort_by_selected = settings.DEFAULT_SORT_BY
+            try:
+                c.sort_by_selected = settings.DEFAULT_SORT_BY
+            except TypeError:
+                pass  # c doesn't exist when using from API (mostly a testing issue)
 
-        c.translated_field_titles = utils.get_field_titles(toolkit._)
+        try:
+            c.translated_field_titles = utils.get_field_titles(toolkit._)
+        except TypeError:
+            pass  # c doesn't exist when using from API (mostly a testing issue)
+
 
         if data_dict.get('q') and 'owner_org' not in data_dict['q']:
             data_dict['defType'] = 'edismax'

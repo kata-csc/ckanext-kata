@@ -22,8 +22,6 @@ from ckanext.harvest import model as harvest_model
 class TestKataPlugin(TestCase):
     """
     General tests for KataPlugin.
-
-    Provides a a dummy context object to test functions and methods that rely on it.
     """
 
     @classmethod
@@ -32,17 +30,10 @@ class TestKataPlugin(TestCase):
 
         cls.kata_plugin = KataPlugin()
 
-        # The Pylons globals are not available outside a request. This is a hack to provide context object.
-        c = AttribSafeContextObj()
-        py_obj = PylonsContext()
-        py_obj.tmpl_context = c
-        pylons.tmpl_context._push_object(c)
-
     @classmethod
     def teardown_class(cls):
         """Get away from testing environment."""
-
-        pylons.tmpl_context._pop_object()
+        pass
 
     def test_get_actions(self):
         """Test get_actions() output type."""
