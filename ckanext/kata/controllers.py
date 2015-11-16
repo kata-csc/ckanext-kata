@@ -374,12 +374,7 @@ class ContactController(BaseController):
             self.crypto = Blowfish.new('config.get("beaker.session.secret")')
 
     def _pad(self, encr_str):
-        ret = encr_str
-        pad_chars = 8 - (len(encr_str) % 8)
-        if pad_chars != 0:
-            for i in range(pad_chars):
-                ret += " "
-        return ret
+        return encr_str + ' ' * (8 - (len(encr_str) % 8))
 
     def _get_logged_in_user(self):
         if c.userobj:
