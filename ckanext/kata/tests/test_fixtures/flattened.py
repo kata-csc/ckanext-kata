@@ -54,4 +54,4 @@ TEST_DATA_FLATTENED = {('_ckan_phase',): u'',
                        ('temporal_coverage_begin',): u'',
                        ('temporal_coverage_end',): u'',
                        ('version',): u'2014-05-16T05:58:49Z'
-                      }
+                       }

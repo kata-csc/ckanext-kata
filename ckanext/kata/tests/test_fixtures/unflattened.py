@@ -97,7 +97,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'mimetype': u'application/csv',
                  'name': u'',
                  'langnotes': [
-                    {'lang': u'fin', 'value': u'''This is a dataset used for testing Kata CKAN extension.
+                     {'lang': u'fin', 'value': u'''This is a dataset used for testing Kata CKAN extension.
                     This is entirely fictional data and any resemblance to anything is purely coincidental.
                     No animals were harmed during this dataset creation.'''}
                  ],
@@ -105,23 +105,23 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'owner_org': '',
                  'event': [
                      {
-                            u'when': u'2000-01-01',
-                            u'who': u'T. Tekijä',
-                            u'type': u'creation',
-                            u'descr': u'Kerätty dataa'
-                        },
-                        {
-                            u'when': u'2000-01-01',
-                            u'who': u'J. Julkaisija',
-                            u'type': u'published',
-                            u'descr': u'Alustava julkaisu'
-                        },
-                        {
-                            u'type': u'modified',
-                            u'who': u'M. Muokkaaja',
-                            u'when': u'2013-11-18',
-                            u'descr': u'Lisätty dataa'
-                        },
+                         u'when': u'2000-01-01',
+                         u'who': u'T. Tekijä',
+                         u'type': u'creation',
+                         u'descr': u'Kerätty dataa'
+                     },
+                     {
+                         u'when': u'2000-01-01',
+                         u'who': u'J. Julkaisija',
+                         u'type': u'published',
+                         u'descr': u'Alustava julkaisu'
+                     },
+                     {
+                         u'type': u'modified',
+                         u'who': u'M. Muokkaaja',
+                         u'when': u'2013-11-18',
+                         u'descr': u'Lisätty dataa'
+                     },
                  ],
                  'pids': [
                      {

@@ -6,17 +6,16 @@ Test classes for Kata CKAN Extension.
 import copy
 from unittest import TestCase
 
-from pylons.util import PylonsContext, pylons, AttribSafeContextObj
-
-from ckanext.kata.plugin import KataPlugin
-from ckanext.kata import settings, utils
-from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
-import ckan.model as model
-from ckan.lib.create_test_data import CreateTestData
-import ckanext.kata.model as kata_model
-import ckanext.kata.actions as actions
-from ckan.logic import get_action, NotAuthorized, ValidationError, NotFound
 from ckanext.harvest import model as harvest_model
+
+import ckan.model as model
+import ckanext.kata.actions as actions
+import ckanext.kata.model as kata_model
+from ckan.lib.create_test_data import CreateTestData
+from ckan.logic import get_action, NotAuthorized, ValidationError, NotFound
+from ckanext.kata import settings, utils
+from ckanext.kata.plugin import KataPlugin
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 
 
 class TestKataPlugin(TestCase):
@@ -164,7 +163,6 @@ class TestKataSchemas(TestCase):
         assert len(schema) > 0
 
 
-
 class TestResouceConverters(TestCase):
     """Unit tests for resource conversions in actions."""
 
@@ -183,28 +181,28 @@ class TestResouceConverters(TestCase):
         cls.test_data2 = {
             'id': u'test',
             'resources': [{
-                              'url': u'http://www.csc.fi',
-                              'algorithm': u'MD5',
-                              'hash': u'f60e586509d99944e2d62f31979a802f',
-                              'mimetype': u'application/pdf',
-                              'resource_type': settings.RESOURCE_TYPE_DATASET,
-                          }]}
+                'url': u'http://www.csc.fi',
+                'algorithm': u'MD5',
+                'hash': u'f60e586509d99944e2d62f31979a802f',
+                'mimetype': u'application/pdf',
+                'resource_type': settings.RESOURCE_TYPE_DATASET,
+            }]}
 
         cls.test_data3 = {
             'id': u'test',
             'resources': [{
-                              'url': u'http://www.csc.fi',
-                              'algorithm': u'MD5',
-                              'hash': u'f60e586509d99944e2d62f31979a802f',
-                              'mimetype': u'application/pdf',
-                              'resource_type': settings.RESOURCE_TYPE_DATASET,
-                          }, {
-                              'url': u'http://www.helsinki.fi',
-                              'algorithm': u'SHA',
-                              'hash': u'somehash',
-                              'format': u'application/csv',
-                              'resource_type': 'file',
-                          }]
+                'url': u'http://www.csc.fi',
+                'algorithm': u'MD5',
+                'hash': u'f60e586509d99944e2d62f31979a802f',
+                'mimetype': u'application/pdf',
+                'resource_type': settings.RESOURCE_TYPE_DATASET,
+            }, {
+                'url': u'http://www.helsinki.fi',
+                'algorithm': u'SHA',
+                'hash': u'somehash',
+                'format': u'application/csv',
+                'resource_type': 'file',
+            }]
         }
 
     def test_dataset_to_resource(self):
@@ -296,7 +294,6 @@ class TestActions(TestCase):
         '''Get away from testing environment.'''
         kata_model.delete_tables()
         CreateTestData.delete()
-
 
     def test_add_member_1_fails(self):
         '''

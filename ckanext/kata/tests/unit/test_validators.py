@@ -5,20 +5,20 @@ Test classes for Kata's validators.
 
 import copy
 import json
-from unittest import TestCase
 from collections import defaultdict
+from unittest import TestCase
 
+from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
+from ckanext.kata import settings
+from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
+    flattened_to_extras, flattened_from_extras, to_licence_id, gen_translation_str_from_langtitle
+from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
 from ckanext.kata.validators import validate_kata_date, validate_kata_interval_date, \
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
     validate_title_duplicates, validate_title, check_direct_download_url, check_pids, \
     validate_license_url
-from ckan.lib.navl.dictization_functions import Invalid, flatten_dict, StopOnError
-from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
-    flattened_to_extras, flattened_from_extras, to_licence_id, gen_translation_str_from_langtitle
-from ckanext.kata import settings
-from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
 
 
 class TestValidators(TestCase):

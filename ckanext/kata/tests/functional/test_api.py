@@ -4,17 +4,18 @@ Functional tests for Kata that use CKAN API.
 """
 
 import copy
-from rdflib import Graph, RDF, URIRef
+
 import testfixtures
+from rdflib import Graph, RDF, URIRef
 
-from ckan.lib.helpers import url_for
-from ckan.lib import search
-from ckan.logic import ValidationError, NotAuthorized
 import ckan.model as model
-
+from ckan.lib import search
+from ckan.lib.helpers import url_for
+from ckan.logic import ValidationError, NotAuthorized
 from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
+
 
 class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
@@ -215,7 +216,6 @@ class TestCreateDatasetAndResources(KataApiTestCase):
             assert output['__type'] != 'Validation Error'
 
 
-
 class TestUpdateDataset(KataApiTestCase):
     """Tests for (mainly) dataset updating."""
 
@@ -257,7 +257,7 @@ class TestSearchDataset(KataApiTestCase):
         super(TestSearchDataset, cls).setup_class()
         search.clear()
 
-        data_dict = copy.deepcopy(cls.TEST_DATADICT)    # Create public dataset
+        data_dict = copy.deepcopy(cls.TEST_DATADICT)  # Create public dataset
 
         # Create a dataset for this test class
         output = cls.api_user_sysadmin.call_action('package_create', data_dict=data_dict)
@@ -323,7 +323,7 @@ class TestDataReading(KataApiTestCase):
         '''
         super(TestDataReading, cls).setup_class()
 
-        cls.public_dataset = copy.deepcopy(cls.TEST_DATADICT)    # Create public dataset
+        cls.public_dataset = copy.deepcopy(cls.TEST_DATADICT)  # Create public dataset
 
     def _compare_datadicts(self, original, output):
         '''
@@ -573,7 +573,7 @@ class TestDataReading(KataApiTestCase):
         resources = output.get('resources')
         assert len(resources) == 2
         assert resources[0]['url'] == TEST_RESOURCE['url'] or \
-            resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
+               resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
 
     def test_create_and_read_resource_2(self):
         '''
@@ -590,7 +590,7 @@ class TestDataReading(KataApiTestCase):
         resources = output.get('resources')
         assert len(resources) == 2
         assert resources[0]['url'] == TEST_RESOURCE['url'] or \
-            resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
+               resources[1]['url'] == TEST_RESOURCE['url'], resources[0]['url'] + ' --- ' + resources[1]['url']
 
     def test_create_and_read_resource_3(self):
         '''
@@ -675,8 +675,8 @@ class TestOrganizationAdmin(KataApiTestCase):
 
         # admin can create an editor for organization
         self.api_user_normal.action.organization_member_create(id=NEW_ORG['name'],
-                                                                 username=self.user_joe.name,
-                                                                 role='editor')
+                                                               username=self.user_joe.name,
+                                                               role='editor')
 
         # editor can create a member for organization
         self.api_user_joe.action.organization_member_create(id=NEW_ORG['name'],

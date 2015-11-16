@@ -3,21 +3,19 @@
 Test Kata's web user interface with Pylons WSGI application.
 '''
 import copy
-
-import re
 import json
-from lxml import etree
-from ckan.logic import get_action
 
-from ckan.tests.legacy import url_for
-import ckan.model as model
-
+import lxml.etree
 from ckanext.harvest import model as harvest_model
+from lxml import etree
+
+import ckan.model as model
 import ckanext.kata.model as kata_model
+from ckan.logic import get_action
+from ckan.tests.legacy import url_for
 from ckanext.kata import settings
 from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
-import lxml.etree
 
 
 # TODO: A WSGI test to parse pages with lxml to make sure there are no tag errors.
@@ -108,12 +106,12 @@ class TestResources(KataWsgiTestCase):
         # import pprint
         # pprint.pprint(dir(res_table))
 
-#         assert 'Full text.' in result.body
+    #         assert 'Full text.' in result.body
 
-        # regex = re.compile(r'<a.*href.*>.*Edit\w*</a>')
-        # assert not regex.search(result.body), "%r" % result.body
+    # regex = re.compile(r'<a.*href.*>.*Edit\w*</a>')
+    # assert not regex.search(result.body), "%r" % result.body
 
-        # assert 'Edit Profile' in result.body    # Sanity check
+    # assert 'Edit Profile' in result.body    # Sanity check
 
 
 class TestRdfExport(KataWsgiTestCase):
@@ -169,7 +167,8 @@ class TestDatasetEditorManagement(KataWsgiTestCase):
         '''
         Test that non-editor can not see the dataset administration page
         '''
-        offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=u'warandpeace')
+        offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage',
+                         name=u'warandpeace')
 
         extra_environ = {'REMOTE_USER': 'tester'}
         res = self.app.get(offset, extra_environ=extra_environ)
@@ -179,12 +178,13 @@ class TestDatasetEditorManagement(KataWsgiTestCase):
         '''
         Test that the dataset management page renders
         '''
-        offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=u'annakarenina')
+        offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage',
+                         name=u'annakarenina')
 
         extra_environ = {'REMOTE_USER': 'testsysadmin'}
         res = self.app.get(offset, extra_environ=extra_environ)
         assert 'Add a user for role' in res, \
-               u'User should see the dataset management page'
+            u'User should see the dataset management page'
 
 
 class TestAuthorisation(KataWsgiTestCase):
@@ -228,6 +228,7 @@ class TestAuthorisation(KataWsgiTestCase):
         assert 'Are you sure you want to delete this dataset?' in res, \
             'Dataset owner should have the delete button available'
 
+
 class TestURNExport(KataWsgiTestCase):
     '''
     Test urn export
@@ -259,9 +260,11 @@ class TestURNExport(KataWsgiTestCase):
         self.assertEquals(len(lxml.etree.fromstring(res.body).xpath("//u:identifier", namespaces=self.namespaces)), 0)
         assert res.body.count('<identifier>') == 0
 
-        organization = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
+        organization = get_action('organization_create')({'user': 'test_sysadmin'},
+                                                         {'name': 'test-organization', 'title': "Test organization"})
 
-        for count, private, delete in (1, False, False), (1, True, False), (2, False, False), (2, False, True), (3, False, False):
+        for count, private, delete in (1, False, False), (1, True, False), (2, False, False), (2, False, True), (
+        3, False, False):
             data = copy.deepcopy(TEST_DATADICT)
             data['owner_org'] = organization['name']
             data['private'] = private
@@ -287,21 +290,25 @@ class TestKataApi(KataWsgiTestCase):
     '''
 
     def test_funder_autocomplete(self):
-        result = self.app.get(url_for(controller= "ckanext.kata.controllers:KATAApiController", action='funder_autocomplete', incomplete=u'eu'))
+        result = self.app.get(
+            url_for(controller="ckanext.kata.controllers:KATAApiController", action='funder_autocomplete',
+                    incomplete=u'eu'))
         results = json.loads(unicode(result.body))['ResultSet']['Result']
         self.assertTrue({"Name": "EU muu rahoitus - EU other funding"} in results)
+
 
 class TestMetadataSupplements(KataWsgiTestCase):
     '''
     Test metadata supplements.
     '''
+
     def test_01_button(self):
         '''
         Test that button renders
         '''
         organization = get_action('organization_create')({'user': 'testsysadmin'},
                                                          {'name': 'unseen-academy',
-                                                         'title': "Unseen Academy"})
+                                                          'title': "Unseen Academy"})
 
         data = copy.deepcopy(TEST_DATADICT)
         data['owner_org'] = organization['name']
@@ -312,7 +319,6 @@ class TestMetadataSupplements(KataWsgiTestCase):
         extra_environ = {'REMOTE_USER': 'testsysadmin'}
         res = self.app.get(offset, extra_environ=extra_environ)
         assert '/dataset/new_resource/' in res
-
 
     def test_02_formpage(self):
         '''

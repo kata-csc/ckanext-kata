@@ -6,13 +6,14 @@ Test classes for Kata CKAN Extension.
 import copy
 from unittest import TestCase
 
-from ckanext.kata import utils, helpers
-from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
-from ckanext.kata.settings import _FIELD_TITLES
 from ckanext.harvest import model as harvest_model
-import ckanext.kata.model as kata_model
+
 import ckan.model as model
+import ckanext.kata.model as kata_model
 from ckan.logic import get_action
+from ckanext.kata import utils, helpers
+from ckanext.kata.settings import _FIELD_TITLES
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 
 
 class TestHelpers(TestCase):
@@ -74,15 +75,19 @@ class TestHelpers(TestCase):
         '''
         disciplines = helpers.split_disciplines('Matematiikka,Fysiikka')
         assert disciplines[1] == 'Fysiikka'
-        assert helpers.split_disciplines('Tiede-, taide- ja liikuntakasvatus')[0] == 'Tiede-, taide- ja liikuntakasvatus'
+        assert helpers.split_disciplines('Tiede-, taide- ja liikuntakasvatus')[
+                   0] == 'Tiede-, taide- ja liikuntakasvatus'
 
     def test_disciplines_string_resolved(self):
         disciplines = u'Matematiikka,Fysiikka'
         assert helpers.disciplines_string_resolved(disciplines) == u'Matematiikka, Fysiikka'
         disciplines = u'http://www.yso.fi/onto/okm-tieteenala/ta111,Fysiikka'
-        assert helpers.disciplines_string_resolved(disciplines, None, 'en') == u'Mathematics, Fysiikka', helpers.disciplines_string_resolved(disciplines, None, 'en')
+        assert helpers.disciplines_string_resolved(disciplines, None,
+                                                   'en') == u'Mathematics, Fysiikka', helpers.disciplines_string_resolved(
+            disciplines, None, 'en')
         disciplines = u'http://www.yso.fi/onto/okm-tieteenala/xyz1234,Fysiikka'
-        assert helpers.disciplines_string_resolved(disciplines, None, 'en') == u'http://www.yso.fi/onto/okm-tieteenala/xyz1234, Fysiikka'
+        assert helpers.disciplines_string_resolved(disciplines, None,
+                                                   'en') == u'http://www.yso.fi/onto/okm-tieteenala/xyz1234, Fysiikka'
 
     def test_get_label_for_uri(self):
         discipline = u'Matematiikka'
@@ -113,11 +118,11 @@ class TestHelpers(TestCase):
         assert translation_def_fi == "otsikko"
 
     def test_has_json_content(self):
-        assert helpers.has_json_content(u'{}') == False
-        assert helpers.has_json_content(None) == False
-        assert helpers.has_json_content('') == False
-        assert helpers.has_json_content('{"fin": ""}') == False
-        assert helpers.has_json_content('{"fin": "", "eng": ""}') == False
+        assert helpers.has_json_content(u'{}') is False
+        assert helpers.has_json_content(None) is False
+        assert helpers.has_json_content('') is False
+        assert helpers.has_json_content('{"fin": ""}') is False
+        assert helpers.has_json_content('{"fin": "", "eng": ""}') is False
         assert helpers.has_json_content('{"fin": "jotain"}') == True
         assert helpers.has_json_content('[1, 2, 3]') == True
 
@@ -125,6 +130,7 @@ class TestHelpers(TestCase):
         datadict = {'langtitle': [{'lang': u'fin', 'value': u'foobar'}]}
         assert helpers.multilang_to_json(datadict, 'langtitle', 'title') == '{"fin": "foobar"}'
         assert datadict.get('title') == '{"fin": "foobar"}'
+
 
 class TestUtils(TestCase):
     """Unit tests for functions in utils.py."""
@@ -139,7 +145,8 @@ class TestUtils(TestCase):
 
     def _create_datasets(self):
         model.User(name="pidtest", sysadmin=True).save()
-        organization = get_action('organization_create')({'user': 'pidtest'}, {'name': 'test-organization', 'title': "Test organization"})
+        organization = get_action('organization_create')({'user': 'pidtest'},
+                                                         {'name': 'test-organization', 'title': "Test organization"})
 
         data = copy.deepcopy(TEST_DATADICT)
         data['owner_org'] = organization['name']
