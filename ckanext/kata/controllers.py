@@ -1137,6 +1137,7 @@ class KataHomeController(HomeController):
 
         return render("home/index.html", cache_force=True)
 
+
 class KataOrganizationController(OrganizationController):
 
     def index(self):

@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-version = '2.0.1'
+version = '3.0.0'
 
 setup(
     name='ckanext-kata',
