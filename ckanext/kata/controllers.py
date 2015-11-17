@@ -475,7 +475,7 @@ class ContactController(BaseController):
             return redirect(url)
 
         if sender_addr and sender_name and \
-                isinstance(sender_name, basestring) and re.match(r'[^\W_\d]{5,50}', sender_name, re.U):
+                isinstance(sender_name, basestring) and len(sender_name) >= 3:
             if user_msg:
                 prefix = prefix_template.format(
                     sender_name=sender_name,
