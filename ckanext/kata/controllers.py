@@ -444,8 +444,8 @@ class ContactController(BaseController):
             return redirect(url)
 
         if asbool(config.get('kata.disable_contact')):
-            h.flash_error(_(u"Sending contact emails is prohibited for now. "
-                            u"Please try again later or contact customer service."))
+            h.flash_error(_(u"Sending contact emails is prohibited for now. Please try again later or contact customer "
+u"service."))
             return redirect(url)
 
         package = Package.get(pkg_id)
@@ -495,7 +495,7 @@ class ContactController(BaseController):
                 h.flash_error(_(u"No message"))
         else:
             h.flash_error(_(u"Message not sent. Please, provide reply address and name. Name must contain \
-            at least three letters."))
+at least three letters."))
 
         return redirect(url)
 

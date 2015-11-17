@@ -12,7 +12,7 @@
       </select><br />
       <label for="msg">{{ _("Message") }}</label>
       <textarea name="msg" id="msg" rows="10" cols="50"></textarea><br />
-      <label for="from_address">{{ _("Your address") }}</label>
+      <label for="from_address">{{ _("Your email address") }}</label>
       {% set from = "" %}
       {% if c.userobj %}
         {% set from = c.userobj.email %}
@@ -45,6 +45,6 @@
       </div>
     {% endif %}
   <br /><br />
-  <input type="submit" value="Send"  class="btn btn-success"/>
+  <input type="submit" value="{{ _('Send') }}"  class="btn btn-success"/>
   </form>
 {% endblock %}
