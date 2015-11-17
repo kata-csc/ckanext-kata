@@ -251,7 +251,7 @@ class TestAuthorisation(KataWsgiTestCase):
         '''
         Test that edit page is not available for random user
         '''
-        offset = offset = url_for("/dataset/edit/annakarenina")
+        offset = url_for("/dataset/edit/annakarenina")
 
         extra_environ = {'REMOTE_USER': 'russianfan'}
         res = self.app.get(offset, extra_environ=extra_environ, status=401)
@@ -261,7 +261,7 @@ class TestAuthorisation(KataWsgiTestCase):
         Test that deletion of a dataset is not available
         for an unauthorised user
         '''
-        offset = offset = url_for("/dataset/delete/annakarenina")
+        offset = url_for("/dataset/delete/annakarenina")
         extra_environ = {'REMOTE_USER': 'russianfan'}
         res = self.app.get(offset, extra_environ=extra_environ, status=401)
 
@@ -387,3 +387,43 @@ class TestMetadataSupplements(KataWsgiTestCase):
         assert 'resource-upload-field' in res
 
         get_action('package_delete')({'user': 'testsysadmin'}, package)
+
+
+class TestKataOrganizationController(KataWsgiTestCase):
+    '''Test organization controller'''
+
+    def test_organization_hiding_pagination(self):
+        model.User(name="test_sysadmin", sysadmin=True).save()
+
+        orgs = []
+
+        for x in range(50):  # Create 50 organizations
+            org_id = 'org_{x}'.format(x=str(x))
+            org_title = 'Organisation {x}'.format(x=str(x))
+            orgs.append(get_action('organization_create')({'user': 'test_sysadmin'},
+                                                          {'name': org_id, 'title': org_title}))
+
+        for org in orgs[::2]:  # Create 25 datasets to distinct organizations
+            data = copy.deepcopy(TEST_DATADICT)
+            data['owner_org'] = org['name']
+            data['name'] = org['id']
+            get_action('package_create')({'user': 'test_sysadmin'}, data)
+
+        res = self.app.get(url_for("/organization"), status=200)
+
+        # Page 1:
+
+        assert res.body.count('>0 Datasets<') == 0
+        assert res.body.count('>1 Dataset<') == 21
+
+        assert res.body.count('25 organizations found')
+
+        # Page 2:
+
+        res = self.app.get(url_for("/organization?sort=&q=&page=2"), status=200)
+
+        assert res.body.count('>0 Datasets<') == 0
+        assert res.body.count('>1 Dataset<') == 4
+
+        assert res.body.count('25 organizations found')
+
