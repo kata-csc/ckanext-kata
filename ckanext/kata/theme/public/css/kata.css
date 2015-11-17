@@ -2146,6 +2146,34 @@ a.download {
 #ida-modal-tips.hide {
   display: none;
 }
+.contact input[type=text],
+.contact input[type=email],
+.contact input[type=hidden],
+.contact textarea,
+.contact select {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 20px;
+  width: 300px !important;
+}
+.contact input[type=checkbox] {
+  width: 20px !important;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.contact label {
+  display: inline-block;
+  float: left;
+  padding-top: 5px;
+  text-align: right;
+  width: 200px;
+}
+.contact label.accept_terms {
+  width: 400px !important;
+  font-weight: normal !important;
+}
 .dataset-heading a {
   color: #0095ca;
 }

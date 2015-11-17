@@ -517,3 +517,31 @@ a.download {
     display: none;
   }
 }
+
+.contact {
+  input[type=text], input[type=email],
+  input[type=hidden], textarea, select {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+    width: 300px !important;
+  }
+  input[type=checkbox] {
+    width: 20px !important;
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+  label {
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    text-align: right;
+    width: 200px;
+    &.accept_terms {
+      width: 400px !important;
+      font-weight: normal !important;
+    }
+  }
+}

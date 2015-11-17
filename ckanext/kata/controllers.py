@@ -12,6 +12,9 @@ import string
 import urllib2
 from urllib import urlencode
 import difflib
+import time
+from Crypto.Cipher import Blowfish
+import base64
 
 import functionally as fn
 import rdflib
@@ -363,6 +366,15 @@ class ContactController(BaseController):
     From the web page, this can be seen from the link telling that this dataset is accessible by contacting the author.
     The feature provides a form for message sending, and the message is sent via email.
     """
+    def __init__(self):
+        if config.get('kata.bf') and len(config.get('kata.bf')) > 4 and len(config.get('kata.bf')) < 56:
+            self.crypto = Blowfish.new('config.get("kata.bf")')
+        else:
+            log.info('No encryption key (kata.bf) is set, falling back to beaker.session.secret!')
+            self.crypto = Blowfish.new('config.get("beaker.session.secret")')
+
+    def _pad(self, encr_str):
+        return encr_str + ' ' * (8 - (len(encr_str) % 8))
 
     def _get_logged_in_user(self):
         if c.userobj:
@@ -385,20 +397,6 @@ class ContactController(BaseController):
 
         return recipient
 
-    def _mark_package_as_contacted(self, userobj, pkg_id):
-        """Mark this user as having already emailed the contact person of the package."""
-
-        model.repo.new_revision()
-
-        if "contacted" not in userobj.extras:
-            userobj.extras['contacted'] = []
-
-        userobj.extras['contacted'].append(pkg_id)
-        userobj.save()
-
-    def _has_already_contacted(self, userobj, pkg_id):
-        return pkg_id in userobj.extras.get('contacted', [])
-
     def _send_message(self, subject, message, recipient_email, recipient_name=None):
         email_dict = {'subject': subject,
                       'body': message}
@@ -409,7 +407,7 @@ class ContactController(BaseController):
 
         recipient_dict = {'display_name': recipient_name, 'email': recipient_email}
 
-        if c.user and message:
+        if message:
             send_notification(recipient_dict, email_dict)
 
     def _prepare_and_send(self, pkg_id, recipient_id, subject, prefix_template, suffix):
@@ -432,10 +430,29 @@ class ContactController(BaseController):
         :type suffix: unicode
         """
 
+        url = h.url_for(controller='package', action='read', id=pkg_id)
+
+        if asbool(config.get('kata.contact_captcha')):
+            try:
+                captcha.check_recaptcha(request)
+            except captcha.CaptchaError:
+                h.flash_error(_(u'Bad Captcha. Please try again.'))
+                redirect(url)
+
+        if not request.params.get('accept_logging'):
+            h.flash_error(_(u"Message not sent as logging wasn't permitted"))
+            return redirect(url)
+
+        if asbool(config.get('kata.disable_contact')):
+            h.flash_error(_(u"Sending contact emails is prohibited for now. "
+                            u"Please try again later or contact customer service."))
+            return redirect(url)
+
         package = Package.get(pkg_id)
         package_title = package.title if package.title else package.name
 
-        sender = self._get_logged_in_user()
+        sender_addr = request.params.get('from_address')
+        sender_name = request.params.get('from_name')
         recipient = self._get_contact_email(pkg_id, recipient_id)
 
         if not recipient:
@@ -443,28 +460,42 @@ class ContactController(BaseController):
 
         user_msg = request.params.get('msg', '')
 
-        if sender:
+        ct = int(time.time())
+        try:
+            check = self.crypto.decrypt(base64.b64decode(request.params.get('check_this_out')))
+            check = re.sub(' ', '', check)
+        except TypeError:
+            h.flash_error(_(u"Message not sent. Couldn't confirm human interaction (spam bot control)"))
+            return redirect(url)
+
+        hp = request.params.get('hp')
+
+        if hp or not check or (ct - int(check) < 20) or (ct - int(check) > 1200):
+            h.flash_error(_(u"Message not sent. Couldn't confirm human interaction (spam bot control)"))
+            return redirect(url)
+
+        if sender_addr and sender_name and \
+                isinstance(sender_name, basestring) and len(sender_name) >= 3:
             if user_msg:
-                if not self._has_already_contacted(c.userobj, pkg_id):
-                    prefix = prefix_template.format(
-                        sender_name=sender['name'],
-                        sender_email=sender['email'],
-                        package_title=package_title,
-                        data_pid=utils.get_primary_data_pid_from_package(package)
-                    )
+                prefix = prefix_template.format(
+                    sender_name=sender_name,
+                    sender_email=sender_addr,
+                    package_title=package_title,
+                    data_pid=utils.get_primary_data_pid_from_package(package)
+                )
 
-                    full_msg = u"{a}{b}{c}".format(a=prefix, b=user_msg, c=suffix)
-                    self._send_message(subject, full_msg, recipient.get('email'), recipient.get('name'))
-                    self._mark_package_as_contacted(c.userobj, pkg_id)
-                    h.flash_success(_("Message sent"))
-                else:
-                    h.flash_error(_("Already contacted"))
+                log.info(u"Message {m} sent from {a} ({b}) to {r} about {c}, IP: {d}"
+                         .format(m=user_msg, a=sender_name, b=sender_addr, r=recipient, c=pkg_id,
+                                 d=request.environ.get('REMOTE_ADDR', 'No remote address')))
+
+                full_msg = u"{a}{b}{c}".format(a=prefix, b=user_msg, c=suffix)
+                self._send_message(subject, full_msg, recipient.get('email'), recipient.get('name'))
+                h.flash_success(_(u"Message sent"))
             else:
-                h.flash_error(_("No message"))
+                h.flash_error(_(u"No message"))
         else:
-            abort(401, _('Please login'))
-
-        url = h.url_for(controller='package', action='read', id=pkg_id)
+            h.flash_error(_(u"Message not sent. Please, provide reply address and name. Name must contain \
+            at least three letters."))
 
         return redirect(url)
 
@@ -510,24 +541,22 @@ class ContactController(BaseController):
 
         c.package = Package.get(pkg_id)
 
+        if asbool(config.get('kata.disable_contact')):
+            h.flash_error(_(u"Sending contact emails is prohibited for now. "
+                            u"Please try again later or contact customer service."))
+
+            return redirect(h.url_for(controller='package',
+                                      action="read",
+                                      id=c.package.name))
+
         if not c.package:
-            abort(404, _("Dataset not found"))
+            abort(404, _(u"Dataset not found"))
 
         contacts = utils.get_package_contacts(c.package.id)
-        c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
+        c.recipient_options = [{'text': contact['name'], 'value': contact['id']} for contact in contacts]
         c.recipient_index = request.params.get('recipient', '')
-
-        url = h.url_for(controller='package',
-                        action="read",
-                        id=c.package.name)
-        if c.user:
-            if pkg_id not in c.userobj.extras.get('contacted', []):
-                return render('contact/contact_form.html')
-            else:
-                h.flash_error(_("Already contacted"))
-                return redirect(url)
-        else:
-            abort(401, _('Please login'))
+        c.current_time = base64.b64encode(self.crypto.encrypt(self._pad(str(int(time.time())))))
+        return render('contact/contact_form.html')
 
     def render_request_form(self, pkg_id):
         """
@@ -536,27 +565,25 @@ class ContactController(BaseController):
         :param pkg_id: package id
         :type pkg_id: string
         """
-
         c.package = Package.get(pkg_id)
 
+        if asbool(config.get('kata.disable_contact')):
+            h.flash_error(_(u"Sending contact emails is prohibited for now. "
+                            u"Please try again later or contact customer service."))
+
+            return redirect(h.url_for(controller='package',
+                                      action="read",
+                                      id=c.package.name))
+
         if not c.package:
-            abort(404, _("Dataset not found"))
+            abort(404, _(u"Dataset not found"))
 
         contacts = utils.get_package_contacts(c.package.id)
-        c.recipient_options = [ {'text': contact['name'], 'value': contact['id']} for contact in contacts ]
+        c.recipient_options = [{'text': contact['name'], 'value': contact['id']} for contact in contacts]
         c.recipient_index = request.params.get('recipient', '')
+        c.current_time = base64.b64encode(self.crypto.encrypt(self._pad(str(int(time.time())))))
 
-        url = h.url_for(controller='package',
-                        action="read",
-                        id=c.package.name)
-        if c.user:
-            if pkg_id not in c.userobj.extras.get('contacted', []):
-                return render('contact/dataset_request_form.html')
-            else:
-                h.flash_error(_("Already contacted"))
-                return redirect(url)
-        else:
-            abort(401, _('Please login'))
+        return render('contact/dataset_request_form.html')
 
 
 class KataUserController(UserController):

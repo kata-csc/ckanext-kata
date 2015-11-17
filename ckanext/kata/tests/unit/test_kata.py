@@ -8,6 +8,10 @@ from unittest import TestCase
 
 from ckanext.harvest import model as harvest_model
 
+from ckanext.kata.controllers import ContactController
+from ckanext.kata.plugin import KataPlugin
+from ckanext.kata import settings, utils
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 import ckan.model as model
 import ckanext.kata.actions as actions
 import ckanext.kata.model as kata_model
@@ -451,6 +455,7 @@ class TestActions(TestCase):
 
 
 class TestHarvestSource(TestCase):
+
     @classmethod
     def setup_class(cls):
         harvest_model.setup()
@@ -466,3 +471,25 @@ class TestHarvestSource(TestCase):
         data_dict['id'] = response['id']
         data_dict['title'] = 'test update'
         response = get_action('harvest_source_update')(context, data_dict)
+
+
+class TestContactController(TestCase):
+
+    @classmethod
+    def setup_class(cls):
+        '''Set up testing environment.'''
+        kata_model.setup()
+        harvest_model.setup()
+
+    @classmethod
+    def teardown_class(cls):
+        '''Get away from testing environment.'''
+        kata_model.delete_tables()
+
+    def test_pad(self):
+        cc = ContactController()
+        dummy_string = '0123456789abcdefghijklmno'
+
+        for x in range(len(dummy_string)):
+            assert len(cc._pad(dummy_string[:x])) == 8 + 8 * (x / 8)
+

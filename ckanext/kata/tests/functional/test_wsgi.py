@@ -14,8 +14,11 @@ import ckanext.kata.model as kata_model
 from ckan.logic import get_action
 from ckan.tests.legacy import url_for
 from ckanext.kata import settings
+from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
+from ckanext.kata.controllers import ContactController
+import lxml.etree
 
 
 # TODO: A WSGI test to parse pages with lxml to make sure there are no tag errors.
@@ -138,7 +141,7 @@ class TestContactForm(KataWsgiTestCase):
         """
         offset = url_for("/contact/warandpeace")
         res = self.app.get(offset)
-        assert res.status == 302, 'Expecting a redirect when user not logged in'
+        assert res.status == 200, 'Everyone is allowed to contact'
 
     def test_contact_controller_user_logged_in(self):
         '''
@@ -157,6 +160,60 @@ class TestContactForm(KataWsgiTestCase):
 
         assert all(piece in res.body for piece in ['<form', '/contact/send/', '</form>']), 'Contact form not rendered'
 
+    def test_contact(self):
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['private'] = False
+        data['contact'][0]['email'] = 'kata.selenium@gmail.com'
+        data['id'] = 'test-contact'
+        data['name'] = 'test-contact'
+
+        model.User(name="test_sysadmin", sysadmin=True).save()
+
+        organisation = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization',
+                                                                                     'title': "Test organization"})
+        data['owner_org'] = organisation.get('name')
+        get_action('package_create')({'user': 'test_sysadmin'}, data)
+
+        offset = url_for("/contact/send/test-contact")
+        res = self.app.post(offset, params={'recipient': utils.get_package_contacts(data.get('name'))[0].get('id')})
+        assert res.status == 302
+
+        offset = url_for("/dataset/test-contact")
+        res = self.app.post(offset)
+        assert 'Message not sent' in res
+
+        import base64
+        import time
+
+        cc = ContactController()
+        _time = base64.b64encode(cc.crypto.encrypt(cc._pad(str(int(time.time())))))
+
+        offset = url_for("/contact/send/test-contact")
+        params = {
+            'recipient': utils.get_package_contacts(data.get('name'))[0].get('id'),
+            'check_this_out': _time,
+            'accept_logging': 'True'
+        }
+        self.app.post(offset, params=params, status=302)
+
+        offset = url_for("/dataset/test-contact")
+        res = self.app.post(offset)
+
+        assert 'spam bot' in res
+
+        _time = base64.b64encode(cc.crypto.encrypt(cc._pad(str(int(time.time())-21))))
+        offset = url_for("/contact/send/test-contact")
+        params = {
+            'recipient': utils.get_package_contacts(data.get('name'))[0].get('id'),
+            'check_this_out': _time,
+            'accept_logging': 'True'
+        }
+        self.app.post(offset, params=params, status=302)
+        offset = url_for("/dataset/test-contact")
+        res = self.app.post(offset)
+
+        assert 'Message not sent' in res
 
 class TestDatasetEditorManagement(KataWsgiTestCase):
     '''
