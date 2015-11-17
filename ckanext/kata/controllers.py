@@ -494,7 +494,7 @@ class ContactController(BaseController):
             else:
                 h.flash_error(_(u"No message"))
         else:
-            h.flash_error(_(u"Please, provide reply address and name. Name must contain at least five letters."))
+            h.flash_error(_(u"Please, provide reply address and name. Name must contain at least three letters."))
 
         return redirect(url)
 

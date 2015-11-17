@@ -29,14 +29,14 @@
                    </select><br />
                    <label for="msg">{{ _("Message") }}</label>
                    <textarea name="msg" id="msg" rows="10" cols="50"></textarea><br />
-                   <label for="from_address">{{ _("Reply address") }}</label>
+                   <label for="from_address">{{ _("Your address") }}</label>
                    {% set from = "" %}
                    {% if c.userobj %}
                      {% set from = c.userobj.email %}
                      {% set fname = c.userobj.fullname %}
                    {% endif %}
                    <input type="email" name="from_address" id="from_address" value="{{ from }}"/><br />
-                   <label for="from_name">{{ _("Reply (your) full name") }}</label>
+                   <label for="from_name">{{ _("Your full name") }}</label>
                    <input type="text" name="from_name" id="from_name" value="{{ fname }}"/><br />
                    <input type="hidden" name="check_this_out" value="{{ c.current_time }}"/>
                    <div class="hidden">
