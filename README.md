@@ -10,7 +10,7 @@ You can install the extension with:
 Requirements
 ============
 
-* CKAN 2.1.2
+* CKAN 2.4.1
 * Some additional Python packages that will be installed using `pip install`
 * CKAN extension ckanext-ytp-comments: https://github.com/kata-csc/ckanext-ytp-comments/tree/etsin
 * ClamAV (if kata.storage.malware_scan=true): http://www.clamav.net/index.html
@@ -39,3 +39,17 @@ If LDAP is used, add basic LDAP configuration to the aforementioned file:
 > kata.ldap.dn = [DN]
 
 > kata.ldap.basedn = [BASE DN]
+
+For contact emails following settings apply:
+
+> kata.bf = [ENCRYPTION KEY]
+
+To enable reCaptcha set:
+
+> kata.contact_captcha = true
+
+Note that this setting requires captcha keys to be set
+
+The email feature can be turned off with:
+
+> kata.disable_contact = true
