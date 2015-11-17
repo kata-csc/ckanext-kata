@@ -4,7 +4,6 @@ Test Kata's web user interface with Pylons WSGI application.
 '''
 import copy
 
-import re
 import json
 from lxml import etree
 from ckan.logic import get_action
@@ -17,6 +16,7 @@ import ckanext.kata.model as kata_model
 from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
+from ckanext.kata.controllers import ContactController
 import lxml.etree
 
 
@@ -169,16 +169,49 @@ class TestContactForm(KataWsgiTestCase):
 
         model.User(name="test_sysadmin", sysadmin=True).save()
 
-        organisation = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
+        organisation = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization',
+                                                                                     'title': "Test organization"})
         data['owner_org'] = organisation.get('name')
         get_action('package_create')({'user': 'test_sysadmin'}, data)
 
         offset = url_for("/contact/send/test-contact")
-        res = self.app.post(offset, params={'recipient_id': utils.get_package_contacts(data.get('name'))})
+        res = self.app.post(offset, params={'recipient': utils.get_package_contacts(data.get('name'))[0].get('id')})
         assert res.status == 302
 
         offset = url_for("/dataset/test-contact")
         res = self.app.post(offset)
+        assert 'Message not sent' in res
+
+        import base64
+        import time
+
+        cc = ContactController()
+        _time = base64.b64encode(cc.crypto.encrypt(cc._pad(str(int(time.time())))))
+
+        offset = url_for("/contact/send/test-contact")
+        params = {
+            'recipient': utils.get_package_contacts(data.get('name'))[0].get('id'),
+            'check_this_out': _time,
+            'accept_logging': 'True'
+        }
+        self.app.post(offset, params=params, status=302)
+
+        offset = url_for("/dataset/test-contact")
+        res = self.app.post(offset)
+
+        assert 'spam bot' in res
+
+        _time = base64.b64encode(cc.crypto.encrypt(cc._pad(str(int(time.time())-21))))
+        offset = url_for("/contact/send/test-contact")
+        params = {
+            'recipient': utils.get_package_contacts(data.get('name'))[0].get('id'),
+            'check_this_out': _time,
+            'accept_logging': 'True'
+        }
+        self.app.post(offset, params=params, status=302)
+        offset = url_for("/dataset/test-contact")
+        res = self.app.post(offset)
+
         assert 'Message not sent' in res
 
 class TestDatasetEditorManagement(KataWsgiTestCase):

@@ -465,13 +465,13 @@ class ContactController(BaseController):
             check = self.crypto.decrypt(base64.b64decode(request.params.get('check_this_out')))
             check = re.sub(' ', '', check)
         except TypeError:
-            h.flash_error(_(u"Couldn't confirm human interaction (spam bot control)"))
+            h.flash_error(_(u"Message not sent. Couldn't confirm human interaction (spam bot control)"))
             return redirect(url)
 
         hp = request.params.get('hp')
 
         if hp or not check or (ct - int(check) < 20) or (ct - int(check) > 1200):
-            h.flash_error(_(u"Couldn't confirm human interaction (spam bot control)"))
+            h.flash_error(_(u"Message not sent. Couldn't confirm human interaction (spam bot control)"))
             return redirect(url)
 
         if sender_addr and sender_name and \
@@ -494,7 +494,8 @@ class ContactController(BaseController):
             else:
                 h.flash_error(_(u"No message"))
         else:
-            h.flash_error(_(u"Please, provide reply address and name. Name must contain at least three letters."))
+            h.flash_error(_(u"Message not sent. Please, provide reply address and name. Name must contain \
+            at least three letters."))
 
         return redirect(url)
 
