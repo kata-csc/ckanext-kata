@@ -13,12 +13,10 @@ import ckan.model as model
 import ckanext.kata.model as kata_model
 from ckan.logic import get_action
 from ckan.tests.legacy import url_for
-from ckanext.kata import settings
 from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 from ckanext.kata.controllers import ContactController
-import lxml.etree
 
 
 # TODO: A WSGI test to parse pages with lxml to make sure there are no tag errors.

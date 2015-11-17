@@ -9,9 +9,6 @@ from unittest import TestCase
 from ckanext.harvest import model as harvest_model
 
 from ckanext.kata.controllers import ContactController
-from ckanext.kata.plugin import KataPlugin
-from ckanext.kata import settings, utils
-from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 import ckan.model as model
 import ckanext.kata.actions as actions
 import ckanext.kata.model as kata_model
