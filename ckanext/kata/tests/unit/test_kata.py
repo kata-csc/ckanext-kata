@@ -6,7 +6,6 @@ Test classes for Kata CKAN Extension.
 import copy
 from unittest import TestCase
 
-import math
 from pylons.util import PylonsContext, pylons, AttribSafeContextObj
 
 from ckanext.kata.controllers import ContactController

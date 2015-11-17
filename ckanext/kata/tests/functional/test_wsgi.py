@@ -14,7 +14,7 @@ import ckan.model as model
 
 from ckanext.harvest import model as harvest_model
 import ckanext.kata.model as kata_model
-from ckanext.kata import settings
+from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 import lxml.etree
@@ -159,6 +159,27 @@ class TestContactForm(KataWsgiTestCase):
 
         assert all(piece in res.body for piece in ['<form', '/contact/send/', '</form>']), 'Contact form not rendered'
 
+    def test_contact(self):
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['private'] = False
+        data['contact'][0]['email'] = 'kata.selenium@gmail.com'
+        data['id'] = 'test-contact'
+        data['name'] = 'test-contact'
+
+        model.User(name="test_sysadmin", sysadmin=True).save()
+
+        organisation = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization', 'title': "Test organization"})
+        data['owner_org'] = organisation.get('name')
+        get_action('package_create')({'user': 'test_sysadmin'}, data)
+
+        offset = url_for("/contact/send/test-contact")
+        res = self.app.post(offset, params={'recipient_id': utils.get_package_contacts(data.get('name'))})
+        assert res.status == 302
+
+        offset = url_for("/dataset/test-contact")
+        res = self.app.post(offset)
+        assert 'Message not sent' in res
 
 class TestDatasetEditorManagement(KataWsgiTestCase):
     '''
