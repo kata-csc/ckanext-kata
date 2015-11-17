@@ -1174,7 +1174,8 @@ class KataOrganizationController(OrganizationController):
         }
         global_results = self._action('group_list')(context, data_dict_global_results)
 
-        global_results = [org for org in global_results if org.get('package_count', 0) > 0]
+        if not q:
+            global_results = [org for org in global_results if org.get('package_count', 0) > 0]
 
         page_results_start = items_per_page * (page - 1)
         page_results_end = page_results_start + items_per_page
