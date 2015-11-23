@@ -1144,6 +1144,10 @@ class KataOrganizationController(OrganizationController):
         '''
         Modified version of ckan.controllers.group:GroupController.index to hide datasets without organizations.
         '''
+        if request.params.get('showall'):
+            c.showall = request.params.get('showall')
+            return super(OrganizationController, self).index()
+
         group_type = self._guess_group_type()
 
         page = self._get_page_number(request.params) or 1

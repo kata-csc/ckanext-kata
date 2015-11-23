@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 2.0.1\n"
+"Project-Id-Version: ckanext-kata 3.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-17 08:32+0000\n"
+"POT-Creation-Date: 2015-11-23 12:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,52 +25,52 @@ msgstr ""
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:474 ckanext/kata/actions.py:538
+#: ckanext/kata/actions.py:463 ckanext/kata/actions.py:527
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:485 ckanext/kata/actions.py:549
-#: ckanext/kata/controllers.py:689 ckanext/kata/controllers.py:767
+#: ckanext/kata/actions.py:474 ckanext/kata/actions.py:538
+#: ckanext/kata/controllers.py:690 ckanext/kata/controllers.py:768
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:490 ckanext/kata/actions.py:494
-#: ckanext/kata/controllers.py:764
+#: ckanext/kata/actions.py:479 ckanext/kata/actions.py:483
+#: ckanext/kata/controllers.py:765
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:498
+#: ckanext/kata/actions.py:487
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:505
+#: ckanext/kata/actions.py:494
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:509
+#: ckanext/kata/actions.py:498
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:514
+#: ckanext/kata/actions.py:503
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:560
+#: ckanext/kata/actions.py:549
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:566
+#: ckanext/kata/actions.py:555
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:624
+#: ckanext/kata/actions.py:613
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:658
+#: ckanext/kata/actions.py:647
 msgid "You don't have permission to remove this user."
 msgstr ""
 
@@ -122,105 +122,105 @@ msgstr ""
 msgid "User %s not authorized to delete resource %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:439 ckanext/kata/controllers.py:728
+#: ckanext/kata/controllers.py:440 ckanext/kata/controllers.py:729
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:443
+#: ckanext/kata/controllers.py:444
 msgid "Message not sent as logging wasn't permitted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:447 ckanext/kata/controllers.py:545
-#: ckanext/kata/controllers.py:571
+#: ckanext/kata/controllers.py:448 ckanext/kata/controllers.py:546
+#: ckanext/kata/controllers.py:572
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
 msgstr ""
 
-#: ckanext/kata/controllers.py:459
+#: ckanext/kata/controllers.py:460
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:468 ckanext/kata/controllers.py:474
+#: ckanext/kata/controllers.py:469 ckanext/kata/controllers.py:475
 msgid "Message not sent. Couldn't confirm human interaction (spam bot control)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:493 ckanext/kata/controllers.py:723
+#: ckanext/kata/controllers.py:494 ckanext/kata/controllers.py:724
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:495
+#: ckanext/kata/controllers.py:496
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:497
+#: ckanext/kata/controllers.py:498
 msgid ""
 "Message not sent. Please, provide reply address and name. Name must contain "
 "at least three letters."
 msgstr ""
 
-#: ckanext/kata/controllers.py:553 ckanext/kata/controllers.py:579
+#: ckanext/kata/controllers.py:554 ckanext/kata/controllers.py:580
 #: ckanext/kata/theme/templates/kata/dummy.html:61
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:622
+#: ckanext/kata/controllers.py:623
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:633
+#: ckanext/kata/controllers.py:634
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:664 ckanext/kata/controllers.py:904
-#: ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:665 ckanext/kata/controllers.py:905
+#: ckanext/kata/controllers.py:1165 ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:686
+#: ckanext/kata/controllers.py:687
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:706
+#: ckanext/kata/controllers.py:707
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:708 ckanext/kata/validators.py:164
+#: ckanext/kata/controllers.py:709 ckanext/kata/validators.py:164
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:823
+#: ckanext/kata/controllers.py:824
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:848
+#: ckanext/kata/controllers.py:849
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:853
+#: ckanext/kata/controllers.py:854
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:856
+#: ckanext/kata/controllers.py:857
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:858
+#: ckanext/kata/controllers.py:859
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:862
+#: ckanext/kata/controllers.py:863
 msgid "Failed to load file"
 msgstr ""
 
-#: ckanext/kata/controllers.py:982 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:983 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/controllers.py:983
+#: ckanext/kata/controllers.py:984
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -230,15 +230,15 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: ckanext/kata/controllers.py:984
+#: ckanext/kata/controllers.py:985
 msgid "Tags"
 msgstr ""
 
-#: ckanext/kata/controllers.py:985
+#: ckanext/kata/controllers.py:986
 msgid "Formats"
 msgstr ""
 
-#: ckanext/kata/controllers.py:986
+#: ckanext/kata/controllers.py:987
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:72
 msgid "License"
@@ -615,6 +615,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/contact/contact_form.html:65
+#: ckanext/kata/theme/templates/contact/dataset_request_form.html:48
 #: ckanext/kata/theme/templates/package/package_rights.html:181
 msgid "Send"
 msgstr ""
@@ -2466,7 +2467,11 @@ msgstr ""
 msgid "Search for organizations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/organization/index.html:58
+#: ckanext/kata/theme/templates/organization/index.html:40
+msgid "Show empty organizations"
+msgstr ""
+
+#: ckanext/kata/theme/templates/organization/index.html:65
 msgid "There are currently no organizations for this site"
 msgstr ""
 

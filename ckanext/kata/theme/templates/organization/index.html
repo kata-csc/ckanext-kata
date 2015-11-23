@@ -34,6 +34,13 @@
               {%- endif %}
 
             </div>
+
+            <div class="search-extras form-inline">
+              <label class="checkbox">
+                <input type="checkbox" name="showall" value="true"{% if c.showall | lower == 'true' %} checked{% endif %}>{{ _('Show empty organizations') }}
+              </label>
+            </div>
+
         </form>
       </div>
     </div>
