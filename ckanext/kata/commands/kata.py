@@ -1,13 +1,13 @@
+'''Paster commands'''
+
 import sys
-import datetime
-from datetime import timedelta
 
 from ckan.lib.cli import CkanCommand
 from ckan.lib.dictization.model_dictize import package_dictize
 import ckan.model as model
 from ckanext.harvest.model import HarvestSource
-from ckanext.kata.model import setup, KataAccessRequest
-from ckanext.kata.utils import send_edit_access_request_email
+from ckanext.kata.model import setup
+
 
 class Kata(CkanCommand):
     '''
@@ -15,8 +15,6 @@ class Kata(CkanCommand):
 
       katacmd initdb
         - Creates the necessary tables in the database
-      katacmd send_request_emails
-        - Sends edit request messages
     '''
 
     summary = __doc__.split('\n')[0]
@@ -34,13 +32,11 @@ class Kata(CkanCommand):
             self.parser.print_usage()
             sys.exit(1)
         cmd = self.args[0]
-        
+
         if cmd == 'initdb':
             self.initdb()
         elif cmd == 'harvest_sources':
             self.harvest_sources()
-        elif cmd == 'send_request_emails':
-            self.send_emails()
         elif cmd == 'sphinx':
             self.sphinx()
         elif cmd == 'crawl':
@@ -52,27 +48,16 @@ class Kata(CkanCommand):
         super(Kata, self)._load_config(load_site_user=False)
 
     def initdb(self):
-#        kata = Group.get('KATA')
-#        if not kata:
-#            repo.new_revision()
-#            kata = Group(name="KATA", title="Tieteenalat")
-#            kata.save()
-#            for tiede in tieteet.tieteet:
-#                t = Group(description=tiede['description'],
-#                          name=tiede['name'],
-#                          title=tiede['title'])
-#                t.save()
-#                m = Member(group=kata, table_id=t.id, table_name="group")
-#                m.save()
+        '''Database initialization'''
         setup()
 
     def harvest_sources(self):
         ddi = HarvestSource(url='http://www.fsd.uta.fi/fi/aineistot/luettelo/fsd-ddi-records-uris-fi.txt',
                             type='DDI')
         ddi.save()
-        #oai = HarvestSource(url='http://helda.helsinki.fi/oai/request',
+        # oai = HarvestSource(url='http://helda.helsinki.fi/oai/request',
         #                    type='OAI-PMH')
-        #oai.save()
+        # oai.save()
 
     def sphinx(self):
         import sphinx

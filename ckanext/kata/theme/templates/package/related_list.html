@@ -31,12 +31,6 @@
             <li>
               {% link_for _('Edit metadata'), controller='package', action='edit', id=pkg.name, class_='', icon='' %}
             </li>
-            {% else %}
-            <li>
-              <a href="{{ h.url_for(controller='ckanext.kata.controllers:EditAccessRequestController', action='render_edit_request', pkg_id=pkg.name) }}">
-              {{ _('Request metadata editing rights') }}
-              </a>
-            </li>
             {% endif %}
 
             {% if h.dataset_is_valid(c.pkg_dict) %}

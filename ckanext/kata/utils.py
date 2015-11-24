@@ -35,45 +35,6 @@ def generate_pid():
     return "urn:nbn:fi:csc-kata%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
 
 
-def send_edit_access_request_email(req):
-    """
-    Send edit access request email.
-
-    :param user_id: user who requests access
-    :param pkg_id: dataset's id
-    """
-    requester = User.get(req.user_id)
-    pkg = Package.get(req.pkg_id)
-    selrole = False
-    for role in pkg.roles:
-        if role.role == "admin":
-            selrole = role
-    if not selrole:
-        return
-
-    admin = User.get(selrole.user_id)
-    admin_dict = admin.as_dict()
-    admin_dict['name'] = admin.fullname if admin.fullname else admin.name
-
-    msg = u'{a} ({b}) is requesting editing rights to the metadata in dataset\n\n{c}\n\n\
-for which you are currently an administrator. Please click this \
-link if you want to allow this user to edit the metadata of the dataset:\n\
-{d}\n\n{a} ({b}) pyytää muokkausoikeuksia tietoaineiston\n\n{c}\n\n\
-metatietoihin, joiden ylläpitäjä olet. Klikkaa linkkiä, jos haluat tämän käyttäjän \
-saavan muokkausoikeudet aineiston metatietoihin:\n\
-{d}\n'
-
-    controller = 'ckanext.kata.controllers:EditAccessRequestController'
-
-    requester_name = requester.fullname if requester.fullname else requester.name
-    accessurl = config.get('ckan.site_url', '') + h.url_for(controller=controller, action="unlock_access", id=req.id)
-    body = msg.format(a=requester_name, b=requester.email, c=pkg.title if pkg.title else pkg.name, d=accessurl)
-    email_dict = {}
-    email_dict["subject"] = u"Access request for dataset / pyyntö koskien tietoaineistoa %s" % pkg.title if pkg.title else pkg.name
-    email_dict["body"] = body
-    send_notification(admin_dict, email_dict)
-
-
 def label_list_yso(tag_url):
     """
     Takes tag keyword URL and fetches the labels that link to it.
