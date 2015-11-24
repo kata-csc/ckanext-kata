@@ -2,6 +2,7 @@
 
 import copy
 import unittest
+import testfixtures
 
 import ckanapi
 import paste.fixture
@@ -93,4 +94,45 @@ class KataApiTestCase(unittest.TestCase):
     def teardown_class(cls):
         """Get away from testing environment."""
         model.repo.rebuild_db()
+
+    def _compare_datadicts(self, original, output):
+        '''
+        Compare a CKAN generated datadict to original datadict. Returns True if identical,
+        otherwise throws an exception with useful output of differences.
+
+        :param original: original datadict
+        :param output: a datadict received from CKAN API
+        '''
+
+        data_dict = copy.deepcopy(original)
+
+        # name (data pid), title and notes are generated so they shouldn't match
+        data_dict.pop('name', None)
+        data_dict.pop('title', None)
+        data_dict.pop('notes', None)
+
+        # lang* fields are converted to translation JSON strings and
+        # after that they are not needed anymore
+        data_dict.pop('langtitle', None)
+        data_dict.pop('langnotes', None)
+
+        # Terms of usage acceptance is checked but not saved
+        data_dict.pop('accept-terms', None)
+
+        # tag_string is converted into a list of tags, so the result won't match
+        # TODO: convert both to the same format and then compare?
+        data_dict.pop('tag_string', None)
+
+        # Remove xpaths because xpath-json converter not yet implemented
+        data_dict.pop('xpaths', None)
+
+        # Remove all values that are not present in the original data_dict
+        output = dict((k, v) for k, v in output.items() if k in data_dict.keys())
+
+        # Take out automatically added distributor (CKAN user)
+        output['agent'] = filter(lambda x: x.get('name') not in ['testsysadmin', 'tester'], output['agent'])
+
+        testfixtures.compare(output, data_dict)
+
+        return True
 

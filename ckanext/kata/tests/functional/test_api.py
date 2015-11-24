@@ -5,7 +5,6 @@ Functional tests for Kata that use CKAN API.
 
 import copy
 
-import testfixtures
 from rdflib import Graph, RDF, URIRef
 
 import ckan.model as model
@@ -57,8 +56,8 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         output = self.api_user_normal.call_action('package_show', data_dict={'id': new_res['package_id']})
         assert 'id' in output
 
-        # Check that some metadata value is correct.
-        assert output['checksum'] == self.TEST_DATADICT['checksum']
+        # Check that data dict is correct.
+        assert self._compare_datadicts(self.TEST_DATADICT, output)
 
     def test_create_update_delete_dataset(self):
         '''
@@ -324,47 +323,6 @@ class TestDataReading(KataApiTestCase):
         super(TestDataReading, cls).setup_class()
 
         cls.public_dataset = copy.deepcopy(cls.TEST_DATADICT)  # Create public dataset
-
-    def _compare_datadicts(self, original, output):
-        '''
-        Compare a CKAN generated datadict to original datadict. Returns True if identical,
-        otherwise throws an exception with useful output of differences.
-
-        :param original: original datadict
-        :param output: a datadict received from CKAN API
-        '''
-
-        data_dict = copy.deepcopy(original)
-
-        # name (data pid), title and notes are generated so they shouldn't match
-        data_dict.pop('name', None)
-        data_dict.pop('title', None)
-        data_dict.pop('notes', None)
-
-        # lang* fields are converted to translation JSON strings and
-        # after that they are not needed anymore
-        data_dict.pop('langtitle', None)
-        data_dict.pop('langnotes', None)
-
-        # Terms of usage acceptance is checked but not saved
-        data_dict.pop('accept-terms', None)
-
-        # tag_string is converted into a list of tags, so the result won't match
-        # TODO: convert both to the same format and then compare?
-        data_dict.pop('tag_string', None)
-
-        # Remove xpaths because xpath-json converter not yet implemented
-        data_dict.pop('xpaths', None)
-
-        # Remove all values that are not present in the original data_dict
-        output = dict((k, v) for k, v in output.items() if k in data_dict.keys())
-
-        # Take out automatically added distributor (CKAN user)
-        output['agent'] = filter(lambda x: x.get('name') not in ['testsysadmin', 'tester'], output['agent'])
-
-        testfixtures.compare(output, data_dict)
-
-        return True
 
     def test_create_and_read_dataset(self):
         '''
