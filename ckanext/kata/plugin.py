@@ -297,13 +297,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             error = error_dict[index].get(name)
         return error
 
-    def reference_update(self, ref):
-        # Todo: this can be found from helpers as well!
-        # @beaker_cache(type="dbm", expire=2678400)
-        def cached_url(url):
-            return url
-        return cached_url(ref)
-
     def update_config(self, config):
         """
         This IConfigurer implementation causes CKAN to look in the
