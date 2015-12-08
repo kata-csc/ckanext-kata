@@ -2,6 +2,7 @@
 
 import copy
 import unittest
+import testfixtures
 
 import ckanapi
 import paste.fixture
@@ -11,6 +12,7 @@ from webtest import AppError
 
 from ckan.config.middleware import make_app
 from ckan.lib.create_test_data import CreateTestData
+import ckan.lib.navl.dictization_functions as df
 
 import ckanext.kata.model as kata_model
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_ORGANIZATION_COMMON, TEST_DATADICT
@@ -19,6 +21,7 @@ import ckanext.ytp.comments.model as comments_model
 # Note: all ORM model changes must be imported before WsgiAppCase
 from ckan import model
 import ckan.tests.legacy as tests
+from ckanext.kata.validators import kata_tag_string_convert
 
 
 class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
@@ -94,3 +97,63 @@ class KataApiTestCase(unittest.TestCase):
         """Get away from testing environment."""
         model.repo.rebuild_db()
 
+    def _compare_datadicts(self, original, output):
+        '''
+        Compare a CKAN generated datadict to original datadict. Returns True if identical,
+        otherwise throws an exception with useful output of differences.
+
+        :param original: original datadict
+        :param output: a datadict received from CKAN API
+        '''
+
+        def convert_tags(tag_string):
+            ''' Convert tag_string to tags dict. Copy-paste from ckan.tests.legacy.logic.test_tag_vocab.py. '''
+            key = 'vocab_tags'
+            data = {key: tag_string}
+            errors = []
+            context = {'model': model, 'session': model.Session}
+            kata_tag_string_convert(key, data, errors, context)
+            del data[key]
+            return data
+
+        data_dict = copy.deepcopy(original)
+
+        # name (data pid), title and notes are generated so they shouldn't match
+        data_dict.pop('name', None)
+        data_dict.pop('title', None)
+        data_dict.pop('notes', None)
+
+        # lang* fields are converted to translation JSON strings and
+        # after that they are not needed anymore
+        data_dict.pop('langtitle', None)
+        data_dict.pop('langnotes', None)
+
+        # Terms of usage acceptance is checked but not saved
+        data_dict.pop('accept-terms', None)
+
+        # Create tags from original dataset's tag_string
+        if not data_dict.get('tags'):
+            data_dict['tags'] = df.unflatten(convert_tags(data_dict.get('tag_string'))).get('tags')
+            data_dict.pop('tag_string', None)
+
+        print data_dict['tags']
+
+        for tag_dict in output.get('tags'):
+            # These are not provided from kata_tag_string_convert, so remove them
+            tag_dict.pop('display_name')
+            tag_dict.pop('id')
+            tag_dict.pop('state')
+            tag_dict.pop('vocabulary_id')
+
+        # Remove xpaths because xpath-json converter not yet implemented
+        data_dict.pop('xpaths', None)
+
+        # Remove all values that are not present in the original data_dict
+        output = dict((k, v) for k, v in output.items() if k in data_dict.keys())
+
+        # Take out automatically added distributor (CKAN user)
+        output['agent'] = filter(lambda x: x.get('name') not in ['testsysadmin', 'tester'], output['agent'])
+
+        testfixtures.compare(output, data_dict)
+
+        return True

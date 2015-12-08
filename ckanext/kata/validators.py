@@ -15,8 +15,7 @@ import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
 from ckan.logic.validators import tag_length_validator, url_validator
-from ckan.model import Package, User
-from ckanext.kata import utils, converters, settings
+from ckanext.kata import utils, settings
 import ckan.lib.navl.dictization_functions as df
 import ckan.authz as authz
 import ckan.logic as logic
@@ -74,13 +73,11 @@ def kata_tag_string_convert(key, data, errors, context):
     '''
 
     if isinstance(data[key], basestring):
-        tags = [tag.strip() \
-                for tag in data[key].split(',') \
-                if tag.strip()]
+        tags = [tag.strip() for tag in data[key].split(',') if tag.strip()]
     else:
         tags = data[key]
 
-    current_index = max( [int(k[1]) for k in data.keys() if len(k) == 3 and k[0] == 'tags'] + [-1] )
+    current_index = max([int(k[1]) for k in data.keys() if len(k) == 3 and k[0] == 'tags'] + [-1])
 
     for num, tag in zip(count(current_index+1), tags):
         data[('tags', num, 'name')] = tag
@@ -96,6 +93,7 @@ def validate_kata_date(key, data, errors, context):
     '''
     if isinstance(data[key], basestring) and data[key]:
         _parse_iso8601_date(key, data[key], errors)
+
 
 def validate_kata_interval_date(key, data, errors, context):
     '''
@@ -117,6 +115,7 @@ def validate_kata_interval_date(key, data, errors, context):
         else:
             _parse_iso8601_date(key, data[key], errors)
 
+
 def _parse_iso8601_date(key, datestr, errors):
     try:
         return iso8601.parse_date(datestr)
@@ -126,6 +125,7 @@ def _parse_iso8601_date(key, datestr, errors):
     except ValueError:
         errors[key].append(_('Invalid date'))
     return None
+
 
 def validate_kata_date_relaxed(key, data, errors, context):
     '''
@@ -173,6 +173,7 @@ def validate_general(key, data, errors, context):
         if not GEN_REGEX.match(data[key]):
             errors[key].append(_('Invalid characters: <> not allowed'))
 
+
 def contains_alphanumeric(key, data, errors, context):
     '''
     Checks that the field contains some characters, so that eg.
@@ -182,6 +183,7 @@ def contains_alphanumeric(key, data, errors, context):
         if not ALPHANUM_REGEX.match(data[key]):
             errors[key].append(_('Value must contain alphanumeric characters'))
 
+
 def validate_phonenum(key, data, errors, context):
     '''
     Validate a phone number against a regular expression.
@@ -189,6 +191,7 @@ def validate_phonenum(key, data, errors, context):
     if isinstance(data[key], basestring) and data[key]:
         if not TEL_REGEX.match(data[key]):
             errors[key].append(_('Invalid telephone number, must be e.g. +358 (45) 123 45 67 or 010-234567'))
+
 
 def validate_access_application_url(key, data, errors, context):
     '''
