@@ -17,7 +17,7 @@ ckan.module('etsin-ida-prefill', function ($, _) {
             var idaPrefillModal = null;
             var idaUrnInput = $('#ida-prefill-input');
             var tips = $('#ida-modal-tips');
-            var idaPidRegex = /^urn:nbn:fi:csc-ida.*$/;
+            var idaPidRegex = /^urn:nbn:fi:csc-ida.*s$/;
 
             checkRegexp = function(obj, regexp) {
                 if(!(regexp.test(obj.val()))) {
@@ -47,7 +47,7 @@ ckan.module('etsin-ida-prefill', function ($, _) {
                 if (valid) {
                     // Update primary pid field and close modal
                     $('#pids__0__id').val(idaUrnInput.val());
-                    primIdentifierField.blur();
+                    directDlField.val('http://avaa.tdata.fi/openida/dl.jsp?pid='.concat(idaUrnInput.val()));
                     idaPrefillModal.dialog('close');
                 }
                 return valid;
@@ -95,17 +95,6 @@ ckan.module('etsin-ida-prefill', function ($, _) {
 
             idaUrnInput.on('input', function() {
                 $('#ida-preview-url').text('IDA URL: http://avaa.tdata.fi/openida/dl.jsp?pid='.concat(idaUrnInput.val()))
-            });
-
-            /** Function to populate download link url field in availability tab of add new dataset form
-            based on if primary pid given in identifiers tab is IDA urn.
-            */
-            primIdentifierField.blur(function (e) {
-                var pidVal = e.target.value;
-                if (pidVal.indexOf('urn:nbn:fi:csc-ida') == 0) {
-                  $('#direct_download').click();
-                  directDlField.val('http://avaa.tdata.fi/openida/dl.jsp?pid='.concat(pidVal));
-                }
             });
         }
     }

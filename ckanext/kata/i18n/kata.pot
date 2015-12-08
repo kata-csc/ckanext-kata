@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-23 12:14+0000\n"
+"POT-Creation-Date: 2015-12-07 08:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -616,7 +616,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/contact/contact_form.html:65
 #: ckanext/kata/theme/templates/contact/dataset_request_form.html:48
-#: ckanext/kata/theme/templates/package/package_rights.html:181
+#: ckanext/kata/theme/templates/package/package_rights.html:175
 msgid "Send"
 msgstr ""
 
@@ -745,7 +745,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/organization/member_new.html:32
 #: ckanext/kata/theme/templates/organization/members.html:31
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:57
-#: ckanext/kata/theme/templates/package/package_rights.html:124
+#: ckanext/kata/theme/templates/package/package_rights.html:118
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:38
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:33
 msgid "Delete"
@@ -1933,7 +1933,7 @@ msgid "This is the current revision of this dataset, as edited at %(timestamp)s.
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:182
-#: ckanext/kata/theme/templates/package/related_list.html:107
+#: ckanext/kata/theme/templates/package/related_list.html:101
 msgid "Related Media for {dataset}"
 msgstr ""
 
@@ -2445,9 +2445,9 @@ msgstr ""
 #: ckanext/kata/theme/templates/organization/about.html:41
 #: ckanext/kata/theme/templates/organization/edit_base.html:50
 #: ckanext/kata/theme/templates/organization/read.html:39
-#: ckanext/kata/theme/templates/package/package_rights.html:71
+#: ckanext/kata/theme/templates/package/package_rights.html:65
 #: ckanext/kata/theme/templates/package/read.html:78
-#: ckanext/kata/theme/templates/package/related_list.html:79
+#: ckanext/kata/theme/templates/package/related_list.html:73
 msgid "Followers"
 msgstr ""
 
@@ -2486,12 +2486,12 @@ msgstr ""
 #: ckanext/kata/theme/templates/organization/member_new.html:20
 #: ckanext/kata/theme/templates/organization/member_new.html:23
 #: ckanext/kata/theme/templates/organization/members.html:12
-#: ckanext/kata/theme/templates/package/package_rights.html:109
+#: ckanext/kata/theme/templates/package/package_rights.html:103
 msgid "User"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/member_new.html:23
-#: ckanext/kata/theme/templates/package/package_rights.html:140
+#: ckanext/kata/theme/templates/package/package_rights.html:134
 #: ckanext/kata/theme/templates/user/edit_user_form.html:16
 #: ckanext/kata/theme/templates/user/new_user_form.html:6
 #: ckanext/kata/theme/templates/user/read.html:35
@@ -2500,7 +2500,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/organization/member_new.html:27
 #: ckanext/kata/theme/templates/organization/members.html:13
-#: ckanext/kata/theme/templates/package/package_rights.html:110
+#: ckanext/kata/theme/templates/package/package_rights.html:104
 #: ckanext/kata/theme/templates/package/role_fields.html:13
 #: ckanext/kata/theme/templates/package/role_fields.html:40
 msgid "Role"
@@ -2508,7 +2508,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/organization/member_new.html:31
 #: ckanext/kata/theme/templates/organization/members.html:26
-#: ckanext/kata/theme/templates/package/package_rights.html:122
+#: ckanext/kata/theme/templates/package/package_rights.html:116
 msgid "Are you sure you want to delete this member?"
 msgstr ""
 
@@ -2519,7 +2519,7 @@ msgid "Save"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/member_new.html:38
-#: ckanext/kata/theme/templates/package/package_rights.html:145
+#: ckanext/kata/theme/templates/package/package_rights.html:139
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:76
 msgid "Add"
 msgstr ""
@@ -2597,9 +2597,9 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/history.html:3
 #: ckanext/kata/theme/templates/package/history.html:6
-#: ckanext/kata/theme/templates/package/package_rights.html:49
+#: ckanext/kata/theme/templates/package/package_rights.html:43
 #: ckanext/kata/theme/templates/package/read.html:57
-#: ckanext/kata/theme/templates/package/related_list.html:58
+#: ckanext/kata/theme/templates/package/related_list.html:52
 msgid "History"
 msgstr ""
 
@@ -2619,92 +2619,87 @@ msgstr ""
 msgid "Edit metadata"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:28
-#: ckanext/kata/theme/templates/package/related_list.html:37
-msgid "Request metadata editing rights"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/package_rights.html:35
+#: ckanext/kata/theme/templates/package/package_rights.html:29
 #: ckanext/kata/theme/templates/package/read.html:46
-#: ckanext/kata/theme/templates/package/related_list.html:45
+#: ckanext/kata/theme/templates/package/related_list.html:39
 #: ckanext/kata/theme/templates/package/snippets/info.html:36
 msgid "Add new supplement"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:62
+#: ckanext/kata/theme/templates/package/package_rights.html:56
 #: ckanext/kata/theme/templates/package/read.html:69
-#: ckanext/kata/theme/templates/package/related_list.html:70
+#: ckanext/kata/theme/templates/package/related_list.html:64
 msgid "Metadata completeness"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:76
+#: ckanext/kata/theme/templates/package/package_rights.html:70
 #: ckanext/kata/theme/templates/package/read.html:84
-#: ckanext/kata/theme/templates/package/related_list.html:84
+#: ckanext/kata/theme/templates/package/related_list.html:78
 msgid "Data used"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:77
+#: ckanext/kata/theme/templates/package/package_rights.html:71
 #: ckanext/kata/theme/templates/package/read.html:86
 #: ckanext/kata/theme/templates/package/read.html:88
-#: ckanext/kata/theme/templates/package/related_list.html:86
-#: ckanext/kata/theme/templates/package/related_list.html:88
+#: ckanext/kata/theme/templates/package/related_list.html:80
+#: ckanext/kata/theme/templates/package/related_list.html:82
 msgid "times"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:78
+#: ckanext/kata/theme/templates/package/package_rights.html:72
 #: ckanext/kata/theme/templates/package/read.html:90
-#: ckanext/kata/theme/templates/package/related_list.html:90
+#: ckanext/kata/theme/templates/package/related_list.html:84
 msgid "Advertise reuse"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:95
+#: ckanext/kata/theme/templates/package/package_rights.html:89
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:8
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:8
 msgid "Dataset title"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:101
+#: ckanext/kata/theme/templates/package/package_rights.html:95
 msgid "{0} named roles"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:135
+#: ckanext/kata/theme/templates/package/package_rights.html:129
 msgid "Add a user for role"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:142
+#: ckanext/kata/theme/templates/package/package_rights.html:136
 msgid "User role"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:156
+#: ckanext/kata/theme/templates/package/package_rights.html:150
 msgid "Send invitation"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:158
+#: ckanext/kata/theme/templates/package/package_rights.html:152
 msgid ""
 "Did not find the user you were searching for? Send her or him an email "
 "invitation to log in to Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:159
+#: ckanext/kata/theme/templates/package/package_rights.html:153
 msgid "If you want to, you can add your own message to be sent to the person."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:160
+#: ckanext/kata/theme/templates/package/package_rights.html:154
 msgid ""
 "After the person has logged in to the service, she or he can be added to a "
 "role."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:163
+#: ckanext/kata/theme/templates/package/package_rights.html:157
 msgid "Email address"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:163
+#: ckanext/kata/theme/templates/package/package_rights.html:157
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:164
 msgid "john.doe@example.com"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/package_rights.html:164
+#: ckanext/kata/theme/templates/package/package_rights.html:158
 msgid "Your message"
 msgstr ""
 
@@ -2719,7 +2714,7 @@ msgid "Show in RDF format"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/read.html:54
-#: ckanext/kata/theme/templates/package/related_list.html:55
+#: ckanext/kata/theme/templates/package/related_list.html:49
 msgid "Administer dataset rights"
 msgstr ""
 
@@ -2731,11 +2726,11 @@ msgid ""
 "reuses, a plain 0 is displayed."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/related_list.html:100
+#: ckanext/kata/theme/templates/package/related_list.html:94
 msgid "Add Related Item"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/related_list.html:114
+#: ckanext/kata/theme/templates/package/related_list.html:108
 msgid "No related items"
 msgstr ""
 
@@ -5323,7 +5318,12 @@ msgid ""
 "accepts terms and conditions in an external service, choose the third option."
 " If the data can be accessed only by directly contacting the distributor, "
 "choose the last option. In this case data requests are sent by email to the "
-"address you provided in distributor section."
+"address you provided in distributor section. Instructions on sharing files "
+"stored in IDA: "
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:67
+msgid "http://openscience.fi/ida-browser-sharing"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:81
@@ -5350,9 +5350,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:89
-msgid ""
-"Input IDA identifier related to the data in order to get download URL for the"
-" data"
+msgid "Enter your dataset's IDA identifier in order to create download link"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:93
@@ -5360,7 +5358,7 @@ msgid "Input a valid IDA identifier"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:95
-msgid "IDA data identifier"
+msgid "IDA identifier (Identifier.series)"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/rdfgen.html:8

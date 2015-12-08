@@ -2131,6 +2131,16 @@ a.download {
 .dataset-section.form-tab-content .form-inner-table td {
   padding-top: 0px !important;
 }
+#urlDiv_direct_download {
+  margin-left: 15px;
+}
+#urlDiv_direct_download label.control-label {
+  text-align: left !important;
+  width: 45% !important;
+}
+#urlDiv_direct_download div.controls.kata-label-pluspad {
+  padding-top: 0px !important;
+}
 #usage-info #ida_direct_download_link {
   cursor: pointer;
 }

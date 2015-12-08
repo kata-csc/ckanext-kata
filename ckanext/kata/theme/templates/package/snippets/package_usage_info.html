@@ -64,7 +64,7 @@
         <span class="error-block kata-error-non-input">{{ errors.availability[0] }}</span>
       {% endif %}
     </div>
-    {{ kata_form.tooltip(tooltip=_("Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.")) }}
+    {{ kata_form.tooltip(tooltip=_("Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section. Instructions on sharing files stored in IDA: ") ~ '<a href="' ~ _('http://openscience.fi/ida-browser-sharing') ~ '" target="_blank">' ~ _('http://openscience.fi/ida-browser-sharing') ~ '</a>') }}
   </div>
 
   {% set error = errors.license_id %}
@@ -86,13 +86,13 @@
   {% endcall %}
 </div>
 <div id="ida-prefill-modal">
-  <div id="ida-prefill-description" class="modal-content-block">{{ _('Input IDA identifier related to the data in order to get download URL for the data') }}</div>
+  <div id="ida-prefill-description" class="modal-content-block">{{ _("Enter your dataset's IDA identifier in order to create download link") }}</div>
   <div class="modal-content-block">
     <fieldset>
       <legend></legend>
       <p id="ida-modal-tips" class="hide">{{ _('Input a valid IDA identifier') }}</p>
       <div class="form-input-block">
-        <label id="ida-prefill-input-label" for="ida-prefill-input">{{ _('IDA data identifier') }}</label>
+        <label id="ida-prefill-input-label" for="ida-prefill-input">{{ _('IDA identifier (Identifier.series)') }}</label>
           <input type="text" name="ida-prefill-input" id="ida-prefill-input" placeholder="urn:nbn:fi:csc-ida..." class="text ui-widget-content ui-corner-all">
       </div>
     </fieldset>
