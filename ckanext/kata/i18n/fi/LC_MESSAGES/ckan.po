@@ -2699,7 +2699,6 @@ msgid "Search for organizations"
 msgstr "Etsi organisaatioita..."
 
 #: ckanext/kata/theme/templates/organization/index.html:40
-#, fuzzy
 #| msgid "Show empty organizations"
 msgid "Show all organizations"
 msgstr "Näytä kaikki organisaatiot"
