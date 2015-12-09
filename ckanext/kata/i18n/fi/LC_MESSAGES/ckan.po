@@ -5615,7 +5615,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:52
 msgid "only by contacting the distributor"
-msgstr "ottamalla yhteyttä yhteyshenkilöön"
+msgstr "ottamalla yhteyttä jakelijaan"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:57
 msgid "through data provider"
