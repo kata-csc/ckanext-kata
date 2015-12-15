@@ -5,16 +5,15 @@ Custom authorization functions for actions.
 import logging
 
 from pylons.i18n import _
-from ckan import authz
-from ckan.logic.auth.create import _check_group_auth
 
 import ckan.logic
 import ckan.logic.auth as logic_auth
-from ckan.logic.auth import get_package_object, update
-from ckan.model import User, Package
 import ckanext.kata.settings as settings
+from ckan import authz
 from ckan.logic import NotFound
-
+from ckan.logic.auth import get_package_object, update
+from ckan.logic.auth.create import _check_group_auth
+from ckan.model import User, Package
 
 log = logging.getLogger(__name__)
 
@@ -83,7 +82,7 @@ def package_delete(context, data_dict):
     user = context['user']
     package = get_package_object(context, data_dict)
     if is_owner(context, data_dict)['success'] == True:
-    # if h.check_access('package_delete', data_dict):
+        # if h.check_access('package_delete', data_dict):
         return {'success': True}
     else:
         authorized = authz.has_user_permission_for_group_or_org(package.owner_org, user, 'delete_dataset')
@@ -127,14 +126,14 @@ def package_create(context, data_dict=None):
             'anon_create_dataset',
             'create_dataset_if_not_in_organization',
             'create_unowned_dataset',
-            ))
+        ))
     else:
         check1 = True  # Registered users may create datasets
 
     if not check1:
         return {'success': False, 'msg': _('User %s not authorized to create packages') % user}
 
-    check2 = _check_group_auth(context,data_dict)
+    check2 = _check_group_auth(context, data_dict)
     if not check2:
         return {'success': False, 'msg': _('User %s not authorized to edit these groups') % user}
 
@@ -167,8 +166,10 @@ def package_show(context, data_dict):
     else:
         return is_ownr
 
+
 def package_revision_list(context, data_dict):
     return package_show(context, data_dict)
+
 
 def kata_has_user_permission_for_org(org_id, user_name, permission):
     '''
@@ -181,6 +182,7 @@ def kata_has_user_permission_for_org(org_id, user_name, permission):
     if org_id and user_name and permission:
         return True
     return False
+
 
 def user_autocomplete(context, data_dict):
     '''
@@ -199,6 +201,7 @@ def user_autocomplete(context, data_dict):
     else:
         return {'success': False}
 
+
 def user_activity_list(context, data_dict):
     '''
     Disables user activity listing except for sysadmins and the users themselves.
@@ -210,10 +213,12 @@ def user_activity_list(context, data_dict):
     # Allow any logged in user to view their own activity stream
     logged_in_user = context.get('user')
     target_user_obj = context.get('user_obj')
-    if logged_in_user and target_user_obj and hasattr(target_user_obj, 'name') and logged_in_user == target_user_obj.name:
+    if logged_in_user and target_user_obj and hasattr(target_user_obj,
+                                                      'name') and logged_in_user == target_user_obj.name:
         return {'success': True}
     else:
         return logic_auth.get.sysadmin(context, data_dict)
+
 
 def member_list(context, data_dict):
     '''
