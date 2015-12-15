@@ -90,8 +90,6 @@ class Schemas:
                              # phone number can be missing from the first users
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
         # phone number can be missing from the first users
-        # schema['contact_phone'] = [ignore_missing, validate_phonenum, convert_to_extras_kata, unicode]
-        # schema['contact_URL'] = [ignore_missing, url_validator, convert_to_extras_kata, unicode, validate_general]
         schema['event'] = {'type': [ignore_missing, va.check_events, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_interval_date],
@@ -246,15 +244,12 @@ class Schemas:
 
         :rtype: schema
         '''
-        # Todo: requires additional testing and planning
         schema = cls._create_package_schema()
 
         schema.pop('accept-terms', None)
 
         schema['__extras'] = [ignore]   # This removes orgauth checking
         schema['availability'].insert(0, ignore_missing)
-        # Todo: this shouldn't be anymore
-        schema['contact_URL'] = [ignore_missing, url_validator, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
         schema['license_URL'] = [ignore_missing, co.convert_to_extras_kata, unicode, va.validate_general]
