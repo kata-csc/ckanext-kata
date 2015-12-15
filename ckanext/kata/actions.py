@@ -249,13 +249,6 @@ def package_update(context, data_dict):
     #             u'type': u'version',
     #         })
 
-    # TODO: JUHO: Apply correct schema depending on dataset
-    # This is quick resolution. More robust way would be to check through
-    # model.Package to which harvest source the dataset belongs and then get the
-    # type of the harvester (eg. DDI)
-    # if data_dict['name'].startswith('FSD'):
-    #     context['schema'] = schemas.update_package_schema_ddi()
-
     if asbool(data_dict.get('private')) and not data_dict.get('persist_schema'):
         context['schema'] = Schemas.private_package_schema()
 
