@@ -987,9 +987,9 @@ def get_tab_errors(errors, tab):
     for key in errors.keys():
         if key in tabs.get(tab):
             return "tab-error"
-    # Todo: find a better way to handle resources, the availability thingy related resources error doesn't always work
-    # and this solution here in general is basically brute-forced to work for mimetype, hash etc.
+
     if 'resources' in errors:
+        # Hard coded resource index 0 may be wrong for datasets created through API.
         for key in errors.get('resources')[0].keys():
             if key in tabs.get('resources') and key in tabs.get(tab):
                 return "tab-error"
