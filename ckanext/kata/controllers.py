@@ -840,7 +840,6 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
             if xmltype == info['name']:
                 log.debug('_upload_xml: Found harvester for import: {nam}'.format(nam=info['name']))
                 try:
-                    # TODO: virus check ??
                     if xmlfile:
                         pkg_dict = harvester.parse_xml(xmlfile, context)
                     elif url:
