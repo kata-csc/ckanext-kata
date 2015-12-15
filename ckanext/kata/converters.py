@@ -231,21 +231,6 @@ def ltitle_from_extras(key, data, errors, context):
             langtitles.append(langtitle)
 
 
-def export_as_related(key, data, errors, context):
-    '''
-    Not used?
-    '''
-    # Todo: find out if this is used
-    if 'id' in data[('__extras',)]:
-        for value in data[key].split(';'):
-            if value != '':
-                if len(Session.query(Related).filter(Related.title == value).all()) == 0:
-                    data_dict = {'title': value,
-                                 'type': _("Paper"),
-                                 'dataset_id': data[('__extras',)]['id']}
-                    related_create(context, data_dict)
-
-
 def remove_disabled_languages(key, data, errors, context):
     '''
     If `langdis == 'True'`, remove all languages.
