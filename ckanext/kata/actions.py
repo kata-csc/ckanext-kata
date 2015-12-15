@@ -177,14 +177,8 @@ def package_create(context, data_dict):
     :rtype: dictionary
     """
     user = model.User.get(context['user'])
-    try:
-        if data_dict['type'] == 'harvest' and not user.sysadmin:
-            ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
-
-    except KeyError:
-        log.debug("Tried to check the package type, but it wasn't present!")
-        # TODO: JUHO: Dubious to let pass without checking user.sysadmin
-        pass
+    if data_dict.get('type') == 'harvest' and not user.sysadmin:
+        ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
 
     data_dict = utils.dataset_to_resource(data_dict)
 
