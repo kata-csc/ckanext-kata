@@ -110,7 +110,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
 
         print 'Delete resource #1'
         # For some reason this is forbidden for the user that created the resource
-        self.api_user_sysadmin.call_action('resource_delete', data_dict={'id': res_id})
+        self.api_user_normal.call_action('resource_delete', data_dict={'id': res_id})
 
     def test_create_edit(self):
         '''

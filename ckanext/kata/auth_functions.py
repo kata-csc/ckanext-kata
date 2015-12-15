@@ -233,10 +233,10 @@ def member_list(context, data_dict):
     else:
         return {'success': False}
 
+
 def resource_delete(context, data_dict):
     '''
-    Nearly plain copying of resource_delete: CKAN doesn't seem to call package_delete as it should
-    thus passing our local version of it
+    Nearly plain copying of resource_delete: CKAN calls local package_delete, thus passing our local version of it.
 
     :param context: context
     :param data_dict: data_dict
@@ -247,15 +247,8 @@ def resource_delete(context, data_dict):
     user = context.get('user')
     resource = logic_auth.get_resource_object(context, data_dict)
 
-    if resource.resource_type == settings.RESOURCE_TYPE_DATASET:
-        return {'success': False, 'msg': _('Resource %s can not be deleted') % (data_dict['id'])}
-
     # check authentication against package
-    query = model.Session.query(model.Package)\
-        .join(model.ResourceGroup)\
-        .join(model.Resource)\
-        .filter(model.ResourceGroup.id == resource.resource_group_id)
-    pkg = query.first()
+    pkg = model.Package.get(resource.package_id)
     if not pkg:
         raise NotFound(_('No package found for this resource, cannot check auth.'))
 
