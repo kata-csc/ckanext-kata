@@ -58,6 +58,12 @@ class KataPrivacyTestCase(tests.WsgiAppCase, unittest.TestCase):
         group_dict = {'name': 'test_group', 'title': 'Test Group'}
         cls.api_test_sysadmin.action.group_create(**group_dict)
 
+        user_dict = {'id': 'test_organisation', 'username': 'test_user', 'role': 'admin'}
+        cls.api_test_sysadmin.action.organization_member_create(**user_dict)
+
+        user_dict = {'id': 'test_group', 'username': 'test_user', 'role': 'admin'}
+        cls.api_test_sysadmin.action.group_member_create(**user_dict)
+
         cls.TEST_DATADICT = copy.deepcopy(TEST_DATADICT)
         cls.package_id = u'urn-nbn-fi-csc-kata20140728095757755621'
         cls.TEST_DATADICT['owner_org'] = 'test_organisation'
