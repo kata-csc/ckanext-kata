@@ -2,6 +2,8 @@
 
 import copy
 import unittest
+from lxml import etree
+
 import testfixtures
 
 import ckanapi
@@ -46,6 +48,9 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
         py_obj = PylonsContext()
         py_obj.tmpl_context = c
         pylons.tmpl_context._push_object(c)
+
+        # The lxml's HTML parser allows quite much errors so it is not really a good validation of the rendered pages.
+        cls.html_parser = etree.HTMLParser()
 
     @classmethod
     def teardown_class(cls):

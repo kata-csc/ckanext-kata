@@ -1,11 +1,10 @@
-# coding: utf-8
+# coding=utf-8
 '''
 Test Kata's web user interface with Pylons WSGI application.
 '''
 import copy
 import json
 
-import lxml.etree
 from ckanext.harvest import model as harvest_model
 from lxml import etree
 
@@ -19,8 +18,6 @@ from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 from ckanext.kata.controllers import ContactController
 
 
-# TODO: A WSGI test to parse pages with lxml to make sure there are no tag errors.
-
 class TestPages(KataWsgiTestCase):
     """
     Simple tests to see that pages render properly.
@@ -33,20 +30,30 @@ class TestPages(KataWsgiTestCase):
         offset = url_for('/group')
         res = self.app.get(offset)
         assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+        assert len(etree.fromstring(res.body, parser=self.html_parser))
 
     def test_harvest_page(self):
         res = self.app.get('/harvest', extra_environ={})
         assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+        assert len(etree.fromstring(res.body, parser=self.html_parser))
 
     def test_dataset_page(self):
         offset = url_for('/dataset')
         res = self.app.get(offset)
         assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+        assert len(etree.fromstring(res.body, parser=self.html_parser))
 
     def test_urnexport_page(self):
         offset = url_for('/urnexport')
         res = self.app.get(offset)
         assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+        assert len(etree.fromstring(res.body, parser=self.html_parser))
+
+    def test_organization_page(self):
+        offset = url_for('/organization')
+        res = self.app.get(offset)
+        assert res.status == 200, 'Wrong HTTP status code (expecting 200)'
+        assert len(etree.fromstring(res.body, parser=self.html_parser))
 
 
 class TestResources(KataWsgiTestCase):
@@ -60,7 +67,8 @@ class TestResources(KataWsgiTestCase):
     #     """
     #     offset = url_for(controller='package', action='read', id=u'warandpeace')
     #     res = self.app.get(offset)
-    #     assert '<section id="dataset-resources"' not in res, 'A package with no resources should not render Data and Resources section'
+    #     assert '<section id="dataset-resources"' not in res, \
+    #         'A package with no resources should not render Data and Resources section'
     #
     # def test_data_and_resources_rendered(self):
     #     """
@@ -68,7 +76,8 @@ class TestResources(KataWsgiTestCase):
     #     """
     #     offset = url_for(controller='package', action='read', id=u'annakarenina')
     #     res = self.app.get(offset)
-    #     assert '<section id="dataset-resources"' in res, 'A package with resources should render Data and Resources section'
+    #     assert '<section id="dataset-resources"' in res, \
+    #         'A package with resources should render Data and Resources section'
 
     def test_resource_read_redirect(self):
         """
@@ -94,6 +103,7 @@ class TestResources(KataWsgiTestCase):
         result = result.follow()
 
         assert result.body.count('Full text.') == 1
+        assert len(etree.fromstring(result.body, parser=self.html_parser))
 
         # resources_obj = etree.lxml.etree.fromstring(result.body).xpath("//u:identifier", namespaces=self.namespaces)
         # with open('/var/www/foo.txt', mode='wt') as f:
@@ -121,9 +131,8 @@ class TestRdfExport(KataWsgiTestCase):
         offset = url_for(controller='package', action='read', id=u'warandpeace') + '.rdf'
         res = self.app.get(offset)
 
-        assert "<rdf" in res
-        assert "</rdf" in res
-
+        assert "<rdf" in res.body
+        assert len(etree.fromstring(res.body))
 
 class TestContactForm(KataWsgiTestCase):
     '''
@@ -309,7 +318,7 @@ class TestURNExport(KataWsgiTestCase):
         res = self.app.get(offset)
 
         # No datasets to export
-        self.assertEquals(len(lxml.etree.fromstring(res.body).xpath("//u:identifier", namespaces=self.namespaces)), 0)
+        self.assertEquals(len(etree.fromstring(res.body).xpath("//u:identifier", namespaces=self.namespaces)), 0)
         assert res.body.count('<identifier>') == 0
 
         organization = get_action('organization_create')({'user': 'test_sysadmin'},
@@ -327,7 +336,7 @@ class TestURNExport(KataWsgiTestCase):
 
             res = self.app.get(offset)
 
-            tree = lxml.etree.fromstring(res.body)
+            tree = etree.fromstring(res.body)
             self.assertEquals(len(tree.xpath("//u:identifier", namespaces=self.namespaces)), count)
 
             try:
