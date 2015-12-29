@@ -941,7 +941,7 @@ def kata_build_nav_main(*args):
     routers = {
         'home': ['ckanext.kata.controllers:KataHomeController'],
         'search': ['ckanext.kata.controllers:KataPackageController', 'package'],
-        'organizations_index': ['organization'],
+        'organizations_index': ['ckanext.kata.controllers:KataOrganizationController', 'organization'],
         'about': ['home']
     }
 
