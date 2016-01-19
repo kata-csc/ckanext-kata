@@ -6,7 +6,7 @@
         {# This should be the same as in settings.py. TODO: remove latter comparison and use value from settings. #}
         <th class="heading" title="{{ res.name or res.description }}">
           {# <span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ res.format }}</span> #}
-          {{ _(h.resource_display_name(res)) if _(h.resource_display_name(res)) != _('Unnamed resource') else res.url | truncate(50) }}
+          {{ (_(h.resource_display_name(res)) if _(h.resource_display_name(res)) != _('Unnamed resource') else res.url) | truncate(50) }}
            {# {{ h.popular('views', res.tracking_summary.total, min=10) if res.tracking_summary}} #}
         </th>
       {% endblock %}

@@ -221,9 +221,7 @@
     </div>
     <div class="form-label">{{ _('Copyright notice') }}</div>
     <div class="form-content">
-      <p>
-        {{ pkg_dict.license_URL }}
-      </p>
+      {{ h.render_markdown(pkg_dict.license_URL) }}
     </div>
   </div>
 
@@ -300,8 +298,8 @@
 <div class="dataset-section form-tab-content">
   <!-- Resources -->
   <div class="form-row">
-    <div class="form-label">{{ _('Files') }}</div>
-    <div class="form-content">
+    <div class="form-label">{{ _('Supplements') }}</div>
+    <div class="form-content" id="metadata-info-resource-list">
       <table class="form-inner-table">
         {% snippet "package/snippets/resources_list.html", pkg=pkg_dict, resources=pkg_dict.resources %}
       </table>

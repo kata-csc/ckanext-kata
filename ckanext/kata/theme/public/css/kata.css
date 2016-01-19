@@ -2184,6 +2184,14 @@ a.download {
   width: 400px !important;
   font-weight: normal !important;
 }
+#metadata-info-resource-list {
+  width: 70%;
+}
+#resource-edit #field-url {
+  cursor: default;
+  height: 50px;
+  word-break: break-word;
+}
 .dataset-heading a {
   color: #0095ca;
 }

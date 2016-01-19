@@ -8,6 +8,9 @@ this.ckan.module('kata-terms-of-use', function (jQuery, _) {
     _onChange: function () {
       var val = this.el.prop('checked') ? false : true;
       document.getElementsByName("save")[1].disabled = val;
+      if(!val) {
+        document.getElementById('save-and-publish').removeAttribute('title');
+      }
     }
   };
 });
