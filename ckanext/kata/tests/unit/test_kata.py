@@ -174,6 +174,7 @@ class TestResouceConverters(TestCase):
         cls.test_data = {
             'id': u'test',
             'direct_download_URL': u'http://www.csc.fi',
+            'direct_download_name': u'CSC',
             'algorithm': u'MD5',
             'checksum': u'f60e586509d99944e2d62f31979a802f',
             'mimetype': u'application/pdf',
@@ -206,6 +207,18 @@ class TestResouceConverters(TestCase):
             }]
         }
 
+        cls.test_data4 = {
+            'id': u'test',
+            'resources': [{
+                'name': u'CSC',
+                'url': u'http://www.csc.fi',
+                'algorithm': u'MD5',
+                'hash': u'f60e586509d99944e2d62f31979a802f',
+                'mimetype': u'application/pdf',
+                'resource_type': settings.RESOURCE_TYPE_DATASET,
+            }]
+        }
+
     def test_dataset_to_resource(self):
         data_dict = copy.deepcopy(self.test_data)
         assert 'resources' not in data_dict
@@ -227,6 +240,14 @@ class TestResouceConverters(TestCase):
         # dataset_to_resource can handle missing data, so resources is created
         assert 'resources' in data_dict
 
+    def test_dataset_to_resource_should_have_resource_with_name_key(self):
+        data_dict = copy.deepcopy(self.test_data)
+        assert 'direct_download_name' in data_dict
+        utils.dataset_to_resource(data_dict)
+        assert data_dict['resources'] is not None and data_dict['resources'][0] is not None and data_dict['resources'][0]['name'] != u''
+        assert 'direct_download_name' not in data_dict
+
+
     def test_resource_to_dataset(self):
         data_dict = copy.deepcopy(self.test_data2)
         utils.resource_to_dataset(data_dict)
@@ -237,6 +258,13 @@ class TestResouceConverters(TestCase):
         data_dict['resources'][0].pop('resource_type')
         utils.resource_to_dataset(data_dict)
         assert 'direct_download_URL' not in data_dict
+
+    def test_resource_to_dataset_should_have_direct_download_name_in_dataset(self):
+        data_dict = copy.deepcopy(self.test_data4)
+        assert 'direct_download_name' not in data_dict
+        assert data_dict['resources'] is not None and data_dict['resources'][0] is not None and data_dict['resources'][0]['name'] != u''
+        utils.resource_to_dataset(data_dict)
+        assert 'direct_download_name' in data_dict
 
     def test_resource_handling(self):
         data_dict = copy.deepcopy(self.test_data3)

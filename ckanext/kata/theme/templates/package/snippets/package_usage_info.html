@@ -17,8 +17,10 @@
         <a id="ida_direct_download_link" onclick="openIdaPopup(); event.returnValue=false;">{{ _('directly downloadable from IDA') }}</a>
         {% if errors.resources and data.availability == 'direct_download' %}
           {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=[_('Missing value')], classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+          {{ form.input('direct_download_name', label=_('Web address display name'), id="direct_download_name", placeholder='', value=data.direct_download_name, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
         {% else %}
           {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
+          {{ form.input('direct_download_name', label=_('Web address display name'), id="direct_download_name", placeholder='', value=data.direct_download_name, error='', classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
         {% endif %}
       </div>
 
@@ -64,7 +66,8 @@
         <span class="error-block kata-error-non-input">{{ errors.availability[0] }}</span>
       {% endif %}
     </div>
-    {{ kata_form.tooltip(tooltip=_("Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section. Instructions on sharing files stored in IDA: ") ~ '<a href="' ~ _('http://openscience.fi/ida-browser-sharing') ~ '" target="_blank">' ~ _('http://openscience.fi/ida-browser-sharing') ~ '</a>') }}
+    {{ kata_form.tooltip(tooltip=_("Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. In the first option, optionally also provide display name for the web address. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section. Instructions on sharing files stored in IDA: ") ~ '<a href="' ~ _('http://openscience.fi/ida-browser-sharing') ~ '" target="_blank">' ~ _('http://openscience.fi/ida-browser-sharing') ~ '</a>') }}
+    {{ kata_form.tooltip(tooltip=_("Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. In the first option, optionally also provide display name for the web address. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section. Instructions on sharing files stored in IDA: ") ~ '<a href="' ~ _('http://openscience.fi/ida-browser-sharing') ~ '" target="_blank">' ~ _('http://openscience.fi/ida-browser-sharing') ~ '</a>') }}
   </div>
 
   {% set error = errors.license_id %}
