@@ -29,9 +29,6 @@
           {% if res.resource_type != 'dataset' %}
             {% link_for _('Edit'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn btn-primary', icon='wrench' %}
           {% endif %}
-          {% if user.sysadmin %}
-            Editing of 'dataset' resource not available even in sysadmin mode.
-          {% endif %}
         {% endif %}
       </td>
 
