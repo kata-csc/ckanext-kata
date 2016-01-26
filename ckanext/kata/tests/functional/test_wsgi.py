@@ -102,7 +102,7 @@ class TestResources(KataWsgiTestCase):
         # Redirect should redirect to dataset page
         result = result.follow()
 
-        assert result.body.count('Full text.') == 1
+        assert result.body.count('Full text.') == 0
         assert len(etree.fromstring(result.body, parser=self.html_parser))
 
         # resources_obj = etree.lxml.etree.fromstring(result.body).xpath("//u:identifier", namespaces=self.namespaces)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-01-21 10:16+0000\n"
+"POT-Creation-Date: 2016-01-26 09:24+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -244,7 +244,7 @@ msgstr "Formaatit"
 
 #: ckanext/kata/controllers.py:986
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:74
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:72
 msgid "License"
 msgstr "Lisenssi"
 
@@ -744,7 +744,7 @@ msgstr "Minun ryhmäni"
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:19
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:8
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:278
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:19
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:20
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:23
 msgid "URL"
 msgstr "URL"
@@ -1210,7 +1210,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/data-model.html:21
 #: ckanext/kata/theme/templates/kata/dummy.html:27
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:222
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:86
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
 msgid "Copyright notice"
 msgstr "Lisätietoja käyttöluvasta"
 
@@ -5579,71 +5579,64 @@ msgid "directly downloadable from IDA"
 msgstr "Avoimesti IDAsta"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:22
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:32
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:21
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:30
 msgid "Web address for downloading the dataset"
 msgstr "Aineiston web-osoite"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:22
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:32
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:62
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:21
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:30
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:60
 msgid "http://mydata.com"
 msgstr "http://omadatani.fi"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:20
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:23
-msgid "Web address display name"
-msgstr "Web-osoitteen kuvailunimi"
-
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:29
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:27
 msgid "downloadable after registration / identification"
 msgstr "avoimesti rekisteröitymällä tai tunnistautumalla"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:37
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:35
 msgid "with data access application form"
 msgstr "lupahakemuksella"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:45
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:43
 msgid "Create a new access request form automatically"
 msgstr "Luo uusi lupahakemuslomake automaattisesti"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:48
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:46
 msgid "Or enter the address of an existing application form"
 msgstr "Tai anna valmiin lupahakemuksen osoite"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:48
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:46
 msgid "http://remsid/"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:54
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:52
 msgid "only by contacting the distributor"
 msgstr "ottamalla yhteyttä jakelijaan"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:59
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:57
 msgid "through data provider"
 msgstr "datan jakelijan kautta"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:62
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:60
 msgid "Data provider's web address"
 msgstr "Datan jakelijan web-osoite"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:67
 msgid ""
 "Choose how the data can be accessed. Type the URL information asked for "
 "depending on your choice. If the data is downloadable, choose the first "
-"or second option and provide the url. In the first option, optionally "
-"also provide display name for the web address. If the data is accessible "
-"after a person accepts terms and conditions in an external service, "
-"choose the third option. If the data can be accessed only by directly "
-"contacting the distributor, choose the last option. In this case data "
-"requests are sent by email to the address you provided in distributor "
-"section. Instructions on sharing files stored in IDA: "
+"or second option and provide the url. If the data is accessible after a "
+"person accepts terms and conditions in an external service, choose the "
+"third option. If the data can be accessed only by directly contacting the"
+" distributor, choose the last option. In this case data requests are sent"
+" by email to the address you provided in distributor section. "
+"Instructions on sharing files stored in IDA: "
 msgstr ""
 "Valitse, miten dataan pääsee käsiksi. Kirjoita web-osoitetiedot, jos "
 "niitä kysytään (riippuu valinnastasi). Jos data on ladattavissa verkosta,"
-" valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Lisää "
-"web-osoitteen kuvailunimi ensimmäisessä kohdassa halutessasi. Jos data on"
+" valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data on"
 " saatavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy määrittelemäsi"
 " ehdot jossain ulkopuolisessa palvelussa, valitse kolmas vaihtoehto. Jos "
 "dataan pääsee käsiksi vain ottamalla suoraan yhteyttä jakelijaan, valitse"
@@ -5651,27 +5644,27 @@ msgstr ""
 "antamaasi jakelijan sähköpostiosoitteeseen. Ohjeet IDA-palveluun "
 "tallennettujen tiedostojen jakamisesta: "
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:67
 msgid "http://openscience.fi/ida-browser-sharing"
 msgstr "http://avointiede.fi/ida-selain-jakaminen"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:81
 msgid "Choose a license from the given options."
 msgstr "Valitse lisenssi annetuista vaihtoehdoista."
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:81
 msgid "Information about licenses"
 msgstr "Tietoa lisensseistä"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:81
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr "http://creativecommons.org/choose/?lang=fi"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:86
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
 msgid "e.g. additional information about the license"
 msgstr "esim. lisätietoa lisenssistä"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:87
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:85
 msgid ""
 "Provide detailed information about copyright notice, use constraints, "
 "referencing etc. Note that the field is required if license is set to "
@@ -5681,15 +5674,15 @@ msgstr ""
 "yms. Huomaa, että kenttä on pakollinen jos lisenssiksi on asetettu "
 "License Not Specified tai jokin versio tyypistä Other."
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:91
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:89
 msgid "Enter your dataset's IDA identifier in order to create download link"
 msgstr "Syötä aineiston IDA-tunniste luodaksesi latauslinkin"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:95
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:93
 msgid "Input a valid IDA identifier"
 msgstr "Syötä kelvollinen IDA-tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:97
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:95
 msgid "IDA identifier (Identifier.series)"
 msgstr "IDA-tunniste (Identifier.series)"
 
@@ -5925,7 +5918,7 @@ msgstr "Aineistoon liittyvä kuvailutiedosto"
 msgid "You must be logged in to upload a file."
 msgstr "Kirjaudu sisään voidaksesi lähettää tiedoston"
 
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:19
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:20
 msgid "Automatically generated"
 msgstr "Luodaan automaattisesti"
 
@@ -6168,4 +6161,3 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
-

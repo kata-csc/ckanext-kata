@@ -879,6 +879,9 @@ input[id="xmlfile"] {
   float: left !important;
   width: 190px !important;
 }
+.resource-form #field-resource-type-upload {
+  height: 0;
+}
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
   background: #ffffff;
@@ -2189,8 +2192,6 @@ a.download {
 }
 #resource-edit #field-url {
   cursor: default;
-  height: 50px;
-  word-break: break-word;
 }
 .dataset-heading a {
   color: #0095ca;

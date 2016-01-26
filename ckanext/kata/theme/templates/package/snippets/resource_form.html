@@ -16,8 +16,8 @@
       {% endif %}
     </div>
     {# override CKAN original for a read-only field (automatically generated) and for layout tweaks #}
-    {{ form.input('url', id='field-url', label=_('URL'), placeholder=_('Automatically generated'), value=data.url, error=errors.url, classes=['control-full'], attrs={'readonly': 'readonly'}) }}
   </div>
+  {{ form.textarea('url', id='field-url', label=_('URL'), placeholder=_('Automatically generated'), value=data.url, error=errors.url, attrs={'readonly': 'readonly'}, rows=3) }}
 {% endblock %}
 
 {# override original inputs for small tweaks #}

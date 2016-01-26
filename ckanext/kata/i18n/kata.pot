@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-01-21 10:16+0000\n"
+"POT-Creation-Date: 2016-01-26 09:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -235,7 +235,7 @@ msgstr ""
 
 #: ckanext/kata/controllers.py:986
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:74
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:72
 msgid "License"
 msgstr ""
 
@@ -699,7 +699,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:19
 #: ckanext/kata/theme/templates/package/snippets/import_xml.html:8
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:278
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:19
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:20
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:23
 msgid "URL"
 msgstr ""
@@ -1107,7 +1107,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/data-model.html:21
 #: ckanext/kata/theme/templates/kata/dummy.html:27
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:222
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:86
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
 msgid "Copyright notice"
 msgstr ""
 
@@ -5265,104 +5265,98 @@ msgid "directly downloadable from IDA"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:22
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:32
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:21
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:30
 msgid "Web address for downloading the dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:22
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:32
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:62
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:21
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:30
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:60
 msgid "http://mydata.com"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:20
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:23
-msgid "Web address display name"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:29
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:27
 msgid "downloadable after registration / identification"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:37
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:35
 msgid "with data access application form"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:45
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:43
 msgid "Create a new access request form automatically"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:48
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:46
 msgid "Or enter the address of an existing application form"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:48
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:46
 msgid "http://remsid/"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:54
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:52
 msgid "only by contacting the distributor"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:59
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:57
 msgid "through data provider"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:62
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:60
 msgid "Data provider's web address"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:67
 msgid ""
 "Choose how the data can be accessed. Type the URL information asked for "
 "depending on your choice. If the data is downloadable, choose the first or "
-"second option and provide the url. In the first option, optionally also "
-"provide display name for the web address. If the data is accessible after a "
-"person accepts terms and conditions in an external service, choose the third "
-"option. If the data can be accessed only by directly contacting the "
-"distributor, choose the last option. In this case data requests are sent by "
-"email to the address you provided in distributor section. Instructions on "
-"sharing files stored in IDA: "
+"second option and provide the url. If the data is accessible after a person "
+"accepts terms and conditions in an external service, choose the third option."
+" If the data can be accessed only by directly contacting the distributor, "
+"choose the last option. In this case data requests are sent by email to the "
+"address you provided in distributor section. Instructions on sharing files "
+"stored in IDA: "
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:67
 msgid "http://openscience.fi/ida-browser-sharing"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:81
 msgid "Choose a license from the given options."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:81
 msgid "Information about licenses"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:83
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:81
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:86
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:84
 msgid "e.g. additional information about the license"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:87
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:85
 msgid ""
 "Provide detailed information about copyright notice, use constraints, "
 "referencing etc. Note that the field is required if license is set to License"
 " Not Specified or any variant of Other."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:91
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:89
 msgid "Enter your dataset's IDA identifier in order to create download link"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:95
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:93
 msgid "Input a valid IDA identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:97
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:95
 msgid "IDA identifier (Identifier.series)"
 msgstr ""
 
@@ -5569,7 +5563,7 @@ msgstr ""
 msgid "You must be logged in to upload a file."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/resource_form.html:19
+#: ckanext/kata/theme/templates/package/snippets/resource_form.html:20
 msgid "Automatically generated"
 msgstr ""
 

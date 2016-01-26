@@ -11,6 +11,8 @@ Example:
 #}
 {% if resources %}
   {% for resource in resources %}
-    {% snippet 'package/snippets/resource_item.html', pkg=pkg, res=resource, user=user %}
+    {% if resource.resource_type != 'dataset' %}
+      {% snippet 'package/snippets/resource_item.html', pkg=pkg, res=resource, user=user %}
+    {% endif %}
   {% endfor %}
 {% endif %}

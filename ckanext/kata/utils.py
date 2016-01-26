@@ -114,7 +114,6 @@ def resource_to_dataset(data_dict):
     if resource:
         data_dict.update({
             'direct_download_URL': resource.get('url', u''),
-            'direct_download_name': resource.get('name', u''),
             'checksum': resource.get('hash', u''),
             'mimetype': resource.get('mimetype', u''),
             'format': resource.get('format', u''),
@@ -161,16 +160,12 @@ def dataset_to_resource(data_dict):
 
     data_dict['resources'][resource_index] = {
         'url': data_dict.get('direct_download_URL', settings.DATASET_URL_UNKNOWN),
-        'name': data_dict.get('direct_download_name', u''),
         'hash': data_dict.get('checksum', u''),
         'format': data_dict.get('format', u''),
         'mimetype': data_dict.get('mimetype', u''),
         'algorithm': data_dict.get('algorithm', u''),
         'resource_type': settings.RESOURCE_TYPE_DATASET,
     }
-
-    if data_dict.get('direct_download_name') is not None:
-        del data_dict['direct_download_name']
 
     return data_dict
 
