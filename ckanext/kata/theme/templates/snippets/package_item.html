@@ -26,7 +26,7 @@ Example:
   {% endif %}
   {% block package_item_content %}
   <div class="dataset-content">
-    {% set (rating, stars)=h.get_package_ratings_for_data_dict(package) %}
+    {% set rating = package.metadata_score %}
     {% if not small and not numbered %}
     <span class="rating-text" title="{{ _("Metadata completeness score") }}">{{ _('Metadata: {rating}/5').format(rating=rating) }}</span>
     {% endif %}
