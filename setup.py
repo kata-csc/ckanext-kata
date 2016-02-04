@@ -19,19 +19,6 @@ setup(
     namespace_packages=['ckanext', 'ckanext.kata'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        # -*- Extra requirements: -*-
-        'SPARQLWrapper <= 1.7.2',
-        'rdflib >= 4.2.0',
-        'iso8601 >= 0.1.5',
-        'pyClamd >= 0.3.10',
-        'lxml >= 3.1.2',
-        'functionally >= 1.0.1',
-        'python-magic >= 0.4.6',
-        'python-ldap >= 2.4.16',
-        'iso-639 >= 0.4.0',
-        'pycrypto == 2.6.1',
-    ],
     package_data={
         'ckan': [
             'i18n/*/LC_MESSAGES/*.mo',
