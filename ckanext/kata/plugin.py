@@ -627,10 +627,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
 
         self._handle_titles(pkg_dict)
 
-        (data['metadata_score'], _) = helpers.get_package_ratings_for_data_dict(pkg_dict)
-
         validated = json.loads(pkg_dict.get('validated_data_dict'))
-        (validated['metadata_score'], _) = helpers.get_package_ratings_for_data_dict(pkg_dict)
 
         _crypt = self._crypto()
 
