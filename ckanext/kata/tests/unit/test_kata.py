@@ -80,7 +80,8 @@ class TestKataPlugin(TestCase):
                     'agent_2_role': u'author',
                     'agent_3_name': u'juho',
                     'agent_3_role': u'distributor',
-                    'data_dict': '{"dada": "dudu"}'}
+                    'data_dict': '{"dada": "dudu"}',
+                    'validated_data_dict': '{"data": "dudu"}'}
 
         # output = self.kata_plugin.before_index(dict(data_dict=json.dumps(pkg_dict)))
         output = self.kata_plugin.before_index(pkg_dict)
