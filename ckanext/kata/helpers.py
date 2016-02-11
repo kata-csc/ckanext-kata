@@ -139,8 +139,13 @@ def get_package_ratings(data):
     if not (data.get('tags') or data.get('tag_string')):    # Either of these should be present
         score -= 5  # MINUS
 
-    if len(data.get('agent', [])) >= 2:
-        score += 2 * len(data['agent']) if len(data['agent']) < 6 else 6
+    ag = list()
+    if data.get('agent'):
+        for d in data.get('agent'):
+            if d.get('role'):
+                ag.append(d)
+    if len(ag) >= 2:
+        score += 2 * len(ag) if len(ag) < 6 else 6
 
     if len(data.get('event', [])) >= 1:
         score += 1
