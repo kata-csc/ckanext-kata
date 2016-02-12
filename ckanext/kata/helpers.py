@@ -140,10 +140,9 @@ def get_package_ratings(data):
         score -= 5  # MINUS
 
     ag = list()
-    if data.get('agent'):
-        for d in data.get('agent'):
-            if d.get('role'):
-                ag.append(d)
+    for d in data.get('agent', []):
+        if d.get('role'):
+            ag.append(d)
     if len(ag) >= 2:
         score += 2 * len(ag) if len(ag) < 6 else 6
 
