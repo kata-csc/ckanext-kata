@@ -8,7 +8,10 @@ import json
 import re
 import datetime
 import iso8601
+from Crypto.Cipher import Blowfish
+import base64
 
+from pylons import config
 from ckan import logic
 from ckan.lib.base import g, c, _
 from ckan.common import OrderedDict
@@ -63,6 +66,16 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     show_package_schema = Schemas.show_package_schema
     tags_schema = Schemas.tags_schema
     create_package_schema_oai_cmdi = Schemas.create_package_schema_oai_cmdi
+
+    def _crypto(self):
+        if config.get('kata.bf') and len(config.get('kata.bf')) > 4 and len(config.get('kata.bf')) < 56:
+            return Blowfish.new('config.get("kata.bf")')
+        else:
+            log.info('Falling back to beaker.session.secret')
+            return Blowfish.new('config.get("beaker.session.secret")')
+
+    def _pad(self, encr_str):
+        return encr_str + ' ' * (8 - (len(encr_str) % 8))
 
     def before_map(self, map):
         """
@@ -613,6 +626,21 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                 pkg_dict.pop(temporal_field)
 
         self._handle_titles(pkg_dict)
+
+        validated = json.loads(pkg_dict.get('validated_data_dict'))
+
+        _crypt = self._crypto()
+
+        try:
+            for item in validated.get('contact'):
+                for k_ in item.iterkeys():
+                    if k_ == u'email':
+                        item[k_] = base64.b64encode(_crypt.encrypt(self._pad(item[k_])))
+        except TypeError:
+            # Harves sources
+            pass
+
+        pkg_dict['validated_data_dict'] = json.dumps(validated)
 
         pkg_dict['data_dict'] = json.dumps(data)
 
