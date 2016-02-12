@@ -19,14 +19,14 @@ setup(
     namespace_packages=['ckanext', 'ckanext.kata'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        'python-ldap >= 2.4.16'
-    ],
     package_data={
         'ckan': [
             'i18n/*/LC_MESSAGES/*.mo',
         ]
     },
+    install_requires=[
+        'python-ldap >= 2.4.16'
+    ],
     message_extractors={
         'ckanext': [
             ('**.py', 'python', None),  #
