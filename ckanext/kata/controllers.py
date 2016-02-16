@@ -53,9 +53,12 @@ import ckanext.kata.clamd_wrapper as clamd_wrapper
 import ckanext.kata.settings as settings
 from ckanext.kata.schemas import Schemas as kata_schemas
 from ckanext.kata import utils
+import ckan.authz as authz
 
 _get_or_bust = ckan.logic.get_or_bust
 check_access = logic.check_access
+
+lookup_group_controller = ckan.lib.plugins.lookup_group_controller
 
 log = logging.getLogger(__name__)
 t = plugins.toolkit
@@ -1195,3 +1198,162 @@ class KataOrganizationController(OrganizationController):
         return render(self._index_template(group_type),
                       extra_vars={'group_type': group_type})
 
+
+    def organization_pages(self, name_id, limit=20):
+
+
+        #id = "4a429a89-865f-401d-bdfb-16bbb508501a"
+        # This would be read from a json file, for example
+        if name_id == 'hy':
+            id = "4a429a89-865f-401d-bdfb-16bbb508501a"
+
+        group_type = "organization"
+
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'schema': self._db_to_form_schema(group_type=group_type),
+                   'for_view': True}
+        #data_dict = {'id': id}
+
+        # unicode format (decoded from utf8)
+        q = c.q = request.params.get('q', '')
+        c.id = id
+
+        self._read(id, limit, group_type)
+        return render("organization/hy.html",
+                      extra_vars={'group_type': group_type})
+
+    def _read(self, id, limit, group_type):
+        ''' This is common code used by both read and bulk_process'''
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'schema': self._db_to_form_schema(group_type=group_type),
+                   'for_view': True, 'extras_as_string': True}
+
+        q = c.q = request.params.get('q', '')
+        # Search within group
+        q += ' owner_org:"%s"' %id
+
+        context['return_query'] = True
+
+        page = self._get_page_number(request.params)
+
+        # most search operations should reset the page counter:
+        params_nopage = [(k, v) for k, v in request.params.items()
+                         if k != 'page']
+        sort_by = request.params.get('sort', None)
+
+        def search_url(params):
+            action = 'organization_pages'
+            url = h.url_for(controller='ckanext.kata.controllers:KataOrganizationController', action=action)
+            params = [(k, v.encode('utf-8') if isinstance(v, basestring)
+                       else str(v)) for k, v in params]
+            return url + u'?' + urlencode(params)
+
+        def drill_down_url(**by):
+            return h.add_url_param(alternative_url=None,
+                                   controller='ckanext.kata.controllers:KataOrganizationController', action='organization_pages',
+                                   extras=dict(id=id),
+                                   new_params=by)
+
+        c.drill_down_url = drill_down_url
+
+        def remove_field(key, value=None, replace=None):
+            return h.remove_url_param(key, value=value, replace=replace,
+                                      controller='ckanext.kata.controllers:KataOrganizationController', action='browse',
+                                      extras=dict(id=id))
+
+        c.remove_field = remove_field
+
+        def pager_url(q=None, page=None):
+            params = list(params_nopage)
+            params.append(('page', page))
+            return search_url(params)
+
+        try:
+            c.fields = []
+            search_extras = {}
+            for (param, value) in request.params.items():
+                if not param in ['q', 'page', 'sort', 'id'] \
+                        and len(value) and not param.startswith('_'):
+                    if not param.startswith('ext_'):
+                        c.fields.append((param, value))
+                        q += ' %s: "%s"' % (param, value)
+                    else:
+                        search_extras[param] = value
+
+            fq = 'capacity:"public"'
+            user_member_of_orgs = [org['id'] for org
+                                   in h.organizations_available('read')]
+
+            if (id in user_member_of_orgs):
+                fq = ''
+                context['ignore_capacity_check'] = True
+
+            facets = OrderedDict()
+
+            default_facet_titles = {'organization': _('Organizations'),
+                                    'groups': _('Groups'),
+                                    'tags': _('Tags'),
+                                    'res_format': _('Formats'),
+                                    'license_id': _('Licenses')}
+
+            for facet in g.facets:
+                if facet in default_facet_titles:
+                    facets[facet] = default_facet_titles[facet]
+                else:
+                    facets[facet] = facet
+
+            for plugin in p.PluginImplementations(p.IFacets):
+                facets = plugin.dataset_facets(facets, 'dataset')
+
+            if 'capacity' in facets and (group_type != 'organization' or
+                                         not user_member_of_orgs):
+                del facets['capacity']
+
+            c.facet_titles = facets
+
+            data_dict = {
+                'q': q,
+                'fq': fq,
+                'facet.field': facets.keys(),
+                'rows': limit,
+                'sort': sort_by,
+                'start': (page - 1) * limit,
+                'extras': search_extras
+            }
+
+            context_ = dict((k, v) for (k, v) in context.items() if k != 'schema')
+            query = get_action('package_search')(context_, data_dict)
+
+            c.page = h.Page(
+                collection=query['results'],
+                page=page,
+                url=pager_url,
+                item_count=query['count'],
+                items_per_page=limit
+            )
+
+            c.package_count = query['count']
+            c.facets = query['facets']
+            maintain.deprecate_context_item('facets',
+                                            'Use `c.search_facets` instead.')
+
+            c.search_facets = query['search_facets']
+            c.search_facets_limits = {}
+            for facet in c.facets.keys():
+                limit = int(request.params.get('_%s_limit' % facet,
+                                               g.facets_default_number))
+                c.search_facets_limits[facet] = limit
+            c.page.items = query['results']
+
+            c.sort_by_selected = sort_by
+
+        except search.SearchError, se:
+            log.error('Group search error: %r', se.args)
+            c.query_error = True
+            c.facets = {}
+            c.page = h.Page(collection=[])
+
+        self._setup_template_variables(context, {'id':id},
+            group_type=group_type)

@@ -165,6 +165,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/organization',
                     controller='ckanext.kata.controllers:KataOrganizationController',
                     action='index')
+        map.connect('organization_pages',
+                    '/organization_pages/{name_id}',
+                    controller='ckanext.kata.controllers:KataOrganizationController',
+                    action='organization_pages')
 
         # Hide resource_read page
         map.redirect('/dataset/{id}/resource/{resource_id}', '/dataset/{id}')
