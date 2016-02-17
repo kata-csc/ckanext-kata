@@ -1198,14 +1198,22 @@ class KataOrganizationController(OrganizationController):
         return render(self._index_template(group_type),
                       extra_vars={'group_type': group_type})
 
-
     def organization_pages(self, name_id, limit=20):
 
+        id = list()
+        try:
+            org = open("/opt/data/ckan/pyenv/organisations.json", "r")
+            org_json = json.load(org)
+            this_org = org_json.get(name_id)
+            if not this_org or not this_org.get('main'):
+                raise ValueError
+            id.append(this_org.get('main'))
+            for item in this_org.get('children', []):
+                id.append(item)
+            org.close()
 
-        #id = "4a429a89-865f-401d-bdfb-16bbb508501a"
-        # This would be read from a json file, for example
-        if name_id == 'hy':
-            id = "4a429a89-865f-401d-bdfb-16bbb508501a"
+        except (IOError, ValueError, TypeError):
+            abort(404, 'Configuration error in organisation definitions')
 
         group_type = "organization"
 
@@ -1213,7 +1221,6 @@ class KataOrganizationController(OrganizationController):
                    'user': c.user or c.author,
                    'schema': self._db_to_form_schema(group_type=group_type),
                    'for_view': True}
-        #data_dict = {'id': id}
 
         # unicode format (decoded from utf8)
         q = c.q = request.params.get('q', '')
@@ -1232,7 +1239,10 @@ class KataOrganizationController(OrganizationController):
 
         q = c.q = request.params.get('q', '')
         # Search within group
-        q += ' owner_org:"%s"' %id
+        query_id = id
+        for a, aq in enumerate(query_id):
+            query_id[a] = ' owner_org:' + aq
+        q += " OR".join(query_id)
 
         context['return_query'] = True
 
