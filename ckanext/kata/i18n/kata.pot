@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-01-26 09:24+0000\n"
+"POT-Creation-Date: 2016-02-23 10:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgid "Required information missing"
 msgstr ""
 
 #: ckanext/kata/actions.py:451 ckanext/kata/actions.py:515
-#: ckanext/kata/controllers.py:690 ckanext/kata/controllers.py:768
+#: ckanext/kata/controllers.py:689 ckanext/kata/controllers.py:767
 msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:456 ckanext/kata/actions.py:460
-#: ckanext/kata/controllers.py:765
+#: ckanext/kata/controllers.py:764
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -117,105 +117,105 @@ msgstr ""
 msgid "User %s not authorized to delete resource %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:440 ckanext/kata/controllers.py:729
+#: ckanext/kata/controllers.py:439 ckanext/kata/controllers.py:728
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:444
+#: ckanext/kata/controllers.py:443
 msgid "Message not sent as logging wasn't permitted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:448 ckanext/kata/controllers.py:546
-#: ckanext/kata/controllers.py:572
+#: ckanext/kata/controllers.py:447 ckanext/kata/controllers.py:545
+#: ckanext/kata/controllers.py:571
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
 msgstr ""
 
-#: ckanext/kata/controllers.py:460
+#: ckanext/kata/controllers.py:459
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:469 ckanext/kata/controllers.py:475
+#: ckanext/kata/controllers.py:468 ckanext/kata/controllers.py:474
 msgid "Message not sent. Couldn't confirm human interaction (spam bot control)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:494 ckanext/kata/controllers.py:724
+#: ckanext/kata/controllers.py:493 ckanext/kata/controllers.py:723
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:496
+#: ckanext/kata/controllers.py:495
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:498
+#: ckanext/kata/controllers.py:497
 msgid ""
 "Message not sent. Please, provide reply address and name. Name must contain "
 "at least three letters."
 msgstr ""
 
-#: ckanext/kata/controllers.py:554 ckanext/kata/controllers.py:580
+#: ckanext/kata/controllers.py:553 ckanext/kata/controllers.py:579
 #: ckanext/kata/theme/templates/kata/dummy.html:61
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:623
+#: ckanext/kata/controllers.py:622
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:634
+#: ckanext/kata/controllers.py:633
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:665 ckanext/kata/controllers.py:904
-#: ckanext/kata/controllers.py:1164 ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:664 ckanext/kata/controllers.py:903
+#: ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:687
+#: ckanext/kata/controllers.py:686
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:707
+#: ckanext/kata/controllers.py:706
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:709 ckanext/kata/validators.py:164
+#: ckanext/kata/controllers.py:708 ckanext/kata/validators.py:164
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:824
+#: ckanext/kata/controllers.py:823
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:848
+#: ckanext/kata/controllers.py:847
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:853
+#: ckanext/kata/controllers.py:852
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:856
+#: ckanext/kata/controllers.py:855
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:858
+#: ckanext/kata/controllers.py:857
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:862
+#: ckanext/kata/controllers.py:861
 msgid "Failed to load file"
 msgstr ""
 
-#: ckanext/kata/controllers.py:982 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:981 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/controllers.py:983
+#: ckanext/kata/controllers.py:982
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -225,15 +225,15 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: ckanext/kata/controllers.py:984
+#: ckanext/kata/controllers.py:983
 msgid "Tags"
 msgstr ""
 
-#: ckanext/kata/controllers.py:985
+#: ckanext/kata/controllers.py:984
 msgid "Formats"
 msgstr ""
 
-#: ckanext/kata/controllers.py:986
+#: ckanext/kata/controllers.py:985
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:72
 msgid "License"
@@ -280,12 +280,12 @@ msgstr ""
 msgid "New organisation \"{org}\" created automatically."
 msgstr ""
 
-#: ckanext/kata/helpers.py:348 ckanext/kata/theme/templates/package/read.html:21
+#: ckanext/kata/helpers.py:352 ckanext/kata/theme/templates/package/read.html:21
 #: ckanext/kata/theme/templates/package/related_list.html:13
 msgid "Unpublished"
 msgstr ""
 
-#: ckanext/kata/helpers.py:348
+#: ckanext/kata/helpers.py:352
 msgid "Published"
 msgstr ""
 
@@ -2462,11 +2462,7 @@ msgstr ""
 msgid "Search for organizations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/organization/index.html:40
-msgid "Show all organizations"
-msgstr ""
-
-#: ckanext/kata/theme/templates/organization/index.html:65
+#: ckanext/kata/theme/templates/organization/index.html:58
 msgid "There are currently no organizations for this site"
 msgstr ""
 

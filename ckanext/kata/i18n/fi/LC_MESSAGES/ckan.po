@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-01-26 09:24+0000\n"
+"POT-Creation-Date: 2016-02-23 10:38+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -31,12 +31,12 @@ msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
 #: ckanext/kata/actions.py:451 ckanext/kata/actions.py:515
-#: ckanext/kata/controllers.py:690 ckanext/kata/controllers.py:768
+#: ckanext/kata/controllers.py:689 ckanext/kata/controllers.py:767
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
 #: ckanext/kata/actions.py:456 ckanext/kata/actions.py:460
-#: ckanext/kata/controllers.py:765
+#: ckanext/kata/controllers.py:764
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
@@ -120,16 +120,16 @@ msgstr ""
 msgid "User %s not authorized to delete resource %s"
 msgstr "Käyttäjällä %s ei ole oikeuksia poistaa resurssia %s"
 
-#: ckanext/kata/controllers.py:440 ckanext/kata/controllers.py:729
+#: ckanext/kata/controllers.py:439 ckanext/kata/controllers.py:728
 msgid "Bad Captcha. Please try again."
 msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
-#: ckanext/kata/controllers.py:444
+#: ckanext/kata/controllers.py:443
 msgid "Message not sent as logging wasn't permitted"
 msgstr "Viestiä ei lähetetty, koska lokin tallentamista ei sallittu"
 
-#: ckanext/kata/controllers.py:448 ckanext/kata/controllers.py:546
-#: ckanext/kata/controllers.py:572
+#: ckanext/kata/controllers.py:447 ckanext/kata/controllers.py:545
+#: ckanext/kata/controllers.py:571
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
@@ -137,25 +137,25 @@ msgstr ""
 "Asiakasviestien lähetys on parhaillaan poissa käytöstä. Ole hyvä ja yritä"
 " myöhemmin uudelleen tai ota yhteyttä asiakaspalveluun."
 
-#: ckanext/kata/controllers.py:460
+#: ckanext/kata/controllers.py:459
 msgid "Recipient not found"
 msgstr "Vastaanottajaa ei löytynyt"
 
-#: ckanext/kata/controllers.py:469 ckanext/kata/controllers.py:475
+#: ckanext/kata/controllers.py:468 ckanext/kata/controllers.py:474
 msgid "Message not sent. Couldn't confirm human interaction (spam bot control)"
 msgstr ""
 "Viestiä ei lähetetty. Tarkistukset bottien varalta antoivat positiivisen "
 "tuloksen."
 
-#: ckanext/kata/controllers.py:494 ckanext/kata/controllers.py:724
+#: ckanext/kata/controllers.py:493 ckanext/kata/controllers.py:723
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
-#: ckanext/kata/controllers.py:496
+#: ckanext/kata/controllers.py:495
 msgid "No message"
 msgstr "Viesti on tyhjä"
 
-#: ckanext/kata/controllers.py:498
+#: ckanext/kata/controllers.py:497
 msgid ""
 "Message not sent. Please, provide reply address and name. Name must "
 "contain at least three letters."
@@ -163,68 +163,68 @@ msgstr ""
 "Viestiä ei lähetetty. Täytäthän sähköpostiosoite- ja nimitietosi. Nimen "
 "on koostuttava vähintään kolmesta kirjaimesta."
 
-#: ckanext/kata/controllers.py:554 ckanext/kata/controllers.py:580
+#: ckanext/kata/controllers.py:553 ckanext/kata/controllers.py:579
 #: ckanext/kata/theme/templates/kata/dummy.html:61
 msgid "Dataset not found"
 msgstr "Aineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:623
+#: ckanext/kata/controllers.py:622
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:634
+#: ckanext/kata/controllers.py:633
 msgid "Successfully logged out."
 msgstr "Olet nyt kirjautunut ulos."
 
-#: ckanext/kata/controllers.py:665 ckanext/kata/controllers.py:904
-#: ckanext/kata/controllers.py:1164 ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:664 ckanext/kata/controllers.py:903
+#: ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:687
+#: ckanext/kata/controllers.py:686
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
-#: ckanext/kata/controllers.py:707
+#: ckanext/kata/controllers.py:706
 msgid "Feature disabled"
 msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:709 ckanext/kata/validators.py:164
+#: ckanext/kata/controllers.py:708 ckanext/kata/validators.py:164
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
-#: ckanext/kata/controllers.py:824
+#: ckanext/kata/controllers.py:823
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:848
+#: ckanext/kata/controllers.py:847
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:853
+#: ckanext/kata/controllers.py:852
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:856
+#: ckanext/kata/controllers.py:855
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
-#: ckanext/kata/controllers.py:858
+#: ckanext/kata/controllers.py:857
 msgid "Invalid XML content"
 msgstr "Virheellinen XML sisältö"
 
-#: ckanext/kata/controllers.py:862
+#: ckanext/kata/controllers.py:861
 msgid "Failed to load file"
 msgstr "Tiedostoa ei voitu ladata"
 
-#: ckanext/kata/controllers.py:982 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:981 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr "Organisaatiot"
 
-#: ckanext/kata/controllers.py:983
+#: ckanext/kata/controllers.py:982
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -234,15 +234,15 @@ msgstr "Organisaatiot"
 msgid "Groups"
 msgstr "Ryhmät"
 
-#: ckanext/kata/controllers.py:984
+#: ckanext/kata/controllers.py:983
 msgid "Tags"
 msgstr "Asiasanat"
 
-#: ckanext/kata/controllers.py:985
+#: ckanext/kata/controllers.py:984
 msgid "Formats"
 msgstr "Formaatit"
 
-#: ckanext/kata/controllers.py:986
+#: ckanext/kata/controllers.py:985
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:72
 msgid "License"
@@ -292,13 +292,13 @@ msgstr ""
 msgid "New organisation \"{org}\" created automatically."
 msgstr "Uusi organisaatio \"{org}\" luotu automaattisesti."
 
-#: ckanext/kata/helpers.py:348
+#: ckanext/kata/helpers.py:352
 #: ckanext/kata/theme/templates/package/read.html:21
 #: ckanext/kata/theme/templates/package/related_list.html:13
 msgid "Unpublished"
 msgstr "Julkaisematon"
 
-#: ckanext/kata/helpers.py:348
+#: ckanext/kata/helpers.py:352
 msgid "Published"
 msgstr "Julkaistu"
 
@@ -2693,11 +2693,7 @@ msgstr "Lisää organisaatio"
 msgid "Search for organizations"
 msgstr "Etsi organisaatioita..."
 
-#: ckanext/kata/theme/templates/organization/index.html:40
-msgid "Show all organizations"
-msgstr "Näytä kaikki organisaatiot"
-
-#: ckanext/kata/theme/templates/organization/index.html:65
+#: ckanext/kata/theme/templates/organization/index.html:58
 msgid "There are currently no organizations for this site"
 msgstr "Sivustolla ei ole parhaillaan organisaatioita"
 
@@ -5636,13 +5632,13 @@ msgid ""
 msgstr ""
 "Valitse, miten dataan pääsee käsiksi. Kirjoita web-osoitetiedot, jos "
 "niitä kysytään (riippuu valinnastasi). Jos data on ladattavissa verkosta,"
-" valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data on"
-" saatavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy määrittelemäsi"
-" ehdot jossain ulkopuolisessa palvelussa, valitse kolmas vaihtoehto. Jos "
-"dataan pääsee käsiksi vain ottamalla suoraan yhteyttä jakelijaan, valitse"
-" viimeinen vaihtoehto. Tässä tapauksessa datapyynnöt lähetetään edellä "
-"antamaasi jakelijan sähköpostiosoitteeseen. Ohjeet IDA-palveluun "
-"tallennettujen tiedostojen jakamisesta: "
+" valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data"
+" on saatavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy "
+"määrittelemäsi ehdot jossain ulkopuolisessa palvelussa, valitse kolmas "
+"vaihtoehto. Jos dataan pääsee käsiksi vain ottamalla suoraan yhteyttä "
+"jakelijaan, valitse viimeinen vaihtoehto. Tässä tapauksessa datapyynnöt "
+"lähetetään edellä antamaasi jakelijan sähköpostiosoitteeseen. Ohjeet IDA-"
+"palveluun tallennettujen tiedostojen jakamisesta: "
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:67
 msgid "http://openscience.fi/ida-browser-sharing"
@@ -6161,3 +6157,7 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
+#~ msgid "Show all organizations"
+#~ msgstr "Näytä kaikki organisaatiot"
+
