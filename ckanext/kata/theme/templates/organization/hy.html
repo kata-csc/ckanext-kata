@@ -2,19 +2,26 @@
 
 {% block inner_content %}
 
-  <div class="etsin-container">
+  <div class="etsin-container" data-module="etsin-organisation-pages">
+    <div class="org-img-frame"><img src="/base/images/Helsingin_yliopisto.svg.png"/></div>
     <div class="container">
-      <div class="row-fluid">
+      <div id="org-info-frame">
+        <div class="org-info-block"><div class="org-info-block-header">Organisaatio</div><div class="org-info-block-content">{{ org_name }}</div></div>
+        <div class="org-info-block"><div class="org-info-block-header">Kuvaus</div><div class="org-info-block-content">{{ org_descr|safe }}</div></div>
+        <div class="org-info-block"><div class="org-info-block-header">URL</div><div class="org-info-block-content"><a href="{{ org_url }}" target="_blank">{{ org_url }}</a></div></div>
+      </div>
+      <div class="row-fluid" id="org-search-row-upper">
         <h2 class="page-title">{{ c.group_dict.display_name }}</h2>
         <div class="organization-view-header">
           <div class="actions-and-ratings">
             <div class="button-container">
-              <a class="btn btn-default" href={{h.url_for(controller='organization', action='about', id=c.group_dict.name)}}>{{ _('Organization info') }}</a>
+              <a class="btn btn-default" onclick="return false;" id="org-info-btn" href={{h.url_for(controller='organization', action='about', id=c.group_dict.name)}}>{{ _('Organization info') }}
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <div class="clearfix"></div>
+      <!--div class="clearfix"></div-->
       <h2 class="etsin-secondary-title">{{ _('Search for datasets') }}</h2>
       <form id="dataset-search" class="dataset-search clearfix search-form" method="get" data-module="select-switch">
         <div class="search-terms">

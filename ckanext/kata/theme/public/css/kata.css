@@ -2727,6 +2727,44 @@ a.download {
   border-bottom: 1px solid #c9c9c9;
   padding-bottom: 60px;
 }
+.etsin-container .org-img-frame {
+  margin-left: 30px;
+  float: left;
+  max-width: 150px;
+}
+@media screen and (max-width: 1150px) {
+  .etsin-container .org-img-frame {
+    max-width: 100px;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .etsin-container .org-img-frame {
+    display: none;
+  }
+}
+.etsin-container #org-search-row-upper:after {
+  clear: none !important;
+}
+#org-info-btn {
+  border: 0px;
+}
+#org-info-frame {
+  display: none;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 700px;
+  word-wrap: break-word;
+}
+#org-info-frame .org-info-block {
+  margin: 10px;
+}
+#org-info-frame .org-info-block .org-info-block-header {
+  font-weight: bold;
+}
+#org-info-frame .org-info-block .org-info-block-content {
+  margin-left: 20px;
+  margin-top: 5px;
+}
 .browse-search-switcher {
   margin-bottom: 40px;
   font-size: 0;

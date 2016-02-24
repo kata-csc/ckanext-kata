@@ -1215,7 +1215,10 @@ class KataOrganizationController(OrganizationController):
         except (IOError, ValueError, TypeError):
             abort(404, 'Configuration error in organisation definitions')
 
-        group_type = "organization"
+        group_type = 'organization'
+        org_name = 'Helsingin Yliopisto'
+        org_descr = u'<p>Etsimessä voi tarkastella Helsingin Yliopistossa tuotettuja tutkimusaineistoja.</p><p>Helsingin yliopiston korkein valvoja on yliopistokollegion valitsema yliopiston kansleri, jonka tehtävänä yliopistolain mukaan on edistää tieteitä ja valvoa yliopiston etua. Kanslerilla on oikeus olla läsnä valtioneuvoston niissä istunnoissa, joissa käsitellään Helsingin yliopistoa koskevia asioita. Tämä oikeus on kirjattu yliopistolakiin ja se johtuu yliopiston autonomiasta. Kanslerin muodolliset kelpoisuusvaatimukset ovat melko väljät: Kansleriksi tulee valita henkilö, joka on toiminut ansiokkaasti tieteen tai yliopistolaitoksen hyväksi. Käytännössä lähes jokainen kansleri on ollut entinen, jopa edeltävä rehtori. Kansleri päättää professorin nimittämisestä sekä myöntää dosentin arvot.</p>'
+        org_url = "https://www.helsinki.fi/"
 
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author,
@@ -1228,7 +1231,7 @@ class KataOrganizationController(OrganizationController):
 
         self._read(id, limit, group_type)
         return render("organization/hy.html",
-                      extra_vars={'group_type': group_type})
+                      extra_vars={'group_type': group_type, 'org_name': org_name, 'org_descr': org_descr, 'org_url': org_url})
 
     def _read(self, id, limit, group_type):
         ''' This is common code used by both read and bulk_process'''
