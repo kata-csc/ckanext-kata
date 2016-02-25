@@ -1258,7 +1258,7 @@ class KataOrganizationController(OrganizationController):
 
         def search_url(params):
             action = 'organization_pages'
-            url = h.url_for(controller='ckanext.kata.controllers:KataOrganizationController', action=action)
+            url = h.url_for(controller='ckanext.kata.controllers:KataOrganizationController', action=action, extras=dict(id=id))
             params = [(k, v.encode('utf-8') if isinstance(v, basestring)
                        else str(v)) for k, v in params]
             return url + u'?' + urlencode(params)
@@ -1273,7 +1273,7 @@ class KataOrganizationController(OrganizationController):
 
         def remove_field(key, value=None, replace=None):
             return h.remove_url_param(key, value=value, replace=replace,
-                                      controller='ckanext.kata.controllers:KataOrganizationController', action='browse',
+                                      controller='ckanext.kata.controllers:KataOrganizationController', action='organization_pages',
                                       extras=dict(id=id))
 
         c.remove_field = remove_field
