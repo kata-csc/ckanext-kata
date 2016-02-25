@@ -1228,6 +1228,7 @@ class KataOrganizationController(OrganizationController):
         # unicode format (decoded from utf8)
         q = c.q = request.params.get('q', '')
         c.id = id
+        c.name_id = name_id
 
         self._read(id, limit, group_type)
         return render("organization/hy.html",
@@ -1258,14 +1259,14 @@ class KataOrganizationController(OrganizationController):
 
         def search_url(params):
             action = 'organization_pages'
-            url = h.url_for(controller='ckanext.kata.controllers:KataOrganizationController', action=action, extras=dict(id=id))
+            url = h.url_for(controller='ckanext.kata.controllers:KataOrganizationController', action=action, name_id=c.name_id)
             params = [(k, v.encode('utf-8') if isinstance(v, basestring)
                        else str(v)) for k, v in params]
             return url + u'?' + urlencode(params)
 
         def drill_down_url(**by):
             return h.add_url_param(alternative_url=None,
-                                   controller='ckanext.kata.controllers:KataOrganizationController', action='organization_pages',
+                                   controller='ckanext.kata.controllers:KataOrganizationController', action='organization_pages', name_id=c.name_id,
                                    extras=dict(id=id),
                                    new_params=by)
 
@@ -1273,7 +1274,7 @@ class KataOrganizationController(OrganizationController):
 
         def remove_field(key, value=None, replace=None):
             return h.remove_url_param(key, value=value, replace=replace,
-                                      controller='ckanext.kata.controllers:KataOrganizationController', action='organization_pages',
+                                      controller='ckanext.kata.controllers:KataOrganizationController', action='organization_pages', name_id=c.name_id,
                                       extras=dict(id=id))
 
         c.remove_field = remove_field
