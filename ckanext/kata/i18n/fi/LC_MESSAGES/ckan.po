@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-02-23 10:38+0000\n"
+"POT-Creation-Date: 2016-02-25 09:21+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -67,11 +67,11 @@ msgstr "Käyttäjällä on jo %s -oikeudet"
 msgid "User added"
 msgstr "Käyttäjä lisätty"
 
-#: ckanext/kata/actions.py:590
+#: ckanext/kata/actions.py:591
 msgid "You don't have permission to modify roles for this organization."
 msgstr "Sinulla ei ole oikeuksia muokata tämän organisaation rooleja."
 
-#: ckanext/kata/actions.py:624
+#: ckanext/kata/actions.py:625
 msgid "You don't have permission to remove this user."
 msgstr "Sinulla ei ole oikeuksia poistaa tätä käyttäjää."
 
@@ -301,6 +301,14 @@ msgstr "Julkaisematon"
 #: ckanext/kata/helpers.py:352
 msgid "Published"
 msgstr "Julkaistu"
+
+#: ckanext/kata/helpers.py:483
+msgid "By datasets"
+msgstr "Aineistoittain"
+
+#: ckanext/kata/helpers.py:483
+msgid "Show all"
+msgstr "Näytä kaikki"
 
 #: ckanext/kata/settings.py:54
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:81
@@ -2693,7 +2701,17 @@ msgstr "Lisää organisaatio"
 msgid "Search for organizations"
 msgstr "Etsi organisaatioita..."
 
-#: ckanext/kata/theme/templates/organization/index.html:58
+#: ckanext/kata/theme/templates/organization/index.html:36
+msgid "Order by"
+msgstr ""
+
+#: ckanext/kata/theme/templates/organization/index.html:46
+#, fuzzy
+#| msgid "Igbo"
+msgid "Go"
+msgstr "igbo"
+
+#: ckanext/kata/theme/templates/organization/index.html:71
 msgid "There are currently no organizations for this site"
 msgstr "Sivustolla ei ole parhaillaan organisaatioita"
 
@@ -6157,7 +6175,4 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
-
-#~ msgid "Show all organizations"
-#~ msgstr "Näytä kaikki organisaatiot"
 

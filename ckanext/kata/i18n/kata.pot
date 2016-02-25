@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-02-23 10:38+0000\n"
+"POT-Creation-Date: 2016-02-25 09:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,11 +66,11 @@ msgstr ""
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:590
+#: ckanext/kata/actions.py:591
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:624
+#: ckanext/kata/actions.py:625
 msgid "You don't have permission to remove this user."
 msgstr ""
 
@@ -287,6 +287,14 @@ msgstr ""
 
 #: ckanext/kata/helpers.py:352
 msgid "Published"
+msgstr ""
+
+#: ckanext/kata/helpers.py:483
+msgid "By datasets"
+msgstr ""
+
+#: ckanext/kata/helpers.py:483
+msgid "Show all"
 msgstr ""
 
 #: ckanext/kata/settings.py:54
@@ -2462,7 +2470,15 @@ msgstr ""
 msgid "Search for organizations"
 msgstr ""
 
-#: ckanext/kata/theme/templates/organization/index.html:58
+#: ckanext/kata/theme/templates/organization/index.html:36
+msgid "Order by"
+msgstr ""
+
+#: ckanext/kata/theme/templates/organization/index.html:46
+msgid "Go"
+msgstr ""
+
+#: ckanext/kata/theme/templates/organization/index.html:71
 msgid "There are currently no organizations for this site"
 msgstr ""
 
