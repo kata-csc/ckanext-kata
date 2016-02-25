@@ -22,10 +22,6 @@ ckan.module('etsin-organisation-pages', function ($, _) {
               }
 
           });
-          orgInfoFrame.mouseleave(function() {
-              $(this).hide("slow");
-              orgInfoBtn.text(showTxt);
-          });
         }
     }
 });
