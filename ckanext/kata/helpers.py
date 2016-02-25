@@ -479,6 +479,10 @@ def organizations_available(permission='edit_group'):
     return organizations
 
 
+def get_organization_sorters():
+    return [(N_("By datasets"), "packages"), (N_("Show all"), "title")]
+
+
 def convert_language_code(lang, to_format, throw_exceptions=True):
     '''
     Convert ISO 639 language code to <to_format>. Throws KeyError if none found.

@@ -32,7 +32,20 @@
                   {% endfor -%}
                 </span>
               {%- endif %}
-
+              <div class="form-select control-group control-order-by">
+                <label for="field-order-by">{{ _('Order by') }}</label>
+                <select id="field-order-by" name="sort">
+                  {% set sorting = h.get_organization_sorters() %}
+                  {% for label, value in sorting %}
+                    {% if label and value %}
+                      <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                {% block search_sortby_button %}
+                  <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
+                {% endblock %}
+              </div>
             </div>
         </form>
       </div>
