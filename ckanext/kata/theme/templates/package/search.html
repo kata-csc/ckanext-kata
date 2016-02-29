@@ -16,6 +16,9 @@
           </div>
         </div>
         #}
+        {% block flash %}
+          {{ super() }}
+        {% endblock %}
         <div class="row-fluid">
           <h2 class="etsin-secondary-title">{{ _("Search for a Dataset") }}</h2>
 
@@ -23,7 +26,7 @@
             <div class="search-terms">
                <div class="search-input control-group search-giant">
                  <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
-                   placeholder="{{ _('Enter search term or query…') }}">
+                   placeholder="{{ _('Enter search term or query…') }}" tabindex="1" autofocus>
                  <button type="submit" value="search">
                    <i class="icon-search"></i>
                    <span>{{ _('Submit') }}</span>
