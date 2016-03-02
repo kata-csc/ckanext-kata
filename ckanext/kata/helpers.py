@@ -816,15 +816,18 @@ def get_active_facets(facets):
     Constructs a summary of currently active facets for search view.
     Resolves also if any "show more"/"show only top" toggles are on (limits).
     '''
-    facet_info = dict()
-    facet_info['fields'] = facets.get('fields')
-    facet_info['fields'].pop('isopen', None)
-    facet_info['search'] = dict()
-    limits = [k for k, v in request.params.items() if v and k.endswith('_limit')]
-    limits = [limit.rsplit('_', 1)[0].strip('_') for limit in limits]
-    for key in facets.get('search').iterkeys():
-        facet_info['search'][key] = bool(key in limits)
-    return json.dumps(facet_info)
+
+    if facets and type(facets.get('search')) is dict:
+        facet_info = dict()
+        facet_info['fields'] = facets.get('fields')
+        facet_info['fields'].pop('isopen', None)
+        facet_info['search'] = dict()
+        limits = [k for k, v in request.params.items() if v and k.endswith('_limit')]
+        limits = [limit.rsplit('_', 1)[0].strip('_') for limit in limits]
+        for key in facets.get('search').iterkeys():
+            facet_info['search'][key] = bool(key in limits)
+        return json.dumps(facet_info)
+    return '{}'
 
 
 def get_fields_grouped():
