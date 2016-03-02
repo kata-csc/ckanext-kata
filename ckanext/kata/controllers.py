@@ -509,11 +509,13 @@ at least three letters."))
         """
 
         package = Package.get(pkg_id)
-        package_title = package.title if package.title else package.name
-        subject = u"Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
-        recipient_id = request.params.get('recipient', '')
-
-        return self._prepare_and_send(pkg_id, recipient_id, subject, settings.USER_MESSAGE_PREFIX_TEMPLATE, settings.REPLY_TO_SENDER_NOTE)
+        if package:
+            package_title = package.title if package.title else package.name
+            subject = u"Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
+            recipient_id = request.params.get('recipient', '')
+            return self._prepare_and_send(pkg_id, recipient_id, subject, settings.USER_MESSAGE_PREFIX_TEMPLATE, settings.REPLY_TO_SENDER_NOTE)
+        else:
+            ckan.lib.base.abort(404, _("Package not found"))
 
     def send_request_message(self, pkg_id):
         """
