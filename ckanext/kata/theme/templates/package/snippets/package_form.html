@@ -42,7 +42,7 @@ then itself be extended to add/remove blocks of functionality. #}
           <button class="btn btn-primary" type="submit" value="finish" name="save">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
           {# Changing the text of save and publish on edit can be done in new_package_form.html #}
           <button id="save-and-publish" class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled" title="{{ _('Accept the terms of use before publishing') }}">{% block save_and_publish_button_text %}{{ _('Save and publish') }}{% endblock %}</button>
-          <a class="btn btn-default" href="" onclick="window.history.back()">{{ _('Cancel') }}</a>
+          <a id="cancel-edit" class="btn btn-default">{{ _('Cancel') }}</a>
         {#
           {% block cancel_button %}
             <a class="btn btn-default" href="">{% block cancel_button_text %}{{ _('Cancel') }}{% endblock %}</a>

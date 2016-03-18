@@ -8,6 +8,12 @@ this.ckan.module('etsin-dataset-form', function ($, translate) {
       setTimeout(function () {
         selectTab(0);
       }, 200);
+
+      $('#cancel-edit').click(function() {
+        var newUrl = window.location.href.replace('/edit', '');
+        window.location.href = newUrl;
+        return false;
+      });
     },
 
     selectTab: function (index, force) {
