@@ -324,8 +324,8 @@ class TestURNExport(KataWsgiTestCase):
         organization = get_action('organization_create')({'user': 'test_sysadmin'},
                                                          {'name': 'test-organization', 'title': "Test organization"})
 
-        for count, private, delete in (1, False, False), (1, True, False), (2, False, False), (2, False, True), (
-        3, False, False):
+        for count, private, delete in (2, False, False), (2, True, False), (4, False, False), (4, False, True), (
+        6, False, False):
             data = copy.deepcopy(TEST_DATADICT)
             data['owner_org'] = organization['name']
             data['private'] = private
@@ -336,6 +336,7 @@ class TestURNExport(KataWsgiTestCase):
 
             res = self.app.get(offset)
 
+            print res
             tree = etree.fromstring(res.body)
             self.assertEquals(len(tree.xpath("//u:identifier", namespaces=self.namespaces)), count)
 
