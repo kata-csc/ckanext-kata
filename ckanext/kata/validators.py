@@ -10,6 +10,7 @@ import urlparse
 
 from pylons.i18n import _
 from paste.deploy.converters import asbool
+1from sqlalchemy import or_
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
@@ -19,6 +20,7 @@ from ckanext.kata import utils, settings
 import ckan.lib.navl.dictization_functions as df
 import ckan.authz as authz
 import ckan.logic as logic
+import ckan.model as model
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -591,3 +593,46 @@ def continue_if_missing(key, data, errors, context):
 
     if value is missing or value is None:
         data.pop(key, None)
+
+def validate_pid_uniqueness(key, data, errors, context):
+#     '''
+#     Validate dataset pids are unique, i.e. they do not exist already.
+#
+#     :param key: key
+#     :param data: data
+#     :param errors: errors
+#     :param context: context
+#     '''
+    exam_pid = data.get(key)
+    exam_package_id = data.get(('id',))
+
+    # Query package extra table with key like pids_%_id and match exact pid name with the corresponding value
+    # Return only rows with package state active, since deleted datasets might be re-added.
+    query = model.Session.query(model.PackageExtra).filter(model.PackageExtra.key.like('pids_%_id')). \
+            filter(or_(model.PackageExtra.value == exam_pid, model.PackageExtra.package_id == exam_pid)). \
+            join(model.Package).filter(model.Package.state == 'active')
+
+    q_amt = query.count()
+    q_package_ids = [i[0] for i in query.values('package_id')]
+    q_pids = [i[0] for i in query.values('value')]
+
+    # If existing pids or package_ids with value matching the pid were found
+    # and if none of those found values is the pid, raise an error.
+    # The latter if is when updating a dataset.
+  #  print("!!!!")
+    if q_amt > 0:
+      #  print("EXAM PID: " + exam_pid)
+      #  print("EXAM PACKAGE_ID: " + exam_package_id)
+        for idx, item in enumerate(q_pids):
+           # print("ITEM PID: " + item)
+         #   print("ITEM PACKAGE ID: " + q_package_ids[idx])
+            if item == exam_pid and q_package_ids[idx] != exam_package_id:
+             #   print("????")
+                raise Invalid(_('Identifier {id} exists in another dataset').format(id=exam_package_id))
+
+        # for item in q_package_ids:
+        #     if item != exam_package_id:
+        #         raise Invalid(_('Identifier {id} exists in another dataset').format(id=exam_package_id))
+
+        # if exam_package_id not in q_package_ids:
+        #     raise Invalid(_('Identifier {id} exists in another dataset').format(id=exam_package_id))

@@ -329,8 +329,10 @@ class TestURNExport(KataWsgiTestCase):
             data = copy.deepcopy(TEST_DATADICT)
             data['owner_org'] = organization['name']
             data['private'] = private
+            data['pids'][1]['id'] = utils.generate_pid()
 
             package = get_action('package_create')({'user': 'test_sysadmin'}, data)
+
             if delete:
                 get_action('package_delete')({'user': 'test_sysadmin'}, {'id': package['id']})
 
