@@ -123,7 +123,7 @@ class MetadataController(BaseController):
         seen_ids = list()
         for package_id, name, pid in query:
             # Since package_id is not listed as name/value pair, print it separately and only once
-            if not package_id in seen_ids and package_id.startswith('urn:nbn:fi:csc-%'):
+            if not package_id in seen_ids and package_id.startswith('urn:nbn:fi:csc-'):
                 seen_ids.append(package_id)
                 self._create_urnexport_xml_item(records, package_id, name, base_url, now)
             self._create_urnexport_xml_item(records, pid, name, base_url, now)
