@@ -19,6 +19,7 @@ import ckan.lib.navl.dictization_functions as df
 import ckanext.kata.model as kata_model
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_ORGANIZATION_COMMON, TEST_DATADICT
 import ckanext.ytp.comments.model as comments_model
+from ckanext.kata import utils
 
 # Note: all ORM model changes must be imported before WsgiAppCase
 from ckan import model
@@ -58,6 +59,12 @@ class KataWsgiTestCase(tests.WsgiAppCase, unittest.TestCase):
 
         kata_model.delete_tables()
         model.repo.rebuild_db()
+
+    @classmethod
+    def get_unique_pids(self, ddict):
+        for pid in ddict.get('pids', []):
+            pid['id'] = utils.generate_pid()
+        return ddict
 
 
 class KataApiTestCase(unittest.TestCase):
@@ -162,3 +169,9 @@ class KataApiTestCase(unittest.TestCase):
         testfixtures.compare(output, data_dict)
 
         return True
+
+    @classmethod
+    def get_unique_pids(self, ddict):
+        for pid in ddict.get('pids', []):
+            pid['id'] = utils.generate_pid()
+        return ddict

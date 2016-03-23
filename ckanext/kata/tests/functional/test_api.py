@@ -20,18 +20,22 @@ class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
 
     def test_create_dataset(self):
-        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        output = self.api_user_normal.action.package_create(**data)
         assert output
         assert output['id'].startswith('urn:nbn:fi:csc-kata')
 
     def test_create_dataset_without_tags(self):
-        data = copy.copy(self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
         data.pop('tag_string')
 
         self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
 
     def test_create_dataset_sysadmin(self):
-        output = self.api_user_sysadmin.action.package_create(**self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        output = self.api_user_sysadmin.action.package_create(**data)
         assert output
         assert output['id'].startswith('urn:nbn:fi:csc-kata')
 
@@ -40,7 +44,9 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         Add a dataset and 20 resources and read dataset through API
         '''
         print 'Create dataset'
-        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        output = self.api_user_normal.action.package_create(**data)
         assert 'id' in output
 
         new_res = copy.deepcopy(TEST_RESOURCE)
@@ -57,17 +63,19 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         assert 'id' in output
 
         # Check that data dict is correct.
-        assert self._compare_datadicts(self.TEST_DATADICT, output)
+        assert self._compare_datadicts(data, output)
 
     def test_create_update_delete_dataset(self):
         '''
         Add, modify and delete a dataset through API
         '''
         print 'Create dataset'
-        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        output = self.api_user_normal.action.package_create(**data)
         assert 'id' in output
 
-        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = copy.deepcopy(data)
         data_dict['id'] = output['id']
 
         print 'Update dataset'
@@ -116,9 +124,10 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         '''
         Test and edit dataset via API. Check that immutables stay as they are.
         '''
-        output = self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
+        output = self.api_user_normal.call_action('package_create', data_dict=data_dict)
 
         orig_id = output['id']
         data_dict['id'] = orig_id
@@ -133,11 +142,13 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         '''Test required fields for agents (role, name/organisation/URL)'''
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
         data_dict['agent'][2].pop('role')
 
         self.assertRaises(ValidationError, self.api_user_normal.call_action, 'package_create', data_dict=data_dict)
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
         data_dict.pop('agent', None)
         data_dict['agent'] = [{'role': u'author'}]
 
@@ -146,6 +157,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
     def test_create_dataset_no_org(self):
         '''A user can not create a dataset with no organisation'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
         data_dict['owner_org'] = ''
 
         self.assertRaises(ValidationError, self.api_user_anna.call_action, 'package_create', data_dict=data_dict)
@@ -153,6 +165,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
     def test_create_dataset_no_org_2(self):
         '''A user with organization cannot create organizationless dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
         data_dict['owner_org'] = ''
         data_dict['name'] = 'test'
 
@@ -161,6 +174,7 @@ class TestCreateDatasetAndResources(KataApiTestCase):
     def test_create_public_dataset_by_member(self):
         '''Organization member can create public dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
 
         self.api_user_joe.call_action('package_create', data_dict=data_dict)
 
@@ -169,17 +183,20 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         Anyone can create a public dataset to an organization
         '''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
         self.api_user_anna.call_action('package_create', data_dict=data_dict)
 
     def test_create_public_dataset_by_editor(self):
         '''Organization editor can create public dataset'''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
 
         output = self.api_user_normal.call_action('package_create', data_dict=data_dict)
         assert output
 
     def test_create_dataset_without_accepting_terms_of_usage(self):
-        data = copy.copy(self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
         data.pop('accept-terms')
 
         self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
@@ -189,7 +206,8 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         Create minimal dataset. Tests especially API usage, a case where a user drops the non-required fields
         altogether.
         '''
-        data = copy.copy(self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
         data_dict = dict()
         for key in data:
             if key in settings.KATA_FIELDS_REQUIRED:
@@ -221,9 +239,10 @@ class TestUpdateDataset(KataApiTestCase):
     def test_update_by_data_pid(self):
         '''Update a dataset by using it's data PID instead of id or name'''
 
-        self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
-
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
+        self.api_user_normal.call_action('package_create', data_dict=data_dict)
+
         data_dict['langnotes'] = [
             {'lang': 'eng', 'value': 'A new description'}
         ]
@@ -328,7 +347,9 @@ class TestDataReading(KataApiTestCase):
         '''
         Create and read a dataset through API and check that values are correct
         '''
-        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        output = self.api_user_normal.action.package_create(**data)
 
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -336,14 +357,16 @@ class TestDataReading(KataApiTestCase):
 
         output = self.api_user_normal.action.package_show(id=output['id'])
 
-        assert self._compare_datadicts(self.TEST_DATADICT, output)
+        assert self._compare_datadicts(data, output)
 
     def test_create_and_read_dataset_2(self):
         '''
         Create and read a dataset through API and check that values are correct.
         Read as a different user than dataset creator.
         '''
-        output = self.api_user_normal.action.package_create(**self.public_dataset)
+        data = copy.deepcopy(self.public_dataset)
+        data = self.get_unique_pids(data)
+        output = self.api_user_normal.action.package_create(**data)
 
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -352,7 +375,7 @@ class TestDataReading(KataApiTestCase):
         output = self.api_user_anna.action.package_show(id=output['id'])
 
         # Use hide_sensitive_fields() because user is not the creator of the dataset
-        original = copy.deepcopy(self.public_dataset)
+        original = copy.deepcopy(data)
         assert self._compare_datadicts(utils.hide_sensitive_fields(original), output)
 
     def test_create_and_read_dataset_private(self):
@@ -360,6 +383,7 @@ class TestDataReading(KataApiTestCase):
         Check that private dataset may not be read by other user
         '''
         data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
         data['private'] = u'True'
         output = self.api_user_joe.action.package_create(**data)
 
@@ -370,6 +394,7 @@ class TestDataReading(KataApiTestCase):
     def test_create_and_update_and_read_dataset_private(self):
 
         data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
         data['private'] = True
         data_dict = {
             'owner_org': u'',
@@ -418,20 +443,24 @@ class TestDataReading(KataApiTestCase):
         '''
         Create, update and read a dataset through API and check that values are correct
         '''
-        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        output = self.api_user_normal.action.package_create(**data)
         output = self.api_user_normal.action.package_show(id=output['id'])
 
         output['accept-terms'] = 'true'
         output = self.api_user_normal.action.package_update(**output)
         output = self.api_user_normal.action.package_show(id=output['id'])
 
-        assert self._compare_datadicts(self.TEST_DATADICT, output)
+        assert self._compare_datadicts(data, output)
 
     def test_secured_fields(self):
         '''
         Test that anonymous user can not read protected data
         '''
-        output = self.api_user_sysadmin.action.package_create(**self.public_dataset)
+        data = copy.deepcopy(self.public_dataset)
+        data = self.get_unique_pids(data)
+        output = self.api_user_sysadmin.action.package_create(**data)
 
         output = self.api.action.package_show(id=output['id'])
 
@@ -446,10 +475,11 @@ class TestDataReading(KataApiTestCase):
         '''
 
         ACCESS_URL = 'http://www.csc.fi/english/'
-
-        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
-
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
+
+        output = self.api_user_normal.action.package_create(**data_dict)
+
         data_dict['id'] = output['id']
         data_dict['availability'] = 'access_application'
         data_dict['access_application_URL'] = ACCESS_URL
@@ -491,6 +521,7 @@ class TestDataReading(KataApiTestCase):
         Test that value None will remove a field completely
         '''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
         data_dict['discipline'] = None
 
         output = self.api_user_normal.action.package_create(**data_dict)
@@ -516,6 +547,7 @@ class TestDataReading(KataApiTestCase):
         Create and read resource data through API and test that 'url' matches. Availability 'through_provider'.
         '''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
         data_dict['availability'] = 'through_provider'
         data_dict['through_provider_URL'] = 'http://www.tdata.fi/'
         data_dict.pop('direct_download_URL')
@@ -537,7 +569,9 @@ class TestDataReading(KataApiTestCase):
         '''
         Create and read resource data through API and test that 'url' matches. Availability 'direct_download'.
         '''
-        output = self.api_user_normal.action.package_create(**self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        output = self.api_user_normal.action.package_create(**data)
 
         new_res = copy.deepcopy(TEST_RESOURCE)
         new_res['package_id'] = output['id']
@@ -569,7 +603,9 @@ class TestDataReading(KataApiTestCase):
         '''
         Create and read a dataset through API and check that RDF generation doesn't break.
         '''
-        output = self.api_user_sysadmin.action.package_create(**self.public_dataset)
+        data = copy.deepcopy(self.public_dataset)
+        data = self.get_unique_pids(data)
+        output = self.api_user_sysadmin.action.package_create(**data)
 
         offset = url_for("/dataset/{0}.rdf".format(output['id']))
         res = self.app.get(offset)
@@ -864,6 +900,7 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
         '''Create dataset with a new organization.'''
 
         data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
         data_dict['title'] = u'{"fin": "A new dataset to create"}'
         data_dict['owner_org'] = 'A New Org for create'
         pkg_dict = self.api_user_joe.action.package_create(**data_dict)
@@ -880,7 +917,9 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
         existing_org['name'] = 'existing-org-for-update'
         org_dict = self.api_user_sysadmin.action.organization_create(**existing_org)
 
-        pkg_dict = self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        pkg_dict = self.api_user_normal.call_action('package_create', data_dict=data)
         pkg_dict['owner_org'] = existing_org['title']
         updated_dict = self.api_user_normal.call_action('package_update', data_dict=pkg_dict)
 
@@ -890,7 +929,9 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
         '''Change owner organization to non-existing organization. A new
         organisation should be created.
         '''
-        output = self.api_user_normal.call_action('package_create', data_dict=self.TEST_DATADICT)
+        data = copy.deepcopy(self.TEST_DATADICT)
+        data = self.get_unique_pids(data)
+        output = self.api_user_normal.call_action('package_create', data_dict=data)
         output['owner_org'] = 'A Brand New Org'
         pkg_dict = self.api_user_normal.call_action('package_update', data_dict=output)
         neworg = model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first()

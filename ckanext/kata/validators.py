@@ -10,7 +10,7 @@ import urlparse
 
 from pylons.i18n import _
 from paste.deploy.converters import asbool
-1from sqlalchemy import or_
+from sqlalchemy import or_
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
@@ -628,7 +628,7 @@ def validate_pid_uniqueness(key, data, errors, context):
          #   print("ITEM PACKAGE ID: " + q_package_ids[idx])
             if item == exam_pid and q_package_ids[idx] != exam_package_id:
              #   print("????")
-                raise Invalid(_('Identifier {id} exists in another dataset').format(id=exam_package_id))
+                raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=exam_package_id))
 
         # for item in q_package_ids:
         #     if item != exam_package_id:
