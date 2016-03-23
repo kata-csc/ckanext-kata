@@ -324,12 +324,15 @@ class TestURNExport(KataWsgiTestCase):
         organization = get_action('organization_create')({'user': 'test_sysadmin'},
                                                          {'name': 'test-organization', 'title': "Test organization"})
 
-        for count, private, delete in (2, False, False), (2, True, False), (4, False, False), (4, False, True), (
-        6, False, False):
+        for i, (count, private, delete) in enumerate([(2, False, False), (2, True, False), (4, False, False),
+                                                      (4, False, True), (6, False, False)]):
             data = copy.deepcopy(TEST_DATADICT)
+            # generate unique pids in a somewhat clumsy way...
+            for pid in data.get('pids', []):
+                pid['id'] = pid.get('id') + unicode(i)
+
             data['owner_org'] = organization['name']
             data['private'] = private
-            data['pids'][1]['id'] = utils.generate_pid()
 
             package = get_action('package_create')({'user': 'test_sysadmin'}, data)
 
