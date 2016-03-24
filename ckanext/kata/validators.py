@@ -614,7 +614,6 @@ def validate_pid_uniqueness(key, data, errors, context):
 
     q_amt = query.count()
     q_package_ids = [i[0] for i in query.values('package_id')]
-    q_pids = [i[0] for i in query.values('value')]
 
     # If existing pids or package_ids with value matching the pid were found
     # and if none of those found values is the pid, raise an error.
