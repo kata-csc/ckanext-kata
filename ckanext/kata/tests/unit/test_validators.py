@@ -5,6 +5,7 @@ Test classes for Kata's validators.
 
 import copy
 import json
+import random
 from collections import defaultdict
 from unittest import TestCase
 
@@ -13,12 +14,16 @@ from ckanext.kata import settings
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
     flattened_to_extras, flattened_from_extras, to_licence_id, gen_translation_str_from_langtitle
 from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 from ckanext.kata.validators import validate_kata_date, validate_kata_interval_date, \
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
     validate_title_duplicates, validate_title, check_direct_download_url, check_pids, \
-    validate_license_url
+    validate_license_url, validate_pid_uniqueness
+from ckan.logic import get_action
+import ckan.model as model
+
 
 
 class TestValidators(TestCase):
@@ -450,6 +455,158 @@ class TestValidators(TestCase):
         dada[('license_URL',)] = u'Only usable before collision with the Andromeda galaxy.'
         validate_license_url(('license_URL',), dada, errors, None)
         assert len(errors) == 0
+
+
+class TestPidUniquenessValidator(TestCase):
+    '''
+    Test pid uniqueness validator
+    '''
+
+    @classmethod
+    def setup_class(cls):
+        model.User(name="test_sysadmin", sysadmin=True).save()
+        cls.organization = get_action('organization_create')({'user': 'test_sysadmin'},
+                                                         {'name': 'test-organization', 'title': "Test organization"})
+
+    @classmethod
+    def teardown_class(cls):
+        model.repo.rebuild_db()
+
+    def _get_random_no(self):
+        return unicode(random.randint(1, 10000))
+
+    def _get_flat_data(self):
+        flat_dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        return flat_dada
+
+    def _set_flat_data_random_id(self, flat_data):
+        flat_data[('id',)] = self._get_random_no()
+
+    def _set_unflattened_data_random_id(self, unflattened_data):
+        unflattened_data['id'] = self._get_random_no()
+
+    def _get_unflattened_data(self):
+        unflattened_data = copy.deepcopy(TEST_DATADICT)
+        unflattened_data['owner_org'] = self.organization['name']
+        return unflattened_data
+
+    def _set_random_pids_for_unflattened_data(self, unflattened_data, exceptNo=0):
+        for idx, pid in enumerate(unflattened_data.get('pids', [])):
+            if exceptNo > 0 and idx != exceptNo:
+                pid['id'] = pid.get('id') + self._get_random_no()
+            else:
+                pid['id'] = pid.get('id') + self._get_random_no()
+
+    def _create_package_with_unflattened_data(self, unflattened_data):
+        return get_action('package_create')({'user': 'test_sysadmin'}, unflattened_data)
+
+    # Test with no datasets in database
+    def test_validate_pid_uniqueness_1(self):
+        errors = defaultdict(list)
+        flat_data = self._get_flat_data();
+        self._set_flat_data_random_id(flat_data)
+        try:
+            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 2, 'id'), flat_data, errors, None)
+        except Invalid as e:
+            self.fail("validate_pid_uniqueness_1 failed: {0}".format(e))
+
+    # Test with existing dataset with different id and no same pids as tested pid dataset
+    def test_validate_pid_uniqueness_2(self):
+        errors = defaultdict(list)
+        data = self._get_unflattened_data()
+        flat_data = flatten_dict(copy.deepcopy(data))
+        self._set_unflattened_data_random_id(data)
+        self._set_flat_data_random_id(flat_data)
+        self._set_random_pids_for_unflattened_data(data)
+        self._create_package_with_unflattened_data(data)
+
+        try:
+            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 2, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
+        except Invalid as e:
+            self.fail("validate_pid_uniqueness_2 failed: {0}".format(e))
+
+    # Test with existing dataset with different id and some same pids as tested pid dataset
+    def test_validate_pid_uniqueness_3(self):
+        errors = defaultdict(list)
+        data = self._get_unflattened_data()
+        flat_data = flatten_dict(copy.deepcopy(data))
+        self._set_unflattened_data_random_id(data)
+        self._set_flat_data_random_id(flat_data)
+        self._set_random_pids_for_unflattened_data(data)
+        flat_data[('pids', 2, 'id')] = data.get('pids')[3].get('id')
+        self._create_package_with_unflattened_data(data)
+
+        try:
+            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
+        except Invalid as e:
+            self.fail("validate_pid_uniqueness_3 failed: {0}".format(e))
+
+        self.assertRaises(Invalid, validate_pid_uniqueness, ('pids', 2, 'id'), flat_data, errors, None)
+
+    # Test with existing dataset with same id (same dataset) and no same pids as tested pid dataset
+    def test_validate_pid_uniqueness_4(self):
+        errors = defaultdict(list)
+        data = self._get_unflattened_data()
+        self._set_unflattened_data_random_id(data)
+        flat_data = flatten_dict(copy.deepcopy(data))
+        self._set_random_pids_for_unflattened_data(data)
+        self._create_package_with_unflattened_data(data)
+
+        try:
+            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 2, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
+        except Invalid as e:
+            self.fail("validate_pid_uniqueness_4 failed: {0}".format(e))
+
+    # Test with existing dataset with same id (same dataset) and some same pids as tested pid dataset
+    def test_validate_pid_uniqueness_5(self):
+        errors = defaultdict(list)
+        data = self._get_unflattened_data()
+        self._set_unflattened_data_random_id(data)
+        flat_data = flatten_dict(copy.deepcopy(data))
+        self._set_random_pids_for_unflattened_data(data)
+        flat_data[('pids', 2, 'id')] = data.get('pids')[3].get('id')
+        self._create_package_with_unflattened_data(data)
+
+        try:
+            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 2, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
+        except Invalid as e:
+            self.fail("validate_pid_uniqueness_5 failed: {0}".format(e))
+
+    # Given existing dataset with different package id than tested dataset
+    # and one of its pids is same as in tested dataset
+    # When dataset's pid is tested for uniqueness
+    # Then it should fail for the pid that is same as the existing dataset's package id
+    def test_validate_pid_uniqueness_6(self):
+        errors = defaultdict(list)
+        data = self._get_unflattened_data()
+        flat_data = flatten_dict(copy.deepcopy(data))
+        self._set_unflattened_data_random_id(data)
+        self._set_flat_data_random_id(flat_data)
+        self._set_random_pids_for_unflattened_data(data)
+        flat_data[('pids', 2, 'id')] = data.get('id')
+        self._create_package_with_unflattened_data(data)
+
+        try:
+            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
+            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
+        except Invalid as e:
+            self.fail("validate_pid_uniqueness_6 failed: {0}".format(e))
+
+        self.assertRaises(Invalid, validate_pid_uniqueness, ('pids', 2, 'id'), flat_data, errors, None)
 
 
 class TestResourceValidators(TestCase):

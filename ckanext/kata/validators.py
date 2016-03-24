@@ -619,20 +619,8 @@ def validate_pid_uniqueness(key, data, errors, context):
     # If existing pids or package_ids with value matching the pid were found
     # and if none of those found values is the pid, raise an error.
     # The latter if is when updating a dataset.
-  #  print("!!!!")
+
     if q_amt > 0:
-      #  print("EXAM PID: " + exam_pid)
-      #  print("EXAM PACKAGE_ID: " + exam_package_id)
-        for idx, item in enumerate(q_pids):
-           # print("ITEM PID: " + item)
-         #   print("ITEM PACKAGE ID: " + q_package_ids[idx])
-            if item == exam_pid and q_package_ids[idx] != exam_package_id:
-             #   print("????")
+        for item in q_package_ids:
+            if item != exam_package_id:
                 raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=exam_package_id))
-
-        # for item in q_package_ids:
-        #     if item != exam_package_id:
-        #         raise Invalid(_('Identifier {id} exists in another dataset').format(id=exam_package_id))
-
-        # if exam_package_id not in q_package_ids:
-        #     raise Invalid(_('Identifier {id} exists in another dataset').format(id=exam_package_id))
