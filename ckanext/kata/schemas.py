@@ -119,7 +119,8 @@ class Schemas:
         schema['temporal_coverage_end'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
-                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
+                          'id': [not_empty, va.validate_general, va.validate_pid_uniqueness,
+                                 unicode, co.flattened_to_extras],
                           'type': [not_missing, unicode, co.flattened_to_extras],
                           'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
@@ -233,6 +234,10 @@ class Schemas:
 
         schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
         schema['version'] = [ignore_missing, unicode]
+        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
+                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
+                          'type': [not_missing, unicode, co.flattened_to_extras],
+                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         return schema
 
     @classmethod
@@ -259,6 +264,10 @@ class Schemas:
                              'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
+        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
+                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
+                          'type': [not_missing, unicode, co.flattened_to_extras],
+                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         return schema
 
 
@@ -271,6 +280,10 @@ class Schemas:
         """
         schema = cls.create_package_schema_oai_dc()
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
+        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
+                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
+                          'type': [not_missing, unicode, co.flattened_to_extras],
+                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         return schema
 
 
@@ -296,6 +309,10 @@ class Schemas:
         schema['temporal_coverage_begin'] = [ignore_missing, va.validate_kata_date_relaxed, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, va.validate_kata_date_relaxed, co.convert_to_extras_kata, unicode]
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
+        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
+                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
+                          'type': [not_missing, unicode, co.flattened_to_extras],
+                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         # schema['xpaths'] = [xpath_to_extras]
 
         return schema
