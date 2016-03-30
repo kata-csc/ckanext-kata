@@ -503,7 +503,7 @@ class TestPidUniquenessValidator(TestCase):
     # Test with no datasets in database
     def test_validate_pid_uniqueness_1(self):
         errors = defaultdict(list)
-        flat_data = self._get_flat_data();
+        flat_data = self._get_flat_data()
         self._set_flat_data_random_id(flat_data)
         try:
             validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)

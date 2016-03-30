@@ -119,8 +119,8 @@ class Schemas:
         schema['temporal_coverage_end'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
-                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras,
-                                 va.validate_pid_uniqueness],
+                          'id': [not_empty, va.validate_general, va.validate_pid_uniqueness,
+                                 unicode, co.flattened_to_extras],
                           'type': [not_missing, unicode, co.flattened_to_extras],
                           'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
