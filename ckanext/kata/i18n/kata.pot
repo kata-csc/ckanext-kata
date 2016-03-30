@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 3.0.1\n"
+"Project-Id-Version: ckanext-kata 3.0.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-02-25 09:21+0000\n"
+"POT-Creation-Date: 2016-03-30 13:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgid "Required information missing"
 msgstr ""
 
 #: ckanext/kata/actions.py:451 ckanext/kata/actions.py:515
-#: ckanext/kata/controllers.py:689 ckanext/kata/controllers.py:767
+#: ckanext/kata/controllers.py:696 ckanext/kata/controllers.py:774
 msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:456 ckanext/kata/actions.py:460
-#: ckanext/kata/controllers.py:764
+#: ckanext/kata/controllers.py:771
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -117,105 +117,105 @@ msgstr ""
 msgid "User %s not authorized to delete resource %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:439 ckanext/kata/controllers.py:728
+#: ckanext/kata/controllers.py:443 ckanext/kata/controllers.py:735
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:443
+#: ckanext/kata/controllers.py:447
 msgid "Message not sent as logging wasn't permitted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:447 ckanext/kata/controllers.py:545
-#: ckanext/kata/controllers.py:571
+#: ckanext/kata/controllers.py:451 ckanext/kata/controllers.py:552
+#: ckanext/kata/controllers.py:578
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
 msgstr ""
 
-#: ckanext/kata/controllers.py:459
+#: ckanext/kata/controllers.py:463
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:468 ckanext/kata/controllers.py:474
+#: ckanext/kata/controllers.py:472 ckanext/kata/controllers.py:478
 msgid "Message not sent. Couldn't confirm human interaction (spam bot control)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:493 ckanext/kata/controllers.py:723
+#: ckanext/kata/controllers.py:497 ckanext/kata/controllers.py:730
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:495
+#: ckanext/kata/controllers.py:499
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:497
+#: ckanext/kata/controllers.py:501
 msgid ""
 "Message not sent. Please, provide reply address and name. Name must contain "
 "at least three letters."
 msgstr ""
 
-#: ckanext/kata/controllers.py:553 ckanext/kata/controllers.py:579
-#: ckanext/kata/theme/templates/kata/dummy.html:61
+#: ckanext/kata/controllers.py:517 ckanext/kata/controllers.py:560
+#: ckanext/kata/controllers.py:586 ckanext/kata/theme/templates/kata/dummy.html:61
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:622
+#: ckanext/kata/controllers.py:629
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:633
+#: ckanext/kata/controllers.py:640
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:664 ckanext/kata/controllers.py:903
+#: ckanext/kata/controllers.py:671 ckanext/kata/controllers.py:910
 #: ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:686
+#: ckanext/kata/controllers.py:693
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:706
+#: ckanext/kata/controllers.py:713
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:708 ckanext/kata/validators.py:164
+#: ckanext/kata/controllers.py:715 ckanext/kata/validators.py:166
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:823
+#: ckanext/kata/controllers.py:830
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:847
+#: ckanext/kata/controllers.py:854
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:852
+#: ckanext/kata/controllers.py:859
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:855
+#: ckanext/kata/controllers.py:862
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:857
+#: ckanext/kata/controllers.py:864
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:861
+#: ckanext/kata/controllers.py:868
 msgid "Failed to load file"
 msgstr ""
 
-#: ckanext/kata/controllers.py:981 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:988 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/controllers.py:982
+#: ckanext/kata/controllers.py:989
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -225,15 +225,15 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: ckanext/kata/controllers.py:983
+#: ckanext/kata/controllers.py:990
 msgid "Tags"
 msgstr ""
 
-#: ckanext/kata/controllers.py:984
+#: ckanext/kata/controllers.py:991
 msgid "Formats"
 msgstr ""
 
-#: ckanext/kata/controllers.py:985
+#: ckanext/kata/controllers.py:992
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:72
 msgid "License"
@@ -269,7 +269,7 @@ msgstr ""
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
 
-#: ckanext/kata/converters.py:543 ckanext/kata/validators.py:528
+#: ckanext/kata/converters.py:543 ckanext/kata/validators.py:530
 msgid ""
 "An organization must be supplied. If you do not find a suitable organization,"
 " please choose the default organization 'Ei linkitetä organisaatioon - do not"
@@ -341,126 +341,130 @@ msgstr ""
 msgid "Terms of use"
 msgstr ""
 
-#: ckanext/kata/validators.py:63
+#: ckanext/kata/validators.py:65
 #, python-format
 msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
 msgstr ""
 
-#: ckanext/kata/validators.py:105
+#: ckanext/kata/validators.py:107
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01/2002-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:113
+#: ckanext/kata/validators.py:115
 msgid "To date must be greater than from date. Example: 2001-01-01/2002-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:123
+#: ckanext/kata/validators.py:125
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:126 ckanext/kata/validators.py:147
+#: ckanext/kata/validators.py:128 ckanext/kata/validators.py:149
 msgid "Invalid date"
 msgstr ""
 
-#: ckanext/kata/validators.py:144
+#: ckanext/kata/validators.py:146
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: 2001-03-01 "
 "or 2001-03"
 msgstr ""
 
-#: ckanext/kata/validators.py:174
+#: ckanext/kata/validators.py:176
 msgid "Invalid characters: <> not allowed"
 msgstr ""
 
-#: ckanext/kata/validators.py:184
+#: ckanext/kata/validators.py:186
 msgid "Value must contain alphanumeric characters"
 msgstr ""
 
-#: ckanext/kata/validators.py:193
+#: ckanext/kata/validators.py:195
 msgid "Invalid telephone number, must be e.g. +358 (45) 123 45 67 or 010-234567"
 msgstr ""
 
-#: ckanext/kata/validators.py:274
+#: ckanext/kata/validators.py:276
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,/."
 msgstr ""
 
-#: ckanext/kata/validators.py:295
+#: ckanext/kata/validators.py:297
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
 "-'/,:().;= "
 msgstr ""
 
-#: ckanext/kata/validators.py:314
+#: ckanext/kata/validators.py:316
 #, python-format
 msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
 msgstr ""
 
-#: ckanext/kata/validators.py:326
+#: ckanext/kata/validators.py:328
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 
-#: ckanext/kata/validators.py:337
+#: ckanext/kata/validators.py:339
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:353
+#: ckanext/kata/validators.py:355
 msgid "Duplicate fields for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:390
+#: ckanext/kata/validators.py:392
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:402
+#: ckanext/kata/validators.py:404
 msgid "Missing compulsory distributor information"
 msgstr ""
 
-#: ckanext/kata/validators.py:424
+#: ckanext/kata/validators.py:426
 msgid "Missing dataset title"
 msgstr ""
 
-#: ckanext/kata/validators.py:434
+#: ckanext/kata/validators.py:436
 msgid "Missing dataset PIDs"
 msgstr ""
 
-#: ckanext/kata/validators.py:447
+#: ckanext/kata/validators.py:449
 msgid "Missing primary data PID"
 msgstr ""
 
-#: ckanext/kata/validators.py:455
+#: ckanext/kata/validators.py:457
 msgid "Primary data PID can not be modified"
 msgstr ""
 
-#: ckanext/kata/validators.py:473 ckanext/kata/validators.py:509
+#: ckanext/kata/validators.py:475 ckanext/kata/validators.py:511
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:19
 msgid "Missing value"
 msgstr ""
 
-#: ckanext/kata/validators.py:538
+#: ckanext/kata/validators.py:540
 #, python-format
 msgid "Organization name must be at least %s characters long"
 msgstr ""
 
-#: ckanext/kata/validators.py:540
+#: ckanext/kata/validators.py:542
 #, python-format
 msgid "Organization name must be a maximum of %i characters long"
 msgstr ""
 
-#: ckanext/kata/validators.py:543
+#: ckanext/kata/validators.py:545
 msgid "This organization name cannot be used"
 msgstr ""
 
-#: ckanext/kata/validators.py:559
+#: ckanext/kata/validators.py:561
 msgid "Terms of use must be accepted"
 msgstr ""
 
-#: ckanext/kata/validators.py:576
+#: ckanext/kata/validators.py:578
 msgid ""
 "Copyright notice is needed if license is not specified or is a variant of "
 "license type other."
+msgstr ""
+
+#: ckanext/kata/validators.py:625
+msgid "Identifier {pid} exists in another dataset {id}"
 msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:15
@@ -839,21 +843,21 @@ msgstr ""
 #: ckanext/kata/theme/templates/home/index.html:27
 #: ckanext/kata/theme/templates/kata/dummy.html:184
 #: ckanext/kata/theme/templates/package/search.html:4
-#: ckanext/kata/theme/templates/package/search.html:20
+#: ckanext/kata/theme/templates/package/search.html:23
 msgid "Search for a Dataset"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:33
 #: ckanext/kata/theme/templates/organization/index.html:21
 #: ckanext/kata/theme/templates/organization/read.html:54
-#: ckanext/kata/theme/templates/package/search.html:26
+#: ckanext/kata/theme/templates/package/search.html:29
 msgid "Enter search term or query…"
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:36
 #: ckanext/kata/theme/templates/organization/index.html:24
 #: ckanext/kata/theme/templates/organization/read.html:57
-#: ckanext/kata/theme/templates/package/search.html:29
+#: ckanext/kata/theme/templates/package/search.html:32
 msgid "Submit"
 msgstr ""
 
@@ -2548,19 +2552,19 @@ msgid "Search for datasets"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/read.html:86
-#: ckanext/kata/theme/templates/package/search.html:56
+#: ckanext/kata/theme/templates/package/search.html:59
 msgid ""
 " <p><strong>There was an error while searching.</strong> Please try "
 "again.</p> "
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/read.html:116
-#: ckanext/kata/theme/templates/package/search.html:87
+#: ckanext/kata/theme/templates/package/search.html:90
 msgid "Limit search results"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/read.html:125
-#: ckanext/kata/theme/templates/package/search.html:96
+#: ckanext/kata/theme/templates/package/search.html:99
 msgid "More categories…"
 msgstr ""
 
@@ -2746,11 +2750,11 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:36
+#: ckanext/kata/theme/templates/package/search.html:39
 msgid "Open data"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/search.html:39
+#: ckanext/kata/theme/templates/package/search.html:42
 msgid "Since year"
 msgstr ""
 
