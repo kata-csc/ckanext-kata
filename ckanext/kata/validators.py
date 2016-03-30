@@ -595,14 +595,14 @@ def continue_if_missing(key, data, errors, context):
         data.pop(key, None)
 
 def validate_pid_uniqueness(key, data, errors, context):
-#     '''
-#     Validate dataset pids are unique, i.e. they do not exist already.
-#
-#     :param key: key
-#     :param data: data
-#     :param errors: errors
-#     :param context: context
-#     '''
+    '''
+    Validate dataset pids are unique, i.e. they do not exist already.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
     exam_pid = data.get(key)
     exam_package_id = data.get(('id',))
 
