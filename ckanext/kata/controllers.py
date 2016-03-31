@@ -152,7 +152,7 @@ class MetadataController(BaseController):
                    action='read',
                    id=name))
 
-    #@beaker_cache(type="dbm", expire=86400)
+    @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
         '''
         Generate an XML listing of packages, which have Kata or Ida URN as data PID.
