@@ -207,6 +207,16 @@
     </div>
   </div>
 
+  <!-- Resources -->
+  <div class="form-row">
+    <div class="form-label">{{ _('Supplements') }}</div>
+    <div class="form-content" id="metadata-info-resource-list">
+      <table class="form-inner-table">
+        {% snippet "package/snippets/resources_list.html", pkg=pkg_dict, resources=pkg_dict.resources, user=user %}
+      </table>
+    </div>
+  </div>
+
   <div class="form-row">
     <div class="form-label">{{ _('License') }}</div>
     <div class="form-content">
@@ -296,15 +306,7 @@
 
 </div>
 <div class="dataset-section form-tab-content">
-  <!-- Resources -->
-  <div class="form-row">
-    <div class="form-label">{{ _('Supplements') }}</div>
-    <div class="form-content" id="metadata-info-resource-list">
-      <table class="form-inner-table">
-        {% snippet "package/snippets/resources_list.html", pkg=pkg_dict, resources=pkg_dict.resources, user=user %}
-      </table>
-    </div>
-  </div>
+
   <!-- IDs -->
 
   <div class="form-row">
