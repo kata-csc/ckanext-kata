@@ -275,7 +275,7 @@ class TestAuthorisation(KataWsgiTestCase):
         '''
         Test that delete button exists for package editor
         '''
-        offset = url_for(controller='package', action='edit', id=u'annakarenina')
+        offset = url_for(controller='package', action='read', id=u'annakarenina')
         pkg_id = u'annakarenina'
         user_id = u'tester'
         user = model.User.get(user_id)
