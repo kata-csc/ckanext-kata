@@ -105,6 +105,7 @@ ul.kata {
   @media (max-width: 700px) {
     min-width: 360px;
   }
+  font-size: 11px;
 }
 .kata-medium-input {
     width: 334px !important;
@@ -231,6 +232,7 @@ input[id="xmlfile"] {
     .btn + .btn {
       margin-left: 15px;
     }
+    display: inline-block;
   }
 
   @form-label-width: 30%;
@@ -260,7 +262,7 @@ input[id="xmlfile"] {
     .form-instructions {
       padding-left: 10px;
       float: right;
-      width: @form-help-spacer-width;
+      width: 8%;
       i {
         font-size: 20px;
       }
@@ -276,6 +278,7 @@ input[id="xmlfile"] {
         padding: 5px 8px;
         font-size: small;
         min-width: 180px;
+        float: none;
       }
     }
     .form-table {
@@ -532,8 +535,9 @@ input[id="xmlfile"] {
 .supplement-form {
   .form-actions {
     overflow: hidden;
+    float: right;
     .btn {
-      float: right;
+      display: inline-block;
       padding: 4px 12px !important;
     }
   }
@@ -549,5 +553,9 @@ input[id="xmlfile"] {
 
 .resource-form #field-resource-type-upload {
   height: 0;
+}
+
+#s2id_field-organizations {
+  width: 100% !important;
 }
 

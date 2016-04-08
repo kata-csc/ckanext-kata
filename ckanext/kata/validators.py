@@ -526,26 +526,23 @@ def kata_owner_org_validator(key, data, errors, context):
     value = data.get(key)
 
     if value is missing or not value:
-        if not authz.check_config_permission('create_unowned_dataset'):
-            err = _(
-            u"An organization must be supplied. If you do not find a suitable organization, please choose the default organization "
-            u"'Ei linkitetä organisaatioon - do not link to an organization' or create a new one."
-            )
-
-            raise Invalid(err)
-        data.pop(key, None)
-        raise df.StopOnError
-
-    if len(value) < 2:
-        raise Invalid(_('Organization name must be at least %s characters long') % 2)
-    if len(value) > PACKAGE_NAME_MAX_LENGTH:
-        raise Invalid(_('Organization name must be a maximum of %i characters long') % \
-                      PACKAGE_NAME_MAX_LENGTH)
-    if value.lower() in ['new', 'edit', 'search']:
-        raise Invalid(_('This organization name cannot be used'))
+        err = _(
+        u"An organization must be supplied. If you do not find a suitable organization, please choose the default organization "
+        u"'Ei linkitetä organisaatioon - do not link to an organization'."
+        )
+        raise Invalid(err)
 
     model = context['model']
     group = model.Group.get(value)
+    if not group:
+        org_name = re.sub(r'[^a-zA-Z0-9]+', '-', utils.slugify(value)).lower()
+        org_name = re.sub(r'-$', '', org_name)
+        group = model.Group.get(org_name)
+        if not group:
+            err = _(
+            u'The provided organization does not exist. Please contact Etsin administration using our contact form at http://openscience.fi/contact-form')
+            raise Invalid(err)
+
     if group:
         data[key] = group.id
 

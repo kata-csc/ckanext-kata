@@ -11,6 +11,7 @@ import ckan.model as model
 from ckan.lib import search
 from ckan.lib.helpers import url_for
 from ckan.logic import ValidationError, NotAuthorized
+from ckan.lib.navl.dictization_functions import Invalid
 from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
@@ -223,6 +224,11 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data_dict['license_id'] = u'cc-by'
         data_dict['private'] = u'False'
 
+        # Test with non-existing organisation
+        self.assertRaises(ValidationError, self.api_user_anna.call_action, 'package_create', data_dict=data_dict)
+
+        # Switch to existing organisation
+        data_dict['owner_org'] = self.TEST_DATADICT['owner_org']
         output = self.api_user_anna.call_action('package_create', data_dict=data_dict)
         if '__type' in output:
             assert output['__type'] != 'Validation Error'
@@ -896,6 +902,7 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
                                                                       filter(model.Group.id == pkg_dict['owner_org']).
                                                                       first().title, org_dict['title'])
 
+    # This test should fail since adding new organization via package_create is not allowed
     def test_create_owner_org_new(self):
         '''Create dataset with a new organization.'''
 
@@ -903,11 +910,8 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
         data_dict = self.get_unique_pids(data_dict)
         data_dict['title'] = u'{"fin": "A new dataset to create"}'
         data_dict['owner_org'] = 'A New Org for create'
-        pkg_dict = self.api_user_joe.action.package_create(**data_dict)
+        self.assertRaises(ValidationError, self.api_user_joe.action.package_create, **data_dict)
 
-        neworg = model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first()
-
-        assert neworg.title == data_dict['owner_org'], "%s != %s" % (neworg.title, data_dict['owner_org'])
 
     def test_update_owner_org_existing(self):
         '''Change owner organization to some existing organization.'''
@@ -927,13 +931,10 @@ class TestOrganizationChangeAndCreate(KataApiTestCase):
 
     def test_update_owner_org_new(self):
         '''Change owner organization to non-existing organization. A new
-        organisation should be created.
+        organisation should not be created.
         '''
         data = copy.deepcopy(self.TEST_DATADICT)
         data = self.get_unique_pids(data)
         output = self.api_user_normal.call_action('package_create', data_dict=data)
         output['owner_org'] = 'A Brand New Org'
-        pkg_dict = self.api_user_normal.call_action('package_update', data_dict=output)
-        neworg = model.Session.query(model.Group).filter(model.Group.id == pkg_dict['owner_org']).first()
-
-        assert neworg.title == output['owner_org'], "%s != %s" % (neworg.title, output['owner_org'])
+        self.assertRaises(ValidationError, self.api_user_normal.call_action, 'package_update', data_dict=output)

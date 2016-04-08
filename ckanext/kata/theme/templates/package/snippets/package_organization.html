@@ -16,32 +16,53 @@
       {% set selected_org = h.resolve_org_name(data.owner_org) %}
     {% endif %}
   {% endif %}
-  {% set org_attrs = {'class': 'kata-input-license',
-                      'data-module': 'autocomplete', 'data-module-tags': 'false',
-                      'data-module-source': '/api/2/util/organization/autocomplete?q=?',
-                      'data-module-label': 'title', 'data-module-key': 'id'} %}
-  <div class="kata-autocomplete error-block-autocomplete">
-    {% call kata_form.input(
-      'owner_org', id='field-organizations', label=_('Organisation') + '*',
-      placeholder=_('Choose an organisation...'), value=selected_org,
-      control_classes=['kata-medium-input'], label_classes=['kata-input-comp'],
-      attrs=org_attrs)
-    %}
-      <div class="form-instructions dropdown">
-        <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
-          <i class="icon-question-sign"></i>
-        </a>
-        <div class="dropdown-menu">
-          {{ _("Select an organisation to which this dataset will be linked. When you start typing, you will get suggestions for matching organisations. Select the correct organization with a mouse click. If you can not find your organisation from the selection list, you can add a new organisation by writing it's name to this field.") }}
+
+  {% set organizations_available = h.organizations_available('create_dataset') %}
+
+  {% set existing_org = data.owner_org or data.group_id %}
+
+<div class="kata-autocomplete error-block-autocomplete">
+  <div class="form-row">
+    <label for="field-organizations" class="form-label kata-input-comp" for="field-organizations">{{ _('Organization') }}</label>
+    <div class="form-content kata-input-comp">
+
+
+      <div class="select2-search">
+        <div class="control-group">
+          <div class="controls">
+            <select id="field-organizations" name="owner_org" data-module="autocomplete">
+              {% if h.check_config_permission('create_unowned_dataset') %}
+                 <option value="" {% if not selected_org and data.id %} selected="selected" {% endif %}>{{ _('No organization') }}</option>
+              {% endif %}
+              {% if not existing_org %}
+                <option selected="selected" value=""></option>
+              {% endif %}
+              {% for organization in organizations_available %}
+                {# get out first org from users list only if there is not an existing org #}
+                {% set selected_org = (existing_org and existing_org == organization.id) %}
+                <option value="{{ organization.id }}" {% if selected_org %} selected="selected" {% endif %}>{{ organization.display_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
       </div>
-      {% if errors.owner_org %}
-        <span class="error-block error-block-margin separate-error">
-          {{ errors.owner_org[0] }}
-        </span>
-      {% endif %}
-    {% endcall %}
+    </div>
+    <div class="form-instructions dropdown">
+      <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
+        <i class="icon-question-sign"></i>
+      </a>
+      <div class="dropdown-menu">
+        {{ _('Select an organisation to which this dataset will be linked. When you start typing, you will get suggestions for matching organisations. Select the correct organization with a mouse click. If you can not find your organisation from the selection list, please contact Etsin administration through our <a href=\"http://openscience.fi/contact-form\" target=\"_blank\">contact form</a>.') | safe }}
+      </div>
+    </div>
+    {% if errors.owner_org %}
+      <span class="error-block error-block-margin separate-error">
+        {{ errors.owner_org[0] }}
+      </span>
+    {% endif %}
+
   </div>
+</div>
 
 </div>
 
