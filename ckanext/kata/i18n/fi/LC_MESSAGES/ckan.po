@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-04-07 12:38+0000\n"
+"POT-Creation-Date: 2016-04-12 06:26+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -473,9 +473,6 @@ msgstr ""
 
 #: ckanext/kata/validators.py:542
 #, fuzzy
-#| msgid "" "The provided organization does not exist. Please contact Etsin "
-#| "administration through our <a href=\"http://openscience.fi/contact-form\""
-#| " target=\"_blank\">contact form</a>"
 msgid ""
 "The provided organization does not exist. Please contact Etsin "
 "administration using our contact form at http://openscience.fi/contact-"
@@ -2849,6 +2846,10 @@ msgstr "pakollinen tieto"
 #: ckanext/kata/theme/templates/package/related_list.html:52
 msgid "History"
 msgstr "Historia"
+
+#: ckanext/kata/theme/templates/package/new_package_form.html:15
+msgid "Update and unpublish"
+msgstr "Päivitä julkaisemattomana"
 
 #: ckanext/kata/theme/templates/package/new_resource.html:3
 #: ckanext/kata/theme/templates/package/new_resource_not_draft.html:3
@@ -5469,6 +5470,10 @@ msgstr "Hyväksy käyttöehdot ennen julkaisemista"
 msgid "Save and publish"
 msgstr "Tallenna ja julkaise"
 
+#: ckanext/kata/theme/templates/package/snippets/package_form.html:38
+msgid "Update and publish"
+msgstr "Päivitä ja julkaise"
+
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:34
 msgid ""
 "Field is compulsory but an automatically generated primary data "
@@ -5535,14 +5540,14 @@ msgstr ""
 msgid "No organization"
 msgstr "Ei organisaatiota"
 
-#: ckanext/kata/theme/templates/package/snippets/package_organization.html:52
+#: ckanext/kata/theme/templates/package/snippets/package_organization.html:55
 msgid ""
 "Select an organisation to which this dataset will be linked. When you "
 "start typing, you will get suggestions for matching organisations. Select"
 " the correct organization with a mouse click. If you can not find your "
 "organisation from the selection list, please contact Etsin administration"
 " through our <a href=\"http://openscience.fi/contact-form\" "
-"target=\"_blank\">contact form</a>"
+"target=\"_blank\">contact form</a>."
 msgstr ""
 "Valitse mihin organisaatioon aineisto linkitetään. Alkaessasi "
 "kirjoittamaan saat ehdotuksia Etsimen organisaatioista. Valitse haluamasi"
