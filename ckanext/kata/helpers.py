@@ -990,7 +990,6 @@ def get_contact_captcha():
 
     return asbool(config.get('kata.contact_captcha', 'False'))
 
-
 def get_autocomplete_format(data):
     '''
     Splits and resolves
@@ -1007,4 +1006,3 @@ def get_autocomplete_format(data):
                 label = get_label_for_uri(item)
                 rets.append({"id": item, "text": label})
     return json.dumps(rets)
-

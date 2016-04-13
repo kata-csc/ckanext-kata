@@ -22,7 +22,6 @@ this.ckan.module('kata-autocomplete', function (jQuery, _) {
       tags: false,
       key: false,
       label: false,
-      getlabels: false,
       items: 10,
       source: null,
       interval: 1000,
@@ -73,12 +72,17 @@ this.ckan.module('kata-autocomplete', function (jQuery, _) {
         }
         settings.initSelection = this.formatInitialValue;
       }
+      else {
+        if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+            var ieversion=new Number(RegExp.$1);
+            if (ieversion<=7) {return}
+         }
+      }
 
       var select2 = this.el.select2(settings).data('select2');
 
-      if (this.options.getlabels) {
-        newData = JSON.parse(this.el.val());
-        this.el.select2("data", newData);
+	    if (this.options.getlabels) {
+          this.el.select2("data", jQuery.parseJSON(this.el.val()));
       }
 
       if (this.options.tags && select2 && select2.search) {
@@ -92,6 +96,8 @@ this.ckan.module('kata-autocomplete', function (jQuery, _) {
       $('.select2-choice', select2.container).on('click', function() {
         return false;
       });
+
+      this._select2 = select2;
     },
 
     /* Looks up the completions for the current search term and passes them
@@ -113,7 +119,7 @@ this.ckan.module('kata-autocomplete', function (jQuery, _) {
     getCompletions: function (string, fn) {
       var parts  = this.options.source.split('?');
       var end    = parts.pop();
-      var source = parts.join('?') + string + end;
+      var source = parts.join('?') + encodeURIComponent(string) + end;
       var client = this.sandbox.client;
       var options = {
         format: function(data) {
@@ -146,29 +152,28 @@ this.ckan.module('kata-autocomplete', function (jQuery, _) {
       // old data.
       this._lastTerm = string;
 
+      // Kills previous timeout
+      clearTimeout(this._debounced);
+
+      // OK, wipe the dropdown before we start ajaxing the completions
+      fn({results:[]});
+
       if (string) {
-        if (!this._debounced) {
-          // Set a timer to prevent the search lookup occurring too often.
-          this._debounced = setTimeout(function () {
-            var term = module._lastTerm;
+        // Set a timer to prevent the search lookup occurring too often.
+        this._debounced = setTimeout(function () {
+          var term = module._lastTerm;
 
-            delete module._debounced;
+          // Cancel the previous request if it hasn't yet completed.
+          if (module._last && typeof module._last.abort == 'function') {
+            module._last.abort();
+          }
 
-            // Cancel the previous request if it hasn't yet completed.
-            if (module._last) {
-              module._last.abort();
-            }
+          module._last = module.getCompletions(term, fn);
+        }, this.options.interval);
 
-            module._last = module.getCompletions(term, function (terms) {
-              fn(module._lastResults = terms);
-            });
-          }, this.options.interval);
-        } else {
-          // Re-use the last set of terms.
-          fn(this._lastResults || {results: []});
-        }
-      } else {
-        fn({results: []});
+        // This forces the ajax throbber to appear, because we've called the
+        // callback already and that hides the throbber
+        $('.select2-search input', this._select2.dropdown).addClass('select2-active');
       }
     },
 

@@ -11,48 +11,15 @@
 
   {% snippet 'package/snippets/recommended_description.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name %}
 
-    {# Autocomplete for keywords #}
-
-    <h3 class="module-heading-add-dataset">{{ _('Subject') }} {{ kata_form.required() }}</h3>
-
-    <div class="module-content">
-      <p>
-        {{ _('Search keywords from') }} <a href="{{ _('http://finto.fi/koko/en/') }}" target="_blank">KOKO</a>{{ _(' ontology, select keywords with enter or mouse click.') }}
-        {{ kata_form.tooltip(tooltip=_("Field is compulsory.<br /><br />Add keywords that describe your data. Once you start typing, you will automatically get suggestions for matching keywords. You can then select the appropriate suggestion with a mouse click, or you can enter your own keywords. If you make a mistake, you can remove a keyword by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (see http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
-      </p>
-      
-      {% set autocomplete_source = '/api/2/util/tag/autocomplete?incomplete=?&language=' ~ h.lang()  %}
-      {% set tag_attrs = {'data-module': 'kata-autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label', 'data-module-getlabels': 'true'} %}
-      {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=h.get_autocomplete_format(data.tag_string), error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=tag_attrs) }}
-    </div>
-    <br />
-
-    {# Autocomplete for field of science #}
-
-    <div class="kata-autocomplete">
-      <h3 class="module-heading-add-dataset optional">{{ _('Field of science') }} {{ kata_form.optional() }}</h3>
-      <div class="module-content">
-
-
-      <p>
-        {{ _('Search words from') }} <a href="{{ _('http://finto.fi/okm-tieteenala/en/') }}" target="_blank">{{ _('okm-tieteenala') }}</a> {{ _('ontology, select keywords with enter or mouse click.') }}
-        {{ kata_form.tooltip(tooltip=_("Enter the academic discipline or disciplines to which your dataset belongs.<br /><br />Type the name of the discipline in the search box below. Once you start typing, you will automatically get suggestions for matching discipline names. The disciplines you enter must be selected from the given suggestions. You can select the appropropriate discipline from the list of suggestions with a mouse click. If you make a mistake, you can remove a discipline by clicking the \'x\' next to it.<br /><br />The suggestions are retrieved from the Finto vocabulary service (http://finto.fi/en/). Note that you must have JavaScript enabled in your browser in order for the automatic suggestions to work.")) }}
-      </p>
-      {% set autocomplete_source = '/api/2/util/discipline_autocomplete?incomplete=?&language=' ~ h.lang()  %}
-      {% set disc_attrs = {'data-module': 'kata-autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source , 'data-module-key': 'key', 'data-module-label': 'label', 'data-module-getlabels': 'true'} %}
-      {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('eg. Matematiikka'), value=h.get_autocomplete_format(data.discipline), error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete'], attrs=disc_attrs) }}
-      </div>
-    </div>
-    {# Languages #}
-
-    <h3 class="module-heading-add-dataset">{{ _('Languages') }} {{ kata_form.required() }}</h3>
-    <div class="module-content">
-        <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
-        <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
+  <div class="form-row">
+    <label class="form-label center-align" for="language">{{ _('Languages') }}*</label>
+    <div class="form-content">
+      <input type="checkbox" style="top: 0px;" id="langdis" name="langdis" onchange="KATA.checkLang('#language')" {% if data.langdis != 'False' and data.langdis %}checked value="True"{% endif %}>
+      <label for="langdis" class="kata-checkbox-label">{{ _('This dataset contains non-textual data') }}</label>
 
       <div id="langdiv" class="top-padding" {% if data.langdis != 'False' and data.langdis %} style="display: none" {% endif %}>
         {% set autocomplete_source = '/api/2/util/language/autocomplete?incomplete=?&language=' ~ currentlang  %}
-        {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
+        {% set tag_attrs = {'data-module': 'kata-autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
         {{ form.input('language', id='language', label=_('Languages'), placeholder=_('e.g. eng, fin, swe'), value=data.language, error=errors.language, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-85'], attrs=tag_attrs, label_classes=['hide']) }}
 
         <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
@@ -66,15 +33,15 @@
 
   <div class="form-row">
     {% set autocomplete_source = '/api/2/util/tag/autocomplete?incomplete=?&language=' ~ h.lang()  %}
-    {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label'} %}
+    {% set tag_attrs = {'data-module': 'kata-autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source, 'data-module-key': 'key', 'data-module-label': 'label', 'data-module-getlabels': 'true'} %}
     {{ kata_form.tooltip(tooltip=_("Add keywords that describe your data. When you start typing, you will get suggestions for matching keywords. You can select a suggested keyword with a mouse click, or you can write your own keyword and select it with enter key. To remove a keyword, click the \'x\' symbol on the keyword tag.")) }}
-    {{ form.input('tag_string', id='field-tags', label=_('Keywords') ~ '*', placeholder=_('e.g. economy, mental health, government'), value=data.tag_string, error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=tag_attrs, label_classes=['center-align']) }}
+    {{ form.input('tag_string', id='field-tags', label=_('Keywords') ~ '*', placeholder=_('e.g. economy, mental health, government'), value=h.get_autocomplete_format(data.tag_string), error=errors.tag_string, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=tag_attrs, label_classes=['center-align']) }}
   </div>
 
   <div class="form-row">
     {% set autocomplete_source = '/api/2/util/discipline_autocomplete?incomplete=?&language=' ~ h.lang()  %}
-    {% set disc_attrs = {'data-module': 'autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source , 'data-module-key': 'key', 'data-module-label': 'label'} %}
+    {% set disc_attrs = {'data-module': 'kata-autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source , 'data-module-key': 'key', 'data-module-label': 'label', 'data-module-getlabels': 'true'} %}
     {{ kata_form.tooltip(tooltip=_("Select scientific disciplines the dataset belongs to. When you start typing, you will get suggestions for matching discipline names. You can select a suggested keyword with a mouse click. To remove a keyword, click the \'x\' symbol on the keyword tag.")) }}
-    {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('e.g. Mathematics'), value=data.discipline, error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=disc_attrs, label_classes=['center-align']) }}
+    {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('e.g. Mathematics'), value=h.get_autocomplete_format(data.discipline), error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=disc_attrs, label_classes=['center-align']) }}
   </div>
 </div>
