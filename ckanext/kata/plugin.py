@@ -241,6 +241,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_active_facets': helpers.get_active_facets,
             'get_authors': helpers.get_authors,
             'get_contact_captcha': helpers.get_contact_captcha,
+            'get_autocomplete_format': helpers.get_autocomplete_format,
             'get_contacts': helpers.get_contacts,
             'get_contributors': helpers.get_contributors,
             'get_dataset_paged_order': helpers.get_dataset_paged_order,
