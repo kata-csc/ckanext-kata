@@ -472,7 +472,6 @@ msgstr ""
 "listalta."
 
 #: ckanext/kata/validators.py:542
-#, fuzzy
 msgid ""
 "The provided organization does not exist. Please contact Etsin "
 "administration using our contact form at http://openscience.fi/contact-"
