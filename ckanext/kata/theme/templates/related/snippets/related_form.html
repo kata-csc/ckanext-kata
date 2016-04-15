@@ -33,7 +33,7 @@
             <a class="btn btn-danger pull-left" href="{% url_for controller='related', action='delete', related_id=data.id, id=c.pkg_id %}" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
           {% endif %}
         {% endblock %}
-        {{ h.nav_link(_('Cancel'), controller='related', action='list', id=c.id, class_='btn btn-default') }}
+        <a class="btn btn-default cancel-back-btn pull-left">{{ _('Cancel') }}</a>
         <button class="btn btn-primary" type="submit" name="save">{% block button_text %}{{ _('Save') }}{% endblock %}</button>
       </div>
     </form>

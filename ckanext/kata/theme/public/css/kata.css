@@ -745,6 +745,9 @@ input[id="xmlfile"] {
     margin-left: 7%;
   }
 }
+.form-tab-content.related-form a.cancel-back-btn {
+  margin-right: 10px;
+}
 .etsin-dataset-form {
   border: 1px solid #c9c9c9;
   /* stack tab headers on small display */
