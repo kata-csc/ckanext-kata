@@ -25,7 +25,7 @@ setup(
         ]
     },
     install_requires=[
-        'python-ldap >= 2.4.16'
+        'python-ldap == 2.4.16'
     ],
     message_extractors={
         'ckanext': [
