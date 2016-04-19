@@ -291,6 +291,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'split_disciplines': helpers.split_disciplines,
             'string_to_list': helpers.string_to_list,
             'organizations_available': helpers.organizations_available,
+            'get_identifier_display_html': helpers.get_identifier_display_html,
         }
 
     def get_dict_field_errors(self, errors, field, index, name):

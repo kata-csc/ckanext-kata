@@ -1,6 +1,7 @@
 {% set urn_url = h.get_urn_fi_address(pkg_dict) %}
 {% set permanent_url = h.full_current_url() %}
 {% set lang = h.lang() %}
+{% import 'macros/kata_form.html' as kata_form %}
 
 <div class="dataset-section form-tab-content">
 
@@ -317,6 +318,7 @@
     <div class="form-label">{{ _('Identifiers') }}</div>
     <div class="form-content">
       <table class="form-inner-table">
+      <!--
         <tr>
           <th>{{ _('Permanent address for dataset') }}</th>
           <td><a href="{{ permanent_url }}">{{ permanent_url }}</a></td>
@@ -326,20 +328,27 @@
           <th>{{ _('Uniform Resource Name') }}</th>
           <td><a href="{{ urn_url }}">{{ urn_url }}</a></td>
         </tr>
-        {%- endif -%}
+        {%- endif -%} -->
         <tr>
           <th>{{ _('Primary metadata identifier') }}</th>
-          <td>{{ pkg_dict.id }}</td>
+          <td>{{ h.get_identifier_display_html(pkg_dict.id) | safe }}</td>
+          <td>{{ kata_form.tooltip(tooltip=_("<p>Metadata identifier is an identifier given for a single metadata record. The primary metadata identifier is the metadata identifier which refers to this dataset. Additional metadata identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to this metadata record using different identifier systems.</p>")) }}</td>
         </tr>
         <tr>
           <th>{{ _('Primary data identifier') }}</th>
-          <td>{{ h.get_pids_by_type('data', pkg_dict, primary=True)[0]['id'] }}</td>
+          <td>{{ h.get_identifier_display_html(h.get_pids_by_type('data', pkg_dict, primary=True)[0]['id']) | safe }}
+          <td>{{ kata_form.tooltip(tooltip=_("<p>Data identifier is an identifier of the data this metadata record refers to. Several data identifiers - in addition to the primary data identifier - may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</td>
         </tr>
+        {% set first_version_pid = true %}
         {% for pid_type in h.get_pid_types() %}
           {% for pid in h.get_pids_by_type(pid_type, pkg_dict, primary=False) %}
             <tr>
-              <th>{{ _(pid.get('type', '').capitalize() + ' identifier') }}</th>
-              <td>{{ pid.id }}</td>
+              <th>{{ _(pid.get('type', '').capitalize() + ' identifier') | safe }}</th>
+              <td>{{ h.get_identifier_display_html(pid.id) | safe }}</td>
+              {% if pid_type == 'version' and first_version_pid %}
+                {% set first_version_pid = false %}
+                <td>{{ kata_form.tooltip(tooltip=_("Version identifier is just like the data identifier, but it refers to a certain version of data.")) }}</td>
+              {% endif %}
             </tr>
           {% endfor %}
         {% endfor %}

@@ -110,6 +110,9 @@ ul.kata {
 .kata-medium-input {
     width: 334px !important;
     font-size: 14px;
+  @media screen and (max-width: 485px) {
+    width: 200px !important;
+  }
 }
 .kata-label-pluspad {
     padding-top: 9px !important;
@@ -272,14 +275,28 @@ input[id="xmlfile"] {
           text-decoration: none;
         }
       }
-      .dropdown-menu {
-        left: -3.5em;
-        right: -1em;
-        padding: 5px 8px;
-        font-size: small;
-        min-width: 180px;
-        float: none;
+      @media screen and (min-width: 700px) {
+        .dropdown-menu {
+          left: -18.5em;
+          right: -1em;
+          padding: 5px 8px;
+          font-size: small;
+          min-width: 250px;
+          max-width: 400px;
+          float: none;
+        }
       }
+      @media screen and (max-width: 700px) {
+        .dropdown-menu {
+          left: -1.5em;
+          right: -1em;
+          padding: 5px 8px;
+          font-size: small;
+          min-width: 180px;
+          float: none;
+        }
+      }
+
     }
     .form-table {
       margin-left: auto;
@@ -503,8 +520,10 @@ input[id="xmlfile"] {
 .custom-fields-container {
   margin-bottom: 70px;
 
-  .no-label-controls {
-    margin-left: 30% !important;
+  @media screen and (min-width: 700px) {
+    .no-label-controls {
+      margin-left: 30% !important;
+    }
   }
 }
 

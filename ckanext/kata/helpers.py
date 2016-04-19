@@ -1006,3 +1006,21 @@ def get_autocomplete_format(data):
                 label = get_label_for_uri(item)
                 rets.append({"id": item, "text": label})
     return json.dumps(rets)
+
+
+def get_identifier_display_html(identifier):
+    '''
+    Get identifier html for displaying in the UI.
+
+    :param identifier: identifier value
+    :return: string - either plain string or html link string
+    '''
+
+    if not isinstance(identifier, basestring):
+        return identifier
+    if re.match('^urn:nbn:fi:csc-(kata|ida)', identifier):
+        return '<a href="http://urn.fi/' + identifier + '">http://urn.fi/' + identifier + '</a>'
+    elif identifier.startswith('http'):
+        return '<a href="' + identifier + '">' + identifier + '</a>'
+    else:
+        return identifier
