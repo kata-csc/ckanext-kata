@@ -10,7 +10,7 @@
         <label class="control-label" for="xmlfile">{{ _('File') }}</label>
         <input id="xmlfile" type="file" placeholder="/path/to/file.xml" value="" name="xmlfile"/>
       </div>
-      {% set options = [ {'value': 'ddi', 'text': 'DDI2'}, {'value': 'oai-pmh', 'text': 'OAI-PMH/OAI DC'}, {'value': 'ida', 'text': 'OAI-PMH IDA'}, {'value': 'cmdi', 'text': 'OAI-PMH CMDI'}] %}
+      {% set options = [ {'value': 'ddi', 'text': 'DDI2'}, {'value': 'oai-pmh', 'text': 'OAI-PMH/OAI DC'}, {'value': 'ida', 'text': 'OAI-PMH IDA'}, {'value': 'cmdi', 'text': 'OAI-PMH CMDI'}, {'value': 'rdf', 'text': 'RDF'}] %}
       {{ form.select('xml-format', label=_('Format'), options=options, selected='ddi', error=error, classes=['control-full']) }}
       <button class='btn btn-default' name='upload' value='metadata' type='submit' onclick="window.onbeforeunload = null; return true;">{{ _("Upload") }}</button>
     </form>

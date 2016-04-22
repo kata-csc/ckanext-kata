@@ -269,7 +269,6 @@ class Schemas:
                           'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         return schema
 
-
     @classmethod
     def create_package_schema_oai_cmdi(cls):
         """
@@ -285,6 +284,20 @@ class Schemas:
                           'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         return schema
 
+    @classmethod
+    def create_package_schema_etsin_rdf(cls):
+        """
+        Mofidified schema for etsin_rdf using RDF. See `create_package_schema_oai_dc`.
+
+        :rtype: dictionary
+        """
+        schema = cls.create_package_schema_oai_dc()
+        schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
+        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
+                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
+                          'type': [not_missing, unicode, co.flattened_to_extras],
+                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
+        return schema
 
     @classmethod
     def create_package_schema_ddi(cls):
