@@ -184,6 +184,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'package_update': auth_functions.is_owner,
             'resource_delete': auth_functions.resource_delete,
             'resource_update': auth_functions.edit_resource,
+            'user_activity_list': auth_functions.user_activity_list,
             'user_autocomplete': auth_functions.user_autocomplete,
             'user_list': logic.auth.get.sysadmin,
         }
