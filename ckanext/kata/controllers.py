@@ -10,7 +10,7 @@ import logging
 import mimetypes
 import string
 import urllib2
-from urllib import urlencode
+from urllib import urlencode, unquote
 import difflib
 import time
 from Crypto.Cipher import Blowfish
@@ -612,7 +612,7 @@ class KataUserController(UserController):
         ckan.lib.i18n.set_lang(lang)
 
         if h.url_is_local(came_from):
-            return h.redirect_to(str(came_from))
+            return h.redirect_to(unquote(str(came_from)))
 
         if c.user:
             context = {'model': model,

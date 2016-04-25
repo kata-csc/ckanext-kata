@@ -244,6 +244,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_autocomplete_format': helpers.get_autocomplete_format,
             'get_contacts': helpers.get_contacts,
             'get_contributors': helpers.get_contributors,
+            'get_current_url': helpers.get_current_url,
             'get_dataset_paged_order': helpers.get_dataset_paged_order,
             'get_description': helpers.get_description,
             'get_dict_errors': helpers.get_dict_errors,

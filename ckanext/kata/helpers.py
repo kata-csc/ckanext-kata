@@ -15,6 +15,7 @@ import json
 import urllib2
 import httplib
 import copy
+from urlparse import urlparse
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -1024,3 +1025,18 @@ def get_identifier_display_html(identifier):
         return '<a href="' + identifier + '">' + identifier + '</a>'
     else:
         return identifier
+
+
+def get_current_url():
+    '''
+    Get current url without the host part and query parameters etc.,
+    change it to secure ssl connection if not in debug mode
+
+    :return: url path, e.g. https://host.name.fi/fi/dataset/abc-1234
+    '''
+
+    url = urlparse(h.full_current_url())
+    # Dropping the rest of the parameters because url encoding will too easily break stuff
+    if g.debug:
+        return 'http://' + url.netloc + url.path
+    return 'https://' + url.netloc + url.path
