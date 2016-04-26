@@ -471,6 +471,16 @@ def list_organisations(user):
     return _sort_organizations(get_action('organization_list')(context, data_dict))
 
 
+def list_organisations_for_create_dataset(user):
+    '''
+    Lists organization for create dataset page. Basically works like the old version, calling now
+    empty query.
+
+    :return: list of organizations (list of dicts)
+    '''
+    return get_action('organization_autocomplete')({'user': user}, {'q': ''})
+
+
 def organizations_available(permission='edit_group'):
     organizations = _sort_organizations(h.organizations_available(permission))
     if permission == 'create_dataset':

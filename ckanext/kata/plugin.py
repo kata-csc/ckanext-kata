@@ -284,6 +284,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'multilang_to_json': helpers.multilang_to_json,
             'json_to_list': helpers.json_to_list,
             'list_organisations': helpers.list_organisations,
+            'list_organisations_for_create_dataset': helpers.list_organisations_for_create_dataset,
             'modify_error_summary': helpers.modify_error_summary,
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
