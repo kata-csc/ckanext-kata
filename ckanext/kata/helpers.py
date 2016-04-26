@@ -480,6 +480,16 @@ def organizations_available(permission='edit_group'):
     return organizations
 
 
+def list_organisations_for_create_dataset(user):
+    '''
+    Lists organization for create dataset page. Basically works like the old version, calling now
+    empty query.
+
+    :return: list of organizations (list of dicts)
+    '''
+    return get_action('organization_autocomplete')({'user': user}, {'q': ''})
+
+
 def get_organization_sorters():
     return [(N_("By datasets"), "packages"), (N_("Show all"), "title")]
 
