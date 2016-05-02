@@ -275,7 +275,7 @@ class TestAuthorisation(KataWsgiTestCase):
         '''
         Test that delete button exists for package editor
         '''
-        offset = url_for(controller='package', action='edit', id=u'annakarenina')
+        offset = url_for(controller='package', action='read', id=u'annakarenina')
         pkg_id = u'annakarenina'
         user_id = u'tester'
         user = model.User.get(user_id)
@@ -324,18 +324,24 @@ class TestURNExport(KataWsgiTestCase):
         organization = get_action('organization_create')({'user': 'test_sysadmin'},
                                                          {'name': 'test-organization', 'title': "Test organization"})
 
-        for count, private, delete in (1, False, False), (1, True, False), (2, False, False), (2, False, True), (
-        3, False, False):
+        for i, (count, private, delete) in enumerate([(2, False, False), (2, True, False), (4, False, False),
+                                                      (4, False, True), (6, False, False)]):
             data = copy.deepcopy(TEST_DATADICT)
+            # generate unique pids in a somewhat clumsy way...
+            for pid in data.get('pids', []):
+                pid['id'] = pid.get('id') + unicode(i)
+
             data['owner_org'] = organization['name']
             data['private'] = private
 
             package = get_action('package_create')({'user': 'test_sysadmin'}, data)
+
             if delete:
                 get_action('package_delete')({'user': 'test_sysadmin'}, {'id': package['id']})
 
             res = self.app.get(offset)
 
+            print res
             tree = etree.fromstring(res.body)
             self.assertEquals(len(tree.xpath("//u:identifier", namespaces=self.namespaces)), count)
 
@@ -393,43 +399,3 @@ class TestMetadataSupplements(KataWsgiTestCase):
         assert 'resource-upload-field' in res
 
         get_action('package_delete')({'user': 'testsysadmin'}, package)
-
-
-class TestKataOrganizationController(KataWsgiTestCase):
-    '''Test organization controller'''
-
-    def test_organization_hiding_pagination(self):
-        model.User(name="test_sysadmin", sysadmin=True).save()
-
-        orgs = []
-
-        for x in range(50):  # Create 50 organizations
-            org_id = 'org_{x}'.format(x=str(x))
-            org_title = 'Organisation {x}'.format(x=str(x))
-            orgs.append(get_action('organization_create')({'user': 'test_sysadmin'},
-                                                          {'name': org_id, 'title': org_title}))
-
-        for org in orgs[::2]:  # Create 25 datasets to distinct organizations
-            data = copy.deepcopy(TEST_DATADICT)
-            data['owner_org'] = org['name']
-            data['name'] = org['id']
-            get_action('package_create')({'user': 'test_sysadmin'}, data)
-
-        res = self.app.get(url_for("/organization"), status=200)
-
-        # Page 1:
-
-        assert res.body.count('>0 Datasets<') == 0
-        assert res.body.count('>1 Dataset<') == 21
-
-        assert res.body.count('25 organizations found')
-
-        # Page 2:
-
-        res = self.app.get(url_for("/organization?sort=&q=&page=2"), status=200)
-
-        assert res.body.count('>0 Datasets<') == 0
-        assert res.body.count('>1 Dataset<') == 4
-
-        assert res.body.count('25 organizations found')
-

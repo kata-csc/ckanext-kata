@@ -10,7 +10,7 @@ import logging
 import mimetypes
 import string
 import urllib2
-from urllib import urlencode
+from urllib import urlencode, unquote
 import difflib
 import time
 from Crypto.Cipher import Blowfish
@@ -96,6 +96,7 @@ class MetadataController(BaseController):
     '''
     URN export
     '''
+    XMLNS = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping"
 
     def _urnexport(self):
         '''
@@ -104,53 +105,56 @@ class MetadataController(BaseController):
         _or_ = sqlalchemy.or_
         _and_ = sqlalchemy.and_
 
-        xmlns = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping"
-        def locns(loc):
-            return "{%s}%s" % (xmlns, loc)
         xsi = "http://www.w3.org/2001/XMLSchema-instance"
         schemalocation = "urn:nbn:se:uu:ub:epc-schema:rs-location-mapping " \
                          "http://urn.kb.se/resolve?urn=urn:nbn:se:uu:ub:epc-schema:rs-location-mapping&godirectly"
-        records = etree.Element("{" + xmlns + "}records",
+        records = etree.Element("{" + self.XMLNS + "}records",
                          attrib={"{" + xsi + "}schemaLocation": schemalocation},
-                         nsmap={'xsi': xsi, None: xmlns})
+                         nsmap={'xsi': xsi, None: self.XMLNS})
 
-        # Gather all package id's that might contain a Kata/IDA data PID
-        query = model.Session.query(model.PackageExtra).filter(model.PackageExtra.key.like('pids_%_id')). \
+        # Gather all package id's, their related name and pid value that might contain a Kata/IDA data PID
+        query = model.Session.query(model.PackageExtra, model.Package).filter(model.PackageExtra.key.like('pids_%_id')). \
             filter(model.PackageExtra.value.like('urn:nbn:fi:csc-%')). \
             join(model.Package).filter(model.Package.private == False).filter(model.Package.state == 'active'). \
-            values('package_id')
+            values('package_id', 'name', 'value')
 
-        base_url = config.get('ckan.site_url', '').strip("/")
-
-        prot = etree.SubElement(records, locns('protocol-version'))
+        prot = etree.SubElement(records, self._locns('protocol-version'))
         prot.text = '3.0'
-        datestmp = etree.SubElement(records, locns('datestamp'), attrib={'type': 'modified'})
+        datestmp = etree.SubElement(records, self._locns('datestamp'), attrib={'type': 'modified'})
         now = datetime.datetime.now().isoformat()
         datestmp.text = now
-        for pkg_id, in set(query):
-            data_dict = get_action('package_show')({}, {'id': pkg_id})
-            # Get primary data PID and make sure we want to display this dataset
-            try:
-                data_pid = utils.get_pids_by_type('data', data_dict, primary=True)[0].get('id', '')
-            except IndexError:
-                continue
-            if data_pid.startswith('urn:nbn:fi:csc-'):
-                record = etree.SubElement(records, locns('record'))
-                header = etree.SubElement(record, locns('header'))
-                datestmp = etree.SubElement(header, locns('datestamp'), attrib={'type': 'modified'})
-                datestmp.text = now
-                identifier = etree.SubElement(header, locns('identifier'))
-                identifier.text = data_pid
-                destinations = etree.SubElement(header, locns('destinations'))
-                destination = etree.SubElement(destinations, locns('destination'), attrib={'status': 'activated'})
-                datestamp = etree.SubElement(destination, locns('datestamp'), attrib={'type': 'activated'})
-                url = etree.SubElement(destination, locns('url'))
-                url.text = "%s%s" % (base_url,
-                                 helpers.url_for(controller='package',
-                                           action='read',
-                                           id=data_dict.get('name')))
+        base_url = config.get('ckan.site_url', '').strip("/")
+        seen_ids = list()
+        for package_id, name, pid in query:
+            # Since package_id is not listed as name/value pair, print it separately and only once
+            if not package_id in seen_ids and package_id.startswith('urn:nbn:fi:csc-'):
+                seen_ids.append(package_id)
+                self._create_urnexport_xml_item(records, package_id, name, base_url, now)
+            self._create_urnexport_xml_item(records, pid, name, base_url, now)
+
         response.content_type = 'application/xml; charset=utf-8'
         return etree.tostring(records, encoding="UTF-8")
+
+    def _locns(self, loc):
+        return "{%s}%s" % (self.XMLNS, loc)
+
+    def _create_urnexport_xml_item(self, records, identifier_text, name, base_url, now):
+        record = etree.SubElement(records, self._locns('record'))
+        header = etree.SubElement(record, self._locns('header'))
+        datestmp = etree.SubElement(header, self._locns('datestamp'), attrib={'type': 'modified'})
+        datestmp.text = now
+        identifier = etree.SubElement(header, self._locns('identifier'))
+        identifier.text = identifier_text
+
+        destinations = etree.SubElement(header, self._locns('destinations'))
+        destination = etree.SubElement(destinations, self._locns('destination'), attrib={'status': 'activated'})
+        etree.SubElement(destination, self._locns('datestamp'), attrib={'type': 'activated'})
+
+        url = etree.SubElement(destination, self._locns('url'))
+        url.text = "%s%s" % (base_url,
+            helpers.url_for(controller='package',
+                   action='read',
+                   id=name))
 
     @beaker_cache(type="dbm", expire=86400)
     def urnexport(self):
@@ -513,11 +517,14 @@ at least three letters."))
         """
 
         package = Package.get(pkg_id)
+        if not package:
+            ckan.lib.base.abort(404, _("Dataset not found"))
+
         package_title = package.title if package.title else package.name
         subject = u"Message regarding dataset / Viesti koskien tietoaineistoa %s" % package_title
         recipient_id = request.params.get('recipient', '')
-
         return self._prepare_and_send(pkg_id, recipient_id, subject, settings.USER_MESSAGE_PREFIX_TEMPLATE, settings.REPLY_TO_SENDER_NOTE)
+
 
     def send_request_message(self, pkg_id):
         """
@@ -609,7 +616,7 @@ class KataUserController(UserController):
         ckan.lib.i18n.set_lang(lang)
 
         if h.url_is_local(came_from):
-            return h.redirect_to(str(came_from))
+            return h.redirect_to(unquote(str(came_from)))
 
         if c.user:
             context = {'model': model,

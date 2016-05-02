@@ -31,7 +31,7 @@
      attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, primary_pid_readonly:''})%}
 
     <div class="form-double-instructions-container">
-      {{ kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated primary data identifier is provided if left empty.<br /><br />Note that if your data is accessible via access application like REMS, the primary identifier is sent to the service as the data identifier.')) }}
+      {{ kata_form.tooltip(tooltip=_('<p>Data identifier is an identifier of the data this metadata record refers to. The primary data identifier is compulsory but it will be generated automatically if the field is left empty. Additional data identifiers can also be given, if for example you want to refer to the data using different identifier systems.</p><p>If your data is available by data access application form, for example REMS, the primary data identifier will be sent to this service and it must be recognised by the storage service.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
       {{ kata_form.warning_tooltip(tooltip=_('Please note that the primary data identifier can NOT be edited after saving the dataset.')) }}
     </div>
 
@@ -47,7 +47,6 @@
   <input type="hidden" id="name" name="name" value="" />
 
   {% for pid_type in pid_types %}
-
     {% if pid_type == 'data' %}
       {% set additional_data_identifier_label = _('Additional data identifiers') %}
     {% else %}
@@ -71,7 +70,13 @@
               {% endif %}
 
               {% if loop.first %}
-                {{ kata_form.tooltip(tooltip=_('Add this type of identifiers that you have for your dataset.')) }}
+                {% if pid_type != 'data' %}
+                  {% if pid_type == 'metadata' %}
+                    {{ kata_form.tooltip(tooltip=_('<p>Metadata identifier is an identifier given for a single metadata record. Etsin will automatically create a primary metadata identifier for this dataset. The primary metadata identifier is the metadata identifier which refers to this dataset. It will be the variable "id" of the dataset and you will see this if you work with the Etsin API. You can also add additional metadata identifiers for example if you want to refer to this metadata using different identifier systems.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
+                  {% elif pid_type == 'version' %}
+                   {{ kata_form.tooltip(tooltip=_('Version identifier is just like the data identifier, but it refers to a certain version of data.')) }}
+                  {% endif %}
+                {% endif %}
                 <input style="display: none;" type="checkbox" id="pids__{{index}}__value" name="pids__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
                 {{ kata_form.plusbutton(id='pids_add-' ~ pid_type, text=_('Add'), onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
                 <input style="display: none;" type="checkbox" id="pid_btn__{{ index }}__value_id" name="pid_btn__{{ index }}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
@@ -138,7 +143,7 @@
     <div data-module="kata-datetimepicker"
          data-module-currentlang="{{ lang }}" data-module-name="version"
          data-module-value="{{data.version}}" data-module-defaultnow="true"
-         data-module-disabled="true">
+         data-module-disabled="false">
 
       <div class="kata-datetimepicker-parent"></div>
 

@@ -32,22 +32,9 @@ then itself be extended to add/remove blocks of functionality. #}
     <div class="form-row">
       <div class="form-content etsin-actions">
         <div class="form-actions">
-          {% block delete_button %}
-            {% if h.check_access('package_delete', {'id': data.id})  %}
-              {% set locale = h.dump_json({'content': _('Are you sure you want to delete this dataset?')}) %}
-              <a class="btn btn-danger" href="{% url_for controller='package', action='delete', id=data.id %}" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
-            {% endif %}
-          {% endblock %}
-
+          <a id="cancel-edit" class="btn btn-default">{{ _('Cancel') }}</a>
           <button class="btn btn-primary" type="submit" value="finish" name="save">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
-          {# Changing the text of save and publish on edit can be done in new_package_form.html #}
-          <button id="save-and-publish" class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled" title="{{ _('Accept the terms of use before publishing') }}">{% block save_and_publish_button_text %}{{ _('Save and publish') }}{% endblock %}</button>
-          <a class="btn btn-default" href="" onclick="window.history.back()">{{ _('Cancel') }}</a>
-        {#
-          {% block cancel_button %}
-            <a class="btn btn-default" href="">{% block cancel_button_text %}{{ _('Cancel') }}{% endblock %}</a>
-          {% endblock %}
-        #}
+          <button id="save-and-publish" class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled" title="{{ _('Accept the terms of use before publishing') }}">{% block save_and_publish_button_text %}{% if form_style != 'edit' %}{{ _('Save and publish') }}{% else %}{{ _('Update and publish') }}{% endif %}{% endblock %}</button>
         </div>
       </div>
     </div>

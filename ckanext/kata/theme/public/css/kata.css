@@ -455,6 +455,10 @@ ul.kata {
 .kata-input-license {
   width: 100% !important;
 }
+.select2-results,
+.select2-drop {
+  font-size: 11px;
+}
 @media (max-width: 700px) {
   .select2-results,
   .select2-drop {
@@ -464,6 +468,11 @@ ul.kata {
 .kata-medium-input {
   width: 334px !important;
   font-size: 14px;
+}
+@media screen and (max-width: 485px) {
+  .kata-medium-input {
+    width: 200px !important;
+  }
 }
 .kata-label-pluspad {
   padding-top: 9px !important;
@@ -600,6 +609,7 @@ input[id="xmlfile"] {
   float: none;
   border-top: none;
   text-align: left;
+  display: inline-block;
 }
 .form-tab-content .form-actions .btn {
   padding: 10px 24px;
@@ -625,7 +635,7 @@ input[id="xmlfile"] {
 .form-tab-content .form-row .controls {
   min-height: 16px;
   margin-left: 0px;
-  width: 50%;
+  width: 55%;
   padding-right: 0px;
   padding-left: 10px;
   display: inline-block;
@@ -633,7 +643,7 @@ input[id="xmlfile"] {
 .form-tab-content .form-row .form-instructions {
   padding-left: 10px;
   float: right;
-  width: 15%;
+  width: 8%;
 }
 .form-tab-content .form-row .form-instructions i {
   font-size: 20px;
@@ -645,12 +655,26 @@ input[id="xmlfile"] {
 .form-tab-content .form-row .form-instructions a:focus {
   text-decoration: none;
 }
-.form-tab-content .form-row .form-instructions .dropdown-menu {
-  left: -3.5em;
-  right: -1em;
-  padding: 5px 8px;
-  font-size: small;
-  min-width: 180px;
+@media screen and (min-width: 700px) {
+  .form-tab-content .form-row .form-instructions .dropdown-menu {
+    left: -18.5em;
+    right: -1em;
+    padding: 5px 8px;
+    font-size: small;
+    min-width: 250px;
+    max-width: 400px;
+    float: none;
+  }
+}
+@media screen and (max-width: 700px) {
+  .form-tab-content .form-row .form-instructions .dropdown-menu {
+    left: -1.5em;
+    right: -1em;
+    padding: 5px 8px;
+    font-size: small;
+    min-width: 180px;
+    float: none;
+  }
 }
 .form-tab-content .form-row .form-table {
   margin-left: auto;
@@ -738,6 +762,9 @@ input[id="xmlfile"] {
     width: 91%;
     margin-left: 7%;
   }
+}
+.form-tab-content.related-form a.cancel-back-btn {
+  margin-right: 10px;
 }
 .etsin-dataset-form {
   border: 1px solid #c9c9c9;
@@ -839,8 +866,10 @@ input[id="xmlfile"] {
 .custom-fields-container {
   margin-bottom: 70px;
 }
-.custom-fields-container .no-label-controls {
-  margin-left: 30% !important;
+@media screen and (min-width: 700px) {
+  .custom-fields-container .no-label-controls {
+    margin-left: 30% !important;
+  }
 }
 .autocomplete-input-container .select2-choices {
   padding-top: 0px !important;
@@ -869,9 +898,10 @@ input[id="xmlfile"] {
 }
 .supplement-form .form-actions {
   overflow: hidden;
+  float: right;
 }
 .supplement-form .form-actions .btn {
-  float: right;
+  display: inline-block;
   padding: 4px 12px !important;
 }
 #access_application_URL_box .control-label {
@@ -881,6 +911,9 @@ input[id="xmlfile"] {
 }
 .resource-form #field-resource-type-upload {
   height: 0;
+}
+#s2id_field-organizations {
+  width: 100% !important;
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;

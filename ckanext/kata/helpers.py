@@ -15,6 +15,7 @@ import json
 import urllib2
 import httplib
 import copy
+from urlparse import urlparse
 
 import ckan.model as model
 from ckan.model import Related, Package, User
@@ -471,12 +472,26 @@ def list_organisations(user):
     return _sort_organizations(get_action('organization_list')(context, data_dict))
 
 
+def list_organisations_for_create_dataset(user):
+    '''
+    Lists organization for create dataset page. Basically works like the old version, calling now
+    empty query.
+
+    :return: list of organizations (list of dicts)
+    '''
+    return get_action('organization_autocomplete')({'user': user}, {'q': ''})
+
+
 def organizations_available(permission='edit_group'):
     organizations = _sort_organizations(h.organizations_available(permission))
     if permission == 'create_dataset':
         for organization in organizations:
             organization['name'] = organization.get('title', None) or organization['name']
     return organizations
+
+
+def get_organization_sorters():
+    return [(N_("By datasets"), "packages"), (N_("Show all"), "title")]
 
 
 def convert_language_code(lang, to_format, throw_exceptions=True):
@@ -723,54 +738,6 @@ def get_language(lang):
                 return lang
 
 
-def get_active_facets(facets):
-    '''
-    Constructs a summary of currently active facets for search view.
-    Resolves also if any "show more"/"show only top" toggles are on (limits).
-    '''
-    facet_info = dict()
-    facet_info['fields'] = facets['fields']
-    facet_info['search'] = dict()
-    limits = [k for k,v in request.params.items() if v and k.endswith('_limit')]
-    limits = [limit.rsplit('_', 1)[0].strip('_') for limit in limits]
-    for key in facets['search'].iterkeys():
-        facet_info['search'][key] = bool(key in limits)
-    return json.dumps(facet_info)
-
-
-def is_active_facet(facet, active_facets):
-    '''
-    Returns True if given facet is expanded or has selected items
-
-    :param facet: facet id string
-    :param active_facets: result of get_active_facets
-    '''
-    try:
-        data = json.loads(active_facets)
-    except (ValueError, TypeError):
-        return False
-    if not data:
-        return False
-    return facet in data['fields'] or data['search'][facet]
-
-
-def get_dataset_paged_order(index, per_page):
-    '''
-    Get index for a list with pagination (starting from 1)
-
-    :param index: current visible list index starting from 0
-    :param per_page: amount of items per page
-    '''
-    current_page = 1
-    page_param = [v for k,v in request.params.items() if k == 'page']
-    if page_param:
-        try:
-            current_page = int(page_param[0])
-        except ValueError:
-            pass
-    return (current_page - 1) * per_page + index + 1
-
-
 def get_translation_from_extras(package):
     '''
     Fetch the translation string from the extras, in case the title is of the old type.
@@ -860,6 +827,10 @@ def get_active_facets(facets):
     Constructs a summary of currently active facets for search view.
     Resolves also if any "show more"/"show only top" toggles are on (limits).
     '''
+
+    if not facets or not type(facets.get('search')) is dict:
+        return '{}'
+
     facet_info = dict()
     facet_info['fields'] = facets.get('fields')
     facet_info['fields'].pop('isopen', None)
@@ -869,7 +840,6 @@ def get_active_facets(facets):
     for key in facets.get('search').iterkeys():
         facet_info['search'][key] = bool(key in limits)
     return json.dumps(facet_info)
-
 
 def get_fields_grouped():
     '''
@@ -1030,3 +1000,53 @@ def get_contact_captcha():
     '''
 
     return asbool(config.get('kata.contact_captcha', 'False'))
+
+def get_autocomplete_format(data):
+    '''
+    Splits and resolves
+
+    :param data: string of uris
+    :return: json: [{"id": "value", "text": "label"}...]
+    '''
+
+    rets = list()
+    if data:
+        items = [x.strip() for x in data.split(',')]
+        if items:
+            for item in items:
+                label = get_label_for_uri(item)
+                rets.append({"id": item, "text": label})
+    return json.dumps(rets)
+
+
+def get_identifier_display_html(identifier):
+    '''
+    Get identifier html for displaying in the UI.
+
+    :param identifier: identifier value
+    :return: string - either plain string or html link string
+    '''
+
+    if not isinstance(identifier, basestring):
+        return identifier
+    if re.match('^urn:nbn:fi:csc-(kata|ida)', identifier):
+        return '<a href="http://urn.fi/' + identifier + '">http://urn.fi/' + identifier + '</a>'
+    elif identifier.startswith('http'):
+        return '<a href="' + identifier + '">' + identifier + '</a>'
+    else:
+        return identifier
+
+
+def get_current_url():
+    '''
+    Get current url without the host part and query parameters etc.,
+    change it to secure ssl connection if not in debug mode
+
+    :return: url path, e.g. https://host.name.fi/fi/dataset/abc-1234
+    '''
+
+    url = urlparse(h.full_current_url())
+    # Dropping the rest of the parameters because url encoding will too easily break stuff
+    if g.debug:
+        return 'http://' + url.netloc + url.path
+    return 'https://' + url.netloc + url.path

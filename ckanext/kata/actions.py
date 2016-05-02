@@ -554,7 +554,8 @@ def organization_list(context, data_dict):
     """ Modified from ckan.logic.action.get._group_or_org_list.
         Sort by title instead of name and lower case ordering.
     """
-    data_dict['sort'] = 'title'
+    if not data_dict.get('sort'):
+        data_dict['sort'] = 'packages'
     return ckan.logic.action.get.organization_list(context, data_dict)
 
 

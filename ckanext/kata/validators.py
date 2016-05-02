@@ -10,6 +10,7 @@ import urlparse
 
 from pylons.i18n import _
 from paste.deploy.converters import asbool
+from sqlalchemy import or_
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
@@ -19,6 +20,7 @@ from ckanext.kata import utils, settings
 import ckan.lib.navl.dictization_functions as df
 import ckan.authz as authz
 import ckan.logic as logic
+import ckan.model as model
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -524,26 +526,23 @@ def kata_owner_org_validator(key, data, errors, context):
     value = data.get(key)
 
     if value is missing or not value:
-        if not authz.check_config_permission('create_unowned_dataset'):
-            err = _(
-            u"An organization must be supplied. If you do not find a suitable organization, please choose the default organization "
-            u"'Ei linkitetä organisaatioon - do not link to an organization' or create a new one."
-            )
-
-            raise Invalid(err)
-        data.pop(key, None)
-        raise df.StopOnError
-
-    if len(value) < 2:
-        raise Invalid(_('Organization name must be at least %s characters long') % 2)
-    if len(value) > PACKAGE_NAME_MAX_LENGTH:
-        raise Invalid(_('Organization name must be a maximum of %i characters long') % \
-                      PACKAGE_NAME_MAX_LENGTH)
-    if value.lower() in ['new', 'edit', 'search']:
-        raise Invalid(_('This organization name cannot be used'))
+        err = _(
+        u"An organization must be supplied. If you do not find a suitable organization, please choose the default organization "
+        u"'Ei linkitetä organisaatioon - do not link to an organization'."
+        )
+        raise Invalid(err)
 
     model = context['model']
     group = model.Group.get(value)
+    if not group:
+        org_name = re.sub(r'[^a-zA-Z0-9]+', '-', utils.slugify(value)).lower()
+        org_name = re.sub(r'-$', '', org_name)
+        group = model.Group.get(org_name)
+        if not group:
+            err = _(
+            u'The provided organization does not exist. Please contact Etsin administration using our contact form at http://openscience.fi/contact-form')
+            raise Invalid(err)
+
     if group:
         data[key] = group.id
 
@@ -591,3 +590,33 @@ def continue_if_missing(key, data, errors, context):
 
     if value is missing or value is None:
         data.pop(key, None)
+
+def validate_pid_uniqueness(key, data, errors, context):
+    '''
+    Validate dataset pids are unique, i.e. they do not exist already.
+
+    :param key: key
+    :param data: data
+    :param errors: errors
+    :param context: context
+    '''
+    exam_pid = data.get(key)
+    exam_package_id = data.get(('id',))
+
+    # Query package extra table with key like pids_%_id and match exact pid name with the corresponding value
+    # Return only rows with package state active, since deleted datasets might be re-added.
+    query = model.Session.query(model.PackageExtra).filter(model.PackageExtra.key.like('pids_%_id')). \
+            filter(or_(model.PackageExtra.value == exam_pid, model.PackageExtra.package_id == exam_pid)). \
+            join(model.Package).filter(model.Package.state == 'active')
+
+    q_amt = query.count()
+    q_package_ids = [i[0] for i in query.values('package_id')]
+
+    # If existing pids or package_ids with value matching the pid were found
+    # and if none of those found values is the pid, raise an error.
+    # The latter if is when updating a dataset.
+
+    if q_amt > 0:
+        for item in q_package_ids:
+            if item != exam_package_id:
+                raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=exam_package_id))

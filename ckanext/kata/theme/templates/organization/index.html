@@ -18,7 +18,7 @@
             <div class="search-terms">
                <div class="search-input control-group search-giant">
                  <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
-                   placeholder="{{ _('Enter search term or query…') }}">
+                   placeholder="{{ _('Enter search term or query…') }}" tabindex="1" autofocus>
                  <button type="submit" value="search">
                    <i class="icon-search"></i>
                    <span>{{ _('Submit') }}</span>
@@ -32,15 +32,21 @@
                   {% endfor -%}
                 </span>
               {%- endif %}
-
+              <div class="form-select control-group control-order-by">
+                <label for="field-order-by">{{ _('Order by') }}</label>
+                <select id="field-order-by" name="sort">
+                  {% set sorting = h.get_organization_sorters() %}
+                  {% for label, value in sorting %}
+                    {% if label and value %}
+                      <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ _(label) }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                {% block search_sortby_button %}
+                  <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
+                {% endblock %}
+              </div>
             </div>
-
-            <div class="search-extras form-inline">
-              <label class="checkbox">
-                <input type="checkbox" name="showall" value="true"{% if c.showall | lower == 'true' %} checked{% endif %}>{{ _('Show all organizations') }}
-              </label>
-            </div>
-
         </form>
       </div>
     </div>

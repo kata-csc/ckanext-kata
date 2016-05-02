@@ -105,10 +105,14 @@ ul.kata {
   @media (max-width: 700px) {
     min-width: 360px;
   }
+  font-size: 11px;
 }
 .kata-medium-input {
     width: 334px !important;
     font-size: 14px;
+  @media screen and (max-width: 485px) {
+    width: 200px !important;
+  }
 }
 .kata-label-pluspad {
     padding-top: 9px !important;
@@ -231,6 +235,7 @@ input[id="xmlfile"] {
     .btn + .btn {
       margin-left: 15px;
     }
+    display: inline-block;
   }
 
   @form-label-width: 30%;
@@ -252,7 +257,7 @@ input[id="xmlfile"] {
     .form-content, .controls {
       min-height: 16px;
       margin-left: 0px;
-      width: 100% - @form-label-width - @form-help-spacer-width - 5%;
+      width: 100% - @form-label-width - @form-help-spacer-width;
       padding-right: 0px;
       padding-left: 10px;
       display: inline-block;
@@ -260,7 +265,7 @@ input[id="xmlfile"] {
     .form-instructions {
       padding-left: 10px;
       float: right;
-      width: @form-help-spacer-width;
+      width: 8%;
       i {
         font-size: 20px;
       }
@@ -270,13 +275,28 @@ input[id="xmlfile"] {
           text-decoration: none;
         }
       }
-      .dropdown-menu {
-        left: -3.5em;
-        right: -1em;
-        padding: 5px 8px;
-        font-size: small;
-        min-width: 180px;
+      @media screen and (min-width: 700px) {
+        .dropdown-menu {
+          left: -18.5em;
+          right: -1em;
+          padding: 5px 8px;
+          font-size: small;
+          min-width: 250px;
+          max-width: 400px;
+          float: none;
+        }
       }
+      @media screen and (max-width: 700px) {
+        .dropdown-menu {
+          left: -1.5em;
+          right: -1em;
+          padding: 5px 8px;
+          font-size: small;
+          min-width: 180px;
+          float: none;
+        }
+      }
+
     }
     .form-table {
       margin-left: auto;
@@ -380,6 +400,11 @@ input[id="xmlfile"] {
         width: 91%;
         margin-left: 7%;
       }
+    }
+  }
+  &.related-form {
+    a.cancel-back-btn {
+      margin-right: 10px;
     }
   }
 }
@@ -495,8 +520,10 @@ input[id="xmlfile"] {
 .custom-fields-container {
   margin-bottom: 70px;
 
-  .no-label-controls {
-    margin-left: 30% !important;
+  @media screen and (min-width: 700px) {
+    .no-label-controls {
+      margin-left: 30% !important;
+    }
   }
 }
 
@@ -532,8 +559,9 @@ input[id="xmlfile"] {
 .supplement-form {
   .form-actions {
     overflow: hidden;
+    float: right;
     .btn {
-      float: right;
+      display: inline-block;
       padding: 4px 12px !important;
     }
   }
@@ -549,5 +577,9 @@ input[id="xmlfile"] {
 
 .resource-form #field-resource-type-upload {
   height: 0;
+}
+
+#s2id_field-organizations {
+  width: 100% !important;
 }
 
