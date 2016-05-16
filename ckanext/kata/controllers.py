@@ -832,12 +832,11 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         xmlfile = u''
         field_storage = request.params.get('xmlfile')
         if isinstance(field_storage, FieldStorage):
-            bffr = field_storage.file
-            xmlfile = bffr.read()
+            xmlfile = field_storage.file.read()
         url = request.params.get('url', u'')
         xmltype = request.params.get('xml-format', u'')
         log.info('Importing from {src}'.format(
-            src='file: ' + field_storage.filename if field_storage else 'url: ' + url))
+            src='file: ' + field_storage.filename if xmlfile else 'url: ' + url))
         for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
             info = harvester.info()
             if not info or 'name' not in info:
