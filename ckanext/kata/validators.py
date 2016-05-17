@@ -622,4 +622,4 @@ def validate_pid_uniqueness(key, data, errors, context):
     if q_amt > 0:
         for item in q_package_ids:
             if item != exam_package_id:
-                raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=exam_package_id))
+                raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
