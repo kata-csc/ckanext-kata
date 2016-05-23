@@ -2,6 +2,11 @@
 """
 Validators for user inputs.
 """
+
+import json
+import urllib2
+import kata_ldap
+
 import logging
 from itertools import count
 import iso8601
@@ -620,3 +625,69 @@ def validate_pid_uniqueness(key, data, errors, context):
         for item in q_package_ids:
             if item != exam_package_id:
                 raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
+
+
+def validate_data_owner(key, data, errors, context):
+
+    # Validate user has input distributor email
+    if not data.get((u'contact', 0, u'email')):
+        raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
+    contact_email = data.get((u'contact', 0, u'email'))
+
+    # Extract primary data identifier from the data dict
+    data_pid = _find_primary_data_pid(data)
+    if not data_pid:
+        raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
+
+    # Validation is done only when primary data identifier implies the data is in IDA
+    if data_pid.startswith("urn:nbn:fi:csc-ida"):
+        # Get corresponding project numbers for given primary data identifier
+        owner_prjs_from_ida = _get_owner_projects_to_pid(data_pid)
+        log.debug("Owner projects from IDA: {a}".format(a=owner_prjs_from_ida))
+        is_ok = False
+        if len(owner_prjs_from_ida) > 0:
+            # Loop through all (usually only one) project numbers and use LDAP
+            # to validate user has rights
+            for prj_num in owner_prjs_from_ida:
+                log.debug("Project number to check from LDAP: {a}".format(a=prj_num))
+                # Find out project LDAP dn related to project number
+                prj_ldap_dn = kata_ldap.get_csc_project_from_ldap(prj_num)
+                log.debug("Corresponding project LDAP dn: {a}".format(a=prj_ldap_dn))
+                # Validate user belongs to project corresponding the project number
+                if kata_ldap.user_belongs_to_project_in_ldap(contact_email, prj_ldap_dn):
+                    is_ok = True
+                    break
+        if not is_ok:
+            raise Invalid(_('Distributor ({dist}) is not allowed to create new access request form automatically').format(dist=contact_email))
+
+
+
+def _get_owner_projects_to_pid(prim_data_pid):
+    '''
+    Fetches project numbers related to a specific IDA data identifier
+    (Etsin primary data identifier)
+
+    :param prim_data_pid:
+    :return: list of project numbers related to the given prim_data_pid
+    '''
+    res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=prim_data_pid))
+    if res:
+        res_json = json.loads(res.read().decode('utf-8'))
+        if res_json['projects']:
+            return res_json['projects']
+    return []
+
+
+def _find_primary_data_pid(data):
+    '''
+    Find dataset's primary data identifier from data dictionary
+
+    :param data:
+    :return: Primary data identifier as string
+    '''
+    i=0
+    while data.get((u'pids', i, u'id')) and i < 100:
+        if data.get((u'pids', i, u'primary')) == 'True' and data.get((u'pids', i, u'type')) == 'data':
+            return data.get((u'pids', i, 'id'))
+        i=i+1
+    return None
