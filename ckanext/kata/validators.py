@@ -63,7 +63,7 @@ def kata_tag_name_validator(value, context):
     tagname_match = re.compile('[\w \-.()/#+:\?\=\&]*$', re.UNICODE)
     if not tagname_match.match(value):
         raise Invalid(_('Keyword "%s" must be alphanumeric '
-                        'characters or symbols: -_.()/#+:') % (value))
+                        'characters or symbols: -_.()/#+:?=&') % (value))
     return value
 
 
@@ -274,7 +274,7 @@ def validate_discipline(key, data, errors, context):
         for item in val.split(","):
             if not discipline_match.match(item):
                 raise Invalid(_('Discipline "%s" must be alphanumeric '
-                                'characters or symbols: -,/.') % (item))
+                                'characters or symbols: -,:#+?=&/.') % (item))
     else:
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
