@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 3.0.3\n"
+"Project-Id-Version: ckanext-kata 3.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-18 13:50+0000\n"
+"POT-Creation-Date: 2016-05-30 12:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -269,20 +269,20 @@ msgstr ""
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
 
-#: ckanext/kata/helpers.py:352 ckanext/kata/theme/templates/package/read.html:21
+#: ckanext/kata/helpers.py:353 ckanext/kata/theme/templates/package/read.html:21
 #: ckanext/kata/theme/templates/package/related_list.html:13
 msgid "Unpublished"
 msgstr ""
 
-#: ckanext/kata/helpers.py:352
+#: ckanext/kata/helpers.py:353
 msgid "Published"
 msgstr ""
 
-#: ckanext/kata/helpers.py:483
+#: ckanext/kata/helpers.py:494
 msgid "By datasets"
 msgstr ""
 
-#: ckanext/kata/helpers.py:483
+#: ckanext/kata/helpers.py:494
 msgid "Show all"
 msgstr ""
 
@@ -332,7 +332,7 @@ msgstr ""
 
 #: ckanext/kata/validators.py:65
 #, python-format
-msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
+msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:?=&"
 msgstr ""
 
 #: ckanext/kata/validators.py:107
@@ -371,7 +371,7 @@ msgstr ""
 
 #: ckanext/kata/validators.py:276
 #, python-format
-msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,/."
+msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,:#+?=&/."
 msgstr ""
 
 #: ckanext/kata/validators.py:297
@@ -673,7 +673,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/package_rights.html:17
 #: ckanext/kata/theme/templates/package/read.html:36
 #: ckanext/kata/theme/templates/package/related_list.html:26
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:68
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:30
 #: ckanext/kata/theme/templates/related/snippets/related_item.html:23
 msgid "Edit"
@@ -713,7 +713,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/data-model.html:22
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:21
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:28
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:374
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:379
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:25
 msgid "Description"
 msgstr ""
@@ -1520,7 +1520,7 @@ msgid "Agent"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:22
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:371
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:376
 msgid "Event"
 msgstr ""
 
@@ -2370,7 +2370,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/macros/form.html:255
 #: ckanext/kata/theme/templates/macros/kata_form.html:143
 #: ckanext/kata/theme/templates/macros/kata_form.html:158
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:55
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:54
 msgid "Custom"
 msgstr ""
 
@@ -2521,7 +2521,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/organization/member_new.html:38
 #: ckanext/kata/theme/templates/package/package_rights.html:139
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:81
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:80
 msgid "Add"
 msgstr ""
 
@@ -4751,7 +4751,7 @@ msgid "Other"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:197
-msgid "Dataset availability"
+msgid "Data availability"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:200
@@ -4876,38 +4876,45 @@ msgid ""
 "refer to the data using different identifier systems.</p>"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:359
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:350
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:76
+msgid ""
+"Version identifier is just like the data identifier, but it refers to a "
+"certain version of data."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:364
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:4
 msgid "Dataset lifecycle events"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:372
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:377
 msgid "Who"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:373
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:378
 msgid "When"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:391
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:396
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:22
 msgid "Additional information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:396
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:401
 msgid "File format: MIME type"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:402
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:407
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:408
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:413
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid "Checksum"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:412
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:417
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid "Algorithm"
 msgstr ""
@@ -5212,19 +5219,19 @@ msgid ""
 "the dataset."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:51
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:50
 msgid "Additional data identifiers"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:53
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:52
 msgid " identifiers"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:68
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:67
 msgid "Check this to correct errors in an existing PID"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:75
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:74
 msgid ""
 "<p>Metadata identifier is an identifier given for a single metadata record. "
 "Etsin will automatically create a primary metadata identifier for this "
@@ -5239,26 +5246,20 @@ msgid ""
 "DOI, but many others exist.</p>"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:77
-msgid ""
-"Version identifier is just like the data identifier, but it refers to a "
-"certain version of data."
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:133
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:132
 msgid "Generate new version identifier"
 msgstr ""
 
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:133
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:134
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:135
 msgid "Generate a new permanent identifier for the current data version."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:141
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:140
 msgid "Modification date"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:142
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:141
 msgid ""
 "Field is compulsory but an automatically generated date is "
 "provided.<br><br>The modification date tells when the data has last been "

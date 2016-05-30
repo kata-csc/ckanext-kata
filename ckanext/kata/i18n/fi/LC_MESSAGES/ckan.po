@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-04-18 13:50+0000\n"
+"POT-Creation-Date: 2016-05-30 12:52+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -279,21 +279,21 @@ msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
 
-#: ckanext/kata/helpers.py:352
+#: ckanext/kata/helpers.py:353
 #: ckanext/kata/theme/templates/package/read.html:21
 #: ckanext/kata/theme/templates/package/related_list.html:13
 msgid "Unpublished"
 msgstr "Julkaisematon"
 
-#: ckanext/kata/helpers.py:352
+#: ckanext/kata/helpers.py:353
 msgid "Published"
 msgstr "Julkaistu"
 
-#: ckanext/kata/helpers.py:483
+#: ckanext/kata/helpers.py:494
 msgid "By datasets"
 msgstr "Aineistoittain"
 
-#: ckanext/kata/helpers.py:483
+#: ckanext/kata/helpers.py:494
 msgid "Show all"
 msgstr "Näytä kaikki"
 
@@ -342,12 +342,9 @@ msgid "Terms of use"
 msgstr "Käyttöehdot"
 
 #: ckanext/kata/validators.py:65
-#, python-format
-msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:"
+msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:?=&"
 msgstr ""
-"Asiasanan \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: \""
-"\n"
-"\"'_.()/#+."
+"Asiasanan \"%s\" pitää sisältää alfanumeerisia merkkejä tai symboleja: -_.()/#+:?=&"
 
 #: ckanext/kata/validators.py:107
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01/2002-01-01"
@@ -393,11 +390,10 @@ msgstr ""
 " tai 010-234567"
 
 #: ckanext/kata/validators.py:276
-#, python-format
-msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,/."
+msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,:#+?=&/."
 msgstr ""
 "Tieteenalan \"%s\" pitää koostua alfanumeerisita merkeistä (ascii) ja "
-"erikoismerkeistä: -,/."
+"erikoismerkeistä: -,:#+?=&/."
 
 #: ckanext/kata/validators.py:297
 #, python-format
@@ -722,7 +718,7 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/package/package_rights.html:17
 #: ckanext/kata/theme/templates/package/read.html:36
 #: ckanext/kata/theme/templates/package/related_list.html:26
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:69
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:68
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:30
 #: ckanext/kata/theme/templates/related/snippets/related_item.html:23
 msgid "Edit"
@@ -762,7 +758,7 @@ msgstr "minun-ryhmäni"
 #: ckanext/kata/theme/templates/kata/data-model.html:22
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:21
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:28
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:374
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:379
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:25
 msgid "Description"
 msgstr "Kuvaus"
@@ -1654,7 +1650,7 @@ msgid "Agent"
 msgstr "Toimija"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:22
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:371
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:376
 msgid "Event"
 msgstr "Tapahtuma"
 
@@ -2597,7 +2593,7 @@ msgstr "Poista"
 #: ckanext/kata/theme/templates/macros/form.html:255
 #: ckanext/kata/theme/templates/macros/kata_form.html:143
 #: ckanext/kata/theme/templates/macros/kata_form.html:158
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:55
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:54
 msgid "Custom"
 msgstr "Mukautettu"
 
@@ -2757,7 +2753,7 @@ msgstr "Tallenna"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:38
 #: ckanext/kata/theme/templates/package/package_rights.html:139
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:81
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:80
 msgid "Add"
 msgstr "Lisää"
 
@@ -5005,7 +5001,7 @@ msgid "Other"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:197
-msgid "Dataset availability"
+msgid "Data availability"
 msgstr "Aineiston saatavuus"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:200
@@ -5117,11 +5113,10 @@ msgid ""
 "metadata record using different identifier systems.</p>"
 msgstr ""
 "<p>Metadatan tunniste on tunniste, joka on annettu yksittäiselle "
-"metadatatietueelle. Ensisijainen metadatan tunniste on "
-"metadatan tunniste joka viittaa tähän aineistoon. Muitakin "
-"metadatojen tunnisteita voi olla lisättynä aineistoon, jos "
-"aineiston luoja on esimerkiksi halunnut viitata metadatatietueeseen "
-"eri järjestelmien antamilla tunnisteilla.</p>"
+"metadatatietueelle. Ensisijainen metadatan tunniste on metadatan tunniste"
+" joka viittaa tähän aineistoon. Muitakin metadatojen tunnisteita voi olla"
+" lisättynä aineistoon, jos aineiston luoja on esimerkiksi halunnut "
+"viitata metadatatietueeseen eri järjestelmien antamilla tunnisteilla.</p>"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:338
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:27
@@ -5135,44 +5130,52 @@ msgid ""
 "identifier - may exist in the dataset if for example the dataset's editor"
 " has wanted to refer to the data using different identifier systems.</p>"
 msgstr ""
-"<p>Datan tunniste on tunniste, johon tämä metadatatietue viittaa. Aineistolla "
-"voi olla useita datan tunnisteita ensisijaisen datan tunnisteen lisäksi, jos "
-"esimerkiksi aineiston luoja on halunnut viitata dataan eri järjestelmien "
-"antamilla tunnisteilla.</p>"
+"<p>Datan tunniste on tunniste, johon tämä metadatatietue viittaa. "
+"Aineistolla voi olla useita datan tunnisteita ensisijaisen datan "
+"tunnisteen lisäksi, jos esimerkiksi aineiston luoja on halunnut viitata "
+"dataan eri järjestelmien antamilla tunnisteilla.</p>"
 
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:350
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:76
+msgid ""
+"Version identifier is just like the data identifier, but it refers to a "
+"certain version of data."
+msgstr ""
+"Versiotunniste on kuten datan tunniste, mutta se viittaa tiettyyn "
+"versioon datasta."
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:359
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:364
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:4
 msgid "Dataset lifecycle events"
 msgstr "Aineston elinkaaren tapahtumat"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:372
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:377
 msgid "Who"
 msgstr "Kuka"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:373
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:378
 msgid "When"
 msgstr "Milloin"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:391
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:396
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:22
 msgid "Additional information"
 msgstr "Lisätietoa"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:396
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:401
 msgid "File format: MIME type"
 msgstr "Tiedoston muoto: MIME-tyyppi"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:402
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:407
 msgid "File format"
 msgstr "Tiedoston muoto"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:408
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:413
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid "Checksum"
 msgstr "Tarkistussumma"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:412
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:417
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid "Algorithm"
 msgstr "Algoritmi"
@@ -5538,19 +5541,19 @@ msgstr ""
 "Huomaa, että ensisijaista datan tunnistetta EI voi muokata aineiston "
 "tallennuksen jälkeen."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:51
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:50
 msgid "Additional data identifiers"
 msgstr "Datan muut tunnisteet"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:53
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:52
 msgid " identifiers"
 msgstr "tunnisteet"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:68
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:67
 msgid "Check this to correct errors in an existing PID"
 msgstr "Valitse ruutu korjataksesi virheen tunnisteessa"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:75
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:74
 msgid ""
 "<p>Metadata identifier is an identifier given for a single metadata "
 "record. Etsin will automatically create a primary metadata identifier for"
@@ -5577,28 +5580,20 @@ msgstr ""
 "ISBN-numerot. Esimerkkejä tunnistejärjestelmistä ovat URN, Handle ja DOI,"
 " monien muiden lisäksi.</p>"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:77
-msgid ""
-"Version identifier is just like the data identifier, but it refers to a "
-"certain version of data."
-msgstr ""
-"Versiotunniste on kuten datan tunniste, mutta se viittaa tiettyyn "
-"versioon datasta."
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:133
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:132
 msgid "Generate new version identifier"
 msgstr "Luo uusi versiotunniste"
 
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:133
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:134
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:135
 msgid "Generate a new permanent identifier for the current data version."
 msgstr "Luo uusi pysyvä tunniste datan nykyiselle versiolle."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:141
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:140
 msgid "Modification date"
 msgstr "Muokkauspvm"
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:142
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:141
 msgid ""
 "Field is compulsory but an automatically generated date is "
 "provided.<br><br>The modification date tells when the data has last been "
