@@ -60,7 +60,7 @@ def kata_tag_name_validator(value, context):
     Checks an individual tag for unaccepted characters
     '''
 
-    tagname_match = re.compile('[\w \-.()/#+:]*$', re.UNICODE)
+    tagname_match = re.compile('[\w \-.()/#+:\?\=\&]*$', re.UNICODE)
     if not tagname_match.match(value):
         raise Invalid(_('Keyword "%s" must be alphanumeric '
                         'characters or symbols: -_.()/#+:') % (value))
@@ -269,7 +269,7 @@ def validate_discipline(key, data, errors, context):
     val = data.get(key)
     # Regexp is specifically for okm-tieteenala, at:
     # http://onki.fi/fi/browser/overview/okm-tieteenala
-    discipline_match = re.compile('(http://)?[\w \-,\.\/]*$', re.UNICODE)
+    discipline_match = re.compile('[\w \-,:#+.?=&/]*$', re.UNICODE)
     if val:
         for item in val.split(","):
             if not discipline_match.match(item):
