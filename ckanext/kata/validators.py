@@ -65,7 +65,7 @@ def kata_tag_name_validator(value, context):
     Checks an individual tag for unaccepted characters
     '''
 
-    tagname_match = re.compile('[\w \-.()/#+:\?\=\&]*$', re.UNICODE)
+    tagname_match = re.compile('[\w \-.()/#+:]*$', re.UNICODE)
     if not tagname_match.match(value):
         raise Invalid(_('Keyword "%s" must be alphanumeric '
                         'characters or symbols: -_.()/#+:') % (value))
@@ -274,7 +274,7 @@ def validate_discipline(key, data, errors, context):
     val = data.get(key)
     # Regexp is specifically for okm-tieteenala, at:
     # http://onki.fi/fi/browser/overview/okm-tieteenala
-    discipline_match = re.compile('[\w \-,:#+.?=&/]*$', re.UNICODE)
+    discipline_match = re.compile('(http://)?[\w \-,\.\/]*$', re.UNICODE)
     if val:
         for item in val.split(","):
             if not discipline_match.match(item):
@@ -628,13 +628,12 @@ def validate_pid_uniqueness(key, data, errors, context):
 
 
 def validate_data_owner(key, data, errors, context):
-    # Validate (authenticated) user has email address
-    if context.get('auth_user_obj') and context.get('auth_user_obj').email:
-        contact_email = context.get('auth_user_obj').email
-    else:
-        raise Invalid(_('Your profile must include email address to create new access request form automatically'))
 
-    log.debug("CONTACT EMAIL: {a}".format(a=contact_email))
+    # Validate user has input distributor email
+    if not data.get((u'contact', 0, u'email')):
+        raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
+    contact_email = data.get((u'contact', 0, u'email'))
+
     # Extract primary data identifier from the data dict
     data_pid = _find_primary_data_pid(data)
     if not data_pid:
