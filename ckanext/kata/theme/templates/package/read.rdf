@@ -125,6 +125,7 @@
       </dct:publisher>
     </py:for>
 
+    # This is because these kind of agents are possible to add from API
     <py:for each="agent in c.pkg_dict.get('agent', None)">
       <dct:publisher py:if="agent.get('role', None)=='distributor'">
         <foaf:Agent>

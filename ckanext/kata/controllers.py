@@ -835,8 +835,9 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
             xmlfile = field_storage.file.read()
         url = request.params.get('url', u'')
         xmltype = request.params.get('xml-format', u'')
-        log.info('Importing from {src}'.format(
-            src='file: ' + field_storage.filename if xmlfile else 'url: ' + url))
+        log.info('Importing from {src}, declared XML format: {fmt}'.format(
+            src='file: ' + field_storage.filename if xmlfile else 'url: ' + url,
+            fmt=xmltype))
         for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
             info = harvester.info()
             if not info or 'name' not in info:
