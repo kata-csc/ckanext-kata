@@ -833,8 +833,12 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         field_storage = request.params.get('xmlfile')
         if isinstance(field_storage, FieldStorage):
             xmlfile = field_storage.file.read()
-        url = request.params.get('url', u'')
-        xmltype = request.params.get('xml-format', u'')
+        url = request.params.get('url') or \
+              ("{protocol}://{http_host}{context_path}".format(
+                        protocol=request.environ['wsgi.url_scheme'],
+                        http_host=request.environ['HTTP_HOST'],
+                        context_path=request.params.get('cn', u'')) if request.params.get('cn') else u'')
+        xmltype = 'rdf' if request.params.get('cn') else request.params.get('xml-format', u'')
         log.info('Importing from {src}'.format(
             src='file: ' + field_storage.filename if xmlfile else 'url: ' + url))
         for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
@@ -849,6 +853,8 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
                         pkg_dict = harvester.parse_xml(xmlfile, context)
                     elif url:
                         pkg_dict = harvester.fetch_xml(url, context)
+                        import pprint
+                        pprint.pprint(pkg_dict)
                     else:
                         h.flash_error(_('Give upload URL or file.'))
                         return h.redirect_to(controller='package', action='new')
@@ -873,6 +879,27 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         '''
         if request.params.get('upload'):
             return self._upload_xml(errors, error_summary)
+        elif request.params.get('cn'):
+            context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author}
+            try:
+                t.check_access('package_create', context)
+            except t.NotAuthorized:
+                t.abort(401, _('Unauthorized to upload metadata'))
+
+            for harvester in plugins.PluginImplementations(h_interfaces.IHarvester):
+                info = harvester.info()
+                if not info or 'name' not in info:
+                    log.error('Harvester %r does not provide the harvester name in the info response' % str(harvester))
+                    continue
+                if info['name'] == 'rdf':
+                    rdf = self.read(request.params.get('cn'), 'rdf')
+                    import pprint
+                    pprint.pprint(rdf)
+                    rdf_parsed = harvester.parse_xml(rdf, context)
+                    pprint.pprint(rdf_parsed)
+                    return super(KataPackageController, self).new(rdf_parsed, errors, error_summary)
+            return h.redirect_to(controller='package', action='new') # on error
         else:
             return super(KataPackageController, self).new(data, errors, error_summary)
 
