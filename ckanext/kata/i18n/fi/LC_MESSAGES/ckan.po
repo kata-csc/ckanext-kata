@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-05-23 12:06+0000\n"
+"POT-Creation-Date: 2016-06-03 09:55+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -496,26 +496,37 @@ msgstr ""
 msgid "Identifier {pid} exists in another dataset {id}"
 msgstr "Tunniste {pid} on jo käytössä toisessa aineistossa {id}"
 
-#: ckanext/kata/validators.py:632
-msgid ""
-"Distributor email address must be provided to create new access request "
-"form automatically"
-msgstr "Jakelijan sähköpostiosoite vaaditaan uuden "
-"lupahakemuslomakkeen automaattista luontia varten"
+#: ckanext/kata/validators.py:633
+msgid "You must be logged in to create new access request form automatically"
+msgstr ""
+"Sinun täytyy olla kirjautuneena lupahakemuslomakkeen automaattista luontia "
+"varten."
 
-#: ckanext/kata/validators.py:637
+#: ckanext/kata/validators.py:638
 msgid ""
 "Primary data identifier must be provided to create new access request "
 "form automatically"
-msgstr "Ensisijainen datan tunniste vaaditaan uuden "
-"lupahakemuslomakkeen automaattista luontia varten"
+msgstr ""
+"Ensisijainen datan tunniste vaaditaan uuden \"\n"
+"\"lupahakemuslomakkeen automaattista luontia varten"
 
-#: ckanext/kata/validators.py:652
+#: ckanext/kata/validators.py:647
 msgid ""
-"Distributor ({dist}) is not allowed to create new access request form "
-"automatically"
-msgstr "Jakelijalla ({dist}) ei ole oikeuksia luoda uutta "
-"lupahakemuslomaketta automaattisesti"
+"Distributor email address must be provided to create new access request "
+"form automatically"
+msgstr ""
+"Jakelijan sähköpostiosoite vaaditaan uuden \"\n"
+"\"lupahakemuslomakkeen automaattista luontia varten"
+
+#: ckanext/kata/validators.py:651
+msgid ""
+"Neither you or the distributor ({dist}) is allowed to create new access "
+"request form automatically. Please check the validity of distributor "
+"email address."
+msgstr ""
+"Sinulla tai jakelijalla ({dist}) ei ole oikeuksia luoda uutta "
+"lupahakemuslomaketta automaattisesti. Tarkasta jakelijan "
+"sähköpostiosoitteen oikeellisuus."
 
 #: ckanext/kata/theme/templates/footer.html:15
 msgid ""

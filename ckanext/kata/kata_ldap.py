@@ -84,21 +84,26 @@ def get_csc_project_from_ldap(project_id):
     return None
 
 
-def user_belongs_to_project_in_ldap(user_email, project_dn):
+def user_belongs_to_project_in_ldap(ldap_value, project_dn, use_eppn):
     '''
     Tries to resolve whether a user with specific email belongs
-    to a specifi project entity in LDAP
+    to a specific project entity in LDAP
 
     :param project_id: CSCPrjNum LDAP entity attribute value
+    :param use_eppn: if True, use eppn as ldap attribute, otherwise
+     use mail as ldap attribute
     :return: True if user belongs to project, or False if not
     '''
-    if user_email and project_dn:
+    if ldap_value and project_dn:
         try:
             ld = ldap.initialize(SERVER)
             try:
                 ld.simple_bind_s(DN, PASSWD)
                 attrs = ['dn']
-                filtr = '(&(memberof=' + project_dn + ')(mail=' + user_email + '))'
+                if use_eppn:
+                    filtr = '(&(memberof=' + project_dn + ')(eduPersonPrincipalName=' + ldap_value + '))'
+                else:
+                    filtr = '(&(memberof=' + project_dn + ')(mail=' + ldap_value + '))'
                 res = ld.search_s(BASEDN, ldap.SCOPE_SUBTREE, filtr, attrs)
                 try:
                     if len(res) != 1:

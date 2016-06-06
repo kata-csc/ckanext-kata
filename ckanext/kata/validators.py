@@ -628,38 +628,96 @@ def validate_pid_uniqueness(key, data, errors, context):
 
 
 def validate_data_owner(key, data, errors, context):
+    '''
+    Validate whether either the logged in user or the person owning the distributor
+    email address has permission to create new access request form automatically
 
-    # Validate user has input distributor email
-    if not data.get((u'contact', 0, u'email')):
-        raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
-    contact_email = data.get((u'contact', 0, u'email'))
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+    # Assert user is logged in
+    if not context.get('auth_user_obj'):
+        raise Invalid(_('You must be logged in to create new access request form automatically'))
 
-    # Extract primary data identifier from the data dict
+    # Extract primary data identifier from the data dict and assert its existence
     data_pid = _find_primary_data_pid(data)
     if not data_pid:
         raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
 
-    # Validation is done only when primary data identifier implies the data is in IDA
-    if data_pid.startswith("urn:nbn:fi:csc-ida"):
-        # Get corresponding project numbers for given primary data identifier
-        owner_prjs_from_ida = _get_owner_projects_to_pid(data_pid)
-        log.debug("Owner projects from IDA: {a}".format(a=owner_prjs_from_ida))
-        is_ok = False
-        if len(owner_prjs_from_ida) > 0:
-            # Loop through all (usually only one) project numbers and use LDAP
-            # to validate user has rights
-            for prj_num in owner_prjs_from_ida:
-                log.debug("Project number to check from LDAP: {a}".format(a=prj_num))
-                # Find out project LDAP dn related to project number
-                prj_ldap_dn = kata_ldap.get_csc_project_from_ldap(prj_num)
-                log.debug("Corresponding project LDAP dn: {a}".format(a=prj_ldap_dn))
-                # Validate user belongs to project corresponding the project number
-                if kata_ldap.user_belongs_to_project_in_ldap(contact_email, prj_ldap_dn):
-                    is_ok = True
-                    break
-        if not is_ok:
-            raise Invalid(_('Distributor ({dist}) is not allowed to create new access request form automatically').format(dist=contact_email))
+    # Get user EPPN
+    if context.get('auth_user_obj').openid:
+        eppn = context.get('auth_user_obj').openid
 
+    is_ok = _validate_data_owner_by_eppn(eppn, data_pid)
+    if not is_ok:
+        # Validate user has input distributor email
+        if not data.get((u'contact', 0, u'email')):
+            raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
+        contact_email = data.get((u'contact', 0, u'email'))
+        is_ok = _validate_data_owner_by_email(contact_email, data_pid)
+        if not is_ok:
+            raise Invalid(_('Neither you or the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
+
+
+def _validate_data_owner_by_email(contact_email, data_pid):
+    '''
+    Validation using distributor email address
+
+    :param contact_email: distributor email address
+    :param data_pid: pid for the IDA project
+    :return:  boolean whether person having distributor email belongs to the IDA project
+    '''
+    #log.debug("Email to be validated: {a}".format(a=contact_email))
+    prj_ldap_dn = _get_project_ldap_dn(data_pid)
+    if prj_ldap_dn:
+        # Validate user belongs to project corresponding the project number
+        return kata_ldap.user_belongs_to_project_in_ldap(contact_email, prj_ldap_dn, False)
+    return False
+
+
+def _validate_data_owner_by_eppn(eppn, data_pid):
+    '''
+    Validation using user eppn (openid field in db)
+
+    :param eppn: opendb field in database
+    :param data_pid: pid for the IDA project
+    :return: boolean whether eppn belongs to the IDA project
+    '''
+    #log.debug("Eppn to be validated: {a}".format(a=eppn))
+    prj_ldap_dn = _get_project_ldap_dn(data_pid)
+    if prj_ldap_dn:
+        # Validate user belongs to project corresponding the project number
+        return kata_ldap.user_belongs_to_project_in_ldap(eppn, prj_ldap_dn, True)
+    return False
+
+
+def _get_project_ldap_dn(data_pid):
+    '''
+    Get LDAP dn for the given IDA data pid
+
+    :param data_pid: pid for the IDA project
+    :return: dn (as string)
+    '''
+    if data_pid:
+        # Validation is done only when primary data identifier implies the data is in IDA
+        if data_pid.startswith("urn:nbn:fi:csc-ida"):
+            # Get corresponding project numbers for given primary data identifier
+            owner_prjs_from_ida = _get_owner_projects_to_pid(data_pid)
+            log.debug("Owner projects from IDA: {a}".format(a=owner_prjs_from_ida))
+
+            if len(owner_prjs_from_ida) > 0:
+                # Loop through all (usually only one) project numbers and use LDAP
+                # to validate user has rights
+                for prj_num in owner_prjs_from_ida:
+                    log.debug("Project number to check from LDAP: {a}".format(a=prj_num))
+                    # Find out project LDAP dn related to project number
+                    prj_ldap_dn = kata_ldap.get_csc_project_from_ldap(prj_num)
+                    log.debug("Corresponding project LDAP dn: {a}".format(a=prj_ldap_dn))
+                    return prj_ldap_dn
+    return None
 
 
 def _get_owner_projects_to_pid(prim_data_pid):

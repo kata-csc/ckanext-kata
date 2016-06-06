@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-05-23 12:06+0000\n"
+"POT-Creation-Date: 2016-06-03 09:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -455,22 +455,27 @@ msgstr ""
 msgid "Identifier {pid} exists in another dataset {id}"
 msgstr ""
 
-#: ckanext/kata/validators.py:632
-msgid ""
-"Distributor email address must be provided to create new access request form "
-"automatically"
+#: ckanext/kata/validators.py:633
+msgid "You must be logged in to create new access request form automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:637
+#: ckanext/kata/validators.py:638
 msgid ""
 "Primary data identifier must be provided to create new access request form "
 "automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:652
+#: ckanext/kata/validators.py:647
 msgid ""
-"Distributor ({dist}) is not allowed to create new access request form "
+"Distributor email address must be provided to create new access request form "
 "automatically"
+msgstr ""
+
+#: ckanext/kata/validators.py:651
+msgid ""
+"Neither you or the distributor ({dist}) is allowed to create new access "
+"request form automatically. Please check the validity of distributor email "
+"address."
 msgstr ""
 
 #: ckanext/kata/theme/templates/footer.html:15
