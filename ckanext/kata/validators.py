@@ -638,28 +638,31 @@ def validate_data_owner(key, data, errors, context):
     :param context:
     :return:
     '''
-    # Assert user is logged in
-    if not context.get('auth_user_obj'):
-        raise Invalid(_('You must be logged in to create new access request form automatically'))
 
-    # Extract primary data identifier from the data dict and assert its existence
-    data_pid = _find_primary_data_pid(data)
-    if not data_pid:
-        raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
+    if data[key] == u'True':
+        # Assert user is logged in
+        if not context.get('auth_user_obj'):
+            raise Invalid(_('You must be logged in to create new access request form automatically'))
 
-    # Get user EPPN
-    if context.get('auth_user_obj').openid:
-        eppn = context.get('auth_user_obj').openid
+        # Extract primary data identifier from the data dict and assert its existence
+        data_pid = _find_primary_data_pid(data)
+        if not data_pid:
+            raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
 
-    is_ok = _validate_data_owner_by_eppn(eppn, data_pid)
-    if not is_ok:
-        # Validate user has input distributor email
-        if not data.get((u'contact', 0, u'email')):
-            raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
-        contact_email = data.get((u'contact', 0, u'email'))
-        is_ok = _validate_data_owner_by_email(contact_email, data_pid)
+        # Get user EPPN
+        eppn = ''
+        if context.get('auth_user_obj').openid:
+            eppn = context.get('auth_user_obj').openid
+
+        is_ok = _validate_data_owner_by_eppn(eppn, data_pid)
         if not is_ok:
-            raise Invalid(_('Neither you or the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
+            # Validate user has input distributor email
+            if not data.get((u'contact', 0, u'email')):
+                raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
+            contact_email = data.get((u'contact', 0, u'email'))
+            is_ok = _validate_data_owner_by_email(contact_email, data_pid)
+            if not is_ok:
+                raise Invalid(_('Neither you or the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
 
 
 def _validate_data_owner_by_email(contact_email, data_pid):
