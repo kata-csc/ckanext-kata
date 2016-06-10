@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-06-03 09:55+0000\n"
+"POT-Creation-Date: 2016-06-10 14:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -455,25 +455,32 @@ msgstr ""
 msgid "Identifier {pid} exists in another dataset {id}"
 msgstr ""
 
-#: ckanext/kata/validators.py:633
+#: ckanext/kata/validators.py:649
 msgid "You must be logged in to create new access request form automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:638
+#: ckanext/kata/validators.py:654
 msgid ""
 "Primary data identifier must be provided to create new access request form "
 "automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:647
+#: ckanext/kata/validators.py:669 ckanext/kata/validators.py:679
+msgid ""
+"There was an internal problem in validating permissions for creating new "
+"access request form automatically. Please contact Etsin administration for "
+"more information."
+msgstr ""
+
+#: ckanext/kata/validators.py:674
 msgid ""
 "Distributor email address must be provided to create new access request form "
 "automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:651
+#: ckanext/kata/validators.py:681
 msgid ""
-"Neither you or the distributor ({dist}) is allowed to create new access "
+"Neither you nor the distributor ({dist}) is allowed to create new access "
 "request form automatically. Please check the validity of distributor email "
 "address."
 msgstr ""

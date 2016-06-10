@@ -630,7 +630,8 @@ def validate_pid_uniqueness(key, data, errors, context):
 def validate_data_owner(key, data, errors, context):
     '''
     Validate whether either the logged in user or the person owning the distributor
-    email address has permission to create new access request form automatically
+    email address has permission to create new access request form automatically for
+    IDA identifier
 
     :param key:
     :param data:
@@ -639,30 +640,46 @@ def validate_data_owner(key, data, errors, context):
     :return:
     '''
 
-    if data[key] == u'True':
-        # Assert user is logged in
-        if not context.get('auth_user_obj'):
-            raise Invalid(_('You must be logged in to create new access request form automatically'))
+    # Assert create new access request form automatically checkbox is checked
+    if data[key] == u'False':
+        return
 
-        # Extract primary data identifier from the data dict and assert its existence
-        data_pid = _find_primary_data_pid(data)
-        if not data_pid:
-            raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
+    # Assert user is logged in
+    if not context.get('auth_user_obj'):
+        raise Invalid(_('You must be logged in to create new access request form automatically'))
 
-        # Get user EPPN
-        eppn = ''
-        if context.get('auth_user_obj').openid:
-            eppn = context.get('auth_user_obj').openid
+    # Extract primary data identifier from the data dict and assert its existence
+    data_pid = _find_primary_data_pid(data)
+    if not data_pid:
+        raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
 
+    # If primary data identifier is not IDA pid, validation is not needed
+    if not data_pid.startswith('urn:nbn:fi:csc-ida'):
+        return
+
+    # Get user EPPN
+    eppn = ''
+    if context.get('auth_user_obj').openid:
+        eppn = context.get('auth_user_obj').openid
+
+    is_ok = False
+    try:
         is_ok = _validate_data_owner_by_eppn(eppn, data_pid)
-        if not is_ok:
-            # Validate user has input distributor email
-            if not data.get((u'contact', 0, u'email')):
-                raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
-            contact_email = data.get((u'contact', 0, u'email'))
+    except Exception:
+        raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
+
+    if not is_ok:
+        # Validate user has input distributor email
+        if not data.get((u'contact', 0, u'email')):
+            raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
+        contact_email = data.get((u'contact', 0, u'email'))
+        try:
             is_ok = _validate_data_owner_by_email(contact_email, data_pid)
-            if not is_ok:
-                raise Invalid(_('Neither you or the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
+        except Exception:
+            raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
+        if not is_ok:
+            raise Invalid(_('Neither you nor the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
+
 
 
 def _validate_data_owner_by_email(contact_email, data_pid):
@@ -689,7 +706,7 @@ def _validate_data_owner_by_eppn(eppn, data_pid):
     :param data_pid: pid for the IDA project
     :return: boolean whether eppn belongs to the IDA project
     '''
-    #log.debug("Eppn to be validated: {a}".format(a=eppn))
+
     prj_ldap_dn = _get_project_ldap_dn(data_pid)
     if prj_ldap_dn:
         # Validate user belongs to project corresponding the project number
@@ -731,11 +748,16 @@ def _get_owner_projects_to_pid(prim_data_pid):
     :param prim_data_pid:
     :return: list of project numbers related to the given prim_data_pid
     '''
-    res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=prim_data_pid))
-    if res:
-        res_json = json.loads(res.read().decode('utf-8'))
-        if res_json['projects']:
-            return res_json['projects']
+    try:
+        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=prim_data_pid))
+        if res:
+            res_json = json.loads(res.read().decode('utf-8'))
+            if res_json['projects']:
+                return res_json['projects']
+    except Exception:
+        log.warn("Fetching project number from researchida6 failed")
+        raise
+
     return []
 
 

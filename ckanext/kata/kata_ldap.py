@@ -69,16 +69,18 @@ def get_csc_project_from_ldap(project_id):
                     else:
                         return res[0][0]
                 except Exception as e:
-                    log.info('Faulty LDAP result %s' % e)
-                    return None
+                    log.warn('Faulty LDAP result %s' % e)
+                    raise
             except ldap.INVALID_CREDENTIALS:
-                log.info('Invalid credentials in LDAP call')
+                log.warn('Invalid credentials in LDAP call')
+                raise
             except ldap.LDAPError, e:
                 if type(e.message) == dict:
                     for (key, value) in e.message.iteritems():
-                        print('%s: %s' % (key, value))
+                        log.warn('{key}: {value}'.format(key=key, value=value))
                 else:
-                    log.info(e.message)
+                    log.warn(e.message)
+                raise
         finally:
             ld.unbind()
     return None
@@ -105,22 +107,19 @@ def user_belongs_to_project_in_ldap(ldap_value, project_dn, use_eppn):
                 else:
                     filtr = '(&(memberof=' + project_dn + ')(mail=' + ldap_value + '))'
                 res = ld.search_s(BASEDN, ldap.SCOPE_SUBTREE, filtr, attrs)
-                try:
-                    if len(res) != 1:
-                        return False
-                    else:
-                        return True  # Is this correct expression, i.e. is len(res) != 1 if user is not found
-                except Exception as e:
-                    log.info('Faulty LDAP result %s' % e)
-                    return False
+                if len(res) > 0:
+                    return True
+                return False
             except ldap.INVALID_CREDENTIALS:
-                log.info('Invalid credentials in LDAP call')
+                log.warn('Invalid credentials in LDAP call')
+                raise
             except ldap.LDAPError, e:
                 if type(e.message) == dict:
                     for (key, value) in e.message.iteritems():
-                        print('%s: %s' % (key, value))
+                        log.warn('{key}: {value}'.format(key=key, value=value))
                 else:
-                    log.info(e.message)
+                    log.warn(e.message)
+                raise
         finally:
             ld.unbind()
     return False
