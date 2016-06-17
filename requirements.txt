@@ -1,5 +1,5 @@
 SPARQLWrapper>=1.7.6
-rdflib>=4.2.0
+rdflib>=4.2.1
 iso8601>=0.1.5
 pyClamd>=0.3.10
 lxml>=3.1.2
