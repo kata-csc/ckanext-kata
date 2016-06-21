@@ -92,6 +92,7 @@
       <dct:creator py:if="agent.get('role', None)=='author'">
         <foaf:Agent>
           <foaf:name py:if="agent.get('name', None)">${ agent.get('name', None) }</foaf:name>
+          <foaf:account py:if="agent.get('id', None)">${ agent.get('id', None) }</foaf:account>
           <org:memberOf>
             <foaf:organization>
               <foaf:name>${ agent.get('organisation', None) }</foaf:name>
@@ -105,6 +106,7 @@
       <dct:contributor py:if="agent.get('role', None)=='contributor'">
         <foaf:Agent>
           <foaf:name py:if="agent.get('name', None)">${ agent.get('name', None) }</foaf:name>
+          <foaf:account py:if="agent.get('id', None)">${ agent.get('id', None) }</foaf:account>
           <org:memberOf>
             <foaf:organization>
               <foaf:name>${ agent.get('organisation', None) }</foaf:name>
