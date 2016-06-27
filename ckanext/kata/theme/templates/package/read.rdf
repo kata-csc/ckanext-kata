@@ -159,6 +159,7 @@
 
     <dcat:distribution>
       <dcat:Distribution>
+        <dct:title>${c.pkg_dict.get('availability')}</dct:title>
         <dcat:accessURL py:if="c.pkg_dict.get('availability') in ['access_application', 'access_request', 'through_provider']" rdf:resource="${ h.get_download_url(c.pkg_dict) }" />
         <dcat:downloadURL py:if="c.pkg_dict.get('availability') == 'direct_download'" rdf:resource="${ h.get_download_url(c.pkg_dict) }" />
         <spdx:checksum py:if="c.pkg_dict.get('checksum') and c.pkg_dict.get('algorithm')">
