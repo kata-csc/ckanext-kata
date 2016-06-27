@@ -86,12 +86,20 @@
           {% if loop.index0 > 0 %}
             <br><br>
           {% endif %}
-          {{ agent.name }}
+          {% if agent.name %}
+            {{ agent.name }}
+          {% endif %}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            {% if agent.name %}
+              <br>
+            {% endif %}
+            {{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            {% if agent.name or agent.organisation %}
+              <br>
+            {% endif %}
+            {{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
