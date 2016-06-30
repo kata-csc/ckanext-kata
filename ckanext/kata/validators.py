@@ -641,7 +641,7 @@ def validate_data_owner(key, data, errors, context):
     '''
 
     # Assert create new access request form automatically checkbox is checked
-    if data[key] == u'False':
+    if data[key] == u'False' or data[key] == u'':
         return
 
     # Assert user is logged in
