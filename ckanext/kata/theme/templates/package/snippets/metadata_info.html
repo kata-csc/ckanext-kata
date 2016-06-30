@@ -320,20 +320,26 @@
       <table class="form-inner-table">
       <!--
         <tr>
-          <th>{{ _('Permanent address for dataset') }}</th>
+          <th></th>
           <td><a href="{{ permanent_url }}">{{ permanent_url }}</a></td>
-        </tr>
+        </tr>-->
         {%- if urn_url -%}
         <tr>
-          <th>{{ _('Uniform Resource Name') }}</th>
+          <th>{{ _('Permanent address for dataset') }}</th>
           <td><a href="{{ urn_url }}">{{ urn_url }}</a></td>
         </tr>
-        {%- endif -%} -->
+        {%- endif -%}
         <tr>
           <th>{{ _('Primary metadata identifier') }}</th>
-          <td>{{ h.get_identifier_display_html(pkg_dict.id) | safe }}</td>
+          {% set primary_metadata_id = h.get_pids_by_type('metadata', pkg_dict, primary=True) %} 
+          {% if primary_metadata_id %} 
+            <td>{{ h.get_identifier_display_html(primary_metadata_id[0]['id']) | safe }}</td> 
+          {% else %} 
+            <td>{{ h.get_identifier_display_html(pkg_dict.id) | safe }}</td> 
+          {% endif %}
           <td>{{ kata_form.tooltip(tooltip=_("<p>Metadata identifier is an identifier given for a single metadata record. The primary metadata identifier is the metadata identifier which refers to this dataset. Additional metadata identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to this metadata record using different identifier systems.</p>")) }}</td>
         </tr>
+
         <tr>
           <th>{{ _('Primary data identifier') }}</th>
           <td>{{ h.get_identifier_display_html(h.get_pids_by_type('data', pkg_dict, primary=True)[0]['id']) | safe }}

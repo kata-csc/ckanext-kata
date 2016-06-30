@@ -1,22 +1,22 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
-{% set pids = h.get_pids_by_type('data', data, primary=True) %}
+{% set pids = h.get_pids_by_type('metadata', data, primary=True) %}
 {% if not pids %}
-  {% do pids.append(dict(type='data', primary='True')) %}
+  {% do pids.append(dict(type='metadata', primary='True')) %}
 {% endif %}
 {% for pid_type in h.get_pid_types() %}
   {% do pids.extend( h.get_pids_by_type(pid_type, data, primary=False)) %}
 {% endfor %}
 {% if pids | length == 1 %}
-  {% do pids.append(dict(type='data')) %}
+  {% do pids.append(dict(type='metadata')) %}
 {% endif %}
 
 {% set index = h.create_loop_index() %}
 {% set pid_types = h.get_pid_types() %}
 
-{% set primary_pids = h.get_pids_by_type('data', data, primary=True) %}
-{% set primary_pid = primary_pids[0] or dict(type='data', primary='True') %}
+{% set primary_pids = h.get_pids_by_type('metadata', data, primary=True) %}
+{% set primary_pid = primary_pids[0] or dict(type='metadata', primary='True') %}
 
 <div class="tab-content-inner">
 
@@ -24,15 +24,14 @@
 
   {% set primary_pid_readonly = " readonly" if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index]%}
   {% call kata_form.input(
-    'pids__' ~ index ~ '__id', label=_('Primary data identifier') + '*',
+    'pids__' ~ index ~ '__id', label=_('Primary metadata identifier') + '*',
      id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
      value=primary_pid.id,
      label_classes=['kata-input-comp'], control_classes=['kata-medium'],
      attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, primary_pid_readonly:''})%}
 
     <div class="form-double-instructions-container">
-      {{ kata_form.tooltip(tooltip=_('<p>Data identifier is an identifier of the data this metadata record refers to. The primary data identifier is compulsory but it will be generated automatically if the field is left empty. Additional data identifiers can also be given, if for example you want to refer to the data using different identifier systems.</p><p>If your data is available by data access application form, for example REMS, the primary data identifier will be sent to this service and it must be recognised by the storage service.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
-      {{ kata_form.warning_tooltip(tooltip=_('Please note that the primary data identifier can NOT be edited after saving the dataset.')) }}
+      {{ kata_form.tooltip(tooltip=_('<p>Metadata identifier is an identifier given for a single metadata record. Etsin will automatically create a primary metadata identifier for this dataset. The primary metadata identifier is the metadata identifier which refers to this dataset. It will be the variable "id" of the dataset and you will see this if you work with the Etsin API. You can also add additional metadata identifiers for example if you want to refer to this metadata using different identifier systems.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
     </div>
 
     <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
@@ -46,12 +45,12 @@
   {% do index.increase() %}
 
   {% for pid_type in pid_types %}
-    {% if pid_type == 'data' %}
-      {% set additional_data_identifier_label = _('Additional data identifiers') %}
+    {% if pid_type == 'metadata' %}
+      {% set additional_identifier_label = _('Additional metadata identifiers') %}
     {% else %}
-      {% set additional_data_identifier_label = _(pid_type | capitalize) + _(' identifiers') %}
+      {% set additional_identifier_label = _(pid_type | capitalize) + _(' identifiers') %}
     {% endif %}
-    <label class="form-label kata-input-comp" for="pids__{{ index }}__id" style="float: left;font-weight: 700;width: 30%;text-align: right;">{{ additional_data_identifier_label or _('Custom') }}</label>
+    <label class="form-label kata-input-comp" for="pids__{{ index }}__id" style="float: left;font-weight: 700;width: 30%;text-align: right;">{{ additional_identifier_label or _('Custom') }}</label>
 
     <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="custom-fields-container">
       {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
@@ -69,9 +68,9 @@
               {% endif %}
 
               {% if loop.first %}
-                {% if pid_type != 'data' %}
-                  {% if pid_type == 'metadata' %}
-                    {{ kata_form.tooltip(tooltip=_('<p>Metadata identifier is an identifier given for a single metadata record. Etsin will automatically create a primary metadata identifier for this dataset. The primary metadata identifier is the metadata identifier which refers to this dataset. It will be the variable "id" of the dataset and you will see this if you work with the Etsin API. You can also add additional metadata identifiers for example if you want to refer to this metadata using different identifier systems.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
+                {% if pid_type != 'metadata' %}
+                  {% if pid_type == 'data' %}
+                    {{ kata_form.tooltip(tooltip=_('<p>Data identifier is an identifier of the data this metadata record refers to. The primary data identifier is compulsory but it will be generated automatically if the field is left empty. Additional data identifiers can also be given, if for example you want to refer to the data using different identifier systems.</p><p>If your data is available by data access application form, for example REMS, the primary data identifier will be sent to this service and it must be recognised by the storage service.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
                   {% elif pid_type == 'version' %}
                    {{ kata_form.tooltip(tooltip=_('Version identifier is just like the data identifier, but it refers to a certain version of data.')) }}
                   {% endif %}
@@ -89,7 +88,7 @@
 
           {# NOT USED BECAUSE LABEL OF THE FIRST PID CANNOT BE SET AS IT IS BEING SET IN KATA_FORM.INPUT - OTHERWISE LABEL GETS COPIED TO CUSTOM FIELDS
           {% call kata_form.input(
-            'pids__' ~ index ~ '__id', label=additional_data_identifier_label,
+            'pids__' ~ index ~ '__id', label=additional_identifier_label,
              id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
              value=pid.id,
              label_classes=['kata-input-comp'], control_classes=['kata-medium'],

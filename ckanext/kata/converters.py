@@ -508,7 +508,7 @@ def default_name_from_id(key, data, errors, context):
 
 def check_primary_pids(key, data, errors, context):
     '''
-    Check that primary pids exist, if not, get them from package.id and package.name
+    Check that primary pid exist, if not, get it from package.id
 
     :param key: key
     :param data: data
@@ -516,10 +516,10 @@ def check_primary_pids(key, data, errors, context):
     :param context: context
     '''
 
-    data_pids = utils.get_pids_by_type('data', {'pids': data.get(('pids',))}, primary=True)
+    metadata_pids = utils.get_pids_by_type('metadata', {'pids': data.get(('pids',))}, primary=True)
 
-    if not data_pids:
-        data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})
+    if not metadata_pids:
+        data[('pids',)].append({'primary': u'True', 'type': 'metadata', 'id': data[('id',)]})
 
 
 def to_licence_id(key, data, errors, context):

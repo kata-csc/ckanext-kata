@@ -485,7 +485,7 @@ u"service."))
                     sender_name=sender_name,
                     sender_email=sender_addr,
                     package_title=package_title,
-                    data_pid=utils.get_primary_data_pid_from_package(package)
+                    metadata_pid=utils.get_primary_data_pid_from_package(package)
                 )
 
                 log.info(u"Message {m} sent from {a} ({b}) to {r} about {c}, IP: {d}"

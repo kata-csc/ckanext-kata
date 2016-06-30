@@ -403,13 +403,17 @@ def is_url(data):
 
 
 def get_urn_fi_address(package):
-    if package.get('id', '').startswith('http://') or package.get('id', '').startswith('https://'):
+    package_id = package.get('id', '')
+    if package_id.startswith('http://') or package_id.startswith('https://'):
         return package.get('id')
-    pid = get_pids_by_type('data', package, primary=True)[0].get('id', None)
-    if is_urn(pid):
+    elif is_urn(package_id):
         template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
-        return template % {'pid': pid}
+        return template % {'pid': package.get('id')}
     return ''
+    #pid = get_pids_by_type('data', package, primary=True)[0].get('id', None)
+    #if is_urn(pid):
+    #    template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
+    #    return template % {'pid': pid}
 
 def get_dummy_title():
     return json.dumps({

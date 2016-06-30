@@ -288,7 +288,7 @@ def get_primary_pid(pid_type, data_dict, use_package_id=False):
 
 def get_primary_data_pid_from_package(package):
     '''
-    Returns the primary data PID for a _package_.
+    Returns the primary metadata PID for a _package_.
 
     :param package: dataset to query
     :type package: model.Package
@@ -303,7 +303,7 @@ def get_primary_data_pid_from_package(package):
     for key, value in pids:
         if 'primary' in key and value == u'True':  # Note string type!
             idx = key.split('_')[1]
-            if package.extras[pid_type.format(idx=idx)] == 'data':
+            if package.extras[pid_type.format(idx=idx)] == 'metadata':
                 primary_pid = package.extras[pid_id.format(idx=idx)]
 
     return primary_pid
