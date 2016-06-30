@@ -133,12 +133,12 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                          'provider': u'kata',
                          'id': u'urn:nbn:fi:csc-kata20140728095757755621',
                          'type': u'data',
-                         'primary': u'True',
                      },
                      {
                          'provider': u'kata',
                          'id': u'kata_metadata_PID',
                          'type': u'metadata',
+                         'primary': u'True',
                      },
                      {
                          'provider': u'kata',
