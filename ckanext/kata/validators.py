@@ -663,8 +663,11 @@ def validate_ida_data_auth_policy(key, data, errors, context):
     prj_ldap_dn = None
     try:
         # Get LDAP dn for the given IDA data pid
-        # Get corresponding project numbers for given IDA data identifier
-        owner_prjs_from_ida = _get_ida_pid_related_project_numbers(data_pid)
+        # Fetch IDA project numbers related to the IDA data identifier
+        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=data_pid))
+        res_json = json.loads(res.read().decode('utf-8')) if res else {}
+        owner_prjs_from_ida = res_json['projects'] or []
+
         if len(owner_prjs_from_ida) > 0:
             # Loop through all (usually only one) project numbers and use LDAP
             # to validate user has rights
@@ -697,7 +700,7 @@ def validate_ida_data_auth_policy(key, data, errors, context):
 
 def _get_ida_pid_related_project_numbers(ida_data_identifier):
     '''
-    Fetch IDA project numbers related to a specific IDA data identifier
+    # Fetch IDA project numbers related to a specific IDA data identifier
 
     :param ida_data_identifier:
     :return: list of project numbers related to the given prim_data_pid
