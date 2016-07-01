@@ -53,7 +53,7 @@ def get_csc_project_from_ldap(project_id):
     Tries to find project entity from LDAP using project_id
 
     :param project_id: CSCPrjNum LDAP entity attribute value
-    :return: dn of the found project, or None if not found
+    :return: distinguished name of the found project, or None if not found
     '''
     if project_id:
         try:
@@ -88,10 +88,10 @@ def get_csc_project_from_ldap(project_id):
 
 def user_belongs_to_project_in_ldap(ldap_value, project_dn, use_eppn):
     '''
-    Tries to resolve whether a user with specific email belongs
+    Tries to resolve whether a user with specific email or eppn belongs
     to a specific project entity in LDAP
 
-    :param project_id: CSCPrjNum LDAP entity attribute value
+    :param project_dn: Project LDAP distinguished name
     :param use_eppn: if True, use eppn as ldap attribute, otherwise
      use mail as ldap attribute
     :return: True if user belongs to project, or False if not

@@ -4,28 +4,26 @@ Validators for user inputs.
 """
 
 import json
-import urllib2
-import kata_ldap
-
 import logging
-from itertools import count
-import iso8601
 import re
+import urllib2
 import urlparse
+from itertools import count
 
-from pylons.i18n import _
-from paste.deploy.converters import asbool
-from sqlalchemy import or_
+import iso8601
 
 import ckan.lib.helpers as h
-from ckan.lib.navl.validators import not_empty
-from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
-from ckan.logic.validators import tag_length_validator, url_validator
-from ckanext.kata import utils, settings
-import ckan.lib.navl.dictization_functions as df
-import ckan.authz as authz
 import ckan.logic as logic
 import ckan.model as model
+from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
+from ckan.lib.navl.validators import not_empty
+from ckan.logic.validators import tag_length_validator, url_validator
+from ckanext.kata import utils, settings
+from paste.deploy.converters import asbool
+from pylons.i18n import _
+from sqlalchemy import or_
+
+import kata_ldap
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -627,8 +625,12 @@ def validate_pid_uniqueness(key, data, errors, context):
                 raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
 
 
-def validate_data_owner(key, data, errors, context):
+def validate_ida_data_auth_policy(key, data, errors, context):
     '''
+    This validator is IDA-specific and due to IDA requirements. The validator is
+    related to giving authorization for creating access request form automatically
+    to IDA data.
+
     Validate whether either the logged in user or the person owning the distributor
     email address has permission to create new access request form automatically for
     IDA identifier
@@ -644,27 +646,36 @@ def validate_data_owner(key, data, errors, context):
     if data[key] == u'False' or data[key] == u'':
         return
 
-    # Assert user is logged in
-    if not context.get('auth_user_obj'):
-        raise Invalid(_('You must be logged in to create new access request form automatically'))
-
     # Extract primary data identifier from the data dict and assert its existence
-    data_pid = _find_primary_data_pid(data)
-    if not data_pid:
+    data_pids = utils.get_pids_by_type('data', data, True)
+    if not data_pids:
         raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
+    data_pid = data_pids[0]['id']
 
     # If primary data identifier is not IDA pid, validation is not needed
     if not data_pid.startswith('urn:nbn:fi:csc-ida'):
         return
 
     # Get user EPPN
-    eppn = ''
-    if context.get('auth_user_obj').openid:
-        eppn = context.get('auth_user_obj').openid
+    eppn = context.get('auth_user_obj').openid or ''
 
     is_ok = False
+    prj_ldap_dn = None
     try:
-        is_ok = _validate_data_owner_by_eppn(eppn, data_pid)
+        # Get LDAP dn for the given IDA data pid
+        # Get corresponding project numbers for given IDA data identifier
+        owner_prjs_from_ida = _get_ida_pid_related_project_numbers(data_pid)
+        if len(owner_prjs_from_ida) > 0:
+            # Loop through all (usually only one) project numbers and use LDAP
+            # to validate user has rights
+            for prj_num in owner_prjs_from_ida:
+                # Find out project LDAP dn related to project number
+                prj_ldap_dn = kata_ldap.get_csc_project_from_ldap(prj_num)
+
+        # Validation using user eppn (openid field in db)
+        if prj_ldap_dn:
+            # Validate user belongs to project corresponding the project number
+            is_ok = kata_ldap.user_belongs_to_project_in_ldap(eppn, prj_ldap_dn, True)
     except Exception:
         raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
 
@@ -674,82 +685,25 @@ def validate_data_owner(key, data, errors, context):
             raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
         contact_email = data.get((u'contact', 0, u'email'))
         try:
-            is_ok = _validate_data_owner_by_email(contact_email, data_pid)
+            # Validation using distributor email address
+            if prj_ldap_dn:
+                # Validate user belongs to project corresponding the project number
+                is_ok = kata_ldap.user_belongs_to_project_in_ldap(contact_email, prj_ldap_dn, False)
         except Exception:
             raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
         if not is_ok:
             raise Invalid(_('Neither you nor the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
 
 
-
-def _validate_data_owner_by_email(contact_email, data_pid):
+def _get_ida_pid_related_project_numbers(ida_data_identifier):
     '''
-    Validation using distributor email address
+    Fetch IDA project numbers related to a specific IDA data identifier
 
-    :param contact_email: distributor email address
-    :param data_pid: pid for the IDA project
-    :return:  boolean whether person having distributor email belongs to the IDA project
-    '''
-    #log.debug("Email to be validated: {a}".format(a=contact_email))
-    prj_ldap_dn = _get_project_ldap_dn(data_pid)
-    if prj_ldap_dn:
-        # Validate user belongs to project corresponding the project number
-        return kata_ldap.user_belongs_to_project_in_ldap(contact_email, prj_ldap_dn, False)
-    return False
-
-
-def _validate_data_owner_by_eppn(eppn, data_pid):
-    '''
-    Validation using user eppn (openid field in db)
-
-    :param eppn: opendb field in database
-    :param data_pid: pid for the IDA project
-    :return: boolean whether eppn belongs to the IDA project
-    '''
-
-    prj_ldap_dn = _get_project_ldap_dn(data_pid)
-    if prj_ldap_dn:
-        # Validate user belongs to project corresponding the project number
-        return kata_ldap.user_belongs_to_project_in_ldap(eppn, prj_ldap_dn, True)
-    return False
-
-
-def _get_project_ldap_dn(data_pid):
-    '''
-    Get LDAP dn for the given IDA data pid
-
-    :param data_pid: pid for the IDA project
-    :return: dn (as string)
-    '''
-    if data_pid:
-        # Validation is done only when primary data identifier implies the data is in IDA
-        if data_pid.startswith("urn:nbn:fi:csc-ida"):
-            # Get corresponding project numbers for given primary data identifier
-            owner_prjs_from_ida = _get_owner_projects_to_pid(data_pid)
-            log.debug("Owner projects from IDA: {a}".format(a=owner_prjs_from_ida))
-
-            if len(owner_prjs_from_ida) > 0:
-                # Loop through all (usually only one) project numbers and use LDAP
-                # to validate user has rights
-                for prj_num in owner_prjs_from_ida:
-                    log.debug("Project number to check from LDAP: {a}".format(a=prj_num))
-                    # Find out project LDAP dn related to project number
-                    prj_ldap_dn = kata_ldap.get_csc_project_from_ldap(prj_num)
-                    log.debug("Corresponding project LDAP dn: {a}".format(a=prj_ldap_dn))
-                    return prj_ldap_dn
-    return None
-
-
-def _get_owner_projects_to_pid(prim_data_pid):
-    '''
-    Fetches project numbers related to a specific IDA data identifier
-    (Etsin primary data identifier)
-
-    :param prim_data_pid:
+    :param ida_data_identifier:
     :return: list of project numbers related to the given prim_data_pid
     '''
     try:
-        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=prim_data_pid))
+        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=ida_data_identifier))
         if res:
             res_json = json.loads(res.read().decode('utf-8'))
             if res_json['projects']:
@@ -759,18 +713,3 @@ def _get_owner_projects_to_pid(prim_data_pid):
         raise
 
     return []
-
-
-def _find_primary_data_pid(data):
-    '''
-    Find dataset's primary data identifier from data dictionary
-
-    :param data:
-    :return: Primary data identifier as string
-    '''
-    i=0
-    while data.get((u'pids', i, u'id')) and i < 100:
-        if data.get((u'pids', i, u'primary')) == 'True' and data.get((u'pids', i, u'type')) == 'data':
-            return data.get((u'pids', i, 'id'))
-        i=i+1
-    return None
