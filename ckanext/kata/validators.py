@@ -11,6 +11,9 @@ import urlparse
 from itertools import count
 
 import iso8601
+from paste.deploy.converters import asbool
+from pylons.i18n import _
+from sqlalchemy import or_
 
 import ckan.lib.helpers as h
 import ckan.logic as logic
@@ -19,10 +22,6 @@ from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
 from ckan.lib.navl.validators import not_empty
 from ckan.logic.validators import tag_length_validator, url_validator
 from ckanext.kata import utils, settings
-from paste.deploy.converters import asbool
-from pylons.i18n import _
-from sqlalchemy import or_
-
 import kata_ldap
 
 log = logging.getLogger('ckanext.kata.validators')
