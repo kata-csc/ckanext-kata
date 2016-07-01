@@ -696,23 +696,3 @@ def validate_ida_data_auth_policy(key, data, errors, context):
             raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
         if not is_ok:
             raise Invalid(_('Neither you nor the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
-
-
-def _get_ida_pid_related_project_numbers(ida_data_identifier):
-    '''
-    # Fetch IDA project numbers related to a specific IDA data identifier
-
-    :param ida_data_identifier:
-    :return: list of project numbers related to the given prim_data_pid
-    '''
-    try:
-        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=ida_data_identifier))
-        if res:
-            res_json = json.loads(res.read().decode('utf-8'))
-            if res_json['projects']:
-                return res_json['projects']
-    except Exception:
-        log.warn("Fetching project number from researchida6 failed")
-        raise
-
-    return []
