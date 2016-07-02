@@ -646,10 +646,9 @@ def validate_ida_data_auth_policy(key, data, errors, context):
         return
 
     # Extract primary data identifier from the data dict and assert its existence
-    data_pids = utils.get_pids_by_type('data', data, True)
-    if not data_pids:
+    data_pid = utils.get_primary_pid_from_validator_data_object(data, 'data')
+    if not data_pid:
         raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
-    data_pid = data_pids[0]['id']
 
     # If primary data identifier is not IDA pid, validation is not needed
     if not data_pid.startswith('urn:nbn:fi:csc-ida'):

@@ -501,8 +501,8 @@ msgid ""
 "Primary data identifier must be provided to create new access request "
 "form automatically"
 msgstr ""
-"Ensisijainen datan tunniste vaaditaan uuden \"\n"
-"\"lupahakemuslomakkeen automaattista luontia varten"
+"Ensisijainen datan tunniste vaaditaan uuden "
+"lupahakemuslomakkeen automaattista luontia varten"
 
 #: ckanext/kata/validators.py:680 ckanext/kata/validators.py:693
 msgid ""
@@ -519,8 +519,8 @@ msgid ""
 "Distributor email address must be provided to create new access request "
 "form automatically"
 msgstr ""
-"Jakelijan sähköpostiosoite vaaditaan uuden \"\n"
-"\"lupahakemuslomakkeen automaattista luontia varten"
+"Jakelijan sähköpostiosoite vaaditaan uuden "
+"lupahakemuslomakkeen automaattista luontia varten"
 
 #: ckanext/kata/validators.py:695
 msgid ""
