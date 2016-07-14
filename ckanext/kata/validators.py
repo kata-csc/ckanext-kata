@@ -655,7 +655,8 @@ def validate_ida_data_auth_policy(key, data, errors, context):
         return
 
     # Get user EPPN
-    eppn = context.get('auth_user_obj').openid or ''
+    auo = context.get('auth_user_obj')
+    eppn = auo.openid if auo else ''
 
     is_ok = False
     prj_ldap_dn = None
