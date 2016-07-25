@@ -2,25 +2,27 @@
 """
 Validators for user inputs.
 """
-import logging
-from itertools import count
-import iso8601
-import re
-import urlparse
 
-from pylons.i18n import _
+import json
+import logging
+import re
+import urllib2
+import urlparse
+from itertools import count
+
+import iso8601
 from paste.deploy.converters import asbool
+from pylons.i18n import _
 from sqlalchemy import or_
 
 import ckan.lib.helpers as h
-from ckan.lib.navl.validators import not_empty
-from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
-from ckan.logic.validators import tag_length_validator, url_validator
-from ckanext.kata import utils, settings
-import ckan.lib.navl.dictization_functions as df
-import ckan.authz as authz
 import ckan.logic as logic
 import ckan.model as model
+from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
+from ckan.lib.navl.validators import not_empty
+from ckan.logic.validators import tag_length_validator, url_validator
+from ckanext.kata import utils, settings
+import kata_ldap
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -620,3 +622,76 @@ def validate_pid_uniqueness(key, data, errors, context):
         for item in q_package_ids:
             if item != exam_package_id:
                 raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
+
+
+def validate_ida_data_auth_policy(key, data, errors, context):
+    '''
+    This validator is IDA-specific and due to IDA requirements. The validator is
+    related to giving authorization for creating access request form automatically
+    to IDA data.
+
+    Validate whether either the logged in user or the person owning the distributor
+    email address has permission to create new access request form automatically for
+    IDA identifier
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    # Assert create new access request form automatically checkbox is checked
+    if data[key] == u'False' or data[key] == u'':
+        return
+
+    # Extract primary data identifier from the data dict and assert its existence
+    data_pid = utils.get_primary_pid_from_validator_data_object(data, 'data')
+    if not data_pid:
+        raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
+
+    # If primary data identifier is not IDA pid, validation is not needed
+    if not data_pid.startswith('urn:nbn:fi:csc-ida'):
+        return
+
+    # Get user EPPN
+    auo = context.get('auth_user_obj')
+    eppn = auo.openid if auo else ''
+
+    is_ok = False
+    prj_ldap_dn = None
+    try:
+        # Get LDAP dn for the given IDA data pid
+        # Fetch IDA project numbers related to the IDA data identifier
+        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=data_pid))
+        res_json = json.loads(res.read().decode('utf-8')) if res else {}
+        owner_prjs_from_ida = res_json['projects'] or []
+
+        if len(owner_prjs_from_ida) > 0:
+            # Loop through all (usually only one) project numbers and use LDAP
+            # to validate user has rights
+            for prj_num in owner_prjs_from_ida:
+                # Find out project LDAP dn related to project number
+                prj_ldap_dn = kata_ldap.get_csc_project_from_ldap(prj_num)
+
+        # Validation using user eppn (openid field in db)
+        if prj_ldap_dn:
+            # Validate user belongs to project corresponding the project number
+            is_ok = kata_ldap.user_belongs_to_project_in_ldap(eppn, prj_ldap_dn, True)
+    except Exception:
+        raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
+
+    if not is_ok:
+        # Validate user has input distributor email
+        if not data.get((u'contact', 0, u'email')):
+            raise Invalid(_('Distributor email address must be provided to create new access request form automatically'))
+        contact_email = data.get((u'contact', 0, u'email'))
+        try:
+            # Validation using distributor email address
+            if prj_ldap_dn:
+                # Validate user belongs to project corresponding the project number
+                is_ok = kata_ldap.user_belongs_to_project_in_ldap(contact_email, prj_ldap_dn, False)
+        except Exception:
+            raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
+        if not is_ok:
+            raise Invalid(_('Neither you nor the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))

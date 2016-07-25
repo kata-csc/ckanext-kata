@@ -265,6 +265,22 @@ def get_pids_by_type(pid_type, data_dict, primary=None, use_package_id=False):
     return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
             (primary is None or asbool(x.get('primary', 'False')) == primary)] + extra
 
+
+def get_primary_pid_from_validator_data_object(data, type):
+    '''
+    Find dataset's primary identifier from validator data dictionary
+
+    :param data: data object that validator functions get as parameter
+    :param type: Type of primary identifier that is looked for
+    :return: Primary identifier as string
+    '''
+    i=0
+    while data.get((u'pids', i, u'id')):
+        if data.get((u'pids', i, u'primary')) == 'True' and data.get((u'pids', i, u'type')) == type:
+            return data.get((u'pids', i, 'id'))
+        i=i+1
+    return None
+
 def get_primary_pid(pid_type, data_dict, use_package_id=False):
     '''
     Returns the primary PID of the given type for a package.

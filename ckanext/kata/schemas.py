@@ -136,7 +136,7 @@ class Schemas:
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]
         schema['access_application_new_form'] = [co.checkbox_to_boolean, co.convert_to_extras_kata,
-                                                 co.remove_access_application_new_form]
+                                                 co.remove_access_application_new_form, va.validate_ida_data_auth_policy]
         schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,
                                             unicode, va.validate_general, co.convert_to_extras_kata]
         schema['access_request_URL'] = [ignore_missing, va.check_access_request_url, url_validator,
