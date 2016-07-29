@@ -250,20 +250,29 @@ class TestUtils(TestCase):
         pids = utils.get_pids_by_type('data', data_dict)
         assert len(pids) == 2
         pids = utils.get_pids_by_type('data', data_dict, primary=True)
-        assert len(pids) == 1
-        pids = utils.get_pids_by_type('data', data_dict, primary=True, use_package_id=True)
-        assert len(pids) == 1
+        assert len(pids) == 0
         pids = utils.get_pids_by_type('data', data_dict, primary=False)
-        assert len(pids) == 1
+        assert len(pids) == 2
+        pids = utils.get_pids_by_type('data', data_dict, use_package_id=True)
+        assert len(pids) == 2
+        pids = utils.get_pids_by_type('data', data_dict, primary=True, use_package_id=True)
+        assert len(pids) == 0
+        pids = utils.get_pids_by_type('data', data_dict, primary=False, use_package_id=True)
+        assert len(pids) == 2
 
         pids = utils.get_pids_by_type('metadata', data_dict)
         assert len(pids) == 1
         pids = utils.get_pids_by_type('metadata', data_dict, primary=True)
-        assert len(pids) == 0
-        pids = utils.get_pids_by_type('metadata', data_dict, primary=True, use_package_id=True)
         assert len(pids) == 1
+        pids = utils.get_pids_by_type('metadata', data_dict, primary=False)
+        assert len(pids) == 0
         pids = utils.get_pids_by_type('metadata', data_dict, use_package_id=True)
         assert len(pids) == 2
+        pids = utils.get_pids_by_type('metadata', data_dict, primary=True, use_package_id=True)
+        assert len(pids) == 2
+        pids = utils.get_pids_by_type('metadata', data_dict, primary=False, use_package_id=True)
+        assert len(pids) == 1
+
 
         pids = utils.get_pids_by_type('version', data_dict)
         assert len(pids) == 1

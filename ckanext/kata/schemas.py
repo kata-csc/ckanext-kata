@@ -129,7 +129,7 @@ class Schemas:
         schema['version'] = [not_empty, unicode, va.validate_kata_date]
         schema['availability'] = [not_missing, co.convert_to_extras_kata]
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
-        schema['__extras'] = [va.check_agent, va.check_contact, va.check_pids, va.check_langtitle]
+        schema['__extras'] = [va.check_agent, va.check_contact, va.check_langtitle]
         schema['__junk'] = [va.check_junk]
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]

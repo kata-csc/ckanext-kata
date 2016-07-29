@@ -19,7 +19,7 @@ from ckanext.kata.validators import validate_kata_date, validate_kata_interval_d
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
-    validate_title_duplicates, validate_title, check_direct_download_url, check_pids, \
+    validate_title_duplicates, validate_title, check_direct_download_url, \
     validate_license_url, validate_pid_uniqueness
 from ckan.logic import get_action
 import ckan.model as model
@@ -31,7 +31,7 @@ class TestValidators(TestCase):
 
     @classmethod
     def setup_class(cls):
-        """Set up tests."""
+        pass
 
     def test_validate_kata_interval_date_valid(self):
         errors = defaultdict(list)
@@ -431,21 +431,21 @@ class TestValidators(TestCase):
         dada[('langtitle', 0, 'value')] = u''
         self.assertRaises(Invalid, validate_title, ('langtitle', 0, 'lang'), dada, errors, None)
 
-    def test_check_pids(self):
-        errors = defaultdict(list)
-        dada = copy.deepcopy(TEST_DATA_FLATTENED)
-
-        check_pids(None, dada, errors, None)
-        assert len(errors) == 0
-
-        dada[('pids', 0, 'primary')] = u'False'
-        dada[('pids', 1, 'primary')] = u'True'
-        self.assertRaises(Invalid, check_pids, None, dada, errors, None)
-
-        dada[('pids', 2, 'primary')] = u'True'
-
-        check_pids(None, dada, errors, None)
-        assert len(errors) == 0
+    # def test_check_pids(self):
+    #     errors = defaultdict(list)
+    #     unflattened_dada = copy.deepcopy(TEST_DATADICT)
+    #     unflattened_dada['owner_org'] = 'test-organization'
+    #     dada = flatten_dict(unflattened_dada)
+    #
+    #     check_pids(None, dada, errors, None)
+    #     assert len(errors) == 0
+    #
+    #     package = get_action('package_create')({'user': 'test_sysadmin'}, unflattened_dada)
+    #     dada[('id',)] = package.get('id')
+    #     dada[('pids', 2, 'id')] = u'something_else'
+    #     import pprint
+    #     pprint.pprint(dada)
+    #     self.assertRaises(Invalid, check_pids, None, dada, errors, None)
 
     def test_license_url(self):
         errors = defaultdict(list)

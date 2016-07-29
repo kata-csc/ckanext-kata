@@ -22,7 +22,12 @@
 
   {# NOTE: Parameter "error" passed to kata_form.input macro needs to be corrected in all cases since it is same as in package_actors.html #}
 
-  {% set primary_pid_readonly = " readonly" if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index]%}
+  {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
+  {% if pid_errors and pid_errors is iterable %}
+    <span class="separate-error error-block error-block-margin">{{ pid_errors|join('. ') }}</span>
+  {% endif %}
+
+  {% set primary_pid_readonly = " readonly" if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index] and not errors.get('primary_pid_missing', []) %}
   {% call kata_form.input(
     'pids__' ~ index ~ '__id', label=_('Primary metadata identifier') + '*',
      id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
@@ -35,7 +40,7 @@
     </div>
 
     <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
-    <input type="hidden" name="pids__{{ index }}__type" value="data" />
+    <input type="hidden" name="pids__{{ index }}__type" value="metadata" />
 
     {% if errors.pids and errors.pids[index.index] %}
       <span class="error-block kata-pid-field-error separate-error error-block-margin">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
@@ -119,11 +124,6 @@
       {% endfor %}
     </div>
   {% endfor %}
-
-  {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
-  {% if pid_errors and pid_errors is iterable %}
-    <span class="separate-error error-block error-block-margin">{{ pid_errors|join('. ') }}</span>
-  {% endif %}
 
   <input type="hidden" value="{{ index }}" id="pid-index" />
 

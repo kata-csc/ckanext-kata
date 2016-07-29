@@ -404,11 +404,12 @@ def is_url(data):
 
 def get_urn_fi_address(package):
     package_id = package.get('id', '')
+    primary_pid = get_pids_by_type('metadata', package, primary=True)[0].get('id', None)
     if package_id.startswith('http://') or package_id.startswith('https://'):
         return package.get('id')
-    elif is_urn(package_id):
+    elif is_urn(package_id) or is_urn(primary_pid):
         template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
-        return template % {'pid': package.get('id')}
+        return template % {'pid': package_id if package_id else primary_pid}
     return ''
     #pid = get_pids_by_type('data', package, primary=True)[0].get('id', None)
     #if is_urn(pid):
@@ -956,10 +957,10 @@ def get_tab_errors(errors, tab):
         return ''
 
     tabs = {'1': ['langtitle', 'langnotes', 'language', 'tag_string'],
-            '2': ['__extras', 'agent', 'contact', 'owner_org'],
+            '2': ['agent', 'contact', 'owner_org'],
             '3': ['license', 'license_URL', 'availability', 'direct_download_URL', 'access_application_URL', 'through_provider_URL', 'access_request_URL', 'url'],
             '4': ['geographic_coverage', 'temporal_coverage_begin', 'temporal_coverage_end', 'event', 'mimetype', 'format', 'hash', 'algorithm'],
-            '5': ['pids', 'version'],
+            '5': ['pids', 'version', '__extras'],
             'resources': ['url', 'mimetype', 'format', 'hash', 'algorithm']}
 
     for key in errors.keys():

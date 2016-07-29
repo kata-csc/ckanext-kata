@@ -509,6 +509,7 @@ def default_name_from_id(key, data, errors, context):
 def check_primary_pids(key, data, errors, context):
     '''
     Check that primary pid exist, if not, get it from package.id
+    and add to data dict
 
     :param key: key
     :param data: data

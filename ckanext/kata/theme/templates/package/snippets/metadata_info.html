@@ -325,12 +325,12 @@
         </tr>-->
         {%- if urn_url -%}
         <tr>
-          <th>{{ _('Permanent address for dataset') }}</th>
+          <th>{{ _('Permanent address for this page') }}</th>
           <td><a href="{{ urn_url }}">{{ urn_url }}</a></td>
         </tr>
         {%- endif -%}
         <tr>
-          <th>{{ _('Primary metadata identifier') }}</th>
+          <th>{{ _('Primary dataset identifier') }}</th>
           {% set primary_metadata_id = h.get_pids_by_type('metadata', pkg_dict, primary=True) %} 
           {% if primary_metadata_id %} 
             <td>{{ h.get_identifier_display_html(primary_metadata_id[0]['id']) | safe }}</td> 
@@ -340,17 +340,25 @@
           <td>{{ kata_form.tooltip(tooltip=_("<p>Metadata identifier is an identifier given for a single metadata record. The primary metadata identifier is the metadata identifier which refers to this dataset. Additional metadata identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to this metadata record using different identifier systems.</p>")) }}</td>
         </tr>
 
-        <tr>
-          <th>{{ _('Primary data identifier') }}</th>
-          <td>{{ h.get_identifier_display_html(h.get_pids_by_type('data', pkg_dict, primary=True)[0]['id']) | safe }}
-          <td>{{ kata_form.tooltip(tooltip=_("<p>Data identifier is an identifier of the data this metadata record refers to. Several data identifiers - in addition to the primary data identifier - may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</td>
-        </tr>
         {% set first_version_pid = true %}
+        {% set first_data_pid = true %}
         {% for pid_type in h.get_pid_types() %}
           {% for pid in h.get_pids_by_type(pid_type, pkg_dict, primary=False) %}
             <tr>
-              <th>{{ _(pid.get('type', '').capitalize() + ' identifier') | safe }}</th>
+              {% if pid_type == 'metadata' %}
+                <th>{{ _('Secondary dataset identifier') | safe }}</th>
+              {% endif %}
+              {% if pid_type == 'data' %}
+                <th>{{ _('Data identifier') | safe }}</th>
+              {% endif %}
+              {% if pid_type == 'version' %}
+                <th>{{ _('Dataset version identifier') | safe }}</th>
+              {% endif %}
               <td>{{ h.get_identifier_display_html(pid.id) | safe }}</td>
+              {% if pid_type == 'data' and first_data_pid %}
+                {% set first_data_pid = false %}
+                <td>{{ kata_form.tooltip(tooltip=_("<p>Data identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</td>
+              {% endif %}
               {% if pid_type == 'version' and first_version_pid %}
                 {% set first_version_pid = false %}
                 <td>{{ kata_form.tooltip(tooltip=_("Version identifier is just like the data identifier, but it refers to a certain version of data.")) }}</td>
