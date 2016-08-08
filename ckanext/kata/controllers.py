@@ -606,6 +606,13 @@ class KataUserController(UserController):
         lang = session.pop('lang', None)
         session.save()
         came_from = request.params.get('came_from', '')
+        if came_from and not came_from.isspace():
+            came_from = came_from\
+                        .replace('\n', ' ')\
+                        .replace('\r', '')
+        if '<CR>' in came_from or '<LF>' in came_from:
+            came_from = ''
+
 
         # we need to set the language explicitly here or the flash
         # messages will not be translated.
