@@ -54,7 +54,7 @@ class TestHelpers(TestCase):
     def test_get_funder(self):
         assert helpers.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
 
-    def test_get_urn_fi_address(self):
+    def test_get_dataset_permanent_address(self):
         package = copy.deepcopy(TEST_DATADICT)
         self.assertTrue(helpers.get_urn_fi_address(package).startswith('http://urn.fi/urn:nbn:fi:csc-kata'))
 

@@ -93,7 +93,7 @@ class Schemas:
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_interval_date],
                            'descr': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric]}
-        schema['id'] = [default(u''), co.update_pid, unicode]
+        schema['id'] = [not_empty]
 
         # Langtitle fields are used by the UI, to construct a 'title' field with translations in JSON format
         # This is not necessarily needed for the API calls
@@ -325,8 +325,8 @@ class Schemas:
         """
         schema = cls._create_package_schema()
         # Taken from ckan.logic.schema.default_update_package_schema():
-        schema['id'] = [ignore_missing, package_id_not_changed]
-        schema['name'] = [ignore_missing, va.package_name_not_changed]
+        schema['id'] = [not_empty, package_id_not_changed]
+        schema['name'] = [not_empty, va.package_name_not_changed]
         schema['owner_org'] = [ignore_missing, va.kata_owner_org_validator, unicode]
         return schema
 
@@ -339,7 +339,7 @@ class Schemas:
         '''
         schema = cls.create_package_schema_oai_dc_ida()
 
-        schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['id'] = [not_empty, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
 
         return schema
@@ -355,7 +355,7 @@ class Schemas:
         '''
         schema = cls.create_package_schema_oai_dc()
 
-        schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['id'] = [not_empty, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
 
         return schema
@@ -381,7 +381,6 @@ class Schemas:
         for key in settings.KATA_FIELDS:
             schema[key] = [co.convert_from_extras_kata, ignore_missing, unicode]
 
-        schema['__after'] = [co.check_primary_pids]
         schema['agent'] = [co.flattened_from_extras, ignore_missing]
         schema['contact'] = [co.flattened_from_extras, ignore_missing]
         schema['access_application_new_form'] = [unicode],

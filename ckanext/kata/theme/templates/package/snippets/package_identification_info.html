@@ -27,13 +27,12 @@
     <span class="separate-error error-block error-block-margin">{{ pid_errors|join('. ') }}</span>
   {% endif %}
 
-  {% set primary_pid_readonly = " readonly" if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index] and not errors.get('primary_pid_missing', []) %}
   {% call kata_form.input(
     'pids__' ~ index ~ '__id', label=_('Primary metadata identifier') + '*',
      id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
      value=primary_pid.id,
      label_classes=['kata-input-comp'], control_classes=['kata-medium'],
-     attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, primary_pid_readonly:''})%}
+     attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index})%}
 
     <div class="form-double-instructions-container">
       {{ kata_form.tooltip(tooltip=_('<p>Metadata identifier is an identifier given for a single metadata record. Etsin will automatically create a primary metadata identifier for this dataset. The primary metadata identifier is the metadata identifier which refers to this dataset. It will be the variable "id" of the dataset and you will see this if you work with the Etsin API. You can also add additional metadata identifiers for example if you want to refer to this metadata using different identifier systems.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
@@ -60,11 +59,10 @@
     <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="custom-fields-container">
       {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
       {% for pid in pids %}
-        {% set pid_readonly = " readonly" if pid.id and not (h.asbool(pid.get('primary')) and errors and not data.id) %}
         <div class="control-custom">
           <div class="form-row">
             <div class="form-content kata-medium{{ ' error' if errors }}{{ ' no-label-controls' if not hasLabel}}">
-              <input id="pids__{{ index }}__id" type="text" name="pids__{{ index }}__id" value="{{ pid.id | empty_and_escape }}" placeholder="http://www.pid.com/1234" class="kata-medium-input pid kata-pid-input-wide pids_{{ index }}" {{ pid_readonly }} />
+              <input id="pids__{{ index }}__id" type="text" name="pids__{{ index }}__id" value="{{ pid.id | empty_and_escape }}" placeholder="http://www.pid.com/1234" class="kata-medium-input pid kata-pid-input-wide pids_{{ index }}" />
               {# {% if errors and errors is iterable %}<span class="error-block">{{ errors|join(', ') }}</span>{% endif %}#}
             </div>
              {% if pid.id and not h.asbool(pid.get('primary')) %}

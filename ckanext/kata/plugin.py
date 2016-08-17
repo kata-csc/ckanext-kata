@@ -275,7 +275,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_translation': helpers.get_translation,
             'get_translation_from_extras': helpers.get_translation_from_extras,
             'get_language': helpers.get_language,
-            'get_urn_fi_address': helpers.get_urn_fi_address,
+            'get_dataset_permanent_address': helpers.get_dataset_permanent_address,
             'get_visibility_options': helpers.get_visibility_options,
             'has_json_content': helpers.has_json_content,
             'is_active_facet': helpers.is_active_facet,

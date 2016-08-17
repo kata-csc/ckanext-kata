@@ -293,15 +293,6 @@ def checkbox_to_boolean(key, data, errors, context):
             data[key] = u'False'
 
 
-def update_pid(key, data, errors, context):
-    '''
-    Replace an empty unicode string with random PID.
-    '''
-    if type(data[key]) == unicode:
-        if len(data[key]) == 0:
-            data[key] = utils.generate_pid()
-
-
 def convert_from_extras_kata(key, data, errors, context):
     '''
     Convert all extras fields from extras to data dict and remove
@@ -504,23 +495,6 @@ def default_name_from_id(key, data, errors, context):
         id = data.get(('id',))
 
         data[key] = utils.datapid_to_name(id)
-
-
-def check_primary_pids(key, data, errors, context):
-    '''
-    Check that primary pid exist, if not, get it from package.id
-    and add to data dict
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-
-    metadata_pids = utils.get_pids_by_type('metadata', {'pids': data.get(('pids',))}, primary=True)
-
-    if not metadata_pids:
-        data[('pids',)].append({'primary': u'True', 'type': 'metadata', 'id': data[('id',)]})
 
 
 def to_licence_id(key, data, errors, context):

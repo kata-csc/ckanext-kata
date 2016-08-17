@@ -92,6 +92,14 @@ def package_show(context, data_dict):
     return pkg_dict1
 
 
+def _handle_package_id(context, data_dict):
+    '''
+    Create package id if it does not exist.
+    '''
+    if not 'id' in data_dict or len(data_dict['id']) == 0:
+        data_dict['id'] = unicode(utils.generate_pid())
+
+
 def _handle_pids(context, data_dict):
     '''
     Do some PID modifications to data_dict
@@ -114,23 +122,14 @@ def _handle_pids(context, data_dict):
                                'provider': 'Etsin',
                                }]
 
-    # If no primary data PID, generate one if this is a new dataset
-#    if not utils.get_pids_by_type('data', data_dict, primary=True):
-#        model = context["model"]
-#        session = context["session"]
-
-#        if data_dict.get('id'):
-#            query = session.query(model.Package.id).filter_by(name=data_dict['id'])  # id contains name !
-#            result = query.first()
-
-#            if result:
-#                return  # Existing dataset, don't generate new data PID
-
-#        data_dict['pids'].insert(0, {'id': utils.generate_pid(),
-#                                    'type': 'data',
-#                                   'primary': 'True',
-#                                     'provider': 'Etsin',
-#                                    })
+    # If no primary metadata PID exists, use dataset id as primary metadata PID
+    # by copying dataset id value to primary metadata PID
+    if not utils.get_pids_by_type('metadata', data_dict, primary=True):
+       data_dict['pids'].insert(0, {'id': data_dict['id'],
+                                    'type': u'metadata',
+                                    'primary': u'True',
+                                    'provider': u'Etsin',
+                                   })
 
 
 def _add_ida_download_url(context, data_dict):
@@ -182,6 +181,7 @@ def package_create(context, data_dict):
 
     data_dict = utils.dataset_to_resource(data_dict)
 
+    _handle_package_id(context, data_dict)
     _handle_pids(context, data_dict)
 
     _add_ida_download_url(context, data_dict)
@@ -236,6 +236,7 @@ def package_update(context, data_dict):
     else:
         data_dict['accept-terms'] = 'yes'  # This is not needed when adding a resource
 
+    _handle_package_id(context, data_dict)
     _handle_pids(context, data_dict)
 
     _add_ida_download_url(context, data_dict)

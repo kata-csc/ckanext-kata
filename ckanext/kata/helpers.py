@@ -402,19 +402,11 @@ def is_url(data):
     return data.startswith('http://') or data.startswith('https://')
 
 
-def get_urn_fi_address(package):
+def get_dataset_permanent_address(package):
     package_id = package.get('id', '')
-    primary_pid = get_pids_by_type('metadata', package, primary=True)[0].get('id', None)
-    if package_id.startswith('http://') or package_id.startswith('https://'):
-        return package.get('id')
-    elif is_urn(package_id) or is_urn(primary_pid):
-        template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
-        return template % {'pid': package_id if package_id else primary_pid}
-    return ''
-    #pid = get_pids_by_type('data', package, primary=True)[0].get('id', None)
-    #if is_urn(pid):
-    #    template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
-    #    return template % {'pid': pid}
+    template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(id)s")
+    return template % {'id': package_id if package_id else 'ERROR'}
+
 
 def get_dummy_title():
     return json.dumps({
