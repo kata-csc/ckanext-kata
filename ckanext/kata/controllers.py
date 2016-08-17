@@ -610,8 +610,6 @@ class KataUserController(UserController):
             came_from = came_from\
                         .replace('\n', ' ')\
                         .replace('\r', '')
-        if '<CR>' in came_from or '<LF>' in came_from:
-            came_from = ''
 
 
         # we need to set the language explicitly here or the flash
