@@ -79,7 +79,7 @@
       </select>
       {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
     </div>
-      {{ kata_form.tooltip(tooltip=_('Choose a license from the given options.') ~ '<br /><br />' ~ _('Information about licenses') ~ ': <a href="' ~ _('http://creativecommons.org/choose/?lang=en') ~ '" target="_blank">creativecommons.org</a>') }}
+      {{ kata_form.tooltip(tooltip=_('Choose a license from the given options. In addition to the chosen license, the relevant laws must be considered, e.g. Personal Data Act.') ~ '<br /><br />' ~ _('Information about licenses') ~ ': <a href="' ~ _('http://creativecommons.org/choose/?lang=en') ~ '" target="_blank">creativecommons.org</a>') }}
   </div>
 
   {% call kata_form.textarea('license_URL', id='license_URL', label=_('Copyright notice'), placeholder=_('e.g. additional information about the license'), value=data.license_URL, error=errors.license_URL, classes=['error-block-fullwidth']) %}

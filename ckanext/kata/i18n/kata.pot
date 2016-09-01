@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.1.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-07-25 09:19+0000\n"
+"POT-Creation-Date: 2016-09-01 07:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgid "Required information missing"
 msgstr ""
 
 #: ckanext/kata/actions.py:451 ckanext/kata/actions.py:515
-#: ckanext/kata/controllers.py:696 ckanext/kata/controllers.py:774
+#: ckanext/kata/controllers.py:701 ckanext/kata/controllers.py:779
 msgid "User not found"
 msgstr ""
 
 #: ckanext/kata/actions.py:456 ckanext/kata/actions.py:460
-#: ckanext/kata/controllers.py:771
+#: ckanext/kata/controllers.py:776
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
@@ -117,7 +117,7 @@ msgstr ""
 msgid "User %s not authorized to delete resource %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:443 ckanext/kata/controllers.py:735
+#: ckanext/kata/controllers.py:443 ckanext/kata/controllers.py:740
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
@@ -140,7 +140,7 @@ msgstr ""
 msgid "Message not sent. Couldn't confirm human interaction (spam bot control)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:497 ckanext/kata/controllers.py:730
+#: ckanext/kata/controllers.py:497 ckanext/kata/controllers.py:735
 msgid "Message sent"
 msgstr ""
 
@@ -159,63 +159,63 @@ msgstr ""
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:629
+#: ckanext/kata/controllers.py:634
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:640
+#: ckanext/kata/controllers.py:645
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:671 ckanext/kata/controllers.py:910
+#: ckanext/kata/controllers.py:676 ckanext/kata/controllers.py:915
 #: ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:693
+#: ckanext/kata/controllers.py:698
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:713
+#: ckanext/kata/controllers.py:718
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:715 ckanext/kata/validators.py:168
+#: ckanext/kata/controllers.py:720 ckanext/kata/validators.py:168
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:830
+#: ckanext/kata/controllers.py:835
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:854
+#: ckanext/kata/controllers.py:859
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:859
+#: ckanext/kata/controllers.py:864
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:862
+#: ckanext/kata/controllers.py:867
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:864
+#: ckanext/kata/controllers.py:869
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:868
+#: ckanext/kata/controllers.py:873
 msgid "Failed to load file"
 msgstr ""
 
-#: ckanext/kata/controllers.py:988 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:993 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/controllers.py:989
+#: ckanext/kata/controllers.py:994
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -225,15 +225,15 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: ckanext/kata/controllers.py:990
+#: ckanext/kata/controllers.py:995
 msgid "Tags"
 msgstr ""
 
-#: ckanext/kata/controllers.py:991
+#: ckanext/kata/controllers.py:996
 msgid "Formats"
 msgstr ""
 
-#: ckanext/kata/controllers.py:992
+#: ckanext/kata/controllers.py:997
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:230
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:73
 msgid "License"
@@ -5026,7 +5026,8 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:147
 msgid ""
 "Distributor is a person or an organisation who has the right to distribute "
-"the dataset or has published the dataset."
+"the dataset or has published the dataset. If the data makes up a personal "
+"data registry, the distributor acts as the registry holder."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:151
@@ -5327,8 +5328,8 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:10
 msgid ""
 "I have asked consent from all persons whose personal information I have added"
-" to this dataset and informed them of how they can get their personal data "
-"removed. Detailed information in:"
+" to this descriptive data and informed them of how they can get their "
+"personal data removed. Detailed information in:"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:11
@@ -5413,7 +5414,9 @@ msgid "http://openscience.fi/ida-browser-sharing"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82
-msgid "Choose a license from the given options."
+msgid ""
+"Choose a license from the given options. In addition to the chosen license, "
+"the relevant laws must be considered, e.g. Personal Data Act."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82

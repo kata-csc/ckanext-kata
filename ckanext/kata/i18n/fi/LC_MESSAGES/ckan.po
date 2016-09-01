@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-07-25 09:19+0000\n"
+"POT-Creation-Date: 2016-09-01 07:36+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -31,12 +31,12 @@ msgid "Required information missing"
 msgstr "Pakollinen tieto puuttuu"
 
 #: ckanext/kata/actions.py:451 ckanext/kata/actions.py:515
-#: ckanext/kata/controllers.py:696 ckanext/kata/controllers.py:774
+#: ckanext/kata/controllers.py:701 ckanext/kata/controllers.py:779
 msgid "User not found"
 msgstr "Käyttäjää ei löytynyt"
 
 #: ckanext/kata/actions.py:456 ckanext/kata/actions.py:460
-#: ckanext/kata/controllers.py:771
+#: ckanext/kata/controllers.py:776
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
@@ -120,7 +120,7 @@ msgstr ""
 msgid "User %s not authorized to delete resource %s"
 msgstr "Käyttäjällä %s ei ole oikeuksia poistaa resurssia %s"
 
-#: ckanext/kata/controllers.py:443 ckanext/kata/controllers.py:735
+#: ckanext/kata/controllers.py:443 ckanext/kata/controllers.py:740
 msgid "Bad Captcha. Please try again."
 msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
@@ -147,7 +147,7 @@ msgstr ""
 "Viestiä ei lähetetty. Tarkistukset bottien varalta antoivat positiivisen "
 "tuloksen."
 
-#: ckanext/kata/controllers.py:497 ckanext/kata/controllers.py:730
+#: ckanext/kata/controllers.py:497 ckanext/kata/controllers.py:735
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
@@ -169,63 +169,63 @@ msgstr ""
 msgid "Dataset not found"
 msgstr "Aineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:629
+#: ckanext/kata/controllers.py:634
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:640
+#: ckanext/kata/controllers.py:645
 msgid "Successfully logged out."
 msgstr "Olet nyt kirjautunut ulos."
 
-#: ckanext/kata/controllers.py:671 ckanext/kata/controllers.py:910
+#: ckanext/kata/controllers.py:676 ckanext/kata/controllers.py:915
 #: ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:693
+#: ckanext/kata/controllers.py:698
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
 
-#: ckanext/kata/controllers.py:713
+#: ckanext/kata/controllers.py:718
 msgid "Feature disabled"
 msgstr "Ominaisuus poistettu käytöstä"
 
-#: ckanext/kata/controllers.py:715 ckanext/kata/validators.py:168
+#: ckanext/kata/controllers.py:720 ckanext/kata/validators.py:168
 msgid "Invalid email address"
 msgstr "Vääränmuotoinen sähköpostiosoite"
 
-#: ckanext/kata/controllers.py:830
+#: ckanext/kata/controllers.py:835
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:854
+#: ckanext/kata/controllers.py:859
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:859
+#: ckanext/kata/controllers.py:864
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:862
+#: ckanext/kata/controllers.py:867
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
-#: ckanext/kata/controllers.py:864
+#: ckanext/kata/controllers.py:869
 msgid "Invalid XML content"
 msgstr "Virheellinen XML sisältö"
 
-#: ckanext/kata/controllers.py:868
+#: ckanext/kata/controllers.py:873
 msgid "Failed to load file"
 msgstr "Tiedostoa ei voitu ladata"
 
-#: ckanext/kata/controllers.py:988 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:993 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr "Organisaatiot"
 
-#: ckanext/kata/controllers.py:989
+#: ckanext/kata/controllers.py:994
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -235,15 +235,15 @@ msgstr "Organisaatiot"
 msgid "Groups"
 msgstr "Ryhmät"
 
-#: ckanext/kata/controllers.py:990
+#: ckanext/kata/controllers.py:995
 msgid "Tags"
 msgstr "Asiasanat"
 
-#: ckanext/kata/controllers.py:991
+#: ckanext/kata/controllers.py:996
 msgid "Formats"
 msgstr "Formaatit"
 
-#: ckanext/kata/controllers.py:992
+#: ckanext/kata/controllers.py:997
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:230
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:73
 msgid "License"
@@ -5310,10 +5310,12 @@ msgstr "Lisää avustaja"
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:147
 msgid ""
 "Distributor is a person or an organisation who has the right to "
-"distribute the dataset or has published the dataset."
+"distribute the dataset or has published the dataset. If the data makes up"
+" a personal data registry, the distributor acts as the registry holder."
 msgstr ""
 "Jakelija on henkilö tai organisaatio, jolla on oikeus jakaa aineistoa "
 "edelleen tai joka on asettanut aineiston julkisesti saataville."
+" Henkilörekisteriaineistoissa jakelijana toimii rekisterinpitäjä."
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:151
 msgid "Phone"
@@ -5686,11 +5688,11 @@ msgstr "Creative Commons CC0."
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:10
 msgid ""
 "I have asked consent from all persons whose personal information I have "
-"added to this dataset and informed them of how they can get their "
-"personal data removed. Detailed information in:"
+"added to this descriptive data and informed them of how they can get "
+"their personal data removed. Detailed information in:"
 msgstr ""
-"Olen kysynyt lupaa kaikilta henkilöiltä, joiden tietoja olen lisännyt "
-"tähän aineistoon ja kertonut heille miten he saavat tietonsa poistetuksi."
+"Olen kysynyt lupaa kaikilta henkilöiltä, joiden tiedot olen liittänyt "
+"tähän tietoaineistoon ja kertonut heille miten he saavat tietonsa poistetuksi."
 " Ehtojen yksityiskohdat: "
 
 #: ckanext/kata/theme/templates/package/snippets/package_terms_of_use.html:11
@@ -5784,8 +5786,12 @@ msgid "http://openscience.fi/ida-browser-sharing"
 msgstr "http://avointiede.fi/ida-selain-jakaminen"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82
-msgid "Choose a license from the given options."
-msgstr "Valitse lisenssi annetuista vaihtoehdoista."
+msgid ""
+"Choose a license from the given options. In addition to the chosen "
+"license, the relevant laws must be considered, e.g. Personal Data Act."
+msgstr ""
+"Valitse lisenssi annetuista vaihtoehdoista. Valitun lisenssin lisäksi"
+" on huomioitava lainsäädäntö, kuten henkilötietolaki."
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:82
 msgid "Information about licenses"
@@ -6304,4 +6310,7 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
+#~ msgid "Choose a license from the given options."
+#~ msgstr "Valitse lisenssi annetuista vaihtoehdoista."
 
