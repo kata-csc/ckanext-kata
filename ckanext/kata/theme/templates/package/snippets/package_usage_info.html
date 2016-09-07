@@ -73,8 +73,8 @@
     <label class="form-label" for="field-license">{{ _("License") }}</label>
     <div class="controls form-content">
       <select id="field-license" name="license_id" class="kata-input-license" data-module="autocomplete">
-        {% for licence_desc, licence_id in licences %}
-          <option value="{{ licence_id }}" {% if data.get('license_id', 'CC-BY-4.0') == licence_id %}selected="selected"{% endif %}>{{ licence_desc }}</option>
+        {% for license_desc, license_id in licenses %}
+          <option value="{{ license_id }}" {% if data.get('license_id', 'CC-BY-4.0') == license_id %}selected="selected"{% endif %}>{{ license_desc }}</option>
         {% endfor %}
       </select>
       {% if error %}<span class="error-block">{{ error }}</span>{% endif %}

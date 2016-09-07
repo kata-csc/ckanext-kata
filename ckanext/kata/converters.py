@@ -522,9 +522,9 @@ def check_primary_pids(key, data, errors, context):
         data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})
 
 
-def to_licence_id(key, data, errors, context):
+def to_license_id(key, data, errors, context):
     '''
-    Try to match licence to existing defined license, replace matched content with licence id.
+    Try to match license to existing defined license, replace matched content with license id.
 
     The license converter is divided into two parts: the 'fuzzy' part and the lookup table part.
     We will first try to check whether the license fits into any of the Creative Commons licenses
@@ -592,11 +592,11 @@ def to_licence_id(key, data, errors, context):
 
             license_id_out = license_map.get(license_id_lower)
             if license_id_out:
-                log.debug("--> licence_id_map.json: " + license_id_out)
+                log.debug("--> license_id_map.json: " + license_id_out)
                 data[key] = license_id_out
             else:
                 # no matching license found, do nothing
-                log.debug("No license ID in licence collection")
+                log.debug("No license ID in license collection")
     else:
         log.debug("No license ID in data")
         data[key] = "undefined"

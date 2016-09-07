@@ -19,7 +19,7 @@ then itself be extended to add/remove blocks of functionality. #}
   {% block errors %}{{ kataform.kataerrors(error_summary, h) }}{% endblock %}
 
   {% block basic_fields %}
-    {% snippet 'package/snippets/package_basic_fields.html', data=data, errors=errors, licences=c.licences, groups_available=c.groups_available, roles=c.roles, version_PID=c.version_PID, lastmod=c.lastmod, user=c.userobj %}
+    {% snippet 'package/snippets/package_basic_fields.html', data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available, roles=c.roles, version_PID=c.version_PID, lastmod=c.lastmod, user=c.userobj %}
   {% endblock %}
 
   {% block metadata_fields %}
