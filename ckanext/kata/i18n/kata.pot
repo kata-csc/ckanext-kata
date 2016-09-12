@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.1.3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-09-12 08:35+0000\n"
+"POT-Creation-Date: 2016-09-12 11:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4784,23 +4784,23 @@ msgid "Data availability"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:207
-msgid "This dataset is available via an access form."
+msgid "Access this dataset via this access form."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:208
-msgid "This dataset is available freely via this address."
+msgid "Access this dataset freely."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:209
-msgid "This dataset is available via login."
+msgid "Access this dataset by logging in."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
-msgid "This dataset is available by contacting the distributor."
+msgid "Access this dataset by contacting the distributor."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:213
-msgid "This dataset is available through data provider."
+msgid "Access this dataset through data provider."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:214

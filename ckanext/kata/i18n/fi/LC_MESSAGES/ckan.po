@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-09-12 08:35+0000\n"
+"POT-Creation-Date: 2016-09-12 11:45+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -5047,23 +5047,23 @@ msgid "Data availability"
 msgstr "Aineiston saatavuus"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:207
-msgid "This dataset is available via an access form."
-msgstr "Ainesto on saatavilla hakulomakkeella."
+msgid "Access this dataset via this access form."
+msgstr "Täytä hakulomake nähdäksesi aineiston."
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:208
-msgid "This dataset is available freely via this address."
-msgstr "Aineisto on saatavilla vapaasti tästä osoitteesta."
+msgid "Access this dataset freely."
+msgstr "Lataa aineisto vapaasti."
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:209
-msgid "This dataset is available via login."
-msgstr "Aineisto on saatavilla sisäänkirjautumalla."
+msgid "Access this dataset by logging in."
+msgstr "Kirjaudu sisään nähdäksesi aineiston."
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:211
-msgid "This dataset is available by contacting the distributor."
-msgstr "Aineisto on saatavilla ottamalla yhteyttä jakelijaan."
+msgid "Access this dataset by contacting the distributor."
+msgstr "Ota yhteyttä jakelijaan nähdäksesi aineiston."
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:213
-msgid "This dataset is available through data provider."
+msgid "Access this dataset through data provider."
 msgstr "Aineisto on saatavilla datan jakelijan kautta."
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:214
@@ -6289,27 +6289,9 @@ msgstr "Ei aineistoja."
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
 
-#~ msgid "this link"
-#~ msgstr "tästä linkistä "
+#~ msgid "This dataset is available freely via this address."
+#~ msgstr "Aineisto on saatavilla vapaasti tästä osoitteesta."
 
-#~ msgid " available freely "
-#~ msgstr "saatavilla vapaasti "
-
-#~ msgid "from this address"
-#~ msgstr "tästä osoitteesta"
-
-#~ msgid " available by "
-#~ msgstr "saatavilla "
-
-#~ msgid "contacting the distributor"
-#~ msgstr "ottamalla yhteyttä jakelijaan"
-
-#~ msgid " available through "
-#~ msgstr " saatavilla "
-
-#~ msgid "data provider"
-#~ msgstr "datan jakelijan kautta"
-
-#~ msgid "Download"
-#~ msgstr "Lataa"
+#~ msgid "This dataset is available via login."
+#~ msgstr "Aineisto on saatavilla sisäänkirjautumalla."
 
