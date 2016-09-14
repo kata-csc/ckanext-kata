@@ -236,13 +236,17 @@
           <span property="dc:rights">{{ pkg_dict.license_title }}</span>
         {% endif %}
       </p>
+  </div>
 
-    </div>
     <div class="form-label">{{ _('Copyright notice') }}</div>
     <div class="form-content">
       {{ h.render_markdown(pkg_dict.license_URL) }}
     </div>
-  </div>
+
+    <div class="form-label">{{ _('Citation') }}</div>
+    <div class="form-content">
+      {{ h.render_markdown(pkg_dict.citation) }}
+    </div>
 
 </div>
 <div class="dataset-section form-tab-content">

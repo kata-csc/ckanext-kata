@@ -150,6 +150,7 @@ class Schemas:
         schema['owner_org'] = [va.kata_owner_org_validator, unicode]
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_direct_download_url,
                                       unicode, va.validate_general]
+        schema['citation'] = [va.continue_if_missing, co.convert_to_extras_kata, unicode]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
         schema['resources']['algorithm'] = [ignore_missing, unicode, va.validate_algorithm]
         schema['resources']['format'] = [ignore_missing, unicode, va.validate_general]
