@@ -456,6 +456,19 @@ class TestValidators(TestCase):
         validate_license_url(('license_URL',), dada, errors, None)
         assert len(errors) == 0
 
+    def test_citation_invalid(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('citation',)] = u'<invalid>'
+        validate_general(('citation',), dada, errors, None)
+        assert len(errors) == 1
+
+    def test_citation_valid(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('citation',)] = u'T. Tekijä. Test Data. 2000/01/01.'
+        validate_general(('citation',), dada, errors, None)
+        assert len(errors) == 0
 
 class TestPidUniquenessValidator(TestCase):
     '''

@@ -74,6 +74,7 @@ TEST_DATADICT = {'access_application_new_form': u'False',
 
                  'algorithm': u'MD5',
                  'availability': u'direct_download',
+                 'citation': u'T. Tekijä. Test Data. 2000/01/01.',
                  'checksum': u'f60e586509d99944e2d62f31979a802f',
                  'contact': [{'name': u'Jali Jakelija',
                               'email': u'jali.jakelija@csc.fi',
