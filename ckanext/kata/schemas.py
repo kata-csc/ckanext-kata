@@ -145,7 +145,7 @@ class Schemas:
                                           unicode, va.validate_general, co.convert_to_extras_kata]
         schema['discipline'] = [ignore_missing, va.validate_discipline, co.convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
-        schema['license_URL'] = [va.continue_if_missing, va.validate_license_url, co.convert_to_extras_kata, unicode,
+        schema['license_URL'] = [va.continue_if_missing, va.validate_license_url, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode,
                                  va.validate_general]
         schema['owner_org'] = [va.kata_owner_org_validator, unicode]
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_direct_download_url,

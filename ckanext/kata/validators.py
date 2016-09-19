@@ -568,11 +568,11 @@ def validate_license_url(key, data, errors, context):
     :param data: data
     :param errors: errors
     :param context:
-    :return: nothing. Raise invalid if length is less than 2 and lisense is not specific.
+    :return: nothing. Raise invalid if length is less than 2 and license is not specific.
     '''
 
     value = data.get(key)
-    if data.get(('license_id',)) in ['notspecified', 'other-closed', 'other-nc', 'other-at', 'other-pd', 'other-open']:
+    if data.get(('license_id',)) in [u'notspecified', u'other', u'other-closed', u'other-nc', u'other-at', u'other-pd', u'other-open']:
         if not value or len(value) < 2:
             raise Invalid(_('Copyright notice is needed if license is not specified or '
                             'is a variant of license type other.'))

@@ -24,6 +24,8 @@ from ckanext.kata import settings, utils
 
 log = logging.getLogger('ckanext.kata.converters')
 
+UNRESOLVED_LICENSE_ID = u'unresolve_license_id'
+
 
 def gen_translation_str_from_multilang_field(fieldkey, message, key, data, errors, context):
     '''
@@ -526,12 +528,9 @@ def to_license_id(key, data, errors, context):
     '''
     Try to match license to existing defined license, replace matched content with license id.
 
-    The license converter is divided into two parts: the 'fuzzy' part and the lookup table part.
-    We will first try to check whether the license fits into any of the Creative Commons licenses
-    by trying to find certain keywords (i.e. 'cc', 'by', 'nd' etc.).
-
-    If the license wasn't of type CC, it is compared to the lookup table of known licenses in
-    license_id_map.json.
+    If license_id is unresolvable (key exists but value not recognized), make license_id = 'other'
+    Also in this case, license_URL needs to be populated with unrecognized license_id, but it
+    can not be done in this converter, but in its own
 
     :param key: key
     :param data: data
@@ -539,16 +538,37 @@ def to_license_id(key, data, errors, context):
     :param context: context
     '''
 
-    map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/license_id_map.json'
+    license_id_out = resolve_license_id(data.get(key))
+    if license_id_out == UNRESOLVED_LICENSE_ID:
+        # If license_URL has no value, mark it for the use of
+        # fill_license_URL_if_license_id_not_resolved converter
+        if not data.get(('license_URL',)):
+            data[('license_URL',)] = UNRESOLVED_LICENSE_ID + data.get(key)
+        data[key] = u'other'
+    else:
+        data[key] = license_id_out
 
-    license_id = data.get(key)
+
+def resolve_license_id(license_id):
+    '''
+    The license converter is divided into two parts: the 'fuzzy' part and the lookup table part.
+    We will first try to check whether the license fits into any of the Creative Commons licenses
+    by trying to find certain keywords (i.e. 'cc', 'by', 'nd' etc.).
+
+    If the license wasn't of type CC, it is compared to the lookup table of known licenses in
+    license_id_map.json.
+
+    :param license_id: license_id to resolve
+    :return: resolved license_id
+    '''
+
+    map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/license_id_map.json'
     license_id_out = None
     license_id_work = None
 
     # Part 1: fuzzy search for Creative Common licenses
     if license_id:
         license_id_lower = license_id.lower().strip()
-        log.debug("license: " + license_id)
         if 'cc' in license_id_lower or ('creative' in license_id_lower and 'commons' in license_id_lower):
             if 'by' in license_id_lower or 'attribution' in license_id_lower:
                 if 'nc' in license_id_lower or 'noncommercial' in license_id_lower:
@@ -583,7 +603,7 @@ def to_license_id(key, data, errors, context):
                 license_id_out = 'CC0-1.0'
         if license_id_out:
             log.debug("--> " + license_id_out)
-            data[key] = license_id_out
+            return license_id_out
         else:
 
             # Part 2: compare the licenses to license_id_map.json lookup
@@ -593,10 +613,37 @@ def to_license_id(key, data, errors, context):
             license_id_out = license_map.get(license_id_lower)
             if license_id_out:
                 log.debug("--> license_id_map.json: " + license_id_out)
-                data[key] = license_id_out
+                return license_id_out
             else:
-                # no matching license found, do nothing
+                # no matching license found, return unresolved
                 log.debug("No license ID in license collection")
+                return UNRESOLVED_LICENSE_ID
     else:
         log.debug("No license ID in data")
-        data[key] = "undefined"
+        return "undefined"
+
+
+def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
+    '''
+    There are two use cases for this converter.
+    1) license_id converter has been run already, in which case:
+        if license_id was not recognized, then license_URL value should
+        be preset like: UNRESOLVED_LICENSE_ID prepended before the unrecognized
+        license_id. In this case just remove the UNRESOLVED_LICENSE_ID for license_URL
+        value
+    2) license_id converter has not run yet, in which case:
+        if license_id cannot be resolved, the license_id converter help function,
+        resolve_license_id, would return UNRESOLVED_LICENSE_ID, in which case
+        license_URL gets the value of license_id
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    if data.get(key) and data.get(key).startswith(UNRESOLVED_LICENSE_ID):
+        data[key] = data.get(key)[len(UNRESOLVED_LICENSE_ID):]
+    elif resolve_license_id(data.get(('license_id',))) == UNRESOLVED_LICENSE_ID:
+        data[key] = data.get(('license_id',))
