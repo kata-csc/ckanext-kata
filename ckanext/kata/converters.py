@@ -528,9 +528,9 @@ def to_license_id(key, data, errors, context):
     '''
     Try to match license to existing defined license, replace matched content with license id.
 
-    If license_id is unresolvable (key exists but value not recognized), make license_id = 'other'
-    Also in this case, license_URL needs to be populated with unrecognized license_id, but it
-    can not be done in this converter, but in its own
+    If license_id is unresolvable (key exists but value not recognized), make license_id = 'other'.
+    Set also a temporary variable for license URL converter (in case it has not been run already)
+    that contains the original license id value.
 
     :param key: key
     :param data: data
@@ -540,17 +540,7 @@ def to_license_id(key, data, errors, context):
 
     license_id_out = resolve_license_id(data.get(key))
     if license_id_out == UNRESOLVED_LICENSE_ID:
-        # If license_URL has no value, mark it for the use of
-        # fill_license_URL_if_license_id_not_resolved converter
-        if data.get(('license_URL',)):
-            if data.get(('license_URL',)).startswith(UNRESOLVED_LICENSE_ID):
-                data[('license_URL',)] = data.get(('license_URL',))[len(UNRESOLVED_LICENSE_ID):]
-            else:
-                data[('license_URL',)] = data.get(key) + ". " + data.get(('license_URL',))
-        else:
-            data[('license_URL',)] = data.get(key)
-
-        # data[key] needs to be set after license URL has been set
+        data[UNRESOLVED_LICENSE_ID] = data.get(key)
         data[key] = u'other'
     else:
         data[key] = license_id_out
@@ -632,16 +622,15 @@ def resolve_license_id(license_id):
 
 def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
     '''
-    There are two use cases for this converter.
-    1) license_id converter has been run already, in which case:
-        if license_id was not recognized, then license_URL value should
-        be preset like: UNRESOLVED_LICENSE_ID prepended before the unrecognized
-        license_id. In this case just remove the UNRESOLVED_LICENSE_ID for license_URL
-        value
-    2) license_id converter has not run yet, in which case:
-        if license_id cannot be resolved, the license_id converter help function,
-        resolve_license_id, would return UNRESOLVED_LICENSE_ID, in which case
-        license_URL gets the value of license_id
+     This function modifies license_URL value in case license_id is not recognized.
+
+     If license id converter (to_license_id) has been run AND license id was not
+     recognized, a temporary variable in the data dict containing the license id is
+     prepended to the value of license URL. The temporary variable is used since
+     at this point the real license id entry has already been changed to value 'other'.
+
+     If license id converter (to_license_id) has not been run AND license id is not
+     recognized, this function should change license URL to include the license id.
 
     :param key:
     :param data:
@@ -650,7 +639,7 @@ def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
     :return:
     '''
 
-    if data.get(key) and data.get(key).startswith(UNRESOLVED_LICENSE_ID):
-        data[key] = data.get(key)[len(UNRESOLVED_LICENSE_ID):]
+    if data.get(UNRESOLVED_LICENSE_ID) and data.get(('license_id',)) == u'other':
+        data[key] = data.get(UNRESOLVED_LICENSE_ID) + ('. ' + data.get(key) if data.get(key) else '')
     elif resolve_license_id(data.get(('license_id',))) == UNRESOLVED_LICENSE_ID:
-        data[key] = UNRESOLVED_LICENSE_ID + (data.get(('license_id',)) + '. ' + data.get(key) if data.get(key) else data.get(('license_id',)))
+        data[key] = data.get(('license_id',)) + '. ' + data.get(key) if data.get(key) else data.get(('license_id',))

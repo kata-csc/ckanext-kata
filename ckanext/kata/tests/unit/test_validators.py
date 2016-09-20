@@ -942,8 +942,6 @@ class TestLicenseConverters(TestCase):
         populate_license_URL_if_license_id_not_resolved(self.url_key, self.test_data24, {}, {})
         to_license_id(self.id_key, self.test_data24, {}, {})
         assert self.test_data24.get(self.id_key) == 'other'
-        import pprint
-        pprint.pprint(self.test_data24.get(self.url_key))
         assert self.test_data24.get(self.url_key) == 'badly_written_license'
         
         to_license_id(self.id_key, self.test_data25, {}, {})

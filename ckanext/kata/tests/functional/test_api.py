@@ -202,6 +202,25 @@ class TestCreateDatasetAndResources(KataApiTestCase):
 
         self.assertRaises(ValidationError, self.api_user_normal.action.package_create, **data)
 
+    def test_create_dataset_with_unrecognized_license_1(self):
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
+        data_dict['license_id'] = u'custom_license'
+        del data_dict['license_URL']
+
+        output = self.api_user_normal.call_action('package_create', data_dict=data_dict)
+        assert output['license_id'] == u'other'
+        assert output['license_URL'] == u'custom_license'
+
+    def test_create_dataset_with_unrecognized_license_2(self):
+        data_dict = copy.deepcopy(self.TEST_DATADICT)
+        data_dict = self.get_unique_pids(data_dict)
+        data_dict['license_id'] = u'cc-by'
+
+        output = self.api_user_normal.call_action('package_create', data_dict=data_dict)
+        assert output['license_id'] == u'other'
+        assert output['license_URL'] == u'cc-by. Not to be distributed outside the Milky Way galaxy'
+
     def test_create_dataset_minimal(self):
         '''
         Create minimal dataset. Tests especially API usage, a case where a user drops the non-required fields
