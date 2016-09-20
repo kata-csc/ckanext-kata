@@ -24,7 +24,7 @@ from ckanext.kata import settings, utils
 
 log = logging.getLogger('ckanext.kata.converters')
 
-UNRESOLVED_LICENSE_ID = u'unresolve_license_id'
+UNRESOLVED_LICENSE_ID = u'unresolved_license_id'
 
 
 def gen_translation_str_from_multilang_field(fieldkey, message, key, data, errors, context):
@@ -542,8 +542,15 @@ def to_license_id(key, data, errors, context):
     if license_id_out == UNRESOLVED_LICENSE_ID:
         # If license_URL has no value, mark it for the use of
         # fill_license_URL_if_license_id_not_resolved converter
-        if not data.get(('license_URL',)):
-            data[('license_URL',)] = UNRESOLVED_LICENSE_ID + data.get(key)
+        if data.get(('license_URL',)):
+            if data.get(('license_URL',)).startswith(UNRESOLVED_LICENSE_ID):
+                data[('license_URL',)] = data.get(('license_URL',))[len(UNRESOLVED_LICENSE_ID):]
+            else:
+                data[('license_URL',)] = data.get(key) + ". " + data.get(('license_URL',))
+        else:
+            data[('license_URL',)] = data.get(key)
+
+        # data[key] needs to be set after license URL has been set
         data[key] = u'other'
     else:
         data[key] = license_id_out
@@ -646,4 +653,4 @@ def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
     if data.get(key) and data.get(key).startswith(UNRESOLVED_LICENSE_ID):
         data[key] = data.get(key)[len(UNRESOLVED_LICENSE_ID):]
     elif resolve_license_id(data.get(('license_id',))) == UNRESOLVED_LICENSE_ID:
-        data[key] = data.get(('license_id',))
+        data[key] = UNRESOLVED_LICENSE_ID + (data.get(('license_id',)) + '. ' + data.get(key) if data.get(key) else data.get(('license_id',)))
