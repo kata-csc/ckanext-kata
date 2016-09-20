@@ -2,12 +2,16 @@ html,
 body {
   min-width: 300px;
 }
-a {
+a,
+.fakelink {
   color: #0095ca;
   text-decoration: none;
+  cursor: pointer;
 }
 a:hover,
-a:focus {
+.fakelink:hover,
+a:focus,
+.fakelink:focus {
   color: #006f97;
   text-decoration: underline;
 }
@@ -235,8 +239,7 @@ i.chevron-alt {
   height: auto;
   margin-bottom: 0px;
   font-size: 90%;
-  -webkit-filter: 0 !important;
-          filter: 0 !important;
+  filter: 0 !important;
   border-bottom: 1px solid #c9c9c9;
 }
 .site-footer a {
@@ -356,6 +359,18 @@ i.chevron-alt {
 }
 .kata-datepicker-enabler input {
   top: 5px;
+}
+.modal-backdrop,
+.modal-backdrop.fade.in {
+  background: #aaaaaa url(/base/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+}
+.modal-footer {
+  background-color: #FFF;
+}
+.modal-footer .ui-button-text {
+  font-weight: normal;
 }
 .role-select {
   margin: 0;
@@ -1549,8 +1564,7 @@ textarea {
   width: 150px;
 }
 header.masthead {
-  -webkit-filter: 0 !important;
-          filter: 0 !important;
+  filter: 0 !important;
 }
 .debug,
 #debug {
