@@ -32,9 +32,9 @@ then itself be extended to add/remove blocks of functionality. #}
     <div class="form-row">
       <div class="form-content etsin-actions">
         <div class="form-actions">
-          <a id="cancel-edit" class="btn btn-default">{{ _('Cancel') }}</a>
-          <button class="btn btn-primary" type="submit" value="finish" name="save">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
-          <button id="save-and-publish" class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled" title="{{ _('Accept the terms of use before publishing') }}">{% block save_and_publish_button_text %}{% if form_style != 'edit' %}{{ _('Save and publish') }}{% else %}{{ _('Update and publish') }}{% endif %}{% endblock %}</button>
+          <a id="cancel-edit" class="btn btn-default" onclick="window.onbeforeunload = null; return true;">{{ _('Cancel') }}</a>
+          <button class="btn btn-primary" type="submit" value="finish" name="save" onclick="window.onbeforeunload = null; return true;">{% block save_button_text %}{{ _('Save') }}{% endblock %}</button>
+          <button id="save-and-publish" class="btn btn-primary" type="submit" value="finish" name="save" data-module="kata-save-tools" disabled="disabled" title="{{ _('Accept the terms of use before publishing') }}" onclick="window.onbeforeunload = null; return true;">{% block save_and_publish_button_text %}{% if form_style != 'edit' %}{{ _('Save and publish') }}{% else %}{{ _('Update and publish') }}{% endif %}{% endblock %}</button>
         </div>
       </div>
     </div>
