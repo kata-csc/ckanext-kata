@@ -473,7 +473,7 @@ class TestPidUniquenessValidator(TestCase):
         model.repo.rebuild_db()
 
     def _get_random_no(self):
-        return unicode(random.randint(1, 10000))
+        return unicode(random.randint(100, 100000))
 
     def _get_flat_data(self):
         flat_dada = copy.deepcopy(TEST_DATA_FLATTENED)
