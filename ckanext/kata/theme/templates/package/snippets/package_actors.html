@@ -41,7 +41,7 @@
         {% endcall %}
 
         {% call kata_form.input(
-          'agent__' ~ index ~ '__organisation', label=_('Organisation') + '*',
+          'agent__' ~ index ~ '__organisation', label=_('Organisation'),
           id='agent__' ~ index ~ '__organisation_id', placeholder=_('University. Faculty. Department.'),
           value=agent.organisation, error=h.get_dict_field_errors(errors, 'agent', index, 'organisation'),
           classes=['control-custom'], label_classes=['kata-input-comp'],
@@ -285,7 +285,7 @@
         {% set agent_prefix = "agent__" ~ index ~ "__" %}
 
           {% call kata_form.input(
-            'agent__' ~ index ~ '__name', label=_('Owner') + '*',
+            'agent__' ~ index ~ '__name', label=_('Owner'),
             id='agent__' ~ index ~ '__name_id', placeholder=_('name or ID such as ORCID'),
             value=agent.name, error=h.get_dict_field_errors(errors, 'agent', index, 'name'),
             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
