@@ -4,9 +4,9 @@
       {% block resource_item_title %}
 
         {# This should be the same as in settings.py. TODO: remove latter comparison and use value from settings. #}
-        <th class="heading" title="{{ res.name or res.description }}">
+        <td title="{{ res.name or res.description }}">
           {# <span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ res.format }}</span> #}
-          {{ (_(h.resource_display_name(res)) if _(h.resource_display_name(res)) != _('Unnamed resource') else res.url) | truncate(50) }}
+          <a href="{{ res.url }}" target="_blank">{{ (_(h.resource_display_name(res)) if _(h.resource_display_name(res)) != _('Unnamed resource') else res.url) | truncate(50) }}</a>
            {# {{ h.popular('views', res.tracking_summary.total, min=10) if res.tracking_summary}} #}
         </th>
       {% endblock %}
@@ -24,7 +24,7 @@
 
       <td>
         {#<a class="btn btn-primary" href="{{ url }}">{{ _('Explore') }}</a>#}
-        <a class="btn btn-primary" href="{{ res.url }}" target="_blank">{{ _('Download') }}</a>
+        {#<a class="btn btn-primary" href="{{ res.url }}" target="_blank">{{ _('Download') }}</a> #}
         {% if h.check_access('resource_update', {'id' : res.id, 'resource_type' : res.resource_type }) %}
           {% if res.resource_type != 'dataset' %}
             {% link_for _('Edit'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn btn-primary', icon='wrench' %}
