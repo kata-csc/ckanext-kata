@@ -85,6 +85,11 @@
   {% call kata_form.textarea('license_URL', id='license_URL', label=_('Copyright notice'), placeholder=_('e.g. additional information about the license'), value=data.license_URL, error=errors.license_URL, classes=['error-block-fullwidth']) %}
     {{ kata_form.tooltip(tooltip=_("Provide detailed information about copyright notice, use constraints, referencing etc. Note that the field is required if license is set to License Not Specified or any variant of Other.")) }}
   {% endcall %}
+
+  {% call kata_form.textarea('citation', id='citation', label=_('Citation'), placeholder=_('e.g. Author, A.A.. (Year, Month Date of Publication). Dataset title. Retrieved from URL '), value=data.citation, error=errors.citation, classes=['error-block-fullwidth']) %}
+    {{ kata_form.tooltip(tooltip=_("Provide a citation that can be used to refer to this dataset.")) }}
+  {% endcall %}
+
 </div>
 <div id="ida-prefill-modal">
   <div id="ida-prefill-description" class="modal-content-block">{{ _("Enter your dataset's IDA identifier in order to create download link") }}</div>
