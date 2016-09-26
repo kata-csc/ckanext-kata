@@ -244,7 +244,106 @@
 
     <div class="form-label">{{ _('Citation') }}</div>
     <div class="form-content">
-      {{ h.render_markdown(pkg_dict.citation) }}
+      {% if 'citation' in pkg_dict %}
+        {{ h.render_markdown(pkg_dict.citation) }}
+      {% else %}
+
+        <!-- Title -->
+        {{ h.get_title_in_lang(pkg_dict.title, lang) }}, 
+
+        <!-- Last modified -->
+        {{ h.extract_version_date(pkg_dict.version) }}, 
+
+        <!-- Author -->
+        {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+          {% for agent in role.list if agent.role == 'author' %}
+            {% if agent.name %}
+              {{ agent.name }} ({{ _('author') }}), 
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+
+        <!-- Distributor -->
+        {% for contact in pkg_dict.contact %}
+          {% if contact.name %}
+            {{ contact.name }} ({{ _('distributor') }}), 
+          {% endif %}
+        {% endfor %}
+
+        <!-- Etsin -->
+        {{ _('Etsin research data finder')}}, 
+
+        <!-- Current year -->
+        {{ h.get_current_year() }}.
+
+        <!-- Url -->
+        {{ h.get_current_url() }}<br>
+
+      {% endif %}
+
+      <span class="fakelink" data-toggle="modal" data-target="#citations">Show more citation formats</span>
+
+      <div class="modal fade modal-content-block" id="citations" tabindex="-1" role="dialog" aria-labelledby="citationsLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="modal-title ui-widget" id="citationsLabel">{{ _('Citations') }}</div>
+            </div>
+            <div class="modal-body">
+              {% if 'citation' in pkg_dict %}
+                <b>{{ _('Provided by distributor') }}</b><br />
+                {{ pkg_dict.citation }}
+                <br><br>
+              {% endif %}
+
+              <b>{{ _('Etsin default citation (en)') }}</b><br>
+              {{ h.get_title_in_lang(pkg_dict.title, 'en') }}, 
+              {{ h.extract_version_date(pkg_dict.version) }}, 
+              {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+                {% for agent in role.list if agent.role == 'author' %}
+                  {% if agent.name %}
+                    {{ agent.name }} (author), 
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+              {% for contact in pkg_dict.contact %}
+                {% if contact.name %}
+                  {{ contact.name }} (distributor), 
+                {% endif %}
+              {% endfor %}
+              Etsin research data finder, 
+              {{ h.get_current_year() }}.
+              {{ h.get_current_url() }}
+              <br><br>
+
+              <b>{{ _('Etsin default citation (fi)') }}</b><br>
+              {{ h.get_title_in_lang(pkg_dict.title, 'fi') }}, 
+              {{ h.extract_version_date(pkg_dict.version) }}, 
+              {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+                {% for agent in role.list if agent.role == 'author' %}
+                  {% if agent.name %}
+                    {{ agent.name }} (tekijä), 
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+              {% for contact in pkg_dict.contact %}
+                {% if contact.name %}
+                  {{ contact.name }} (jakelija), 
+                {% endif %}
+              {% endfor %}
+              Etsin tutkimuksen tietoaineistojen hakupalvelu, 
+              {{ h.get_current_year() }}.
+              {{ h.get_current_url() }}
+              <br><br>
+
+            </div>
+            <div class="modal-footer ida-dialog">
+              <button type="button" class="ui-button ui-button-text-only ui-widget btn btn-default" data-dismiss="modal"><span class="ui-button-text ui-widget">{{ _('Close') }}</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
 </div>

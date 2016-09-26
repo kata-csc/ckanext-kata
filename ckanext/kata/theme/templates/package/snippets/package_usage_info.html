@@ -87,7 +87,7 @@
   {% endcall %}
 
   {% call kata_form.textarea('citation', id='citation', label=_('Citation'), placeholder=_('e.g. Author, A.A.. (Year, Month Date of Publication). Dataset title. Retrieved from URL '), value=data.citation, error=errors.citation, classes=['error-block-fullwidth']) %}
-    {{ kata_form.tooltip(tooltip=_("Provide a citation that can be used to refer to this dataset.")) }}
+    {{ kata_form.tooltip(tooltip=_("Provide a citation example for this dataset. If not specified, default citation format will be used.")) }}
   {% endcall %}
 
 </div>
