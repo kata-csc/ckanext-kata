@@ -17,10 +17,9 @@ from ckan.lib.navl.validators import not_empty
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
 from ckan.logic.validators import tag_length_validator, url_validator
 from ckanext.kata import utils, settings
-import ckan.lib.navl.dictization_functions as df
-import ckan.authz as authz
-import ckan.logic as logic
 import ckan.model as model
+
+from utils import is_ida_pid
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -199,11 +198,13 @@ def validate_access_application_url(key, data, errors, context):
     '''
     Validate dataset's `access_application_URL`.
 
-    Dummy value _must_ be added for a new form so that it can be overwritten
-    in the same session in iPackageController `edit` hook. For REMS.
+    Dummy value _must_ be added for other than access application url
+    so that it can be overwritten in ckanext-rems when it knows what
+    the access_application_URL will be.
     '''
     if data.get(('availability',)) == 'access_application':
-        if data.get(('access_application_new_form',)) in [u'True', u'on']:
+        if data.get(('access_application',)) == 'access_application_reetta_ida' or \
+        data.get(('access_application',))  == 'access_application_reetta':
             data[key] = h.full_current_url().replace('/edit/', '/')
         else:
             not_empty(key, data, errors, context)
@@ -242,18 +243,7 @@ def check_access_request_url(key, data, errors, context):
     '''
     Validate dataset's access request URL.
     '''
-    if data.get(('availability',)) == 'access_request':
-        not_empty(key, data, errors, context)
-    else:
-        data.pop(key, None)
-        raise StopOnError
-
-
-def check_through_provider_url(key, data, errors, context):
-    '''
-    Validate dataset's `through_provider_URL`.
-    '''
-    if data.get(('availability',)) == 'through_provider':
+    if data.get(('availability',)) == 'access_request' and data.get(('access_application')) == 'access_application_other':
         not_empty(key, data, errors, context)
     else:
         data.pop(key, None)
@@ -580,6 +570,7 @@ def continue_if_missing(key, data, errors, context):
     if value is missing or value is None:
         data.pop(key, None)
 
+
 def validate_pid_uniqueness(key, data, errors, context):
     '''
     Validate dataset pids are unique, i.e. they do not exist already.
@@ -609,3 +600,22 @@ def validate_pid_uniqueness(key, data, errors, context):
         for item in q_package_ids:
             if item != exam_package_id:
                 raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
+
+
+def check_access_application_ida_identifier(key, data, errors, context):
+    '''
+    Check access_application_ida_identifier value is an IDA identifier
+    (Identifier.series)
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+    if data.get(('availability',)) == 'access_application':
+        if data.get(('access_application',)) == 'access_application_reetta_ida' and not is_ida_pid(data[key]):
+            raise Invalid(_('Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)'))
+    else:
+        data.pop(key, None)
+        raise StopOnError

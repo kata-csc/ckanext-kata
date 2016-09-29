@@ -35,6 +35,17 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         // Create tooltips with no fade-in (change false to number for a fade-in)
         jQuery(".kata-plus-btn").tooltip({ show: false });
       }
+
+      /* Show notification if user changes availability from access_application_reetta_ida to
+       * something else.
+       */
+      $("#usage-info input:radio").change(function () {
+        if ($(this).is(":checked") && $(this).attr('id') != 'access_application_reetta_ida') {
+          if ($('#access_application_ida_identifier').val().match('^urn:nbn:fi:csc\-ida') !== null) {
+            $('#ida-pid-change-alert').css('display', 'block');
+          }
+        }
+      });
     },
 
     /* Creates a new field and appends it to the list. This currently works by
@@ -185,10 +196,17 @@ KATA.toggleAccess = function(obj) {
             $('#urlDiv_access_request').slideUp("fast");
             $('#urlDiv_direct_download').slideUp("fast");
             break;
-        case 'through_provider':
-            $('#urlDiv_access_application').hide();
-            $('#urlDiv_access_request').hide();
-            $('#urlDiv_direct_download').hide();
+        case 'access_application_reetta_ida':
+            $('#access_application_reetta_ida_box').slideDown("fast");
+            $('#access_application_other_box').slideUp("fast");
+            break;
+        case 'access_application_reetta':
+            $('#access_application_reetta_ida_box').slideUp("fast");
+            $('#access_application_other_box').slideUp("fast");
+            break;
+        case 'access_application_other':
+            $('#access_application_other_box').slideDown("fast");
+            $('#access_application_reetta_ida_box').slideUp("fast");
             break;
         }
 };

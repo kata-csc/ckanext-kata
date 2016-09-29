@@ -950,7 +950,7 @@ def get_tab_errors(errors, tab):
 
     tabs = {'1': ['langtitle', 'langnotes', 'language', 'tag_string'],
             '2': ['agent', 'contact', 'owner_org'],
-            '3': ['license', 'license_URL', 'availability', 'direct_download_URL', 'access_application_URL', 'through_provider_URL', 'access_request_URL', 'url'],
+            '3': ['license', 'license_URL', 'availability', 'direct_download_URL', 'access_application_ida_identifier', 'access_application_URL', 'access_request_URL', 'url'],
             '4': ['geographic_coverage', 'temporal_coverage_begin', 'temporal_coverage_end', 'event', 'mimetype', 'format', 'hash', 'algorithm'],
             '5': ['pids', 'version', '__extras'],
             'resources': ['url', 'mimetype', 'format', 'hash', 'algorithm']}

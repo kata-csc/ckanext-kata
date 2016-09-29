@@ -235,8 +235,7 @@ i.chevron-alt {
   height: auto;
   margin-bottom: 0px;
   font-size: 90%;
-  -webkit-filter: 0 !important;
-          filter: 0 !important;
+  filter: 0 !important;
   border-bottom: 1px solid #c9c9c9;
 }
 .site-footer a {
@@ -1549,8 +1548,7 @@ textarea {
   width: 150px;
 }
 header.masthead {
-  -webkit-filter: 0 !important;
-          filter: 0 !important;
+  filter: 0 !important;
 }
 .debug,
 #debug {
@@ -2167,14 +2165,11 @@ a.download {
 .dataset-section.form-tab-content .form-inner-table td {
   padding-top: 0px !important;
 }
-#urlDiv_direct_download {
-  margin-left: 15px;
-}
-#urlDiv_direct_download label.control-label {
+#usage-info label.control-label {
   text-align: left !important;
-  width: 45% !important;
+  width: 60% !important;
 }
-#urlDiv_direct_download div.controls.kata-label-pluspad {
+#usage-info div.controls.kata-label-pluspad {
   padding-top: 0px !important;
 }
 #usage-info #ida_direct_download_link {

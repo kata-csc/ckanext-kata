@@ -26,6 +26,8 @@ import unicodedata
 
 log = logging.getLogger(__name__)
 
+IDA_PID_REGEX = re.compile(r'^urn:nbn:fi:csc-ida.*s$')
+
 
 def generate_pid():
     """
@@ -425,8 +427,7 @@ def is_ida_pid(pid):
     :rtype: bool
     '''
 
-    ida_pid_regex = 'urn:nbn:fi:csc-ida\w+'
-    return pid and re.match(ida_pid_regex, pid)
+    return pid and IDA_PID_REGEX.match(pid)
 
 
 def generate_ida_download_url(data_pid):

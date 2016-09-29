@@ -133,16 +133,15 @@ class Schemas:
         schema['__junk'] = [va.check_junk]
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
+        schema['access_application'] = [ignore_missing, unicode, va.validate_general, co.convert_to_extras_kata]
+        schema['access_application_ida_identifier'] = [ignore_missing, va.check_access_application_ida_identifier,
+                                                       unicode, va.validate_general, co.convert_to_extras_kata]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['access_application_new_form'] = [co.checkbox_to_boolean, co.convert_to_extras_kata,
-                                                 co.remove_access_application_new_form]
         schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,
                                             unicode, va.validate_general, co.convert_to_extras_kata]
         schema['access_request_URL'] = [ignore_missing, va.check_access_request_url, url_validator,
                                         unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['through_provider_URL'] = [ignore_missing, va.check_through_provider_url, url_validator,
-                                          unicode, va.validate_general, co.convert_to_extras_kata]
         schema['discipline'] = [ignore_missing, va.validate_discipline, co.convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
         schema['license_URL'] = [va.continue_if_missing, va.validate_license_url, co.convert_to_extras_kata, unicode,
@@ -383,7 +382,6 @@ class Schemas:
 
         schema['agent'] = [co.flattened_from_extras, ignore_missing]
         schema['contact'] = [co.flattened_from_extras, ignore_missing]
-        schema['access_application_new_form'] = [unicode],
         schema['event'] = [co.flattened_from_extras, ignore_missing]
         schema['langdis'] = [unicode]
         # schema['organization'] = [ignore_missing, unicode]

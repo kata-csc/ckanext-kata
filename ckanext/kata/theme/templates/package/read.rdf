@@ -152,7 +152,7 @@
       <dct:language py:if="lang">${ lang }</dct:language>
     </py:for>
 
-    <!--! <dcat:landingPage py:if="c.pkg_dict.get('availability') in ['access_request', 'through_provider']" rdf:resource="${ h.get_download_url(c.pkg_dict) }" /> -->
+    <!--! <dcat:landingPage py:if="c.pkg_dict.get('availability') in ['access_request']" rdf:resource="${ h.get_download_url(c.pkg_dict) }" /> -->
 
     <dcat:distribution>
       <dcat:Distribution>

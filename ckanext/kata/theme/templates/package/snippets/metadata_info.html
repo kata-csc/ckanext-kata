@@ -203,7 +203,6 @@
         {% if pkg_dict.availability == 'contact_owner' %}
             {{ _(' available by ') -}} {% link_for _('contacting the distributor'), controller='ckanext.kata.controllers:ContactController', action='render_request_form', pkg_id=pkg_dict.name, class_='download' %}.
         {% endif %}
-        {% if pkg_dict.availability == 'through_provider' %}{{ _(' available through ') }}<a href="{{ pkg_dict.through_provider_URL }}" class="download">{{ _('data provider') }}</a> {% endif %}
         {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}{% endif %}
     </div>
   </div>
@@ -314,6 +313,16 @@
     <div class="form-label">{{ _('Version') }}</div>
     <div class="form-content">{{ pkg_dict.version }}</div>
   </div>
+
+  {%- if urn_url -%}
+  <div class="form-row">
+    <div class="form-label">{{ _('Permanent address for this page') }}</div>
+    <div class="form-content">
+      <a href="{{ urn_url }}">{{ urn_url }}</a>
+    </div>
+  </div>
+  {%- endif -%}
+
   <div class="form-row">
     <div class="form-label">{{ _('Identifiers') }}</div>
     <div class="form-content">
@@ -323,14 +332,8 @@
           <th></th>
           <td><a href="{{ permanent_url }}">{{ permanent_url }}</a></td>
         </tr>-->
-        {%- if urn_url -%}
         <tr>
-          <th>{{ _('Permanent address for this page') }}</th>
-          <td><a href="{{ urn_url }}">{{ urn_url }}</a></td>
-        </tr>
-        {%- endif -%}
-        <tr>
-          <th>{{ _('Primary dataset identifier') }}</th>
+          <th>{{ _('Primary identifier') }}</th>
           {% set primary_metadata_id = h.get_pids_by_type('metadata', pkg_dict, primary=True) %} 
           {% if primary_metadata_id %} 
             <td>{{ h.get_identifier_display_html(primary_metadata_id[0]['id']) | safe }}</td> 
@@ -346,13 +349,13 @@
           {% for pid in h.get_pids_by_type(pid_type, pkg_dict, primary=False) %}
             <tr>
               {% if pid_type == 'metadata' %}
-                <th>{{ _('Secondary dataset identifier') | safe }}</th>
+                <th>{{ _('Other identifier') | safe }}</th>
               {% endif %}
               {% if pid_type == 'data' %}
                 <th>{{ _('Data identifier') | safe }}</th>
               {% endif %}
               {% if pid_type == 'version' %}
-                <th>{{ _('Dataset version identifier') | safe }}</th>
+                <th>{{ _('Version identifier') | safe }}</th>
               {% endif %}
               <td>{{ h.get_identifier_display_html(pid.id) | safe }}</td>
               {% if pid_type == 'data' and first_data_pid %}

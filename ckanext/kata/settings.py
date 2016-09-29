@@ -124,8 +124,7 @@ RESOURCE_TYPE_DATASET = 'dataset'
 AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
                         'access_request': 'access_request_URL',
                         'contact_owner': None,
-                        'direct_download': 'direct_download_URL',
-                        'through_provider': 'through_provider_URL',
+                        'direct_download': 'direct_download_URL'
                         }
 
 # Required extras fields
@@ -135,7 +134,8 @@ KATA_FIELDS_REQUIRED = ['agent',
                         ]
 
 # Recommended extras fields
-KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
+KATA_FIELDS_RECOMMENDED = ['access_application',
+                           'access_application_ida_identifier',
                            'access_application_URL',
                            'access_request_URL',
                            'discipline',
@@ -147,8 +147,7 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            'license_URL',
                            'pids',
                            'temporal_coverage_begin',
-                           'temporal_coverage_end',
-                           'through_provider_URL'
+                           'temporal_coverage_end'
                            ]
 
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
@@ -168,6 +167,7 @@ ERRORS = {
     u'Accept-terms': N_(u'Terms of use'),
     u'Langnotes': u'Description + language',
     u'License URL': u'Copyright notice',
+    u'Access application ida identifier': u'IDA metadata identifier for Reetta service'
 }
 
 # Message strings to be automatically included in emails sent by users

@@ -28,7 +28,7 @@
   {% endif %}
 
   {% call kata_form.input(
-    'pids__' ~ index ~ '__id', label=_('Primary metadata identifier') + '*',
+    'pids__' ~ index ~ '__id', label=_('Primary identifier'),
      id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
      value=primary_pid.id,
      label_classes=['kata-input-comp'], control_classes=['kata-medium'],
@@ -50,7 +50,7 @@
 
   {% for pid_type in pid_types %}
     {% if pid_type == 'metadata' %}
-      {% set additional_identifier_label = _('Additional metadata identifiers') %}
+      {% set additional_identifier_label = _('Other identifiers') %}
     {% else %}
       {% set additional_identifier_label = _(pid_type | capitalize) + _(' identifiers') %}
     {% endif %}
