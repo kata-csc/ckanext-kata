@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-09-29 12:32+0000\n"
+"POT-Creation-Date: 2016-09-29 12:53+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -5092,6 +5092,10 @@ msgstr "jakelija"
 msgid "Etsin research data finder"
 msgstr "Etsin tutkimuksen tietoaineistojen hakupalvelu"
 
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:284
+msgid "Show more citation formats"
+msgstr "Näytä lisää sitaattiehdotuksia"
+
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:290
 msgid "Citations"
 msgstr "Sitaatit"
@@ -6342,34 +6346,4 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
-
-#~ msgid " available via an access form in "
-#~ msgstr "saatavilla hakulomakkeella "
-
-#~ msgid "this link"
-#~ msgstr "tästä linkistä "
-
-#~ msgid " available freely "
-#~ msgstr "saatavilla vapaasti "
-
-#~ msgid "from this address"
-#~ msgstr "tästä osoitteesta"
-
-#~ msgid " available via login "
-#~ msgstr "saatavilla sisäänkirjautumalla"
-
-#~ msgid " available by "
-#~ msgstr "saatavilla "
-
-#~ msgid "contacting the distributor"
-#~ msgstr "ottamalla yhteyttä jakelijaan"
-
-#~ msgid " available through "
-#~ msgstr " saatavilla "
-
-#~ msgid "data provider"
-#~ msgstr "datan jakelijan kautta"
-
-#~ msgid "Download"
-#~ msgstr "Lataa"
 
