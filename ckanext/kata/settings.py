@@ -4,7 +4,7 @@
 from ckan.common import OrderedDict
 from pylons.i18n.translation import gettext_noop as N_
 
-PID_TYPES = ['metadata', 'data', 'version']
+PID_TYPES = ['primary', 'access', 'relation']
 
 # Overridden CKAN role permissions
 ROLE_PERMISSIONS = OrderedDict([
@@ -152,7 +152,7 @@ KATA_FIELDS_RECOMMENDED = ['access_application',
 
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
 
-DATAPID_TO_NAME_REGEXES = [r'[^A-Za-z0-9]', r'-']     # [pattern, replace]
+PID_TO_NAME_REGEXES = [r'[^A-Za-z0-9]', r'-']     # [pattern, replace]
 
 # Change misleading or bad error summary names to more sane ones
 ERRORS = {
@@ -174,13 +174,13 @@ ERRORS = {
 
 # Template for the message included at the beginning of emails sent through the contact form
 USER_MESSAGE_PREFIX_TEMPLATE = u"\n{sender_name} ({sender_email}) has sent you a message regarding the following dataset:\
-\n\n{package_title} (Identifier: {data_pid})\n\nThe message is below.\n\n\n{sender_name} ({sender_email}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
-\n\n{package_title} (Tunniste: {data_pid})\n\nViesti:\n\n\n    ---\n"
+\n\n{package_title} (Identifier: {package_id})\n\nThe message is below.\n\n\n{sender_name} ({sender_email}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
+\n\n{package_title} (Tunniste: {package_id})\n\nViesti:\n\n\n    ---\n"
 
 # Template for the message included at the beginning of emails sent through the data access request form
-DATA_REQUEST_PREFIX_TEMPLATE = u"\n{sender_name} ({sender_email}) is requesting access to data in dataset\n\n{package_title} (Identifier: {data_pid})\n\n\
+DATA_REQUEST_PREFIX_TEMPLATE = u"\n{sender_name} ({sender_email}) is requesting access to data in dataset\n\n{package_title} (Identifier: {package_id})\n\n\
 for which you are currently marked as distributor.\n\nThe message is below.\n\n\n\
-{sender_name} ({sender_email}) pyytää dataa, joka liittyy tietoaineistoon\n\n{package_title} (Tunniste: {data_pid})\n\nja johon sinut on merkitty jakelijaksi. \
+{sender_name} ({sender_email}) pyytää dataa, joka liittyy tietoaineistoon\n\n{package_title} (Tunniste: {package_id})\n\nja johon sinut on merkitty jakelijaksi. \
 Mukaan liitetty viesti on alla.\n\n\n    ---\n"
 
 REPLY_TO_SENDER_NOTE = u"\n    ---\n\nPlease do not reply directly to this e-mail.\n\

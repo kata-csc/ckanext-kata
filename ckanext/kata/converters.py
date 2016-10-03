@@ -477,7 +477,7 @@ def default_name_from_id(key, data, errors, context):
     if not data.get(key):
         id = data.get(('id',))
 
-        data[key] = utils.datapid_to_name(id)
+        data[key] = utils.pid_to_name(id)
 
 
 def to_licence_id(key, data, errors, context):

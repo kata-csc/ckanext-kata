@@ -57,7 +57,7 @@ def package_show(context, data_dict):
 
     if not data_dict.get('id') and not data_dict.get('name'):
         # Get package by data PIDs
-        data_dict['id'] = utils.get_package_id_by_data_pids(data_dict)
+        data_dict['id'] = utils.get_package_id_by_access_or_primary_pid(data_dict)
 
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
@@ -118,17 +118,17 @@ def _handle_pids(context, data_dict):
 
     if data_dict.get('generate_version_pid') == 'on':
         data_dict['pids'] += [{'id': utils.generate_pid(),
-                               'type': 'version',
+                               'type': 'relation',
                                'provider': 'Etsin',
+                               'relation':'version'
                                }]
 
-    # If no primary metadata PID exists, use dataset id as primary metadata PID
-    # by copying dataset id value to primary metadata PID
-    if not utils.get_pids_by_type('metadata', data_dict, primary=True):
+    # If no primary identifier exists, use dataset id as primary identifier
+    # by copying dataset id value to primary identifier PID
+    if not utils.get_pids_by_type('primary', data_dict):
        data_dict['pids'].insert(0, {'id': data_dict['id'],
-                                    'type': u'metadata',
-                                    'primary': u'True',
-                                    'provider': u'Etsin',
+                                    'type': u'primary',
+                                    'provider': u'Etsin'
                                    })
 
 
@@ -159,7 +159,7 @@ def _add_ida_download_url(context, data_dict):
                     log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))
                     data_dict['access_application_download_URL'] = new_url
         else:
-            log.warn("Failed to get primary data PID for dataset")
+            log.warn("Failed to get access PID for dataset")
 
 
 def package_create(context, data_dict):

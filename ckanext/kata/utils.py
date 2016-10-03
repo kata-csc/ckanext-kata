@@ -242,32 +242,29 @@ def get_funders(data_dict):
                   data_dict.get('agent', []))
 
 
-def datapid_to_name(string):
+def pid_to_name(string):
     '''
-    Wrap re.sub to convert a data-PID to package.name
+    Wrap re.sub to convert a PID to package.name.
     '''
-    return re.sub(*settings.DATAPID_TO_NAME_REGEXES, string=string)
+    return re.sub(*settings.PID_TO_NAME_REGEXES, string=string)
 
 
-def get_pids_by_type(pid_type, data_dict, primary=None, use_package_id=False):
+def get_pids_by_type(pid_type, data_dict, relation=None):
     '''
-    Get all of package PIDs of certain type
+    Get all package PID dicts of certain type
 
-    :param use_package_id: Set to True to get package.id as primary metadata PID
-    :param primary: True to get only primary pids, or False to get all pids without primary='True', use None to get all pids.
-    :param pid_type: PID type to get (data, metadata, version)
+    :param pid_type: PID type to get (primary, access, relation)
     :param data_dict:
+    :param relation: relation type. None == get all pids. Basically applicable only
+            when pid type is relation, otherwise not useful since primary and access
+            types do not have relation defined.
     :rtype: list of dicts
     '''
-    extra = []
-    if use_package_id:
-        if pid_type == 'metadata' and data_dict.get('id'):
-            extra = [{'primary': u'True', 'type': pid_type, 'id': data_dict['id']}]
 
     return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
-            (primary is None or asbool(x.get('primary', 'False')) == primary)] + extra
+            (relation == None or x.get('relation') == relation)]
 
-def get_primary_pid(pid_type, data_dict, use_package_id=False):
+def get_primary_pid(data_dict, get_dict=False):
     '''
     Returns the primary PID of the given type for a package.
     This is a convenience function that returns the first primary PID
@@ -275,26 +272,46 @@ def get_primary_pid(pid_type, data_dict, use_package_id=False):
 
     If no primary PID can be found, this function returns None.
 
-    :param pid_type: PID type to get (data, metadata, version)
     :param data_dict:
-    :param use_package_id: Set to True to get package.id as primary metadata PID
-    :return: the primary PID of the given type
+    :return: the primary identifier of the package
     :rtype: str or unicode
     '''
 
-    pids = get_pids_by_type(pid_type=pid_type, data_dict=data_dict, primary=True, use_package_id=use_package_id)
+    pids = get_pids_by_type(pid_type='primary', data_dict=data_dict)
+    if pids:
+        if get_dict:
+            return pids[0]
+        return pids[0]['id']
+    else:
+        return None
+
+
+def get_access_pid(data_dict):
+    '''
+    Returns the access PID of the given type for a package.
+    This is a convenience function that returns the first access PID
+    returned by get_pids_by_type.
+
+    If no access PID can be found, this function returns None.
+
+    :param data_dict:
+    :return: the access identifier of the package
+    :rtype: str or unicode
+    '''
+
+    pids = get_pids_by_type(pid_type='access', data_dict=data_dict)
     if pids:
         return pids[0]['id']
     else:
         return None
 
-def get_primary_data_pid_from_package(package):
+def get_primary_pid_from_package(package):
     '''
     Returns the primary metadata PID for a _package_.
 
     :param package: dataset to query
     :type package: model.Package
-    :return: the primary data PID
+    :return: the primary identifier
     :rtype: str or unicode
     '''
 
@@ -303,9 +320,9 @@ def get_primary_data_pid_from_package(package):
     pids = [(k, v) for k, v in package.extras.iteritems() if k.startswith('pids')]
     primary_pid = None
     for key, value in pids:
-        if 'primary' in key and value == u'True':  # Note string type!
+        if 'type' in key and value == u'primary':  # Note string type!
             idx = key.split('_')[1]
-            if package.extras[pid_type.format(idx=idx)] == 'metadata':
+            if package.extras[pid_type.format(idx=idx)] == 'primary':
                 primary_pid = package.extras[pid_id.format(idx=idx)]
 
     return primary_pid
@@ -315,7 +332,7 @@ def get_package_id_by_pid(pid, pid_type):
     """ Find pid by id and type.
 
     :param pid: id of the pid
-    :param pid_type: type of the pid
+    :param pid_type: type of the pid (primary, access, relation)
     :return: id of the package
     """
     query = select(['key', 'package_id']).where(and_(model.PackageExtra.value == pid, model.PackageExtra.key.like('pids_%_id'),
@@ -330,19 +347,21 @@ def get_package_id_by_pid(pid, pid_type):
     return None
 
 
-def get_package_id_by_data_pids(data_dict):
+# THIS METHOD WAS PREVIOUSLY GET_PACKAGE_ID_BY_DATA_PIDS, is the below correct?
+def get_package_id_by_access_or_primary_pid(data_dict):
     '''
     Try if the provided data PIDs match exactly one dataset.
 
     :param data_dict:
     :return: Package id or None if not found.
     '''
-    data_pids = get_pids_by_type('data', data_dict)
+    primary_pid = get_primary_pid(data_dict)
+    access_pid = get_access_pid(data_dict)
 
-    if len(data_pids) == 0:
+    if not primary_pid and not access_pid:
         return None
 
-    pid_list = [pid.get('id') for pid in data_pids]
+    pid_list = [primary_pid, access_pid]
 
     # Get package ID's with matching PIDS
     query = Session.query(model.PackageExtra.package_id.distinct()).\
@@ -361,14 +380,14 @@ def get_package_id_by_data_pids(data_dict):
     # Dictize the results
     extras = model_dictize.extras_list_dictize(extras, {'model': PackageExtra})
 
-    # Check that matching PIDS are type 'data'.
+    # Check that matching PIDS are either type 'primary' or 'access'.
     for extra in extras:
         key = extra['key'].split('_')   # eg. ('pids', '0', 'id')
 
         if key[2] == 'id' and extra['value'] in pid_list:
             type_key = '_'.join(key[:2] + ['type'])
 
-            if not filter(lambda x: x['key'] == type_key and x['value'] == 'data', extras):
+            if not filter(lambda x: x['key'] == type_key and (x['value'] == 'primary' or x['value'] == 'access'), extras):
                 return None      # Found a hit with wrong type of PID
 
     return pkg_ids[0]    # No problems found, so use this
@@ -430,18 +449,18 @@ def is_ida_pid(pid):
     return pid and IDA_PID_REGEX.match(pid)
 
 
-def generate_ida_download_url(data_pid):
+def generate_ida_download_url(access_pid):
     '''
-    Returns an assumed download URL for the data based on the given data PID.
+    Returns an assumed download URL for the data based on the given access PID.
 
     TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
 
-    :param data_pid: the PID of the IDA dataset (should be actual data PID, not metadata PID)
+    :param access_pid: the PID of the IDA dataset (should be actual data PID, not metadata PID)
     :return: a download URL for an IDA dataset
     '''
 
     ida_download_url_template = "http://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
-    return ida_download_url_template.format(p=data_pid)
+    return ida_download_url_template.format(p=access_pid)
 
 
 def slugify(str):

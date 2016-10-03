@@ -420,7 +420,7 @@ class ContactController(BaseController):
         contact address of the given dataset.
 
         The prefix template should have formatting placeholders for the following arguments:
-        {sender_name}, {sender_email}, {package_title}, {data_pid}
+        {sender_name}, {sender_email}, {package_title}, {package_id}
 
         :param pkg_id: package id
         :type pkg_id: string
@@ -485,7 +485,8 @@ u"service."))
                     sender_name=sender_name,
                     sender_email=sender_addr,
                     package_title=package_title,
-                    metadata_pid=utils.get_primary_data_pid_from_package(package)
+                    package_id=pkg_id
+                    # above line was: metadata_pid=utils.get_primary_data_pid_from_package(package)
                 )
 
                 log.info(u"Message {m} sent from {a} ({b}) to {r} about {c}, IP: {d}"

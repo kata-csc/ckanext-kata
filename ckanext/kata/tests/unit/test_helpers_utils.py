@@ -187,13 +187,13 @@ class TestUtils(TestCase):
         self.assertEquals(utils.get_package_id_by_pid('some_version_pid_2', 'data'), None)
         self.assertEquals(utils.get_package_id_by_pid('invalid', 'version'), None)
 
-    def test_get_package_id_by_data_pids(self):
+    def test_get_package_id_by_access_or_primary_pid(self):
         package_1_id, package_2_id = self._create_datasets()
 
-        package_id = utils.get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_1'}]})
+        package_id = utils.get_package_id_by_access_or_primary_pid({'pids': [{'type': 'data', 'id': 'some_data_pid_1'}]})
         self.assertEquals(package_1_id, package_id[0])
 
-        package_id = utils.get_package_id_by_data_pids({'pids': [{'type': 'data', 'id': 'some_data_pid_2'}]})
+        package_id = utils.get_package_id_by_access_or_primary_pid({'pids': [{'type': 'data', 'id': 'some_data_pid_2'}]})
         self.assertEquals(package_2_id, package_id[0])
 
     def test_generate_pid(self):
@@ -237,8 +237,8 @@ class TestUtils(TestCase):
 
         assert translator(_FIELD_TITLES['tags']) == title
 
-    def test_datapid_to_name(self):
-        name = utils.datapid_to_name('http://example.com/some/thing?good=true')
+    def test_pid_to_name(self):
+        name = utils.pid_to_name('http://example.com/some/thing?good=true')
         assert name
         assert '/' not in name
 

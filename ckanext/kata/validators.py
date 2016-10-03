@@ -416,29 +416,6 @@ def check_langtitle(key, data, errors, context):
         raise Invalid({'key': 'langtitle', 'value': _('Missing dataset title')})
 
 
-#def check_pids(key, data, errors, context):
-#    '''
-#    Check that compulsory PIDs exist. Also check that primary metadata PID is not modified in any way.
-#    '''
-
- #   if data.get((u'pids', 0, u'id'), None) is None:
- #       raise Invalid({'key': 'pids', 'value': _('Missing dataset PIDs')})
-
-#    primary_keys = [k for k in data.keys() if k[0] == 'pids' and k[2] == 'primary']
- #   for k in primary_keys:
- #       if asbool(data[k] or False) and data[(k[0], k[1], 'type')] == 'metadata' and data[(k[0], k[1], 'id')]:
- #           primary_pid = data[(k[0], k[1], 'id')]
-
-#            try:
-#                data_dict = logic.get_action('package_show')({}, {'id': data[('id',)]})
-#                old_primary_pid = utils.get_pids_by_type('metadata', data_dict, primary=True)[0].get('id')
-#                if old_primary_pid and old_primary_pid != primary_pid:
-#                    raise Invalid({'key': 'pids', 'value': _("Primary data PID can not be modified")})
-#            except (logic.NotFound, KeyError):
-#                # New dataset, all is well
-#                pass
-
-
 def check_events(key, data, errors, context):
     '''
     Validates that none of the event's data is empty

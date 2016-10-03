@@ -24,7 +24,6 @@ from ckan.logic import get_action, ValidationError
 from ckanext.kata import settings, utils
 from ckan.lib.navl.dictization_functions import validate
 from ckan.lib import plugins
-from ckanext.kata.utils import get_pids_by_type
 from pylons.i18n.translation import gettext_noop as N_
 from ckan.common import request
 from webhelpers.html import literal

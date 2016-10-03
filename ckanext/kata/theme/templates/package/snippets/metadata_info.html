@@ -324,7 +324,7 @@
   {%- endif -%}
 
   <div class="form-row">
-    <div class="form-label">{{ _('Identifiers') }}</div>
+    <div class="form-label">{{ _('Primary identifier') }}</div>
     <div class="form-content">
       <table class="form-inner-table">
       <!--
@@ -333,47 +333,41 @@
           <td><a href="{{ permanent_url }}">{{ permanent_url }}</a></td>
         </tr>-->
         <tr>
-          <th>{{ _('Primary identifier') }}</th>
-          {% set primary_metadata_id = h.get_pids_by_type('metadata', pkg_dict, primary=True) %} 
-          {% if primary_metadata_id %} 
-            <td>{{ h.get_identifier_display_html(primary_metadata_id[0]['id']) | safe }}</td> 
+          {% set primary_pid = h.get_pids_by_type('primary', pkg_dict) %} 
+          {% if primary_pid %} 
+            <td>{{ h.get_identifier_display_html(primary_pid[0]['id']) | safe }}</td> 
           {% else %} 
-            <td>{{ h.get_identifier_display_html(pkg_dict.id) | safe }}</td> 
+            <td>ERROR</td> 
           {% endif %}
-          <td>{{ kata_form.tooltip(tooltip=_("<p>Metadata identifier is an identifier given for a single metadata record. The primary metadata identifier is the metadata identifier which refers to this dataset. Additional metadata identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to this metadata record using different identifier systems.</p>")) }}</td>
+          <td>{{ kata_form.tooltip(tooltip=_("<p>Primary identifier is the main identifier of a particular dataset. ...... The primary metadata identifier is the metadata identifier which refers to this dataset. Additional metadata identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to this metadata record using different identifier systems.</p>")) }}</td>
         </tr>
-
-        {% set first_version_pid = true %}
-        {% set first_data_pid = true %}
-        {% for pid_type in h.get_pid_types() %}
-          {% for pid in h.get_pids_by_type(pid_type, pkg_dict, primary=False) %}
-            <tr>
-              {% if pid_type == 'metadata' %}
-                <th>{{ _('Other identifier') | safe }}</th>
-              {% endif %}
-              {% if pid_type == 'data' %}
-                <th>{{ _('Data identifier') | safe }}</th>
-              {% endif %}
-              {% if pid_type == 'version' %}
-                <th>{{ _('Version identifier') | safe }}</th>
-              {% endif %}
-              <td>{{ h.get_identifier_display_html(pid.id) | safe }}</td>
-              {% if pid_type == 'data' and first_data_pid %}
-                {% set first_data_pid = false %}
-                <td>{{ kata_form.tooltip(tooltip=_("<p>Data identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</td>
-              {% endif %}
-              {% if pid_type == 'version' and first_version_pid %}
-                {% set first_version_pid = false %}
-                <td>{{ kata_form.tooltip(tooltip=_("Version identifier is just like the data identifier, but it refers to a certain version of data.")) }}</td>
-              {% endif %}
-            </tr>
-          {% endfor %}
-        {% endfor %}
       </table>
     </div>
   </div>
 
+  {% set relation_pids = h.get_pids_by_type('relation', pkg_dict) %}
+  {% if relation_pids %}
+    <div class="form-row">
+      <div class="form-label">{{ _('Other identifiers') }}</div>
+      <div class="form-content">
+        <table class="form-inner-table">
+          {% set first_relation_pid = true %}
+          {% for pid in relation_pids %}
+            <tr>
+              <th>{{ 'Relaatio-tyyppi' | safe }}</th>
+              <td>{{ h.get_identifier_display_html(pid.id) | safe }}</td>
+              {% if first_relation_pid %}
+                {% set first_relation_pid = false %}
+                <td>{{ kata_form.tooltip(tooltip=_("<p>Relation identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  {% endif %}
 </div>
+
 <div class="dataset-section form-tab-content">
 <!-- Dataset lifecycle events -->
 
