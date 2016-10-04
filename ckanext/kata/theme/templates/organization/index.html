@@ -65,11 +65,13 @@
           {% endblock %}
 
           {% if c.page.items or request.params %} <!-- Search results list -->
-            {% snippet "organization/snippets/organization_list.html", organizations=c.page.items, description=False, image=False %}
 
+            <!-- Organization hierarchy listing -->
             <div id="publisher-tree">
               {% snippet 'organization/snippets/organization_tree.html', top_nodes=h.get_action('group_tree', {'type': 'organization'}), show_dataset_count=true%}
             </div>
+
+            {#% snippet "organization/snippets/organization_list.html", organizations=c.page.items, description=False, image=False %#}
 
           {% else %}
             <p class="empty">

@@ -239,7 +239,8 @@ i.chevron-alt {
   height: auto;
   margin-bottom: 0px;
   font-size: 90%;
-  filter: 0 !important;
+  -webkit-filter: 0 !important;
+          filter: 0 !important;
   border-bottom: 1px solid #c9c9c9;
 }
 .site-footer a {
@@ -1564,7 +1565,8 @@ textarea {
   width: 150px;
 }
 header.masthead {
-  filter: 0 !important;
+  -webkit-filter: 0 !important;
+          filter: 0 !important;
 }
 .debug,
 #debug {
@@ -2773,6 +2775,65 @@ a.download {
 .organization-container {
   border-bottom: 1px solid #c9c9c9;
   padding-bottom: 60px;
+}
+/* ckanext-hierarchy collapsible organization tree styles */
+#publisher-tree {
+  margin-top: 1em;
+}
+.organization-tree {
+  margin-left: 0 !important;
+  /* 1st level ogranizations */
+}
+.organization-tree button {
+  display: inline-block;
+  position: absolute;
+  padding: 2px 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.organization-tree button i[class^="icon-"] {
+  display: inline-block;
+  line-height: 22px;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0;
+}
+.organization-tree .btn.btn-gray {
+  background-color: #c9c9c9 !important;
+  background-image: none;
+}
+.organization-tree .js-collapse,
+.organization-tree .js-collapsed {
+  display: none;
+}
+.organization-tree .organization {
+  list-style-type: none;
+}
+.organization-tree .organization-row {
+  height: 26px;
+  padding-left: 30px;
+  margin-bottom: 10px;
+  background-color: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 3px;
+}
+.organization-tree .organization-row a {
+  vertical-align: middle;
+  line-height: 27px;
+}
+.organization-tree .organization-row a .highlight {
+  background-color: #B1D7FE;
+}
+.organization-tree .organization-row a span.badge {
+  vertical-align: middle;
+}
+.organization-tree .organization-subtree {
+  margin-left: 30px;
+}
+.organization-tree ul.no-bullet {
+  list-style-type: none;
+  padding-left: 10px;
 }
 .browse-search-switcher {
   margin-bottom: 40px;
