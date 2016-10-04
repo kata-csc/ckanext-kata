@@ -17,7 +17,7 @@
         <form id="organization-search" class="dataset-search clearfix search-form" method="get" data-module="select-switch">
             <div class="search-terms">
                <div class="search-input control-group search-giant">
-                 <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
+                 <input data-organization-filter type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
                    placeholder="{{ _('Enter search term or query…') }}" tabindex="1" autofocus>
                  <button type="submit" value="search">
                    <i class="icon-search"></i>
@@ -56,7 +56,7 @@
       <div class="row-fluid">
         <div class="search-results-list">
 
-          {% block search_title %}
+          {% block search_title %} <!-- Löytyi N organisaatiota -->
             {% if not no_title %}
               <span class="number-of-results">
                 {% snippet 'snippets/search_result_text.html', type='organization', query=c.q, count=c.page.item_count %}
@@ -64,8 +64,13 @@
             {% endif %}
           {% endblock %}
 
-          {% if c.page.items or request.params %}
+          {% if c.page.items or request.params %} <!-- Search results list -->
             {% snippet "organization/snippets/organization_list.html", organizations=c.page.items, description=False, image=False %}
+
+            <div id="publisher-tree">
+              {% snippet 'organization/snippets/organization_tree.html', top_nodes=h.get_action('group_tree', {'type': 'organization'}), show_dataset_count=true%}
+            </div>
+
           {% else %}
             <p class="empty">
               {{ _('There are currently no organizations for this site') }}.
