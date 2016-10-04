@@ -4,7 +4,7 @@ Styles are in Less format. The `lessc` compiler is expected to be found under `n
 
 Install requirements to the same location as less (`sources/ckan`):
 ```
-npm install nodewatch autoprefixer
+npm install nodewatch autoprefixer-cli
 ```
 Note: From less 2.x onwards there's an autoprefixer plugin for less. For less 1.x we need to use the standalone solution.
 
