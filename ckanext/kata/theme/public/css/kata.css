@@ -2831,7 +2831,7 @@ a.download {
 .organization-tree .organization-subtree {
   margin-left: 30px;
 }
-.organization-tree ul.no-bullet {
+ul.no-bullet {
   list-style-type: none;
   padding-left: 10px;
 }

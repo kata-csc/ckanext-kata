@@ -56,7 +56,8 @@
       <div class="row-fluid">
         <div class="search-results-list">
 
-          {% block search_title %} <!-- Löytyi N organisaatiota -->
+          <!-- Löytyi N organisaatiota -->
+          {% block search_title %}
             {% if not no_title %}
               <span class="number-of-results">
                 {% snippet 'snippets/search_result_text.html', type='organization', query=c.q, count=c.page.item_count %}
@@ -64,25 +65,33 @@
             {% endif %}
           {% endblock %}
 
-          {% if c.page.items or request.params %} <!-- Search results list -->
+          <!-- Search results list -->
+          {% if c.q and c.page.items %}
+            <!-- query params found - show a flatlist -->
+            {% snippet "organization/snippets/organization_list.html", organizations=c.page.items, description=False, image=False %}
 
-            <!-- Organization hierarchy listing -->
+            {% block page_pagination_list %}
+              {{ c.page.pager(q=c.q, sort=c.sort_by_selected or '') }}
+            {% endblock %}
+
+          <!-- no query params - show a tree -->
+          {% elif not c.q and c.page.items %}
             <div id="publisher-tree">
               {% snippet 'organization/snippets/organization_tree.html', top_nodes=h.get_action('group_tree', {'type': 'organization'}), show_dataset_count=true%}
             </div>
 
-            {#% snippet "organization/snippets/organization_list.html", organizations=c.page.items, description=False, image=False %#}
-
+          <!-- No ogranizations -->
           {% else %}
             <p class="empty">
               {{ _('There are currently no organizations for this site') }}.
             </p>
           {% endif %}
+
         </div>
 
-        {% block page_pagination_list %}
+        {#% block page_pagination_list %}
           {{ c.page.pager(q=c.q, sort=c.sort_by_selected or '') }}
-        {% endblock %}
+        {% endblock %#}
 
       </div>
     </div>
