@@ -94,3 +94,75 @@
   border-bottom: 1px solid @border-color-bg;
   padding-bottom: 60px;
 }
+
+/* ckanext-hierarchy collapsible organization tree styles */
+
+#publisher-tree {
+  margin-top: 1em;
+}
+
+.organization-tree {
+  margin-left: 0 !important;
+
+  button {
+    display: inline-block;
+    position: absolute;
+
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+
+    i[class^="icon-"]{
+      display: inline-block;
+      line-height: 22px;
+      text-align: center;
+      vertical-align: middle;
+      margin: 0;
+    }
+  }
+
+  .btn.btn-gray {
+    background-color: @border-color-bg !important;
+    background-image: none;
+  }
+
+  .js-collapse, .js-collapsed {
+    display: none;
+  }
+
+  /* 1st level ogranizations */
+  .organization {
+    list-style-type: none;
+  }
+
+  .organization-row {
+    height: 26px;
+    padding-left: 30px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid @border-color-bg;
+    border-radius: 3px;
+
+    a {
+      vertical-align: middle;
+      line-height: 27px;
+      .highlight {
+        background-color: #B1D7FE;
+      }
+      span.badge {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .organization-subtree {
+    margin-left: 30px;
+  }
+
+  ul.no-bullet {
+    list-style-type: none;
+    padding-left: 10px;
+  }
+
+}
