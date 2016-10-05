@@ -32,6 +32,9 @@
                   {% endfor -%}
                 </span>
               {%- endif %}
+
+              {# Show sort selection only on search results (flatlist) #}
+              {% if c.q and c.page.items %}
               <div class="form-select control-group control-order-by">
                 <label for="field-order-by">{{ _('Order by') }}</label>
                 <select id="field-order-by" name="sort">
@@ -42,6 +45,9 @@
                     {% endif %}
                   {% endfor %}
                 </select>
+               {% endif %}
+
+
                 {% block search_sortby_button %}
                   <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
                 {% endblock %}
@@ -56,7 +62,6 @@
       <div class="row-fluid">
         <div class="search-results-list">
 
-          <!-- Löytyi N organisaatiota -->
           {% block search_title %}
             {% if not no_title %}
               <span class="number-of-results">
@@ -65,22 +70,20 @@
             {% endif %}
           {% endblock %}
 
-          <!-- Search results list -->
           {% if c.q and c.page.items %}
-            <!-- query params found - show a flatlist -->
+            {# on a search query with results - show a flatlist instead of hierarchy tree #}
             {% snippet "organization/snippets/organization_list.html", organizations=c.page.items, description=False, image=False %}
 
             {% block page_pagination_list %}
               {{ c.page.pager(q=c.q, sort=c.sort_by_selected or '') }}
             {% endblock %}
 
-          <!-- no query params - show a tree -->
+          {# on an empty search - show the whole organization hierarchy tree #}
           {% elif not c.q and c.page.items %}
             <div id="publisher-tree">
               {% snippet 'organization/snippets/organization_tree.html', top_nodes=h.get_action('group_tree', {'type': 'organization'}), show_dataset_count=true%}
             </div>
-
-          <!-- No ogranizations -->
+          
           {% else %}
             <p class="empty">
               {{ _('There are currently no organizations for this site') }}.
