@@ -104,27 +104,26 @@
 .organization-tree {
   margin-left: 0 !important;
 
-  button {
+  .btn-collapse {
+    /* Button to collapse / expand the tree branches */
     display: inline-block;
     position: absolute;
-
-    padding: 2px 6px;
-    font-size: 12px;
-    line-height: 1.5;
+    padding: 5px 12px;
     border-radius: 3px;
 
-    i[class^="icon-"]{
-      display: inline-block;
+    i[class^="icon-"] {
       line-height: 22px;
-      text-align: center;
-      vertical-align: middle;
-      margin: 0;
+      font-size: 18px;
     }
-  }
 
-  .btn.btn-gray {
-    background-color: @border-color-bg !important;
-    background-image: none;
+    /* make it look like a link*/
+    color: @link-color;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover, &:focus {
+      color: @link-secondary-color;
+    }
+
   }
 
   .js-collapse, .js-collapsed {
@@ -137,16 +136,21 @@
   }
 
   .organization-row {
-    height: 26px;
+    height: 32px;
     padding-left: 30px;
     margin-bottom: 10px;
     background-color: white;
-    border: 1px solid @border-color-bg;
-    border-radius: 3px;
+    /*border: 1px solid @border-color-bg;
+    border-radius: 3px;*/
+
+    /* left blue bar */
+    border-left: 2px solid #0095ca;
+    padding-left: 2em;
+    margin: 4px 0;
 
     a {
       vertical-align: middle;
-      line-height: 27px;
+      line-height: 32px;
       .highlight {
         background-color: #B1D7FE;
       }
@@ -159,6 +163,14 @@
   .organization-subtree {
     margin-left: 30px;
   }
+
+  .badge {
+    background-color: white !important;
+    border: 1px solid @brand-primary-color;
+    color: @brand-primary-color;
+    text-shadow: none;
+  }
+
 }
 
 ul.no-bullet {

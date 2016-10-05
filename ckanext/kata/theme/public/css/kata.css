@@ -2784,24 +2784,24 @@ a.download {
   margin-left: 0 !important;
   /* 1st level ogranizations */
 }
-.organization-tree button {
+.organization-tree .btn-collapse {
+  /* Button to collapse / expand the tree branches */
   display: inline-block;
   position: absolute;
-  padding: 2px 6px;
-  font-size: 12px;
-  line-height: 1.5;
+  padding: 5px 12px;
   border-radius: 3px;
+  /* make it look like a link*/
+  color: #0095ca;
+  text-decoration: none;
+  cursor: pointer;
 }
-.organization-tree button i[class^="icon-"] {
-  display: inline-block;
+.organization-tree .btn-collapse i[class^="icon-"] {
   line-height: 22px;
-  text-align: center;
-  vertical-align: middle;
-  margin: 0;
+  font-size: 18px;
 }
-.organization-tree .btn.btn-gray {
-  background-color: #c9c9c9 !important;
-  background-image: none;
+.organization-tree .btn-collapse:hover,
+.organization-tree .btn-collapse:focus {
+  color: #006f97;
 }
 .organization-tree .js-collapse,
 .organization-tree .js-collapsed {
@@ -2811,16 +2811,20 @@ a.download {
   list-style-type: none;
 }
 .organization-tree .organization-row {
-  height: 26px;
+  height: 32px;
   padding-left: 30px;
   margin-bottom: 10px;
   background-color: white;
-  border: 1px solid #c9c9c9;
-  border-radius: 3px;
+  /*border: 1px solid @border-color-bg;
+    border-radius: 3px;*/
+  /* left blue bar */
+  border-left: 2px solid #0095ca;
+  padding-left: 2em;
+  margin: 4px 0;
 }
 .organization-tree .organization-row a {
   vertical-align: middle;
-  line-height: 27px;
+  line-height: 32px;
 }
 .organization-tree .organization-row a .highlight {
   background-color: #B1D7FE;
@@ -2830,6 +2834,12 @@ a.download {
 }
 .organization-tree .organization-subtree {
   margin-left: 30px;
+}
+.organization-tree .badge {
+  background-color: white !important;
+  border: 1px solid #0095ca;
+  color: #0095ca;
+  text-shadow: none;
 }
 ul.no-bullet {
   list-style-type: none;
