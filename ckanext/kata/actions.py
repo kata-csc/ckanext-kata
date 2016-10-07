@@ -553,9 +553,20 @@ def organization_list_for_user(context, data_dict):
 def organization_list(context, data_dict):
     """ Modified from ckan.logic.action.get._group_or_org_list.
         Sort by title instead of name and lower case ordering.
+
+        For some reason, sorting by packages filters out all
+        organizations without datasets, which results to
+        a wrong number of organizations in the organization
+        index view. The sort after a search query should,
+        however default to 'packages'. 
     """
+
     if not data_dict.get('sort'):
-        data_dict['sort'] = 'packages'
+        if data_dict.get('q'):
+            data_dict['sort'] = 'packages'
+        else:
+            data_dict['sort'] = 'title'
+
     return ckan.logic.action.get.organization_list(context, data_dict)
 
 
