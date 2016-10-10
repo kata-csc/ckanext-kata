@@ -25,6 +25,34 @@ Examples:
   {% endcall %}
 {% endmacro %}
 
+
+{#
+Creates all the markup required for an input element that does NOT get submitted.
+Handles matching labels to inputs, error messages and other useful elements.
+
+id          - The id to use on the input and label. Convention is to prefix with 'field-'.
+label       - The human readable label.
+value       - The value of the input.
+placeholder - Some placeholder text.
+type        - The type of input eg. email, url, date (default: text).
+error       - A list of error strings for the field or just true to highlight the field.
+classes     - An array of classes to apply to the control-group.
+
+Examples:
+
+  {% import 'macros/form.html' as form %}
+  {{ form.input('title', label=_('Title'), value=data.title, error=errors.title) }}
+
+#}
+{% macro input_unnamed(id, label='', value='', placeholder='', type='text', error="", classes=[], control_classes=[], label_classes=[], attrs={}) %}
+  {%- set extra_html = caller() if caller -%}
+
+  {% call input_block(id, label or id, error, classes, extra_html=extra_html, control_classes=control_classes, label_classes=label_classes) %}
+    <input id="{{ id }}" type="{{ type }}" value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}" {{ attributes(attrs) }} />
+  {% endcall %}
+{% endmacro %}
+
+
 {#
 Builds a single checkbox input.
 

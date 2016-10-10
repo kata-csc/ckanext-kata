@@ -4,7 +4,7 @@
 from ckan.common import OrderedDict
 from pylons.i18n.translation import gettext_noop as N_
 
-PID_TYPES = ['primary', 'access', 'relation']
+PID_TYPES = ['primary', 'relation']
 
 # Overridden CKAN role permissions
 ROLE_PERMISSIONS = OrderedDict([
@@ -135,7 +135,7 @@ KATA_FIELDS_REQUIRED = ['agent',
 
 # Recommended extras fields
 KATA_FIELDS_RECOMMENDED = ['access_application',
-                           'access_application_ida_identifier',
+                           'external_id',
                            'access_application_URL',
                            'access_request_URL',
                            'discipline',
@@ -167,7 +167,7 @@ ERRORS = {
     u'Accept-terms': N_(u'Terms of use'),
     u'Langnotes': u'Description + language',
     u'License URL': u'Copyright notice',
-    u'Access application ida identifier': u'IDA metadata identifier for Reetta service'
+    u'External id': u'External identifier'
 }
 
 # Message strings to be automatically included in emails sent by users

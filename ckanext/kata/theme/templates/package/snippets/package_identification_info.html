@@ -46,14 +46,21 @@
     {% set pids = h.get_pids_by_type('relation', data) or [dict(type='relation')] %}
     {% for pid in pids %}
       {% set pid_readonly = " readonly" if pid.id and not errors.get('pids', [])[index.index] %}
+      {% set pid_select_disabled = " disabled" if pid.id and not errors.get('pids', [])[index.index] %}
       <div class="control-custom">
         <div class="form-row">
-          <div class="form-content kata-medium{{ ' error' if errors }}{{ ' no-label-controls' if not hasLabel}}">
+          <div style="margin-left: 15% !important; width: 65%" class="form-content kata-medium{{ ' error' if errors }}{{ ' no-label-controls' if not hasLabel}}">
+            <select style="width: 140px;" id="pids__{{ index }}__relation" name="pids__{{ index }}__relation" class="pids_{{ index }}" {{ pid_select_disabled }}>
+              <option selected value="is_version_of">{{ _('is version of') }}</option>
+              <option value="has_version">{{ _('has version') }}</option>
+              <option value="is_part_of">{{ _('is part of') }}</option>
+              <option value="has_part">{{ _('has part') }}</option>
+            </select>
             <input id="pids__{{ index }}__id" type="text" name="pids__{{ index }}__id" value="{{ pid.id | empty_and_escape }}" placeholder="http://www.pid.com/1234" class="kata-medium-input pid kata-pid-input-wide pids_{{ index }}" {{ pid_readonly }} />
           </div>
             {% if pid.id %}
-              <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
-              <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));">{{ _('Edit') if pid.id }}</label>
+              <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly')); $('select.pids_{{ index }}').prop('disabled', !$('select.pids_{{ index }}').prop('disabled'));" />
+              <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly')); $('select.pids_{{ index }}').prop('disabled', !$('select.pids_{{ index }}').prop('disabled'));">{{ _('Edit') if pid.id }}</label>
             {% endif %}
 
             {% if loop.first %}

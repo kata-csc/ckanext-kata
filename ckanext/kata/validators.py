@@ -579,9 +579,10 @@ def validate_pid_uniqueness(key, data, errors, context):
                 raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
 
 
-def check_access_application_ida_identifier(key, data, errors, context):
+def check_external_id(key, data, errors, context):
     '''
-    Check access_application_ida_identifier value is an IDA identifier
+    Check external_id value is an IDA identifier (or, if in the future other types of accesses than IDA
+    are needed, then this validator should be extended to also accept those types of IDs).
     (Identifier.series)
 
     :param key:
@@ -590,9 +591,23 @@ def check_access_application_ida_identifier(key, data, errors, context):
     :param context:
     :return:
     '''
-    if data.get(('availability',)) == 'access_application':
-        if data.get(('access_application',)) == 'access_application_reetta_ida' and not is_ida_pid(data[key]):
-            raise Invalid(_('Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)'))
-    else:
-        data.pop(key, None)
-        raise StopOnError
+    if data.get(('availability',)) == 'access_application' and \
+    data.get(('access_application',)) == 'access_application_reetta_ida' and \
+    not is_ida_pid(data[key]):
+        raise Invalid(_('Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)'))
+
+
+def validate_relation(key, data, errors, context):
+    '''
+    Check relation key is valid
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    if data.get(key):
+        pass
+        # Implement logic which checks relation is valid

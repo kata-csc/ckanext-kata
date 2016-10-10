@@ -122,7 +122,7 @@ class Schemas:
                                  unicode, co.flattened_to_extras],
                           'type': [not_missing, unicode, co.flattened_to_extras],
                           # The below relation schema needs further work
-                          'relation': [ignore_missing, unicode, co.flattened_to_extras]}
+                          'relation': [ignore_missing, va.validate_relation, unicode, co.flattened_to_extras]}
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
@@ -135,8 +135,8 @@ class Schemas:
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
         schema['access_application'] = [ignore_missing, unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['access_application_ida_identifier'] = [ignore_missing, va.check_access_application_ida_identifier,
-                                                       unicode, va.validate_general, co.convert_to_extras_kata]
+        schema['external_id'] = [ignore_missing, va.check_external_id, unicode, va.validate_general,
+                                   co.convert_to_extras_kata]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]
         schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,

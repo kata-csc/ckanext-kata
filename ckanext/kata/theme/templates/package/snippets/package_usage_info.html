@@ -1,6 +1,8 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
+{% set external_id = h.get_external_id(data) %}
+
 <div class="tab-content-inner">
 
   <div class="alert alert-info" id="ida-pid-change-alert" style="display: none;">
@@ -66,7 +68,7 @@
           {{ kata_form.tooltip(tooltip=_("If the dataset is in IDA storage service and you would like to use Reetta resource entitlement management system to manage access rights to the dataset, choose this option. IDA is linked to Reetta, so your dataset's IDA metadata PID (Identifier.series) is required to establish connection between Reetta and IDA. Applicants are able to access the application form via Etsin dataset page, and after the dataset distributor has accepted the applicant's application, the applicant will be notified of this automatically.")) }}
         </label>
         <div class="m-left" id="access_application_reetta_ida_box" {% if not access_application_reetta_ida_option %} style="display: none" {%endif%}>
-          {{ form.input('access_application_ida_identifier', label=_("Enter IDA metadata identifier of the dataset"), id='access_application_ida_identifier', placeholder=_('urn:nbn:fi:csc-ida...'), value=data.access_application_ida_identifier, error=errors.access_application_ida_identifier, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+          {{ form.input_unnamed('access_application_reetta_ida_identifier', label=_("Enter IDA metadata identifier of the dataset"), placeholder=_('urn:nbn:fi:csc-ida...s'), value=external_id, error=errors.external_id, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
         </div>
 
         <label class="radio" for="access_application_reetta">
@@ -89,6 +91,8 @@
         <input type="radio" name="availability" id="contact_owner" value="contact_owner" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'contact_owner'%}checked{% endif %}>
         {{ _('contacting the distributor') }}
       </label>
+
+      <input id="external_id" type="hidden" name="external_id" value="{{ external_id | empty_and_escape }}" />
 
       {% if errors.availability %}
         <span class="error-block kata-error-non-input">{{ errors.availability[0] }}</span>

@@ -7,19 +7,14 @@ import logging
 import urllib2
 import socket
 import functionally as fn
-from paste.deploy.converters import asbool
 
-from pylons import config
 from lxml import etree
 import re
 from sqlalchemy.sql import select, and_
 from ckan import model as model
 from ckan.lib.dictization import model_dictize
 
-from ckan.lib.email_notifications import send_notification
-from ckan.logic import get_action
 from ckan.model import User, Package, Session, PackageExtra
-from ckan.lib import helpers as h
 from ckanext.kata import settings
 import unicodedata
 
@@ -264,7 +259,7 @@ def get_pids_by_type(pid_type, data_dict, relation=None):
     return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
             (relation == None or x.get('relation') == relation)]
 
-def get_primary_pid(data_dict, get_dict=False):
+def get_primary_pid(data_dict, get_as_dict=False):
     '''
     Returns the primary PID of the given type for a package.
     This is a convenience function that returns the first primary PID
@@ -273,37 +268,36 @@ def get_primary_pid(data_dict, get_dict=False):
     If no primary PID can be found, this function returns None.
 
     :param data_dict:
+    :param get_as_dict: If true, return a dictionary, otherwise return plaing string
     :return: the primary identifier of the package
-    :rtype: str or unicode
     '''
 
     pids = get_pids_by_type(pid_type='primary', data_dict=data_dict)
     if pids:
-        if get_dict:
+        if get_as_dict:
             return pids[0]
         return pids[0]['id']
     else:
         return None
 
 
-def get_access_pid(data_dict):
+def get_external_id(data_dict):
     '''
-    Returns the access PID of the given type for a package.
-    This is a convenience function that returns the first access PID
-    returned by get_pids_by_type.
+    Returns the external ID.
+    External ID is to be used when an external system needs to identify
+    this dataset with non-changing ID.
 
-    If no access PID can be found, this function returns None.
+    If no ID can be found, this function returns None.
 
     :param data_dict:
-    :return: the access identifier of the package
+    :return: the external ID of the package
     :rtype: str or unicode
     '''
 
-    pids = get_pids_by_type(pid_type='access', data_dict=data_dict)
-    if pids:
-        return pids[0]['id']
-    else:
-        return None
+    if data_dict.get('external_id'):
+        return data_dict.get('external_id')
+    return None
+
 
 def get_primary_pid_from_package(package):
     '''
@@ -347,21 +341,20 @@ def get_package_id_by_pid(pid, pid_type):
     return None
 
 
-# THIS METHOD WAS PREVIOUSLY GET_PACKAGE_ID_BY_DATA_PIDS, is the below correct?
-def get_package_id_by_access_or_primary_pid(data_dict):
+# THIS METHOD WAS PREVIOUSLY GET_PACKAGE_ID_BY_DATA_PIDS, is the below correct, or should relation pids also be used?
+def get_package_id_by_primary_pid(data_dict):
     '''
-    Try if the provided data PIDs match exactly one dataset.
+    Try if the provided primary PID matches exactly one dataset.
 
     :param data_dict:
     :return: Package id or None if not found.
     '''
     primary_pid = get_primary_pid(data_dict)
-    access_pid = get_access_pid(data_dict)
 
-    if not primary_pid and not access_pid:
+    if not primary_pid:
         return None
 
-    pid_list = [primary_pid, access_pid]
+    pid_list = [primary_pid]
 
     # Get package ID's with matching PIDS
     query = Session.query(model.PackageExtra.package_id.distinct()).\
@@ -387,7 +380,7 @@ def get_package_id_by_access_or_primary_pid(data_dict):
         if key[2] == 'id' and extra['value'] in pid_list:
             type_key = '_'.join(key[:2] + ['type'])
 
-            if not filter(lambda x: x['key'] == type_key and (x['value'] == 'primary' or x['value'] == 'access'), extras):
+            if not filter(lambda x: x['key'] == type_key and (x['value'] == 'primary'), extras):
                 return None      # Found a hit with wrong type of PID
 
     return pkg_ids[0]    # No problems found, so use this
@@ -449,18 +442,18 @@ def is_ida_pid(pid):
     return pid and IDA_PID_REGEX.match(pid)
 
 
-def generate_ida_download_url(access_pid):
+def generate_ida_download_url(external_id):
     '''
-    Returns an assumed download URL for the data based on the given access PID.
+    Returns an assumed download URL for the data based on the given access ID.
 
     TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
 
-    :param access_pid: the PID of the IDA dataset (should be actual data PID, not metadata PID)
+    :param external_id: the ID for the IDA dataset (should not change ever for this dataset)
     :return: a download URL for an IDA dataset
     '''
 
     ida_download_url_template = "http://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
-    return ida_download_url_template.format(p=access_pid)
+    return ida_download_url_template.format(p=external_id)
 
 
 def slugify(str):

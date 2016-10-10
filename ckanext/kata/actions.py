@@ -120,15 +120,15 @@ def _handle_pids(context, data_dict):
         data_dict['pids'] += [{'id': utils.generate_pid(),
                                'type': 'relation',
                                'provider': 'Etsin',
-                               'relation':'version'
+                               'relation':'has_version'
                                }]
 
     # If no primary identifier exists, use dataset id as primary identifier
     # by copying dataset id value to primary identifier PID
-    if not utils.get_pids_by_type('primary', data_dict):
+    if not utils.get_primary_pid(data_dict):
        data_dict['pids'].insert(0, {'id': data_dict['id'],
-                                    'type': u'primary',
-                                    'provider': u'Etsin'
+                                    'type': 'primary',
+                                    'provider': 'Etsin'
                                    })
 
 
@@ -149,7 +149,7 @@ def _add_ida_download_url(context, data_dict):
 
         url = data_dict.get('access_application_download_URL')
 
-        ida_pid = data_dict.get('access_application_ida_identifier')
+        ida_pid = data_dict.get('external_id')
 
         if ida_pid:
             if not url:

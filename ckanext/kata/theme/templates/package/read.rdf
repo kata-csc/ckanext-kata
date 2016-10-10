@@ -21,11 +21,11 @@
     </py:for>
 
     <dct:modified>${ c.pkg_dict['metadata_modified'] }</dct:modified>
-    <foaf:primaryTopic rdf:resource="${ h.get_primary_pid('data', c.pkg_dict) }"/>
+    <foaf:primaryTopic rdf:resource="${ h.get_primary_pid(c.pkg_dict) }"/>
   </dcat:CatalogRecord>
 
 
-  <dcat:Dataset rdf:about="${ h.get_primary_pid('data', c.pkg_dict) }">
+  <dcat:Dataset rdf:about="${ h.get_primary_pid(c.pkg_dict) }">
 
     <py:if test="c.pkg_dict.get('notes')">
         <py:for each="notes in h.json_to_list(c.pkg_dict.get('notes'))">

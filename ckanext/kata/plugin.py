@@ -269,6 +269,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_pids_by_type': utils.get_pids_by_type,
             'get_pid_types': helpers.get_pid_types,
             'get_primary_pid': utils.get_primary_pid,
+            'get_external_id': utils.get_external_id,
             'get_related_urls': helpers.get_related_urls,
             'get_rightscategory': helpers.get_rightscategory,
             'get_tab_errors': helpers.get_tab_errors,

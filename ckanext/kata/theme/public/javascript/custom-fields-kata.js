@@ -36,15 +36,22 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         jQuery(".kata-plus-btn").tooltip({ show: false });
       }
 
-      /* Show notification if user changes availability from access_application_reetta_ida to
-       * something else.
+      /* Show notification if user changes availability
+       * from access_application_reetta_ida to something else.
        */
       $("#usage-info input:radio").change(function () {
         if ($(this).is(":checked") && $(this).attr('id') != 'access_application_reetta_ida') {
-          if ($('#access_application_ida_identifier').val().match('^urn:nbn:fi:csc\-ida') !== null) {
+          if ($('#access_application_reetta_ida_identifier').val().match('^urn:nbn:fi:csc\-ida') !== null) {
             $('#ida-pid-change-alert').css('display', 'block');
           }
         }
+        $('#access_application_reetta_ida_identifier').val('');
+        $('#access_application_reetta_ida_identifier').trigger('change');
+      });
+
+      /* Change external_id input value based on access_application_reetta_ida_identifier field. */
+      $('#access_application_reetta_ida_identifier').change(function() {
+        $('#external_id').val($(this).val());
       });
     },
 

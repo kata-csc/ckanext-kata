@@ -1,4 +1,7 @@
 {% set urn_url = h.get_dataset_permanent_address(pkg_dict) %}
+{% set has_rights_to_dataset = h.check_access('package_update', {'id': pkg_dict['id']}) %} 
+{% set primary_pid = h.get_primary_pid(pkg_dict) %} 
+{% set external_id = h.get_external_id(pkg_dict) %} 
 {% set permanent_url = h.full_current_url() %}
 {% set lang = h.lang() %}
 {% import 'macros/kata_form.html' as kata_form %}
@@ -333,9 +336,8 @@
           <td><a href="{{ permanent_url }}">{{ permanent_url }}</a></td>
         </tr>-->
         <tr>
-          {% set primary_pid = h.get_pids_by_type('primary', pkg_dict) %} 
           {% if primary_pid %} 
-            <td>{{ h.get_identifier_display_html(primary_pid[0]['id']) | safe }}</td> 
+            <td>{{ h.get_identifier_display_html(primary_pid) | safe }}</td> 
           {% else %} 
             <td>ERROR</td> 
           {% endif %}
@@ -345,21 +347,26 @@
     </div>
   </div>
 
+  {%- if has_rights_to_dataset and external_id -%}
+  <div class="form-row">
+    <div class="form-label">{{ _('External identifier') }}</div>
+    <div class="form-content">{{ external_id }}</div>
+  </div>
+  {%- endif -%}
+
   {% set relation_pids = h.get_pids_by_type('relation', pkg_dict) %}
   {% if relation_pids %}
-    <div class="form-row">
+    <div class="form-row" style="margin-bottom: 10px;">
       <div class="form-label">{{ _('Other identifiers') }}</div>
-      <div class="form-content">
-        <table class="form-inner-table">
-          {% set first_relation_pid = true %}
+      <div class="form-content">{{ kata_form.tooltip(tooltip=_("<p>Relation identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</div>
+    </div>
+    <div class="form-row">
+      <div class="form-content" style="width:80%">
+        <table class="form-inner-table" style="margin-left:100px;">
           {% for pid in relation_pids %}
             <tr>
-              <th>{{ 'Relaatio-tyyppi' | safe }}</th>
+              <th>{{ _(pid.relation) | safe }}</th>
               <td>{{ h.get_identifier_display_html(pid.id) | safe }}</td>
-              {% if first_relation_pid %}
-                {% set first_relation_pid = false %}
-                <td>{{ kata_form.tooltip(tooltip=_("<p>Relation identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</td>
-              {% endif %}
             </tr>
           {% endfor %}
         </table>
