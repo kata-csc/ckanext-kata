@@ -262,42 +262,6 @@ input[id="xmlfile"] {
       padding-left: 10px;
       display: inline-block;
     }
-    .form-instructions {
-      padding-left: 10px;
-      float: right;
-      width: 8%;
-      i {
-        font-size: 20px;
-      }
-      a {
-        float: inherit;
-        &:hover, &:focus {
-          text-decoration: none;
-        }
-      }
-      @media screen and (min-width: 700px) {
-        .dropdown-menu {
-          left: -18.5em;
-          right: -1em;
-          padding: 5px 8px;
-          font-size: small;
-          min-width: 250px;
-          max-width: 400px;
-          float: none;
-        }
-      }
-      @media screen and (max-width: 700px) {
-        .dropdown-menu {
-          left: -1.5em;
-          right: -1em;
-          padding: 5px 8px;
-          font-size: small;
-          min-width: 180px;
-          float: none;
-        }
-      }
-
-    }
     .form-table {
       margin-left: auto;
       margin-right: auto;
@@ -407,6 +371,43 @@ input[id="xmlfile"] {
       margin-right: 10px;
     }
   }
+}
+
+.form-instructions {
+  padding-left: 10px;
+  float: right;
+  width: 8%;
+  i {
+    font-size: 20px;
+  }
+  a {
+    float: inherit;
+    &:hover, &:focus {
+      text-decoration: none;
+    }
+  }
+  @media screen and (min-width: 700px) {
+    .dropdown-menu {
+      left: -18.5em;
+      right: -1em;
+      padding: 5px 8px;
+      font-size: small;
+      min-width: 250px;
+      max-width: 400px;
+      float: none;
+    }
+  }
+  @media screen and (max-width: 700px) {
+    .dropdown-menu {
+      left: -1.5em;
+      right: -1em;
+      padding: 5px 8px;
+      font-size: small;
+      min-width: 180px;
+      float: none;
+    }
+  }
+
 }
 
 @form-border-color: @border-color-bg;

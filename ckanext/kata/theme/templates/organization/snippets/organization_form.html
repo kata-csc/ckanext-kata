@@ -1,4 +1,5 @@
 {% import 'macros/form.html' as form %}
+{% import 'macros/kata_form.html' as kata_form %}
 
 <form class="dataset-form form-horizontal" method="post" data-module="basic-form">
 
@@ -23,17 +24,19 @@
     {{ form.input('image_url', label=_('Image URL'), id='field-image-url', type='url', placeholder=_('http://example.com/my-image.jpg'), value=data.image_url, error=errors.image_url, classes=['control-full']) }}
 
     <!-- ckanext-hierarchy - choose parent organization -->
-    <div class="control-group">
-      <label class="control-label" for="field-parent">{{ _("Parent") }}</label>
-      <div class="controls">
-        <select id="field-parent" name="groups__0__name" data-module="autocomplete">
-          {% set selected_parent = (data.get('groups') or [{'name': ''}])[0]['name'] %} {{ selected_parent }}
-        <option value="" {% if not selected_parent %} selected="selected" {% endif %}>{{ _('None - top level') }}</option>
-        {% for group in c.allowable_parent_groups %}
-          <option value="{{ group.name }}" {% if group.name == selected_parent %}selected="selected"{% endif %}>{{ group.title }}</option>
-        {% endfor %}
-        </select>
-      </div>
+      <div class="control-group">
+        <label class="control-label" for="field-parent">{{ _("Parent") }}</label>
+        <div class="controls">
+          <select id="field-parent" name="groups__0__name" data-module="autocomplete">
+            {% set selected_parent = (data.get('groups') or [{'name': ''}])[0]['name'] %} {{ selected_parent }}
+          <option value="" {% if not selected_parent %} selected="selected" {% endif %}>{{ _('None - top level') }}</option>
+          {% for group in c.allowable_parent_groups %}
+            <option value="{{ group.name }}" {% if group.name == selected_parent %}selected="selected"{% endif %}>{{ group.title }}</option>
+          {% endfor %}
+          </select>
+          {{ kata_form.tooltip(tooltip=_('Select a parent organisation in organization hierarchy to which this dataset will be linked. When you start typing, you will get suggestions for matching organisations. Select an organization with a mouse click. If you can not find your organisation from the selection list, please contact Etsin administration through our <a href=\"http://openscience.fi/contact-form\" target=\"_blank\">contact form</a>.') | safe ) }}
+        </div>
+      
     </div>
 
   {% endblock %}

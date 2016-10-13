@@ -656,42 +656,6 @@ input[id="xmlfile"] {
   padding-left: 10px;
   display: inline-block;
 }
-.form-tab-content .form-row .form-instructions {
-  padding-left: 10px;
-  float: right;
-  width: 8%;
-}
-.form-tab-content .form-row .form-instructions i {
-  font-size: 20px;
-}
-.form-tab-content .form-row .form-instructions a {
-  float: inherit;
-}
-.form-tab-content .form-row .form-instructions a:hover,
-.form-tab-content .form-row .form-instructions a:focus {
-  text-decoration: none;
-}
-@media screen and (min-width: 700px) {
-  .form-tab-content .form-row .form-instructions .dropdown-menu {
-    left: -18.5em;
-    right: -1em;
-    padding: 5px 8px;
-    font-size: small;
-    min-width: 250px;
-    max-width: 400px;
-    float: none;
-  }
-}
-@media screen and (max-width: 700px) {
-  .form-tab-content .form-row .form-instructions .dropdown-menu {
-    left: -1.5em;
-    right: -1em;
-    padding: 5px 8px;
-    font-size: small;
-    min-width: 180px;
-    float: none;
-  }
-}
 .form-tab-content .form-row .form-table {
   margin-left: auto;
   margin-right: auto;
@@ -781,6 +745,42 @@ input[id="xmlfile"] {
 }
 .form-tab-content.related-form a.cancel-back-btn {
   margin-right: 10px;
+}
+.form-instructions {
+  padding-left: 10px;
+  float: right;
+  width: 8%;
+}
+.form-instructions i {
+  font-size: 20px;
+}
+.form-instructions a {
+  float: inherit;
+}
+.form-instructions a:hover,
+.form-instructions a:focus {
+  text-decoration: none;
+}
+@media screen and (min-width: 700px) {
+  .form-instructions .dropdown-menu {
+    left: -18.5em;
+    right: -1em;
+    padding: 5px 8px;
+    font-size: small;
+    min-width: 250px;
+    max-width: 400px;
+    float: none;
+  }
+}
+@media screen and (max-width: 700px) {
+  .form-instructions .dropdown-menu {
+    left: -1.5em;
+    right: -1em;
+    padding: 5px 8px;
+    font-size: small;
+    min-width: 180px;
+    float: none;
+  }
 }
 .etsin-dataset-form {
   border: 1px solid #c9c9c9;
@@ -2754,7 +2754,6 @@ a.download {
   border: 1px solid #c9c9c9;
   padding: 20px;
   margin-bottom: 60px;
-  overflow: hidden;
 }
 .organization-about-wrapper {
   overflow: hidden;
