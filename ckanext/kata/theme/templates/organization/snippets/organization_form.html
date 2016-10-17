@@ -30,14 +30,14 @@
           <select id="field-parent" name="groups__0__name" data-module="autocomplete">
             {% set selected_parent = (data.get('groups') or [{'name': ''}])[0]['name'] %} {{ selected_parent }}
           <option value="" {% if not selected_parent %} selected="selected" {% endif %}>{{ _('None - top level') }}</option>
-          {% for group in c.allowable_parent_groups %}
-            <option value="{{ group.name }}" {% if group.name == selected_parent %}selected="selected"{% endif %}>{{ group.title }}</option>
+          {% for org in c.allowable_parents_hierarchy %}
+            <option value="{{ org.name }}" {% if org.name == selected_parent %}selected="selected"{% endif %}>{{ org.hierarchy }}</option>
           {% endfor %}
           </select>
           {{ kata_form.tooltip(tooltip=_('Select a parent organisation in organization hierarchy to which this dataset will be linked. When you start typing, you will get suggestions for matching organisations. Select an organization with a mouse click. If you can not find your organisation from the selection list, please contact Etsin administration through our <a href=\"http://openscience.fi/contact-form\" target=\"_blank\">contact form</a>.') | safe ) }}
         </div>
-      
     </div>
+    <!-- ckanext-hierarchy - choose parent organization -->
 
   {% endblock %}
 
