@@ -2840,6 +2840,24 @@ a.download {
   color: #0095ca;
   text-shadow: none;
 }
+.compact ul.no-bullet {
+  padding-left: 0px !important;
+}
+.compact .organization-tree .btn-collapse {
+  padding: 0px;
+  vertical-align: baseline;
+}
+.compact .organization-tree .organization-row {
+  height: 1.5em;
+  margin: 0px;
+  margin-botton: 2px;
+  border-left: none;
+  padding-left: 1.2em;
+}
+.compact .organization-tree .organization-row a {
+  line-height: inherit;
+  vertical-align: baseline;
+}
 ul.no-bullet {
   list-style-type: none;
   padding-left: 10px;
