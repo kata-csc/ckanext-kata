@@ -746,10 +746,53 @@ input[id="xmlfile"] {
 .form-tab-content.related-form a.cancel-back-btn {
   margin-right: 10px;
 }
+.form-narrow {
+  padding: 20px;
+}
+.form-narrow .control-group .form-row {
+  margin-bottom: 20px;
+}
+.form-narrow .form-row {
+  margin-bottom: 40px;
+  clear: both;
+}
+.form-narrow .form-row .form-label,
+.form-narrow .form-row .control-label {
+  float: left;
+  font-weight: 700;
+  width: 20%;
+  text-align: right;
+}
+.form-narrow .form-row .form-content,
+.form-narrow .form-row .controls {
+  min-height: 16px;
+  margin-left: 0px;
+  width: 65%;
+  padding-right: 0px;
+  padding-left: 10px;
+  display: inline-block;
+}
+@media (max-width: 700px) {
+  .form-narrow .form-row .form-label,
+  .form-narrow .form-row .control-label {
+    float: none;
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  .form-narrow .form-row .form-content,
+  .form-narrow .form-row .form-instructions,
+  .form-narrow .form-row .controls {
+    width: 91%;
+    margin-left: 7%;
+  }
+}
+.form-instructions-center {
+  top: 4px;
+}
 .form-instructions {
   padding-left: 10px;
   float: right;
-  width: 8%;
 }
 .form-instructions i {
   font-size: 20px;
@@ -928,7 +971,8 @@ input[id="xmlfile"] {
 .resource-form #field-resource-type-upload {
   height: 0;
 }
-#s2id_field-organizations {
+#s2id_field-organizations,
+#s2id_field-parent {
   width: 100% !important;
 }
 header.masthead {
