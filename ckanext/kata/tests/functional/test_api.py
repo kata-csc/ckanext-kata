@@ -16,10 +16,6 @@ from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
 
-
-# testing
-import pprint
-
 class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
 
