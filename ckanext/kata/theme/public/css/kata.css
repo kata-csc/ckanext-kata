@@ -239,7 +239,8 @@ i.chevron-alt {
   height: auto;
   margin-bottom: 0px;
   font-size: 90%;
-  filter: 0 !important;
+  -webkit-filter: 0 !important;
+          filter: 0 !important;
   border-bottom: 1px solid #c9c9c9;
 }
 .site-footer a {
@@ -655,42 +656,6 @@ input[id="xmlfile"] {
   padding-left: 10px;
   display: inline-block;
 }
-.form-tab-content .form-row .form-instructions {
-  padding-left: 10px;
-  float: right;
-  width: 8%;
-}
-.form-tab-content .form-row .form-instructions i {
-  font-size: 20px;
-}
-.form-tab-content .form-row .form-instructions a {
-  float: inherit;
-}
-.form-tab-content .form-row .form-instructions a:hover,
-.form-tab-content .form-row .form-instructions a:focus {
-  text-decoration: none;
-}
-@media screen and (min-width: 700px) {
-  .form-tab-content .form-row .form-instructions .dropdown-menu {
-    left: -18.5em;
-    right: -1em;
-    padding: 5px 8px;
-    font-size: small;
-    min-width: 250px;
-    max-width: 400px;
-    float: none;
-  }
-}
-@media screen and (max-width: 700px) {
-  .form-tab-content .form-row .form-instructions .dropdown-menu {
-    left: -1.5em;
-    right: -1em;
-    padding: 5px 8px;
-    font-size: small;
-    min-width: 180px;
-    float: none;
-  }
-}
 .form-tab-content .form-row .form-table {
   margin-left: auto;
   margin-right: auto;
@@ -780,6 +745,85 @@ input[id="xmlfile"] {
 }
 .form-tab-content.related-form a.cancel-back-btn {
   margin-right: 10px;
+}
+.form-narrow {
+  padding: 20px;
+}
+.form-narrow .control-group .form-row {
+  margin-bottom: 20px;
+}
+.form-narrow .form-row {
+  margin-bottom: 40px;
+  clear: both;
+}
+.form-narrow .form-row .form-label,
+.form-narrow .form-row .control-label {
+  float: left;
+  font-weight: 700;
+  width: 20%;
+  text-align: right;
+}
+.form-narrow .form-row .form-content,
+.form-narrow .form-row .controls {
+  min-height: 16px;
+  margin-left: 0px;
+  width: 65%;
+  padding-right: 0px;
+  padding-left: 10px;
+  display: inline-block;
+}
+@media (max-width: 700px) {
+  .form-narrow .form-row .form-label,
+  .form-narrow .form-row .control-label {
+    float: none;
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  .form-narrow .form-row .form-content,
+  .form-narrow .form-row .form-instructions,
+  .form-narrow .form-row .controls {
+    width: 91%;
+    margin-left: 7%;
+  }
+}
+.form-instructions-center {
+  top: 4px;
+}
+.form-instructions {
+  padding-left: 10px;
+  float: right;
+}
+.form-instructions i {
+  font-size: 20px;
+}
+.form-instructions a {
+  float: inherit;
+}
+.form-instructions a:hover,
+.form-instructions a:focus {
+  text-decoration: none;
+}
+@media screen and (min-width: 700px) {
+  .form-instructions .dropdown-menu {
+    left: -18.5em;
+    right: -1em;
+    padding: 5px 8px;
+    font-size: small;
+    min-width: 250px;
+    max-width: 400px;
+    float: none;
+  }
+}
+@media screen and (max-width: 700px) {
+  .form-instructions .dropdown-menu {
+    left: -1.5em;
+    right: -1em;
+    padding: 5px 8px;
+    font-size: small;
+    min-width: 180px;
+    float: none;
+  }
 }
 .etsin-dataset-form {
   border: 1px solid #c9c9c9;
@@ -927,7 +971,8 @@ input[id="xmlfile"] {
 .resource-form #field-resource-type-upload {
   height: 0;
 }
-#s2id_field-organizations {
+#s2id_field-organizations,
+#s2id_field-parent {
   width: 100% !important;
 }
 header.masthead {
@@ -1564,7 +1609,8 @@ textarea {
   width: 150px;
 }
 header.masthead {
-  filter: 0 !important;
+  -webkit-filter: 0 !important;
+          filter: 0 !important;
 }
 .debug,
 #debug {
@@ -2752,7 +2798,6 @@ a.download {
   border: 1px solid #c9c9c9;
   padding: 20px;
   margin-bottom: 60px;
-  overflow: hidden;
 }
 .organization-about-wrapper {
   overflow: hidden;
@@ -2773,6 +2818,93 @@ a.download {
 .organization-container {
   border-bottom: 1px solid #c9c9c9;
   padding-bottom: 60px;
+}
+/* ckanext-hierarchy collapsible organization tree styles */
+#publisher-tree {
+  margin-top: 1em;
+}
+.organization-tree {
+  margin-left: 0 !important;
+  /* 1st level ogranizations */
+}
+.organization-tree .btn-collapse {
+  /* Button to collapse / expand the tree branches */
+  display: inline-block;
+  position: absolute;
+  padding: 5px 12px;
+  border-radius: 3px;
+  /* make it look like a link*/
+  color: #0095ca;
+  text-decoration: none;
+  cursor: pointer;
+}
+.organization-tree .btn-collapse i[class^="icon-"] {
+  line-height: 22px;
+  font-size: 18px;
+}
+.organization-tree .btn-collapse:hover,
+.organization-tree .btn-collapse:focus {
+  color: #006f97;
+}
+.organization-tree .js-collapse,
+.organization-tree .js-collapsed {
+  display: none;
+}
+.organization-tree .organization {
+  list-style-type: none;
+}
+.organization-tree .organization-row {
+  height: 32px;
+  padding-left: 30px;
+  margin-bottom: 10px;
+  background-color: white;
+  /*border: 1px solid @border-color-bg;
+    border-radius: 3px;*/
+  /* left blue bar */
+  border-left: 2px solid #0095ca;
+  padding-left: 2em;
+  margin: 4px 0;
+}
+.organization-tree .organization-row a {
+  vertical-align: middle;
+  line-height: 32px;
+}
+.organization-tree .organization-row a .highlight {
+  background-color: #B1D7FE;
+}
+.organization-tree .organization-row a span.badge {
+  vertical-align: middle;
+}
+.organization-tree .organization-subtree {
+  margin-left: 30px;
+}
+.organization-tree .badge {
+  background-color: white !important;
+  border: 1px solid #0095ca;
+  color: #0095ca;
+  text-shadow: none;
+}
+.compact ul.no-bullet {
+  padding-left: 0px !important;
+}
+.compact .organization-tree .btn-collapse {
+  padding: 0px;
+  vertical-align: baseline;
+}
+.compact .organization-tree .organization-row {
+  height: 1.5em;
+  margin: 0px;
+  margin-botton: 2px;
+  border-left: none;
+  padding-left: 1.2em;
+}
+.compact .organization-tree .organization-row a {
+  line-height: inherit;
+  vertical-align: baseline;
+}
+ul.no-bullet {
+  list-style-type: none;
+  padding-left: 10px;
 }
 .browse-search-switcher {
   margin-bottom: 40px;

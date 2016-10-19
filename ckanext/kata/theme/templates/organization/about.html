@@ -47,9 +47,7 @@
           </div>
         </div>
 
-        <div class="clearfix"></div>
-
-        <div class="organization-view-content">
+        <div class="organization-view-content clearfix">
           <div class="organization-about-wrapper">
             <div class="organization-about-left">
               <h3>{{ c.group_dict.display_name }}</h3>
@@ -59,6 +57,11 @@
               {% else %}
 		        <p class="empty">{{ _('There is no description for this organization') }}</p>
 	          {% endif %}
+
+            <h2>{{_('Organization hierarchy')}}</h2>
+            <div id="publisher-tree">
+               {% snippet 'organization/snippets/organization_tree.html', top_nodes=[h.get_action('group_tree_section', {'id': c.group_dict.id, 'type': c.group_dict.type})] %}
+            </div>
 
             </div>
             <div class="organization-about-right">
