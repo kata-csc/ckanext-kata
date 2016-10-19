@@ -44,7 +44,8 @@
               {% endfor %}
               </select>
             </div>
-            {{ kata_form.tooltip(class="form-instructions-center", tooltip=_('Select a parent organisation in organization hierarchy to which this dataset will be linked. When you start typing, you will get suggestions for matching organisations. Select an organization with a mouse click. If you can not find your organisation from the selection list, please contact Etsin administration through our <a href=\"http://openscience.fi/contact-form\" target=\"_blank\">contact form</a>.') | safe ) }}
+            {% set ttip = _('Select a parent organisation in organization hierarchy to which this dataset will be linked. When you start typing, you will get suggestions for matching organisations. Select an organization with a mouse click. If you can not find your organisation from the selection list, please contact Etsin administration through our <a href=\"http://openscience.fi/contact-form\" target=\"_blank\">contact form</a>.') %}
+            {{ kata_form.tooltip(class="form-instructions-center", tooltip=ttip ) }}
           </div>
       </div>
       <!-- ckanext-hierarchy - choose parent organization -->

@@ -44,6 +44,7 @@ setup(
             ('kata/theme/templates/home/**.html', 'ckan', None),
             ('kata/theme/templates/user/**.html', 'ckan', None),
             ('kata/theme/templates/organization/**.html', 'ckan', None),
+            ('kata/theme/templates/organization/snippets/**.html', 'ckan', None)
         ],
     },
     entry_points=
