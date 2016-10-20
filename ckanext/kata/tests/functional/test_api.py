@@ -279,7 +279,7 @@ class TestSearchDataset(KataApiTestCase):
         '''
         super(TestSearchDataset, cls).setup_class()
 
-        package_index = index_for(model.Package)
+        package_index = search.index_for(model.Package)
         package_index.clear()
 
         data_dict = copy.deepcopy(cls.TEST_DATADICT)  # Create public dataset
