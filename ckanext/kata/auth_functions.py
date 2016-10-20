@@ -35,7 +35,13 @@ def is_owner(context, data_dict):
     # Package creator is always owner regardless of organizations
     pkg = context.get('package', None) or Package.get(data_dict['id'])
     user = context.get('user', False)
-    user_id = convert_user_name_or_id_to_id(user, context)
+
+    # If user id can't be resolved, user can't be owner
+    try:
+        user_id = convert_user_name_or_id_to_id(user, context)
+    except:
+        return {'success': False}
+
     if pkg.creator_user_id == user_id:
         return {'success': True}
 
