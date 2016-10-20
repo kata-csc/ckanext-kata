@@ -41,7 +41,6 @@ from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
 import ckan.logic as logic
 import ckan.model as model
 from ckan.model import Package
-from ckan.model.authz import add_user_to_role
 import ckan.plugins as plugins
 from ckan.common import response
 from ckan.common import OrderedDict
