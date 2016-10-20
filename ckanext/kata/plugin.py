@@ -144,12 +144,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/data-model',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_data_model")
-        map.connect('/package_administration/{name}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action="dataset_editor_manage")
-        map.connect('/dataset_editor_delete/{name}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action="dataset_editor_delete")
         map.connect('/storage/upload_handle',
                     controller="ckanext.kata.controllers:MalwareScanningStorageController",
                     action='upload_handle')
@@ -192,8 +186,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_actions(self):
         """ Register actions. """
         return {
-            'dataset_editor_add': actions.dataset_editor_add,
-            'dataset_editor_delete': actions.dataset_editor_delete,
             'group_activity_list': actions.group_activity_list,
             'group_activity_list_html': actions.group_activity_list_html,
             'group_create': actions.group_create,

@@ -219,34 +219,6 @@ class TestContactForm(KataWsgiTestCase):
 
         assert 'Message not sent' in res
 
-class TestDatasetEditorManagement(KataWsgiTestCase):
-    '''
-    Test the dataset editor management page's visibility
-    '''
-
-    def test_dataset_management_page_not_renders(self):
-        '''
-        Test that non-editor can not see the dataset administration page
-        '''
-        offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage',
-                         name=u'warandpeace')
-
-        extra_environ = {'REMOTE_USER': 'tester'}
-        res = self.app.get(offset, extra_environ=extra_environ)
-        assert res.status == 302, 'Expecting a redirect when user has no edit rights'
-
-    def test_dataset_management_page_renders(self):
-        '''
-        Test that the dataset management page renders
-        '''
-        offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage',
-                         name=u'annakarenina')
-
-        extra_environ = {'REMOTE_USER': 'testsysadmin'}
-        res = self.app.get(offset, extra_environ=extra_environ)
-        assert 'Add a user for role' in res, \
-            u'User should see the dataset management page'
-
 
 class TestAuthorisation(KataWsgiTestCase):
     '''
