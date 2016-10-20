@@ -473,6 +473,15 @@ ul.kata {
     width: 200px !important;
   }
 }
+#identification-info select {
+  width: 346px !important;
+  font-size: 14px;
+}
+@media screen and (max-width: 485px) {
+  #identification-info select {
+    width: 212px !important;
+  }
+}
 .kata-label-pluspad {
   padding-top: 9px !important;
 }
@@ -619,16 +628,17 @@ input[id="xmlfile"] {
 .form-tab-content .control-group .form-row {
   margin-bottom: 20px;
 }
-.form-tab-content .form-row {
-  margin-bottom: 40px;
-  clear: both;
-}
+.form-tab-content .form-label,
 .form-tab-content .form-row .form-label,
 .form-tab-content .form-row .control-label {
   float: left;
   font-weight: 700;
   width: 30%;
   text-align: right;
+}
+.form-tab-content .form-row {
+  margin-bottom: 40px;
+  clear: both;
 }
 .form-tab-content .form-row .form-content,
 .form-tab-content .form-row .controls {
@@ -725,6 +735,13 @@ input[id="xmlfile"] {
 }
 .form-tab-content .form-row #generate_version_pid {
   margin-left: 20px;
+}
+.form-tab-content #identification-info .form-row .form-content {
+  padding-left: 0px;
+  margin-left: 20%;
+}
+.form-tab-content #pids-relation .form-content input.pid {
+  margin-top: 10px;
 }
 .form-tab-content .kata-add {
   margin-left: 30%;

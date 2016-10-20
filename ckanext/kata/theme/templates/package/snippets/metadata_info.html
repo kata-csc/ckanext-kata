@@ -362,11 +362,13 @@
     </div>
     <div class="form-row">
       <div class="form-content" style="width:80%">
-        <table class="form-inner-table" style="margin-left:100px;">
+        <table class="form-inner-table" style="margin-left:20%;">
           {% for pid in relation_pids %}
             <tr>
-              <th>{{ _(pid.relation) | safe }}</th>
-              <td>{{ h.get_identifier_display_html(pid.id) | safe }}</td>
+              <td style="font-style: italic;">{{ h.get_relation_type_translation(pid.relation, lang) | safe }}</td>
+            </tr>
+            <tr>
+              <td style="padding-bottom: 15px;">{{ h.get_identifier_display_html(pid.id) | safe }}</td>
             </tr>
           {% endfor %}
         </table>

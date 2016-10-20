@@ -3,7 +3,7 @@
 Template helpers for Kata CKAN extension.
 '''
 import iso8601
-
+import os
 from paste.deploy.converters import asbool
 from pylons import config
 import functionally as fn
@@ -1026,9 +1026,9 @@ def get_identifier_display_html(identifier):
     if not isinstance(identifier, basestring):
         return identifier
     if re.match('^urn:nbn:fi:csc-(kata|ida)', identifier):
-        return '<a href="http://urn.fi/' + identifier + '">' + identifier + '</a>'
+        return '<a target="_blank" href="http://urn.fi/' + identifier + '">' + identifier + '</a>'
     elif identifier.startswith('http'):
-        return '<a href="' + identifier + '">' + identifier + '</a>'
+        return '<a target="_blank" href="' + identifier + '">' + identifier + '</a>'
     else:
         return identifier
 
@@ -1046,3 +1046,19 @@ def get_current_url():
     if g.debug:
         return 'http://' + url.netloc + url.path
     return 'https://' + url.netloc + url.path
+
+
+def get_relation_types():
+    url = "file://%s" % os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "theme/public/relations.json"))
+    source = urllib2.urlopen(url)
+    try:
+        return json.load(source)
+    finally:
+        source.close()
+
+def get_relation_type_translation(relation_type, lang):
+    res = filter(lambda rel: rel['id'] == relation_type, get_relation_types())
+    if res:
+        return res[0][lang]
+    return "Unknown relation type"

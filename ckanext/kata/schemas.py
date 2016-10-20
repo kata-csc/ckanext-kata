@@ -120,9 +120,9 @@ class Schemas:
         schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
                           'id': [not_empty, va.validate_general, va.validate_pid_uniqueness,
                                  unicode, co.flattened_to_extras],
-                          'type': [not_missing, unicode, co.flattened_to_extras],
-                          # The below relation schema needs further work
-                          'relation': [ignore_missing, va.validate_relation, unicode, co.flattened_to_extras]}
+                          'type': [not_missing, va.validate_pid_type, unicode, co.flattened_to_extras],
+                          'relation': [ignore_missing, co.to_relation, va.validate_pid_relation_type,
+                                       unicode, co.flattened_to_extras]}
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()

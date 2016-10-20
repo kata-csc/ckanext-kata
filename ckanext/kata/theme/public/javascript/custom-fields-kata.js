@@ -65,9 +65,12 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      */
     newField: function (element) {
       var fields = this.cloneField(element);
-
       // Do some adjusting for copied PID fields
-      fields.find('.pid').removeProp('readonly')
+      fields.find('.pid').attr('readonly', false);
+      $("#target").val($("#target option:first").val());
+      fields.find('select.pid').val($('select.pid option:first').val());
+      fields.find('select.pid option').removeProp('selected');
+
       fields.find('.pid').removeClass (function (index, css) {
         return (css.match (/(^|\s)pids_\S+/g) || []).join(' ');
       });

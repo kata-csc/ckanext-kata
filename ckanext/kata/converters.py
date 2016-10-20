@@ -467,17 +467,15 @@ def flattened_from_extras(key, data, errors, context):
 
 def default_name_from_id(key, data, errors, context):
     '''
-    If name not given, generate name from package.id
+    In all cases, generate name from package.id
 
     :param key: key
     :param data: data
     :param errors: validation errors
     :param context: context
     '''
-    if not data.get(key):
-        id = data.get(('id',))
 
-        data[key] = utils.pid_to_name(id)
+    data[key] = utils.pid_to_name(data.get(('id',)))
 
 
 def to_licence_id(key, data, errors, context):
@@ -558,3 +556,35 @@ def to_licence_id(key, data, errors, context):
     else:
         log.debug("No license ID in data")
         data[key] = "undefined"
+
+
+
+def to_relation(key, data, errors, context):
+    '''
+    Try to match relation to existing defined relation, replace matched content with relation id.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    relation_id = data.get(key)
+    log.debug("relation: " + relation_id)
+    if relation_id:
+        map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/theme/public/relations.json'
+        with open(map_file_name) as map_file:
+            relation_map = json.load(map_file)
+
+        relation_id_out = None
+        for relation in relation_map:
+            if relation.get('id').lower() == relation_id.lower().strip():
+                relation_id_out = relation.get('id')
+                log.debug("Resulting relation id: " + data[key])
+                break
+
+        if relation_id_out:
+            data[key] = relation_id_out
+        else:
+            # no matching relation found, do nothing
+            log.debug("No existing relation ID matched relation")

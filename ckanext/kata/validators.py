@@ -2,7 +2,7 @@
 """
 Validators for user inputs.
 """
-import logging
+import logging, os, json
 from itertools import count
 import iso8601
 import re
@@ -597,7 +597,7 @@ def check_external_id(key, data, errors, context):
         raise Invalid(_('Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)'))
 
 
-def validate_relation(key, data, errors, context):
+def validate_pid_relation_type(key, data, errors, context):
     '''
     Check relation key is valid
 
@@ -609,5 +609,27 @@ def validate_relation(key, data, errors, context):
     '''
 
     if data.get(key):
-        pass
-        # Implement logic which checks relation is valid
+        map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/theme/public/relations.json'
+        with open(map_file_name) as map_file:
+            relation_map = json.load(map_file)
+
+        if not any(relation.get('id') == data.get(key) for relation in relation_map):
+            raise Invalid(_('PID relation must be one of the following values: ') + ",".join(map(lambda rel: rel.get('id'), relation_map)))
+
+
+def validate_pid_type(key, data, errors, context):
+    '''
+    If pid type is 'relation', make sure 'relation' key has a value
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    lst = list(key)
+    lst[2] = 'relation'
+    relation_key = tuple(lst)
+    if data.get(key) == 'relation' and not data.get(relation_key):
+        raise Invalid(_('PID relation must be defined if PID type is relation'))

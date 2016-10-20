@@ -873,10 +873,12 @@ Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun
         '''
         Overwrite CKAN method to take uploading xml into sequence.
         '''
+
         if request.params.get('upload'):
             return self._upload_xml(errors, error_summary)
         else:
             return super(KataPackageController, self).new(data, errors, error_summary)
+
 
     def read_rdf(self, id, format):
         '''

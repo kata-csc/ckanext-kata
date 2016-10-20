@@ -1,0 +1,7 @@
+[ {"id": "isNewVersionOf", "fi": "Tämän aineiston vanhempi versio on", "en": "An older version of this dataset is"},
+  {"id": "isPreviousVersionOf", "fi": "Tämä aineisto on vanhempi versio aineistosta", "en": "This dataset is older version of"},
+  {"id": "hasPart", "fi": "Tähän aineistoon kuuluu seuraava osa", "en": "The following part belongs to this dataset"},
+  {"id": "isPartOf", "fi": "Tämä aineisto on osa aineistoa", "en": "This dataset is part of dataset"},
+  {"id": "hasMetadata", "fi": "Tämän aineiston toissijainen metadatan lähde on", "en": "Secondary source for this dataset's metadata is"},
+  {"id": "isMetadataFor", "fi": "Tämän aineiston ensisijainen metadatan lähde on", "en": "Primary source for this dataset's metadata is"},
+  {"id": "generalRelation", "fi": "Viittaus aineistoon", "en": "Reference to dataset"}]
