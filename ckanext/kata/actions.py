@@ -287,10 +287,10 @@ def package_delete(context, data_dict):
     '''
     # Logging for production use
     _log_action('Package', 'delete', context['user'], data_dict['id'])
-
+    
+    ret = ckan.logic.action.delete.package_delete(context, data_dict)
     index = index_for('package')
     index.remove_dict(data_dict)
-    ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
 
