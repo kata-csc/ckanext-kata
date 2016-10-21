@@ -234,6 +234,7 @@ class TestAuthorisation(KataWsgiTestCase):
         extra_environ = {'REMOTE_USER': 'russianfan'}
         res = self.app.get(offset, extra_environ=extra_environ, status=401)
 
+
     def test_delete_not_available(self):
         '''
         Test that deletion of a dataset is not available
@@ -241,7 +242,19 @@ class TestAuthorisation(KataWsgiTestCase):
         '''
         offset = url_for("/dataset/delete/annakarenina")
         extra_environ = {'REMOTE_USER': 'russianfan'}
-        res = self.app.get(offset, extra_environ=extra_environ, status=401)
+
+        res = self.app.get(offset, extra_environ=extra_environ)
+
+        assert res.status == 200, 'Wrong status code (expecting 200)'  # Confirmation page
+        res = res.forms[0].submit('delete')
+
+        assert res.status == 302, 'Wrong status code (expecting 302)'  # Redirect to login page
+        res = res.follow()
+
+        assert res.status == 200, 'Wrong status code (expecting 200)'  # Login page
+        assert 'Unauthorized to delete package' in res, \
+            'The login page should alert the user about deleting being unauthorized'
+
 
     def test_delete_available(self):
         '''
