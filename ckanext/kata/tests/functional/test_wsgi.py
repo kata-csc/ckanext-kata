@@ -262,9 +262,26 @@ class TestAuthorisation(KataWsgiTestCase):
             A non-admin should be able to delete its own created dataset.
         """
 
+        org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
 
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['name'] = 'test-delete-own-dataset'
 
-        assert True
+        package = get_action('package_create')({'user': 'joeadmin'}, data)
+
+        get_action('package_delete')({'user': 'joeadmin'}, {'id': package['id']})
+
+        offset = url_for(controller='package', action='read', id=package['id'])
+        res = self.app.get(offset)
+
+        assert res.status == 302, 'The user should be redirected to login page, since the package is deleted'
+        res = res.follow()
+
+        assert 'Unauthorized to read package' in res, \
+                "The package should be deleted and not shown to an anonymous user."
+
 
     def test_delete_authorized_external(self):
         """
@@ -272,7 +289,8 @@ class TestAuthorisation(KataWsgiTestCase):
         """
 
         # tester - organization editor (has a right to delete packages)
-        organization = get_action('organization_create')({'user': 'testsysadmin'}, TEST_ORGANIZATION_COMMON)
+        org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
 
         # create a dataset under that organization
         data = copy.deepcopy(TEST_DATADICT)
@@ -301,7 +319,8 @@ class TestAuthorisation(KataWsgiTestCase):
         """
 
         # joeadmin - organization member (does not have a right to delete packages)
-        organization = get_action('organization_create')({'user': 'testsysadmin'}, TEST_ORGANIZATION_COMMON)
+        org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
 
         # create a dataset under that organization
         data = copy.deepcopy(TEST_DATADICT)
