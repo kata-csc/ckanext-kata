@@ -17,6 +17,8 @@ from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT, TEST_ORGANIZATION_COMMON
 from ckanext.kata.controllers import ContactController
 
+from nose.tools import raises
+
 
 class TestPages(KataWsgiTestCase):
     """
@@ -256,7 +258,11 @@ class TestAuthorisation(KataWsgiTestCase):
             'The login page should alert the user about deleting being unauthorized'
 
     def test_delete_authorized_own(self):
-        # ei-admin yrittää poistaa itse oman tietoaineistonsa
+        """
+            A non-admin should be able to delete its own created dataset.
+        """
+
+
 
         assert True
 
@@ -265,10 +271,7 @@ class TestAuthorisation(KataWsgiTestCase):
             An editor should be able to delete a package from an external organization
         """
 
-        # authorized organization users in TEST_ORGANIZATION_COMMON:
-        # testsysadmin - admin (has a right to delete packages)
-        # tester - editor (has a right to delete packages)
-        # joeadmin - member (does not have a right to delete packages)
+        # tester - organization editor (has a right to delete packages)
         organization = get_action('organization_create')({'user': 'testsysadmin'}, TEST_ORGANIZATION_COMMON)
 
         # create a dataset under that organization
@@ -291,6 +294,26 @@ class TestAuthorisation(KataWsgiTestCase):
         assert 'Unauthorized to read package' in res, \
                 "The package should be deleted and not shown to an anonymous user."
 
+    @raises(NotAuthorized)
+    def test_delete_unauthorized_external(self):
+        """
+            A member should not be able to delete a package from an external organization
+        """
+
+        # joeadmin - organization member (does not have a right to delete packages)
+        organization = get_action('organization_create')({'user': 'testsysadmin'}, TEST_ORGANIZATION_COMMON)
+
+        # create a dataset under that organization
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['name'] = 'test-unauthorized-external-deletion'
+
+        package = get_action('package_create')({'user': 'testsysadmin'}, data)
+
+        # delete the package as 'tester'
+        get_action('package_delete')({'user': 'joeadmin'}, {'id': package['id']})
+
+        # The test should throw NotAuthorized exception
 
 class TestURNExport(KataWsgiTestCase):
     '''
