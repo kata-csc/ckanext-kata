@@ -263,6 +263,7 @@ class TestAuthorisation(KataWsgiTestCase):
         """
 
         org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        org['name'] = 'testdeleteauthorizedown'
         organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
 
         data = copy.deepcopy(TEST_DATADICT)
@@ -290,6 +291,7 @@ class TestAuthorisation(KataWsgiTestCase):
 
         # tester - organization editor (has a right to delete packages)
         org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        org['name'] = 'testdeleteauthorizedexternal'
         organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
 
         # create a dataset under that organization
@@ -320,6 +322,7 @@ class TestAuthorisation(KataWsgiTestCase):
 
         # joeadmin - organization member (does not have a right to delete packages)
         org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        org['name'] = 'testdeleteunauthorizedexternal'
         organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
 
         # create a dataset under that organization
