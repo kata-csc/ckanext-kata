@@ -61,20 +61,15 @@ t = plugins.toolkit
 
 def get_package_owner(package):
     """Returns the user id of the package admin for the specified package.
-       If multiple user accounts are associated with the package as admins,
-       an arbitrary one is returned.
+       Package creator is always admin, so return their id. Package
+       may also have other admins.
 
        :param package: package data
        :type package: Package object
        :returns: userid
        :rtype: string
     """
-    userid = None
-    for role in package.roles:
-        if role.role == "admin":
-            userid = role.user_id
-            break
-    return userid
+    return package.creator_user_id
 
 
 def _encode_params(params):
