@@ -21,6 +21,7 @@ from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, ge
 
 log = logging.getLogger(__name__)
 
+DC = Namespace("http://purl.org/dc/terms/")
 DCT = Namespace("http://purl.org/dc/terms/")
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 ADMS = Namespace("http://www.w3.org/ns/adms#")
@@ -32,21 +33,38 @@ LOCN = Namespace('http://www.w3.org/ns/locn#')
 GSP = Namespace('http://www.opengis.net/ont/geosparql#')
 OWL = Namespace('http://www.w3.org/2002/07/owl#')
 SPDX = Namespace('http://spdx.org/rdf/terms#')
-
+DCES = Namespace("http://purl.org/dc/elements/1.1/")
+LICENSES = Namespace("http://purl.org/okfn/licenses/")
+LOCAL = Namespace("http://opendatasearch.org/schema#")
+OPMV = Namespace("http://purl.org/net/opmv/ns#")
+REV = Namespace("http://purl.org/stuff/rev#")
+SCOVO = Namespace("http://purl.org/NET/scovo#")
+SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
+VOID = Namespace("http://rdfs.org/ns/void#")
+UUID = Namespace("urn:uuid:")
 GEOJSON_IMT = 'https://www.iana.org/assignments/media-types/application/vnd.geo+json'
 
 namespaces = {
     'dct': DCT,
     'dcat': DCAT,
     'adms': ADMS,
-    'vcard': VCARD,
-    'foaf': FOAF,
     'schema': SCHEMA,
-    'time': TIME,
-    'skos': SKOS,
     'locn': LOCN,
     'gsp': GSP,
-    'owl': OWL,
+    "rdf": RDF,
+    "rdfs": RDFS,
+    "owl": OWL,
+    "dc": DC,
+    "foaf": FOAF,
+    "opmv": OPMV,
+    "skos": SKOS,
+    "time": TIME,
+    "void": VOID,
+    "vcard": VCARD,
+    "local": LOCAL,
+    "rev": REV,
+    "scovo": SCOVO,
+    "licenses": LICENSES
 }
 
 class KataDcatProfile(RDFProfile):
@@ -59,7 +77,7 @@ class KataDcatProfile(RDFProfile):
         """
             Creates an RDF triple from a Kata language string
             self._add_translated_triple_from_dict(dataset_dict, dataset_ref, DCT.title, 'langtitle', 'title')
-            {"fin": "Otsikko", "eng":"Title"} ->
+            {"fin": "Otsikko", "eng": "Title"} ->
             <dct:title xml:lang="fi">Otsikko</dct:title>
             <dct:title xml:lang="en">Title</dct:title>
         """
@@ -87,17 +105,17 @@ class KataDcatProfile(RDFProfile):
 
         # Basic fields
         # TODO: check each field name
-        items = [
-            ('url', DCAT.landingPage, None, URIRef),
-            ('identifier', DCT.identifier, ['guid', 'id'], Literal),
-            ('version', OWL.versionInfo, ['dcat_version'], Literal),
-            ('version_notes', ADMS.versionNotes, None, Literal),
-            ('frequency', DCT.accrualPeriodicity, None, Literal),
-            ('access_rights', DCT.accessRights, None, Literal),
-            ('dcat_type', DCT.type, None, Literal),
-            ('provenance', DCT.provenance, None, Literal),
-        ]
-        self._add_triples_from_dict(dataset_dict, dataset_ref, items)
+        #items = [
+            #('url', DCAT.landingPage, None, URIRef),  # disabled in old serializer
+            #('identifier', DCT.identifier, ['guid', 'id'], Literal),  # TODO
+            #('version', OWL.versionInfo, ['dcat_version'], Literal),
+            #('version_notes', ADMS.versionNotes, None, Literal),
+            #('frequency', DCT.accrualPeriodicity, None, Literal),
+            #('access_rights', DCT.accessRights, None, Literal),  # TODO
+            #('dcat_type', DCT.type, None, Literal),
+            #('provenance', DCT.provenance, None, Literal),
+        #]
+        #self._add_triples_from_dict(dataset_dict, dataset_ref, items)
 
         # Etsin: Title and Description, including translations
         items = [
@@ -113,6 +131,8 @@ class KataDcatProfile(RDFProfile):
         # TODO: resolve URLs from Finto. Currently get_label_for_uri() breaks RDFlib.
         for tag in dataset_dict.get('tags', []):
             g.add((dataset_ref, DCAT.keyword, Literal(tag.get('display_name'))))
+            if is_url(tag.get('name')):
+                g.add((dataset_ref, DCAT.theme, URIRef(tag.get('name'))))
 
         # Dates
         # Etsin: issued-field is new. This used to be inside CatalogRecord.
@@ -124,18 +144,23 @@ class KataDcatProfile(RDFProfile):
 
         #  Lists
         items = [
-            ('language', DCT.language, None, Literal),
-            ('theme', DCAT.theme, None, URIRef),
-            ('conforms_to', DCT.conformsTo, None, Literal),
-            ('alternate_identifier', ADMS.identifier, None, Literal),
-            ('documentation', FOAF.page, None, Literal),
-            ('related_resource', DCT.relation, None, Literal),
-            ('has_version', DCT.hasVersion, None, Literal),
-            ('is_version_of', DCT.isVersionOf, None, Literal),
-            ('source', DCT.source, None, Literal),
-            ('sample', ADMS.sample, None, Literal),
+            #('theme', DCAT.theme, None, URIRef),
+            #('conforms_to', DCT.conformsTo, None, Literal),
+            #('alternate_identifier', ADMS.identifier, None, Literal),
+            #('documentation', FOAF.page, None, Literal),
+            #('related_resource', DCT.relation, None, Literal),  # TODO
+            #('has_version', DCT.hasVersion, None, Literal),
+            #('is_version_of', DCT.isVersionOf, None, Literal),
+            #('source', DCT.source, None, Literal),
+            #('sample', ADMS.sample, None, Literal),
         ]
         self._add_list_triples_from_dict(dataset_dict, dataset_ref, items)
+
+        # Etsin: language field need to be stripped from spaces
+        langs = self._get_dict_value(dataset_dict, 'language').split(', ')
+        for lang in langs:
+            params = (dataset_ref, DCAT.language, Literal(lang))
+            self.g.add(params)
 
         # Contact details
         if any([
