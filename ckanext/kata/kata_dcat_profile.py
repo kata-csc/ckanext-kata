@@ -17,7 +17,7 @@ from ckan.plugins import toolkit
 from ckanext.dcat.utils import resource_uri, publisher_uri_from_dataset_dict
 from ckanext.dcat.profiles import RDFProfile
 
-from ckanext.kata.helpers import json_to_list, convert_language_code
+from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_label_for_uri
 
 log = logging.getLogger(__name__)
 
@@ -55,6 +55,23 @@ class KataDcatProfile(RDFProfile):
         Modified from EuropeanDCATAPProfile
     '''
 
+    def _add_translated_triple_from_dict(self, _dict, subject, predicate, key, fallback=None):
+        """
+            Creates an RDF triple from a Kata language string
+            self._add_translated_triple_from_dict(dataset_dict, dataset_ref, DCT.title, 'langtitle', 'title')
+            {"fin": "Otsikko", "eng":"Title"} ->
+            <dct:title xml:lang="fi">Otsikko</dct:title>
+            <dct:title xml:lang="en">Title</dct:title>
+        """
+
+        value = self._get_dict_value(_dict, key)
+        if not value and fallback:
+            value = self._get_dict_value(_dict, fallback)
+        for item in json_to_list(value):
+            lang = convert_language_code(item.get('lang'), 'alpha2', throw_exceptions=False)
+            params = (subject, predicate, Literal(item.get('value'), lang=lang))
+            self.g.add(params)
+
     def parse_dataset(self, dataset_dict, dataset_ref):
         # pass through
         return dataset_dict
@@ -69,8 +86,8 @@ class KataDcatProfile(RDFProfile):
         g.add((dataset_ref, RDF.type, DCAT.Dataset))
 
         # Basic fields
+        # TODO: check each field name
         items = [
-            ('title', DCT.title, None, Literal),
             ('url', DCAT.landingPage, None, URIRef),
             ('identifier', DCT.identifier, ['guid', 'id'], Literal),
             ('version', OWL.versionInfo, ['dcat_version'], Literal),
@@ -82,20 +99,23 @@ class KataDcatProfile(RDFProfile):
         ]
         self._add_triples_from_dict(dataset_dict, dataset_ref, items)
 
-        # Etsin: add a language parameter for each rdf:description
-        notes = self._get_dict_value(dataset_dict, 'notes')
-        for desc in json_to_list(notes):
-            lang = convert_language_code(desc.get('lang'), 'alpha2', throw_exceptions=False)
-            params = (dataset_ref, DCT.description, Literal(desc.get('value'), lang=lang))
-            self.g.add(params)
+        # Etsin: Title and Description, including translations
+        items = [
+            (DCT.title, 'langtitle', 'title'),
+            (DCT.description, 'notes')
+        ]
 
-        
+        for item in items:
+            self._add_translated_triple_from_dict(dataset_dict, dataset_ref, *item)
 
         # Tags
+        # Etsin: tags can be URLs or user inputted keywords
+        # TODO: resolve URLs from Finto. Currently get_label_for_uri() breaks RDFlib.
         for tag in dataset_dict.get('tags', []):
-            g.add((dataset_ref, DCAT.keyword, Literal(tag['name'])))
+            g.add((dataset_ref, DCAT.keyword, Literal(tag.get('display_name'))))
 
         # Dates
+        # Etsin: issued-field is new. This used to be inside CatalogRecord.
         items = [
             ('issued', DCT.issued, ['metadata_created'], Literal),
             ('modified', DCT.modified, ['metadata_modified'], Literal),
