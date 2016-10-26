@@ -327,7 +327,7 @@
   {%- endif -%}
 
   <div class="form-row">
-    <div class="form-label">{{ _('Primary identifier') }}</div>
+    <div class="form-label">{{ _('Dataset identifier') }}</div>
     <div class="form-content">
       <table class="form-inner-table">
       <!--
@@ -357,7 +357,7 @@
   {% set relation_pids = h.get_pids_by_type('relation', pkg_dict) %}
   {% if relation_pids %}
     <div class="form-row" style="margin-bottom: 10px;">
-      <div class="form-label">{{ _('Other identifiers') }}</div>
+      <div class="form-label">{{ _('Other related identifiers') }}</div>
       <div class="form-content">{{ kata_form.tooltip(tooltip=_("<p>Relation identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</div>
     </div>
     <div class="form-row">

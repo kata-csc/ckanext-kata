@@ -550,7 +550,7 @@ def continue_if_missing(key, data, errors, context):
 
 def validate_pid_uniqueness(key, data, errors, context):
     '''
-    Validate dataset pids are unique, i.e. they do not exist already.
+    Validate dataset primary pid or id is unique, i.e. they do not exist already.
 
     :param key: key
     :param data: data

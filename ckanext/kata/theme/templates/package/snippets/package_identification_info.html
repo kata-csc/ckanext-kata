@@ -16,7 +16,7 @@
 
   {% set primary_pid_readonly = " readonly" if primary_pid.id and not errors.get('pids', [])[index.index]%}
 
-  <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ _('Primary identifier') }}</label>
+  <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ _('Dataset identifier') }}</label>
 
   {% call kata_form.input(
     'pids__' ~ index ~ '__id', id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
@@ -41,17 +41,17 @@
 
   {% do index.increase() %}
 
-  {% set additional_identifier_label = _('Other identifiers') %}
+  {% set additional_identifier_label = _('Other related identifiers') %}
   <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ additional_identifier_label }}</label>
 
-  <div data-module="custom-fields-kata" data-module-id="pids-relation" id="pids-relation" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="custom-fields-container">
+  <div data-module="custom-fields-kata" data-module-id="pids-relation" id="pids-relation" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="relations-container custom-fields-container">
     {% set pids = h.get_pids_by_type('relation', data) or [dict(type='relation')] %}
     {% for pid in pids %}
       {% set pid_readonly = " readonly" if pid.id and not errors.get('pids', [])[index.index] %}
       {% set pid_select_readonly = " readonly" if pid.id and not errors.get('pids', [])[index.index] %}
       <div class="control-custom">
         <div class="form-row">
-          <div style="{{ 'margin-top: 5px !important' if loop.first }}" class="form-content kata-medium{{ ' error' if errors }}">
+          <div style="{{ 'margin-top: 5px !important' if loop.first }}" class=" form-content kata-medium{{ ' error' if errors }}">
             <select id="pids__{{ index }}__relation" name="pids__{{ index }}__relation" class="pids_{{ index }} pid" {{ pid_readonly }}>
               {% for relation in h.get_relation_types() %}
                 <option {% if pid.id and pid.relation == relation.id %} selected {% endif %} value="{{ relation.id }}">{{ relation[lang] }}</option>
@@ -82,16 +82,7 @@
     </div>
 
   <input type="hidden" value="{{ index }}" id="pid-index" />
-
-  <!--
-  <div class="form-row">
-    <label for="generate_version_pid" class="control-label kata-input-comp kata-wide-label">{{ _('Generate new version identifier') }}</label>
-    <input id="generate_version_pid" type="checkbox" name="generate_version_pid" class="checkbox checkbox-generate" {{ 'checked' if not pids[0].id }} title='{{ _("Generate a new permanent identifier for the current data version.") }}'/>
-    {{ kata_form.tooltip(tooltip=_('Generate a new permanent identifier for the current data version.')) }}
-  </div>
-
-  {% set lang = h.lang() %}
-
+<!--
   <div class="form-row">
   {% call kata_form.input_block2("last_modified", _('Modification date'), error=errors.version, control_classes=['controls-row', 'controls-wide', 'modification-date-controls'], label_classes=['kata-input-comp', 'kata-wide-label'],
   extra_html=kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br><br>The modification date tells when the data has last been modified. Click the calendar icon to open a calendar tool to choose the modification date for this dataset. Time can be entered if "use exact time" is chosen.'))) %}

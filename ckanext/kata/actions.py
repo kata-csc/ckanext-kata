@@ -116,13 +116,6 @@ def _handle_pids(context, data_dict):
 
         data_dict['pids'] = non_empty
 
-    if data_dict.get('generate_version_pid') == 'on':
-        data_dict['pids'] += [{'id': utils.generate_pid(),
-                               'type': 'relation',
-                               'provider': 'Etsin',
-                               'relation':'has_version'
-                               }]
-
     # If no primary identifier exists, use dataset id as primary identifier
     # by copying dataset id value to primary identifier PID
     if not utils.get_primary_pid(data_dict):
