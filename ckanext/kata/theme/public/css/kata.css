@@ -239,8 +239,7 @@ i.chevron-alt {
   height: auto;
   margin-bottom: 0px;
   font-size: 90%;
-  -webkit-filter: 0 !important;
-          filter: 0 !important;
+  filter: 0 !important;
   border-bottom: 1px solid #c9c9c9;
 }
 .site-footer a {
@@ -968,9 +967,6 @@ input[id="xmlfile"] {
   float: left !important;
   width: 190px !important;
 }
-.resource-form #field-resource-type-upload {
-  height: 0;
-}
 #s2id_field-organizations,
 #s2id_field-parent {
   width: 100% !important;
@@ -1609,8 +1605,7 @@ textarea {
   width: 150px;
 }
 header.masthead {
-  -webkit-filter: 0 !important;
-          filter: 0 !important;
+  filter: 0 !important;
 }
 .debug,
 #debug {
