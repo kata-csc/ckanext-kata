@@ -145,7 +145,7 @@ class Schemas:
                                           unicode, va.validate_general, co.convert_to_extras_kata]
         schema['discipline'] = [ignore_missing, va.validate_discipline, co.convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
-        schema['license_URL'] = [va.continue_if_missing, va.validate_license_url, co.convert_to_extras_kata, unicode,
+        schema['license_URL'] = [va.continue_if_missing, va.validate_license_url, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode,
                                  va.validate_general]
         schema['owner_org'] = [va.kata_owner_org_validator, unicode]
         schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_direct_download_url,
@@ -256,7 +256,7 @@ class Schemas:
         schema['availability'].insert(0, ignore_missing)
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
-        schema['license_URL'] = [ignore_missing, co.convert_to_extras_kata, unicode, va.validate_general]
+        schema['license_URL'] = [va.continue_if_missing, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['maintainer'] = [ignore_missing, unicode, va.validate_general]
         schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
                              'email': [ignore_missing, unicode, va.validate_email, co.flattened_to_extras],
@@ -304,7 +304,7 @@ class Schemas:
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_date_relaxed],
                            'descr': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric]}
         schema['geographic_coverage'].insert(0, ignore_missing)
-        schema['license_URL'] = [ignore_missing, co.convert_to_extras_kata, unicode, va.validate_general]
+        schema['license_URL'] = [va.continue_if_missing, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['temporal_coverage_begin'] = [ignore_missing, va.validate_kata_date_relaxed, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, va.validate_kata_date_relaxed, co.convert_to_extras_kata, unicode]
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
