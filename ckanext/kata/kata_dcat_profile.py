@@ -8,7 +8,7 @@ from pylons import config
 
 import rdflib
 from rdflib import URIRef, BNode, Literal
-from rdflib.namespace import Namespace, RDF, XSD, SKOS, RDFS
+from rdflib.namespace import Namespace, RDF
 
 from geomet import wkt, InvalidGeoJSONException
 
@@ -17,13 +17,12 @@ from ckan.plugins import toolkit
 from ckanext.dcat.utils import resource_uri, publisher_uri_from_dataset_dict
 from ckanext.dcat.profiles import RDFProfile
 
-from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_label_for_uri
+from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_label_for_uri, get_if_url
 from ckan.lib.helpers import url_for
 from ckanext.kata.utils import get_pids_by_type
 
 log = logging.getLogger(__name__)
 
-DC = Namespace("http://purl.org/dc/terms/")
 DCT = Namespace("http://purl.org/dc/terms/")
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 ADMS = Namespace("http://www.w3.org/ns/adms#")
@@ -142,6 +141,19 @@ class KataDcatProfile(RDFProfile):
 
         for item in items:
             self._add_translated_triple_from_dict(dataset_dict, dataset_ref, *item)
+
+        # Etsin: Agents
+        for agent in dataset_dict.get('agent', []):
+            if agent.get('role') == 'owner':
+                agent_node_ref = BNode()
+                g.add((agent_node_ref, RDF.type, FOAF.Agent))
+                g.add((dataset_ref, DCT.rightsHolder, agent_node_ref))
+                if not get_if_url(agent.get('name')):
+                    name = agent.get('name', agent.get('organisation', ''))
+                else:
+                    name = agent.get('name')
+                g.add((agent_node_ref, FOAF.name, Literal(name)))
+                
 
         # Tags
         # Etsin: tags can be URLs or user inputted keywords
