@@ -158,6 +158,23 @@ class KataDcatProfile(RDFProfile):
                 g.add((isoutputof_ref, FOAF.Project, project_ref))
                 g.add((dataset_ref, FRAPO.isOutputOf, isoutputof_ref))
 
+        # Etsin: Publishers
+        for contact in dataset_dict.get('contact'):
+            agent_node_ref = BNode()
+            g.add((agent_node_ref, RDF.type, FOAF.Agent))
+            g.add((dataset_ref, DCT.publisher, agent_node_ref))
+            g.add((agent_node_ref, FOAF.name, Literal(contact.get('name', None))))
+            if contact.get('email') != 'hidden':
+                email = contact.get('email', None)
+                g.add((agent_node_ref, FOAF.mbox, URIRef("mailto:" + email)))
+            if contact.get('URL'):
+                url = contact.get('URL', None)
+                g.add((agent_node_ref, FOAF.homepage, URIRef(url)))
+            if contact.get('phone'):
+                phone = contact.get('phone', None)
+                g.add((agent_node_ref, FOAF.phone, URIRef("tel:" + phone)))
+
+
         # Tags
         # Etsin: tags can be URLs or user inputted keywords
         # TODO: resolve URLs from Finto. Currently get_label_for_uri() breaks RDFlib.
