@@ -736,7 +736,7 @@ input[id="xmlfile"] {
 .form-tab-content .form-row #generate_version_pid {
   margin-left: 20px;
 }
-.form-tab-content #identification-info .relations-container .form-row .form-content {
+.form-tab-content #identification-info .form-row .form-content {
   padding-left: 0px;
   margin-left: 20%;
 }

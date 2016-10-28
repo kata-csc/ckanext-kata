@@ -1,5 +1,6 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
+{% set currentlang = h.lang() %}
 
   <h3>{{ _('Dataset lifecycle events') }}</h3>
   <div class="form-row">
@@ -178,3 +179,16 @@
       {% endif %}
     </div>
   </div>
+
+  {% call kata_form.input_block2("last_modified", _('Last modification date'), error=errors.version, control_classes=['controls-row', 'controls-wide', 'modification-date-controls'], label_classes=['control-label', 'center-align'],
+  extra_html=kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br><br>The modification date tells when the data has last been modified. Click the calendar icon to open a calendar tool to choose the modification date for this dataset. Time can be entered if "use exact time" is chosen.'))) %}
+    <div data-module="kata-datetimepicker"
+         data-module-currentlang="{{ currentlang }}" data-module-name="version"
+         data-module-value="{{data.version}}" data-module-defaultnow="true"
+         data-module-disabled="false">
+
+      <div class="kata-datetimepicker-parent"></div>
+
+      <div class="kata-datepicker-error"></div>
+    </div>
+  {% endcall %}

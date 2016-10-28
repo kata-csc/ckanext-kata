@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.1.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-10-24 13:00+0000\n"
+"POT-Creation-Date: 2016-10-28 06:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,56 +21,56 @@ msgstr ""
 msgid "Paper"
 msgstr ""
 
-#: ckanext/kata/actions.py:180
+#: ckanext/kata/actions.py:173
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:441 ckanext/kata/actions.py:505
+#: ckanext/kata/actions.py:434 ckanext/kata/actions.py:498
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:452 ckanext/kata/actions.py:516
+#: ckanext/kata/actions.py:445 ckanext/kata/actions.py:509
 #: ckanext/kata/controllers.py:697 ckanext/kata/controllers.py:775
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:457 ckanext/kata/actions.py:461
+#: ckanext/kata/actions.py:450 ckanext/kata/actions.py:454
 #: ckanext/kata/controllers.py:772
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:465
+#: ckanext/kata/actions.py:458
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:472
+#: ckanext/kata/actions.py:465
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:476
+#: ckanext/kata/actions.py:469
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:481
+#: ckanext/kata/actions.py:474
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:527
+#: ckanext/kata/actions.py:520
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:533
+#: ckanext/kata/actions.py:526
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:592
+#: ckanext/kata/actions.py:585
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:626
+#: ckanext/kata/actions.py:619
 msgid "You don't have permission to remove this user."
 msgstr ""
 
@@ -673,8 +673,8 @@ msgstr ""
 #: ckanext/kata/theme/templates/package/package_rights.html:17
 #: ckanext/kata/theme/templates/package/read.html:36
 #: ckanext/kata/theme/templates/package/related_list.html:26
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:28
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:64
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:26
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:62
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:30
 #: ckanext/kata/theme/templates/related/snippets/related_item.html:23
 msgid "Edit"
@@ -1510,7 +1510,7 @@ msgid "Description + language"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:26
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:359
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:354
 msgid "External identifier"
 msgstr ""
 
@@ -2502,7 +2502,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/organization/member_new.html:38
 #: ckanext/kata/theme/templates/package/package_rights.html:139
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:70
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:68
 msgid "Add"
 msgstr ""
 
@@ -4807,20 +4807,16 @@ msgstr ""
 msgid "No funding information is available."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:319
-msgid "Version"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:325
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:320
 msgid "Permanent address for this page"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:333
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:19
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:328
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:17
 msgid "Dataset identifier"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:351
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:346
 msgid ""
 "<p>Primary identifier is the main identifier of a particular dataset. ...... "
 "The primary metadata identifier is the metadata identifier which refers to "
@@ -4829,12 +4825,12 @@ msgid ""
 "using different identifier systems.</p>"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:367
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:44
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:362
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:42
 msgid "Other related identifiers"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:368
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:363
 msgid ""
 "<p>Relation identifier is an identifier of the data this metadata record "
 "refers to. Several data identifiers may exist in the dataset if for example "
@@ -4842,8 +4838,13 @@ msgid ""
 "identifier systems.</p>"
 msgstr ""
 
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:386
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:183
+msgid "Last modification date"
+msgstr ""
+
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:391
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:4
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr ""
 
@@ -5161,12 +5162,12 @@ msgstr ""
 msgid "Update and publish"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:27
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:63
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:25
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:61
 msgid "Check this to correct errors in an existing PID"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:32
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:30
 msgid ""
 "<p>Primary identifier is the main identifier of a particular dataset. ......."
 " Etsin will automatically create a primary metadata identifier for this "
@@ -5181,7 +5182,7 @@ msgid ""
 "DOI, but many others exist.</p>"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:68
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:66
 msgid ""
 "<p>Relation identifier is an identifier of the data this metadata record "
 "refers to. The primary data identifier is compulsory but it will be generated"
@@ -5194,28 +5195,6 @@ msgid ""
 "refer to for example a data file or a metadata record. The permanent "
 "identifiers for digital systems are analogous to the ISBN for books. Examples"
 " of identifiers for data are URN, Handle and DOI, but many others exist.</p>"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:88
-msgid "Generate new version identifier"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:89
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:90
-msgid "Generate a new permanent identifier for the current data version."
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:96
-msgid "Modification date"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:97
-msgid ""
-"Field is compulsory but an automatically generated date is "
-"provided.<br><br>The modification date tells when the data has last been "
-"modified. Click the calendar icon to open a calendar tool to choose the "
-"modification date for this dataset. Time can be entered if \"use exact time\""
-" is chosen."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:35
@@ -5510,90 +5489,90 @@ msgid ""
 "varying levels of security."
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:8
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:9
 msgid "event"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:9
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:10
 msgid "by whom"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:10
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:11
 msgid "when"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:11
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:12
 msgid "description"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:27
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:93
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:140
-msgid "collection"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:28
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:94
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:141
-msgid "creation"
+msgid "collection"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:29
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:95
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:142
-msgid "checked"
+msgid "creation"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:30
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:96
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:143
-msgid "extended"
+msgid "checked"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:31
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:97
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:144
-msgid "changed"
+msgid "extended"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:32
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:98
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:145
-msgid "removed"
+msgid "changed"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:33
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:99
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:146
-msgid "published"
+msgid "removed"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:34
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:100
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:147
-msgid "sent"
+msgid "published"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:35
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:101
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:148
-msgid "received"
+msgid "sent"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:36
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:102
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:149
-msgid "modified"
+msgid "received"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:37
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:103
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:150
+msgid "modified"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:38
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:104
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:151
 msgid "used"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:126
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:173
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:127
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:174
 msgid ""
 "Describe the lifecycle of your data by adding important events related to the"
 " data. A single event consists of four fields: event, by whom, when and "
@@ -5601,6 +5580,15 @@ msgid ""
 "add more events by first adding a new set of fields by clicking the '+' "
 "button.<br /><br />To remove an event, delete its contents from the three "
 "text fields."
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:184
+msgid ""
+"Field is compulsory but an automatically generated date is "
+"provided.<br><br>The modification date tells when the data has last been "
+"modified. Click the calendar icon to open a calendar tool to choose the "
+"modification date for this dataset. Time can be entered if \"use exact time\""
+" is chosen."
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:5
