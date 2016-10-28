@@ -1,23 +1,11 @@
-import datetime
-import json
 import logging
 
-from dateutil.parser import parse as parse_date
-
-from pylons import config
-
-import rdflib
 from rdflib import URIRef, BNode, Literal
 from rdflib.namespace import Namespace, RDF
 
-from geomet import wkt, InvalidGeoJSONException
-
-from ckan.plugins import toolkit
-
-from ckanext.dcat.utils import resource_uri, publisher_uri_from_dataset_dict
 from ckanext.dcat.profiles import RDFProfile
 
-from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_label_for_uri, get_if_url
+from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_if_url
 from ckan.lib.helpers import url_for
 from ckanext.kata.utils import get_pids_by_type
 
@@ -26,46 +14,19 @@ log = logging.getLogger(__name__)
 DCT = Namespace("http://purl.org/dc/terms/")
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 ADMS = Namespace("http://www.w3.org/ns/adms#")
-VCARD = Namespace("http://www.w3.org/2006/vcard/ns#")
+ORG = Namespace("http://www.w3.org/ns/org#")
+FRAPO = Namespace("http://purl.org/cerif/frapo/")
+RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-SCHEMA = Namespace('http://schema.org/')
-TIME = Namespace('http://www.w3.org/2006/time')
-LOCN = Namespace('http://www.w3.org/ns/locn#')
-GSP = Namespace('http://www.opengis.net/ont/geosparql#')
-OWL = Namespace('http://www.w3.org/2002/07/owl#')
-SPDX = Namespace('http://spdx.org/rdf/terms#')
-DCES = Namespace("http://purl.org/dc/elements/1.1/")
-LICENSES = Namespace("http://purl.org/okfn/licenses/")
-LOCAL = Namespace("http://opendatasearch.org/schema#")
-OPMV = Namespace("http://purl.org/net/opmv/ns#")
-REV = Namespace("http://purl.org/stuff/rev#")
-SCOVO = Namespace("http://purl.org/NET/scovo#")
-SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
-VOID = Namespace("http://rdfs.org/ns/void#")
-UUID = Namespace("urn:uuid:")
-GEOJSON_IMT = 'https://www.iana.org/assignments/media-types/application/vnd.geo+json'
 
 namespaces = {
     'dct': DCT,
     'dcat': DCAT,
     'adms': ADMS,
-    #'schema': SCHEMA,
-    #'locn': LOCN,
-    #'gsp': GSP,
-    #"rdf": RDF,
-    #"rdfs": RDFS,
-    #"owl": OWL,
-    #"dc": DC,
-    "foaf": FOAF,
-    #"opmv": OPMV,
-    #"skos": SKOS,
-    #"time": TIME,
-    #"void": VOID,
-    #"vcard": VCARD,
-    #"local": LOCAL,
-    #"rev": REV,
-    #"scovo": SCOVO,
-    #"licenses": LICENSES
+    'org': ORG,
+    'frapo': FRAPO,
+    'rdfs': RDFS,
+    "foaf": FOAF
 }
 
 
@@ -101,22 +62,20 @@ class KataDcatProfile(RDFProfile):
 
         g.add((dataset_ref, RDF.type, DCAT.Dataset))
 
-        # TODO:
-        # How to add CatalogRecord?
+        # TODO: do we need to add CatalogRecord?
 
         # Basic fields
-        # TODO: check each field name
-        items = [
-            #('url', DCAT.landingPage, None, URIRef),  # disabled in old serializer
-            #('identifier', DCT.identifier, ['guid', 'id'], Literal),  # TODO
-            #('version', OWL.versionInfo, ['dcat_version'], Literal),
-            #('version_notes', ADMS.versionNotes, None, Literal),
-            #('frequency', DCT.accrualPeriodicity, None, Literal),
-            #('access_rights', DCT.accessRights, None, Literal),  # TODO
-            #('dcat_type', DCT.type, None, Literal),
-            #('provenance', DCT.provenance, None, Literal),
-            #('provenance', DCT.provenance, None, Literal),
-        ]
+        # items = [
+        #     ('url', DCAT.landingPage, None, URIRef),  # disabled in old serializer
+        #     ('identifier', DCT.identifier, ['guid', 'id'], Literal),  # TODO
+        #     ('version', OWL.versionInfo, ['dcat_version'], Literal),
+        #     ('version_notes', ADMS.versionNotes, None, Literal),
+        #     ('frequency', DCT.accrualPeriodicity, None, Literal),
+        #     ('access_rights', DCT.accessRights, None, Literal),  # TODO
+        #     ('dcat_type', DCT.type, None, Literal),
+        #     ('provenance', DCT.provenance, None, Literal),
+        #     ('provenance', DCT.provenance, None, Literal),
+        # ]
         #self._add_triples_from_dict(dataset_dict, dataset_ref, items)
 
         # Etsin: homepage
@@ -144,16 +103,60 @@ class KataDcatProfile(RDFProfile):
 
         # Etsin: Agents
         for agent in dataset_dict.get('agent', []):
-            if agent.get('role') == 'owner':
+            agent_role = agent.get('role')
+
+            # Rights Holders
+            if agent_role in ['owner', 'distributor']:
+                name = agent.get('name', None)
+                if agent_role == 'owner':
+                    if not get_if_url(agent.get('name')):
+                        name = agent.get('name', agent.get('organisation', ''))
+                    nodetype = DCT.rightsHolder
+                if agent_role == 'distributor':
+                    nodetype = DCT.publisher
+
                 agent_node_ref = BNode()
                 g.add((agent_node_ref, RDF.type, FOAF.Agent))
-                g.add((dataset_ref, DCT.rightsHolder, agent_node_ref))
-                if not get_if_url(agent.get('name')):
-                    name = agent.get('name', agent.get('organisation', ''))
-                else:
-                    name = agent.get('name')
+                g.add((dataset_ref, nodetype, agent_node_ref))
                 g.add((agent_node_ref, FOAF.name, Literal(name)))
-                
+
+            # Authors
+            if agent_role in ['author', 'contributor']:
+                if agent_role == 'author':
+                    nodetype = DCT.creator
+                if agent_role == 'contributor':
+                    nodetype = DCT.contributor
+
+                organization_ref = BNode()
+                agent_ref = BNode()
+                memberof_ref = BNode()
+                creator_ref = BNode()
+
+                g.add((organization_ref, FOAF.name, Literal(agent.get('organisation', None))))
+                g.add((memberof_ref, FOAF.organization, organization_ref))
+                g.add((agent_ref, ORG.memberOf, memberof_ref))
+                g.add((agent_ref, FOAF.name, Literal(agent.get('name', None))))
+                g.add((creator_ref, FOAF.Agent, agent_ref))
+                g.add((dataset_ref, nodetype, creator_ref))
+
+            # Funders
+            if agent.get('role') == 'funder':
+                organization_ref = BNode()
+                memberof_ref = BNode()
+                project_ref = BNode()
+                isoutputof_ref = BNode()
+
+                if agent.get('URL'):
+                    g.add((project_ref, FOAF.homepage, Literal(agent.get('URL', None))))
+                if agent.get('fundingid'):
+                    g.add((project_ref, RDFS.comment, Literal(agent.get('fundingid', None))))
+
+                g.add((organization_ref, FOAF.name, Literal(agent.get('organisation', None))))
+                g.add((memberof_ref, FOAF.organization, organization_ref))
+                g.add((project_ref, ORG.memberOf, memberof_ref))
+                g.add((project_ref, FOAF.name, Literal(agent.get('name', None))))
+                g.add((isoutputof_ref, FOAF.Project, project_ref))
+                g.add((dataset_ref, FRAPO.isOutputOf, isoutputof_ref))
 
         # Tags
         # Etsin: tags can be URLs or user inputted keywords
@@ -172,18 +175,18 @@ class KataDcatProfile(RDFProfile):
         self._add_date_triples_from_dict(dataset_dict, dataset_ref, items)
 
         #  Lists
-        items = [
-            #('theme', DCAT.theme, None, URIRef),
-            #('conforms_to', DCT.conformsTo, None, Literal),
-            #('alternate_identifier', ADMS.identifier, None, Literal),
-            #('documentation', FOAF.page, None, Literal),
-            #('related_resource', DCT.relation, None, Literal),  # TODO
-            #('has_version', DCT.hasVersion, None, Literal),
-            #('is_version_of', DCT.isVersionOf, None, Literal),
-            #('source', DCT.source, None, Literal),
-            #('sample', ADMS.sample, None, Literal),
-        ]
-        self._add_list_triples_from_dict(dataset_dict, dataset_ref, items)
+        # items = [
+        #     ('theme', DCAT.theme, None, URIRef),
+        #     ('conforms_to', DCT.conformsTo, None, Literal),
+        #     ('alternate_identifier', ADMS.identifier, None, Literal),
+        #     ('documentation', FOAF.page, None, Literal),
+        #     ('related_resource', DCT.relation, None, Literal),  # TODO
+        #     ('has_version', DCT.hasVersion, None, Literal),
+        #     ('is_version_of', DCT.isVersionOf, None, Literal),
+        #     ('source', DCT.source, None, Literal),
+        #     ('sample', ADMS.sample, None, Literal),
+        # ]
+        # self._add_list_triples_from_dict(dataset_dict, dataset_ref, items)
 
         # Etsin: language field need to be stripped from spaces
         langs = self._get_dict_value(dataset_dict, 'language').split(', ')
