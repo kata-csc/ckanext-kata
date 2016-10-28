@@ -376,11 +376,6 @@
 <!-- Dataset lifecycle events -->
 
   <div class="form-row">
-    <div class="form-label">{{ _('Last modification date') }}</div>
-    <div class="form-content">{{ pkg_dict.version }}</div>
-  </div>
-
-  <div class="form-row">
     <div class="form-label">{{ _('Dataset lifecycle events') }}</div>
       <div class="form-content">
         <!--<table class="form-inner-table">-->
@@ -408,6 +403,10 @@
         </table>
         {% endif %}
       </div>
+  </div>
+  <div class="form-row">
+    <div class="form-label">{{ _('Most recent data modification date') }}</div>
+    <div class="form-content">{{ pkg_dict.version }}</div>
   </div>
 </div>
 <div class="dataset-section form-tab-content">

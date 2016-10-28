@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-10-28 06:31+0000\n"
+"POT-Creation-Date: 2016-10-28 14:44+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -762,7 +762,7 @@ msgstr "minun-ryhmäni"
 #: ckanext/kata/theme/templates/kata/data-model.html:22
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:21
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:34
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:406
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:401
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:25
 msgid "Description"
 msgstr "Kuvaus"
@@ -1626,7 +1626,7 @@ msgid "Agent"
 msgstr "Toimija"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:22
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:403
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:398
 msgid "Event"
 msgstr "Tapahtuma"
 
@@ -5088,42 +5088,42 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:386
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:183
-msgid "Last modification date"
-msgstr "Viimeisin muokkauspvm"
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:391
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr "Aineston elinkaaren tapahtumat"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:404
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:399
 msgid "Who"
 msgstr "Kuka"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:405
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:400
 msgid "When"
 msgstr "Milloin"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:423
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:415
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:183
+msgid "Most recent data modification date"
+msgstr "Datan viimeisin muokkauspäivämäärä"
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:422
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:22
 msgid "Additional information"
 msgstr "Lisätietoa"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:428
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:427
 msgid "File format: MIME type"
 msgstr "Tiedoston muoto: MIME-tyyppi"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:434
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:433
 msgid "File format"
 msgstr "Tiedoston muoto"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:440
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:439
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid "Checksum"
 msgstr "Tarkistussumma"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:444
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:443
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid "Algorithm"
 msgstr "Algoritmi"
@@ -6211,13 +6211,4 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
-
-#~ msgid "Version"
-#~ msgstr "Versio"
-
-#~ msgid "Generate new version identifier"
-#~ msgstr "Luo uusi versiotunniste"
-
-#~ msgid "Generate a new permanent identifier for the current data version."
-#~ msgstr "Luo uusi pysyvä tunniste datan nykyiselle versiolle."
 

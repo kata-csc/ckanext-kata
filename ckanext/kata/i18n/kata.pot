@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.1.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-10-28 06:31+0000\n"
+"POT-Creation-Date: 2016-10-28 14:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -714,7 +714,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/data-model.html:22
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:21
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:34
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:406
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:401
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:25
 msgid "Description"
 msgstr ""
@@ -1497,7 +1497,7 @@ msgid "Agent"
 msgstr ""
 
 #: ckanext/kata/theme/templates/kata/dummy.html:22
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:403
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:398
 msgid "Event"
 msgstr ""
 
@@ -4839,42 +4839,42 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:386
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:183
-msgid "Last modification date"
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:391
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:404
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:399
 msgid "Who"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:405
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:400
 msgid "When"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:423
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:415
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:183
+msgid "Most recent data modification date"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:422
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:22
 msgid "Additional information"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:428
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:427
 msgid "File format: MIME type"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:434
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:433
 msgid "File format"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:440
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:439
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:36
 msgid "Checksum"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:444
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:443
 #: ckanext/kata/theme/templates/package/snippets/recommended_file_information.html:47
 msgid "Algorithm"
 msgstr ""
