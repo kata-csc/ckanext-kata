@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-10-19 06:56+0000\n"
+"POT-Creation-Date: 2016-10-28 07:32+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -249,32 +249,32 @@ msgstr "Formaatit"
 msgid "License"
 msgstr "Lisenssi"
 
-#: ckanext/kata/converters.py:69
+#: ckanext/kata/converters.py:70
 msgid "The language code is not in ISO639-3 format"
 msgstr "Kieli ei ole annettu ISO 639-2 T-muodossa"
 
-#: ckanext/kata/converters.py:71
+#: ckanext/kata/converters.py:72
 msgid "The given {field} string is incorrectly formatted"
 msgstr "Annettu {field} merkkijono on vääränmuotoinen"
 
-#: ckanext/kata/converters.py:91
+#: ckanext/kata/converters.py:92
 msgid "The given title string is not JSON parseable"
 msgstr "Annettu otsikko ei ole JSON-muodossa"
 
-#: ckanext/kata/converters.py:96
+#: ckanext/kata/converters.py:97
 msgid "The given description string is not JSON parseable"
 msgstr "Annettu kuvaus ei ole JSON-muodossa"
 
-#: ckanext/kata/converters.py:253
+#: ckanext/kata/converters.py:254
 msgid "No language given"
 msgstr "Kieltä ei annettu"
 
-#: ckanext/kata/converters.py:259
+#: ckanext/kata/converters.py:260
 #, python-format
 msgid "Language is disabled, removing languages: '%s'"
 msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 
-#: ckanext/kata/converters.py:393
+#: ckanext/kata/converters.py:394
 #, python-format
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
@@ -797,7 +797,7 @@ msgstr "minun-ryhmäni"
 #: ckanext/kata/theme/templates/kata/data-model.html:22
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:27
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:28
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:496
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:492
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:25
 msgid "Description"
 msgstr "Kuvaus"
@@ -1696,7 +1696,7 @@ msgid "Agent"
 msgstr "Toimija"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:22
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:493
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:489
 msgid "Event"
 msgstr "Tapahtuma"
 
@@ -2871,10 +2871,10 @@ msgid ""
 "contact Etsin administration through our <a href=\"http://openscience.fi"
 "/contact-form\" target=\"_blank\">contact form</a>."
 msgstr ""
-"Valitse hierarkiasta yläorganisaatio, johon organisaatio linkitetään. Alkaessasi "
-"kirjoittamaan saat ehdotuksia Etsimen organisaatioista. Valitse haluamasi"
-" organisaatio klikkaamalla ehdotusta hiirellä. Jos et löydä "
-"organisaatiotasi listalta, voit ottaa yhteyttä Etsin-ylläpitoon <a "
+"Valitse hierarkiasta yläorganisaatio, johon organisaatio linkitetään. "
+"Alkaessasi kirjoittamaan saat ehdotuksia Etsimen organisaatioista. "
+"Valitse haluamasi organisaatio klikkaamalla ehdotusta hiirellä. Jos et "
+"löydä organisaatiotasi listalta, voit ottaa yhteyttä Etsin-ylläpitoon <a "
 "href=\"http://avointiede.fi/ota-yhteytta\" "
 "target=\"_blank\">palautelomakkeella</a>"
 
@@ -5179,27 +5179,23 @@ msgid "No funding information is available."
 msgstr "Rahoitustietoja ei ole saatavilla."
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:431
-msgid "Version"
-msgstr "Versio"
-
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:435
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:25
 msgid "Identifiers"
 msgstr "Tunnisteet"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:440
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:436
 msgid "Permanent address for dataset"
 msgstr "Aineiston pysyvä osoite"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:445
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:441
 msgid "Uniform Resource Name"
 msgstr "Aineiston yksilöllinen tunnus"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:450
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:446
 msgid "Primary metadata identifier"
 msgstr "Ensisijainen metadatan tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:452
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:448
 msgid ""
 "<p>Metadata identifier is an identifier given for a single metadata "
 "record. The primary metadata identifier is the metadata identifier which "
@@ -5213,12 +5209,12 @@ msgstr ""
 " lisättynä aineistoon, jos aineiston luoja on esimerkiksi halunnut "
 "viitata metadatatietueeseen eri järjestelmien antamilla tunnisteilla.</p>"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:455
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:451
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:27
 msgid "Primary data identifier"
 msgstr "Ensisijainen datan tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:457
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:453
 msgid ""
 "<p>Data identifier is an identifier of the data this metadata record "
 "refers to. Several data identifiers - in addition to the primary data "
@@ -5230,7 +5226,7 @@ msgstr ""
 "tunnisteen lisäksi, jos esimerkiksi aineiston luoja on halunnut viitata "
 "dataan eri järjestelmien antamilla tunnisteilla.</p>"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:467
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:463
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:76
 msgid ""
 "Version identifier is just like the data identifier, but it refers to a "
@@ -5239,18 +5235,22 @@ msgstr ""
 "Versiotunniste on kuten datan tunniste, mutta se viittaa tiettyyn "
 "versioon datasta."
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:481
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:4
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:477
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:5
 msgid "Dataset lifecycle events"
 msgstr "Aineston elinkaaren tapahtumat"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:494
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:490
 msgid "Who"
 msgstr "Kuka"
 
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:495
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:491
 msgid "When"
 msgstr "Milloin"
+
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:506
+msgid "Most recent data modification date"
+msgstr "Datan viimeisin muokkauspäivämäärä"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:513
 #: ckanext/kata/theme/templates/package/snippets/package_basic_fields.html:22
@@ -5686,23 +5686,6 @@ msgstr "Luo uusi versiotunniste"
 msgid "Generate a new permanent identifier for the current data version."
 msgstr "Luo uusi pysyvä tunniste datan nykyiselle versiolle."
 
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:140
-msgid "Modification date"
-msgstr "Muokkauspvm"
-
-#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:141
-msgid ""
-"Field is compulsory but an automatically generated date is "
-"provided.<br><br>The modification date tells when the data has last been "
-"modified. Click the calendar icon to open a calendar tool to choose the "
-"modification date for this dataset. Time can be entered if \"use exact "
-"time\" is chosen."
-msgstr ""
-"Kenttä on pakollinen, mutta siihen tarjotaan automaattisesti generoitu "
-"päivämäärä.<br><br>Muokkauspäivämäärä kertoo, milloin dataa on viimeksi "
-"muokattu. Klikkaa kalenteri-ikonia ja valitse päivämäärä. Kellonaika "
-"voidaan syöttää valitsemalla \"käytä tarkkaa  kellonaikaa\". "
-
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:35
 msgid "No organization"
 msgstr "Ei organisaatiota"
@@ -6020,90 +6003,90 @@ msgstr ""
 "käytetty algoritmi. Algoritmeja on saatavilla useita, joista vahvemmat "
 "ovat turvallisempia."
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:8
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:9
 msgid "event"
 msgstr "tapahtuma"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:9
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:10
 msgid "by whom"
 msgstr "kenen toimesta"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:10
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:11
 msgid "when"
 msgstr "milloin"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:11
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:12
 msgid "description"
 msgstr "kuvaus"
-
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:27
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:93
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:140
-msgid "collection"
-msgstr "kokoaminen"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:28
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:94
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:141
-msgid "creation"
-msgstr "luonti"
+msgid "collection"
+msgstr "kokoaminen"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:29
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:95
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:142
-msgid "checked"
-msgstr "tarkistus"
+msgid "creation"
+msgstr "luonti"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:30
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:96
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:143
-msgid "extended"
-msgstr "laajennus"
+msgid "checked"
+msgstr "tarkistus"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:31
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:97
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:144
-msgid "changed"
-msgstr "muutos"
+msgid "extended"
+msgstr "laajennus"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:32
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:98
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:145
-msgid "removed"
-msgstr "poisto"
+msgid "changed"
+msgstr "muutos"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:33
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:99
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:146
-msgid "published"
-msgstr "julkaisu"
+msgid "removed"
+msgstr "poisto"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:34
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:100
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:147
-msgid "sent"
-msgstr "lähetys"
+msgid "published"
+msgstr "julkaisu"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:35
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:101
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:148
-msgid "received"
-msgstr "saapuminen"
+msgid "sent"
+msgstr "lähetys"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:36
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:102
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:149
-msgid "modified"
-msgstr "muokkaus"
+msgid "received"
+msgstr "saapuminen"
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:37
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:103
 #: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:150
+msgid "modified"
+msgstr "muokkaus"
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:38
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:104
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:151
 msgid "used"
 msgstr "käyttö"
 
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:126
-#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:173
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:127
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:174
 msgid ""
 "Describe the lifecycle of your data by adding important events related to"
 " the data. A single event consists of four fields: event, by whom, when "
@@ -6118,6 +6101,23 @@ msgstr ""
 "kentät, kun lisäät tapahtuman.<br /><br />Voit lisätä kenttiä uusille "
 "tapahtumille '+'-nappulasta.<br /><br />Poistaaksesi tapahtuman tyhjennä "
 "kyseisen tapahtuman sisältö sen kolmesta tekstikentästä."
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:183
+msgid "Most recent data modification date*"
+msgstr "Datan viimeisin muokkauspäivämäärä*"
+
+#: ckanext/kata/theme/templates/package/snippets/recommended_lifecycle_events.html:184
+msgid ""
+"Field is compulsory but an automatically generated date is "
+"provided.<br><br>The modification date tells when the data has last been "
+"modified. Click the calendar icon to open a calendar tool to choose the "
+"modification date for this dataset. Time can be entered if \"use exact "
+"time\" is chosen."
+msgstr ""
+"Kenttä on pakollinen, mutta siihen tarjotaan automaattisesti generoitu "
+"päivämäärä.<br><br>Muokkauspäivämäärä kertoo, milloin dataa on viimeksi "
+"muokattu. Klikkaa kalenteri-ikonia ja valitse päivämäärä. Kellonaika "
+"voidaan syöttää valitsemalla \"käytä tarkkaa  kellonaikaa\". "
 
 #: ckanext/kata/theme/templates/package/snippets/recommended_relations.html:5
 msgid "Relations"
@@ -6374,4 +6374,7 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
+#~ msgid "Version"
+#~ msgstr "Versio"
 

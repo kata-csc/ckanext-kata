@@ -428,10 +428,6 @@
   <!-- IDs -->
 
   <div class="form-row">
-    <div class="form-label">{{ _('Version') }}</div>
-    <div class="form-content">{{ pkg_dict.version }}</div>
-  </div>
-  <div class="form-row">
     <div class="form-label">{{ _('Identifiers') }}</div>
     <div class="form-content">
       <table class="form-inner-table">
@@ -479,9 +475,9 @@
 
   <div class="form-row">
     <div class="form-label">{{ _('Dataset lifecycle events') }}</div>
-    {% if pkg_dict.event %}
       <div class="form-content">
         <!--<table class="form-inner-table">-->
+        {% if pkg_dict.event %}
         <table class="table table-bordered table-condensed">
           <colgroup>
             <col width="20%">
@@ -503,8 +499,12 @@
           </tr>
           {% endfor %}
         </table>
+        {% endif %}
       </div>
-    {% endif %}
+  </div>
+  <div class="form-row">
+    <div class="form-label">{{ _('Most recent data modification date') }}</div>
+    <div class="form-content">{{ pkg_dict.version }}</div>
   </div>
 </div>
 <div class="dataset-section form-tab-content">

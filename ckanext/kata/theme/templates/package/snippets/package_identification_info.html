@@ -134,20 +134,4 @@
     {{ kata_form.tooltip(tooltip=_('Generate a new permanent identifier for the current data version.')) }}
   </div>
 
-  {% set lang = h.lang() %}
-
-  <div class="form-row">
-  {% call kata_form.input_block2("last_modified", _('Modification date'), error=errors.version, control_classes=['controls-row', 'controls-wide', 'modification-date-controls'], label_classes=['kata-input-comp', 'kata-wide-label'],
-  extra_html=kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br><br>The modification date tells when the data has last been modified. Click the calendar icon to open a calendar tool to choose the modification date for this dataset. Time can be entered if "use exact time" is chosen.'))) %}
-    <div data-module="kata-datetimepicker"
-         data-module-currentlang="{{ lang }}" data-module-name="version"
-         data-module-value="{{data.version}}" data-module-defaultnow="true"
-         data-module-disabled="false">
-
-      <div class="kata-datetimepicker-parent"></div>
-
-      <div class="kata-datepicker-error"></div>
-    </div>
-  {% endcall %}
-  </div>
 </div>
