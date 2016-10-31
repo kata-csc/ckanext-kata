@@ -5,8 +5,9 @@ from rdflib.namespace import Namespace, RDF
 
 from ckanext.dcat.profiles import RDFProfile
 
-from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_if_url, get_download_url
+from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_if_url, get_download_url, split_disciplines, get_rightscategory
 from ckan.lib.helpers import url_for
+from ckan.model import Related
 from ckanext.kata.utils import get_pids_by_type
 
 log = logging.getLogger(__name__)
@@ -234,6 +235,26 @@ class KataDcatProfile(RDFProfile):
 
         g.add((dist_parent_ref, DCAT.Distribution, distribution_ref))
         g.add((dataset_ref, DCAT.distribution, dist_parent_ref))
+
+        # Etsin: Disciplines
+        for discipline in split_disciplines(dataset_dict.get('discipline', '')):
+            if is_url(discipline):
+                disc = URIRef(discipline)
+            else:
+                disc = Literal(discipline)
+            g.add((dataset_ref, DCT.subject, disc))
+
+        # Etsin: Rights Declaration
+        # Peter: I couldn't find a way to add an xmlns attribute under
+        # the parent <DCT:rights> in rdflib
+        category, declarations = get_rightscategory(dataset_dict)
+        
+        declaration_strings = ''
+        for declaration in declarations:
+            declaration_strings += u'<RightsDeclaration>{}</RightsDeclaration>\n'.format(declaration)
+        xml_string = u'<RightsDeclarationMD RIGHTSCATEGORY="{}" xmlns="http://www.loc.gov/METS/" >\n{}</RightsDeclarationMD>'.format(category, declaration_strings)
+
+        g.add((dataset_ref, DCT.rights, Literal(xml_string, datatype=RDF.XMLLiteral)))
 
         #  Lists
         # items = [
