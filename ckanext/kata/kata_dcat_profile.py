@@ -5,7 +5,7 @@ from rdflib.namespace import Namespace, RDF
 
 from ckanext.dcat.profiles import RDFProfile
 
-from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_if_url
+from ckanext.kata.helpers import json_to_list, convert_language_code, is_url, get_if_url, get_download_url
 from ckan.lib.helpers import url_for
 from ckanext.kata.utils import get_pids_by_type
 
@@ -18,6 +18,7 @@ ORG = Namespace("http://www.w3.org/ns/org#")
 FRAPO = Namespace("http://purl.org/cerif/frapo/")
 RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 FOAF = Namespace("http://xmlns.com/foaf/0.1/")
+SPDX = Namespace('http://spdx.org/rdf/terms#')
 
 namespaces = {
     'dct': DCT,
@@ -26,7 +27,8 @@ namespaces = {
     'org': ORG,
     'frapo': FRAPO,
     'rdfs': RDFS,
-    "foaf": FOAF
+    'foaf': FOAF,
+    'spdx': SPDX
 }
 
 
@@ -108,10 +110,12 @@ class KataDcatProfile(RDFProfile):
             # Rights Holders
             if agent_role in ['owner', 'distributor']:
                 name = agent.get('name', None)
+
                 if agent_role == 'owner':
                     if not get_if_url(agent.get('name')):
                         name = agent.get('name', agent.get('organisation', ''))
                     nodetype = DCT.rightsHolder
+
                 if agent_role == 'distributor':
                     nodetype = DCT.publisher
 
@@ -124,6 +128,7 @@ class KataDcatProfile(RDFProfile):
             if agent_role in ['author', 'contributor']:
                 if agent_role == 'author':
                     nodetype = DCT.creator
+
                 if agent_role == 'contributor':
                     nodetype = DCT.contributor
 
@@ -148,6 +153,7 @@ class KataDcatProfile(RDFProfile):
 
                 if agent.get('URL'):
                     g.add((project_ref, FOAF.homepage, Literal(agent.get('URL', None))))
+
                 if agent.get('fundingid'):
                     g.add((project_ref, RDFS.comment, Literal(agent.get('fundingid', None))))
 
@@ -164,12 +170,15 @@ class KataDcatProfile(RDFProfile):
             g.add((agent_node_ref, RDF.type, FOAF.Agent))
             g.add((dataset_ref, DCT.publisher, agent_node_ref))
             g.add((agent_node_ref, FOAF.name, Literal(contact.get('name', None))))
+
             if contact.get('email') != 'hidden':
                 email = contact.get('email', None)
                 g.add((agent_node_ref, FOAF.mbox, URIRef("mailto:" + email)))
+
             if contact.get('URL'):
                 url = contact.get('URL', None)
                 g.add((agent_node_ref, FOAF.homepage, URIRef(url)))
+
             if contact.get('phone'):
                 phone = contact.get('phone', None)
                 g.add((agent_node_ref, FOAF.phone, URIRef("tel:" + phone)))
@@ -190,6 +199,41 @@ class KataDcatProfile(RDFProfile):
             ('modified', DCT.modified, ['metadata_modified'], Literal),
         ]
         self._add_date_triples_from_dict(dataset_dict, dataset_ref, items)
+
+        # Etsin: Distribution
+        availability_list = ['access_application', 'access_request', 'through_provider']
+
+        checksum_ref = BNode()
+        checksum_parent_ref = BNode()
+        distribution_ref = BNode()
+        dist_parent_ref = BNode()
+
+        checksum = dataset_dict.get('checksum')
+        algorithm = dataset_dict.get('algorithm')
+        if checksum and algorithm:
+            g.add((checksum_ref, SPDX.checksumValue, Literal(checksum)))
+            g.add((checksum_ref, SPDX.algorithm, Literal(algorithm)))
+            g.add((checksum_parent_ref, SPDX.Checksum, checksum_ref))
+            g.add((distribution_ref, SPDX.checksum, checksum_parent_ref))
+
+        if dataset_dict.get('availability') in availability_list:
+            access_url = get_download_url(dataset_dict)
+            g.add((distribution_ref, DCAT.accessURL, Literal(access_url)))
+
+        if dataset_dict.get('availability') == 'direct_download':
+            access_url = get_download_url(dataset_dict)
+            g.add((distribution_ref, DCAT.downloadURL, Literal(access_url)))
+
+        mimetype = dataset_dict.get('mimetype')
+        if mimetype:
+            g.add((distribution_ref, DCAT.mediaType, Literal(mimetype)))
+
+        dist_format = dataset_dict.get('format')
+        if dist_format:
+            g.add((distribution_ref, DCT['format'], Literal(dist_format)))
+
+        g.add((dist_parent_ref, DCAT.Distribution, distribution_ref))
+        g.add((dataset_ref, DCAT.distribution, dist_parent_ref))
 
         #  Lists
         # items = [
