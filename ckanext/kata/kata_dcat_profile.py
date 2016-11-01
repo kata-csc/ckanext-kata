@@ -292,7 +292,7 @@ class KataDcatProfile(RDFProfile):
             g.add((dataset_ref, DCT.temporal, temporal_extent))
 
         # Etsin: language field needs to be stripped from spaces
-        langs = self._get_dict_value(dataset_dict, 'language').split(', ')
+        langs = self._get_dict_value(dataset_dict, 'language', '').split(', ')
         for lang in langs:
             params = (dataset_ref, DCAT.language, Literal(lang))
             self.g.add(params)
