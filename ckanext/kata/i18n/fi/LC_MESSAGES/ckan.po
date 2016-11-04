@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2016-09-30 13:03+0000\n"
+"POT-Creation-Date: 2016-11-04 09:18+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -18,118 +18,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/kata/actions.py:88
+#: ckanext/kata/actions.py:87
 msgid "Paper"
 msgstr "Artikkeli"
 
-#: ckanext/kata/actions.py:181
+#: ckanext/kata/actions.py:180
 msgid "Unauthorized to add a harvest source"
 msgstr "Ei oikeuksia luoda uutta haravointikohdetta"
 
-#: ckanext/kata/actions.py:440 ckanext/kata/actions.py:504
-msgid "Required information missing"
-msgstr "Pakollinen tieto puuttuu"
-
-#: ckanext/kata/actions.py:451 ckanext/kata/actions.py:515
-#: ckanext/kata/controllers.py:701 ckanext/kata/controllers.py:779
-msgid "User not found"
-msgstr "Käyttäjää ei löytynyt"
-
-#: ckanext/kata/actions.py:456 ckanext/kata/actions.py:460
-#: ckanext/kata/controllers.py:776
-#, python-format
-msgid "No sufficient privileges to remove user from role %s."
-msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
-
-#: ckanext/kata/actions.py:464
-msgid "No such user and role combination"
-msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
-
-#: ckanext/kata/actions.py:471
-msgid "Built-in users can not be removed"
-msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
-
-#: ckanext/kata/actions.py:475
-msgid "You can not remove yourself"
-msgstr "Et voi poistaa itseäsi"
-
-#: ckanext/kata/actions.py:480
-#, python-format
-msgid "User removed from role %s"
-msgstr "Käyttäjä poistettu roolista %s"
-
-#: ckanext/kata/actions.py:526
-#, python-format
-msgid "User already has %s rights"
-msgstr "Käyttäjällä on jo %s -oikeudet"
-
-#: ckanext/kata/actions.py:532
-msgid "User added"
-msgstr "Käyttäjä lisätty"
-
-#: ckanext/kata/actions.py:591
+#: ckanext/kata/actions.py:474
 msgid "You don't have permission to modify roles for this organization."
 msgstr "Sinulla ei ole oikeuksia muokata tämän organisaation rooleja."
 
-#: ckanext/kata/actions.py:625
+#: ckanext/kata/actions.py:508
 msgid "You don't have permission to remove this user."
 msgstr "Sinulla ei ole oikeuksia poistaa tätä käyttäjää."
 
-#: ckanext/kata/auth_functions.py:65
+#: ckanext/kata/auth_functions.py:70
 #, python-format
 msgid "Resource %s not editable"
 msgstr "Resurssia %s ei voi muokata"
 
-#: ckanext/kata/auth_functions.py:90
+#: ckanext/kata/auth_functions.py:95
 #: ckanext/kata/theme/templates/kata/dummy.html:105
 #, python-format
 msgid "User %s not authorized to delete package %s"
 msgstr "Käyttäjällä %s ei ole oikeuksia poistaa aineistoa %s"
 
-#: ckanext/kata/auth_functions.py:117
+#: ckanext/kata/auth_functions.py:122
 #, python-format
 msgid "User %s not authorized to add a dataset"
 msgstr "Käyttäjällä %s ei ole oikeuksia lisätä aineistoa"
 
-#: ckanext/kata/auth_functions.py:134
+#: ckanext/kata/auth_functions.py:139
 #: ckanext/kata/theme/templates/kata/dummy.html:102
 #, python-format
 msgid "User %s not authorized to create packages"
 msgstr "Käyttäjällä %s ei ole oikeuksia luoda aineistoja"
 
-#: ckanext/kata/auth_functions.py:138
+#: ckanext/kata/auth_functions.py:143
 #, python-format
 msgid "User %s not authorized to edit these groups"
 msgstr "Käyttäjällä %s ei ole oikeuksia muokata ryhmiä"
 
-#: ckanext/kata/auth_functions.py:145
+#: ckanext/kata/auth_functions.py:150
 #: ckanext/kata/theme/templates/kata/dummy.html:103
 #, python-format
 msgid "User %s not authorized to add dataset to this organization"
 msgstr "Käyttäjällä %s ei ole oikeutta luoda aineistoa tähän organisaatioon"
 
-#: ckanext/kata/auth_functions.py:258
+#: ckanext/kata/auth_functions.py:263
 #: ckanext/kata/theme/templates/kata/dummy.html:106
 msgid "No package found for this resource, cannot check auth."
 msgstr ""
 "Aineistoa ei löytynyt tälle aineistolinkille, ei voida tarkistaa "
 "valtuutusta"
 
-#: ckanext/kata/auth_functions.py:264
+#: ckanext/kata/auth_functions.py:269
 #, python-format
 msgid "User %s not authorized to delete resource %s"
 msgstr "Käyttäjällä %s ei ole oikeuksia poistaa resurssia %s"
 
-#: ckanext/kata/controllers.py:443 ckanext/kata/controllers.py:740
+#: ckanext/kata/controllers.py:437
 msgid "Bad Captcha. Please try again."
 msgstr "Väärä Captcha. Ole hyvä ja yritä uudelleen."
 
-#: ckanext/kata/controllers.py:447
+#: ckanext/kata/controllers.py:441
 msgid "Message not sent as logging wasn't permitted"
 msgstr "Viestiä ei lähetetty, koska lokin tallentamista ei sallittu"
 
-#: ckanext/kata/controllers.py:451 ckanext/kata/controllers.py:552
-#: ckanext/kata/controllers.py:578
+#: ckanext/kata/controllers.py:445 ckanext/kata/controllers.py:546
+#: ckanext/kata/controllers.py:572
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
@@ -137,25 +96,25 @@ msgstr ""
 "Asiakasviestien lähetys on parhaillaan poissa käytöstä. Ole hyvä ja yritä"
 " myöhemmin uudelleen tai ota yhteyttä asiakaspalveluun."
 
-#: ckanext/kata/controllers.py:463
+#: ckanext/kata/controllers.py:457
 msgid "Recipient not found"
 msgstr "Vastaanottajaa ei löytynyt"
 
-#: ckanext/kata/controllers.py:472 ckanext/kata/controllers.py:478
+#: ckanext/kata/controllers.py:466 ckanext/kata/controllers.py:472
 msgid "Message not sent. Couldn't confirm human interaction (spam bot control)"
 msgstr ""
 "Viestiä ei lähetetty. Tarkistukset bottien varalta antoivat positiivisen "
 "tuloksen."
 
-#: ckanext/kata/controllers.py:497 ckanext/kata/controllers.py:735
+#: ckanext/kata/controllers.py:491
 msgid "Message sent"
 msgstr "Viesti lähetetty"
 
-#: ckanext/kata/controllers.py:499
+#: ckanext/kata/controllers.py:493
 msgid "No message"
 msgstr "Viesti on tyhjä"
 
-#: ckanext/kata/controllers.py:501
+#: ckanext/kata/controllers.py:495
 msgid ""
 "Message not sent. Please, provide reply address and name. Name must "
 "contain at least three letters."
@@ -163,69 +122,55 @@ msgstr ""
 "Viestiä ei lähetetty. Täytäthän sähköpostiosoite- ja nimitietosi. Nimen "
 "on koostuttava vähintään kolmesta kirjaimesta."
 
-#: ckanext/kata/controllers.py:517 ckanext/kata/controllers.py:560
-#: ckanext/kata/controllers.py:586
+#: ckanext/kata/controllers.py:511 ckanext/kata/controllers.py:554
+#: ckanext/kata/controllers.py:580
 #: ckanext/kata/theme/templates/kata/dummy.html:62
 msgid "Dataset not found"
 msgstr "Aineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:634
+#: ckanext/kata/controllers.py:628
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:645
+#: ckanext/kata/controllers.py:639
 msgid "Successfully logged out."
 msgstr "Olet nyt kirjautunut ulos."
 
-#: ckanext/kata/controllers.py:676 ckanext/kata/controllers.py:915
-#: ckanext/kata/middleware.py:15
-msgid "Not authorized to see this page"
-msgstr "Ei oikeuksia nähdä tätä sivua"
-
-#: ckanext/kata/controllers.py:698
-#, python-format
-msgid "No sufficient privileges to add a user to role %s."
-msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
-
-#: ckanext/kata/controllers.py:718
-msgid "Feature disabled"
-msgstr "Ominaisuus poistettu käytöstä"
-
-#: ckanext/kata/controllers.py:720 ckanext/kata/validators.py:168
-msgid "Invalid email address"
-msgstr "Vääränmuotoinen sähköpostiosoite"
-
-#: ckanext/kata/controllers.py:835
+#: ckanext/kata/controllers.py:657
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:859
+#: ckanext/kata/controllers.py:681
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:864
+#: ckanext/kata/controllers.py:686
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:867
+#: ckanext/kata/controllers.py:689
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
-#: ckanext/kata/controllers.py:869
+#: ckanext/kata/controllers.py:691
 msgid "Invalid XML content"
 msgstr "Virheellinen XML sisältö"
 
-#: ckanext/kata/controllers.py:873
+#: ckanext/kata/controllers.py:695
 msgid "Failed to load file"
 msgstr "Tiedostoa ei voitu ladata"
 
-#: ckanext/kata/controllers.py:993 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:723 ckanext/kata/middleware.py:15
+msgid "Not authorized to see this page"
+msgstr "Ei oikeuksia nähdä tätä sivua"
+
+#: ckanext/kata/controllers.py:801 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr "Organisaatiot"
 
-#: ckanext/kata/controllers.py:994
+#: ckanext/kata/controllers.py:802
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -235,46 +180,46 @@ msgstr "Organisaatiot"
 msgid "Groups"
 msgstr "Ryhmät"
 
-#: ckanext/kata/controllers.py:995
+#: ckanext/kata/controllers.py:803
 msgid "Tags"
 msgstr "Asiasanat"
 
-#: ckanext/kata/controllers.py:996
+#: ckanext/kata/controllers.py:804
 msgid "Formats"
 msgstr "Formaatit"
 
-#: ckanext/kata/controllers.py:997
+#: ckanext/kata/controllers.py:805
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:229
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:73
 msgid "License"
 msgstr "Lisenssi"
 
-#: ckanext/kata/converters.py:69
+#: ckanext/kata/converters.py:68
 msgid "The language code is not in ISO639-3 format"
 msgstr "Kieli ei ole annettu ISO 639-2 T-muodossa"
 
-#: ckanext/kata/converters.py:71
+#: ckanext/kata/converters.py:70
 msgid "The given {field} string is incorrectly formatted"
 msgstr "Annettu {field} merkkijono on vääränmuotoinen"
 
-#: ckanext/kata/converters.py:91
+#: ckanext/kata/converters.py:90
 msgid "The given title string is not JSON parseable"
 msgstr "Annettu otsikko ei ole JSON-muodossa"
 
-#: ckanext/kata/converters.py:96
+#: ckanext/kata/converters.py:95
 msgid "The given description string is not JSON parseable"
 msgstr "Annettu kuvaus ei ole JSON-muodossa"
 
-#: ckanext/kata/converters.py:253
+#: ckanext/kata/converters.py:252
 msgid "No language given"
 msgstr "Kieltä ei annettu"
 
-#: ckanext/kata/converters.py:259
+#: ckanext/kata/converters.py:258
 #, python-format
 msgid "Language is disabled, removing languages: '%s'"
 msgstr "Kieli on poistettu käytöstä, poistetaan kielet: '%s'"
 
-#: ckanext/kata/converters.py:393
+#: ckanext/kata/converters.py:392
 #, python-format
 msgid "Language %s not in ISO 639-2 T format"
 msgstr "Väärä tai vääränmuotoinen kieli %s, ei ISO 639-2 T-muodossa"
@@ -376,6 +321,10 @@ msgstr ""
 "Päivämäärän ({key }) muoto väärä: {val}, oikea muoto ISO8601. Esimerkki: "
 "\"\n"
 "\"2001-01-01"
+
+#: ckanext/kata/validators.py:168
+msgid "Invalid email address"
+msgstr "Vääränmuotoinen sähköpostiosoite"
 
 #: ckanext/kata/validators.py:178
 msgid "Invalid characters: <> not allowed"
@@ -693,7 +642,6 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/contact/contact_form.html:65
 #: ckanext/kata/theme/templates/contact/dataset_request_form.html:48
-#: ckanext/kata/theme/templates/package/package_rights.html:175
 msgid "Send"
 msgstr "Lähetä"
 
@@ -754,8 +702,7 @@ msgstr "Päivitä Ryhmä"
 #: ckanext/kata/theme/templates/organization/members.html:28
 #: ckanext/kata/theme/templates/organization/read.html:16
 #: ckanext/kata/theme/templates/package/edit.html:13
-#: ckanext/kata/theme/templates/package/package_rights.html:17
-#: ckanext/kata/theme/templates/package/read.html:36
+#: ckanext/kata/theme/templates/package/read.html:46
 #: ckanext/kata/theme/templates/package/related_list.html:26
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:68
 #: ckanext/kata/theme/templates/package/snippets/resource_item.html:30
@@ -824,8 +771,7 @@ msgstr "Oletko varma että haluat poistaa tämän ryhmän?"
 #: ckanext/kata/theme/templates/organization/member_new.html:32
 #: ckanext/kata/theme/templates/organization/members.html:31
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:57
-#: ckanext/kata/theme/templates/package/package_rights.html:118
-#: ckanext/kata/theme/templates/package/read.html:62
+#: ckanext/kata/theme/templates/package/read.html:69
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:33
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:33
 msgid "Delete"
@@ -2135,7 +2081,7 @@ msgstr ""
 "%(timestamp)s."
 
 #: ckanext/kata/theme/templates/kata/dummy.html:183
-#: ckanext/kata/theme/templates/package/related_list.html:101
+#: ckanext/kata/theme/templates/package/related_list.html:98
 msgid "Related Media for {dataset}"
 msgstr "Aineistoon {dataset} liittyvät mediat"
 
@@ -2154,7 +2100,7 @@ msgid "There is no description for this dataset"
 msgstr "Tälle aineistolle ei ole kuvausta"
 
 #: ckanext/kata/theme/templates/kata/dummy.html:188
-#: ckanext/kata/theme/templates/package/read.html:60
+#: ckanext/kata/theme/templates/package/read.html:67
 msgid "Are you sure you want to delete this dataset?"
 msgstr "Oletko varma että haluat poistaa tämän aineiston?"
 
@@ -2722,9 +2668,8 @@ msgstr "Lisää jäseniä"
 #: ckanext/kata/theme/templates/organization/about.html:41
 #: ckanext/kata/theme/templates/organization/edit_base.html:50
 #: ckanext/kata/theme/templates/organization/read.html:39
-#: ckanext/kata/theme/templates/package/package_rights.html:65
-#: ckanext/kata/theme/templates/package/read.html:84
-#: ckanext/kata/theme/templates/package/related_list.html:73
+#: ckanext/kata/theme/templates/package/read.html:91
+#: ckanext/kata/theme/templates/package/related_list.html:70
 msgid "Followers"
 msgstr "Seuraajat"
 
@@ -2767,12 +2712,10 @@ msgstr "Lisää jäsen"
 #: ckanext/kata/theme/templates/organization/member_new.html:20
 #: ckanext/kata/theme/templates/organization/member_new.html:23
 #: ckanext/kata/theme/templates/organization/members.html:12
-#: ckanext/kata/theme/templates/package/package_rights.html:103
 msgid "User"
 msgstr "Käyttäjä"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:23
-#: ckanext/kata/theme/templates/package/package_rights.html:134
 #: ckanext/kata/theme/templates/user/edit_user_form.html:16
 #: ckanext/kata/theme/templates/user/new_user_form.html:6
 #: ckanext/kata/theme/templates/user/read.html:35
@@ -2781,15 +2724,11 @@ msgstr "Käyttäjätunnus"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:27
 #: ckanext/kata/theme/templates/organization/members.html:13
-#: ckanext/kata/theme/templates/package/package_rights.html:104
-#: ckanext/kata/theme/templates/package/role_fields.html:13
-#: ckanext/kata/theme/templates/package/role_fields.html:40
 msgid "Role"
 msgstr "Rooli"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:31
 #: ckanext/kata/theme/templates/organization/members.html:26
-#: ckanext/kata/theme/templates/package/package_rights.html:116
 msgid "Are you sure you want to delete this member?"
 msgstr "Oletko varma että haluat poistaa tämän jäsenen?"
 
@@ -2800,7 +2739,6 @@ msgid "Save"
 msgstr "Tallenna"
 
 #: ckanext/kata/theme/templates/organization/member_new.html:38
-#: ckanext/kata/theme/templates/package/package_rights.html:139
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:80
 msgid "Add"
 msgstr "Lisää"
@@ -2884,9 +2822,8 @@ msgstr "pakollinen tieto"
 
 #: ckanext/kata/theme/templates/package/history.html:3
 #: ckanext/kata/theme/templates/package/history.html:6
-#: ckanext/kata/theme/templates/package/package_rights.html:43
-#: ckanext/kata/theme/templates/package/read.html:57
-#: ckanext/kata/theme/templates/package/related_list.html:52
+#: ckanext/kata/theme/templates/package/read.html:64
+#: ckanext/kata/theme/templates/package/related_list.html:49
 msgid "History"
 msgstr "Historia"
 
@@ -2899,121 +2836,50 @@ msgstr "Päivitä julkaisemattomana"
 msgid "Add metadata supplement"
 msgstr "Lisää aineistoon liittyvä kuvailutiedosto"
 
-#: ckanext/kata/theme/templates/package/package_rights.html:13
-#: ckanext/kata/theme/templates/package/related_list.html:22
-msgid "Show dataset"
-msgstr "Näytä aineisto"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:23
-#: ckanext/kata/theme/templates/package/read.html:41
-#: ckanext/kata/theme/templates/package/related_list.html:32
-msgid "Edit metadata"
-msgstr "Muokkaa metatietoja"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:29
-#: ckanext/kata/theme/templates/package/read.html:46
-#: ckanext/kata/theme/templates/package/related_list.html:39
-#: ckanext/kata/theme/templates/package/snippets/info.html:36
-msgid "Add new supplement"
-msgstr "Lisää kuvailutiedosto"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:56
-#: ckanext/kata/theme/templates/package/read.html:75
-#: ckanext/kata/theme/templates/package/related_list.html:64
-msgid "Metadata completeness"
-msgstr "Metatietojen kattavuus"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:70
-#: ckanext/kata/theme/templates/package/read.html:90
-#: ckanext/kata/theme/templates/package/related_list.html:78
-msgid "Data used"
-msgstr "Dataa käytetty"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:71
-#: ckanext/kata/theme/templates/package/read.html:92
-#: ckanext/kata/theme/templates/package/read.html:94
-#: ckanext/kata/theme/templates/package/related_list.html:80
-#: ckanext/kata/theme/templates/package/related_list.html:82
-msgid "times"
-msgstr "kertaa"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:72
-#: ckanext/kata/theme/templates/package/read.html:96
-#: ckanext/kata/theme/templates/package/related_list.html:84
-msgid "Advertise reuse"
-msgstr "Kerro uudelleenkäytöstä"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:89
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:9
-#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:8
-msgid "Dataset title"
-msgstr "Aineiston otsikko"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:95
-msgid "{0} named roles"
-msgstr "{0} nimettyä roolia"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:129
-msgid "Add a user for role"
-msgstr "Lisää käyttäjä rooliin"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:136
-msgid "User role"
-msgstr "Käyttäjärooli"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:150
-msgid "Send invitation"
-msgstr "Lähetä kutsu"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:152
-msgid ""
-"Did not find the user you were searching for? Send her or him an email "
-"invitation to log in to Etsin."
-msgstr ""
-"Etkö löytänyt etsimääsi käyttäjää? Lähetä hänelle kutsu kirjautumaan "
-"Etsin-palveluun sähköpostitse"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:153
-msgid "If you want to, you can add your own message to be sent to the person."
-msgstr ""
-"Jos haluat, voit lisätä oman viestisi henkilölle menevään "
-"sähköpostiviestiin."
-
-#: ckanext/kata/theme/templates/package/package_rights.html:154
-msgid ""
-"After the person has logged in to the service, she or he can be added to "
-"a role."
-msgstr "Kun henkilö on kirjautunut palveluun, hänet voi lisätä rooliin."
-
-#: ckanext/kata/theme/templates/package/package_rights.html:157
-msgid "Email address"
-msgstr "Sähköpostiosoite"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:157
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:164
-msgid "john.doe@example.com"
-msgstr "matti.meikalainen@esimerkki.fi"
-
-#: ckanext/kata/theme/templates/package/package_rights.html:158
-msgid "Your message"
-msgstr "Viestisi"
-
 #: ckanext/kata/theme/templates/package/read.html:13
 #: ckanext/kata/theme/templates/package/related_list.html:8
 #: ckanext/kata/theme/templates/snippets/package_item.html:38
 msgid "Draft"
 msgstr "Luonnos"
 
-#: ckanext/kata/theme/templates/package/read.html:31
-msgid "Show in RDF format"
-msgstr "Näytä RDF-muodossa"
+#: ckanext/kata/theme/templates/package/read.html:33
+msgid "Export as ..."
+msgstr "Lataa muodossa ..."
 
-#: ckanext/kata/theme/templates/package/read.html:54
-#: ckanext/kata/theme/templates/package/related_list.html:49
-msgid "Administer dataset rights"
-msgstr "Hallinnoi aineiston oikeuksia"
+#: ckanext/kata/theme/templates/package/read.html:51
+#: ckanext/kata/theme/templates/package/related_list.html:32
+msgid "Edit metadata"
+msgstr "Muokkaa metatietoja"
 
-#: ckanext/kata/theme/templates/package/read.html:98
+#: ckanext/kata/theme/templates/package/read.html:56
+#: ckanext/kata/theme/templates/package/related_list.html:39
+#: ckanext/kata/theme/templates/package/snippets/info.html:36
+msgid "Add new supplement"
+msgstr "Lisää kuvailutiedosto"
+
+#: ckanext/kata/theme/templates/package/read.html:82
+#: ckanext/kata/theme/templates/package/related_list.html:61
+msgid "Metadata completeness"
+msgstr "Metatietojen kattavuus"
+
+#: ckanext/kata/theme/templates/package/read.html:97
+#: ckanext/kata/theme/templates/package/related_list.html:75
+msgid "Data used"
+msgstr "Dataa käytetty"
+
+#: ckanext/kata/theme/templates/package/read.html:99
+#: ckanext/kata/theme/templates/package/read.html:101
+#: ckanext/kata/theme/templates/package/related_list.html:77
+#: ckanext/kata/theme/templates/package/related_list.html:79
+msgid "times"
+msgstr "kertaa"
+
+#: ckanext/kata/theme/templates/package/read.html:103
+#: ckanext/kata/theme/templates/package/related_list.html:81
+msgid "Advertise reuse"
+msgstr "Kerro uudelleenkäytöstä"
+
+#: ckanext/kata/theme/templates/package/read.html:105
 msgid ""
 "If you are logged in, you can click the button to fill a submittable form"
 " about reuse. After submitting the information about reuse, anyone can "
@@ -3027,18 +2893,17 @@ msgstr ""
 "uudelleenkäyttöjä ei ole vielä raportoitu, näkyy vasemmalla linkin sijaan"
 " pelkkä 0."
 
-#: ckanext/kata/theme/templates/package/related_list.html:94
+#: ckanext/kata/theme/templates/package/related_list.html:22
+msgid "Show dataset"
+msgstr "Näytä aineisto"
+
+#: ckanext/kata/theme/templates/package/related_list.html:91
 msgid "Add Related Item"
 msgstr "Lisää liittyvä kohde"
 
-#: ckanext/kata/theme/templates/package/related_list.html:108
+#: ckanext/kata/theme/templates/package/related_list.html:105
 msgid "No related items"
 msgstr "Ei liittyviä kohteita"
-
-#: ckanext/kata/theme/templates/package/role_fields.html:25
-#: ckanext/kata/theme/templates/package/role_fields.html:48
-msgid "Value"
-msgstr "Arvo"
 
 #: ckanext/kata/theme/templates/package/search.html:39
 msgid "Open data"
@@ -5023,6 +4888,11 @@ msgstr "zulu"
 msgid "Zuni"
 msgstr "zuni"
 
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:9
+#: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:8
+msgid "Dataset title"
+msgstr "Aineiston otsikko"
+
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:45
 msgid "No description"
 msgstr "Ei kuvausta"
@@ -5363,6 +5233,10 @@ msgstr ""
 #: ckanext/kata/theme/templates/user/read.html:31
 msgid "Email"
 msgstr "Sähköposti"
+
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:164
+msgid "john.doe@example.com"
+msgstr "matti.meikalainen@esimerkki.fi"
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:170
 msgid ""
@@ -6346,4 +6220,85 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
+#~ msgid "Required information missing"
+#~ msgstr "Pakollinen tieto puuttuu"
+
+#~ msgid "User not found"
+#~ msgstr "Käyttäjää ei löytynyt"
+
+#~ msgid "No sufficient privileges to remove user from role %s."
+#~ msgstr "Ei oikeuksia poistaa käyttäjää roolista %s."
+
+#~ msgid "No such user and role combination"
+#~ msgstr "Käyttäjä-rooli -kombinaatiota ei löydy"
+
+#~ msgid "Built-in users can not be removed"
+#~ msgstr "Järjestelmän sisäänrakennettuja käyttäjiä ei voi poistaa"
+
+#~ msgid "You can not remove yourself"
+#~ msgstr "Et voi poistaa itseäsi"
+
+#~ msgid "User removed from role %s"
+#~ msgstr "Käyttäjä poistettu roolista %s"
+
+#~ msgid "User already has %s rights"
+#~ msgstr "Käyttäjällä on jo %s -oikeudet"
+
+#~ msgid "User added"
+#~ msgstr "Käyttäjä lisätty"
+
+#~ msgid "No sufficient privileges to add a user to role %s."
+#~ msgstr "Ei oikeuksia lisätä käyttäjää rooliin %s."
+
+#~ msgid "Feature disabled"
+#~ msgstr "Ominaisuus poistettu käytöstä"
+
+#~ msgid "{0} named roles"
+#~ msgstr "{0} nimettyä roolia"
+
+#~ msgid "Add a user for role"
+#~ msgstr "Lisää käyttäjä rooliin"
+
+#~ msgid "User role"
+#~ msgstr "Käyttäjärooli"
+
+#~ msgid "Send invitation"
+#~ msgstr "Lähetä kutsu"
+
+#~ msgid ""
+#~ "Did not find the user you were "
+#~ "searching for? Send her or him an"
+#~ " email invitation to log in to "
+#~ "Etsin."
+#~ msgstr ""
+#~ "Etkö löytänyt etsimääsi käyttäjää? Lähetä "
+#~ "hänelle kutsu kirjautumaan Etsin-palveluun "
+#~ "sähköpostitse"
+
+#~ msgid "If you want to, you can add your own message to be sent to the person."
+#~ msgstr ""
+#~ "Jos haluat, voit lisätä oman viestisi"
+#~ " henkilölle menevään sähköpostiviestiin."
+
+#~ msgid ""
+#~ "After the person has logged in to"
+#~ " the service, she or he can be"
+#~ " added to a role."
+#~ msgstr "Kun henkilö on kirjautunut palveluun, hänet voi lisätä rooliin."
+
+#~ msgid "Email address"
+#~ msgstr "Sähköpostiosoite"
+
+#~ msgid "Your message"
+#~ msgstr "Viestisi"
+
+#~ msgid "Show in RDF format"
+#~ msgstr "Näytä RDF-muodossa"
+
+#~ msgid "Administer dataset rights"
+#~ msgstr "Hallinnoi aineiston oikeuksia"
+
+#~ msgid "Value"
+#~ msgstr "Arvo"
 
