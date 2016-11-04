@@ -621,7 +621,6 @@ class TestDataReading(KataApiTestCase):
         g = Graph()
         g.parse(data=res.body)
 
-        assert len(list(g.subjects(RDF.type, URIRef("http://www.w3.org/ns/dcat#CatalogRecord")))) == 1
         assert len(list(g.subjects(RDF.type, URIRef("http://www.w3.org/ns/dcat#Dataset")))) == 1
         assert len(list(g.subject_objects(URIRef("http://purl.org/dc/terms/contributor")))) == 2
 
