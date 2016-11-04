@@ -27,7 +27,7 @@
 
     <div class="actions-and-ratings">
       <div class="button-container">
-        <a class="btn btn-default" href="{{h.url_for(controller='package', action='read', id=pkg.name, format='rdf')}}">
+        <a class="btn btn-default" href="{{h.url_for(controller='package', action='read', id=pkg.name) + '.rdf'}}">
           {{ _('Show in RDF format') }}
         </a>
         {% if has_update_rights %}
