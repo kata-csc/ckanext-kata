@@ -161,7 +161,6 @@ def _add_ida_download_url(context, data_dict):
         else:
             log.warn("Failed to get primary data PID for dataset")
 
-
 def package_create(context, data_dict):
     """
     Creates a new dataset.
@@ -179,11 +178,11 @@ def package_create(context, data_dict):
     if data_dict.get('type') == 'harvest' and not user.sysadmin:
         ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
 
-    data_dict = utils.dataset_to_resource(data_dict)
-
-    _handle_pids(context, data_dict)
-
-    _add_ida_download_url(context, data_dict)
+    if data_dict.get('type') in ['harvest', 'dataset']:
+        data_dict = utils.dataset_to_resource(data_dict)
+        _handle_pids(context, data_dict)
+        _add_ida_download_url(context, data_dict)
+    
     if asbool(data_dict.get('private')) and not data_dict.get('persist_schema'):
         context['schema'] = Schemas.private_package_schema()
 
