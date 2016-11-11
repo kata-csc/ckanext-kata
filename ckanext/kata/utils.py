@@ -241,7 +241,8 @@ def pid_to_name(string):
     '''
     Wrap re.sub to convert a PID to package.name.
     '''
-    return re.sub(*settings.PID_TO_NAME_REGEXES, string=string)
+    if string:
+        return re.sub(*settings.PID_TO_NAME_REGEXES, string=string)
 
 
 def get_pids_by_type(pid_type, data_dict, relation=None):

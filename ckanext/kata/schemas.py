@@ -118,7 +118,7 @@ class Schemas:
         schema['temporal_coverage_end'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
-                          'id': [not_empty, va.validate_general, va.validate_pid_uniqueness,
+                          'id': [not_empty, va.validate_general, va.validate_primary_pid_uniqueness,
                                  unicode, co.flattened_to_extras],
                           'type': [not_missing, va.validate_pid_type, unicode, co.flattened_to_extras],
                           'relation': [ignore_missing, co.to_relation, va.validate_pid_relation_type,
@@ -135,7 +135,7 @@ class Schemas:
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
         schema['access_application'] = [ignore_missing, unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['external_id'] = [ignore_missing, va.check_external_id, unicode, va.validate_general,
+        schema['external_id'] = [ignore_missing, va.check_external_id, va.validate_external_id_uniqueness, unicode, va.validate_general,
                                    co.convert_to_extras_kata]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]

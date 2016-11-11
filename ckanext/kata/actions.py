@@ -94,10 +94,23 @@ def package_show(context, data_dict):
 
 def _handle_package_id(context, data_dict):
     '''
-    Create package id if it does not exist.
+    Create package id if it does not exist. Check that it does not exist already.
+    If this method does not result in placing id to data_dict, then something
+    is very wrong and the user does not have anything to do with it. This should
+    always result in valid id getting placed into data_dict.
     '''
     if not 'id' in data_dict or len(data_dict['id']) == 0:
-        data_dict['id'] = unicode(utils.generate_pid())
+        new_id_exists = True
+        i=0
+        while new_id_exists and i < 10:
+            new_id = unicode(utils.generate_pid())
+            existing_id_query = model.Session.query(model.Package)\
+                            .filter(model.Package.id == new_id)
+            if existing_id_query.first():
+                i += 1
+                continue
+            data_dict['id'] = unicode(utils.generate_pid())
+            new_id_exists = False
 
 
 def _handle_pids(context, data_dict):
@@ -119,7 +132,8 @@ def _handle_pids(context, data_dict):
     # If no primary identifier exists, use dataset id as primary identifier
     # by copying dataset id value to primary identifier PID
     if not utils.get_primary_pid(data_dict):
-       data_dict['pids'].insert(0, {'id': data_dict['id'],
+        if 'id' in data_dict and len(data_dict['id']) > 0:
+            data_dict['pids'].insert(0, {'id': data_dict['id'],
                                     'type': 'primary',
                                     'provider': 'Etsin'
                                    })

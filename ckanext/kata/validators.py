@@ -10,7 +10,7 @@ import urlparse
 
 from pylons.i18n import _
 from paste.deploy.converters import asbool
-from sqlalchemy import or_
+from sqlalchemy import and_
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.validators import not_empty
@@ -548,35 +548,65 @@ def continue_if_missing(key, data, errors, context):
         data.pop(key, None)
 
 
-def validate_pid_uniqueness(key, data, errors, context):
+def validate_external_id_uniqueness(key, data, errors, context):
     '''
-    Validate dataset primary pid or id is unique, i.e. they do not exist already.
+        Validate external id is unique, i.e. it does not exist already in any other dataset.
 
-    :param key: key
-    :param data: data
-    :param errors: errors
-    :param context: context
-    '''
-    exam_pid = data.get(key)
+        :param key: key
+        :param data: data
+        :param errors: errors
+        :param context: context
+        '''
+
+    exam_external_id = data.get(key)
     exam_package_id = data.get(('id',))
 
-    # Query package extra table with key like pids_%_id and match exact pid name with the corresponding value
-    # Return only rows with package state active, since deleted datasets might be re-added.
-    query = model.Session.query(model.PackageExtra).filter(model.PackageExtra.key.like('pids_%_id')). \
-            filter(or_(model.PackageExtra.value == exam_pid, model.PackageExtra.package_id == exam_pid)). \
-            join(model.Package).filter(model.Package.state == 'active')
+    if exam_external_id:
+        all_similar_external_ids_query = model.Session.query(model.PackageExtra) \
+            .filter(model.PackageExtra.key.like('external_id')) \
+            .filter(model.PackageExtra.value == exam_external_id) \
+            .join(model.Package).filter(model.Package.state == 'active').values('package_id', 'value')
 
-    q_amt = query.count()
-    q_package_ids = [i[0] for i in query.values('package_id')]
+        for package_id, exteral_id_value in all_similar_external_ids_query:
+            if package_id != exam_package_id:
+                raise Invalid(_('Value {ext_id} exists in another dataset {id}').format(ext_id=exam_external_id,
+                                                                                            id=package_id))
 
-    # If existing pids or package_ids with value matching the pid were found
-    # and if none of those found values is the pid, raise an error.
-    # The latter if is when updating a dataset.
+def validate_primary_pid_uniqueness(key, data, errors, context):
+    '''
+        Validate dataset primary pid is unique, i.e. it does not exist already in any other dataset.
 
-    if q_amt > 0:
-        for item in q_package_ids:
-            if item != exam_package_id:
-                raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
+        :param key: key
+        :param data: data
+        :param errors: errors
+        :param context: context
+        '''
+
+    exam_primary_pid = data.get(key)
+    exam_package_id = data.get(('id',))
+
+    lst = list(key)
+    lst[2] = 'type'
+    pid_type_key = tuple(lst)
+    if data.get(pid_type_key) == 'primary':
+        all_similar_pids_query = model.Session.query(model.PackageExtra)\
+                    .filter(model.PackageExtra.key.like('pids_%_id'))\
+                    .filter(model.PackageExtra.value == exam_primary_pid)\
+                    .join(model.Package).filter(model.Package.state == 'active').values('package_id', 'key', 'value')
+
+        import pprint
+        for package_id, pid_id_key, pid_id_value in all_similar_pids_query:
+            if package_id != exam_package_id:
+                pid_type_key = 'pids_' + pid_id_key[pid_id_key.find('_')+1:pid_id_key.rfind('_')] + '_type'
+                pprint.pprint(pid_type_key)
+                primary_type_in_other_dataset_query = model.Session.query(model.PackageExtra)\
+                            .filter(and_(model.PackageExtra.package_id == package_id,
+                                         model.PackageExtra.key == pid_type_key,
+                                         model.PackageExtra.value == 'primary'))
+                a = primary_type_in_other_dataset_query.first()
+                pprint.pprint(a)
+                if primary_type_in_other_dataset_query.first():
+                    raise Invalid(_('Primary identifier {pid} exists in another dataset {id}').format(pid=exam_primary_pid, id=package_id))
 
 
 def check_external_id(key, data, errors, context):
