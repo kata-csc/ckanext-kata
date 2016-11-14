@@ -85,12 +85,13 @@
         </tr>
         <tr>
           <td>{{ _('Data used') }}</td>
-          {% if c.related_count > 0 %}
-            <td>{% link_for c.related_count, controller='related', action='list', id=pkg.name %} {{ _('times') }}</td>
+          {% set showcase_count = h.get_package_showcase_count(pkg.id) %}
+          {% if showcase_count > 0 %}
+            <td>{% link_for showcase_count, controller='ckanext.showcase.controller:ShowcaseController', action='dataset_showcase_list', id=pkg.name %}</td>
           {% else %}
-            <td>{{ c.related_count }} {{ _('times') }}</td>
+            <td>0 {{ _('times') }}</td>
           {% endif %}
-          <td>{% link_for _('Advertise reuse'), controller='related', action='new', id=pkg.name, class_='btn btn-default' %}</td>
+          <td>{% link_for _('Advertise reuse'), controller='ckanext.showcase.controller:ShowcaseController', action='new', class_='btn btn-default' %}</td>
           <td><div class="tooltip-big">
             {{ kata_form.tooltip(tooltip=_("If you are logged in, you can click the button to fill a submittable form about reuse. After submitting the information about reuse, anyone can view it using the number link on the left hand side. If there are no advertised reuses, a plain 0 is displayed.")) }}
           </div></td>
