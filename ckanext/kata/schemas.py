@@ -267,6 +267,7 @@ class Schemas:
                           'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
                           'type': [not_missing, unicode, co.flattened_to_extras],
                           'primary': [ignore_missing, unicode, co.flattened_to_extras]}
+        schema['tag_string'] = [ignore_missing, ignore_empty]
         return schema
 
 
