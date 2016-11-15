@@ -198,17 +198,21 @@ def validate_access_application_url(key, data, errors, context):
     '''
     Validate dataset's `access_application_URL`.
 
-    Dummy value _must_ be added for other than access application url
-    so that it can be overwritten in ckanext-rems when it knows what
-    the access_application_URL will be.
+    Dummy value _must_ be added if user chooses either reetta option
+    so that its value can be overwritten in ckanext-rems when it knows what
+    the access_application_URL will be. If user has chosen the option to
+    which access application URL is input directly, then validation checks
+    its not empty and that it is an url.
     '''
     if data.get(('availability',)) == 'access_application':
         if data.get(('access_application',)) == 'access_application_reetta_ida' or \
         data.get(('access_application',))  == 'access_application_reetta':
             data[key] = h.full_current_url().replace('/edit/', '/')
-        else:
+        elif data.get(('access_application',)) == 'access_application_other':
             not_empty(key, data, errors, context)
             url_validator(key, data, errors, context)
+        else:
+            raise Invalid(_('Invalid value for access_application'))
     else:
         data.pop(key, None)
         raise StopOnError
@@ -243,7 +247,7 @@ def check_access_request_url(key, data, errors, context):
     '''
     Validate dataset's access request URL.
     '''
-    if data.get(('availability',)) == 'access_request' and data.get(('access_application')) == 'access_application_other':
+    if data.get(('availability',)) == 'access_request':
         not_empty(key, data, errors, context)
     else:
         data.pop(key, None)
@@ -351,19 +355,6 @@ def validate_title_duplicates(key, data, errors, context):
 
 def validate_notes_duplicates(key, data, errors, context):
     return validate_multilang_field('langnotes', key, data, errors, context)
-
-
-def package_name_not_changed(key, data, errors, context):
-    '''
-    Checks that package name doesn't change
-    '''
-    package = context.get('package')
-    if data[key] == u'':
-        data[key] = package.name
-    value = data[key]
-    if package and value != package.name:
-        raise Invalid('Cannot change value of key from %s to %s. '
-                      'This key is read-only' % (package.name, value))
 
 
 def check_agent(key, data, errors, context):
@@ -609,7 +600,7 @@ def validate_primary_pid_uniqueness(key, data, errors, context):
                     raise Invalid(_('Primary identifier {pid} exists in another dataset {id}').format(pid=exam_primary_pid, id=package_id))
 
 
-def check_external_id(key, data, errors, context):
+def validate_external_id_format(key, data, errors, context):
     '''
     Check external_id value is an IDA identifier (or, if in the future other types of accesses than IDA
     are needed, then this validator should be extended to also accept those types of IDs).
@@ -663,3 +654,18 @@ def validate_pid_type(key, data, errors, context):
     relation_key = tuple(lst)
     if data.get(key) == 'relation' and not data.get(relation_key):
         raise Invalid(_('PID relation must be defined if PID type is relation'))
+
+
+def validate_package_id_format(key, data, errors, context):
+    '''
+    Valida package id is starts with urn:nbn:fi:csc-kata
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    if not data.get(key).startswith("urn:nbn:fi:csc-kata"):
+        raise Invalid(_('Package id must start with "urn:nbn:fi:csc-kata"'))

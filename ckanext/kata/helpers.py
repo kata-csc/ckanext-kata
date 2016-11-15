@@ -120,13 +120,13 @@ def get_package_ratings(data):
     # MAX 2
 
     pid_types = [pid.get('type') for pid in data.get('pids', [])]
-    pid_types_expected = ['data', 'metadata', 'version']
-    if len(pid_types) < 3:
-        # The minimum metadata model is a bit vague in this part, this is one iterpretation
-        pid_types_expected.pop(2)
+    pid_types_expected = ['primary', 'relation']
+    if len(pid_types) < 2:
+        # The minimum metadata model is a bit vague in this part, this is one interpretation
+        pid_types_expected.pop(1)
 
     if all(pid_type in pid_types for pid_type in pid_types_expected):
-        score += 2 * len(pid_types) if len(pid_types) < 3 else 6
+        score += 2 * len(pid_types) if len(pid_types) < 2 else 4
 
     if len(unicode(data.get('version', ''))) > 15:   # ISO8601 datetime
         score += 1
@@ -1056,9 +1056,10 @@ def get_relation_types():
         return json.load(source)
     finally:
         source.close()
+    return None
 
 def get_relation_type_translation(relation_type, lang):
     res = filter(lambda rel: rel['id'] == relation_type, get_relation_types())
     if res:
         return res[0][lang]
-    return "Unknown relation type"
+    return None

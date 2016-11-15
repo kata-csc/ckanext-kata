@@ -55,8 +55,13 @@ class TestHelpers(TestCase):
         assert helpers.get_funder(TEST_DATADICT)['name'] == u'R. Ahanen'
 
     def test_get_dataset_permanent_address(self):
-        package = copy.deepcopy(TEST_DATADICT)
-        self.assertTrue(helpers.get_urn_fi_address(package).startswith('http://urn.fi/urn:nbn:fi:csc-kata'))
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        model.User(name="pidtest", sysadmin=True).save()
+        organization = get_action('organization_create')({'user': 'pidtest'},
+                                                         {'name': 'test-organization', 'title': "Test organization"})
+        data_dict['owner_org'] = organization['name']
+        package = get_action('package_create')({'user': 'pidtest'}, data_dict)
+        self.assertTrue(helpers.get_dataset_permanent_address(package).startswith('http://urn.fi/urn:nbn:fi:csc-kata'))
 
     def test_convert_language_code(self):
         assert helpers.convert_language_code('fin', 'alpha2') == 'fi'
@@ -153,24 +158,23 @@ class TestUtils(TestCase):
         data['private'] = False
 
         data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
-                         'id': u'some_data_pid_1',
-                         'primary': u'True',
-                         'type': u'data'},
+                         'id': u'some_primary_pid_1',
+                         'type': u'primary'},
                         {'provider': u'http://helda.helsinki.fi/oai/request',
                          'id': u'some_metadata_pid_1',
-                         'primary': u'True',
-                         'type': u'metadata'}]
+                         'type': u'relation',
+                         'relation': u'isMetadataFor'}]
 
         package_1 = get_action('package_create')({'user': 'pidtest'}, data)
 
         data['pids'] = [{'provider': u'http://helda.helsinki.fi/oai/request',
                          'id': u'some_data_pid_2',
-                         'primary': u'True',
-                         'type': u'data'},
+                         'type': u'relation',
+                         'relation': u'generalRelation'},
                         {'provider': u'http://helda.helsinki.fi/oai/request',
-                         'id': u'some_version_pid_2',
-                         'primary': u'True',
-                         'type': u'version'}]
+                         'id': u'some_part_pid_2',
+                         'type': u'relation',
+                         'relation': u'hasPart'}]
 
         package_2 = get_action('package_create')({'user': 'pidtest'}, data)
 
@@ -178,23 +182,15 @@ class TestUtils(TestCase):
 
     def test_get_package_id_by_pid(self):
         package_1_id, package_2_id = self._create_datasets()
-        self.assertEquals(utils.get_package_id_by_pid('some_data_pid_1', 'data'), package_1_id)
-        self.assertEquals(utils.get_package_id_by_pid('some_metadata_pid_1', 'metadata'), package_1_id)
-        self.assertEquals(utils.get_package_id_by_pid('some_data_pid_1', 'metadata'), None)
+        self.assertEquals(utils.get_package_id_by_pid('some_primary_pid_1', 'primary'), package_1_id)
+        self.assertEquals(utils.get_package_id_by_pid('some_metadata_pid_1', 'relation'), package_1_id)
+        self.assertEquals(utils.get_package_id_by_pid('some_data_pid_1', 'unknown_type'), None)
 
-        self.assertEquals(utils.get_package_id_by_pid('some_data_pid_2', 'data'), package_2_id)
-        self.assertEquals(utils.get_package_id_by_pid('some_version_pid_2', 'version'), package_2_id)
-        self.assertEquals(utils.get_package_id_by_pid('some_version_pid_2', 'data'), None)
-        self.assertEquals(utils.get_package_id_by_pid('invalid', 'version'), None)
+        self.assertEquals(utils.get_package_id_by_pid('some_data_pid_2', 'relation'), package_2_id)
+        self.assertEquals(utils.get_package_id_by_pid('some_part_pid_2', 'relation'), package_2_id)
+        self.assertEquals(utils.get_package_id_by_pid('some_unknown_pid_2', 'relation'), None)
+        self.assertEquals(utils.get_package_id_by_pid('invalid', 'invalid'), None)
 
-    def test_get_package_id_by_access_or_primary_pid(self):
-        package_1_id, package_2_id = self._create_datasets()
-
-        package_id = utils.get_package_id_by_access_or_primary_pid({'pids': [{'type': 'data', 'id': 'some_data_pid_1'}]})
-        self.assertEquals(package_1_id, package_id[0])
-
-        package_id = utils.get_package_id_by_access_or_primary_pid({'pids': [{'type': 'data', 'id': 'some_data_pid_2'}]})
-        self.assertEquals(package_2_id, package_id[0])
 
     def test_generate_pid(self):
         pid = utils.generate_pid()
@@ -245,41 +241,38 @@ class TestUtils(TestCase):
     def test_get_pids_by_type(self):
         data_dict = copy.deepcopy(TEST_DATADICT)
         data_dict['id'] = 'some_package.id'
-        data_dict['name'] = 'some_package.name'
 
-        pids = utils.get_pids_by_type('data', data_dict)
-        assert len(pids) == 2
-        pids = utils.get_pids_by_type('data', data_dict, primary=True)
-        assert len(pids) == 0
-        pids = utils.get_pids_by_type('data', data_dict, primary=False)
-        assert len(pids) == 2
-        pids = utils.get_pids_by_type('data', data_dict, use_package_id=True)
-        assert len(pids) == 2
-        pids = utils.get_pids_by_type('data', data_dict, primary=True, use_package_id=True)
-        assert len(pids) == 0
-        pids = utils.get_pids_by_type('data', data_dict, primary=False, use_package_id=True)
-        assert len(pids) == 2
-
-        pids = utils.get_pids_by_type('metadata', data_dict)
+        pids = utils.get_pids_by_type(u'relation', data_dict)
+        assert len(pids) == 3
+        pids = utils.get_pids_by_type(u'primary', data_dict)
         assert len(pids) == 1
-        pids = utils.get_pids_by_type('metadata', data_dict, primary=True)
+        pids = utils.get_pids_by_type(u'relation', data_dict, relation='isPreviousVersionOf')
         assert len(pids) == 1
-        pids = utils.get_pids_by_type('metadata', data_dict, primary=False)
-        assert len(pids) == 0
-        pids = utils.get_pids_by_type('metadata', data_dict, use_package_id=True)
-        assert len(pids) == 2
-        pids = utils.get_pids_by_type('metadata', data_dict, primary=True, use_package_id=True)
-        assert len(pids) == 2
-        pids = utils.get_pids_by_type('metadata', data_dict, primary=False, use_package_id=True)
+        pids = utils.get_pids_by_type(u'relation', data_dict, relation='isPartOf')
         assert len(pids) == 1
-
-
-        pids = utils.get_pids_by_type('version', data_dict)
+        pids = utils.get_pids_by_type(u'relation', data_dict, relation='generalRelation')
         assert len(pids) == 1
-        pids = utils.get_pids_by_type('version', data_dict, primary=True)
-        assert len(pids) == 0
-        pids = utils.get_pids_by_type('version', data_dict, primary=True, use_package_id=True)
-        assert len(pids) == 0
 
         pids = utils.get_pids_by_type('some_unknown_type', data_dict)
         assert len(pids) == 0
+
+
+    def test_get_primary_pid(self):
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        data_dict['id'] = 'some_package.id'
+
+        ppid = utils.get_primary_pid(data_dict)
+        assert ppid == 'some_primary_pid'
+        ppid = utils.get_primary_pid(data_dict, True)
+        assert ppid.get('type') == 'primary'
+
+
+    def test_get_package_id_by_primary_pid(self):
+        model.User(name="pidtest", sysadmin=True).save()
+        data_dict = copy.deepcopy(TEST_DATADICT)
+        organization = get_action('organization_create')({'user': 'pidtest'},
+                                                         {'name': 'test-organization', 'title': "Test organization"})
+        data_dict['owner_org'] = organization['name']
+        get_action('package_create')({'user': 'pidtest'}, data_dict)
+
+        assert utils.get_package_id_by_primary_pid(data_dict)

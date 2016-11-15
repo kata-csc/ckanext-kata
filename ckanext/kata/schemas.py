@@ -93,7 +93,7 @@ class Schemas:
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_interval_date],
                            'descr': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric]}
-        schema['id'] = [not_empty]
+        schema['id'] = [not_empty, va.validate_package_id_format, unicode]
 
         # Langtitle fields are used by the UI, to construct a 'title' field with translations in JSON format
         # This is not necessarily needed for the API calls
@@ -135,7 +135,7 @@ class Schemas:
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
         schema['access_application'] = [ignore_missing, unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['external_id'] = [ignore_missing, va.check_external_id, va.validate_external_id_uniqueness, unicode, va.validate_general,
+        schema['external_id'] = [ignore_missing, va.validate_external_id_format, va.validate_external_id_uniqueness, unicode, va.validate_general,
                                    co.convert_to_extras_kata]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]
@@ -326,7 +326,6 @@ class Schemas:
         schema = cls._create_package_schema()
         # Taken from ckan.logic.schema.default_update_package_schema():
         schema['id'] = [not_empty, package_id_not_changed]
-        schema['name'] = [not_empty, va.package_name_not_changed]
         schema['owner_org'] = [ignore_missing, va.kata_owner_org_validator, unicode]
         return schema
 

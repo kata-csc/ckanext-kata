@@ -19,10 +19,12 @@ from ckanext.kata.validators import validate_kata_date, validate_kata_interval_d
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
-    validate_title_duplicates, validate_title, check_direct_download_url, \
-    validate_license_url, validate_pid_uniqueness
+    validate_title_duplicates, validate_title, check_direct_download_url, validate_access_application_url, \
+    validate_license_url, validate_external_id_uniqueness, validate_primary_pid_uniqueness, validate_external_id_format, \
+    validate_pid_relation_type, validate_pid_type, validate_package_id_format
 from ckan.logic import get_action
 import ckan.model as model
+from ckanext.kata.utils import generate_pid
 
 
 
@@ -456,6 +458,55 @@ class TestValidators(TestCase):
         validate_license_url(('license_URL',), dada, errors, None)
         assert len(errors) == 0
 
+    def test_validate_access_application_url(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('availability',)] = u'access_application'
+
+        #The below does not work since ckan url_validator wants context object
+        # dada[('access_application',)] = u'access_application_other'
+        # dada[('access_application_URL',)] = u'http://test.fi/url'
+        # validate_access_application_url(('access_application_URL',), dada, errors, {})
+        # assert len(errors) == 0
+
+        dada[('access_application',)] = u'unknown_value'
+        self.assertRaises(Invalid, validate_access_application_url, ('access_application_URL',), dada, errors, {})
+
+    def test_validate_external_id_format(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('external_id',)] = u'external_id'
+        dada[('availability',)] = u'access_application'
+        dada[('access_application',)] = u'access_application_reetta_ida'
+        self.assertRaises(Invalid, validate_external_id_format, ('external_id',), dada, errors, {})
+
+    def test_validate_pid_relation_type(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        # Validate with valid relation type
+        validate_pid_relation_type(('pids',1,'relation'), dada, errors, None)
+        assert len(errors) == 0
+        # Validate with invalid relation type
+        dada[('pids',1,'relation')] = u'invalid_relation_type'
+        self.assertRaises(Invalid, validate_pid_relation_type, ('pids',1,'relation'), dada, errors, {})
+
+    def test_validate_pid_type(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        # Validate with type as relation and having a relation value
+        validate_pid_type(('pids', 1, 'type'), dada, errors, None)
+        assert len(errors) == 0
+        # Validate with invalid relation type
+        dada[('pids', 1, 'relation')] = None
+        self.assertRaises(Invalid, validate_pid_type, ('pids', 1, 'type'), dada, errors, {})
+
+    def test_validate_package_id_format(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('id',)] = u'invalid_package_id_format'
+        self.assertRaises(Invalid, validate_package_id_format, ('id',), dada, errors, {})
+
+
 
 class TestPidUniquenessValidator(TestCase):
     '''
@@ -472,23 +523,20 @@ class TestPidUniquenessValidator(TestCase):
     def teardown_class(cls):
         model.repo.rebuild_db()
 
-    def _get_random_no(self):
-        return unicode(random.randint(1, 10000))
-
     def _get_flat_data(self):
         flat_dada = copy.deepcopy(TEST_DATA_FLATTENED)
         return flat_dada
 
-    def _set_flat_data_random_id(self, flat_data):
-        flat_data[('id',)] = self._get_random_no()
-
-    def _set_unflattened_data_random_id(self, unflattened_data):
-        unflattened_data['id'] = self._get_random_no()
+    def _set_flat_data_id(self, flat_data):
+        flat_data[('id',)] = generate_pid()
 
     def _get_unflattened_data(self):
         unflattened_data = copy.deepcopy(TEST_DATADICT)
         unflattened_data['owner_org'] = self.organization['name']
         return unflattened_data
+
+    def _set_unflattened_data_id(self, unflattened_data):
+        unflattened_data['id'] = generate_pid()
 
     def _set_random_pids_for_unflattened_data(self, unflattened_data, exceptNo=0):
         for idx, pid in enumerate(unflattened_data.get('pids', [])):
@@ -500,113 +548,49 @@ class TestPidUniquenessValidator(TestCase):
     def _create_package_with_unflattened_data(self, unflattened_data):
         return get_action('package_create')({'user': 'test_sysadmin'}, unflattened_data)
 
-    # Test with no datasets in database
-    def test_validate_pid_uniqueness_1(self):
+    def test_validate_external_id_uniqueness(self):
         errors = defaultdict(list)
-        flat_data = self._get_flat_data()
-        self._set_flat_data_random_id(flat_data)
-        try:
-            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 2, 'id'), flat_data, errors, None)
-        except Invalid as e:
-            self.fail("validate_pid_uniqueness_1 failed: {0}".format(e))
+        unflattened_data = self._get_unflattened_data()
+        ext_id_1 = u'urn:nbn:fi:csc-ida9238572983572398s'
+        ext_id_2 = u'urn:nbn:fi:csc-ida9238572983572399s'
+        flat_data = flatten_dict(copy.deepcopy(unflattened_data))
+        unflattened_data['external_id'] = ext_id_1
+        flat_data[('external_id',)] = ext_id_2
+        self._set_unflattened_data_id(unflattened_data)
+        self._set_flat_data_id(flat_data)
 
-    # Test with existing dataset with different id and no same pids as tested pid dataset
-    def test_validate_pid_uniqueness_2(self):
+        # Validate against empty database == no other datasets with the same external id
+        validate_external_id_uniqueness(('external_id',), flat_data, errors, None)
+        assert len(errors) == 0
+        self._create_package_with_unflattened_data(unflattened_data)
+        # Validate against database containing one dataset that has different external id
+        validate_external_id_uniqueness(('external_id',), flat_data, errors, None)
+        assert len(errors) == 0
+        # Validate against database containing one dataset having the same external id
+        flat_data[('external_id',)] = ext_id_1
+        self.assertRaises(Invalid, validate_external_id_uniqueness, ('external_id',), flat_data, errors, None)
+
+    def test_validate_primary_pid_uniqueness(self):
         errors = defaultdict(list)
-        data = self._get_unflattened_data()
-        flat_data = flatten_dict(copy.deepcopy(data))
-        self._set_unflattened_data_random_id(data)
-        self._set_flat_data_random_id(flat_data)
-        self._set_random_pids_for_unflattened_data(data)
-        self._create_package_with_unflattened_data(data)
+        unflattened_data = self._get_unflattened_data()
+        ppid_1 = u'primary_pid_1'
+        ppid_2 = u'primary_pid_2'
+        flat_data = flatten_dict(copy.deepcopy(unflattened_data))
+        unflattened_data['pids'][0]['id'] = ppid_1
+        flat_data[('pids',0,'id')] = ppid_2
+        self._set_unflattened_data_id(unflattened_data)
+        self._set_flat_data_id(flat_data)
 
-        try:
-            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 2, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
-        except Invalid as e:
-            self.fail("validate_pid_uniqueness_2 failed: {0}".format(e))
-
-    # Test with existing dataset with different id and some same pids as tested pid dataset
-    def test_validate_pid_uniqueness_3(self):
-        errors = defaultdict(list)
-        data = self._get_unflattened_data()
-        flat_data = flatten_dict(copy.deepcopy(data))
-        self._set_unflattened_data_random_id(data)
-        self._set_flat_data_random_id(flat_data)
-        self._set_random_pids_for_unflattened_data(data)
-        flat_data[('pids', 2, 'id')] = data.get('pids')[3].get('id')
-        self._create_package_with_unflattened_data(data)
-
-        try:
-            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
-        except Invalid as e:
-            self.fail("validate_pid_uniqueness_3 failed: {0}".format(e))
-
-        self.assertRaises(Invalid, validate_pid_uniqueness, ('pids', 2, 'id'), flat_data, errors, None)
-
-    # Test with existing dataset with same id (same dataset) and no same pids as tested pid dataset
-    def test_validate_pid_uniqueness_4(self):
-        errors = defaultdict(list)
-        data = self._get_unflattened_data()
-        self._set_unflattened_data_random_id(data)
-        flat_data = flatten_dict(copy.deepcopy(data))
-        self._set_random_pids_for_unflattened_data(data)
-        self._create_package_with_unflattened_data(data)
-
-        try:
-            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 2, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
-        except Invalid as e:
-            self.fail("validate_pid_uniqueness_4 failed: {0}".format(e))
-
-    # Test with existing dataset with same id (same dataset) and some same pids as tested pid dataset
-    def test_validate_pid_uniqueness_5(self):
-        errors = defaultdict(list)
-        data = self._get_unflattened_data()
-        self._set_unflattened_data_random_id(data)
-        flat_data = flatten_dict(copy.deepcopy(data))
-        self._set_random_pids_for_unflattened_data(data)
-        flat_data[('pids', 2, 'id')] = data.get('pids')[3].get('id')
-        self._create_package_with_unflattened_data(data)
-
-        try:
-            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 2, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
-        except Invalid as e:
-            self.fail("validate_pid_uniqueness_5 failed: {0}".format(e))
-
-    # Given existing dataset with different package id than tested dataset
-    # and one of its pids is same as in tested dataset
-    # When dataset's pid is tested for uniqueness
-    # Then it should fail for the pid that is same as the existing dataset's package id
-    def test_validate_pid_uniqueness_6(self):
-        errors = defaultdict(list)
-        data = self._get_unflattened_data()
-        flat_data = flatten_dict(copy.deepcopy(data))
-        self._set_unflattened_data_random_id(data)
-        self._set_flat_data_random_id(flat_data)
-        self._set_random_pids_for_unflattened_data(data)
-        flat_data[('pids', 2, 'id')] = data.get('id')
-        self._create_package_with_unflattened_data(data)
-
-        try:
-            validate_pid_uniqueness(('pids', 0, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 1, 'id'), flat_data, errors, None)
-            validate_pid_uniqueness(('pids', 3, 'id'), flat_data, errors, None)
-        except Invalid as e:
-            self.fail("validate_pid_uniqueness_6 failed: {0}".format(e))
-
-        self.assertRaises(Invalid, validate_pid_uniqueness, ('pids', 2, 'id'), flat_data, errors, None)
+        # Validate against empty database == no other datasets with the same primary pid
+        validate_primary_pid_uniqueness(('pids',0,'id'), flat_data, errors, None)
+        assert len(errors) == 0
+        self._create_package_with_unflattened_data(unflattened_data)
+        # Validate against database containing one dataset that has different primary pid
+        validate_primary_pid_uniqueness(('pids',0,'id'), flat_data, errors, None)
+        assert len(errors) == 0
+        # Validate against database containing one dataset having the same primary pid
+        flat_data[('pids',0,'id')] = ppid_1
+        self.assertRaises(Invalid, validate_primary_pid_uniqueness, ('pids',0,'id'), flat_data, errors, None)
 
 
 class TestResourceValidators(TestCase):

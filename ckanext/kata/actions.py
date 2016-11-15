@@ -57,7 +57,7 @@ def package_show(context, data_dict):
 
     if not data_dict.get('id') and not data_dict.get('name'):
         # Get package by data PIDs
-        data_dict['id'] = utils.get_package_id_by_access_or_primary_pid(data_dict)
+        data_dict['id'] = utils.get_package_id_by_primary_pid(data_dict)
 
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
@@ -92,26 +92,25 @@ def package_show(context, data_dict):
     return pkg_dict1
 
 
-def _handle_package_id(context, data_dict):
+def _handle_package_id_on_create(context, data_dict):
     '''
-    Create package id if it does not exist. Check that it does not exist already.
+    Create package id always on create. Check that the generated id does not exist already.
     If this method does not result in placing id to data_dict, then something
     is very wrong and the user does not have anything to do with it. This should
     always result in valid id getting placed into data_dict.
     '''
-    if not 'id' in data_dict or len(data_dict['id']) == 0:
-        new_id_exists = True
-        i=0
-        while new_id_exists and i < 10:
-            new_id = unicode(utils.generate_pid())
-            existing_id_query = model.Session.query(model.Package)\
-                            .filter(model.Package.id == new_id)
-            if existing_id_query.first():
-                i += 1
-                continue
-            data_dict['id'] = unicode(utils.generate_pid())
-            new_id_exists = False
 
+    new_id_exists = True
+    i=0
+    while new_id_exists and i < 10:
+        new_id = unicode(utils.generate_pid())
+        existing_id_query = model.Session.query(model.Package)\
+                        .filter(model.Package.id == new_id)
+        if existing_id_query.first():
+            i += 1
+            continue
+        data_dict['id'] = new_id
+        new_id_exists = False
 
 def _handle_pids(context, data_dict):
     '''
@@ -188,7 +187,7 @@ def package_create(context, data_dict):
 
     data_dict = utils.dataset_to_resource(data_dict)
 
-    _handle_package_id(context, data_dict)
+    _handle_package_id_on_create(context, data_dict)
     _handle_pids(context, data_dict)
 
     _add_ida_download_url(context, data_dict)
@@ -243,7 +242,6 @@ def package_update(context, data_dict):
     else:
         data_dict['accept-terms'] = 'yes'  # This is not needed when adding a resource
 
-    _handle_package_id(context, data_dict)
     _handle_pids(context, data_dict)
 
     _add_ida_download_url(context, data_dict)

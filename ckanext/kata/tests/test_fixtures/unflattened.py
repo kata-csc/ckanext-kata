@@ -125,24 +125,26 @@ TEST_DATADICT = {'accept-terms': u'yes',
                  'pids': [
                      {
                          'provider': u'http://helda.helsinki.fi/oai/request',
-                         'id': u'some_data_pid',
-                         'type': u'data',
+                         'id': u'some_primary_pid',
+                         'type': u'primary',
                      },
                      {
                          'provider': u'kata',
                          'id': u'kata_data_PID',
-                         'type': u'data',
+                         'type': u'relation',
+                         'relation': u'generalRelation',
                      },
                      {
                          'provider': u'kata',
                          'id': u'urn:nbn:fi:csc-kata20140728095757755621',
-                         'type': u'metadata',
-                         'primary': u'True',
+                         'type': u'relation',
+                         'relation': u'isPartOf',
                      },
                      {
                          'provider': u'kata',
                          'id': u'kata_version_PID',
-                         'type': u'version',
+                         'type': u'relation',
+                         'relation': u'isPreviousVersionOf'
                      },
                  ],
                  'tag_string': u'Python,ohjelmoitunut solukuolema,programming',

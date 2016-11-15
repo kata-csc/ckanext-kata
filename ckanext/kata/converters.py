@@ -15,11 +15,6 @@ import functools
 from pylons.i18n import _
 from ckan.lib.navl.dictization_functions import missing, Invalid
 
-from ckan.logic.action.create import related_create
-from ckan.model import Related, Session, Group, repo
-from ckan.model.authz import setup_default_user_roles
-import ckan.logic as logic
-
 from ckanext.kata import settings, utils
 
 log = logging.getLogger('ckanext.kata.converters')

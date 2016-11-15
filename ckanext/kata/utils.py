@@ -249,11 +249,11 @@ def get_pids_by_type(pid_type, data_dict, relation=None):
     '''
     Get all package PID dicts of certain type
 
-    :param pid_type: PID type to get (primary, access, relation)
+    :param pid_type: PID type to get (primary, relation)
     :param data_dict:
     :param relation: relation type. None == get all pids. Basically applicable only
-            when pid type is relation, otherwise not useful since primary and access
-            types do not have relation defined.
+            when pid type is relation, otherwise not useful since primary type does
+            not have relation defined.
     :rtype: list of dicts
     '''
 
@@ -327,7 +327,7 @@ def get_package_id_by_pid(pid, pid_type):
     """ Find pid by id and type.
 
     :param pid: id of the pid
-    :param pid_type: type of the pid (primary, access, relation)
+    :param pid_type: type of the pid (primary, relation)
     :return: id of the package
     """
     query = select(['key', 'package_id']).where(and_(model.PackageExtra.value == pid, model.PackageExtra.key.like('pids_%_id'),
@@ -342,16 +342,16 @@ def get_package_id_by_pid(pid, pid_type):
     return None
 
 
-# THIS METHOD WAS PREVIOUSLY GET_PACKAGE_ID_BY_DATA_PIDS, is the below correct, or should relation pids also be used?
 def get_package_id_by_primary_pid(data_dict):
     '''
     Try if the provided primary PID matches exactly one dataset.
+
+    THIS METHOD WAS PREVIOUSLY GET_PACKAGE_ID_BY_DATA_PIDS, is the below correct, or should relation pids also be used?
 
     :param data_dict:
     :return: Package id or None if not found.
     '''
     primary_pid = get_primary_pid(data_dict)
-
     if not primary_pid:
         return None
 
@@ -361,7 +361,6 @@ def get_package_id_by_primary_pid(data_dict):
     query = Session.query(model.PackageExtra.package_id.distinct()).\
         filter(model.PackageExtra.value.in_(pid_list))
     pkg_ids = query.all()
-
     if len(pkg_ids) != 1:
         return None              # Nothing to do if we get many or zero datasets
 
@@ -374,9 +373,9 @@ def get_package_id_by_primary_pid(data_dict):
     # Dictize the results
     extras = model_dictize.extras_list_dictize(extras, {'model': PackageExtra})
 
-    # Check that matching PIDS are either type 'primary' or 'access'.
+    # Check that matching PIDS are type 'primary'.
     for extra in extras:
-        key = extra['key'].split('_')   # eg. ('pids', '0', 'id')
+        key = extra['key'].split('_')   # eg. ['pids', '0', 'id']
 
         if key[2] == 'id' and extra['value'] in pid_list:
             type_key = '_'.join(key[:2] + ['type'])
@@ -445,11 +444,11 @@ def is_ida_pid(pid):
 
 def generate_ida_download_url(external_id):
     '''
-    Returns an assumed download URL for the data based on the given access ID.
+    Returns an assumed download URL for the data based on the given external ID.
 
     TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
 
-    :param external_id: the ID for the IDA dataset (should not change ever for this dataset)
+    :param external_id: the ID for the IDA dataset
     :return: a download URL for an IDA dataset
     '''
 

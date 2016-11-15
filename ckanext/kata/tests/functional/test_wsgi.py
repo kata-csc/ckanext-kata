@@ -16,6 +16,7 @@ from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 from ckanext.kata.controllers import ContactController
+import ckan.lib.dictization.model_dictize as model_dictize
 
 
 class TestPages(KataWsgiTestCase):
@@ -83,18 +84,21 @@ class TestResources(KataWsgiTestCase):
         """
         resource_read should redirect to dataset page.
         """
+        model.repo.new_revision()
+        model.Session.commit()
         res_id = None
-
         pkg = model.Package.get(u'annakarenina')
+        pkg.name = utils.pid_to_name(pkg.id)
+        model.Package.save(pkg)
         for resource in pkg.resources:
             if 'Full text.' in resource.description:
-                revision = model.repo.new_revision()
+                model.repo.new_revision()
                 resource.resource_type = settings.RESOURCE_TYPE_DATASET
                 model.Session.commit()
                 res_id = resource.id
 
         offset = '/en' + url_for(controller='package', action='resource_read',
-                                 id=u'annakarenina', resource_id=res_id)
+                                 id=pkg.id, resource_id=res_id)
 
         extra_environ = {'REMOTE_USER': 'tester'}
         result = self.app.get(offset, extra_environ=extra_environ)
@@ -224,12 +228,26 @@ class TestDatasetEditorManagement(KataWsgiTestCase):
     Test the dataset editor management page's visibility
     '''
 
+    @classmethod
+    def setup_class(cls):
+        super(TestDatasetEditorManagement, cls).setup_class()
+        model.repo.new_revision()
+        model.Session.commit()
+
+        pkg_1 = model.Package.get(u'warandpeace')
+        pkg_1.name = utils.pid_to_name(pkg_1.id)
+        model.Package.save(pkg_1)
+
+        pkg_2 = model.Package.get(u'annakarenina')
+        pkg_2.name = utils.pid_to_name(pkg_2.id)
+        model.Package.save(pkg_2)
+
     def test_dataset_management_page_not_renders(self):
         '''
         Test that non-editor can not see the dataset administration page
         '''
         offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage',
-                         name=u'warandpeace')
+                         id=u'warandpeace')
 
         extra_environ = {'REMOTE_USER': 'tester'}
         res = self.app.get(offset, extra_environ=extra_environ)
@@ -240,7 +258,7 @@ class TestDatasetEditorManagement(KataWsgiTestCase):
         Test that the dataset management page renders
         '''
         offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage',
-                         name=u'annakarenina')
+                         id=u'annakarenina')
 
         extra_environ = {'REMOTE_USER': 'testsysadmin'}
         res = self.app.get(offset, extra_environ=extra_environ)
@@ -252,6 +270,16 @@ class TestAuthorisation(KataWsgiTestCase):
     '''
     Test Kata authorisation functions
     '''
+
+    @classmethod
+    def setup_class(cls):
+        super(TestAuthorisation, cls).setup_class()
+        model.repo.new_revision()
+        model.Session.commit()
+
+        pkg_2 = model.Package.get(u'annakarenina')
+        pkg_2.name = utils.pid_to_name(pkg_2.id)
+        model.Package.save(pkg_2)
 
     def test_edit_not_available(self):
         '''
@@ -379,10 +407,9 @@ class TestMetadataSupplements(KataWsgiTestCase):
 
         data = copy.deepcopy(TEST_DATADICT)
         data['owner_org'] = organization['name']
-        data['name'] = 'metadata-supplement-testdataset'
 
         package = get_action('package_create')({'user': 'testsysadmin'}, data)
-        offset = url_for(controller='package', action='read', id=u'metadata-supplement-testdataset')
+        offset = url_for(controller='package', action='read', id=package['id'])
         extra_environ = {'REMOTE_USER': 'testsysadmin'}
         res = self.app.get(offset, extra_environ=extra_environ)
         assert '/dataset/new_resource/' in res
@@ -391,8 +418,18 @@ class TestMetadataSupplements(KataWsgiTestCase):
         '''
         Test that metadata supplement form renders
         '''
+        organization = get_action('organization_create')({'user': 'testsysadmin'},
+                                                         {'name': 'unseen-academy-1',
+                                                          'title': "Unseen Academy 1"})
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['pids'][0]['id'] = u'unseen-primary-identifier'
+        data['owner_org'] = organization['name']
+
+        package = get_action('package_create')({'user': 'testsysadmin'}, data)
+
         package = get_action('package_show')({'user': 'testsysadmin'},
-                                             {'id': 'metadata-supplement-testdataset'})
+                                             {'id': package['id']})
         offset = url_for('/en/dataset/new_resource/{0}'.format(package['name']))
         extra_environ = {'REMOTE_USER': 'testsysadmin'}
         res = self.app.get(offset, extra_environ=extra_environ)

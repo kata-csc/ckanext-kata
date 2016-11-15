@@ -11,7 +11,6 @@ import ckan.model as model
 from ckan.lib import search
 from ckan.lib.helpers import url_for
 from ckan.logic import ValidationError, NotAuthorized
-from ckan.lib.navl.dictization_functions import Invalid
 from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
@@ -134,10 +133,13 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data_dict['id'] = orig_id
         output = self.api_user_normal.call_action('package_update', data_dict=data_dict)
         assert output['id'] == orig_id
+        output_name = output['name']
 
+        # Change data_dict's name and update it. It should not have changed
         data_dict['name'] = 'new-name-123456'
 
-        self.assertRaises(ValidationError, self.api_user_normal.call_action, 'package_update', data_dict=data_dict)
+        output_2 = self.api_user_normal.call_action('package_update', data_dict=data_dict)
+        assert output_2['name'] == output_name
 
     def test_create_dataset_invalid_agents(self):
         '''Test required fields for agents (role, name/organisation/URL)'''
@@ -488,6 +490,7 @@ class TestDataReading(KataApiTestCase):
 
         data_dict['id'] = output['id']
         data_dict['availability'] = 'access_application'
+        data_dict['access_application'] = u'access_application_other'
         data_dict['access_application_URL'] = ACCESS_URL
 
         # UPDATE AVAILABILITY
