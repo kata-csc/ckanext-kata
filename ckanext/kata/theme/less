@@ -14,7 +14,7 @@ function compile(event, filename) {
       targetFile = __dirname + '/public/css/' + 'kata.css',
       ckanModules = path.join(__dirname, '..', '..', '..', '..', 'ckan', 'node_modules');
       lessCompiler = path.join(ckanModules, 'less', 'bin', 'lessc'),
-      autoprefixer = path.join(ckanModules, 'autoprefixer', 'autoprefixer'),
+      autoprefixer = path.join(ckanModules, 'autoprefixer-cli', 'autoprefixer-cli'),
       cmdLine = lessCompiler + ' ' + __dirname + '/public/less/main.less > ' + targetFile;
 
   exec(cmdLine, function (err, stdout, stderr) {

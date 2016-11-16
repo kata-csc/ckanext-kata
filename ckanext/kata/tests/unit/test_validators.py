@@ -12,7 +12,7 @@ from unittest import TestCase
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
 from ckanext.kata import settings
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
-    flattened_to_extras, flattened_from_extras, to_licence_id, gen_translation_str_from_langtitle
+    flattened_to_extras, flattened_from_extras, to_license_id, gen_translation_str_from_langtitle, populate_license_URL_if_license_id_not_resolved
 from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 from ckanext.kata.validators import validate_kata_date, validate_kata_interval_date, \
@@ -458,6 +458,20 @@ class TestValidators(TestCase):
         validate_license_url(('license_URL',), dada, errors, None)
         assert len(errors) == 0
 
+    def test_citation_invalid(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('citation',)] = u'<invalid>'
+        validate_general(('citation',), dada, errors, None)
+        assert len(errors) == 1
+
+    def test_citation_valid(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        dada[('citation',)] = u'T. Tekijä. Test Data. 2000/01/01.'
+        validate_general(('citation',), dada, errors, None)
+        assert len(errors) == 0
+
     def test_validate_access_application_url(self):
         errors = defaultdict(list)
         dada = copy.deepcopy(TEST_DATA_FLATTENED)
@@ -814,85 +828,126 @@ class TestLicenseConverters(TestCase):
     def setup_class(cls):
         """Set up tests."""
 
-        cls.key = ('license_id',)
+        cls.id_key = ('license_id',)
+        cls.url_key = ('license_URL',)
 
-        cls.test_data1 = {cls.key: "CLARIN_RES" }
-        cls.test_data2 = {cls.key: "underNegotiation" }
-        cls.test_data3 = {cls.key: "CLARIN_ACA-NC"}
-        cls.test_data4 = {cls.key: "creative commons attribution-noncommmercial 1.0"}
-        cls.test_data5 = {cls.key: "other"}
-        cls.test_data6 = {cls.key: "CC-BY-NC-3.0"}
-        cls.test_data7 = {cls.key: "CC-BY-3.0"}
-        cls.test_data8 = {cls.key: "ApacheLicence_2.0"}
-        cls.test_data9 = {cls.key: "CC-BY-ND-3.0"}
-        cls.test_data10 = {cls.key: "CC-BY-SA-3.0"}
-        cls.test_data11 = {cls.key: "CLARIN_PUB"}
-        cls.test_data12 = {cls.key: "CLARIN_ACA"}
-        cls.test_data13 = {cls.key: "notspecified"}
-        cls.test_data14 = {cls.key: "CC-BY-NC-SA-3.0"}
-        cls.test_data15 = {cls.key: "CC-BY-NC-ND-3.0"}
-        cls.test_data16 = {cls.key: "CC-ZERO"}
-        cls.test_data17 = {cls.key: "CC0"}
-        cls.test_data18 = {cls.key: "CC-BY-3.0"}
-        cls.test_data19 = {cls.key: "https://creativecommons.org/licenses/by/4.0/"}
+        cls.test_data1 = {cls.id_key: "CLARIN_RES" }
+        cls.test_data2 = {cls.id_key: "underNegotiation" }
+        cls.test_data3 = {cls.id_key: "CLARIN_ACA-NC"}
+        cls.test_data4 = {cls.id_key: "creative commons attribution-noncommmercial 1.0"}
+        cls.test_data5 = {cls.id_key: "other"}
+        cls.test_data6 = {cls.id_key: "CC-BY-NC-3.0"}
+        cls.test_data7 = {cls.id_key: "CC-BY-3.0"}
+        cls.test_data8 = {cls.id_key: "ApacheLicense_2.0"}
+        cls.test_data9 = {cls.id_key: "CC-BY-ND-3.0"}
+        cls.test_data10 = {cls.id_key: "CC-BY-SA-3.0"}
+        cls.test_data11 = {cls.id_key: "CLARIN_PUB"}
+        cls.test_data12 = {cls.id_key: "CLARIN_ACA"}
+        cls.test_data13 = {cls.id_key: "notspecified"}
+        cls.test_data14 = {cls.id_key: "CC-BY-NC-SA-3.0"}
+        cls.test_data15 = {cls.id_key: "CC-BY-NC-ND-3.0"}
+        cls.test_data16 = {cls.id_key: "CC-ZERO"}
+        cls.test_data17 = {cls.id_key: "CC0"}
+        cls.test_data18 = {cls.id_key: "CC-BY-3.0"}
+        cls.test_data19 = {cls.id_key: "https://creativecommons.org/licenses/by/4.0/"}
+        cls.test_data20 = {cls.id_key: "cc-by-1"}
+        cls.test_data21 = {cls.id_key: "cc-by-nc-sa-3"}
+        cls.test_data22 = {cls.id_key: "cc-by-nc-sa-3", cls.url_key: 'some license info'}
+        cls.test_data23 = {cls.id_key: "cc-by"}
+        cls.test_data24 = {cls.id_key: "badly_written_license"}
+        cls.test_data25 = {cls.id_key: "badly_written_license", cls.url_key: 'some license info'}
+        cls.test_data26 = {cls.id_key: "badly_written_license", cls.url_key: 'some license info'}
 
     def test_license_conversion(self):
 
-        to_licence_id(self.key, self.test_data1, {}, {})
-        assert self.test_data1.get(self.key) == 'ClarinRES-1.0'
+        to_license_id(self.id_key, self.test_data1, {}, {})
+        assert self.test_data1.get(self.id_key) == 'ClarinRES-1.0'
 
-        to_licence_id(self.key, self.test_data2, {}, {})
-        assert self.test_data2.get(self.key) == 'undernegotiation'
+        to_license_id(self.id_key, self.test_data2, {}, {})
+        assert self.test_data2.get(self.id_key) == 'undernegotiation'
 
-        to_licence_id(self.key, self.test_data3, {}, {})
-        assert self.test_data3.get(self.key) == 'ClarinACA+NC-1.0'
+        to_license_id(self.id_key, self.test_data3, {}, {})
+        assert self.test_data3.get(self.id_key) == 'ClarinACA+NC-1.0'
 
-        to_licence_id(self.key, self.test_data4, {}, {})
-        assert self.test_data4.get(self.key) == 'CC-BY-NC-1.0'
+        to_license_id(self.id_key, self.test_data4, {}, {})
+        assert self.test_data4.get(self.id_key) == 'CC-BY-NC-1.0'
 
-        to_licence_id(self.key, self.test_data5, {}, {})
-        assert self.test_data5.get(self.key) == 'other'
+        to_license_id(self.id_key, self.test_data5, {}, {})
+        assert self.test_data5.get(self.id_key) == 'other'
 
-        to_licence_id(self.key, self.test_data6, {}, {})
-        assert self.test_data6.get(self.key) == 'CC-BY-NC-3.0'
+        to_license_id(self.id_key, self.test_data6, {}, {})
+        assert self.test_data6.get(self.id_key) == 'CC-BY-NC-3.0'
 
-        to_licence_id(self.key, self.test_data7, {}, {})
-        assert self.test_data7.get(self.key) == 'CC-BY-3.0'
+        to_license_id(self.id_key, self.test_data7, {}, {})
+        assert self.test_data7.get(self.id_key) == 'CC-BY-3.0'
 
-        to_licence_id(self.key, self.test_data8, {}, {})
-        assert self.test_data8.get(self.key) == 'Apache-2.0'
+        to_license_id(self.id_key, self.test_data8, {}, {})
+        assert self.test_data8.get(self.id_key) == 'Apache-2.0'
 
-        to_licence_id(self.key, self.test_data9, {}, {})
-        assert self.test_data9.get(self.key) == 'CC-BY-ND-3.0'
+        to_license_id(self.id_key, self.test_data9, {}, {})
+        assert self.test_data9.get(self.id_key) == 'CC-BY-ND-3.0'
 
-        to_licence_id(self.key, self.test_data10, {}, {})
-        assert self.test_data10.get(self.key) == 'CC-BY-SA-3.0'
+        to_license_id(self.id_key, self.test_data10, {}, {})
+        assert self.test_data10.get(self.id_key) == 'CC-BY-SA-3.0'
 
-        to_licence_id(self.key, self.test_data11, {}, {})
-        assert self.test_data11.get(self.key) == 'ClarinPUB-1.0'
+        to_license_id(self.id_key, self.test_data11, {}, {})
+        assert self.test_data11.get(self.id_key) == 'ClarinPUB-1.0'
 
-        to_licence_id(self.key, self.test_data12, {}, {})
-        assert self.test_data12.get(self.key) == 'ClarinACA-1.0'
+        to_license_id(self.id_key, self.test_data12, {}, {})
+        assert self.test_data12.get(self.id_key) == 'ClarinACA-1.0'
 
-        to_licence_id(self.key, self.test_data13, {}, {})
-        assert self.test_data13.get(self.key) == 'notspecified'
+        to_license_id(self.id_key, self.test_data13, {}, {})
+        assert self.test_data13.get(self.id_key) == 'notspecified'
 
-        to_licence_id(self.key, self.test_data14, {}, {})
-        assert self.test_data14.get(self.key) == 'CC-BY-NC-SA-3.0'
+        to_license_id(self.id_key, self.test_data14, {}, {})
+        assert self.test_data14.get(self.id_key) == 'CC-BY-NC-SA-3.0'
 
-        to_licence_id(self.key, self.test_data15, {}, {})
-        assert self.test_data15.get(self.key) == 'CC-BY-NC-ND-3.0'
+        to_license_id(self.id_key, self.test_data15, {}, {})
+        assert self.test_data15.get(self.id_key) == 'CC-BY-NC-ND-3.0'
 
-        to_licence_id(self.key, self.test_data16, {}, {})
-        assert self.test_data16.get(self.key) == 'CC0-1.0'
+        to_license_id(self.id_key, self.test_data16, {}, {})
+        assert self.test_data16.get(self.id_key) == 'CC0-1.0'
 
-        to_licence_id(self.key, self.test_data17, {}, {})
-        assert self.test_data17.get(self.key) == 'CC0-1.0'
+        to_license_id(self.id_key, self.test_data17, {}, {})
+        assert self.test_data17.get(self.id_key) == 'CC0-1.0'
 
-        to_licence_id(self.key, self.test_data18, {}, {})
-        assert self.test_data18.get(self.key) == 'CC-BY-3.0'
+        to_license_id(self.id_key, self.test_data18, {}, {})
+        assert self.test_data18.get(self.id_key) == 'CC-BY-3.0'
 
-        to_licence_id(self.key, self.test_data19, {}, {})
-        assert self.test_data19.get(self.key) == 'CC-BY-4.0'
+        to_license_id(self.id_key, self.test_data19, {}, {})
+        assert self.test_data19.get(self.id_key) == 'CC-BY-4.0'
 
+        to_license_id(self.id_key, self.test_data20, {}, {})
+        populate_license_URL_if_license_id_not_resolved(self.url_key, self.test_data20, {}, {})
+        assert self.test_data20.get(self.id_key) == 'CC-BY-1.0'
+        assert self.test_data20.get(self.url_key) is None
 
+        populate_license_URL_if_license_id_not_resolved(self.url_key, self.test_data21, {}, {})
+        to_license_id(self.id_key, self.test_data21, {}, {})
+        assert self.test_data21.get(self.id_key) == 'CC-BY-NC-SA-3.0'
+        assert self.test_data21.get(self.url_key) is None
+
+        populate_license_URL_if_license_id_not_resolved(self.url_key, self.test_data22, {}, {})
+        to_license_id(self.id_key, self.test_data22, {}, {})
+        assert self.test_data22.get(self.id_key) == 'CC-BY-NC-SA-3.0'
+        assert self.test_data22.get(self.url_key) == 'some license info'
+
+        to_license_id(self.id_key, self.test_data23, {}, {})
+        populate_license_URL_if_license_id_not_resolved(self.url_key, self.test_data23, {}, {})
+        assert self.test_data23.get(self.id_key) == 'other'
+        assert self.test_data23.get(self.url_key) == 'cc-by'
+
+        populate_license_URL_if_license_id_not_resolved(self.url_key, self.test_data24, {}, {})
+        to_license_id(self.id_key, self.test_data24, {}, {})
+        assert self.test_data24.get(self.id_key) == 'other'
+        assert self.test_data24.get(self.url_key) == 'badly_written_license'
+
+        to_license_id(self.id_key, self.test_data25, {}, {})
+        populate_license_URL_if_license_id_not_resolved(self.url_key, self.test_data25, {}, {})
+        assert self.test_data25.get(self.id_key) == 'other'
+        assert self.test_data25.get(self.url_key) == 'badly_written_license. some license info'
+
+        populate_license_URL_if_license_id_not_resolved(self.url_key, self.test_data26, {}, {})
+        to_license_id(self.id_key, self.test_data26, {}, {})
+        assert self.test_data26.get(self.id_key) == 'other'
+        assert self.test_data26.get(self.url_key) == 'badly_written_license. some license info'

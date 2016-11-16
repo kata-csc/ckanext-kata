@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-version = '3.1.1'
+version = '3.2.0'
 
 setup(
     name='ckanext-kata',
@@ -44,6 +44,7 @@ setup(
             ('kata/theme/templates/home/**.html', 'ckan', None),
             ('kata/theme/templates/user/**.html', 'ckan', None),
             ('kata/theme/templates/organization/**.html', 'ckan', None),
+            ('kata/theme/templates/organization/snippets/**.html', 'ckan', None)
         ],
     },
     entry_points=

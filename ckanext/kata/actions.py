@@ -539,6 +539,43 @@ def dataset_editor_add(context, data_dict):
 
     return msg
 
+def organization_autocomplete(context, data_dict):
+    '''
+    Return a list of organization names that contain a string.
+
+    :param q: the string to search for
+    :type q: string
+    :param limit: the maximum number of organizations to return (optional,
+        default: 20)
+    :type limit: int
+
+    :rtype: a list of organization dictionaries each with keys ``'name'``,
+        ``'title'``, and ``'id'``
+    '''
+
+    check_access('organization_autocomplete', context, data_dict)
+
+    q = data_dict['q']
+    limit = data_dict.get('limit', 20)
+    model = context['model']
+
+    query = model.Group.search_by_name_or_title(q, group_type=None, is_org=True)
+
+    organization_list = []
+    for organization in query.all():
+        result_dict = {}
+
+        for k in ['id', 'name', 'title']:
+            result_dict[k] = getattr(organization, k)
+
+        org_parents_objs = organization.get_parent_group_hierarchy(type='organization')
+        org_parents_titles = [getattr(org, 'title') for org in org_parents_objs]
+        org_parents_titles.append(result_dict.get('title'))  
+        result_dict['hierarchy'] = ' > '.join(org_parents_titles)
+
+        organization_list.append(result_dict)
+
+    return organization_list
 
 @side_effect_free
 def organization_list_for_user(context, data_dict):
@@ -559,9 +596,20 @@ def organization_list_for_user(context, data_dict):
 def organization_list(context, data_dict):
     """ Modified from ckan.logic.action.get._group_or_org_list.
         Sort by title instead of name and lower case ordering.
+
+        For some reason, sorting by packages filters out all
+        organizations without datasets, which results to
+        a wrong number of organizations in the organization
+        index view. The sort after a search query should,
+        however default to 'packages'. 
     """
+
     if not data_dict.get('sort'):
-        data_dict['sort'] = 'packages'
+        if data_dict.get('q'):
+            data_dict['sort'] = 'packages'
+        else:
+            data_dict['sort'] = 'title'
+
     return ckan.logic.action.get.organization_list(context, data_dict)
 
 

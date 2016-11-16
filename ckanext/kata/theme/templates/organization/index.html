@@ -17,7 +17,7 @@
         <form id="organization-search" class="dataset-search clearfix search-form" method="get" data-module="select-switch">
             <div class="search-terms">
                <div class="search-input control-group search-giant">
-                 <input type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
+                 <input data-organization-filter type="text" class="search" name="q" value="{{ c.q }}" autocomplete="off"
                    placeholder="{{ _('Enter search term or query…') }}" tabindex="1" autofocus>
                  <button type="submit" value="search">
                    <i class="icon-search"></i>
@@ -32,6 +32,9 @@
                   {% endfor -%}
                 </span>
               {%- endif %}
+
+              {# Show sort selection only on search results (flatlist) #}
+              {% if c.q and c.page.items %}
               <div class="form-select control-group control-order-by">
                 <label for="field-order-by">{{ _('Order by') }}</label>
                 <select id="field-order-by" name="sort">
@@ -42,6 +45,9 @@
                     {% endif %}
                   {% endfor %}
                 </select>
+               {% endif %}
+
+
                 {% block search_sortby_button %}
                   <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
                 {% endblock %}
@@ -64,18 +70,31 @@
             {% endif %}
           {% endblock %}
 
-          {% if c.page.items or request.params %}
+          {% if c.q and c.page.items %}
+            {# on a search query with results - show a flatlist instead of hierarchy tree #}
             {% snippet "organization/snippets/organization_list.html", organizations=c.page.items, description=False, image=False %}
+
+            {% block page_pagination_list %}
+              {{ c.page.pager(q=c.q, sort=c.sort_by_selected or '') }}
+            {% endblock %}
+
+          {# before searching - show the whole organization hierarchy tree #}
+          {% elif not c.q and c.page.items %}
+            <div id="publisher-tree">
+              {% snippet 'organization/snippets/organization_tree.html', top_nodes=h.get_action('group_tree', {'type': 'organization'}), show_dataset_count=true%}
+            </div>
+
           {% else %}
             <p class="empty">
               {{ _('There are currently no organizations for this site') }}.
             </p>
           {% endif %}
+
         </div>
 
-        {% block page_pagination_list %}
+        {#% block page_pagination_list %}
           {{ c.page.pager(q=c.q, sort=c.sort_by_selected or '') }}
-        {% endblock %}
+        {% endblock %#}
 
       </div>
     </div>

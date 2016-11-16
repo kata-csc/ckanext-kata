@@ -47,7 +47,7 @@ ckan.module('etsin-ida-prefill', function ($, _) {
                 if (valid) {
                     // Update primary pid field and close modal
                     $('#pids__0__id').val(idaUrnInput.val());
-                    directDlField.val('http://avaa.tdata.fi/openida/dl.jsp?pid='.concat(idaUrnInput.val()));
+                    directDlField.val('https://avaa.tdata.fi/openida/dl.jsp?pid='.concat(idaUrnInput.val()));
                     idaPrefillModal.dialog('close');
                 }
                 return valid;
@@ -94,7 +94,7 @@ ckan.module('etsin-ida-prefill', function ($, _) {
             }
 
             idaUrnInput.on('input', function() {
-                $('#ida-preview-url').text('IDA URL: http://avaa.tdata.fi/openida/dl.jsp?pid='.concat(idaUrnInput.val()))
+                $('#ida-preview-url').text('IDA URL: https://avaa.tdata.fi/openida/dl.jsp?pid='.concat(idaUrnInput.val()))
             });
         }
     }

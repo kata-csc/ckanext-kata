@@ -131,7 +131,7 @@
         </ul>
       {% else %}
       {# Case no events, that is a new blank form #}
-              
+
         {% set index = 1 %}
         <ul class="kata">
           <div class="control-group control-custom">
@@ -180,7 +180,7 @@
     </div>
   </div>
 
-  {% call kata_form.input_block2("last_modified", _('Most recent data modification date'), error=errors.version, control_classes=['controls-row', 'controls-wide', 'modification-date-controls'], label_classes=['control-label', 'center-align'],
+  {% call kata_form.input_block2("last_modified", _('Most recent data modification date*'), error=errors.version, control_classes=['controls-row', 'controls-wide', 'modification-date-controls'], label_classes=['control-label', 'center-align'],
   extra_html=kata_form.tooltip(tooltip=_('Field is compulsory but an automatically generated date is provided.<br><br>The modification date tells when the data has last been modified. Click the calendar icon to open a calendar tool to choose the modification date for this dataset. Time can be entered if "use exact time" is chosen.'))) %}
     <div data-module="kata-datetimepicker"
          data-module-currentlang="{{ currentlang }}" data-module-name="version"

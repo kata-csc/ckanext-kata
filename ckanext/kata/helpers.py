@@ -27,6 +27,7 @@ from ckan.lib import plugins
 from pylons.i18n.translation import gettext_noop as N_
 from ckan.common import request
 from webhelpers.html import literal
+from datetime import date
 
 log = logging.getLogger(__name__)
 
@@ -949,7 +950,7 @@ def get_tab_errors(errors, tab):
 
     tabs = {'1': ['langtitle', 'langnotes', 'language', 'tag_string'],
             '2': ['agent', 'contact', 'owner_org'],
-            '3': ['license', 'license_URL', 'availability', 'direct_download_URL', 'external_id', 'access_application_URL', 'access_request_URL', 'url'],
+            '3': ['license', 'license_URL', 'citation', 'availability', 'direct_download_URL', 'external_id', 'access_application_URL', 'access_request_URL', 'url'],
             '4': ['geographic_coverage', 'temporal_coverage_begin', 'temporal_coverage_end', 'event', 'mimetype', 'format', 'hash', 'algorithm'],
             '5': ['pids', 'version', '__extras'],
             'resources': ['url', 'mimetype', 'format', 'hash', 'algorithm']}
@@ -1047,6 +1048,49 @@ def get_current_url():
         return 'http://' + url.netloc + url.path
     return 'https://' + url.netloc + url.path
 
+def get_title_in_lang(title, lang):
+    '''
+    Used for creating citations.
+    If dataset has a title in a certain language, return it. If
+    dataset doesn't have a title in that language, return title in
+    any other language. Dataset should always have at least one title.
+
+    :param title: dataset titles in JSON
+    :param lang: language code of preferred language
+    :return: string
+    '''
+
+    title = json_to_list(title)
+
+    # First pick: preferred language
+    for t in title:
+        if convert_language_code(t['lang'], 'alpha2', False) == lang:
+          return t['value']
+
+    # Second pick: any language
+    for t in title:
+        return t['value']
+
+
+def extract_version_date(version):
+    '''
+    Used for creating citations.
+    Finds date of last modification by subsetting version.
+
+    :param version: datetime string in format 2016-09-19T13:16:45+03:00
+    :return string in format 2016-09-19
+    '''
+
+    return version[:10]
+
+
+def get_current_year():
+    '''
+    Used for creating citations.
+    :return current year
+    '''
+
+    return date.today().year
 
 def get_relation_types():
     url = "file://%s" % os.path.abspath(

@@ -30,7 +30,7 @@
       {% set agent_index = h.create_loop_index() %}
 
       <div class="tab-pane" id="basic-information">
-        {% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+        {% snippet 'package/snippets/package_basic_information.html', data=data, errors=errors, licenses=licenses, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
       </div>
 
       {# If we have a default group then this wants remembering #}
@@ -39,20 +39,20 @@
       {% endif %}
 
       <div class="tab-pane" id="actor-info">
-        {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
+        {% snippet 'package/snippets/package_actors.html', data=data, errors=errors, licenses=licenses, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user, agent_index=agent_index %}
       </div>
       <div class="tab-pane" id="usage-info">
-        {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+        {% snippet 'package/snippets/package_usage_info.html', data=data, errors=errors, licenses=licenses, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
       </div>
         <div class="tab-pane" id="additional-info">
           <div class="tab-content-inner">
-            {% snippet 'package/snippets/recommended_coverage.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
-            {% snippet 'package/snippets/recommended_lifecycle_events.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
-            {% snippet 'package/snippets/recommended_file_information.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+            {% snippet 'package/snippets/recommended_coverage.html', data=data, errors=errors, licenses=licenses, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+            {% snippet 'package/snippets/recommended_lifecycle_events.html', data=data, errors=errors, licenses=licenses, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+            {% snippet 'package/snippets/recommended_file_information.html', data=data, errors=errors, licenses=licenses, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
           </div>
       </div>
       <div class="tab-pane" id="identification-info">
-        {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licences=licences, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
+        {% snippet 'package/snippets/package_identification_info.html', data=data, errors=errors, licenses=licenses, groups_available=groups_available, roles=roles, version_PID=version_PID, lastmod=lastmod, user=user %}
       </div>
 
       <input type="hidden" value="{{ agent_index.index }}" id="agent-index" />

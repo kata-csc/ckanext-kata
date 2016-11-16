@@ -86,6 +86,7 @@
           {{ form.input('access_application_URL', label=_("Enter the address for the dataset's existing access rights application form"), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
         </div>
       </div>
+      {% if errors.access_application_new_form %}<span class="error-block">{{ errors.access_application_new_form[0] }}</span>{% endif %}
 
       <label class="radio" for="contact_owner">
         <input type="radio" name="availability" id="contact_owner" value="contact_owner" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'contact_owner'%}checked{% endif %}>
@@ -106,18 +107,23 @@
     <label class="form-label" for="field-license">{{ _("License") }}</label>
     <div class="controls form-content">
       <select id="field-license" name="license_id" class="kata-input-license" data-module="autocomplete">
-        {% for licence_desc, licence_id in licences %}
-          <option value="{{ licence_id }}" {% if data.get('license_id', 'CC-BY-4.0') == licence_id %}selected="selected"{% endif %}>{{ licence_desc }}</option>
+        {% for license_desc, license_id in licenses %}
+          <option value="{{ license_id }}" {% if data.get('license_id', 'CC-BY-4.0') == license_id %}selected="selected"{% endif %}>{{ license_desc }}</option>
         {% endfor %}
       </select>
       {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
     </div>
-      {{ kata_form.tooltip(tooltip=_('Choose a license from the given options.') ~ '<br /><br />' ~ _('Information about licenses') ~ ': <a href="' ~ _('http://creativecommons.org/choose/?lang=en') ~ '" target="_blank">creativecommons.org</a>') }}
+      {{ kata_form.tooltip(tooltip=_('Choose a license from the given options. In addition to the chosen license, the relevant laws must be considered, e.g. Personal Data Act.') ~ '<br /><br />' ~ _('Information about licenses') ~ ': <a href="' ~ _('http://creativecommons.org/choose/?lang=en') ~ '" target="_blank">creativecommons.org</a>') }}
   </div>
 
   {% call kata_form.textarea('license_URL', id='license_URL', label=_('Copyright notice'), placeholder=_('e.g. additional information about the license'), value=data.license_URL, error=errors.license_URL, classes=['error-block-fullwidth']) %}
     {{ kata_form.tooltip(tooltip=_("Provide detailed information about copyright notice, use constraints, referencing etc. Note that the field is required if license is set to License Not Specified or any variant of Other.")) }}
   {% endcall %}
+
+  {% call kata_form.textarea('citation', id='citation', label=_('Citation'), placeholder=_('e.g. Author, A.A.. (Year, Month Date of Publication). Dataset title. Retrieved from URL '), value=data.citation, error=errors.citation, classes=['error-block-fullwidth']) %}
+    {{ kata_form.tooltip(tooltip=_("Provide a citation example for this dataset. If not specified, default citation format will be used.")) }}
+  {% endcall %}
+
 </div>
 <div id="ida-prefill-modal">
   <div id="ida-prefill-description" class="modal-content-block">{{ _("Enter the dataset's IDA identifier in order to create download link") }}</div>
