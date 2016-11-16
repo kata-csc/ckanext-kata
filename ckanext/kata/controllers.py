@@ -108,11 +108,34 @@ class MetadataController(BaseController):
                          attrib={"{" + xsi + "}schemaLocation": schemalocation},
                          nsmap={'xsi': xsi, None: self.XMLNS})
 
-        # Gather all package id's, their related name and pid value that might contain a Kata/IDA data PID
-        query = model.Session.query(model.PackageExtra, model.Package).filter(model.PackageExtra.key.like('pids_%_id')). \
-            filter(model.PackageExtra.value.like('urn:nbn:fi:csc-%')). \
+        # Query for all rows whose EITHER key = pids_x_id with corresponding value containing a Kata/IDA PID OR
+        # key = pids_x_type with correspondig value being 'primary'. type index (between the underscores) is used
+        # for finding out the corresponding id index for primary id
+        query = model.Session.query(model.PackageExtra, model.Package).filter(_or_(_and_(model.PackageExtra.key.like('pids_%_id'), model.PackageExtra.value.like('urn:nbn:fi:csc-%')), _and_(model.PackageExtra.key.like('pids_%_type'), model.PackageExtra.value.like('primary')))). \
             join(model.Package).filter(model.Package.private == False).filter(model.Package.state == 'active'). \
-            values('package_id', 'name', 'value')
+            values('package_id', 'name', 'key', 'value')
+
+        # Group stuff according to package ids
+
+        # List of all package ids that are included in the query (since all datasets must have at least one pid,
+        # all published datasets' id's should be present)
+        package_ids = list()
+        # Pid ids grouped by package_id
+        package_grouped_pids = dict()
+        # Primary PID indices grouped by package_id
+        package_grouped_primary_pid_indices = dict()
+        # Package names grouped by package_id
+        package_grouped_names = dict()
+
+        for package_id, name, key, value in query:
+            if package_id not in package_ids:
+                package_ids.append(package_id)
+            if not package_id in package_grouped_names:
+                package_grouped_names[package_id] = name
+            if key.endswith('_id'):
+                package_grouped_pids.setdefault(package_id, {}).update({key: value})
+            if key.endswith('_type') and not package_id in package_grouped_primary_pid_indices:
+                package_grouped_primary_pid_indices[package_id] = key[key.find('_')+1:key.rfind('_')]
 
         prot = etree.SubElement(records, self._locns('protocol-version'))
         prot.text = '3.0'
@@ -120,13 +143,25 @@ class MetadataController(BaseController):
         now = datetime.datetime.now().isoformat()
         datestmp.text = now
         base_url = config.get('ckan.site_url', '').strip("/")
-        seen_ids = list()
-        for package_id, name, pid in query:
-            # Since package_id is not listed as name/value pair, print it separately and only once
-            if not package_id in seen_ids and package_id.startswith('urn:nbn:fi:csc-'):
-                seen_ids.append(package_id)
-                self._create_urnexport_xml_item(records, package_id, name, base_url, now)
-            self._create_urnexport_xml_item(records, pid, name, base_url, now)
+
+        # Iterate over all package_ids
+        for package_id in package_ids:
+            name = package_grouped_names[package_id]
+            primary_idx = -1
+            primary_pid = None
+            if package_id in package_grouped_primary_pid_indices:
+                primary_idx = package_grouped_primary_pid_indices[package_id]
+            if primary_idx != -1 and package_id in package_grouped_pids:
+                primary_pid_id_key = 'pids_' + primary_idx + '_id'
+                if primary_pid_id_key in package_grouped_pids[package_id]:
+                    primary_pid = package_grouped_pids[package_id][primary_pid_id_key]
+
+            # Create one urnexport entry anyways for the package_id
+            self._create_urnexport_xml_item(records, package_id, name, base_url, now)
+            # If primary pid is not the same as package_id (but according to previous must be ida or kata type)
+            # create one urnexport entry for that too
+            if primary_pid and primary_pid != package_id:
+                self._create_urnexport_xml_item(records, primary_pid, name, base_url, now)
 
         response.content_type = 'application/xml; charset=utf-8'
         return etree.tostring(records, encoding="UTF-8")

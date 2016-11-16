@@ -11,7 +11,6 @@ import urlparse
 
 from paste.deploy.converters import asbool
 from pylons.i18n import _
-from sqlalchemy import or_
 from sqlalchemy import and_
 
 import ckan.lib.helpers as h
@@ -589,17 +588,13 @@ def validate_primary_pid_uniqueness(key, data, errors, context):
                     .filter(model.PackageExtra.value == exam_primary_pid)\
                     .join(model.Package).filter(model.Package.state == 'active').values('package_id', 'key', 'value')
 
-        import pprint
         for package_id, pid_id_key, pid_id_value in all_similar_pids_query:
             if package_id != exam_package_id:
                 pid_type_key = 'pids_' + pid_id_key[pid_id_key.find('_')+1:pid_id_key.rfind('_')] + '_type'
-                pprint.pprint(pid_type_key)
                 primary_type_in_other_dataset_query = model.Session.query(model.PackageExtra)\
                             .filter(and_(model.PackageExtra.package_id == package_id,
                                          model.PackageExtra.key == pid_type_key,
                                          model.PackageExtra.value == 'primary'))
-                a = primary_type_in_other_dataset_query.first()
-                pprint.pprint(a)
                 if primary_type_in_other_dataset_query.first():
                     raise Invalid(_('Primary identifier {pid} exists in another dataset {id}').format(pid=exam_primary_pid, id=package_id))
 
@@ -674,12 +669,6 @@ def validate_package_id_format(key, data, errors, context):
     if not data.get(key).startswith("urn:nbn:fi:csc-kata"):
         raise Invalid(_('Package id must start with "urn:nbn:fi:csc-kata"'))
 
-    if q_amt > 0:
-        for item in q_package_ids:
-            if item != exam_package_id:
-                raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
-
-
 def validate_ida_data_auth_policy(key, data, errors, context):
     '''
     This validator is IDA-specific and due to IDA requirements. The validator is
@@ -701,13 +690,13 @@ def validate_ida_data_auth_policy(key, data, errors, context):
     if data[key] == u'False' or data[key] == u'':
         return
 
-    # Extract primary data identifier from the data dict and assert its existence
-    data_pid = utils.get_primary_pid_from_validator_data_object(data, 'data')
-    if not data_pid:
-        raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
+    # Extract external identifier from the data dict and assert its existence
+    ext_id = utils.get_external_id(data)
+    if not ext_id:
+        raise Invalid(_('External identifier must be provided to create new access request form automatically'))
 
-    # If primary data identifier is not IDA pid, validation is not needed
-    if not data_pid.startswith('urn:nbn:fi:csc-ida'):
+    # If external identifier is not IDA pid, validation is not needed
+    if not ext_id.startswith('urn:nbn:fi:csc-ida'):
         return
 
     # Get user EPPN
@@ -719,7 +708,7 @@ def validate_ida_data_auth_policy(key, data, errors, context):
     try:
         # Get LDAP dn for the given IDA data pid
         # Fetch IDA project numbers related to the IDA data identifier
-        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=data_pid))
+        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=ext_id))
         res_json = json.loads(res.read().decode('utf-8')) if res else {}
         owner_prjs_from_ida = res_json['projects'] or []
 

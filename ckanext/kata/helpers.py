@@ -1028,7 +1028,7 @@ def get_identifier_display_html(identifier):
         return identifier
     if re.match('^urn:nbn:fi:csc-(kata|ida)', identifier):
         return '<a target="_blank" href="http://urn.fi/' + identifier + '">' + identifier + '</a>'
-    elif identifier.startswith('http'):
+    elif re.match('^http://|https://', identifier):
         return '<a target="_blank" href="' + identifier + '">' + identifier + '</a>'
     else:
         return identifier
