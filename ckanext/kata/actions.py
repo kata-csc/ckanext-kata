@@ -187,7 +187,8 @@ def package_create(context, data_dict):
 
     data_dict = utils.dataset_to_resource(data_dict)
 
-    _handle_package_id_on_create(context, data_dict)
+    if not user == 'harvest':
+        _handle_package_id_on_create(context, data_dict)
     _handle_pids(context, data_dict)
 
     _add_ida_download_url(context, data_dict)

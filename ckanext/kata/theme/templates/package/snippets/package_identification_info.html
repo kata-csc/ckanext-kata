@@ -1,6 +1,6 @@
 {% import 'macros/kata_form.html' as kata_form %}
 {% set index = h.create_loop_index() %}
-{% set primary_pid = h.get_primary_pid(data, True) or dict(type='primary') %}
+{% set primary_pid = h.get_primary_pid(data) or None %}
 {% set lang = h.lang() %}
 
 <div class="tab-content-inner">
@@ -12,18 +12,18 @@
     <span class="separate-error error-block error-block-margin">{{ pid_errors|join('. ') }}</span>
   {% endif %}
 
-  {% set primary_pid_readonly = " readonly" if primary_pid.id and not errors.get('pids', [])[index.index]%}
+  {% set primary_pid_readonly = " readonly" if primary_pid and not errors.get('pids', [])[index.index]%}
 
   <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ _('Dataset identifier') }}</label>
 
   {% call kata_form.input(
     'pids__' ~ index ~ '__id', id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
-     value=primary_pid.id, control_classes=['kata-medium'], hasLabel=False,
+     value=primary_pid, control_classes=['kata-medium'], hasLabel=False,
      attrs={'class': "kata-medium-input pid pids_" ~ index, primary_pid_readonly:''})%}
 
-  {% if primary_pid.id %}
+  {% if primary_pid %}
     <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
-    <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));">{{ _('Edit') if primary_pid.id }}</label>
+    <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));">{{ _('Edit') if primary_pid }}</label>
   {% endif %}
 
     <div class="form-double-instructions-container">

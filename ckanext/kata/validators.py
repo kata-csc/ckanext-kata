@@ -14,7 +14,6 @@ from pylons.i18n import _
 from sqlalchemy import and_
 
 import ckan.lib.helpers as h
-import ckan.logic as logic
 import ckan.model as model
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
 from ckan.lib.navl.validators import not_empty
@@ -576,13 +575,12 @@ def validate_primary_pid_uniqueness(key, data, errors, context):
         :param context: context
         '''
 
-    exam_primary_pid = data.get(key)
-    exam_package_id = data.get(('id',))
-
     lst = list(key)
     lst[2] = 'type'
     pid_type_key = tuple(lst)
-    if data.get(pid_type_key) == 'primary':
+    if data.get(pid_type_key) == u'primary':
+        exam_primary_pid = data.get(key)
+        exam_package_id = data.get(('id',))
         all_similar_pids_query = model.Session.query(model.PackageExtra)\
                     .filter(model.PackageExtra.key.like('pids_%_id'))\
                     .filter(model.PackageExtra.value == exam_primary_pid)\
@@ -594,7 +592,7 @@ def validate_primary_pid_uniqueness(key, data, errors, context):
                 primary_type_in_other_dataset_query = model.Session.query(model.PackageExtra)\
                             .filter(and_(model.PackageExtra.package_id == package_id,
                                          model.PackageExtra.key == pid_type_key,
-                                         model.PackageExtra.value == 'primary'))
+                                         model.PackageExtra.value == u'primary'))
                 if primary_type_in_other_dataset_query.first():
                     raise Invalid(_('Primary identifier {pid} exists in another dataset {id}').format(pid=exam_primary_pid, id=package_id))
 

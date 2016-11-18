@@ -302,7 +302,7 @@ def get_external_id(data_dict):
 
 def get_primary_pid_from_package(package):
     '''
-    Returns the primary metadata PID for a _package_.
+    Returns the primary PID for a _package_.
 
     :param package: dataset to query
     :type package: model.Package

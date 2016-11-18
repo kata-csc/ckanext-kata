@@ -11,13 +11,8 @@ from ckan.lib import helpers as h
 import os
 import re
 import logging
-import functools
 from pylons.i18n import _
 from ckan.lib.navl.dictization_functions import missing, Invalid
-
-from ckan.logic.action.create import related_create
-from ckan.model import Related, Session, Group, repo
-import ckan.logic as logic
 
 from ckanext.kata import settings, utils
 
