@@ -439,7 +439,7 @@
   {%- endif -%}
 
   <div class="form-row">
-    <div class="form-label">{{ _('Dataset identifier') }}</div>
+    <div class="form-label">{{ _('Identifier') }}</div>
     <div class="form-content">
       <table class="form-inner-table">
       <!--
@@ -453,7 +453,7 @@
           {% else %} 
             <td>ERROR</td> 
           {% endif %}
-          <td>{{ kata_form.tooltip(tooltip=_("<p>Primary identifier is the main identifier of a particular dataset. ...... The primary metadata identifier is the metadata identifier which refers to this dataset. Additional metadata identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to this metadata record using different identifier systems.</p>")) }}</td>
+          <td>{{ kata_form.tooltip(tooltip=_("<p>This is the permanent identifier (PID) for this dataset. Use it when citing this dataset. An identifier is unique and permanent. With identifiers you can unambiguously refer to a dataset. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>")) }}</td>
         </tr>
       </table>
     </div>
@@ -469,7 +469,7 @@
   {% set relation_pids = h.get_pids_by_type('relation', pkg_dict) %}
   {% if relation_pids %}
     <div class="form-row" style="margin-bottom: 10px;">
-      <div class="form-label">{{ _('Other related identifiers') }}</div>
+      <div class="form-label">{{ _('Related <data></data>') }}</div>
       <div class="form-content">{{ kata_form.tooltip(tooltip=_("<p>Relation identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</div>
     </div>
     <div class="form-row">

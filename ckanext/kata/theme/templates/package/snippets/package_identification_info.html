@@ -14,7 +14,7 @@
 
   {% set primary_pid_readonly = " readonly" if primary_pid and not errors.get('pids', [])[index.index]%}
 
-  <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ _('Dataset identifier') }}</label>
+  <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ _('Identifier') }}</label>
 
   {% call kata_form.input(
     'pids__' ~ index ~ '__id', id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
@@ -27,7 +27,7 @@
   {% endif %}
 
     <div class="form-double-instructions-container">
-      {{ kata_form.tooltip(tooltip=_('<p>Primary identifier is the main identifier of a particular dataset. ....... Etsin will automatically create a primary metadata identifier for this dataset. The primary metadata identifier is the metadata identifier which refers to this dataset. It will be the variable "id" of the dataset and you will see this if you work with the Etsin API. You can also add additional metadata identifiers for example if you want to refer to this metadata using different identifier systems.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
+      {{ kata_form.tooltip(tooltip=_('<p>This is the permanent identifier (PID) for this dataset. It is used when citing this dataset. Use the identifier minted by your repository or data archive (URN, DOI, or similar). If you don\'t have a PID, Etsin will generate a URN for you. A PID should not be changed. If you create a new version of a dataset, create a new catalog entry and a new PID. You can also create entries for dataset parts and link them in the Related data field below.</p>')) }}
     </div>
 
     <input type="hidden" name="pids__{{ index }}__type" value="primary" />
@@ -39,7 +39,7 @@
 
   {% do index.increase() %}
 
-  {% set additional_identifier_label = _('Other related identifiers') %}
+  {% set additional_identifier_label = _('Related data') %}
   <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ additional_identifier_label }}</label>
 
   <div data-module="custom-fields-kata" data-module-id="pids-relation" id="pids-relation" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="relations-container custom-fields-container">
@@ -63,7 +63,7 @@
             {% endif %}
 
             {% if loop.first %}
-              {{ kata_form.tooltip(tooltip=_('<p>Relation identifier is an identifier of the data this metadata record refers to. The primary data identifier is compulsory but it will be generated automatically if the field is left empty. Additional data identifiers can also be given, if for example you want to refer to the data using different identifier systems.</p><p>If your data is available by data access application form, for example REMS, the primary data identifier will be sent to this service and it must be recognised by the storage service.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
+              {{ kata_form.tooltip(tooltip=_('<p>Use identifiers minted by your repository or data archive (URN, DOI, or similar). When you create a new version of a dataset you should create a new catalog entry and add relations between them in both directions, i. e. register them in both entries. Also the relations between part and larger entity should be both ways and registered in all relevant entries. Always consider the most complete metadata as primary.</p>')) }}
               <input style="display: none;" type="checkbox" id="pids__{{index}}__value" name="pids__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
               {{ kata_form.plusbutton(id='pids_add-relation', text=_('Add'), onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
               <input style="display: none;" type="checkbox" id="pid_btn__{{ index }}__value_id" name="pid_btn__{{ index }}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>

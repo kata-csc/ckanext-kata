@@ -352,12 +352,22 @@ class TestURNExport(KataWsgiTestCase):
         organization = get_action('organization_create')({'user': 'test_sysadmin'},
                                                          {'name': 'test-organization', 'title': "Test organization"})
 
-        for i, (count, private, delete) in enumerate([(2, False, False), (2, True, False), (4, False, False),
-                                                      (4, False, True), (6, False, False)]):
+        for i, (count, private, delete) in enumerate([(1, False, False), (1, True, False), (2, False, False),
+                                                      (2, False, True), (3, False, False),
+                                                      (5, False, False), (5, True, False), (7, False, False), (7, False, True), (9, False, False)]):
             data = copy.deepcopy(TEST_DATADICT)
+            if i<=4:
+                for pid in data.get('pids', []):
+                    pid['id'] = pid.get('id') + unicode(i)
+            elif i>4:
+                for j, pid in enumerate(data.get('pids', [])):
+                    if i%2 == 0:
+                        pid['id'] = 'urn:nbn:fi:csc-ida1234' + unicode(j+i)
+                    else:
+                        pid['id'] = 'urn:nbn:fi:csc-kata1234' + unicode(j+i)
+
             # generate unique pids in a somewhat clumsy way...
-            for pid in data.get('pids', []):
-                pid['id'] = pid.get('id') + unicode(i)
+
 
             data['owner_org'] = organization['name']
             data['private'] = private
