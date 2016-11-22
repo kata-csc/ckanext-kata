@@ -1,7 +1,7 @@
-[ {"id": "isNewVersionOf", "fi": "Tämän aineiston vanhempi versio on", "en": "Older version"},
-  {"id": "isPreviousVersionOf", "fi": "Tämän aineiston uudempi versio on", "en": "Next version"},
+[ {"id": "isNewVersionOf", "fi": "Aineiston edellinen versio", "en": "Previous version"},
+  {"id": "isPreviousVersionOf", "fi": "Aineiston seuraava versio", "en": "Next version"},
   {"id": "hasPart", "fi": "Tähän aineistoon kuuluu seuraava osa", "en": "This dataset has part"},
   {"id": "isPartOf", "fi": "Tämä aineisto on osa aineistoa", "en": "This dataset is part of"},
-  {"id": "hasMetadata", "fi": "Tämän aineiston toissijainen metadatan lähde on", "en": "Secondary source for this dataset's metadata is"},
-  {"id": "isMetadataFor", "fi": "Tämän aineiston ensisijainen metadatan lähde on", "en": "Primary source for this dataset's metadata is"},
+  {"id": "hasMetadata", "fi": "Muu aineiston kuvailutieto", "en": "Secondary metadata for this dataset is"},
+  {"id": "isMetadataFor", "fi": "Alkuperäinen luettointitietue", "en": "Primary source for metadata for this dataset is"},
   {"id": "generalRelation", "fi": "Viittaus aineistoon", "en": "Reference to dataset"}]

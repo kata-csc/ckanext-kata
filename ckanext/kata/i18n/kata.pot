@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 3.2.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-11-15 16:10+0000\n"
+"POT-Creation-Date: 2016-11-22 07:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,52 +25,52 @@ msgstr ""
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:446 ckanext/kata/actions.py:510
+#: ckanext/kata/actions.py:447 ckanext/kata/actions.py:511
 msgid "Required information missing"
 msgstr ""
 
-#: ckanext/kata/actions.py:457 ckanext/kata/actions.py:521
-#: ckanext/kata/controllers.py:702 ckanext/kata/controllers.py:780
+#: ckanext/kata/actions.py:458 ckanext/kata/actions.py:522
+#: ckanext/kata/controllers.py:737 ckanext/kata/controllers.py:815
 msgid "User not found"
 msgstr ""
 
-#: ckanext/kata/actions.py:462 ckanext/kata/actions.py:466
-#: ckanext/kata/controllers.py:777
+#: ckanext/kata/actions.py:463 ckanext/kata/actions.py:467
+#: ckanext/kata/controllers.py:812
 #, python-format
 msgid "No sufficient privileges to remove user from role %s."
 msgstr ""
 
-#: ckanext/kata/actions.py:470
+#: ckanext/kata/actions.py:471
 msgid "No such user and role combination"
 msgstr ""
 
-#: ckanext/kata/actions.py:477
+#: ckanext/kata/actions.py:478
 msgid "Built-in users can not be removed"
 msgstr ""
 
-#: ckanext/kata/actions.py:481
+#: ckanext/kata/actions.py:482
 msgid "You can not remove yourself"
 msgstr ""
 
-#: ckanext/kata/actions.py:486
+#: ckanext/kata/actions.py:487
 #, python-format
 msgid "User removed from role %s"
 msgstr ""
 
-#: ckanext/kata/actions.py:532
+#: ckanext/kata/actions.py:533
 #, python-format
 msgid "User already has %s rights"
 msgstr ""
 
-#: ckanext/kata/actions.py:538
+#: ckanext/kata/actions.py:539
 msgid "User added"
 msgstr ""
 
-#: ckanext/kata/actions.py:645
+#: ckanext/kata/actions.py:646
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:679
+#: ckanext/kata/actions.py:680
 msgid "You don't have permission to remove this user."
 msgstr ""
 
@@ -117,105 +117,105 @@ msgstr ""
 msgid "User %s not authorized to delete resource %s"
 msgstr ""
 
-#: ckanext/kata/controllers.py:443 ckanext/kata/controllers.py:741
+#: ckanext/kata/controllers.py:478 ckanext/kata/controllers.py:776
 msgid "Bad Captcha. Please try again."
 msgstr ""
 
-#: ckanext/kata/controllers.py:447
+#: ckanext/kata/controllers.py:482
 msgid "Message not sent as logging wasn't permitted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:451 ckanext/kata/controllers.py:553
-#: ckanext/kata/controllers.py:579
+#: ckanext/kata/controllers.py:486 ckanext/kata/controllers.py:588
+#: ckanext/kata/controllers.py:614
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
 msgstr ""
 
-#: ckanext/kata/controllers.py:463
+#: ckanext/kata/controllers.py:498
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:472 ckanext/kata/controllers.py:478
+#: ckanext/kata/controllers.py:507 ckanext/kata/controllers.py:513
 msgid "Message not sent. Couldn't confirm human interaction (spam bot control)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:498 ckanext/kata/controllers.py:736
+#: ckanext/kata/controllers.py:533 ckanext/kata/controllers.py:771
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:500
+#: ckanext/kata/controllers.py:535
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:502
+#: ckanext/kata/controllers.py:537
 msgid ""
 "Message not sent. Please, provide reply address and name. Name must contain "
 "at least three letters."
 msgstr ""
 
-#: ckanext/kata/controllers.py:518 ckanext/kata/controllers.py:561
-#: ckanext/kata/controllers.py:587 ckanext/kata/theme/templates/kata/dummy.html:63
+#: ckanext/kata/controllers.py:553 ckanext/kata/controllers.py:596
+#: ckanext/kata/controllers.py:622 ckanext/kata/theme/templates/kata/dummy.html:63
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:635
+#: ckanext/kata/controllers.py:670
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:646
+#: ckanext/kata/controllers.py:681
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:677 ckanext/kata/controllers.py:918
+#: ckanext/kata/controllers.py:712 ckanext/kata/controllers.py:953
 #: ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:699
+#: ckanext/kata/controllers.py:734
 #, python-format
 msgid "No sufficient privileges to add a user to role %s."
 msgstr ""
 
-#: ckanext/kata/controllers.py:719
+#: ckanext/kata/controllers.py:754
 msgid "Feature disabled"
 msgstr ""
 
-#: ckanext/kata/controllers.py:721 ckanext/kata/validators.py:169
+#: ckanext/kata/controllers.py:756 ckanext/kata/validators.py:167
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/controllers.py:836
+#: ckanext/kata/controllers.py:871
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:860
+#: ckanext/kata/controllers.py:895
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:865
+#: ckanext/kata/controllers.py:900
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:868
+#: ckanext/kata/controllers.py:903
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:870
+#: ckanext/kata/controllers.py:905
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:874
+#: ckanext/kata/controllers.py:909
 msgid "Failed to load file"
 msgstr ""
 
-#: ckanext/kata/controllers.py:996 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:1031 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:98
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/controllers.py:997
+#: ckanext/kata/controllers.py:1032
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -225,46 +225,46 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: ckanext/kata/controllers.py:998
+#: ckanext/kata/controllers.py:1033
 msgid "Tags"
 msgstr ""
 
-#: ckanext/kata/controllers.py:999
+#: ckanext/kata/controllers.py:1034
 msgid "Formats"
 msgstr ""
 
-#: ckanext/kata/controllers.py:1000
+#: ckanext/kata/controllers.py:1035
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:241
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:107
 msgid "License"
 msgstr ""
 
-#: ckanext/kata/converters.py:70
+#: ckanext/kata/converters.py:65
 msgid "The language code is not in ISO639-3 format"
 msgstr ""
 
-#: ckanext/kata/converters.py:72
+#: ckanext/kata/converters.py:67
 msgid "The given {field} string is incorrectly formatted"
 msgstr ""
 
-#: ckanext/kata/converters.py:92
+#: ckanext/kata/converters.py:87
 msgid "The given title string is not JSON parseable"
 msgstr ""
 
-#: ckanext/kata/converters.py:97
+#: ckanext/kata/converters.py:92
 msgid "The given description string is not JSON parseable"
 msgstr ""
 
-#: ckanext/kata/converters.py:254
+#: ckanext/kata/converters.py:249
 msgid "No language given"
 msgstr ""
 
-#: ckanext/kata/converters.py:260
+#: ckanext/kata/converters.py:255
 #, python-format
 msgid "Language is disabled, removing languages: '%s'"
 msgstr ""
 
-#: ckanext/kata/converters.py:368
+#: ckanext/kata/converters.py:363
 #, python-format
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
@@ -330,163 +330,163 @@ msgstr ""
 msgid "Terms of use"
 msgstr ""
 
-#: ckanext/kata/validators.py:68
+#: ckanext/kata/validators.py:66
 #, python-format
 msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:?=&"
 msgstr ""
 
-#: ckanext/kata/validators.py:110
+#: ckanext/kata/validators.py:108
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01/2002-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:118
+#: ckanext/kata/validators.py:116
 msgid "To date must be greater than from date. Example: 2001-01-01/2002-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:128
+#: ckanext/kata/validators.py:126
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:131 ckanext/kata/validators.py:152
+#: ckanext/kata/validators.py:129 ckanext/kata/validators.py:150
 msgid "Invalid date"
 msgstr ""
 
-#: ckanext/kata/validators.py:149
+#: ckanext/kata/validators.py:147
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: 2001-03-01 "
 "or 2001-03"
 msgstr ""
 
-#: ckanext/kata/validators.py:179
+#: ckanext/kata/validators.py:177
 msgid "Invalid characters: <> not allowed"
 msgstr ""
 
-#: ckanext/kata/validators.py:189
+#: ckanext/kata/validators.py:187
 msgid "Value must contain alphanumeric characters"
 msgstr ""
 
-#: ckanext/kata/validators.py:198
+#: ckanext/kata/validators.py:196
 msgid "Invalid telephone number, must be e.g. +358 (45) 123 45 67 or 010-234567"
 msgstr ""
 
-#: ckanext/kata/validators.py:219
+#: ckanext/kata/validators.py:217
 msgid "Invalid value for access_application"
 msgstr ""
 
-#: ckanext/kata/validators.py:274
+#: ckanext/kata/validators.py:272
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,:#+?=&/."
 msgstr ""
 
-#: ckanext/kata/validators.py:295
+#: ckanext/kata/validators.py:293
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
 "-'/,:().;= "
 msgstr ""
 
-#: ckanext/kata/validators.py:314
+#: ckanext/kata/validators.py:312
 #, python-format
 msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
 msgstr ""
 
-#: ckanext/kata/validators.py:326
+#: ckanext/kata/validators.py:324
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 
-#: ckanext/kata/validators.py:337
+#: ckanext/kata/validators.py:335
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:353
+#: ckanext/kata/validators.py:351
 msgid "Duplicate fields for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:377
+#: ckanext/kata/validators.py:375
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:389
+#: ckanext/kata/validators.py:387
 msgid "Missing compulsory distributor information"
 msgstr ""
 
-#: ckanext/kata/validators.py:411
+#: ckanext/kata/validators.py:409
 msgid "Missing dataset title"
 msgstr ""
 
-#: ckanext/kata/validators.py:426 ckanext/kata/validators.py:462
+#: ckanext/kata/validators.py:424 ckanext/kata/validators.py:460
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:27
 msgid "Missing value"
 msgstr ""
 
-#: ckanext/kata/validators.py:480
+#: ckanext/kata/validators.py:478
 msgid ""
 "An organization must be supplied. If you do not find a suitable organization,"
 " please choose the default organization 'Ei linkitetä organisaatioon - do not"
 " link to an organization'."
 msgstr ""
 
-#: ckanext/kata/validators.py:493
+#: ckanext/kata/validators.py:491
 msgid ""
 "The provided organization does not exist. Please contact Etsin administration"
 " using our contact form at http://openscience.fi/contact-form"
 msgstr ""
 
-#: ckanext/kata/validators.py:509
+#: ckanext/kata/validators.py:507
 msgid "Terms of use must be accepted"
 msgstr ""
 
-#: ckanext/kata/validators.py:526
+#: ckanext/kata/validators.py:524
 msgid ""
 "Copyright notice is needed if license is not specified or is a variant of "
 "license type other."
 msgstr ""
 
-#: ckanext/kata/validators.py:567
+#: ckanext/kata/validators.py:565
 msgid "Value {ext_id} exists in another dataset {id}"
 msgstr ""
 
-#: ckanext/kata/validators.py:604
+#: ckanext/kata/validators.py:597
 msgid "Primary identifier {pid} exists in another dataset {id}"
 msgstr ""
 
-#: ckanext/kata/validators.py:622
+#: ckanext/kata/validators.py:615
 msgid "Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)"
 msgstr ""
 
-#: ckanext/kata/validators.py:642
+#: ckanext/kata/validators.py:635
 msgid "PID relation must be one of the following values: "
 msgstr ""
 
-#: ckanext/kata/validators.py:660
+#: ckanext/kata/validators.py:653
 msgid "PID relation must be defined if PID type is relation"
 msgstr ""
 
-#: ckanext/kata/validators.py:675
+#: ckanext/kata/validators.py:668
 msgid "Package id must start with \"urn:nbn:fi:csc-kata\""
 msgstr ""
 
-#: ckanext/kata/validators.py:701
+#: ckanext/kata/validators.py:694
 msgid ""
 "External identifier must be provided to create new access request form "
 "automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:732 ckanext/kata/validators.py:745
+#: ckanext/kata/validators.py:725 ckanext/kata/validators.py:738
 msgid ""
 "There was an internal problem in validating permissions for creating new "
 "access request form automatically. Please contact Etsin administration for "
 "more information."
 msgstr ""
 
-#: ckanext/kata/validators.py:737
+#: ckanext/kata/validators.py:730
 msgid ""
 "Distributor email address must be provided to create new access request form "
 "automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:747
+#: ckanext/kata/validators.py:740
 msgid ""
 "Neither you nor the distributor ({dist}) is allowed to create new access "
 "request form automatically. Please check the validity of distributor email "
@@ -4904,22 +4904,24 @@ msgid "Permanent address for this page"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:445
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:32
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:90
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:17
-msgid "Dataset identifier"
+msgid "Identifier"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:463
 msgid ""
-"<p>Primary identifier is the main identifier of a particular dataset. ...... "
-"The primary metadata identifier is the metadata identifier which refers to "
-"this dataset. Additional metadata identifiers may exist in the dataset if for"
-" example the dataset's editor has wanted to refer to this metadata record "
-"using different identifier systems.</p>"
+"<p>This is the permanent identifier (PID) for this dataset. Use it when "
+"citing this dataset. An identifier is unique and permanent. With identifiers "
+"you can unambiguously refer to a dataset. The permanent identifiers for "
+"digital systems are analogous to the ISBN for books. Examples of identifiers "
+"for data are URN, Handle and DOI, but many others exist.</p>"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:479
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:42
-msgid "Other related identifiers"
+msgid "Related data"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:480
@@ -4986,11 +4988,6 @@ msgid ""
 "added as author. You can add more authors by pressing the '+' button and "
 "remove authors by leaving their fields empty. For each author you must give "
 "at least a name or an organisation."
-msgstr ""
-
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:32
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:90
-msgid "Identifier"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:33
@@ -5261,32 +5258,22 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:30
 msgid ""
-"<p>Primary identifier is the main identifier of a particular dataset. ......."
-" Etsin will automatically create a primary metadata identifier for this "
-"dataset. The primary metadata identifier is the metadata identifier which "
-"refers to this dataset. It will be the variable \"id\" of the dataset and you"
-" will see this if you work with the Etsin API. You can also add additional "
-"metadata identifiers for example if you want to refer to this metadata using "
-"different identifier systems.</p><p>An identifier is unique and permanent. "
-"With identifiers you can unambiguously refer to for example a data file or a "
-"metadata record. The permanent identifiers for digital systems are analogous "
-"to the ISBN for books. Examples of identifiers for data are URN, Handle and "
-"DOI, but many others exist.</p>"
+"<p>This is the permanent identifier (PID) for this dataset. It is used when "
+"citing this dataset. Use the identifier minted by your repository or data "
+"archive (URN, DOI, or similar). If you don't have a PID, Etsin will generate "
+"a URN for you. A PID should not be changed. If you create a new version of a "
+"dataset, create a new catalog entry and a new PID. You can also create "
+"entries for dataset parts and link them in the Related data field below.</p>"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:66
 msgid ""
-"<p>Relation identifier is an identifier of the data this metadata record "
-"refers to. The primary data identifier is compulsory but it will be generated"
-" automatically if the field is left empty. Additional data identifiers can "
-"also be given, if for example you want to refer to the data using different "
-"identifier systems.</p><p>If your data is available by data access "
-"application form, for example REMS, the primary data identifier will be sent "
-"to this service and it must be recognised by the storage service.</p><p>An "
-"identifier is unique and permanent. With identifiers you can unambiguously "
-"refer to for example a data file or a metadata record. The permanent "
-"identifiers for digital systems are analogous to the ISBN for books. Examples"
-" of identifiers for data are URN, Handle and DOI, but many others exist.</p>"
+"<p>Use identifiers minted by your repository or data archive (URN, DOI, or "
+"similar). When you create a new version of a dataset you should create a new "
+"catalog entry and add relations between them in both directions, i. e. "
+"register them in both entries. Also the relations between part and larger "
+"entity should be both ways and registered in all relevant entries. Always "
+"consider the most complete metadata as primary.</p>"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_organization.html:35
