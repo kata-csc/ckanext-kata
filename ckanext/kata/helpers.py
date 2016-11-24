@@ -1085,7 +1085,10 @@ def extract_version_date(version):
     :return string in format 2016-09-19
     '''
 
-    return version[:10]
+    if isinstance(version, basestring):
+        return version[:10]
+
+    return ''
 
 
 def get_current_year():
