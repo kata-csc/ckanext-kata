@@ -41,7 +41,6 @@ from ckan.logic import get_action, NotAuthorized, NotFound, ValidationError
 import ckan.logic as logic
 import ckan.model as model
 from ckan.model import Package
-from ckan.model.authz import add_user_to_role
 import ckan.plugins as plugins
 from ckan.common import response
 from ckan.common import OrderedDict
@@ -62,20 +61,15 @@ t = plugins.toolkit
 
 def get_package_owner(package):
     """Returns the user id of the package admin for the specified package.
-       If multiple user accounts are associated with the package as admins,
-       an arbitrary one is returned.
+       Package creator is always admin, so return their id. Package
+       may also have other admins.
 
        :param package: package data
        :type package: Package object
        :returns: userid
        :rtype: string
     """
-    userid = None
-    for role in package.roles:
-        if role.role == "admin":
-            userid = role.user_id
-            break
-    return userid
+    return package.creator_user_id
 
 
 def _encode_params(params):
@@ -650,178 +644,6 @@ class KataPackageController(PackageController):
     """
     Dataset handling modifications and additions.
     """
-
-    def dataset_editor_manage(self, name):
-        '''
-        Manages (adds) editors and admins of a dataset and sends an invitation email
-        if wanted in case user has not yet logged in to the service.
-        The invitation email feature has no automatic features bound to it, it is a
-        plain email sender.
-
-        :param name: package name
-        :type name: string
-        :param username: if username (request.param) and role (request.param) are set, the user is added for the role
-        :type username: string
-        :param role: if username (request.param) and role (request.param) are set, the user is added for the role
-        :type role: string
-        :param email: if email address (request.param) is given, an invitation email is sent
-        :type email: string
-
-        Renders the package_administration page via :meth:`_show_dataset_role_page`
-
-        '''
-        context = {'model': model, 'session': model.Session, 'user': c.user}
-
-        if not h.check_access('package_update', {'id': name }):
-            h.flash_error(_('Not authorized to see this page'))
-            h.redirect_to(controller='package', action='read', id=name)
-
-        data_dict = {}
-        data_dict['name'] = name
-
-        username = request.params.get('username', False)
-        email = request.params.get('email', False)
-        role = request.params.get('role', False)
-
-        pkg = model.Package.get(name)
-        data_dict = get_action('package_show')(context, {'id': pkg.id})
-
-        if username:
-            data_dict['role'] = role
-            data_dict['username'] = username
-            try:
-                ret = get_action('dataset_editor_add')(context, data_dict)
-                h.flash_success(ret)
-            except ValidationError as e:
-                h.flash_error(e.error_dict.get('message', ''))
-            except NotAuthorized:
-                error_message = _('No sufficient privileges to add a user to role %s.') % role
-                h.flash_error(error_message)
-            except NotFound:
-                h.flash_error(_('User not found'))
-
-        if email:
-
-            EMAIL_REGEX = re.compile(
-    r"""
-    ^[\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~]
-    [\w\d!#$%&\'\*\+\-/=\?\^`{\|\}~.]+
-    @
-    [a-z.A-Z0-9-]+
-    \.
-    [a-zA-Z]{2,6}$
-    """,
-            re.VERBOSE)
-            if isinstance(email, basestring) and email:
-                if not EMAIL_REGEX.match(email) or not(asbool(config.get('kata.invitations', True))):
-                    if not (asbool(config.get('kata.invitations', True))):
-                        error_msg = _(u'Feature disabled')
-                    else:
-                        error_msg = _(u'Invalid email address')
-                    h.flash_error(error_msg)
-                else:
-                    try:
-                        captcha.check_recaptcha(request)
-                        try:
-                            subject = u'Invitation to use the Etsin - kutsu käyttämään Etsin-palvelua'
-                            body = u'\n\n%s would like to add you as an editor for dataset "%s" \
-in the Etsin data search service. To enable this, please log in to the service: %s.\n\n' % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
-                            body += u'\n\n%s haluaisi lisätä sinut muokkaajaksi tietoaineistoon "%s" \
-Etsin-hakupalvelussa. Mahdollistaaksesi tämän, ole hyvä ja kirjaudu palveluun osoitteessa: %s.\n\n' \
-                                    % (c.userobj.fullname, data_dict.get('title', ''), g.site_url)
-                            body += u'\n------------\nLähettäjän viesti / Sender\'s message:\n\n%s\n------------\n' % (request.params.get('mail_message', ''))
-
-                            ckan.lib.mailer.mail_recipient(email, email, subject, body)
-                            h.flash_success(_('Message sent'))
-                            log.info("Invitation sent by %s to %s\n" % (c.userobj.name, email))
-                        except ckan.lib.mailer.MailerException:
-                            raise
-                    except captcha.CaptchaError:
-                        error_msg = _(u'Bad Captcha. Please try again.')
-                        h.flash_error(error_msg)
-
-        data_dict['domain_object'] = pkg.id
-        domain_object_ref = _get_or_bust(data_dict, 'domain_object')
-        # domain_object_ref is actually pkg.id, so this could be simplified
-        domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
-
-        return self._show_dataset_role_page(domain_object, context, data_dict)
-
-    def dataset_editor_delete(self, name):
-        '''
-        Deletes a user from a dataset role.
-
-        :param name: dataset name
-        :type name: string
-        :param username: user (request.param) and role (request.param) to be deleted from dataset
-        :type username: string
-        :param role: user (request.param) and role (request.param) to be deleted from dataset
-        :type role: string
-
-        redirects to dataset_editor_manage.
-        '''
-        context = {'model': model, 'session': model.Session, 'user': c.user}
-        data_dict = {}
-        data_dict['name'] = name
-        data_dict['username'] = request.params.get('username', None)
-        data_dict['role'] = request.params.get('role', None)
-
-        try:
-            ret = ckan.logic.get_action('dataset_editor_delete')(context, data_dict)
-            h.flash_success(ret)
-
-        except ValidationError as e:
-            h.flash_error(e.error_dict.get('message', ''))
-        except NotAuthorized:
-            error_message = _('No sufficient privileges to remove user from role %s.') % data_dict['role']
-            h.flash_error(error_message)
-        except NotFound:
-            h.flash_error(_('User not found'))
-
-        h.redirect_to(controller='ckanext.kata.controllers:KataPackageController',
-                                action='dataset_editor_manage', name=name)
-
-    def _roles_list(self, userobj, domain_object):
-        '''
-        Builds the selection of roles for the role popup menu
-
-        :param userobj: user object
-        :param domain_object: dataset domain object
-        '''
-        if ckan.model.authz.user_has_role(userobj, 'admin', domain_object) or \
-                userobj.sysadmin == True:
-            return [{'text': 'Admin', 'value': 'admin'},
-                    {'text': 'Editor', 'value': 'editor'},
-                    {'text': 'Reader', 'value': 'reader'}]
-        else:
-            return [{'text': 'Editor', 'value': 'editor'},
-                    {'text': 'Reader', 'value': 'reader'}]
-
-    def _show_dataset_role_page(self, domain_object, context, data_dict):
-        '''
-        Adds data for template and renders it
-
-        :param domain_object: dataset domain object
-        :param context: context
-        :param data_dict: data dictionary
-        '''
-
-        c.roles = []
-        if c.userobj:
-            c.roles = self._roles_list(c.userobj, domain_object)
-
-        editor_list = get_action('roles_show')(context, data_dict)
-        c.members = []
-
-        for role in editor_list.get('roles', ''):
-            q = model.Session.query(model.User).\
-                filter(model.User.id == role['user_id']).first()
-
-            c.members.append({'user_id': role['user_id'], 'user': q.name, 'role': role['role']})
-        c.pkg = Package.get(data_dict['id'])
-        c.pkg_dict = get_action('package_show')(context, data_dict)
-
-        return render('package/package_rights.html')
 
     def _upload_xml(self, errors=None, error_summary=None):
         '''

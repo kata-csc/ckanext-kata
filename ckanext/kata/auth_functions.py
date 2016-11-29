@@ -13,6 +13,7 @@ from ckan import authz
 from ckan.logic import NotFound
 from ckan.logic.auth import get_package_object, update
 from ckan.logic.auth.create import _check_group_auth
+from ckan.logic.converters import convert_user_name_or_id_to_id
 from ckan.model import User, Package
 
 log = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ log = logging.getLogger(__name__)
 def is_owner(context, data_dict):
     '''
     This is used in "request edit rights" feature.
-    Checks if the user is admin or editor of the
+    Checks if the user is creator, admin or editor of the
     package in question
 
     :param context: context
@@ -31,14 +32,18 @@ def is_owner(context, data_dict):
     :rtype: dictionary
     '''
 
+    # Package creator is always owner regardless of organizations
     pkg = context.get('package', None) or Package.get(data_dict['id'])
-    roles = pkg.roles if pkg else []
     user = context.get('user', False)
-    if user:
-        for role in roles:
-            ruser = User.get(role.user.id)
-            if user == ruser.name and role.role in ('admin', 'editor'):
-                return {'success': True}
+
+    # If user id can't be resolved, user can't be owner
+    try:
+        user_id = convert_user_name_or_id_to_id(user, context)
+    except:
+        return {'success': False}
+
+    if pkg.creator_user_id == user_id:
+        return {'success': True}
 
     # Check if the user has editor rights to this dataset through an organization
     package = get_package_object(context, data_dict)

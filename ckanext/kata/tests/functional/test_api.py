@@ -16,7 +16,6 @@ from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
 
-
 class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
 
@@ -298,7 +297,9 @@ class TestSearchDataset(KataApiTestCase):
         Set up test class
         '''
         super(TestSearchDataset, cls).setup_class()
-        search.clear()
+
+        package_index = search.index_for(model.Package)
+        package_index.clear()
 
         data_dict = copy.deepcopy(cls.TEST_DATADICT)  # Create public dataset
 
