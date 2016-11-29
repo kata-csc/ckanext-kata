@@ -27,9 +27,19 @@
 
     <div class="actions-and-ratings">
       <div class="button-container">
-        <a class="btn btn-default" href="{{h.url_for(controller='package', action='read', id=pkg.name, format='rdf')}}">
-          {{ _('Show in RDF format') }}
-        </a>
+        <div class="btn-group">
+        {% set pkg_url = h.url_for(controller='package', action='read', id=pkg.name) %}
+          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            {{ _('Export as ...') }}<i class="icon-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu pull-right">
+            <li><a href="{{ pkg_url + '.xml' }}" download>RDF/XML</a></li>
+            <li><a href="{{ pkg_url + '.ttl' }}" download>Turtle</a></li>
+            <li><a href="{{ pkg_url + '.jsonld' }}" download>JSON-LD</a></li>
+            <li><a href="{{ pkg_url + '.n3' }}" download>Notation3</a></li>
+          </ul>
+        </div>
+
         {% if has_update_rights %}
           <div class="btn-group">
             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
