@@ -90,12 +90,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         api_controller = "ckanext.kata.controllers:KATAApiController"
         # Full stops from harvested objects screw up the read method
         # when using the default ckan route
-        map.connect('/dataset/{id:.*?}.{format:rdf}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action='read_rdf')
-        map.connect('/dataset/{id:.*?}.{format:ttl}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action='read_ttl')
         map.connect('/browse',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action='browse')
@@ -202,6 +196,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'member_list': actions.member_list,
             'organization_activity_list': actions.organization_activity_list,
             'organization_activity_list_html': actions.organization_activity_list_html,
+            'organization_autocomplete': actions.organization_autocomplete,
             'organization_create': actions.organization_create,
             'organization_delete': actions.organization_delete,
             'organization_list': actions.organization_list,

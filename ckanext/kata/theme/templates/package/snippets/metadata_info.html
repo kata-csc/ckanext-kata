@@ -110,8 +110,15 @@
     <div class="form-label">{{ _('Organization') }}</div>
     <div class="form-content">
       {% if pkg_dict.get('organization') %}
-        {% set organization=pkg_dict.organization %}
-        {% link_for organization.title or organization.name, controller='organization', action='about', id=organization.name %}
+        {% set org=pkg_dict.organization %}
+        {% set root_nodes = h.get_action('group_tree_section', {'id': org.id, 'type': org.type}) %}
+        {% if not root_nodes.get('children') %}
+          {% link_for org.title or org.name, controller='organization', action='about', id=org.name %}
+        {% else %}
+          <span class="compact">
+            {% snippet 'organization/snippets/organization_tree.html', top_nodes=[root_nodes] %}
+          </span>
+        {% endif %}
       {% endif %}
     </div>
   </div>
@@ -421,10 +428,6 @@
   <!-- IDs -->
 
   <div class="form-row">
-    <div class="form-label">{{ _('Version') }}</div>
-    <div class="form-content">{{ pkg_dict.version }}</div>
-  </div>
-  <div class="form-row">
     <div class="form-label">{{ _('Identifiers') }}</div>
     <div class="form-content">
       <table class="form-inner-table">
@@ -472,9 +475,9 @@
 
   <div class="form-row">
     <div class="form-label">{{ _('Dataset lifecycle events') }}</div>
-    {% if pkg_dict.event %}
       <div class="form-content">
         <!--<table class="form-inner-table">-->
+        {% if pkg_dict.event %}
         <table class="table table-bordered table-condensed">
           <colgroup>
             <col width="20%">
@@ -496,8 +499,12 @@
           </tr>
           {% endfor %}
         </table>
+        {% endif %}
       </div>
-    {% endif %}
+  </div>
+  <div class="form-row">
+    <div class="form-label">{{ _('Most recent data modification date') }}</div>
+    <div class="form-content">{{ pkg_dict.version }}</div>
   </div>
 </div>
 <div class="dataset-section form-tab-content">

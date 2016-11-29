@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-version = '3.1.3'
+version = '3.2.0'
 
 setup(
     name='ckanext-kata',
@@ -44,6 +44,7 @@ setup(
             ('kata/theme/templates/home/**.html', 'ckan', None),
             ('kata/theme/templates/user/**.html', 'ckan', None),
             ('kata/theme/templates/organization/**.html', 'ckan', None),
+            ('kata/theme/templates/organization/snippets/**.html', 'ckan', None)
         ],
     },
     entry_points=
@@ -53,6 +54,8 @@ setup(
     kata=ckanext.kata.plugin:KataPlugin
     [paste.paster_command]
     katacmd = ckanext.kata.commands.kata:Kata
+    [ckan.rdf.profiles]
+    kata_dcat_profile=ckanext.kata.kata_dcat_profile:KataDcatProfile
     """,
 
 )
