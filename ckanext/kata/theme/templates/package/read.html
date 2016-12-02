@@ -108,7 +108,7 @@
             {% set showcase_list_link = h.url_for(controller='ckanext.showcase.controller:ShowcaseController', action='dataset_showcase_list', id=pkg.name) %}
             {% set new_showcase_link = h.url_for(controller='ckanext.showcase.controller:ShowcaseController', action='new_direct', package_id=pkg.name) %}
             <a href="{{ showcase_list_link }}" class="btn btn-default"> {{_("{} times").format(showcase_count)}} </a>
-            <a href ="{{ new_showcase_link }}" class="btn btn-default"><i class="icon-plus"></i></a>
+            <a href ="{{ new_showcase_link }}" class="btn btn-default"><i class="icon-plus no-margin"></i></a>
           </div>
 
           </td>
