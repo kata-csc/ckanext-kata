@@ -40,6 +40,10 @@ from ckanext.kata.middleware import NotAuthorizedMiddleware
 
 log = logging.getLogger('ckanext.kata')
 
+# regex patterns for before_search.
+MATCH_PAREN_RE = re.compile(r'\([^)]*\)')  # match content between parenthesis
+ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!{}[\]^"~*?:])') # find all escapable characters
+
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
@@ -473,6 +477,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         q = data_dict.get('q')
         fq = data_dict.get('fq')
         if q or (fq and fq != '+dataset_type:dataset'):
+            if '!id:' in fq:
+                # Peter: manage_datasets query in ckanext-showcase breaks down if
+                # there are colons in query constraints. i.e. 'urn:nbn:fi...'
+                # This is bypassed by escaping these constraints.
+                matched_content = MATCH_PAREN_RE.search(fq)
+                if matched_content:
+                    escaped_content = ESCAPE_CHARS_RE.sub(r'\\\g<char>', matched_content.group(0))
+                    data_dict["fq"] = MATCH_PAREN_RE.sub(escaped_content, fq)
+
             log.info(u"[{t}] Search query: {q};  constraints: {c}".format(t=datetime.datetime.now(), q=q, c=fq))
 
         return data_dict
