@@ -54,6 +54,7 @@ setup(
     kata=ckanext.kata.plugin:KataPlugin
     [paste.paster_command]
     katacmd = ckanext.kata.commands.kata:Kata
+    hierarchy = ckanext.kata.commands.org_hierarchy:Hierarchy
     [ckan.rdf.profiles]
     kata_dcat_profile=ckanext.kata.kata_dcat_profile:KataDcatProfile
     """,
