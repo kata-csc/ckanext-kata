@@ -626,7 +626,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             for item in validated.get('contact'):
                 for k_ in item.iterkeys():
                     if k_ == u'email':
-                        item[k_] = base64.b64encode(_crypt.encrypt(self._pad(item[k_])))
+                        item[k_] = base64.b64encode(_crypt.encrypt(self._pad(unicode(item[k_], "utf-8"))))
         except TypeError:
             # Harves sources
             pass
