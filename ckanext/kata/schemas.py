@@ -286,6 +286,20 @@ class Schemas:
         return schema
 
 
+
+    @classmethod
+    def create_package_schema_oai_datacite(cls):
+        """
+        Mofidified schema for oai_dc using DataCite. See `create_package_schema_oai_dc`.
+
+        :rtype: dictionary
+        """
+        schema = cls.create_package_schema_oai_dc()
+        return schema
+
+
+
+
     @classmethod
     def create_package_schema_ddi(cls):
         '''
