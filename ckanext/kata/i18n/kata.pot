@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-kata 3.1.3\n"
+"Project-Id-Version: ckanext-kata 4.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-11-04 09:18+0000\n"
+"POT-Creation-Date: 2016-12-12 12:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,15 +21,15 @@ msgstr ""
 msgid "Paper"
 msgstr ""
 
-#: ckanext/kata/actions.py:180
+#: ckanext/kata/actions.py:179
 msgid "Unauthorized to add a harvest source"
 msgstr ""
 
-#: ckanext/kata/actions.py:474
+#: ckanext/kata/actions.py:524
 msgid "You don't have permission to modify roles for this organization."
 msgstr ""
 
-#: ckanext/kata/actions.py:508
+#: ckanext/kata/actions.py:558
 msgid "You don't have permission to remove this user."
 msgstr ""
 
@@ -179,37 +179,37 @@ msgid "Formats"
 msgstr ""
 
 #: ckanext/kata/controllers.py:805
-#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:229
+#: ckanext/kata/theme/templates/package/snippets/metadata_info.html:236
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:73
 msgid "License"
 msgstr ""
 
-#: ckanext/kata/converters.py:68
+#: ckanext/kata/converters.py:70
 msgid "The language code is not in ISO639-3 format"
 msgstr ""
 
-#: ckanext/kata/converters.py:70
+#: ckanext/kata/converters.py:72
 msgid "The given {field} string is incorrectly formatted"
 msgstr ""
 
-#: ckanext/kata/converters.py:90
+#: ckanext/kata/converters.py:92
 msgid "The given title string is not JSON parseable"
 msgstr ""
 
-#: ckanext/kata/converters.py:95
+#: ckanext/kata/converters.py:97
 msgid "The given description string is not JSON parseable"
 msgstr ""
 
-#: ckanext/kata/converters.py:252
+#: ckanext/kata/converters.py:254
 msgid "No language given"
 msgstr ""
 
-#: ckanext/kata/converters.py:258
+#: ckanext/kata/converters.py:260
 #, python-format
 msgid "Language is disabled, removing languages: '%s'"
 msgstr ""
 
-#: ckanext/kata/converters.py:392
+#: ckanext/kata/converters.py:394
 #, python-format
 msgid "Language %s not in ISO 639-2 T format"
 msgstr ""
@@ -696,11 +696,13 @@ msgid "A little information about my group..."
 msgstr ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:22
+#: ckanext/kata/theme/templates/macros/form.html:387
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:31
 msgid "Image URL"
 msgstr ""
 
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:22
+#: ckanext/kata/theme/templates/macros/form.html:386
 #: ckanext/kata/theme/templates/organization/snippets/organization_form.html:31
 msgid "http://example.com/my-image.jpg"
 msgstr ""
@@ -712,7 +714,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/group/snippets/group_form.html:52
 #: ckanext/kata/theme/templates/organization/member_new.html:32
 #: ckanext/kata/theme/templates/organization/members.html:31
-#: ckanext/kata/theme/templates/organization/snippets/organization_form.html:57
+#: ckanext/kata/theme/templates/organization/snippets/organization_form.html:85
 #: ckanext/kata/theme/templates/package/read.html:69
 #: ckanext/kata/theme/templates/package/snippets/resource_form.html:33
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:33
@@ -2362,6 +2364,14 @@ msgstr ""
 msgid "The form contains invalid entries:"
 msgstr ""
 
+#: ckanext/kata/theme/templates/macros/form.html:388
+msgid "Image"
+msgstr ""
+
+#: ckanext/kata/theme/templates/macros/form.html:400
+msgid "Clear Upload"
+msgstr ""
+
 #: ckanext/kata/theme/templates/macros/kata_form.html:59
 msgid ""
 "You have unsaved changes. Make sure to click 'Save Changes' below before "
@@ -2639,19 +2649,17 @@ msgstr ""
 msgid "Data used"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read.html:99
-#: ckanext/kata/theme/templates/package/read.html:101
+#: ckanext/kata/theme/templates/package/read.html:102
 #: ckanext/kata/theme/templates/package/related_list.html:77
 #: ckanext/kata/theme/templates/package/related_list.html:79
 msgid "times"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read.html:103
-#: ckanext/kata/theme/templates/package/related_list.html:81
-msgid "Advertise reuse"
+#: ckanext/kata/theme/templates/package/read.html:110
+msgid "{} times"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/read.html:105
+#: ckanext/kata/theme/templates/package/read.html:117
 msgid ""
 "If you are logged in, you can click the button to fill a submittable form "
 "about reuse. After submitting the information about reuse, anyone can view it"
@@ -2661,6 +2669,10 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/related_list.html:22
 msgid "Show dataset"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/related_list.html:81
+msgid "Advertise reuse"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/related_list.html:91
