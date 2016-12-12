@@ -477,7 +477,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         q = data_dict.get('q')
         fq = data_dict.get('fq')
         if q or (fq and fq != '+dataset_type:dataset'):
-            if '!id:' in fq:
+            if fq and '!id:' in fq:
                 # Peter: manage_datasets query in ckanext-showcase breaks down if
                 # there are colons in query constraints. i.e. 'urn:nbn:fi...'
                 # This is bypassed by escaping these constraints.
