@@ -695,3 +695,9 @@ def validate_ida_data_auth_policy(key, data, errors, context):
             raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
         if not is_ok:
             raise Invalid(_('Neither you nor the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
+
+
+def not_empty_if_langtitle_empty(key, data, errors, context):
+    from ckan.lib.navl.validators import not_empty
+    if not data.get(('langtitle', 0, 'value')):
+        not_empty(key, data, errors, context)
