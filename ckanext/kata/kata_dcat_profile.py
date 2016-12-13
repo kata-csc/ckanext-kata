@@ -4,7 +4,8 @@ from ckan.lib.helpers import url_for
 
 from ckanext.dcat.profiles import RDFProfile
 from ckanext.kata.helpers import convert_language_code, get_download_url, \
-    get_if_url, get_rightscategory, is_url, json_to_list, split_disciplines
+    get_if_url, get_rightscategory, is_url, json_to_list, split_disciplines, \
+    resolve_org_name
 from ckanext.kata.utils import get_pids_by_type
 
 from rdflib import BNode, Literal, URIRef
@@ -97,6 +98,7 @@ class KataDcatProfile(RDFProfile):
         # Etsin: Agents
         for agent in dataset_dict.get('agent', []):
             agent_role = agent.get('role')
+            agent_id = agent.get('id')
 
             # Rights Holders
             if agent_role in ['owner', 'distributor']:
@@ -114,6 +116,8 @@ class KataDcatProfile(RDFProfile):
                 g.add((agent_node_ref, RDF.type, FOAF.Agent))
                 g.add((dataset_ref, nodetype, agent_node_ref))
                 g.add((agent_node_ref, FOAF.name, Literal(name)))
+                if agent_id:
+                    g.add((agent_node_ref, DCT.identifier, Literal(agent_id)))
 
             # Authors
             if agent_role in ['author', 'contributor']:
@@ -135,6 +139,10 @@ class KataDcatProfile(RDFProfile):
                 g.add((agent_ref, FOAF.name, Literal(agent.get('name', None))))
                 g.add((creator_ref, FOAF.Agent, agent_ref))
                 g.add((dataset_ref, nodetype, creator_ref))
+
+                if agent_id:
+                    g.add((agent_ref, DCT.identifier, Literal(agent_id)))
+
 
             # Funders
             if agent.get('role') == 'funder':
@@ -158,21 +166,28 @@ class KataDcatProfile(RDFProfile):
 
                 agent_name = agent.get('name', None)
                 g.add((project_ref, FOAF.name, Literal(agent_name)))
+
+                if agent_id:
+                    g.add((project_ref, DCT.identifier, Literal(agent_id)))
+
                 g.add((isoutputof_ref, FOAF.Project, project_ref))
                 g.add((dataset_ref, FRAPO.isOutputOf, isoutputof_ref))
 
         # Etsin: Publishers
         for contact in dataset_dict.get('contact'):
             agent_node_ref = BNode()
+            agent_id = contact.get('id')
 
             g.add((agent_node_ref, RDF.type, FOAF.Agent))
             g.add((dataset_ref, DCT.publisher, agent_node_ref))
 
             contact_name = contact.get('name', None)
             g.add((agent_node_ref, FOAF.name, Literal(contact_name)))
+            if agent_id:
+                g.add((agent_node_ref, DCT.identifier, Literal(agent_id)))
 
             contact_email = contact.get('email')
-            if contact_email != 'hidden':
+            if contact_email and contact_email != 'hidden':
                 g.add((agent_node_ref, FOAF.mbox,
                        URIRef("mailto:" + contact_email)))
 
@@ -184,6 +199,12 @@ class KataDcatProfile(RDFProfile):
             if contact_phone:
                 g.add((agent_node_ref, FOAF.phone,
                        URIRef("tel:" + contact_phone)))
+
+        # Etsin: Organization
+        organization_name = resolve_org_name(dataset_dict.get('owner_org'))
+        publisher_ref = BNode()
+        g.add((dataset_ref, DCT.publisher, publisher_ref))
+        g.add((publisher_ref, FOAF.organization, Literal(organization_name)))
 
         # Etsin: Tags - can be URLs or user inputted keywords
         # TODO: resolve URLs from Finto. Currently get_label_for_uri() breaks
@@ -202,6 +223,21 @@ class KataDcatProfile(RDFProfile):
             ('modified', DCT.modified, ['metadata_modified'], Literal),
         ]
         self._add_date_triples_from_dict(dataset_dict, dataset_ref, items)
+
+        # Etsin: Events
+        for event in dataset_dict.get('event', []):
+            event_ref = BNode()
+            g.add((dataset_ref, DCT.event, event_ref))
+            g.add((event_ref, DCT.type, Literal(event.get('type'))))
+            g.add((event_ref, DCT.creator, Literal(event.get('who'))))
+            g.add((event_ref, DCT.date, Literal(str(event.get('when')))))
+            g.add((event_ref, DCT.description, Literal(event.get('descr'))))
+
+        # Etsin: Citation
+        citation = dataset_dict.get('citation')
+        if citation:
+            g.add((dataset_ref, DCT.bibliographicCitation, Literal(citation)))      
+
 
         # Etsin: Distribution
         availability_list = ['access_application',
@@ -223,10 +259,6 @@ class KataDcatProfile(RDFProfile):
         if dataset_dict.get('availability') in availability_list:
             access_url = get_download_url(dataset_dict)
             g.add((distribution_ref, DCAT.accessURL, Literal(access_url)))
-
-        if dataset_dict.get('availability') == 'direct_download':
-            access_url = get_download_url(dataset_dict)
-            g.add((distribution_ref, DCAT.downloadURL, Literal(access_url)))
 
         mimetype = dataset_dict.get('mimetype')
         if mimetype:
@@ -255,14 +287,20 @@ class KataDcatProfile(RDFProfile):
         category, declarations = get_rightscategory(dataset_dict)
         declaration_strings = ''
         for declaration in declarations:
-            declaration_strings += u'<RightsDeclaration>{}\
-            </RightsDeclaration>\n'.format(declaration)
+            declaration_strings += u'<RightsDeclaration>{}</RightsDeclaration>\n'\
+                .format(declaration)
         xml_string = u'<RightsDeclarationMD RIGHTSCATEGORY="{}" \
             xmlns="http://www.loc.gov/METS/" >\n{}</RightsDeclarationMD>'\
             .format(category, declaration_strings)
 
-        g.add((dataset_ref, DCT.rights, Literal(
+        license_url = dataset_dict.get('license_URL')
+
+        rights_ref = BNode()
+        g.add((dataset_ref, DCT.rights, rights_ref))
+        g.add((rights_ref, DCT.RightsStatement, Literal(
             xml_string, datatype=RDF.XMLLiteral)))
+        g.add((rights_ref, DCT.RightsStatement, Literal(license_url)))
+
 
         # Etsin: Spatial
         coverage = dataset_dict.get('geographic_coverage')
