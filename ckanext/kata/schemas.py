@@ -103,7 +103,7 @@ class Schemas:
         # The title field contains all the title translations in JSON format.
         # The converter gen_translation_str_from_langtitle
         # needs to be called to construct the JSON string from the UI's langtitle fields.
-        schema['title'] = [not_empty]
+        schema['title'] = [ignore_empty]
 
         # Description (notes) is a multilanguage field similar to title
         schema['langnotes'] = {'value': [unicode, va.validate_notes_duplicates, co.escape_quotes],
