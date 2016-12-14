@@ -248,6 +248,10 @@ class KataDcatProfile(RDFProfile):
         distribution_ref = BNode()
         dist_parent_ref = BNode()
 
+        if dataset_dict.get('availability') == 'direct_download':
+            access_url = get_download_url(dataset_dict)
+            g.add((distribution_ref, DCAT.downloadURL, Literal(access_url)))
+
         checksum = dataset_dict.get('checksum')
         algorithm = dataset_dict.get('algorithm')
         if checksum and algorithm:
