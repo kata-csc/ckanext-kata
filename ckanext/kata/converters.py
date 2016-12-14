@@ -559,6 +559,7 @@ def resolve_license_id(license_id):
     '''
 
     map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/license_id_map.json'
+    license_json_file_name = os.path.dirname(os.path.realpath(__file__)) + '/theme/public/licenses.json'
     license_id_out = None
     license_id_work = None
 
@@ -601,8 +602,19 @@ def resolve_license_id(license_id):
             log.debug("--> " + license_id_out)
             return license_id_out
         else:
+            # Part 2: Compare license_id to id values in licenses.json
+            license_json = None
+            with open(license_json_file_name) as license_json_file:
+                license_json = json.load(license_json_file)
 
-            # Part 2: compare the licenses to license_id_map.json lookup
+            def get_license_id_from_license_obj(obj): return obj.get('id')
+            known_licenses = list(map(get_license_id_from_license_obj, license_json))
+
+            if license_id in known_licenses:
+                log.debug("--> licenses.json: " + license_id)
+                return license_id
+
+            # Part 3: compare the licenses to license_id_map.json lookup
             with open(map_file_name) as map_file:
                 license_map = json.load(map_file)
 
