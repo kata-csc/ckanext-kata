@@ -2938,11 +2938,11 @@ msgstr "Kerro uudelleenkäytöstä"
 
 #: ckanext/kata/theme/templates/package/related_list.html:91
 msgid "Add Related Item"
-msgstr "Lisää liittyvä kohde"
+msgstr "Lisää uudelleenkäyttö"
 
 #: ckanext/kata/theme/templates/package/related_list.html:105
 msgid "No related items"
-msgstr "Ei liittyviä kohteita"
+msgstr "Ei uudelleenkäyttöjä"
 
 #: ckanext/kata/theme/templates/package/search.html:39
 msgid "Open data"
@@ -6034,7 +6034,7 @@ msgstr "Nimeämätön resurssi"
 
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:22
 msgid "My Related Item"
-msgstr "Liittyvä kohteeni"
+msgstr "Uudelleenkäyttöni"
 
 #: ckanext/kata/theme/templates/related/snippets/related_form.html:23
 msgid "http://example.com/"
