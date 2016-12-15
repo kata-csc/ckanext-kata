@@ -107,6 +107,52 @@
   </div>
 
   <div class="form-row">
+    <div class="form-label">{{ _('Distributor') }}</div>
+    <div class="form-content">
+      {% for contact in pkg_dict.contact %}
+        {% if loop.index0 > 0 %}
+          <br><br>
+        {% endif %}
+        {{ contact.name }}
+        {% if contact.email %}
+          <br>
+          {% if contact.email == 'hidden' %}
+            <a href="{{ h.url_for(controller='ckanext.kata.controllers:ContactController', action='render_contact_form', pkg_id=pkg_dict.name, recipient=loop.index0) }}">{{_('Send a message') }}</a>
+          {% else %}
+            {{ contact.email }}
+          {% endif %}
+        {% endif %}
+        {% if contact.URL %}
+          <br><a href="{{ contact.URL }}">{{ contact.URL }}</a>
+        {% endif %}
+        {% if contact.phone %}
+          <br>{{ contact.phone }}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-label">{{ _('Owner') }}</div>
+    <div class="form-content">
+      {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+        {% for agent in role.list if agent.role == 'owner' %}
+          {% if loop.index0 > 0 %}
+            <br><br>
+          {% endif %}
+          {{ agent.name }}
+          {% if agent.organisation %}
+            <br>{{ agent.organisation }}
+          {% endif %}
+          {% if agent.URL %}
+            <br>{{ agent.URL }}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-row">
     <div class="form-label">{{ _('Organization') }}</div>
     <div class="form-content">
       {% if pkg_dict.get('organization') %}
@@ -124,47 +170,6 @@
   </div>
 
   <div class="form-row">
-    <div class="form-label">{{ _('Distributor') }}</div>
-    <div class="form-content">
-      {% for contact in pkg_dict.contact %}
-        {% if loop.index0 > 0 %}
-          <br><br>
-        {% endif %}
-        {{ contact.name }}
-        {% if contact.email %}
-          <br>
-          {% if contact.email == 'hidden' %}
-            <a href="{{ h.url_for(controller='ckanext.kata.controllers:ContactController', action='render_contact_form', pkg_id=pkg_dict.name, recipient=loop.index0) }}">{{_('Send a message') }}</a>
-          {% else %}
-            {{ contact.email }}
-          {% endif %}
-        {% endif %}
-        <br><a href="{{ contact.URL }}">{{ contact.URL }}</a>
-        <br>{{ contact.phone }}
-      {% endfor %}
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-label">{{ _('Owner') }}</div>
-    <div class="form-content">
-      {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
-        {% for agent in role.list if agent.role == 'owner' %}
-          {% if loop.index0 > 0 %}
-            <br><br>
-          {% endif %}
-          {{ agent.name }}
-          {% if agent.organisation %}
-          <br>{{ agent.organisation }}
-          {% endif %}
-          {% if agent.URL %}
-          <br>{{ agent.URL }}
-          {% endif %}
-        {% endfor %}
-      {% endfor %}
-    </div>
-  </div>
-  <div class="form-row">
     <div class="form-label">{{ _('Contributor') }}</div>
     <div class="form-content">
       {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
@@ -174,10 +179,10 @@
           {% endif %}
           {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
@@ -191,13 +196,13 @@
           {% if loop.index0 > 0 %}
             <br><br>
           {% endif %}
-          <b>{{ h.resolve_agent_role(agent.role) }}</b><br>
+            <b>{{ h.resolve_agent_role(agent.role) }}</b><br>
           {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
