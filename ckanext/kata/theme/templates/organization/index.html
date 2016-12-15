@@ -39,9 +39,10 @@
               {% else %}
                 {% set sorting = [(_('Title'), 'title'), (_('Datasets'), 'package_count')] %}
                 {% set sorting_selected = c.sort_by_selected %}
+                <span><input type="checkbox" id="show-empty-organizations" />&nbsp;&nbsp;<label for="show-empty-organizations" class="kata-checkbox-label">{{ _('Show empty organizations') }}</label></span>
               {% endif %}
 
-              <span><input type="checkbox" id="show-empty-organizations" />&nbsp;&nbsp;<label for="show-empty-organizations" class="kata-checkbox-label">{{ _('Show empty organizations') }}</label></span>
+
 
               <div class="form-select control-group control-order-by pull-right">
                 <label for="field-order-by">{{ _('Order by') }}</label>
