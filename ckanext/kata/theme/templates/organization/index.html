@@ -33,25 +33,26 @@
                 </span>
               {%- endif %}
 
-              {# Show sort selection only on search results (flatlist) #}
-              {% if c.q and c.page.items %}
+              {% if c.q %}
+                {# Default sorters on flatlist #}
+                {% set sorting = h.get_organization_sorters() %}
+              {% else %}
+                {% set sorting = [(_('Title'), 'title'), (_('Datasets'), 'package_count')] %}
+                {% set sorting_selected = c.sort_by_selected %}
+              {% endif %}
+
               <div class="form-select control-group control-order-by">
                 <label for="field-order-by">{{ _('Order by') }}</label>
                 <select id="field-order-by" name="sort">
-                  {% set sorting = h.get_organization_sorters() %}
+                  
                   {% for label, value in sorting %}
                     {% if label and value %}
                       <option value="{{ value }}"{% if c.sort_by_selected == value %} selected="selected"{% endif %}>{{ _(label) }}</option>
                     {% endif %}
                   {% endfor %}
                 </select>
-               {% endif %}
-
-
-                {% block search_sortby_button %}
-                  <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
-                {% endblock %}
               </div>
+
             </div>
         </form>
       </div>
