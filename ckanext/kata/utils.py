@@ -441,7 +441,7 @@ def is_ida_pid(pid):
     :rtype: bool
     '''
 
-    ida_pid_regex = 'urn:nbn:fi:csc-ida\w+'
+    ida_pid_regex = 'urn:nbn:fi:csc-ida.*s'
     return pid and re.match(ida_pid_regex, pid)
 
 
