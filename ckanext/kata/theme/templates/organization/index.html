@@ -73,7 +73,9 @@
               </span>
             {% endif %}
           {% endblock %}
-
+          <script>
+            document.getElementsByClassName('number-of-results')[0].style.visibility = 'hidden';
+          </script>
           {% if c.q and c.page.items %}
             {# on a search query with results - show a flatlist instead of hierarchy tree #}
             {% snippet "organization/snippets/organization_list.html", organizations=c.page.items, description=False, image=False %}
