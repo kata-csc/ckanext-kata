@@ -29,7 +29,6 @@ from ckan.common import request
 _or_ = sqlalchemy.or_
 
 _get_or_bust = ckan.logic.get_or_bust
-_authz = model.authz
 
 log = logging.getLogger(__name__)
 
@@ -167,7 +166,6 @@ def _add_ida_download_url(context, data_dict):
         else:
             log.warn("Failed to get access PID for dataset")
 
-
 def package_create(context, data_dict):
     """
     Creates a new dataset.
@@ -192,6 +190,7 @@ def package_create(context, data_dict):
     _handle_pids(context, data_dict)
 
     _add_ida_download_url(context, data_dict)
+    
     if asbool(data_dict.get('private')) and not data_dict.get('persist_schema'):
         context['schema'] = Schemas.private_package_schema()
 
@@ -295,10 +294,10 @@ def package_delete(context, data_dict):
     '''
     # Logging for production use
     _log_action('Package', 'delete', context['user'], data_dict['id'])
-
+    
+    ret = ckan.logic.action.delete.package_delete(context, data_dict)
     index = index_for('package')
     index.remove_dict(data_dict)
-    ret = ckan.logic.action.delete.package_delete(context, data_dict)
     return ret
 
 
@@ -425,121 +424,6 @@ def related_update(context, data_dict):
     return ckan.logic.action.update.related_update(context, data_dict)
 
 
-def dataset_editor_delete(context, data_dict):
-    '''
-    Deletes user and role in a dataset
-
-    :param username: user name to delete
-    :type username: string
-    :param name: dataset name or id
-    :type name: string
-    :param role: editor, admin or reader
-    :type role: string
-
-    :rtype: message string
-    '''
-    pkg = model.Package.get(data_dict.get('name', None))
-    user = model.User.get(context.get('user', None))
-    role = data_dict.get('role', None)
-    username = model.User.get(data_dict.get('username', None))
-
-    if not (pkg and user and role):
-        msg = _('Required information missing')
-        raise ValidationError(msg)
-
-    pkg_dict = get_action('package_show')(context, {'id': pkg.id})
-    pkg_dict['domain_object'] = pkg_dict.get('id')
-    domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
-    # This could be simpler, as domain_object_ref is pkg.id
-    domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
-
-    # These are detailed checks to inform the user of the flaw
-    if not username:
-        msg = _('User not found')
-        raise NotFound(msg)
-
-    if not ((_authz.user_has_role(user, 'admin', domain_object) or
-             user.sysadmin)) and role == 'admin':
-        msg = _('No sufficient privileges to remove user from role %s.') % role
-        raise NotAuthorized(msg)
-
-    if not (check_access('package_update', context)):
-        msg = _('No sufficient privileges to remove user from role %s.') % role
-        raise NotAuthorized(msg)
-
-    if not _authz.user_has_role(username, role, pkg):
-        msg = _('No such user and role combination')
-        # Validation error is not the correct answer here, but it does the job
-        raise ValidationError(msg)
-
-    if username.name == model.PSEUDO_USER__VISITOR or \
-            username.name == model.PSEUDO_USER__LOGGED_IN or \
-            username.name == 'harvest':
-        msg = _('Built-in users can not be removed')
-        raise ValidationError(msg)
-
-    if user.id == username.id:
-        msg = _('You can not remove yourself')
-        raise ValidationError(msg)
-
-    _authz.remove_user_from_role(username, role, pkg)
-
-    msg = _('User removed from role %s') % role
-
-    return msg
-
-
-def dataset_editor_add(context, data_dict):
-    '''
-    Adds a user and role to dataset
-
-    :param name: dataset name or id
-    :type name: string
-    :param role: admin, editor or reader
-    :type role: string
-    :param username: user to be added
-    :type username: string
-
-    :rtype: message string
-    '''
-    pkg = model.Package.get(data_dict.get('name', None))
-    user = model.User.get(context.get('user', None))
-    role = data_dict.get('role', None)
-    username = model.User.get(data_dict.get('username', None))
-
-    if not (pkg and user and role):
-        msg = _('Required information missing')
-        raise ValidationError(msg)
-
-    pkg_dict = get_action('package_show')(context, {'id': pkg.id})
-    pkg_dict['domain_object'] = pkg_dict.get('id')
-
-    domain_object_ref = _get_or_bust(pkg_dict, 'domain_object')
-    domain_object = ckan.logic.action.get_domain_object(model, domain_object_ref)
-
-    # These are detailed checks to inform the user of the flaw
-    if not username:
-        msg = _('User not found')
-        raise NotFound(msg)
-
-    if not ((_authz.user_has_role(user, 'admin', domain_object) or
-             user.sysadmin)) and role == 'admin':
-        raise NotAuthorized
-
-    if not (check_access('package_update', context)):
-        raise NotAuthorized
-
-    if _authz.user_has_role(username, role, domain_object):
-        msg = _('User already has %s rights') % role
-        raise ValidationError(msg)
-
-    model.add_user_to_role(username, role, pkg)
-    model.meta.Session.commit()
-
-    msg = _('User added')
-
-    return msg
-
 def organization_autocomplete(context, data_dict):
     '''
     Return a list of organization names that contain a string.
@@ -577,6 +461,7 @@ def organization_autocomplete(context, data_dict):
         organization_list.append(result_dict)
 
     return organization_list
+
 
 @side_effect_free
 def organization_list_for_user(context, data_dict):

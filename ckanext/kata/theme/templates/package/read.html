@@ -27,9 +27,19 @@
 
     <div class="actions-and-ratings">
       <div class="button-container">
-        <a class="btn btn-default" href="{{h.url_for(controller='package', action='read', id=pkg.name, format='rdf')}}">
-          {{ _('Show in RDF format') }}
-        </a>
+        <div class="btn-group">
+        {% set pkg_url = h.url_for(controller='package', action='read', id=pkg.name) %}
+          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            {{ _('Export as ...') }}<i class="icon-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu pull-right">
+            <li><a href="{{ pkg_url + '.xml' }}" download>RDF/XML</a></li>
+            <li><a href="{{ pkg_url + '.ttl' }}" download>Turtle</a></li>
+            <li><a href="{{ pkg_url + '.jsonld' }}" download>JSON-LD</a></li>
+            <li><a href="{{ pkg_url + '.n3' }}" download>Notation3</a></li>
+          </ul>
+        </div>
+
         {% if has_update_rights %}
           <div class="btn-group">
             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -50,9 +60,6 @@
                 {# _('Dataset has invalid information. Please add all required information to add supplements.') #}
               {% endif %}
 
-              <li>
-                <a href={{h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=pkg.name)}}>{{ _('Administer dataset rights') }}</a>
-              </li>
               <li>
                 {% link_for _('History'), controller='package', action='history', id=pkg.name, class_='', icon='' %}
               </li>
@@ -88,15 +95,28 @@
         </tr>
         <tr>
           <td>{{ _('Data used') }}</td>
-          {% if c.related_count > 0 %}
-            <td>{% link_for c.related_count, controller='related', action='list', id=pkg.name %} {{ _('times') }}</td>
+          {% set showcase_count = h.get_package_showcase_count(pkg.id) %}
+          {% if showcase_count > 0 %}
+            <td></td>
           {% else %}
-            <td>{{ c.related_count }} {{ _('times') }}</td>
+            <td>0 {{ _('times') }}</td>
           {% endif %}
-          <td>{% link_for _('Advertise reuse'), controller='related', action='new', id=pkg.name, class_='btn btn-default' %}</td>
+
+          <td>
+
+          <div class="btn-group" role="group" aria-label="...">
+            {% set showcase_list_link = h.url_for(controller='ckanext.showcase.controller:ShowcaseController', action='dataset_showcase_list', id=pkg.name) %}
+            {% set new_showcase_link = h.url_for(controller='ckanext.showcase.controller:ShowcaseController', action='new_direct', package_id=pkg.name) %}
+            <a href="{{ showcase_list_link }}" class="btn btn-default"> {{_("{} times").format(showcase_count)}} </a>
+            <a href ="{{ new_showcase_link }}" class="btn btn-default"><i class="icon-plus no-margin"></i></a>
+          </div>
+
+          </td>
+
           <td><div class="tooltip-big">
-            {{ kata_form.tooltip(tooltip=_("If you are logged in, you can click the button to fill a submittable form about reuse. After submitting the information about reuse, anyone can view it using the number link on the left hand side. If there are no advertised reuses, a plain 0 is displayed.")) }}
+            {{ kata_form.tooltip(tooltip=_("If you are logged in, you can click the plus-sign and tell about how this dataset has been reused by filling the form that opens. After you have saved the reuse information, they will be shown to any user who clicks the button on the left. The button shows the number of reuse cases that have been reported.")) }}
           </div></td>
+
         </tr>
       </table>
 

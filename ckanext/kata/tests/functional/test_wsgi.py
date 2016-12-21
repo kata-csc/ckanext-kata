@@ -10,13 +10,15 @@ from lxml import etree
 
 import ckan.model as model
 import ckanext.kata.model as kata_model
-from ckan.logic import get_action
+from ckan.logic import get_action, NotAuthorized
 from ckan.tests.legacy import url_for
 from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
-from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
+from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT, TEST_ORGANIZATION_COMMON
 from ckanext.kata.controllers import ContactController
 import ckan.lib.dictization.model_dictize as model_dictize
+
+from nose.tools import raises
 
 
 class TestPages(KataWsgiTestCase):
@@ -223,48 +225,6 @@ class TestContactForm(KataWsgiTestCase):
 
         assert 'Message not sent' in res
 
-class TestDatasetEditorManagement(KataWsgiTestCase):
-    '''
-    Test the dataset editor management page's visibility
-    '''
-
-    @classmethod
-    def setup_class(cls):
-        super(TestDatasetEditorManagement, cls).setup_class()
-        model.repo.new_revision()
-        model.Session.commit()
-
-        pkg_1 = model.Package.get(u'warandpeace')
-        pkg_1.name = utils.pid_to_name(pkg_1.id)
-        model.Package.save(pkg_1)
-
-        pkg_2 = model.Package.get(u'annakarenina')
-        pkg_2.name = utils.pid_to_name(pkg_2.id)
-        model.Package.save(pkg_2)
-
-    def test_dataset_management_page_not_renders(self):
-        '''
-        Test that non-editor can not see the dataset administration page
-        '''
-        offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage',
-                         id=u'warandpeace')
-
-        extra_environ = {'REMOTE_USER': 'tester'}
-        res = self.app.get(offset, extra_environ=extra_environ)
-        assert res.status == 302, 'Expecting a redirect when user has no edit rights'
-
-    def test_dataset_management_page_renders(self):
-        '''
-        Test that the dataset management page renders
-        '''
-        offset = url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage',
-                         id=u'annakarenina')
-
-        extra_environ = {'REMOTE_USER': 'testsysadmin'}
-        res = self.app.get(offset, extra_environ=extra_environ)
-        assert 'Add a user for role' in res, \
-            u'User should see the dataset management page'
-
 
 class TestAuthorisation(KataWsgiTestCase):
     '''
@@ -290,6 +250,7 @@ class TestAuthorisation(KataWsgiTestCase):
         extra_environ = {'REMOTE_USER': 'russianfan'}
         res = self.app.get(offset, extra_environ=extra_environ, status=401)
 
+
     def test_delete_not_available(self):
         '''
         Test that deletion of a dataset is not available
@@ -297,26 +258,98 @@ class TestAuthorisation(KataWsgiTestCase):
         '''
         offset = url_for("/dataset/delete/annakarenina")
         extra_environ = {'REMOTE_USER': 'russianfan'}
-        res = self.app.get(offset, extra_environ=extra_environ, status=401)
 
-    def test_delete_available(self):
-        '''
-        Test that delete button exists for package editor
-        '''
-        offset = url_for(controller='package', action='read', id=u'annakarenina')
-        pkg_id = u'annakarenina'
-        user_id = u'tester'
-        user = model.User.get(user_id)
-        pkg = model.Package.get(pkg_id)
-        model.meta.Session.commit()
-        model.authz.add_user_to_role(user, 'editor', pkg)
-
-        extra_environ = {'REMOTE_USER': 'tester'}
         res = self.app.get(offset, extra_environ=extra_environ)
 
-        assert 'Are you sure you want to delete this dataset?' in res, \
-            'Dataset owner should have the delete button available'
+        assert res.status == 200, 'Wrong status code (expecting 200)'  # Confirmation page
+        res = res.forms[0].submit('delete')
 
+        assert res.status == 302, 'Wrong status code (expecting 302)'  # Redirect to login page
+        res = res.follow()
+
+        assert res.status == 200, 'Wrong status code (expecting 200)'  # Login page
+        assert 'Unauthorized to delete package' in res, \
+            'The login page should alert the user about deleting being unauthorized'
+
+    def test_delete_authorized_own(self):
+        """
+            A non-admin should be able to delete its own created dataset.
+        """
+
+        org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        org['name'] = 'testdeleteauthorizedown'
+        organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
+
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['name'] = 'test-delete-own-dataset'
+
+        package = get_action('package_create')({'user': 'joeadmin'}, data)
+
+        get_action('package_delete')({'user': 'joeadmin'}, {'id': package['id']})
+
+        offset = url_for(controller='package', action='read', id=package['id'])
+        res = self.app.get(offset)
+
+        assert res.status == 302, 'The user should be redirected to login page, since the package is deleted'
+        res = res.follow()
+
+        assert 'Unauthorized to read package' in res, \
+                "The package should be deleted and not shown to an anonymous user."
+
+
+    def test_delete_authorized_external(self):
+        """
+            An editor should be able to delete a package from an external organization
+        """
+
+        # tester - organization editor (has a right to delete packages)
+        org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        org['name'] = 'testdeleteauthorizedexternal'
+        organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
+
+        # create a dataset under that organization
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['name'] = 'test-authorized-external-deletion'
+
+        package = get_action('package_create')({'user': 'testsysadmin'}, data)
+
+        # delete the package as 'tester'
+        get_action('package_delete')({'user': 'tester'}, {'id': package['id']})
+
+        # assert, that the package is not found
+        offset = url_for(controller='package', action='read', id=package['id'])
+        res = self.app.get(offset)
+
+        assert res.status == 302, 'The user should be redirected to login page, since the package is deleted'
+        res = res.follow()
+
+        assert 'Unauthorized to read package' in res, \
+                "The package should be deleted and not shown to an anonymous user."
+
+    @raises(NotAuthorized)
+    def test_delete_unauthorized_external(self):
+        """
+            A member should not be able to delete a package from an external organization
+        """
+
+        # joeadmin - organization member (does not have a right to delete packages)
+        org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
+        org['name'] = 'testdeleteunauthorizedexternal'
+        organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
+
+        # create a dataset under that organization
+        data = copy.deepcopy(TEST_DATADICT)
+        data['owner_org'] = organization['name']
+        data['name'] = 'test-unauthorized-external-deletion'
+
+        package = get_action('package_create')({'user': 'testsysadmin'}, data)
+
+        # delete the package as 'tester'
+        get_action('package_delete')({'user': 'joeadmin'}, {'id': package['id']})
+
+        # The test should throw NotAuthorized exception
 
 class TestURNExport(KataWsgiTestCase):
     '''
@@ -379,7 +412,6 @@ class TestURNExport(KataWsgiTestCase):
 
             res = self.app.get(offset)
 
-            print res
             tree = etree.fromstring(res.body)
             self.assertEquals(len(tree.xpath("//u:identifier", namespaces=self.namespaces)), count)
 

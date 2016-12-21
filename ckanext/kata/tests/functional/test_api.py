@@ -15,7 +15,6 @@ from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
 
-
 class TestCreateDatasetAndResources(KataApiTestCase):
     """Tests for creating datasets and resources through API."""
 
@@ -300,7 +299,9 @@ class TestSearchDataset(KataApiTestCase):
         Set up test class
         '''
         super(TestSearchDataset, cls).setup_class()
-        search.clear()
+
+        package_index = search.index_for(model.Package)
+        package_index.clear()
 
         data_dict = copy.deepcopy(cls.TEST_DATADICT)  # Create public dataset
 
@@ -642,7 +643,6 @@ class TestDataReading(KataApiTestCase):
         g = Graph()
         g.parse(data=res.body)
 
-        assert len(list(g.subjects(RDF.type, URIRef("http://www.w3.org/ns/dcat#CatalogRecord")))) == 1
         assert len(list(g.subjects(RDF.type, URIRef("http://www.w3.org/ns/dcat#Dataset")))) == 1
         assert len(list(g.subject_objects(URIRef("http://purl.org/dc/terms/contributor")))) == 2
 

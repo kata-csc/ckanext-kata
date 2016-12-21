@@ -40,6 +40,10 @@ from ckanext.kata.middleware import NotAuthorizedMiddleware
 
 log = logging.getLogger('ckanext.kata')
 
+# regex patterns for before_search.
+MATCH_PAREN_RE = re.compile(r'\([^)]*\)')  # match content between parenthesis
+ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!{}[\]^"~*?:])') # find all escapable characters
+
 
 class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     """
@@ -86,12 +90,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         api_controller = "ckanext.kata.controllers:KATAApiController"
         # Full stops from harvested objects screw up the read method
         # when using the default ckan route
-        map.connect('/dataset/{id:.*?}.{format:rdf}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action='read_rdf')
-        map.connect('/dataset/{id:.*?}.{format:ttl}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action='read_ttl')
         map.connect('/browse',
                     controller="ckanext.kata.controllers:KataPackageController",
                     action='browse')
@@ -144,12 +142,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/data-model',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_data_model")
-        map.connect('/package_administration/{name}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action="dataset_editor_manage")
-        map.connect('/dataset_editor_delete/{name}',
-                    controller="ckanext.kata.controllers:KataPackageController",
-                    action="dataset_editor_delete")
         map.connect('/storage/upload_handle',
                     controller="ckanext.kata.controllers:MalwareScanningStorageController",
                     action='upload_handle')
@@ -192,8 +184,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_actions(self):
         """ Register actions. """
         return {
-            'dataset_editor_add': actions.dataset_editor_add,
-            'dataset_editor_delete': actions.dataset_editor_delete,
             'group_activity_list': actions.group_activity_list,
             'group_activity_list_html': actions.group_activity_list_html,
             'group_create': actions.group_create,
@@ -490,6 +480,15 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         q = data_dict.get('q')
         fq = data_dict.get('fq')
         if q or (fq and fq != '+dataset_type:dataset'):
+            if fq and '!id:' in fq:
+                # Peter: manage_datasets query in ckanext-showcase breaks down if
+                # there are colons in query constraints. i.e. 'urn:nbn:fi...'
+                # This is bypassed by escaping these constraints.
+                matched_content = MATCH_PAREN_RE.search(fq)
+                if matched_content:
+                    escaped_content = ESCAPE_CHARS_RE.sub(r'\\\g<char>', matched_content.group(0))
+                    data_dict["fq"] = MATCH_PAREN_RE.sub(escaped_content, fq)
+
             log.info(u"[{t}] Search query: {q};  constraints: {c}".format(t=datetime.datetime.now(), q=q, c=fq))
 
         return data_dict
@@ -643,7 +642,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             for item in validated.get('contact'):
                 for k_ in item.iterkeys():
                     if k_ == u'email':
-                        item[k_] = base64.b64encode(_crypt.encrypt(self._pad(item[k_])))
+                        item[k_] = base64.b64encode(_crypt.encrypt(self._pad(unicode(item[k_], "utf-8"))))
         except TypeError:
             # Harves sources
             pass

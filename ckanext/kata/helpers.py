@@ -619,10 +619,10 @@ def get_labels_for_uri_nocache(uri, ontology=None):
         data = urllib2.urlopen(url).read()
 
     except urllib2.HTTPError as e:
-        log.error("Can not connect to Finto: %s" % str(e.code))
+        log.error("Can not connect to Finto using url {url} - {code}".format(url=url, code=str(e.code)))
         return None
     except urllib2.URLError as e:
-        log.error("Can not connect to Finto: %s" % str(e.reason))
+        log.error("Can not connect to Finto using url {url} - {code}".format(url=url, code=str(e.reason)))
         return None
     except httplib.HTTPException:
         log.error('Can not connect to Finto: HTTPException')
@@ -1081,7 +1081,10 @@ def extract_version_date(version):
     :return string in format 2016-09-19
     '''
 
-    return version[:10]
+    if isinstance(version, basestring):
+        return version[:10]
+
+    return ''
 
 
 def get_current_year():

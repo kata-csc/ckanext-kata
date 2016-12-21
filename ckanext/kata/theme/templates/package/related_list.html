@@ -46,9 +46,6 @@
 
             {% if has_update_rights %}
             <li>
-              <a href={{h.url_for(controller='ckanext.kata.controllers:KataPackageController', action='dataset_editor_manage', name=pkg.name)}}>{{ _('Administer dataset rights') }}</a>
-            </li>
-            <li>
               {% link_for _('History'), controller='package', action='history', id=pkg.name, class_='', icon='' %}
             </li>
             {% endif %}

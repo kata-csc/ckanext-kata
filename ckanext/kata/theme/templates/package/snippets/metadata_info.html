@@ -110,23 +110,6 @@
   </div>
 
   <div class="form-row">
-    <div class="form-label">{{ _('Organization') }}</div>
-    <div class="form-content">
-      {% if pkg_dict.get('organization') %}
-        {% set org=pkg_dict.organization %}
-        {% set root_nodes = h.get_action('group_tree_section', {'id': org.id, 'type': org.type}) %}
-        {% if not root_nodes.get('children') %}
-          {% link_for org.title or org.name, controller='organization', action='about', id=org.name %}
-        {% else %}
-          <span class="compact">
-            {% snippet 'organization/snippets/organization_tree.html', top_nodes=[root_nodes] %}
-          </span>
-        {% endif %}
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="form-row">
     <div class="form-label">{{ _('Distributor') }}</div>
     <div class="form-content">
       {% for contact in pkg_dict.contact %}
@@ -142,8 +125,12 @@
             {{ contact.email }}
           {% endif %}
         {% endif %}
-        <br><a href="{{ contact.URL }}">{{ contact.URL }}</a>
-        <br>{{ contact.phone }}
+        {% if contact.URL %}
+          <br><a href="{{ contact.URL }}">{{ contact.URL }}</a>
+        {% endif %}
+        {% if contact.phone %}
+          <br>{{ contact.phone }}
+        {% endif %}
       {% endfor %}
     </div>
   </div>
@@ -158,15 +145,39 @@
           {% endif %}
           {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
     </div>
   </div>
+
+  <div class="form-row">
+    <div class="form-label">{{ _('Organization') }}</div>
+    <div class="form-content">
+      {% if pkg_dict.get('organization') %}
+        {% set organization=pkg_dict.organization %}
+        {% link_for organization.title or organization.name, controller='organization', action='about', id=organization.name %}
+
+        {# WORKS CURRENTLY TOO SLOWLY, SO THE BLOCK BELOW IS DISABLED FOR NOW
+          {% set org=pkg_dict.organization %}
+          {% set root_nodes = h.get_action('group_tree_section', {'id': org.id, 'type': org.type}) %}
+          {% if not root_nodes.get('children') %}
+            {% link_for org.title or org.name, controller='organization', action='about', id=org.name %}
+          {% else %}
+            <span class="compact">
+              {% snippet 'organization/snippets/organization_tree.html', top_nodes=[root_nodes] %}
+            </span>
+          {% endif %}
+        #}
+
+      {% endif %}
+    </div>
+  </div>
+
   <div class="form-row">
     <div class="form-label">{{ _('Contributor') }}</div>
     <div class="form-content">
@@ -177,10 +188,10 @@
           {% endif %}
           {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
@@ -194,13 +205,13 @@
           {% if loop.index0 > 0 %}
             <br><br>
           {% endif %}
-          <b>{{ h.resolve_agent_role(agent.role) }}</b><br>
+            <b>{{ h.resolve_agent_role(agent.role) }}</b><br>
           {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}

@@ -2174,8 +2174,6 @@ a.download {
   text-align: left;
 }
 .related-item-list {
-  border: 1px solid #c9c9c9;
-  padding: 20px 20px 0px 20px;
   margin-bottom: 20px;
 }
 .related-item-list li.etsin-related-item {
@@ -3148,4 +3146,31 @@ ul.no-bullet {
 .etsin-user-content .user-tabs > .active:hover {
   background-color: transparent !important;
   border-bottom: none !important;
+}
+.showcase-list-header {
+  padding-bottom: 1em;
+}
+.showcase-list-header:before {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.showcase-list-header:after {
+  display: table;
+  content: "";
+  line-height: 0;
+  clear: both;
+}
+.no-margin {
+  margin: 0 !important;
+}
+h1 > .label,
+h2 > .label,
+h3 > .label {
+  vertical-align: middle;
+  margin-top: -2px;
+  margin-left: 1em;
+}
+#show-empty-organizations {
+  position: static;
 }
