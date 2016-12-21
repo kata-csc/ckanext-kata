@@ -128,18 +128,6 @@ class TestResources(KataWsgiTestCase):
     # assert 'Edit Profile' in result.body    # Sanity check
 
 
-class TestRdfExport(KataWsgiTestCase):
-    '''
-    Test RDF export.
-    '''
-
-    def test_has_rdf_tags(self):
-        offset = url_for(controller='package', action='read', id=u'warandpeace') + '.rdf'
-        res = self.app.get(offset)
-
-        assert "<rdf" in res.body
-        assert len(etree.fromstring(res.body))
-
 class TestContactForm(KataWsgiTestCase):
     '''
     Test dataset contact form
@@ -186,7 +174,7 @@ class TestContactForm(KataWsgiTestCase):
         get_action('package_create')({'user': 'test_sysadmin'}, data)
 
         offset = url_for("/contact/send/test-contact")
-        res = self.app.post(offset, params={'recipient': utils.get_package_contacts(data.get('name'))[0].get('id')})
+        res = self.app.post(offset, params={'recipient': utils.get_package_contacts(data.get('id'))[0].get('id')})
         assert res.status == 302
 
         offset = url_for("/dataset/test-contact")

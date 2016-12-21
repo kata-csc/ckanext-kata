@@ -6,7 +6,7 @@ from ckanext.dcat.profiles import RDFProfile
 from ckanext.kata.helpers import convert_language_code, get_download_url, \
     get_if_url, get_rightscategory, is_url, json_to_list, split_disciplines, \
     resolve_org_name
-from ckanext.kata.utils import get_pids_by_type
+from ckanext.kata.utils import get_primary_pid, get_pids_by_type
 
 from rdflib import BNode, Literal, URIRef
 from rdflib.namespace import Namespace, RDF
@@ -75,15 +75,20 @@ class KataDcatProfile(RDFProfile):
                       id=dataset_dict.get('name'), qualified=True)
         g.add((dataset_ref, FOAF.homepage, URIRef(uri)))
 
-        # Etsin: primary identifiers
-        data_pids = get_pids_by_type('data', dataset_dict)
-        for pid in data_pids:
-            g.add((dataset_ref, ADMS.identifier, URIRef(pid.get('id'))))
+        # Etsin: primary identifier
+        g.add((dataset_ref, ADMS.identifier, URIRef(get_primary_pid(dataset_dict))))
 
-        version_pids = get_pids_by_type('version', dataset_dict)
-        for pid in version_pids:
-            g.add((dataset_ref, DCT.identifier, URIRef(pid.get('id'))))
-            g.add((dataset_ref, DCT.isVersionOf, URIRef(pid.get('id'))))
+        # Etsin: Relation identifiers
+        relation_pids = get_pids_by_type('relation', dataset_dict)
+        for rpid in relation_pids:
+            if rpid.get('relation') == 'isNewVersionOf' or rpid.get('relation') == 'isPreviousVersionOf':
+                g.add((dataset_ref, DCT.isVersionOf, URIRef(rpid.get('id'))))
+            elif rpid.get('relation') == 'hasPart':
+                g.add((dataset_ref, DCT.hasPart, URIRef(rpid.get('id'))))
+            elif rpid.get('relation') == 'isPartOf':
+                g.add((dataset_ref, DCT.isPartOf, URIRef(rpid.get('id'))))
+            else:
+                g.add((dataset_ref, DCT.identifier, URIRef(rpid.get('id'))))
 
         # Etsin: Title and Description, including translations
         items = [
