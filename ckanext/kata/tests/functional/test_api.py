@@ -573,12 +573,12 @@ class TestDataReading(KataApiTestCase):
 
     def test_create_and_read_resource(self):
         '''
-        Create and read resource data through API and test that 'url' matches. Availability 'through_provider'.
+        Create and read resource data through API and test that 'url' matches. Availability 'access_request'.
         '''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict = self.get_unique_pids(data_dict)
-        data_dict['availability'] = 'through_provider'
-        data_dict['through_provider_URL'] = 'http://www.tdata.fi/'
+        data_dict['availability'] = 'access_request'
+        data_dict['access_request_URL'] = 'http://www.tdata.fi/'
         data_dict.pop('direct_download_URL')
 
         output = self.api_user_normal.action.package_create(**data_dict)
