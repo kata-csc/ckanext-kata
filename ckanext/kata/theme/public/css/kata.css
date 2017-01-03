@@ -830,6 +830,11 @@ input[id="xmlfile"] {
     max-width: 400px;
     float: none;
   }
+  .form-instructions.relation-identifier-tooltip {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
 }
 @media screen and (max-width: 700px) {
   .form-instructions .dropdown-menu {
@@ -3170,7 +3175,4 @@ h3 > .label {
   vertical-align: middle;
   margin-top: -2px;
   margin-left: 1em;
-}
-#show-empty-organizations {
-  position: static;
 }

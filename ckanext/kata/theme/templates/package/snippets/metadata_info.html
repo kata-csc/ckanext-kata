@@ -481,11 +481,8 @@
   {% if relation_pids %}
     <div class="form-row" style="margin-bottom: 10px;">
       <div class="form-label">{{ _('Related data') }}</div>
-      <div class="form-content">{{ kata_form.tooltip(tooltip=_("<p>Relation identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</div>
-    </div>
-    <div class="form-row">
-      <div class="form-content" style="width:80%">
-        <table class="form-inner-table" style="margin-left:20%;">
+      <div class="form-content" style="position: relative;">
+        <table class="form-inner-table">
           {% for pid in relation_pids %}
             <tr>
               <td style="font-style: italic;">{{ h.get_relation_type_translation(pid.relation, lang) | safe }}</td>
@@ -495,7 +492,10 @@
             </tr>
           {% endfor %}
         </table>
+        {{ kata_form.tooltip(tooltip=_("<p>Relation identifier is an identifier of the data this metadata record refers to. Several data identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>"), class='relation-identifier-tooltip') }}
       </div>
+    </div>
+    <div class="form-row">
     </div>
   {% endif %}
 </div>
