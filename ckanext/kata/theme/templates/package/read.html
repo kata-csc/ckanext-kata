@@ -95,22 +95,16 @@
         </tr>
         <tr>
           <td>{{ _('Data used') }}</td>
-          {% set showcase_count = h.get_package_showcase_count(pkg.id) %}
-          {% if showcase_count > 0 %}
             <td></td>
-          {% else %}
-            <td>0 {{ _('times') }}</td>
-          {% endif %}
 
+          {% set showcase_count = h.get_package_showcase_count(pkg.id) %}
           <td>
-
-          <div class="btn-group" role="group" aria-label="...">
-            {% set showcase_list_link = h.url_for(controller='ckanext.showcase.controller:ShowcaseController', action='dataset_showcase_list', id=pkg.name) %}
-            {% set new_showcase_link = h.url_for(controller='ckanext.showcase.controller:ShowcaseController', action='new_direct', package_id=pkg.name) %}
-            <a href="{{ showcase_list_link }}" class="btn btn-default"> {{_("{} times").format(showcase_count)}} </a>
-            <a href ="{{ new_showcase_link }}" class="btn btn-default"><i class="icon-plus no-margin"></i></a>
-          </div>
-
+            <div class="btn-group" role="group" aria-label="...">
+              {% set showcase_list_link = h.url_for(controller='ckanext.showcase.controller:ShowcaseController', action='dataset_showcase_list', id=pkg.name) %}
+              {% set new_showcase_link = h.url_for(controller='ckanext.showcase.controller:ShowcaseController', action='new_direct', package_id=pkg.name) %}
+              <a href="{{ showcase_list_link }}" class="btn btn-default"> {{_("{} times").format(showcase_count)}} </a>
+              <a href ="{{ new_showcase_link }}" class="btn btn-default"><i class="icon-plus no-margin"></i></a>
+            </div>
           </td>
 
           <td><div class="tooltip-big">
