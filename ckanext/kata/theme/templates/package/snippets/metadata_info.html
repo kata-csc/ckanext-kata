@@ -488,7 +488,7 @@
               <td style="font-style: italic;">{{ h.get_relation_type_translation(pid.relation, lang) | safe }}</td>
             </tr>
             <tr>
-              <td style="padding-bottom: 15px;">{{ h.get_identifier_display_html(pid.id) | safe }}</td>
+              <td style="padding-bottom: 15px;">{{ pid.id | safe }}</td>
             </tr>
           {% endfor %}
         </table>
