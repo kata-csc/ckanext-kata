@@ -971,6 +971,16 @@ input[id="xmlfile"] {
 #s2id_field-parent {
   width: 100% !important;
 }
+#resource-edit .resource-upload-buttons .controls a {
+  background-color: #eaeaea !important;
+  color: #333333;
+  text-decoration: none;
+  background-position: 0 -15px;
+  border: 0.5px solid #cccccc;
+}
+#resource-edit .resource-upload-buttons .controls a:nth-child(3) {
+  display: none !important;
+}
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
   background: #ffffff;
@@ -3156,7 +3166,4 @@ h3 > .label {
   vertical-align: middle;
   margin-top: -2px;
   margin-left: 1em;
-}
-#show-empty-organizations {
-  position: static;
 }
