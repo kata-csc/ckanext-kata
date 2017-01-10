@@ -206,15 +206,16 @@ def validate_access_application_url(key, data, errors, context):
     which access application URL is input directly, then validation checks
     its not empty and that it is an url.
     '''
-    if data.get(('availability',)) == 'access_application':
-        if data.get(('access_application',)) == 'access_application_reetta_ida' or \
-        data.get(('access_application',))  == 'access_application_reetta':
+    if data.get(('availability',)) == 'access_application_rems_ida' or \
+        data.get(('availability',)) == 'access_application_rems_other' or \
+        data.get(('availability',)) == 'access_application_other':
+
+        if  data.get(('availability',)) == 'access_application_rems_ida' or \
+            data.get(('availability',)) == 'access_application_rems_other':
             data[key] = h.full_current_url().replace('/edit/', '/')
-        elif data.get(('access_application',)) == 'access_application_other':
+        elif data.get(('availability',)) == 'access_application_other':
             not_empty(key, data, errors, context)
             url_validator(key, data, errors, context)
-        else:
-            raise Invalid(_('Invalid value for access_application'))
     else:
         data.pop(key, None)
         raise StopOnError
@@ -228,7 +229,9 @@ def validate_access_application_download_url(key, data, errors, context):
     server has been given.
     '''
 
-    if data.get(('availability',)) == 'access_application':
+    if data.get(('availability',)) == 'access_application_rems_ida' or \
+        data.get(('availability',)) == 'access_application_rems_other' or \
+        data.get(('availability',)) == 'access_application_other':
         value = data.get(key)
         if value:
             url_not_empty(key, data, errors, context)
@@ -609,8 +612,7 @@ def validate_external_id_format(key, data, errors, context):
     :param context:
     :return:
     '''
-    if data.get(('availability',)) == 'access_application' and \
-    data.get(('access_application',)) == 'access_application_reetta_ida' and \
+    if data.get(('availability',)) == 'access_application_rems_ida' and \
     not is_ida_pid(data[key]):
         raise Invalid(_('Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)'))
 
@@ -744,3 +746,7 @@ def not_empty_if_langtitle_empty(key, data, errors, context):
     from ckan.lib.navl.validators import not_empty
     if not data.get(('langtitle', 0, 'value')):
         not_empty(key, data, errors, context)
+
+def validate_availability(key, data, errors, context):
+    if not data.get(key) in settings.AVAILABILITIES:
+        raise Invalid(_('Invalid availability. Must be one of: {availabilities}'.format(availabilities=', '.join(settings.AVAILABILITIES))))

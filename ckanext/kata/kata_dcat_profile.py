@@ -245,7 +245,9 @@ class KataDcatProfile(RDFProfile):
 
 
         # Etsin: Distribution
-        availability_list = ['access_application',
+        availability_list = ['access_application_rems_ida',
+                             'access_application_rems_other',
+                             'access_application_other',
                              'access_request']
 
         checksum_ref = BNode()

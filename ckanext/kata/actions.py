@@ -147,18 +147,16 @@ def _add_ida_download_url(context, data_dict):
     '''
 
     availability = data_dict.get('availability')
-    access_application = data_dict.get('access_application')
 
-    if availability == 'access_application' and access_application == 'access_application_reetta_ida':
+    if availability == 'access_application_rems_ida':
         log.debug("Dataset wants a new access application")
 
         url = data_dict.get('access_application_download_URL')
-
         ida_pid = data_dict.get('external_id')
 
         if ida_pid:
             if not url:
-                log.debug("Checking for dataset IDAiness through data PID: {p}".format(p=ida_pid))
+                log.debug("Checking for dataset IDAiness through data PID: {p}".format(p=unicode(ida_pid)))
                 if utils.is_ida_pid(ida_pid):
                     new_url = utils.generate_ida_download_url(ida_pid)
                     log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))

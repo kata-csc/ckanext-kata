@@ -228,18 +228,6 @@ def get_if_url(data):
         return False
 
 
-def string_to_list(data):
-    '''
-    Split languages and make it a list for Genshi (read.rdf)
-
-    :param data: the string to split
-    :rtype: list
-    '''
-    if data:
-        return data.split(", ")
-    return ''
-
-
 def get_rightscategory(data_dict):
     '''
     Return METS rights category and rights declaration for dataset
@@ -252,7 +240,7 @@ def get_rightscategory(data_dict):
 
     declarations = []
 
-    if availability in ['access_application', 'access_request']:
+    if availability in ['access_application_rems_ida', 'access_application_rems_other', 'access_application_other', 'access_request']:
         category = "CONTRACTUAL"
         declarations.append(data_dict.get('access_application_URL') or data_dict.get('access_request_URL'))
     elif license in ['other-pd', "ODC-PDDL-1.0", "CC0-1.0", "cc-zero"]:

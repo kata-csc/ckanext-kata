@@ -509,8 +509,7 @@ class TestDataReading(KataApiTestCase):
         output = self.api_user_normal.action.package_create(**data_dict)
 
         data_dict['id'] = output['id']
-        data_dict['availability'] = 'access_application'
-        data_dict['access_application'] = u'access_application_other'
+        data_dict['availability'] = 'access_application_other'
         data_dict['access_application_URL'] = ACCESS_URL
 
         # UPDATE AVAILABILITY
@@ -529,7 +528,7 @@ class TestDataReading(KataApiTestCase):
         assert 'checksum' in output
         assert 'mimetype' in output
 
-        assert output.get('availability') == 'access_application'
+        assert output.get('availability') == 'access_application_other'
 
         output['availability'] = 'contact_owner'
         output['accept-terms'] = 'yes'

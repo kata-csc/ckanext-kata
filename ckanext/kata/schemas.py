@@ -128,13 +128,13 @@ class Schemas:
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, co.to_extras_json]
         schema['version'] = [not_empty, unicode, va.validate_kata_date]
-        schema['availability'] = [not_missing, co.convert_to_extras_kata]
+        schema['availability'] = [not_missing, va.validate_availability, co.convert_to_extras_kata]
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
         schema['__extras'] = [va.check_agent, va.check_contact, va.check_langtitle]
         schema['__junk'] = [va.check_junk]
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
-        schema['access_application'] = [ignore_missing, unicode, va.validate_general, co.convert_to_extras_kata]
+     #   schema['access_application'] = [ignore_missing, unicode, va.validate_general, co.convert_to_extras_kata]
         schema['external_id'] = [ignore_missing, va.validate_external_id_format, va.validate_external_id_uniqueness, unicode, va.validate_general,
                                    co.convert_to_extras_kata]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,

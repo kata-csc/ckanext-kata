@@ -21,7 +21,7 @@ from ckanext.kata.validators import validate_kata_date, validate_kata_interval_d
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
     validate_title_duplicates, validate_title, check_direct_download_url, validate_access_application_url, \
     validate_license_url, validate_external_id_uniqueness, validate_primary_pid_uniqueness, validate_external_id_format, \
-    validate_pid_relation_type, validate_pid_type, validate_package_id_format
+    validate_pid_relation_type, validate_pid_type, validate_package_id_format, validate_availability
 from ckan.logic import get_action
 import ckan.model as model
 from ckanext.kata.utils import generate_pid
@@ -472,10 +472,10 @@ class TestValidators(TestCase):
         validate_general(('citation',), dada, errors, None)
         assert len(errors) == 0
 
-    def test_validate_access_application_url(self):
+    def test_validate_availability(self):
         errors = defaultdict(list)
         dada = copy.deepcopy(TEST_DATA_FLATTENED)
-        dada[('availability',)] = u'access_application'
+        dada[('availability',)] = u'unknown_value'
 
         #The below does not work since ckan url_validator wants context object
         # dada[('access_application',)] = u'access_application_other'
@@ -483,15 +483,13 @@ class TestValidators(TestCase):
         # validate_access_application_url(('access_application_URL',), dada, errors, {})
         # assert len(errors) == 0
 
-        dada[('access_application',)] = u'unknown_value'
-        self.assertRaises(Invalid, validate_access_application_url, ('access_application_URL',), dada, errors, {})
+        self.assertRaises(Invalid, validate_availability, ('availability',), dada, errors, {})
 
     def test_validate_external_id_format(self):
         errors = defaultdict(list)
         dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('external_id',)] = u'external_id'
-        dada[('availability',)] = u'access_application'
-        dada[('access_application',)] = u'access_application_reetta_ida'
+        dada[('availability',)] = u'access_application_rems_ida'
         self.assertRaises(Invalid, validate_external_id_format, ('external_id',), dada, errors, {})
 
     def test_validate_pid_relation_type(self):

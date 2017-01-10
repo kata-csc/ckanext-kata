@@ -120,8 +120,17 @@ DATASET_URL_UNKNOWN = 'http://'
 # Text string for dataset's resource.resource_type
 RESOURCE_TYPE_DATASET = 'dataset'
 
+AVAILABILITIES = ['access_application_rems_ida',
+                  'access_application_rems_other',
+                  'access_application_other',
+                  'access_request',
+                  'contact_owner',
+                  'direct_download']
+
 # All availability URL fields used with different availability options
-AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
+AVAILABILITY_OPTIONS = {'access_application_rems_ida': 'access_application_URL',
+                        'access_application_rems_other': 'access_application_URL',
+                        'access_application_other': 'access_application_URL',
                         'access_request': 'access_request_URL',
                         'contact_owner': None,
                         'direct_download': 'direct_download_URL'
@@ -134,7 +143,9 @@ KATA_FIELDS_REQUIRED = ['agent',
                         ]
 
 # Recommended extras fields
-KATA_FIELDS_RECOMMENDED = ['access_application',
+KATA_FIELDS_RECOMMENDED = ['access_application_rems_ida',
+                           'access_application_rems_other',
+                           'access_application_other',
                            'external_id',
                            'access_application_URL',
                            'access_request_URL',
