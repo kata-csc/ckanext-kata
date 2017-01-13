@@ -156,21 +156,15 @@
     <div class="form-label">{{ _('Organization') }}</div>
     <div class="form-content">
       {% if pkg_dict.get('organization') %}
-        {% set organization=pkg_dict.organization %}
-        {% link_for organization.title or organization.name, controller='organization', action='about', id=organization.name %}
-
-        {# WORKS CURRENTLY TOO SLOWLY, SO THE BLOCK BELOW IS DISABLED FOR NOW
-          {% set org=pkg_dict.organization %}
-          {% set root_nodes = h.get_action('group_tree_section', {'id': org.id, 'type': org.type}) %}
+          {% set org = pkg_dict.organization %}
+          {% set root_nodes = h.get_parent_hierarchy(org) %}
           {% if not root_nodes.get('children') %}
             {% link_for org.title or org.name, controller='organization', action='about', id=org.name %}
           {% else %}
             <span class="compact">
-              {% snippet 'organization/snippets/organization_tree.html', top_nodes=[root_nodes] %}
+              {% snippet 'organization/snippets/organization_tree.html', top_nodes=[root_nodes], show_empty=True %}
             </span>
           {% endif %}
-        #}
-
       {% endif %}
     </div>
   </div>
