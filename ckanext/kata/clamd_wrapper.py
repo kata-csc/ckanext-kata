@@ -8,7 +8,7 @@ import pyclamd
 
 log = logging.getLogger(__name__)
 
-def _scan_for_malware(stream):
+def _clamd_scan(stream):
     '''
     Checks for malware in the given stream using a ClamAV daemon.
     Inspired by the example code in pyclamd.
@@ -60,7 +60,7 @@ def _scan_for_malware(stream):
 def perform_scan(resource):
     '''
         Perform a malware scan and return True for a passed file
-        and false for detected malware. Wraps _scan_for_malware
+        and false for detected malware. Wraps _clamd_scan
         handling exceptions.
     '''
     do_scan = asbool(config.get('kata.storage.malware_scan', False))
@@ -68,7 +68,7 @@ def perform_scan(resource):
     if do_scan:
         file_buffer = resource.file
         try:
-            return _scan_for_malware(file_buffer)
+            return _clamd_scan(file_buffer)
         except clamd_wrapper.MalwareCheckError as err:
             log.error(str(err))
             return False
