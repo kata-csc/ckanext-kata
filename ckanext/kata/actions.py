@@ -338,7 +338,7 @@ def resource_create(context, data_dict):
 
 @clamd_wrapper.scan_for_malware
 def resource_update(context, data_dict):
-    return ckan.logic.action.create.resource_update(context, data_dict)
+    return ckan.logic.action.update.resource_update(context, data_dict)
 
 
 def related_create(context, data_dict):

@@ -232,11 +232,15 @@ def validate_access_application_download_url(key, data, errors, context):
         raise StopOnError
 
 
-def check_direct_download_url(key, data, errors, context):
+def check_resource_url_for_direct_download_url(key, data, errors, context):
     '''
     Validate dataset's direct download URL.
     '''
-    if data.get(('availability',)) == 'direct_download':
+
+    lst = list(key)
+    lst[2] = 'resource_type'
+    resource_type_key = tuple(lst)
+    if data.get(('availability',)) == 'direct_download' and data.get(resource_type_key) == settings.RESOURCE_TYPE_DATASET:
         url_not_empty(key, data, errors, context)
 
 
@@ -504,6 +508,9 @@ def url_not_empty(key, data, errors, context):
                                                          omits either URL scheme or hostname
     :returns: None
     '''
+    import pprint
+    pprint.pprint("URL_NOT_EMPTYSSÄ")
+    pprint.pprint(data.get(key))
     value = data.get(key)
     if value and value is not missing:
         url_components = urlparse.urlparse(value)
