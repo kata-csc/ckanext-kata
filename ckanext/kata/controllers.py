@@ -872,42 +872,6 @@ class KataInfoController(BaseController):
         return render('kata/data-model.html')
 
 
-class MalwareScanningStorageController(StorageController):
-    '''
-    MalwareScanningStorageController extends the standard CKAN StorageController
-    class by adding an optional malware check on file uploads.
-
-    Malware scanning is disabled by default but can be enabled by setting
-    the configuration option kata.storage.malware_scan to true.
-    When scanning is enabled, not having a ClamAV daemon running
-    will cause uploads to be rejected.
-    '''
-
-    def upload_handle(self):
-        params = dict(request.params.items())
-        field_storage = params.get('file')
-        buffer = field_storage.file
-
-        do_scan = asbool(config.get('kata.storage.malware_scan', False))
-
-        if do_scan:
-            try:
-                passed = clamd_wrapper.scan_for_malware(buffer)
-                # reset the stream so that the data can be properly read again
-                buffer.seek(0)
-            except clamd_wrapper.MalwareCheckError as err:
-                passed = False
-                log.error(str(err))
-        else:
-            passed = True
-
-        if passed:
-            return StorageController.upload_handle(self)
-        else:
-            # TODO: produce a meaningful error message through javascript?
-            abort(403)
-
-
 class KataHomeController(HomeController):
     '''
     KataHomeController rewrites features of CKAN's home controller.

@@ -142,9 +142,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/data-model',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_data_model")
-        map.connect('/storage/upload_handle',
-                    controller="ckanext.kata.controllers:MalwareScanningStorageController",
-                    action='upload_handle')
         map.connect('add dataset with upload_xml',
                     '/dataset/new',
                     controller="ckanext.kata.controllers:KataPackageController",

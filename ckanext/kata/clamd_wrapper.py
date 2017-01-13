@@ -1,9 +1,14 @@
+from paste.deploy.converters import asbool
+from functools import wraps
+from pylons import config
+from ckan.logic import ValidationError
 import logging
 import pyclamd
 
+
 log = logging.getLogger(__name__)
 
-def scan_for_malware(stream):
+def _scan_for_malware(stream):
     '''
     Checks for malware in the given stream using a ClamAV daemon.
     Inspired by the example code in pyclamd.
@@ -50,6 +55,52 @@ def scan_for_malware(stream):
         raise MalwareCheckError("Connection to ClamAV daemon failed")
 
     return passed
+
+
+def perform_scan(resource):
+    '''
+        Perform a malware scan and return True for a passed file
+        and false for detected malware. Wraps _scan_for_malware
+        handling exceptions.
+    '''
+    do_scan = asbool(config.get('kata.storage.malware_scan', False))
+
+    if do_scan:
+        file_buffer = resource.file
+        try:
+            return _scan_for_malware(file_buffer)
+        except clamd_wrapper.MalwareCheckError as err:
+            log.error(str(err))
+            return False
+        finally:
+            file_buffer.seek(0)  # reset the stream
+
+    return True
+
+
+def scan_for_malware(action_func):
+    """
+        A decorator wrapping clamd_wrapper.perform_scan, that can be used to scan 
+        resource fileuploads.
+
+        Requires a data_dict with a field 'upload' of type FieldStorage.
+        i.e.    {'package_id': u'urn-nbn-fi-csc-kata12345', 
+                'upload': FieldStorage('upload', u'myfile.txt'), 
+                'name': u'myfile.txt'}
+
+        Usage:
+            @scan_for_malware
+            def my_action_function(context, data_dict):
+                return 'something'
+    """
+    def _decorator(request, *args, **kwargs):
+        resource = args[0].get('upload')
+        if not perform_scan(resource):
+            raise ValidationError("Uploaded resource did not pass malware scan.")
+        else:
+            return action_func(request, *args, **kwargs)
+
+    return wraps(action_func)(_decorator)
 
 
 class MalwareCheckError(Exception):

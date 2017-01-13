@@ -18,16 +18,13 @@ import ckan.model as model
 from ckan.lib.search import index_for
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
-from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
+from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound
 from ckanext.kata import utils, settings
-from ckan.logic import get_action
 from ckan import authz
 from ckanext.kata.schemas import Schemas
 import sqlalchemy
 from ckan.common import request
 import ckanext.kata.clamd_wrapper as clamd_wrapper
-from pylons import config
-from functools import wraps
 
 _or_ = sqlalchemy.or_
 
@@ -68,9 +65,6 @@ def package_show(context, data_dict):
     if 'agent' in pkg_dict1:
         agents = filter(None, pkg_dict1.get('agent', []))
         pkg_dict1['agent'] = agents or []
-
-    #print "testing with dummy data"
-    #pkg_dict1['titletest'] = {}
 
     # Normally logic function should not catch the raised errors
     # but here it is needed so action package_show won't catch it instead
@@ -186,7 +180,7 @@ def package_create(context, data_dict):
     _handle_pids(context, data_dict)
 
     _add_ida_download_url(context, data_dict)
-    
+
     if asbool(data_dict.get('private')) and not data_dict.get('persist_schema'):
         context['schema'] = Schemas.private_package_schema()
 
@@ -290,7 +284,7 @@ def package_delete(context, data_dict):
     '''
     # Logging for production use
     _log_action('Package', 'delete', context['user'], data_dict['id'])
-    
+
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     index = index_for('package')
     index.remove_dict(data_dict)
@@ -337,38 +331,12 @@ organization_update = _decorate(ckan.logic.action.update.organization_update, 'o
 organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'organization', 'delete')
 
 
-def _malware_scan(resource):
-    do_scan = asbool(config.get('kata.storage.malware_scan', False))
-
-    if do_scan:
-        file_buffer = resource.file
-        try:
-            return clamd_wrapper.scan_for_malware(file_buffer)
-        except clamd_wrapper.MalwareCheckError as err:
-            log.error(str(err))
-            return False
-        finally:
-            file_buffer.seek(0) # reset the stream
-    
-    return True
-
-
-def scan_for_malware(action_func):
-    def _decorator(request, *args, **kwargs):
-        if not _malware_scan(args[0].get('upload')):
-            raise ValidationError("Resource upload did not pass malware scan.")
-        else:
-            return action_func(request, *args, **kwargs)
-
-    return wraps(action_func)(_decorator)
-
-
-@scan_for_malware
+@clamd_wrapper.scan_for_malware
 def resource_create(context, data_dict):
     return ckan.logic.action.create.resource_create(context, data_dict)
 
 
-@scan_for_malware
+@clamd_wrapper.scan_for_malware
 def resource_update(context, data_dict):
     return ckan.logic.action.create.resource_update(context, data_dict)
 
