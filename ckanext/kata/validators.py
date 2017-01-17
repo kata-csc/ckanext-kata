@@ -508,9 +508,6 @@ def url_not_empty(key, data, errors, context):
                                                          omits either URL scheme or hostname
     :returns: None
     '''
-    import pprint
-    pprint.pprint("URL_NOT_EMPTYSSÄ")
-    pprint.pprint(data.get(key))
     value = data.get(key)
     if value and value is not missing:
         url_components = urlparse.urlparse(value)

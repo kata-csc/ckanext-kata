@@ -19,7 +19,7 @@ from ckanext.kata.validators import validate_kata_date, validate_kata_interval_d
     validate_email, validate_phonenum, \
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
-    validate_title_duplicates, validate_title, check_direct_download_url, check_pids, \
+    validate_title_duplicates, validate_title, check_resource_url_for_direct_download_url, check_pids, \
     validate_license_url, validate_pid_uniqueness
 from ckan.logic import get_action
 import ckan.model as model
@@ -690,7 +690,7 @@ class TestResourceValidators(TestCase):
         dada['availability'] = u'direct_download'
         dada['resources'][0]['url'] = u''
         data = flatten_dict(dada)
-        self.assertRaises(Exception, check_direct_download_url, ('resources', 0, 'url'), data, errors, None)
+        self.assertRaises(Exception, check_resource_url_for_direct_download_url, ('resources', 0, 'url'), data, errors, None)
 
 
 class TestJSONConverters(TestCase):
