@@ -41,6 +41,8 @@ class Kata(CkanCommand):
             self.sphinx()
         elif cmd == 'crawl':
             self.generate_crawl()
+        elif cmd == 'paituli_change':
+            self.update_paituli()
         else:
             print 'Command %s not recognized' % cmd
 
@@ -76,3 +78,11 @@ class Kata(CkanCommand):
 
         for package in model.Session.query(model.Package).all():
             print self.args[1] % package_dictize(package, {'model': model})
+
+    def update_paituli(self):
+        paituli_sets = model.Session.query(model.Package).filter(model.Package.name._like('urn-nbn-fi-csc-kata000010000%')).filter(model.Package.creator_.user_id = 'aleksi').all()
+        for paituli_set in paituli_sets:
+            paituli_set.creator_user_id = 'kylli'
+            paituli_set.save()
+
+        model.Session.commit()
