@@ -4,10 +4,8 @@ import sys
 
 from ckan.lib.cli import CkanCommand
 from ckan.lib.dictization.model_dictize import package_dictize
-import ckan.model as model
 from ckanext.harvest.model import HarvestSource
 from ckanext.kata.model import setup
-
 
 class Kata(CkanCommand):
     '''
@@ -80,9 +78,9 @@ class Kata(CkanCommand):
             print self.args[1] % package_dictize(package, {'model': model})
 
     def update_paituli(self):
-        paituli_sets = model.Session.query(model.Package).filter(model.Package.name._like('urn-nbn-fi-csc-kata000010000%')).filter(model.Package.creator_.user_id = 'aleksi').all()
-        for paituli_set in paituli_sets:
-            paituli_set.creator_user_id = 'kylli'
-            paituli_set.save()
-
-        model.Session.commit()
+        import ckan.model as model
+        from sqlalchemy import and_
+        from sqlalchemy import update
+        ses = model.Session
+        ses.execute(update(model.Package).where(and_(model.Package.creator_user_id == '5f1f5463-6943-4610-968b-57a137e4e7f7',model.Package.name.like('urn-nbn-fi-csc-kata000010000%'))).values(creator_user_id = '5adaebc9-920f-4172-8f70-9797cf1c74ce'))
+        ses.commit()
