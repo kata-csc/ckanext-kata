@@ -6,6 +6,7 @@ from ckan.lib.cli import CkanCommand
 from ckan.lib.dictization.model_dictize import package_dictize
 from ckanext.harvest.model import HarvestSource
 from ckanext.kata.model import setup
+import ckan.model as model
 
 class Kata(CkanCommand):
     '''
@@ -78,7 +79,6 @@ class Kata(CkanCommand):
             print self.args[1] % package_dictize(package, {'model': model})
 
     def update_paituli(self):
-        import ckan.model as model
         from sqlalchemy import and_
         from sqlalchemy import update
         ses = model.Session
