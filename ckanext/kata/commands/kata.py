@@ -40,8 +40,6 @@ class Kata(CkanCommand):
             self.sphinx()
         elif cmd == 'crawl':
             self.generate_crawl()
-        elif cmd == 'paituli_change':
-            self.update_paituli()
         else:
             print 'Command %s not recognized' % cmd
 
@@ -77,10 +75,3 @@ class Kata(CkanCommand):
 
         for package in model.Session.query(model.Package).all():
             print self.args[1] % package_dictize(package, {'model': model})
-
-    def update_paituli(self):
-        from sqlalchemy import and_
-        from sqlalchemy import update
-        ses = model.Session
-        ses.execute(update(model.Package).where(and_(model.Package.creator_user_id == '5f1f5463-6943-4610-968b-57a137e4e7f7',model.Package.name.like('urn-nbn-fi-csc-kata000010000%'))).values(creator_user_id = '5adaebc9-920f-4172-8f70-9797cf1c74ce'))
-        ses.commit()
