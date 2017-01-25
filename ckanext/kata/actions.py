@@ -56,7 +56,7 @@ def package_show(context, data_dict):
 
     if not data_dict.get('id') and not data_dict.get('name'):
         # Get package by data PIDs
-        data_dict['id'] = utils.get_package_id_by_access_or_primary_pid(data_dict)
+        data_dict['id'] = utils.get_package_id_by_data_pids(data_dict)
 
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
@@ -106,7 +106,7 @@ def _handle_pids(context, data_dict):
 
     if data_dict.get('generate_version_pid') == 'on':
         data_dict['pids'] += [{'id': utils.generate_pid(),
-                               'type': 'relation',
+                               'type': 'version',
                                'provider': 'Etsin',
                                }]
 
