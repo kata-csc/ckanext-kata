@@ -20,7 +20,6 @@ from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
 from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
 from ckanext.kata import utils, settings
-from ckan.logic import get_action
 from ckan import authz
 from ckanext.kata.schemas import Schemas
 import sqlalchemy
@@ -91,27 +90,19 @@ def package_show(context, data_dict):
     return pkg_dict1
 
 
-def _handle_package_id_on_create(context, data_dict):
+def _handle_package_id_on_create(data_dict):
     '''
-    Create package id always on create. Check that the generated id does not exist already.
+    Create package id always on create. This method should set 'id' value for the
+    given data_dict. The value should be unique in the system.
     If this method does not result in placing id to data_dict, then something
     is very wrong and the user does not have anything to do with it. This should
     always result in valid id getting placed into data_dict.
     '''
 
-    new_id_exists = True
-    i=0
-    while new_id_exists and i < 10:
-        new_id = unicode(utils.generate_pid())
-        existing_id_query = model.Session.query(model.Package)\
-                        .filter(model.Package.id == new_id)
-        if existing_id_query.first():
-            i += 1
-            continue
-        data_dict['id'] = new_id
-        new_id_exists = False
+    data_dict['id'] = utils.get_unique_package_id()
 
-def _handle_pids(context, data_dict):
+
+def _handle_pids(data_dict):
     '''
     Do some PID modifications to data_dict
     '''
@@ -137,7 +128,7 @@ def _handle_pids(context, data_dict):
                                    })
 
 
-def _add_ida_download_url(context, data_dict):
+def _add_ida_download_url(data_dict):
     '''
     Generate a download URL for actual data if no download URL has been specified,
     an access application is to be used for availability,
@@ -184,10 +175,10 @@ def package_create(context, data_dict):
     data_dict = utils.dataset_to_resource(data_dict)
 
     if not user.name == 'harvest':
-        _handle_package_id_on_create(context, data_dict)
-    _handle_pids(context, data_dict)
+        _handle_package_id_on_create(data_dict)
+    _handle_pids(data_dict)
 
-    _add_ida_download_url(context, data_dict)
+    _add_ida_download_url(data_dict)
     
     if asbool(data_dict.get('private')) and not data_dict.get('persist_schema'):
         context['schema'] = Schemas.private_package_schema()
@@ -240,18 +231,9 @@ def package_update(context, data_dict):
     else:
         data_dict['accept-terms'] = 'yes'  # This is not needed when adding a resource
 
-    _handle_pids(context, data_dict)
+    _handle_pids(data_dict)
 
-    _add_ida_download_url(context, data_dict)
-
-    # # Check if data version has changed and if so, generate a new version_PID
-    # if not data_dict['version'] == temp_pkg_dict['version']:
-    #     data_dict['pids'].append(
-    #         {
-    #             u'provider': u'kata',
-    #             u'id': utils.generate_pid(),
-    #             u'type': u'version',
-    #         })
+    _add_ida_download_url(data_dict)
 
     if asbool(data_dict.get('private')) and not data_dict.get('persist_schema'):
         context['schema'] = Schemas.private_package_schema()

@@ -24,6 +24,25 @@ log = logging.getLogger(__name__)
 IDA_PID_REGEX = re.compile(r'^urn:nbn:fi:csc-ida.*s$')
 
 
+def get_unique_package_id():
+    '''
+    Create new package id by generating a new one. Check that the generated id does not exist already.
+    This method should always return a previously unexisting package id. If this method returns None,
+    then something is wrong.
+    '''
+
+    new_id_exists = True
+    i=0
+    while new_id_exists and i < 10:
+        new_id = unicode(generate_pid())
+        existing_id_query = model.Session.query(model.Package)\
+                        .filter(model.Package.id == new_id)
+        if existing_id_query.first():
+            i += 1
+            continue
+        return new_id
+    return None
+
 def generate_pid():
     """
     Generate a permanent Kata identifier
