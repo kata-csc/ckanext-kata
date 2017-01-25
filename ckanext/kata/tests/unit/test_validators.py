@@ -24,7 +24,7 @@ from ckanext.kata.validators import validate_kata_date, validate_kata_interval_d
     validate_pid_relation_type, validate_pid_type, validate_package_id_format, validate_availability
 from ckan.logic import get_action
 import ckan.model as model
-from ckanext.kata.utils import generate_pid
+from ckanext.kata.utils import get_unique_package_id
 
 
 
@@ -540,7 +540,7 @@ class TestPidUniquenessValidator(TestCase):
         return flat_dada
 
     def _set_flat_data_id(self, flat_data):
-        flat_data[('id',)] = generate_pid()
+        flat_data[('id',)] = get_unique_package_id()
 
     def _get_unflattened_data(self):
         unflattened_data = copy.deepcopy(TEST_DATADICT)
@@ -548,7 +548,7 @@ class TestPidUniquenessValidator(TestCase):
         return unflattened_data
 
     def _set_unflattened_data_id(self, unflattened_data):
-        unflattened_data['id'] = generate_pid()
+        unflattened_data['id'] = get_unique_package_id()
 
     def _set_random_pids_for_unflattened_data(self, unflattened_data, exceptNo=0):
         for idx, pid in enumerate(unflattened_data.get('pids', [])):
