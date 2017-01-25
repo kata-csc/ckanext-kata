@@ -183,7 +183,7 @@ def package_create(context, data_dict):
 
     data_dict = utils.dataset_to_resource(data_dict)
 
-    if not user == 'harvest':
+    if not user.name == 'harvest':
         _handle_package_id_on_create(context, data_dict)
     _handle_pids(context, data_dict)
 
