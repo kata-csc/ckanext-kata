@@ -18,12 +18,13 @@ import ckan.model as model
 from ckan.lib.search import index_for
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
-from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
+from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound
 from ckanext.kata import utils, settings
 from ckan import authz
 from ckanext.kata.schemas import Schemas
 import sqlalchemy
 from ckan.common import request
+import ckanext.kata.clamd_wrapper as clamd_wrapper
 
 _or_ = sqlalchemy.or_
 
@@ -64,9 +65,6 @@ def package_show(context, data_dict):
     if 'agent' in pkg_dict1:
         agents = filter(None, pkg_dict1.get('agent', []))
         pkg_dict1['agent'] = agents or []
-
-    #print "testing with dummy data"
-    #pkg_dict1['titletest'] = {}
 
     # Normally logic function should not catch the raised errors
     # but here it is needed so action package_show won't catch it instead
@@ -274,7 +272,7 @@ def package_delete(context, data_dict):
     '''
     # Logging for production use
     _log_action('Package', 'delete', context['user'], data_dict['id'])
-    
+
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     index = index_for('package')
     index.remove_dict(data_dict)
@@ -311,18 +309,24 @@ def _decorate(f, target_type, action):
     return call
 
 # Overwriting to add logging
-resource_create = _decorate(ckan.logic.action.create.resource_create, 'resource', 'create')
-resource_update = _decorate(ckan.logic.action.update.resource_update, 'resource', 'update')
 resource_delete = _decorate(ckan.logic.action.delete.resource_delete, 'resource', 'delete')
 related_delete = _decorate(ckan.logic.action.delete.related_delete, 'related', 'delete')
-# member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'create')
-# member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
 group_create = _decorate(ckan.logic.action.create.group_create, 'group', 'create')
 group_update = _decorate(ckan.logic.action.update.group_update, 'group', 'update')
 group_delete = _decorate(ckan.logic.action.delete.group_delete, 'group', 'delete')
 organization_create = _decorate(ckan.logic.action.create.organization_create, 'organization', 'create')
 organization_update = _decorate(ckan.logic.action.update.organization_update, 'organization', 'update')
 organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'organization', 'delete')
+
+
+@clamd_wrapper.scan_for_malware
+def resource_create(context, data_dict):
+    return ckan.logic.action.create.resource_create(context, data_dict)
+
+
+@clamd_wrapper.scan_for_malware
+def resource_update(context, data_dict):
+    return ckan.logic.action.update.resource_update(context, data_dict)
 
 
 def related_create(context, data_dict):

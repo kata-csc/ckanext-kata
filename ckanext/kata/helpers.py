@@ -28,6 +28,7 @@ from pylons.i18n.translation import gettext_noop as N_
 from ckan.common import request
 from webhelpers.html import literal
 from datetime import date
+from ckanext.hierarchy.model import GroupTreeNode, group_dictize
 
 log = logging.getLogger(__name__)
 
@@ -477,6 +478,44 @@ def organizations_available(permission='edit_group'):
 
 def get_organization_sorters():
     return [(N_("By datasets"), "packages"), (N_("Show all"), "title")]
+
+
+def _direct_branch_fast(org_list):
+    """
+        Return a direct organization hierarchy from
+        a flat list of Group objects. This can be used to render
+        the hierarchical view with i.e. snippets/organization_tree.html.
+    """
+
+    def reducer(root, child):
+        if root and child:
+            root.add_child_node(child)
+        return child
+
+    def gtn_from_group(grp):
+        return GroupTreeNode(group_dictize(grp))
+
+    # Convert a normal Group object to a ckanext-hierarchy's GroupTreeNode
+    dictized_orgs = map(gtn_from_group, org_list)
+
+    # Save the first organization, since it will be the root organization.
+    root = dictized_orgs[0]
+
+    # Reduce the organizations into the last child by applying
+    # add_child_node to each dictized_orgs item.
+    reduced_orgs = reduce(reducer, dictized_orgs)
+
+    return root
+
+
+def get_parent_hierarchy(organization):
+    # Get a single organization based on data_dict's organization dict
+    query = model.Group.search_by_name_or_title(organization.get('name'), group_type=None, is_org=True)
+    org = query.one()
+
+    parent_hierarchy = org.get_parent_group_hierarchy(type='organization')
+    parent_hierarchy.append(org)
+    return _direct_branch_fast(parent_hierarchy)
 
 
 def convert_language_code(lang, to_format, throw_exceptions=True):

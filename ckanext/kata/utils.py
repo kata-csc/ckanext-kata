@@ -471,7 +471,7 @@ def generate_ida_download_url(external_id):
     :return: a download URL for an IDA dataset
     '''
 
-    ida_download_url_template = "http://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
+    ida_download_url_template = "https://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
     return ida_download_url_template.format(p=external_id)
 
 

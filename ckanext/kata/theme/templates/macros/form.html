@@ -423,7 +423,7 @@ Example
   {{ input(field_url, label=url_label, id='field-image-url', placeholder=placeholder, value=data.get(field_url), error=errors.get(field_url), classes=['control-full']) }}
 
   {% if is_upload_enabled %}
-    {{ input(field_upload, label=upload_label, id='field-image-upload', type='file', placeholder='', value='', error='', classes=['control-full']) }}
+    {{ input(field_upload, label=upload_label, id='field-image-upload', type='file', placeholder='', value='', error='', classes=['control-full resource-upload-buttons']) }}
     {% if is_upload %}
       {{ checkbox(field_clear, label=_('Clear Upload'), id='field-clear-upload', value='true', error='', classes=['control-full']) }}
     {% endif %}
