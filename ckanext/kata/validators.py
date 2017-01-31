@@ -206,12 +206,10 @@ def validate_access_application_url(key, data, errors, context):
     which access application URL is input directly, then validation checks
     its not empty and that it is an url.
     '''
-    if data.get(('availability',)) == 'access_application_rems_ida' or \
-        data.get(('availability',)) == 'access_application_rems_other' or \
+    if data.get(('availability',)) == 'access_application_rems' or \
         data.get(('availability',)) == 'access_application_other':
 
-        if  data.get(('availability',)) == 'access_application_rems_ida' or \
-            data.get(('availability',)) == 'access_application_rems_other':
+        if  data.get(('availability',)) == 'access_application_rems':
             data[key] = h.full_current_url().replace('/edit/', '/')
         elif data.get(('availability',)) == 'access_application_other':
             not_empty(key, data, errors, context)
@@ -229,8 +227,7 @@ def validate_access_application_download_url(key, data, errors, context):
     server has been given.
     '''
 
-    if data.get(('availability',)) == 'access_application_rems_ida' or \
-        data.get(('availability',)) == 'access_application_rems_other' or \
+    if data.get(('availability',)) == 'access_application_rems' or \
         data.get(('availability',)) == 'access_application_other':
         value = data.get(key)
         if value:
@@ -604,21 +601,21 @@ def validate_primary_pid_uniqueness(key, data, errors, context):
                     raise Invalid(_('Primary identifier {pid} exists in another dataset {id}').format(pid=exam_primary_pid, id=package_id))
 
 
-def validate_external_id_format(key, data, errors, context):
-    '''
-    Check external_id value is an IDA identifier (or, if in the future other types of accesses than IDA
-    are needed, then this validator should be extended to also accept those types of IDs).
-    (Identifier.series)
-
-    :param key:
-    :param data:
-    :param errors:
-    :param context:
-    :return:
-    '''
-    if data.get(('availability',)) == 'access_application_rems_ida' and \
-    not is_ida_pid(data[key]):
-        raise Invalid(_('Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)'))
+# def validate_external_id_format(key, data, errors, context):
+#     '''
+#     Check external_id value is an IDA identifier (or, if in the future other types of accesses than IDA
+#     are needed, then this validator should be extended to also accept those types of IDs).
+#     (Identifier.series)
+#
+#     :param key:
+#     :param data:
+#     :param errors:
+#     :param context:
+#     :return:
+#     '''
+#     if data.get(('availability',)) == 'access_application_rems' and \
+#     not is_ida_pid(data[key]):
+#         raise Invalid(_('Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)'))
 
 
 def validate_pid_relation_type(key, data, errors, context):

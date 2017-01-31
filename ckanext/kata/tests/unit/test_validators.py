@@ -473,7 +473,7 @@ class TestValidators(TestCase):
         errors = defaultdict(list)
         dada = copy.deepcopy(TEST_DATA_FLATTENED)
         dada[('external_id',)] = u'external_id'
-        dada[('availability',)] = u'access_application_rems_ida'
+        dada[('availability',)] = u'access_application_rems'
         self.assertRaises(Invalid, validate_external_id_format, ('external_id',), dada, errors, {})
 
     def test_validate_pid_relation_type(self):

@@ -134,7 +134,7 @@ class Schemas:
         schema['__junk'] = [va.check_junk]
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
-        schema['external_id'] = [ignore_missing, va.validate_external_id_format, va.validate_external_id_uniqueness, unicode, va.validate_general,
+        schema['external_id'] = [ignore_missing, va.validate_external_id_uniqueness, unicode, va.validate_general,
                                    co.convert_to_extras_kata]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]

@@ -219,7 +219,7 @@
   <div class="form-row">
     <div class="form-label">{{ _('Data availability') }}</div>
     <div class="form-content">
-        {% if pkg_dict.availability == 'access_application_rems_ida' or pkg_dict.availability == 'access_application_rems_other' or pkg_dict.availability == 'access_application_other' %}<a href="{{ pkg_dict.access_application_URL }}" target="_blank" class="download">{{ _('Access this dataset via this access form.')}}</a> {% endif%}
+        {% if pkg_dict.availability == 'access_application_rems' or pkg_dict.availability == 'access_application_other' %}<a href="{{ pkg_dict.access_application_URL }}" target="_blank" class="download">{{ _('Access this dataset via this access form.')}}</a> {% endif%}
         {% if pkg_dict.availability == 'direct_download' %}{% if pkg_dict.direct_download_URL %} <a href="{{pkg_dict.direct_download_URL}}" class="download">{{ _('Access this dataset freely.') }}</a> {% endif %} {% endif %}
         {% if pkg_dict.availability == 'access_request' %}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}" class="download">{{ _('Access this dataset by logging in.') }}</a> {% endif %} {% endif %}
         {% if pkg_dict.availability == 'contact_owner' %}

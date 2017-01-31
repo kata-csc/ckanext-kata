@@ -37,20 +37,20 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
       }
 
       /* Show notification if user changes availability
-       * from access_application_rems_ida to something else.
+       * from access_application_rems to something else.
        */
       $("#usage-info input:radio").change(function () {
-        if ($(this).is(":checked") && $(this).attr('id') != 'access_application_rems_ida') {
-          if ($('#access_application_rems_ida_identifier').val().match('^urn:nbn:fi:csc\-ida') !== null) {
-            $('#ida-pid-change-alert').css('display', 'block');
+        if ($(this).is(":checked") && $(this).attr('id') != 'access_application_rems') {
+          if ($('#access_application_rems_identifier').val().match('^.+$') !== null) {
+            $('#rems-pid-change-alert').css('display', 'block');
           }
         }
-        $('#access_application_rems_ida_identifier').val('');
-        $('#access_application_rems_ida_identifier').trigger('change');
+        $('#access_application_rems_identifier').val('');
+        $('#access_application_rems_identifier').trigger('change');
       });
 
-      /* Change external_id input value based on access_application_reetta_ida_identifier field. */
-      $('#access_application_rems_ida_identifier').change(function() {
+      /* Change external_id input value based on access_application_rems_identifier field. */
+      $('#access_application_rems_identifier').change(function() {
         $('#external_id').val($(this).val());
       });
     },
@@ -212,17 +212,13 @@ KATA.toggleAccess = function(obj) {
             $('#urlDiv_direct_download').slideUp("fast");
             $('#access_application').prop('checked', false);
             break;
-        case 'access_application_rems_ida':
-            $('#access_application_rems_ida_box').slideDown("fast");
-            $('#access_application_other_box').slideUp("fast");
-            break;
-        case 'access_application_rems_other':
-            $('#access_application_rems_ida_box').slideUp("fast");
+        case 'access_application_rems':
+            $('#access_application_rems_box').slideDown("fast");
             $('#access_application_other_box').slideUp("fast");
             break;
         case 'access_application_other':
             $('#access_application_other_box').slideDown("fast");
-            $('#access_application_rems_ida_box').slideUp("fast");
+            $('#access_application_rems_box').slideUp("fast");
             break;
         }
 };

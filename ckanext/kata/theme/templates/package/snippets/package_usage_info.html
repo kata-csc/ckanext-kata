@@ -5,9 +5,9 @@
 
 <div class="tab-content-inner">
 
-  <div class="alert alert-info" id="ida-pid-change-alert" style="display: none;">
+  <div class="alert alert-info" id="rems-pid-change-alert" style="display: none;">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    {{ _('You changed availability. Please note that the access rights management and access to the dataset is still available in Reetta. Should you at any point wish to return to having the IDA-Reetta availability in Etsin, it is possible by setting the correct IDA PID to the field under "Manage access rights with Reetta service, dataset is stored in IDA".') }}
+    {{ _('You changed availability. Please note that the access rights management and access to the dataset is still available in Reetta. Should you at any point wish to return to having the Reetta availability in Etsin, it is possible by setting the correct PID to the field under "Manage access rights with Reetta service".') }}
   </div>
 
   <div class="form-row">
@@ -39,41 +39,28 @@
       </div>
 
       <label class="radio" for="access_application">
-        <input type="radio"  id="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application_rems_ida' or data.availability == 'access_application_rems_other' or data.availability == 'access_application_other'}}>
+        <input type="radio"  id="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application_rems' or data.availability == 'access_application_other'}}>
         {{ _('using access rights management service') }}
       </label>
-      <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application_rems_ida' and data.availability != 'access_application_rems_other' and data.availability != 'access_application_other'%}style="display:none"{% endif %}>
+      <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application_rems' and data.availability != 'access_application_other'%}style="display:none"{% endif %}>
 
-        {% if data.availability == 'access_application_rems_ida' %}
-          {% set access_application_rems_ida_option = true %}
-          {% set access_application_rems_other_option = false %}
-          {% set access_application_other_option = false %}
-        {% endif %}
-        {% if data.availability == 'access_application_rems_other' %}
-          {% set access_application_rems_ida_option = false %}
-          {% set access_application_rems_other_option = true %}
+        {% if data.availability == 'access_application_rems' %}
+          {% set access_application_rems_option = true %}
           {% set access_application_other_option = false %}
         {% endif %}
         {% if data.availability == 'access_application_other' %}
-          {% set access_application_rems_ida_option = false %}
-          {% set access_application_rems_other_option = false %}
+          {% set access_application_rems_option = false %}
           {% set access_application_other_option = true %}
         {% endif %}
 
-        <label class="radio" for="access_application_rems_ida">
-          <input type="radio" name="availability" id="access_application_rems_ida" style="top: 4px" value="access_application_rems_ida" onclick="KATA.toggleAccess(this)" onchange="" {% if access_application_rems_ida_option %}checked value="True"{% endif %}/>
-          {{ _('Manage access rights with Reetta service, dataset is stored in IDA') }}
-          {{ kata_form.tooltip(tooltip=_("If the dataset is in IDA storage service and you would like to use Reetta resource entitlement management system to manage access rights to the dataset, choose this option. IDA is linked to Reetta, so your dataset's IDA metadata PID (Identifier.series) is required to establish connection between Reetta and IDA. Applicants are able to access the application form via Etsin dataset page, and after the dataset distributor has accepted the applicant's application, the applicant will be notified of this automatically.")) }}
+        <label class="radio" for="access_application_rems">
+          <input type="radio" name="availability" id="access_application_rems" style="top: 4px" value="access_application_rems" onclick="KATA.toggleAccess(this)" onchange="" {% if access_application_rems_option %}checked value="True"{% endif %}/>
+          {{ _('Manage access rights with Reetta service') }}
+          {{ kata_form.tooltip(tooltip=_("If you would like to use Reetta resource entitlement management system to manage access rights to the dataset, choose this option. You should enter an identifier to the text field that will be used for identifying the dataset in Reetta. In case you leave it blank, Etsin generates automatically an identifier for you. However, if your dataset is in IDA storage service, please enter your dataset's IDA metadata PID (Identifier.series), which is required to establish connection between Reetta and IDA. Applicants are able to access the application form via Etsin dataset page, and after the dataset distributor has accepted the applicant's application, the applicant will be notified of this automatically via email.")) }}
         </label>
-        <div class="m-left" id="access_application_rems_ida_box" {% if not access_application_rems_ida_option %} style="display: none" {%endif%}>
-          {{ form.input_unnamed('access_application_rems_ida_identifier', label=_("Enter IDA metadata identifier of the dataset"), placeholder=_('urn:nbn:fi:csc-ida...s'), value=external_id, error=errors.external_id, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+        <div class="m-left" id="access_application_rems_box" {% if not access_application_rems_option %} style="display: none" {%endif%}>
+          {{ form.input_unnamed('access_application_rems_identifier', label=_("Enter identifier for the dataset"), placeholder=_('e.g., urn:nbn:fi:csc-ida...s'), value=external_id, error=errors.external_id, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
         </div>
-
-        <label class="radio" for="access_application_rems_other">
-          <input type="radio" name="availability" id="access_application_rems_other" style="top: 4px" value="access_application_rems_other" onclick="KATA.toggleAccess(this)" {% if access_application_rems_other_option %}checked value="True"{% endif %}/>
-          {{ _('Manage access rights using Reetta service, dataset is not stored in IDA.') }}
-          {{ kata_form.tooltip(tooltip=_('If the dataset is not in IDA storage service and you would like to use Reetta resource entitlement management system for managing access rights to the dataset, choose this option. Applicants are able to access the application form via Etsin dataset page, but all communication after that is business between the dataset distributor and the applicant, Etsin is no longer involved.')) }}
-        </label>
 
         <label class="radio" for="access_application_other">
           <input type="radio" name="availability" id="access_application_other" style="top: 4px" value="access_application_other" onclick="KATA.toggleAccess(this)" {% if access_application_other_option %}checked value="True"{% endif %}/>

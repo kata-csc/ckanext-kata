@@ -128,30 +128,22 @@ def _handle_pids(data_dict):
 
 def _add_ida_download_url(data_dict):
     '''
-    Generate a download URL for actual data if no download URL has been specified,
-    an access application is to be used for availability,
-    and the dataset appears to be from IDA.
-
-    TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
+    Generate a download URL for actual data if no download URL has been specified
+    and access application_rems is used for availability,
+    and the dataset data appears to be from IDA.
     '''
 
     availability = data_dict.get('availability')
+    external_id = data_dict.get('external_id')
+    log.debug("Checking for dataset IDAiness through data PID: {p}".format(p=unicode(external_id)))
+    if availability == 'access_application_rems' and \
+        external_id and utils.is_ida_pid(external_id) and not \
+        data_dict.get('access_application_download_URL'):
 
-    if availability == 'access_application_rems_ida':
-        log.debug("Dataset wants a new access application")
+        new_url = utils.generate_ida_download_url(external_id)
+        log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))
+        data_dict['access_application_download_URL'] = new_url
 
-        url = data_dict.get('access_application_download_URL')
-        ida_pid = data_dict.get('external_id')
-
-        if ida_pid:
-            if not url:
-                log.debug("Checking for dataset IDAiness through data PID: {p}".format(p=unicode(ida_pid)))
-                if utils.is_ida_pid(ida_pid):
-                    new_url = utils.generate_ida_download_url(ida_pid)
-                    log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))
-                    data_dict['access_application_download_URL'] = new_url
-        else:
-            log.warn("Failed to get access PID for dataset")
 
 def package_create(context, data_dict):
     """
