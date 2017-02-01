@@ -319,29 +319,6 @@ def get_external_id(data_dict):
     return None
 
 
-def get_primary_pid_from_package(package):
-    '''
-    Returns the primary PID for a _package_.
-
-    :param package: dataset to query
-    :type package: model.Package
-    :return: the primary identifier
-    :rtype: str or unicode
-    '''
-
-    pid_id = u'pids_{idx}_id'
-    pid_type = u'pids_{idx}_type'
-    pids = [(k, v) for k, v in package.extras.iteritems() if k.startswith('pids')]
-    primary_pid = None
-    for key, value in pids:
-        if 'type' in key and value == u'primary':  # Note string type!
-            idx = key.split('_')[1]
-            if package.extras[pid_type.format(idx=idx)] == 'primary':
-                primary_pid = package.extras[pid_id.format(idx=idx)]
-
-    return primary_pid
-
-
 def get_package_id_by_pid(pid, pid_type):
     """ Find pid by id and type.
 
