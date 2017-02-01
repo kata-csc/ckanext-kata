@@ -178,7 +178,7 @@ class TestContactForm(KataWsgiTestCase):
         id = package['id']
         package_contact_id = utils.get_package_contacts(id)[0].get('id')
 
-        send_contact_offset = url_for("/contact/send/{0}".format(name))
+        send_contact_offset = url_for("/contact/send/{0}".format(id))
         res = self.app.post(send_contact_offset, params={'recipient': package_contact_id})
         assert res.status == 302
 
