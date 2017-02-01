@@ -20,7 +20,7 @@ from ckanext.kata.validators import validate_kata_date, validate_kata_interval_d
     validate_discipline, validate_spatial, validate_algorithm, \
     validate_mimetype, validate_general, validate_kata_date_relaxed, \
     validate_title_duplicates, validate_title, check_resource_url_for_direct_download_url, validate_access_application_url, \
-    validate_license_url, validate_external_id_uniqueness, validate_primary_pid_uniqueness, validate_external_id_format, \
+    validate_license_url, validate_external_id_uniqueness, validate_primary_pid_uniqueness, \
 validate_pid_relation_type, validate_pid_type, validate_package_id_format, validate_availability
 from ckan.logic import get_action
 import ckan.model as model
@@ -468,13 +468,6 @@ class TestValidators(TestCase):
         # assert len(errors) == 0
 
         self.assertRaises(Invalid, validate_availability, ('availability',), dada, errors, {})
-
-    def test_validate_external_id_format(self):
-        errors = defaultdict(list)
-        dada = copy.deepcopy(TEST_DATA_FLATTENED)
-        dada[('external_id',)] = u'external_id'
-        dada[('availability',)] = u'access_application_rems'
-        self.assertRaises(Invalid, validate_external_id_format, ('external_id',), dada, errors, {})
 
     def test_validate_pid_relation_type(self):
         errors = defaultdict(list)

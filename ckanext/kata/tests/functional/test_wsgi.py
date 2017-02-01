@@ -16,7 +16,11 @@ from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataWsgiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT, TEST_ORGANIZATION_COMMON
 from ckanext.kata.controllers import ContactController
-import ckan.lib.dictization.model_dictize as model_dictize
+from ckan.lib.create_test_data import CreateTestData
+from ckan.model import user as user_model
+import ckanapi
+
+
 
 from nose.tools import raises
 
@@ -163,22 +167,23 @@ class TestContactForm(KataWsgiTestCase):
         data = copy.deepcopy(TEST_DATADICT)
         data['private'] = False
         data['contact'][0]['email'] = 'kata.selenium@gmail.com'
-        data['id'] = 'test-contact'
-        data['name'] = 'test-contact'
 
         model.User(name="test_sysadmin", sysadmin=True).save()
 
         organisation = get_action('organization_create')({'user': 'test_sysadmin'}, {'name': 'test-organization',
                                                                                      'title': "Test organization"})
         data['owner_org'] = organisation.get('name')
-        get_action('package_create')({'user': 'test_sysadmin'}, data)
+        package = get_action('package_create')({'user': 'test_sysadmin'}, data)
+        name = package['name']
+        id = package['id']
+        package_contact_id = utils.get_package_contacts(id)[0].get('id')
 
-        offset = url_for("/contact/send/test-contact")
-        res = self.app.post(offset, params={'recipient': utils.get_package_contacts(data.get('id'))[0].get('id')})
+        send_contact_offset = url_for("/contact/send/{0}".format(name))
+        res = self.app.post(send_contact_offset, params={'recipient': package_contact_id})
         assert res.status == 302
 
-        offset = url_for("/dataset/test-contact")
-        res = self.app.post(offset)
+        dataset_offset = url_for("/dataset/{0}".format(name))
+        res = self.app.post(dataset_offset)
         assert 'Message not sent' in res
 
         import base64
@@ -187,28 +192,24 @@ class TestContactForm(KataWsgiTestCase):
         cc = ContactController()
         _time = base64.b64encode(cc.crypto.encrypt(cc._pad(str(int(time.time())))))
 
-        offset = url_for("/contact/send/test-contact")
         params = {
-            'recipient': utils.get_package_contacts(data.get('name'))[0].get('id'),
+            'recipient': package_contact_id,
             'check_this_out': _time,
             'accept_logging': 'True'
         }
-        self.app.post(offset, params=params, status=302)
 
-        offset = url_for("/dataset/test-contact")
-        res = self.app.post(offset)
-
+        self.app.post(send_contact_offset, params=params, status=302)
+        res = self.app.post(dataset_offset)
         assert 'spam bot' in res
 
         _time = base64.b64encode(cc.crypto.encrypt(cc._pad(str(int(time.time())-21))))
-        offset = url_for("/contact/send/test-contact")
         params = {
-            'recipient': utils.get_package_contacts(data.get('name'))[0].get('id'),
+            'recipient': package_contact_id,
             'check_this_out': _time,
             'accept_logging': 'True'
         }
-        self.app.post(offset, params=params, status=302)
-        offset = url_for("/dataset/test-contact")
+        self.app.post(send_contact_offset, params=params, status=302)
+        offset = url_for("/dataset/{0}".format(name))
         res = self.app.post(offset)
 
         assert 'Message not sent' in res
@@ -220,23 +221,49 @@ class TestAuthorisation(KataWsgiTestCase):
     '''
 
     @classmethod
+    def teardown_class(cls):
+        model.repo.rebuild_db()
+
+    @classmethod
     def setup_class(cls):
         super(TestAuthorisation, cls).setup_class()
         model.repo.new_revision()
         model.Session.commit()
 
-        pkg_2 = model.Package.get(u'annakarenina')
-        pkg_2.name = utils.pid_to_name(pkg_2.id)
-        model.Package.save(pkg_2)
+        users = [
+            {'name': 'test_sysadmin',
+             'sysadmin': True,
+             'apikey': 'test_sysadmin',
+             'password': 'test_sysadmin'},
+            {'name': 'test_user',
+             'sysadmin': False,
+             'apikey': 'test_user',
+             'password': 'test_user'},
+            {'name': 'test_user2',
+             'sysadmin': False,
+             'apikey': 'test_user2',
+             'password': 'test_user2'}
+        ]
+        CreateTestData.create_users(users)
+        cls.test_user = user_model.User.get('test_user')
+        cls.test_sysadmin = user_model.User.get('test_sysadmin')
+        cls.api_test_sysadmin = ckanapi.TestAppCKAN(cls.app, apikey=cls.test_sysadmin.apikey)
+        cls.api_test_user = ckanapi.TestAppCKAN(cls.app, apikey=cls.test_user.apikey)
+        org_dict = {'name': 'test_organisation', 'title': 'Test Organisation'}
+        cls.api_test_sysadmin.action.organization_create(**org_dict)
+        cls.TEST_DATADICT = copy.deepcopy(TEST_DATADICT)
+        cls.TEST_DATADICT['owner_org'] = 'test_organisation'
 
     def test_edit_not_available(self):
         '''
         Test that edit page is not available for random user
         '''
-        offset = url_for("/dataset/edit/annakarenina")
-
+        TestAuthorisation.TEST_DATADICT['pids'][0]['id'] = 'primary_pid_1'
+        package = TestAuthorisation.api_test_user.action.package_create(**TestAuthorisation.TEST_DATADICT)
+        offset = url_for("/dataset/edit/{0}".format(package['name']))
         extra_environ = {'REMOTE_USER': 'russianfan'}
         res = self.app.get(offset, extra_environ=extra_environ, status=401)
+        TestAuthorisation.api_test_user.call_action('package_delete', data_dict={'id': package['id']})
 
 
     def test_delete_not_available(self):
@@ -244,7 +271,8 @@ class TestAuthorisation(KataWsgiTestCase):
         Test that deletion of a dataset is not available
         for an unauthorised user
         '''
-        offset = url_for("/dataset/delete/annakarenina")
+        package = TestAuthorisation.api_test_user.action.package_create(**TestAuthorisation.TEST_DATADICT)
+        offset = url_for("/dataset/delete/{0}".format(package['name']))
         extra_environ = {'REMOTE_USER': 'russianfan'}
 
         res = self.app.get(offset, extra_environ=extra_environ)
@@ -259,18 +287,18 @@ class TestAuthorisation(KataWsgiTestCase):
         assert 'Unauthorized to delete package' in res, \
             'The login page should alert the user about deleting being unauthorized'
 
+        TestAuthorisation.api_test_user.call_action('package_delete', data_dict={'id': package['id']})
+
     def test_delete_authorized_own(self):
         """
             A non-admin should be able to delete its own created dataset.
         """
-
         org = copy.deepcopy(TEST_ORGANIZATION_COMMON)
         org['name'] = 'testdeleteauthorizedown'
         organization = get_action('organization_create')({'user': 'testsysadmin'}, org)
 
         data = copy.deepcopy(TEST_DATADICT)
         data['owner_org'] = organization['name']
-        data['name'] = 'test-delete-own-dataset'
 
         package = get_action('package_create')({'user': 'joeadmin'}, data)
 
@@ -299,7 +327,6 @@ class TestAuthorisation(KataWsgiTestCase):
         # create a dataset under that organization
         data = copy.deepcopy(TEST_DATADICT)
         data['owner_org'] = organization['name']
-        data['name'] = 'test-authorized-external-deletion'
 
         package = get_action('package_create')({'user': 'testsysadmin'}, data)
 
@@ -330,7 +357,6 @@ class TestAuthorisation(KataWsgiTestCase):
         # create a dataset under that organization
         data = copy.deepcopy(TEST_DATADICT)
         data['owner_org'] = organization['name']
-        data['name'] = 'test-unauthorized-external-deletion'
 
         package = get_action('package_create')({'user': 'testsysadmin'}, data)
 
