@@ -62,6 +62,9 @@ class KataDcatProfile(RDFProfile):
             self.g.add(params)
 
     def graph_from_dataset(self, dataset_dict, dataset_ref):
+        primary_pid = get_primary_pid(dataset_dict)
+        if not primary_pid:
+            return
 
         g = self.g
 
@@ -76,7 +79,7 @@ class KataDcatProfile(RDFProfile):
         g.add((dataset_ref, FOAF.homepage, URIRef(uri)))
 
         # Etsin: primary identifier
-        g.add((dataset_ref, ADMS.identifier, URIRef(get_primary_pid(dataset_dict))))
+        g.add((dataset_ref, ADMS.identifier, URIRef(primary_pid)))
 
         # Etsin: Relation identifiers
         relation_pids = get_pids_by_type('relation', dataset_dict)
