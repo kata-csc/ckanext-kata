@@ -604,6 +604,9 @@ at least three letters."))
         """
         c.package = Package.get(pkg_id)
 
+        if not c.package:
+            abort(404, _(u"Dataset not found"))
+
         if asbool(config.get('kata.disable_contact')):
             h.flash_error(_(u"Sending contact emails is prohibited for now. "
                             u"Please try again later or contact customer service."))
@@ -611,9 +614,6 @@ at least three letters."))
             return redirect(h.url_for(controller='package',
                                       action="read",
                                       id=c.package.name))
-
-        if not c.package:
-            abort(404, _(u"Dataset not found"))
 
         contacts = utils.get_package_contacts(c.package.id)
         c.recipient_options = [{'text': contact['name'], 'value': contact['id']} for contact in contacts]
