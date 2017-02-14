@@ -636,3 +636,16 @@ def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
         data[key] = data.get(UNRESOLVED_LICENSE_ID) + ('. ' + data.get(key) if data.get(key) else '')
     elif resolve_license_id(data.get(('license_id',))) == UNRESOLVED_LICENSE_ID:
         data[key] = data.get(('license_id',)) + '. ' + data.get(key) if data.get(key) else data.get(('license_id',))
+
+def convert_external_id(key, data, errors, context):
+    '''
+    If availability == 'access_application_rems' and external_id is not given, use package id as the external id
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    if data.get(('availability',)) == 'access_application_rems' and not data.get(key):
+        data[key] = data.get(('id',))

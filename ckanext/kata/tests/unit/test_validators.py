@@ -12,7 +12,7 @@ from unittest import TestCase
 from ckan.lib.navl.dictization_functions import Invalid, flatten_dict
 from ckanext.kata import settings
 from ckanext.kata.converters import remove_disabled_languages, checkbox_to_boolean, convert_languages, from_extras_json, to_extras_json, \
-    flattened_to_extras, flattened_from_extras, to_license_id, gen_translation_str_from_langtitle, populate_license_URL_if_license_id_not_resolved
+    flattened_to_extras, flattened_from_extras, to_license_id, gen_translation_str_from_langtitle, populate_license_URL_if_license_id_not_resolved, convert_external_id
 from ckanext.kata.tests.test_fixtures.flattened import TEST_DATA_FLATTENED
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_DATADICT
 from ckanext.kata.validators import validate_kata_date, validate_kata_interval_date, \
@@ -495,6 +495,14 @@ class TestValidators(TestCase):
         dada[('id',)] = u'invalid_package_id_format'
         self.assertRaises(Invalid, validate_package_id_format, ('id',), dada, errors, {})
 
+    def test_convert_external_id(self):
+        errors = defaultdict(list)
+        dada = copy.deepcopy(TEST_DATA_FLATTENED)
+        package_id = 'urn:nbn:fi:csc-kata29387492874'
+        dada[('id',)] = package_id
+        dada[('availability',)] = 'access_application_rems'
+        convert_external_id(('external_id',), dada, errors, None)
+        assert dada[('id',)] == dada[('external_id',)]
 
 
 class TestPidUniquenessValidator(TestCase):
