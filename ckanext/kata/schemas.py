@@ -88,7 +88,6 @@ class Schemas:
                              'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              # phone number can be missing from the first users
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
-        # phone number can be missing from the first users
         schema['event'] = {'type': [ignore_missing, va.check_events, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_interval_date],
