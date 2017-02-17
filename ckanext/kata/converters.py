@@ -11,13 +11,8 @@ from ckan.lib import helpers as h
 import os
 import re
 import logging
-import functools
 from pylons.i18n import _
 from ckan.lib.navl.dictization_functions import missing, Invalid
-
-from ckan.logic.action.create import related_create
-from ckan.model import Related, Session, Group, repo
-import ckan.logic as logic
 
 from ckanext.kata import settings, utils
 
@@ -264,23 +259,6 @@ def remove_disabled_languages(key, data, errors, context):
         data[key] = u''
 
 
-def remove_access_application_new_form(key, data, errors, context):
-    '''
-    If availability changes remove access_application_new_form.
-
-    Expecting string: `True` or `False` in `data['key']`.
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-    if data.get(('availability',)) != 'access_application':
-        # Remove checkbox value.
-        del data[key]
-        data[key] = u''
-
-
 def checkbox_to_boolean(key, data, errors, context):
     '''
     Convert HTML checkbox's value ('on' / null) to boolean string
@@ -292,15 +270,6 @@ def checkbox_to_boolean(key, data, errors, context):
             data[key] = u'True'
         else:
             data[key] = u'False'
-
-
-def update_pid(key, data, errors, context):
-    '''
-    Replace an empty unicode string with random PID.
-    '''
-    if type(data[key]) == unicode:
-        if len(data[key]) == 0:
-            data[key] = utils.generate_pid()
 
 
 def convert_from_extras_kata(key, data, errors, context):
@@ -494,22 +463,7 @@ def flattened_from_extras(key, data, errors, context):
 
 def default_name_from_id(key, data, errors, context):
     '''
-    If name not given, generate name from package.id
-
-    :param key: key
-    :param data: data
-    :param errors: validation errors
-    :param context: context
-    '''
-    if not data.get(key):
-        id = data.get(('id',))
-
-        data[key] = utils.datapid_to_name(id)
-
-
-def check_primary_pids(key, data, errors, context):
-    '''
-    Check that primary pids exist, if not, get them from package.id and package.name
+    In all cases, generate name from package.id
 
     :param key: key
     :param data: data
@@ -517,10 +471,7 @@ def check_primary_pids(key, data, errors, context):
     :param context: context
     '''
 
-    data_pids = utils.get_pids_by_type('data', {'pids': data.get(('pids',))}, primary=True)
-
-    if not data_pids:
-        data[('pids',)].append({'primary': u'True', 'type': 'data', 'id': data[('name',)]})
+    data[key] = utils.pid_to_name(data.get(('id',)))
 
 
 def to_license_id(key, data, errors, context):
@@ -559,6 +510,7 @@ def resolve_license_id(license_id):
     '''
 
     map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/license_id_map.json'
+    license_json_file_name = os.path.dirname(os.path.realpath(__file__)) + '/theme/public/licenses.json'
     license_id_out = None
     license_id_work = None
 
@@ -601,8 +553,19 @@ def resolve_license_id(license_id):
             log.debug("--> " + license_id_out)
             return license_id_out
         else:
+            # Part 2: Compare license_id to id values in licenses.json
+            license_json = None
+            with open(license_json_file_name) as license_json_file:
+                license_json = json.load(license_json_file)
 
-            # Part 2: compare the licenses to license_id_map.json lookup
+            def get_license_id_from_license_obj(obj): return obj.get('id')
+            known_licenses = list(map(get_license_id_from_license_obj, license_json))
+
+            if license_id in known_licenses:
+                log.debug("--> licenses.json: " + license_id)
+                return license_id
+
+            # Part 3: compare the licenses to license_id_map.json lookup
             with open(map_file_name) as map_file:
                 license_map = json.load(map_file)
 
@@ -618,6 +581,37 @@ def resolve_license_id(license_id):
         log.debug("No license ID in data")
         return "undefined"
 
+
+
+def to_relation(key, data, errors, context):
+    '''
+    Try to match relation to existing defined relation, replace matched content with relation id.
+
+    :param key: key
+    :param data: data
+    :param errors: validation errors
+    :param context: context
+    '''
+
+    relation_id = data.get(key)
+    log.debug("relation: " + relation_id)
+    if relation_id:
+        map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/theme/public/relations.json'
+        with open(map_file_name) as map_file:
+            relation_map = json.load(map_file)
+
+        relation_id_out = None
+        for relation in relation_map:
+            if relation.get('id').lower() == relation_id.lower().strip():
+                relation_id_out = relation.get('id')
+                log.debug("Resulting relation id: " + data[key])
+                break
+
+        if relation_id_out:
+            data[key] = relation_id_out
+        else:
+            # no matching relation found, do nothing
+            log.debug("No existing relation ID matched relation")
 
 def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
     '''
@@ -642,3 +636,16 @@ def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
         data[key] = data.get(UNRESOLVED_LICENSE_ID) + ('. ' + data.get(key) if data.get(key) else '')
     elif resolve_license_id(data.get(('license_id',))) == UNRESOLVED_LICENSE_ID:
         data[key] = data.get(('license_id',)) + '. ' + data.get(key) if data.get(key) else data.get(('license_id',))
+
+def convert_external_id(key, data, errors, context):
+    '''
+    If availability == 'access_application_rems' and external_id is not given, use package id as the external id
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    if data.get(('availability',)) == 'access_application_rems' and not data.get(key):
+        data[key] = data.get(('id',))

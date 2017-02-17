@@ -1,42 +1,36 @@
-{% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
-
-{% set pids = h.get_pids_by_type('data', data, primary=True) %}
-{% if not pids %}
-  {% do pids.append(dict(type='data', primary='True')) %}
-{% endif %}
-{% for pid_type in h.get_pid_types() %}
-  {% do pids.extend( h.get_pids_by_type(pid_type, data, primary=False)) %}
-{% endfor %}
-{% if pids | length == 1 %}
-  {% do pids.append(dict(type='data')) %}
-{% endif %}
-
 {% set index = h.create_loop_index() %}
-{% set pid_types = h.get_pid_types() %}
-
-{% set primary_pids = h.get_pids_by_type('data', data, primary=True) %}
-{% set primary_pid = primary_pids[0] or dict(type='data', primary='True') %}
+{% set primary_pid = h.get_primary_pid(data) or None %}
+{% set lang = h.lang() %}
 
 <div class="tab-content-inner">
 
   {# NOTE: Parameter "error" passed to kata_form.input macro needs to be corrected in all cases since it is same as in package_actors.html #}
 
-  {% set primary_pid_readonly = " readonly" if (primary_pid.id or data.id) and not errors.get('pids', [])[index.index]%}
+  {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
+  {% if pid_errors and pid_errors is iterable %}
+    <span class="separate-error error-block error-block-margin">{{ pid_errors|join('. ') }}</span>
+  {% endif %}
+
+  {% set primary_pid_readonly = " readonly" if primary_pid and not errors.get('pids', [])[index.index]%}
+
+  <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ _('Identifier') }}</label>
+
   {% call kata_form.input(
-    'pids__' ~ index ~ '__id', label=_('Primary data identifier') + '*',
-     id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
-     value=primary_pid.id,
-     label_classes=['kata-input-comp'], control_classes=['kata-medium'],
-     attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, primary_pid_readonly:''})%}
+    'pids__' ~ index ~ '__id', id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
+     value=primary_pid, control_classes=['kata-medium'], hasLabel=False,
+     attrs={'class': "kata-medium-input pid pids_" ~ index, primary_pid_readonly:''})%}
+
+  {% if primary_pid %}
+    <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
+    <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));">{{ _('Edit') if primary_pid }}</label>
+  {% endif %}
 
     <div class="form-double-instructions-container">
-      {{ kata_form.tooltip(tooltip=_('<p>Data identifier is an identifier of the data this metadata record refers to. The primary data identifier is compulsory but it will be generated automatically if the field is left empty. Additional data identifiers can also be given, if for example you want to refer to the data using different identifier systems.</p><p>If your data is available by data access application form, for example REMS, the primary data identifier will be sent to this service and it must be recognised by the storage service.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
-      {{ kata_form.warning_tooltip(tooltip=_('Please note that the primary data identifier can NOT be edited after saving the dataset.')) }}
+      {{ kata_form.tooltip(tooltip=_('<p>This is the permanent identifier (PID) for this dataset. It is used when citing this dataset. Use the identifier minted by your repository or data archive (URN, DOI, or similar). If you don\'t have a PID, Etsin will generate a URN for you. A PID should not be changed. If you create a new version of a dataset, create a new catalog entry and a new PID. You can also create entries for dataset parts and link them in the Related data field below.</p>')) }}
     </div>
 
-    <input type="hidden" id="pids__{{ index }}__primary" name="pids__{{ index }}__primary" value="True" />
-    <input type="hidden" name="pids__{{ index }}__type" value="data" />
+    <input type="hidden" name="pids__{{ index }}__type" value="primary" />
 
     {% if errors.pids and errors.pids[index.index] %}
       <span class="error-block kata-pid-field-error separate-error error-block-margin">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
@@ -45,93 +39,45 @@
 
   {% do index.increase() %}
 
-  {% for pid_type in pid_types %}
-    {% if pid_type == 'data' %}
-      {% set additional_data_identifier_label = _('Additional data identifiers') %}
-    {% else %}
-      {% set additional_data_identifier_label = _(pid_type | capitalize) + _(' identifiers') %}
-    {% endif %}
-    <label class="form-label kata-input-comp" for="pids__{{ index }}__id" style="float: left;font-weight: 700;width: 30%;text-align: right;">{{ additional_data_identifier_label or _('Custom') }}</label>
+  {% set additional_identifier_label = _('Related data') %}
+  <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ additional_identifier_label }}</label>
 
-    <div data-module="custom-fields-kata" data-module-id="pids-{{ pid_type }}" id="pids-{{ pid_type }}" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="custom-fields-container">
-      {% set pids = h.get_pids_by_type(pid_type, data, primary=False) or [dict(type=pid_type, primary=(pid_type == 'primary_data'))] %}
-      {% for pid in pids %}
-        {% set pid_readonly = " readonly" if pid.id and not (h.asbool(pid.get('primary')) and errors and not data.id) %}
-        <div class="control-custom">
-          <div class="form-row">
-            <div class="form-content kata-medium{{ ' error' if errors }}{{ ' no-label-controls' if not hasLabel}}">
-              <input id="pids__{{ index }}__id" type="text" name="pids__{{ index }}__id" value="{{ pid.id | empty_and_escape }}" placeholder="http://www.pid.com/1234" class="kata-medium-input pid kata-pid-input-wide pids_{{ index }}" {{ pid_readonly }} />
-              {# {% if errors and errors is iterable %}<span class="error-block">{{ errors|join(', ') }}</span>{% endif %}#}
-            </div>
-             {% if pid.id and not h.asbool(pid.get('primary')) %}
-                <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
-                <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));">{{ _('Edit') if pids[0].id }}</label>
-              {% endif %}
-
-              {% if loop.first %}
-                {% if pid_type != 'data' %}
-                  {% if pid_type == 'metadata' %}
-                    {{ kata_form.tooltip(tooltip=_('<p>Metadata identifier is an identifier given for a single metadata record. Etsin will automatically create a primary metadata identifier for this dataset. The primary metadata identifier is the metadata identifier which refers to this dataset. It will be the variable "id" of the dataset and you will see this if you work with the Etsin API. You can also add additional metadata identifiers for example if you want to refer to this metadata using different identifier systems.</p><p>An identifier is unique and permanent. With identifiers you can unambiguously refer to for example a data file or a metadata record. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>')) }}
-                  {% elif pid_type == 'version' %}
-                   {{ kata_form.tooltip(tooltip=_('Version identifier is just like the data identifier, but it refers to a certain version of data.')) }}
-                  {% endif %}
-                {% endif %}
-                <input style="display: none;" type="checkbox" id="pids__{{index}}__value" name="pids__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
-                {{ kata_form.plusbutton(id='pids_add-' ~ pid_type, text=_('Add'), onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
-                <input style="display: none;" type="checkbox" id="pid_btn__{{ index }}__value_id" name="pid_btn__{{ index }}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
-              {% endif %}
-
-              <input type="hidden" name="pids__{{ index }}__type" value="{{ pid_type }}" />
-              {% if errors.pids and errors.pids[index.index] %}
-                <span class="error-block kata-pid-field-error separate-error error-block-margin">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
-              {% endif %}
+  <div data-module="custom-fields-kata" data-module-id="pids-relation" id="pids-relation" data-module-index="pid-index" data-module-keep="type" data-module-hide=".hideclone" data-module-remove=".error-block" class="relations-container custom-fields-container">
+    {% set pids = h.get_pids_by_type('relation', data) or [dict(type='relation')] %}
+    {% for pid in pids %}
+      {% set pid_readonly = " readonly" if pid.id and not errors.get('pids', [])[index.index] %}
+      {% set pid_select_readonly = " readonly" if pid.id and not errors.get('pids', [])[index.index] %}
+      <div class="control-custom">
+        <div class="form-row">
+          <div style="{{ 'margin-top: 5px !important' if loop.first }}" class=" form-content kata-medium{{ ' error' if errors }}">
+            <select id="pids__{{ index }}__relation" name="pids__{{ index }}__relation" class="pids_{{ index }} pid" {{ pid_readonly }}>
+              {% for relation in h.get_relation_types() %}
+                <option {% if pid.id and pid.relation == relation.id %} selected {% endif %} value="{{ relation.id }}">{{ relation[lang] }}</option>
+              {% endfor %}
+            </select>
+            <input id="pids__{{ index }}__id" type="text" name="pids__{{ index }}__id" value="{{ pid.id | empty_and_escape }}" placeholder="http://www.pid.com/1234" class="kata-medium-input pid pids_{{ index }}" {{ pid_readonly }} />
           </div>
-
-          {# NOT USED BECAUSE LABEL OF THE FIRST PID CANNOT BE SET AS IT IS BEING SET IN KATA_FORM.INPUT - OTHERWISE LABEL GETS COPIED TO CUSTOM FIELDS
-          {% call kata_form.input(
-            'pids__' ~ index ~ '__id', label=additional_data_identifier_label,
-             id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
-             value=pid.id,
-             label_classes=['kata-input-comp'], control_classes=['kata-medium'],
-             attrs={'class': "kata-medium-input pid kata-pid-input-wide pids_" ~ index, pid_readonly:''}, hasLabel=loop.first)%}
-
-            {% if pid.id and not h.asbool(pid.get('primary')) %}
-              <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));" />
-              <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').prop('readonly',!$('input.pids_{{ index }}').prop('readonly'));">{{ _('Edit') if pids[0].id }}</label>
+            {% if pid.id %}
+              <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').attr('readonly',!$('input.pids_{{ index }}').attr('readonly')); $('select.pids_{{ index }}').attr('readonly', !$('select.pids_{{ index }}').attr('readonly'));" />
+              <label class="control-label katalabel-pid2 hideclone" onclick="$('#pids__{{ index }}__modify').prop('checked', !$('#pids__{{ index }}__modify').prop('checked')); $('input.pids_{{ index }}').attr('readonly',!$('input.pids_{{ index }}').attr('readonly')); $('select.pids_{{ index }}').attr('readonly', !$('select.pids_{{ index }}').attr('readonly'));">{{ _('Edit') if pid.id }}</label>
             {% endif %}
 
             {% if loop.first %}
-              {{ kata_form.tooltip(tooltip=_('PID is a permanent identifier, preferably an HTTP URI.')) }}
+              {{ kata_form.tooltip(tooltip=_('<p>Use identifiers minted by your repository or data archive (URN, DOI, or similar). When you create a new version of a dataset you should create a new catalog entry and add relations between them in both directions, i. e. register them in both entries. Also the relations between part and larger entity should be both ways and registered in all relevant entries. Always consider the most complete metadata as primary.</p>')) }}
               <input style="display: none;" type="checkbox" id="pids__{{index}}__value" name="pids__{{index}}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
-              {{ kata_form.plusbutton(id='pids_add-{{ pid_type }}', text=_('Add'), onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
+              {{ kata_form.plusbutton(id='pids_add-relation', text=_('Add'), onclick="$(\'#pid_btn__" ~ index ~ "__value_id\').change();") }}
               <input style="display: none;" type="checkbox" id="pid_btn__{{ index }}__value_id" name="pid_btn__{{ index }}__value" class="btn btn-danger kata-plus-btn icon-plus-sign checkbox"/>
             {% endif %}
 
-            <input type="hidden" name="pids__{{ index }}__type" value="{{ pid_type }}" />
+            <input type="hidden" name="pids__{{ index }}__type" value="relation" />
             {% if errors.pids and errors.pids[index.index] %}
-              <span class="error-block kata-pid-field-error">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
+              <span class="error-block kata-pid-field-error separate-error error-block-margin">{{ errors.pids[index.index].get('id')|join('. ') }}</span>
             {% endif %}
-          {% endcall %}
-          #}
-
-
         </div>
-      {% do index.increase() %}
-      {% endfor %}
+      </div>
+    {% do index.increase() %}
+    {% endfor %}
     </div>
-  {% endfor %}
-
-  {% set pid_errors = h.get_dict_errors(errors, '__extras', 'pids') %}
-  {% if pid_errors and pid_errors is iterable %}
-    <span class="separate-error error-block error-block-margin">{{ pid_errors|join('. ') }}</span>
-  {% endif %}
 
   <input type="hidden" value="{{ index }}" id="pid-index" />
-
-  <div class="form-row">
-    <label for="generate_version_pid" class="control-label kata-input-comp kata-wide-label">{{ _('Generate new version identifier') }}</label>
-    <input id="generate_version_pid" type="checkbox" name="generate_version_pid" class="checkbox checkbox-generate" {{ 'checked' if not pids[0].id }} title='{{ _("Generate a new permanent identifier for the current data version.") }}'/>
-    {{ kata_form.tooltip(tooltip=_('Generate a new permanent identifier for the current data version.')) }}
-  </div>
-
 </div>

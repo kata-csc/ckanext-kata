@@ -143,9 +143,6 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/data-model',
                     controller="ckanext.kata.controllers:KataInfoController",
                     action="render_data_model")
-        map.connect('/storage/upload_handle',
-                    controller="ckanext.kata.controllers:MalwareScanningStorageController",
-                    action='upload_handle')
         map.connect('add dataset with upload_xml',
                     '/dataset/new',
                     controller="ckanext.kata.controllers:KataPackageController",
@@ -257,20 +254,24 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_labels_for_uri': helpers.get_labels_for_uri,
             'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,
             'get_organization_sorters': helpers.get_organization_sorters,
+            'get_parent_hierarchy': helpers.get_parent_hierarchy,
             'get_owners': helpers.get_owners,
             'get_package_ratings': helpers.get_package_ratings,
             'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,
             'get_pids_by_type': utils.get_pids_by_type,
             'get_pid_types': helpers.get_pid_types,
             'get_primary_pid': utils.get_primary_pid,
+            'get_external_id': utils.get_external_id,
             'get_related_urls': helpers.get_related_urls,
+            'get_relation_types': helpers.get_relation_types,
+            'get_relation_type_translation': helpers.get_relation_type_translation,
             'get_rightscategory': helpers.get_rightscategory,
             'get_tab_errors': helpers.get_tab_errors,
             'get_title_in_lang': helpers.get_title_in_lang,
             'get_translation': helpers.get_translation,
             'get_translation_from_extras': helpers.get_translation_from_extras,
             'get_language': helpers.get_language,
-            'get_urn_fi_address': helpers.get_urn_fi_address,
+            'get_dataset_permanent_address': helpers.get_dataset_permanent_address,
             'get_visibility_options': helpers.get_visibility_options,
             'has_json_content': helpers.has_json_content,
             'is_active_facet': helpers.is_active_facet,
@@ -287,8 +288,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'reference_update': helpers.reference_update,
             'resolve_agent_role': helpers.resolve_agent_role,
             'resolve_org_name': helpers.resolve_org_name,
-            'split_disciplines': helpers.split_disciplines,
-            'string_to_list': helpers.string_to_list,
+            'split_disciplines': helpers.split_disciplines
         }
 
     def get_dict_field_errors(self, errors, field, index, name):
@@ -478,7 +478,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
         q = data_dict.get('q')
         fq = data_dict.get('fq')
         if q or (fq and fq != '+dataset_type:dataset'):
-            if '!id:' in fq:
+            if fq and '!id:' in fq:
                 # Peter: manage_datasets query in ckanext-showcase breaks down if
                 # there are colons in query constraints. i.e. 'urn:nbn:fi...'
                 # This is bypassed by escaping these constraints.
@@ -640,7 +640,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             for item in validated.get('contact'):
                 for k_ in item.iterkeys():
                     if k_ == u'email':
-                        item[k_] = base64.b64encode(_crypt.encrypt(self._pad(item[k_])))
+                        item[k_] = base64.b64encode(_crypt.encrypt(self._pad(unicode(item[k_], "utf-8"))))
         except TypeError:
             # Harves sources
             pass

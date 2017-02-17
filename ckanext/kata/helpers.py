@@ -3,7 +3,7 @@
 Template helpers for Kata CKAN extension.
 '''
 import iso8601
-
+import os
 from paste.deploy.converters import asbool
 from pylons import config
 import functionally as fn
@@ -24,11 +24,11 @@ from ckan.logic import get_action, ValidationError
 from ckanext.kata import settings, utils
 from ckan.lib.navl.dictization_functions import validate
 from ckan.lib import plugins
-from ckanext.kata.utils import get_pids_by_type
 from pylons.i18n.translation import gettext_noop as N_
 from ckan.common import request
 from webhelpers.html import literal
 from datetime import date
+from ckanext.hierarchy.model import GroupTreeNode, group_dictize
 
 log = logging.getLogger(__name__)
 
@@ -122,13 +122,13 @@ def get_package_ratings(data):
     # MAX 2
 
     pid_types = [pid.get('type') for pid in data.get('pids', [])]
-    pid_types_expected = ['data', 'metadata', 'version']
-    if len(pid_types) < 3:
-        # The minimum metadata model is a bit vague in this part, this is one iterpretation
-        pid_types_expected.pop(2)
+    pid_types_expected = ['primary', 'relation']
+    if len(pid_types) < 2:
+        # The minimum metadata model is a bit vague in this part, this is one interpretation
+        pid_types_expected.pop(1)
 
     if all(pid_type in pid_types for pid_type in pid_types_expected):
-        score += 2 * len(pid_types) if len(pid_types) < 3 else 6
+        score += 2 * len(pid_types) if len(pid_types) < 2 else 4
 
     if len(unicode(data.get('version', ''))) > 15:   # ISO8601 datetime
         score += 1
@@ -229,18 +229,6 @@ def get_if_url(data):
         return False
 
 
-def string_to_list(data):
-    '''
-    Split languages and make it a list for Genshi (read.rdf)
-
-    :param data: the string to split
-    :rtype: list
-    '''
-    if data:
-        return data.split(", ")
-    return ''
-
-
 def get_rightscategory(data_dict):
     '''
     Return METS rights category and rights declaration for dataset
@@ -253,7 +241,7 @@ def get_rightscategory(data_dict):
 
     declarations = []
 
-    if availability in ['access_application', 'access_request']:
+    if availability in ['access_application_rems', 'access_application_other', 'access_request']:
         category = "CONTRACTUAL"
         declarations.append(data_dict.get('access_application_URL') or data_dict.get('access_request_URL'))
     elif license in ['other-pd', "ODC-PDDL-1.0", "CC0-1.0", "cc-zero"]:
@@ -403,14 +391,11 @@ def is_url(data):
     return data.startswith('http://') or data.startswith('https://')
 
 
-def get_urn_fi_address(package):
-    if package.get('id', '').startswith('http://') or package.get('id', '').startswith('https://'):
-        return package.get('id')
-    pid = get_pids_by_type('data', package, primary=True)[0].get('id', None)
-    if is_urn(pid):
-        template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(pid)s")
-        return template % {'pid': pid}
-    return ''
+def get_dataset_permanent_address(package):
+    package_id = package.get('id', '')
+    template = config.get('ckanext.kata.urn_address_template', "http://urn.fi/%(id)s")
+    return template % {'id': package_id if package_id else 'ERROR'}
+
 
 def get_dummy_title():
     return json.dumps({
@@ -493,6 +478,44 @@ def organizations_available(permission='edit_group'):
 
 def get_organization_sorters():
     return [(N_("By datasets"), "packages"), (N_("Show all"), "title")]
+
+
+def _direct_branch_fast(org_list):
+    """
+        Return a direct organization hierarchy from
+        a flat list of Group objects. This can be used to render
+        the hierarchical view with i.e. snippets/organization_tree.html.
+    """
+
+    def reducer(root, child):
+        if root and child:
+            root.add_child_node(child)
+        return child
+
+    def gtn_from_group(grp):
+        return GroupTreeNode(group_dictize(grp))
+
+    # Convert a normal Group object to a ckanext-hierarchy's GroupTreeNode
+    dictized_orgs = map(gtn_from_group, org_list)
+
+    # Save the first organization, since it will be the root organization.
+    root = dictized_orgs[0]
+
+    # Reduce the organizations into the last child by applying
+    # add_child_node to each dictized_orgs item.
+    reduced_orgs = reduce(reducer, dictized_orgs)
+
+    return root
+
+
+def get_parent_hierarchy(organization):
+    # Get a single organization based on data_dict's organization dict
+    query = model.Group.search_by_name_or_title(organization.get('name'), group_type=None, is_org=True)
+    org = query.one()
+
+    parent_hierarchy = org.get_parent_group_hierarchy(type='organization')
+    parent_hierarchy.append(org)
+    return _direct_branch_fast(parent_hierarchy)
 
 
 def convert_language_code(lang, to_format, throw_exceptions=True):
@@ -623,10 +646,10 @@ def get_labels_for_uri_nocache(uri, ontology=None):
         data = urllib2.urlopen(url).read()
 
     except urllib2.HTTPError as e:
-        log.error("Can not connect to Finto: %s" % str(e.code))
+        log.error("Can not connect to Finto using url {url} - {code}".format(url=url, code=str(e.code)))
         return None
     except urllib2.URLError as e:
-        log.error("Can not connect to Finto: %s" % str(e.reason))
+        log.error("Can not connect to Finto using url {url} - {code}".format(url=url, code=str(e.reason)))
         return None
     except httplib.HTTPException:
         log.error('Can not connect to Finto: HTTPException')
@@ -953,10 +976,10 @@ def get_tab_errors(errors, tab):
         return ''
 
     tabs = {'1': ['langtitle', 'langnotes', 'language', 'tag_string'],
-            '2': ['__extras', 'agent', 'contact', 'owner_org'],
-            '3': ['license', 'license_URL', 'citation', 'availability', 'direct_download_URL', 'access_application_URL', 'through_provider_URL', 'access_request_URL', 'url', 'access_application_new_form'],
+            '2': ['agent', 'contact', 'owner_org'],
+            '3': ['license', 'license_URL', 'citation', 'availability', 'direct_download_URL', 'external_id', 'access_application_URL', 'access_request_URL', 'url'],
             '4': ['geographic_coverage', 'temporal_coverage_begin', 'temporal_coverage_end', 'event', 'mimetype', 'format', 'hash', 'algorithm'],
-            '5': ['pids', 'version'],
+            '5': ['pids', 'version', '__extras'],
             'resources': ['url', 'mimetype', 'format', 'hash', 'algorithm']}
 
     for key in errors.keys():
@@ -1031,9 +1054,9 @@ def get_identifier_display_html(identifier):
     if not isinstance(identifier, basestring):
         return identifier
     if re.match('^urn:nbn:fi:csc-(kata|ida)', identifier):
-        return '<a href="http://urn.fi/' + identifier + '">http://urn.fi/' + identifier + '</a>'
-    elif identifier.startswith('http'):
-        return '<a href="' + identifier + '">' + identifier + '</a>'
+        return '<a target="_blank" href="http://urn.fi/' + identifier + '">' + identifier + '</a>'
+    elif re.match('^http://|https://', identifier):
+        return '<a target="_blank" href="' + identifier + '">' + identifier + '</a>'
     else:
         return identifier
 
@@ -1055,8 +1078,8 @@ def get_current_url():
 def get_title_in_lang(title, lang):
     '''
     Used for creating citations.
-    If dataset has a title in a certain language, return it. If 
-    dataset doesn't have a title in that language, return title in 
+    If dataset has a title in a certain language, return it. If
+    dataset doesn't have a title in that language, return title in
     any other language. Dataset should always have at least one title.
 
     :param title: dataset titles in JSON
@@ -1098,3 +1121,19 @@ def get_current_year():
     '''
 
     return date.today().year
+
+def get_relation_types():
+    url = "file://%s" % os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "theme/public/relations.json"))
+    source = urllib2.urlopen(url)
+    try:
+        return json.load(source)
+    finally:
+        source.close()
+    return None
+
+def get_relation_type_translation(relation_type, lang):
+    res = filter(lambda rel: rel['id'] == relation_type, get_relation_types())
+    if res:
+        return res[0][lang]
+    return None

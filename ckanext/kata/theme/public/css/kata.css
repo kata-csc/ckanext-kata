@@ -489,6 +489,15 @@ ul.kata {
     width: 200px !important;
   }
 }
+#identification-info .relations-container select {
+  width: 346px !important;
+  font-size: 14px;
+}
+@media screen and (max-width: 485px) {
+  #identification-info .relations-container select {
+    width: 212px !important;
+  }
+}
 .kata-label-pluspad {
   padding-top: 9px !important;
 }
@@ -635,16 +644,17 @@ input[id="xmlfile"] {
 .form-tab-content .control-group .form-row {
   margin-bottom: 20px;
 }
-.form-tab-content .form-row {
-  margin-bottom: 40px;
-  clear: both;
-}
+.form-tab-content .form-label,
 .form-tab-content .form-row .form-label,
 .form-tab-content .form-row .control-label {
   float: left;
   font-weight: 700;
   width: 30%;
   text-align: right;
+}
+.form-tab-content .form-row {
+  margin-bottom: 40px;
+  clear: both;
 }
 .form-tab-content .form-row .form-content,
 .form-tab-content .form-row .controls {
@@ -706,8 +716,15 @@ input[id="xmlfile"] {
 .form-tab-content .form-row #generate_version_pid {
   margin-left: 20px;
 }
+.form-tab-content #identification-info .form-row .form-content {
+  padding-left: 0px;
+  margin-left: 20%;
+}
+.form-tab-content #pids-relation .form-content input.pid {
+  margin-top: 10px;
+}
 .form-tab-content .kata-add {
-  margin-left: 30%;
+  margin-left: 40%;
   padding-left: 10px;
   float: none;
   color: #3FA9F5;
@@ -812,6 +829,11 @@ input[id="xmlfile"] {
     min-width: 250px;
     max-width: 400px;
     float: none;
+  }
+  .form-instructions.relation-identifier-tooltip {
+    position: absolute;
+    top: 0px;
+    right: 0px;
   }
 }
 @media screen and (max-width: 700px) {
@@ -970,6 +992,16 @@ input[id="xmlfile"] {
 #s2id_field-organizations,
 #s2id_field-parent {
   width: 100% !important;
+}
+#resource-edit .resource-upload-buttons .controls a {
+  background-color: #eaeaea !important;
+  color: #333333;
+  text-decoration: none;
+  background-position: 0 -15px;
+  border: 0.5px solid #cccccc;
+}
+#resource-edit .resource-upload-buttons .controls a:nth-child(3) {
+  display: none !important;
 }
 header.masthead {
   font-family: Lato, Helvetica, Arial, sans-serif;
@@ -2220,14 +2252,11 @@ a.download {
 .dataset-section.form-tab-content .form-inner-table td {
   padding-top: 0px !important;
 }
-#urlDiv_direct_download {
-  margin-left: 15px;
-}
-#urlDiv_direct_download label.control-label {
+#usage-info label.control-label {
   text-align: left !important;
-  width: 45% !important;
+  width: 60% !important;
 }
-#urlDiv_direct_download div.controls.kata-label-pluspad {
+#usage-info div.controls.kata-label-pluspad {
   padding-top: 0px !important;
 }
 #usage-info #ida_direct_download_link {

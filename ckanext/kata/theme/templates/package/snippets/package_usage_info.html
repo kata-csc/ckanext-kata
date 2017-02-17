@@ -1,20 +1,28 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/kata_form.html' as kata_form %}
 
+{% set external_id = h.get_external_id(data) %}
+
 <div class="tab-content-inner">
+
+  <div class="alert alert-info" id="rems-pid-change-alert" style="display: none;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{ _('You changed availability. Please note that the access rights management and access to the dataset is still available in Reetta. Should you at any point wish to return to having the Reetta availability in Etsin, it is possible by setting the correct PID to the field under "Manage access rights with Reetta service".') }}
+  </div>
 
   <div class="form-row">
     <label class="form-label">
-      {{ _('Dataset is available for use') ~ '*' -}}
+      {{ _('Dataset is available for use by') ~ '*' -}}
     </label>
     <div class="control-group form-content">
+
       <label class="radio" for="direct_download">
         <input type="radio" name="availability" id="direct_download" value="direct_download" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'direct_download'%}checked{% endif %}>
-        {{ _('directly downloadable') }}
+        {{ _('direct download') }}
       </label>
       {# Somewhat dirty solution. The resource error is *somewhere* in array as some indices may be for metadata documents #}
       <div data-module="etsin-ida-prefill" id="urlDiv_direct_download" {% if (not data.direct_download_URL or data.direct_download_URL == 'http://') and not (errors.resources and data.availability == 'direct_download') %}style="display:none"{% endif %}>
-        <a id="ida_direct_download_link" onclick="openIdaPopup(); event.returnValue=false;">{{ _('directly downloadable from IDA') }}</a>
+        <a id="ida_direct_download_link" onclick="openIdaPopup(); event.returnValue=false;">{{ _('direct download from IDA') }}</a>
         {% if errors.resources and data.availability == 'direct_download' %}
           {{ form.input('direct_download_URL', label=_('Web address for downloading the dataset'), id="direct_download_URL", placeholder=_('http://mydata.com'), value=data.direct_download_URL, error=[_('Missing value')], classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
         {% else %}
@@ -24,43 +32,53 @@
 
       <label class="radio" for="access_request">
         <input type="radio" name="availability" id="access_request" value="access_request" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'access_request'%}checked{% endif %}>
-        {{ _('downloadable after registration / identification') }}
+        {{ _('download after registration or identification') }}
       </label>
-      <div id="urlDiv_access_request" {% if not data.access_request_URL and not errors.access_request_URL %}style="display:none"{% endif %}>
+      <div id="urlDiv_access_request" {% if not data.availability == 'access_request' and (not data.access_request_URL and not errors.access_request_URL) %}style="display:none"{% endif %}>
         {{ form.input('access_request_URL', label=_('Web address for downloading the dataset'), id="access_request_URL", placeholder=_('http://mydata.com'), value=data.access_request_URL, error=errors.access_request_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
       </div>
 
       <label class="radio" for="access_application">
-        <input type="radio" name="availability" id="access_application" value="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application'}}>
-        {{ _('with data access application form') }}
+        <input type="radio"  id="access_application" style="top: 4px" onclick="KATA.toggleAccess(this)" {{ "checked " if data.availability == 'access_application_rems' or data.availability == 'access_application_other'}}>
+        {{ _('using access rights management service') }}
       </label>
-      <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application' and not errors.access_application_URL %}style="display:none"{% endif %}>
-        {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}
-          {% set new_form_chk = true %}
+      <div id="urlDiv_access_application" class="m-left" {% if data.availability != 'access_application_rems' and data.availability != 'access_application_other'%}style="display:none"{% endif %}>
+
+        {% if data.availability == 'access_application_rems' %}
+          {% set access_application_rems_option = true %}
+          {% set access_application_other_option = false %}
         {% endif %}
-        <label class="checkbox" for="access_application_new_form">
-          <input type="checkbox" style="top: 4px;" id="access_application_new_form" name="access_application_new_form" onchange="$('#access_application_URL_box').toggle('fast')" {% if data.access_application_new_form and data.access_application_new_form != 'False' and not errors.access_application_URL %}checked value="True"{% endif %}>
-          {{ _('Create a new access request form automatically') }}
+        {% if data.availability == 'access_application_other' %}
+          {% set access_application_rems_option = false %}
+          {% set access_application_other_option = true %}
+        {% endif %}
+
+        <label class="radio" for="access_application_rems">
+          <input type="radio" name="availability" id="access_application_rems" style="top: 4px" value="access_application_rems" onclick="KATA.toggleAccess(this)" onchange="" {% if access_application_rems_option %}checked value="True"{% endif %}/>
+          {{ _('Manage access rights with Reetta service') }}
+          {{ kata_form.tooltip(tooltip=_("If you would like to use Reetta resource entitlement management system to manage access rights to the dataset, choose this option. You should enter an identifier to the text field that will be used for identifying the dataset in Reetta. In case you leave it blank, Etsin generates automatically an identifier for you. However, if your dataset is in IDA storage service, please enter your dataset's IDA metadata PID (Identifier.series), which is required to establish connection between Reetta and IDA. Applicants are able to access the application form via Etsin dataset page, and after the dataset distributor has accepted the applicant's application, the applicant will be notified of this automatically via email.")) }}
         </label>
-        <div id="access_application_URL_box" {% if new_form_chk %} style="display: none" {%endif%}>
-          {{ form.input('access_application_URL', label=_('Or enter the address of an existing application form'), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+        <div class="m-left" id="access_application_rems_box" {% if not access_application_rems_option %} style="display: none" {%endif%}>
+          {{ form.input_unnamed('access_application_rems_identifier', label=_("Enter identifier for the dataset"), placeholder=_('e.g., urn:nbn:fi:csc-ida...s'), value=external_id, error=errors.external_id, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+        </div>
+
+        <label class="radio" for="access_application_other">
+          <input type="radio" name="availability" id="access_application_other" style="top: 4px" value="access_application_other" onclick="KATA.toggleAccess(this)" {% if access_application_other_option %}checked value="True"{% endif %}/>
+          {{ _('Manage access rights using another service. ') }}
+          {{ kata_form.tooltip(tooltip=_("If you are using another service than Reetta resource entitlement management system for managing the dataset's access rights, choose this option. In this case you need to input a link to that service's corresponsing dataset application form. Etsin users will be able to access the application form via Etsin dataset page, but all communication after that is business between the dataset distributor and the applicant, Etsin is no longer involved.")) }}
+        </label>
+        <div class="m-left" id="access_application_other_box" {% if not access_application_other_option %} style="display: none" {%endif%}>
+          {{ form.input('access_application_URL', label=_("Enter the address for the dataset's existing access rights application form"), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
         </div>
       </div>
-      {% if errors.access_application_new_form %}<span class="error-block">{{ errors.access_application_new_form[0] }}</span>{% endif %}
 
       <label class="radio" for="contact_owner">
         <input type="radio" name="availability" id="contact_owner" value="contact_owner" style="top: 4px" onclick="KATA.toggleAccess(this)" {% if data.availability == 'contact_owner'%}checked{% endif %}>
-        {{ _('only by contacting the distributor') }}
+        {{ _('contacting the distributor') }}
       </label>
-      {% if data.availability == 'through_provider' %}
-        <label class="radio" for="through_provider">
-          <input type="radio" name="availability" id="through_provider" value="through_provider" style="top: 4px" onclick="KATA.toggleAccess(this)" checked>
-          {{ _('through data provider') }}
-        </label>
-        <div id="urlDiv_through_provider">
-          {{ form.input('through_provider_URL', label=_("Data provider's web address"), id="through_provider_URL", placeholder=_('http://mydata.com'), value=data.through_provider_URL, error=errors.through_provider_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp']) }}
-        </div>
-      {% endif%}
+
+      <input id="external_id" type="hidden" name="external_id" value="{{ external_id | empty_and_escape }}" />
+
       {% if errors.availability %}
         <span class="error-block kata-error-non-input">{{ errors.availability[0] }}</span>
       {% endif %}
@@ -92,13 +110,13 @@
 
 </div>
 <div id="ida-prefill-modal">
-  <div id="ida-prefill-description" class="modal-content-block">{{ _("Enter your dataset's IDA identifier in order to create download link") }}</div>
+  <div id="ida-prefill-description" class="modal-content-block">{{ _("Enter the dataset's IDA identifier in order to create download link") }}</div>
   <div class="modal-content-block">
     <fieldset>
       <legend></legend>
       <p id="ida-modal-tips" class="hide">{{ _('Input a valid IDA identifier') }}</p>
       <div class="form-input-block">
-        <label id="ida-prefill-input-label" for="ida-prefill-input">{{ _('IDA identifier (Identifier.series)') }}</label>
+        <label id="ida-prefill-input-label" for="ida-prefill-input">{{ _("IDA identifier (Identifier.series in IDA's file metadata)") }}</label>
           <input type="text" name="ida-prefill-input" id="ida-prefill-input" placeholder="urn:nbn:fi:csc-ida..." class="text ui-widget-content ui-corner-all">
       </div>
     </fieldset>

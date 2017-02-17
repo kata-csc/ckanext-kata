@@ -2,27 +2,26 @@
 """
 Validators for user inputs.
 """
-
-import json
-import logging
+import logging, os, json
+from itertools import count
+import iso8601
 import re
 import urllib2
 import urlparse
-from itertools import count
 
-import iso8601
 from paste.deploy.converters import asbool
 from pylons.i18n import _
-from sqlalchemy import or_
+from sqlalchemy import and_
 
 import ckan.lib.helpers as h
-import ckan.logic as logic
 import ckan.model as model
 from ckan.lib.navl.dictization_functions import StopOnError, Invalid, missing
 from ckan.lib.navl.validators import not_empty
 from ckan.logic.validators import tag_length_validator, url_validator
 from ckanext.kata import utils, settings
 import kata_ldap
+
+from utils import is_ida_pid
 
 log = logging.getLogger('ckanext.kata.validators')
 
@@ -201,13 +200,18 @@ def validate_access_application_url(key, data, errors, context):
     '''
     Validate dataset's `access_application_URL`.
 
-    Dummy value _must_ be added for a new form so that it can be overwritten
-    in the same session in iPackageController `edit` hook. For REMS.
+    Dummy value _must_ be added if user chooses either reetta option
+    so that its value can be overwritten in ckanext-rems when it knows what
+    the access_application_URL will be. If user has chosen the option to
+    which access application URL is input directly, then validation checks
+    its not empty and that it is an url.
     '''
-    if data.get(('availability',)) == 'access_application':
-        if data.get(('access_application_new_form',)) in [u'True', u'on']:
+    if data.get(('availability',)) == 'access_application_rems' or \
+        data.get(('availability',)) == 'access_application_other':
+
+        if  data.get(('availability',)) == 'access_application_rems':
             data[key] = h.full_current_url().replace('/edit/', '/')
-        else:
+        elif data.get(('availability',)) == 'access_application_other':
             not_empty(key, data, errors, context)
             url_validator(key, data, errors, context)
     else:
@@ -223,7 +227,8 @@ def validate_access_application_download_url(key, data, errors, context):
     server has been given.
     '''
 
-    if data.get(('availability',)) == 'access_application':
+    if data.get(('availability',)) == 'access_application_rems' or \
+        data.get(('availability',)) == 'access_application_other':
         value = data.get(key)
         if value:
             url_not_empty(key, data, errors, context)
@@ -232,11 +237,15 @@ def validate_access_application_download_url(key, data, errors, context):
         raise StopOnError
 
 
-def check_direct_download_url(key, data, errors, context):
+def check_resource_url_for_direct_download_url(key, data, errors, context):
     '''
     Validate dataset's direct download URL.
     '''
-    if data.get(('availability',)) == 'direct_download':
+
+    lst = list(key)
+    lst[2] = 'resource_type'
+    resource_type_key = tuple(lst)
+    if data.get(('availability',)) == 'direct_download' and data.get(resource_type_key) == settings.RESOURCE_TYPE_DATASET:
         url_not_empty(key, data, errors, context)
 
 
@@ -245,17 +254,6 @@ def check_access_request_url(key, data, errors, context):
     Validate dataset's access request URL.
     '''
     if data.get(('availability',)) == 'access_request':
-        not_empty(key, data, errors, context)
-    else:
-        data.pop(key, None)
-        raise StopOnError
-
-
-def check_through_provider_url(key, data, errors, context):
-    '''
-    Validate dataset's `through_provider_URL`.
-    '''
-    if data.get(('availability',)) == 'through_provider':
         not_empty(key, data, errors, context)
     else:
         data.pop(key, None)
@@ -365,19 +363,6 @@ def validate_notes_duplicates(key, data, errors, context):
     return validate_multilang_field('langnotes', key, data, errors, context)
 
 
-def package_name_not_changed(key, data, errors, context):
-    '''
-    Checks that package name doesn't change
-    '''
-    package = context.get('package')
-    if data[key] == u'':
-        data[key] = package.name
-    value = data[key]
-    if package and value != package.name:
-        raise Invalid('Cannot change value of key from %s to %s. '
-                      'This key is read-only' % (package.name, value))
-
-
 def check_agent(key, data, errors, context):
     '''
     Check that compulsory agents exist.
@@ -426,40 +411,6 @@ def check_langtitle(key, data, errors, context):
     '''
     if not (data.get(('langtitle', 0, 'value')) or data.get(('title',))):
         raise Invalid({'key': 'langtitle', 'value': _('Missing dataset title')})
-
-
-def check_pids(key, data, errors, context):
-    '''
-    Check that compulsory PIDs exist. Also check that primary data PID is not modified in any way.
-    '''
-
-    # Empty PIDs are removed in actions, so this check should do
-    if data.get((u'pids', 0, u'id'), None) is None:
-        raise Invalid({'key': 'pids', 'value': _('Missing dataset PIDs')})
-
-    primary_data_pid_found = False
-    primary_pid = None
-
-    primary_keys = [k for k in data.keys() if k[0] == 'pids' and k[2] == 'primary']
-
-    for k in primary_keys:
-        if asbool(data[k] or False) and data[(k[0], k[1], 'type')] == 'data' and data[(k[0], k[1], 'id')]:
-            primary_data_pid_found = True
-            primary_pid = data[(k[0], k[1], 'id')]
-
-    if not primary_data_pid_found:
-        raise Invalid({'key': 'pids', 'value': _("Missing primary data PID")})
-
-    # Check constancy of primary data PID
-
-    try:
-        data_dict = logic.get_action('package_show')({}, {'id': data[('id',)]})
-        old_primary_pid = utils.get_pids_by_type('data', data_dict, primary=True)[0].get('id')
-        if old_primary_pid and old_primary_pid != primary_pid:
-            raise Invalid({'key': 'pids', 'value': _("Primary data PID can not be modified")})
-    except (logic.NotFound, KeyError):
-        # New dataset, all is well
-        pass
 
 
 def check_events(key, data, errors, context):
@@ -593,36 +544,131 @@ def continue_if_missing(key, data, errors, context):
     if value is missing or value is None:
         data.pop(key, None)
 
-def validate_pid_uniqueness(key, data, errors, context):
-    '''
-    Validate dataset pids are unique, i.e. they do not exist already.
 
-    :param key: key
-    :param data: data
-    :param errors: errors
-    :param context: context
+def validate_external_id_uniqueness(key, data, errors, context):
     '''
-    exam_pid = data.get(key)
+        Validate external id is unique, i.e. it does not exist already in any other dataset.
+
+        :param key: key
+        :param data: data
+        :param errors: errors
+        :param context: context
+        '''
+
+    exam_external_id = data.get(key)
     exam_package_id = data.get(('id',))
 
-    # Query package extra table with key like pids_%_id and match exact pid name with the corresponding value
-    # Return only rows with package state active, since deleted datasets might be re-added.
-    query = model.Session.query(model.PackageExtra).filter(model.PackageExtra.key.like('pids_%_id')). \
-            filter(or_(model.PackageExtra.value == exam_pid, model.PackageExtra.package_id == exam_pid)). \
-            join(model.Package).filter(model.Package.state == 'active')
+    if exam_external_id:
+        all_similar_external_ids_query = model.Session.query(model.PackageExtra) \
+            .filter(model.PackageExtra.key.like('external_id')) \
+            .filter(model.PackageExtra.value == exam_external_id) \
+            .join(model.Package).filter(model.Package.state == 'active').values('package_id', 'value')
 
-    q_amt = query.count()
-    q_package_ids = [i[0] for i in query.values('package_id')]
+        for package_id, exteral_id_value in all_similar_external_ids_query:
+            if package_id != exam_package_id:
+                raise Invalid(_('Value {ext_id} exists in another dataset {id}').format(ext_id=exam_external_id,
+                                                                                            id=package_id))
 
-    # If existing pids or package_ids with value matching the pid were found
-    # and if none of those found values is the pid, raise an error.
-    # The latter if is when updating a dataset.
+def validate_primary_pid_uniqueness(key, data, errors, context):
+    '''
+        Validate dataset primary pid is unique, i.e. it does not exist already in any other dataset.
 
-    if q_amt > 0:
-        for item in q_package_ids:
-            if item != exam_package_id:
-                raise Invalid(_('Identifier {pid} exists in another dataset {id}').format(pid=exam_pid, id=item))
+        :param key: key
+        :param data: data
+        :param errors: errors
+        :param context: context
+        '''
 
+    lst = list(key)
+    lst[2] = 'type'
+    pid_type_key = tuple(lst)
+    if data.get(pid_type_key) == u'primary':
+        exam_primary_pid = data.get(key)
+        exam_package_id = data.get(('id',))
+        all_similar_pids_query = model.Session.query(model.PackageExtra)\
+                    .filter(model.PackageExtra.key.like('pids_%_id'))\
+                    .filter(model.PackageExtra.value == exam_primary_pid)\
+                    .join(model.Package).filter(model.Package.state == 'active').values('package_id', 'key', 'value')
+
+        for package_id, pid_id_key, pid_id_value in all_similar_pids_query:
+            if package_id != exam_package_id:
+                pid_type_key = 'pids_' + pid_id_key[pid_id_key.find('_')+1:pid_id_key.rfind('_')] + '_type'
+                primary_type_in_other_dataset_query = model.Session.query(model.PackageExtra)\
+                            .filter(and_(model.PackageExtra.package_id == package_id,
+                                         model.PackageExtra.key == pid_type_key,
+                                         model.PackageExtra.value == u'primary'))
+                if primary_type_in_other_dataset_query.first():
+                    raise Invalid(_('Primary identifier {pid} exists in another dataset {id}').format(pid=exam_primary_pid, id=package_id))
+
+
+# def validate_external_id_format(key, data, errors, context):
+#     '''
+#     Check external_id value is an IDA identifier (or, if in the future other types of accesses than IDA
+#     are needed, then this validator should be extended to also accept those types of IDs).
+#     (Identifier.series)
+#
+#     :param key:
+#     :param data:
+#     :param errors:
+#     :param context:
+#     :return:
+#     '''
+#     if data.get(('availability',)) == 'access_application_rems' and \
+#     not is_ida_pid(data[key]):
+#         raise Invalid(_('Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)'))
+
+
+def validate_pid_relation_type(key, data, errors, context):
+    '''
+    Check relation key is valid
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    if data.get(key):
+        map_file_name = os.path.dirname(os.path.realpath(__file__)) + '/theme/public/relations.json'
+        with open(map_file_name) as map_file:
+            relation_map = json.load(map_file)
+
+        if not any(relation.get('id') == data.get(key) for relation in relation_map):
+            raise Invalid(_('PID relation must be one of the following values: ') + ",".join(map(lambda rel: rel.get('id'), relation_map)))
+
+
+def validate_pid_type(key, data, errors, context):
+    '''
+    If pid type is 'relation', make sure 'relation' key has a value
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    lst = list(key)
+    lst[2] = 'relation'
+    relation_key = tuple(lst)
+    if data.get(key) == 'relation' and not data.get(relation_key):
+        raise Invalid(_('PID relation must be defined if PID type is relation'))
+
+
+def validate_package_id_format(key, data, errors, context):
+    '''
+    Valida package id is starts with urn:nbn:fi:csc-kata
+
+    :param key:
+    :param data:
+    :param errors:
+    :param context:
+    :return:
+    '''
+
+    if not data.get(key).startswith("urn:nbn:fi:csc-kata"):
+        raise Invalid(_('Package id must start with "urn:nbn:fi:csc-kata"'))
 
 def validate_ida_data_auth_policy(key, data, errors, context):
     '''
@@ -645,13 +691,13 @@ def validate_ida_data_auth_policy(key, data, errors, context):
     if data[key] == u'False' or data[key] == u'':
         return
 
-    # Extract primary data identifier from the data dict and assert its existence
-    data_pid = utils.get_primary_pid_from_validator_data_object(data, 'data')
-    if not data_pid:
-        raise Invalid(_('Primary data identifier must be provided to create new access request form automatically'))
+    # Extract external identifier from the data dict and assert its existence
+    ext_id = utils.get_external_id(data)
+    if not ext_id:
+        raise Invalid(_('External identifier must be provided to create new access request form automatically'))
 
-    # If primary data identifier is not IDA pid, validation is not needed
-    if not data_pid.startswith('urn:nbn:fi:csc-ida'):
+    # If external identifier is not IDA pid, validation is not needed
+    if not ext_id.startswith('urn:nbn:fi:csc-ida'):
         return
 
     # Get user EPPN
@@ -663,7 +709,7 @@ def validate_ida_data_auth_policy(key, data, errors, context):
     try:
         # Get LDAP dn for the given IDA data pid
         # Fetch IDA project numbers related to the IDA data identifier
-        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=data_pid))
+        res = urllib2.urlopen("http://researchida6.csc.fi/cgi-bin/pid-to-project?pid={pid}".format(pid=ext_id))
         res_json = json.loads(res.read().decode('utf-8')) if res else {}
         owner_prjs_from_ida = res_json['projects'] or []
 
@@ -695,3 +741,13 @@ def validate_ida_data_auth_policy(key, data, errors, context):
             raise Invalid(_('There was an internal problem in validating permissions for creating new access request form automatically. Please contact Etsin administration for more information.'))
         if not is_ok:
             raise Invalid(_('Neither you nor the distributor ({dist}) is allowed to create new access request form automatically. Please check the validity of distributor email address.').format(dist=contact_email))
+
+
+def not_empty_if_langtitle_empty(key, data, errors, context):
+    from ckan.lib.navl.validators import not_empty
+    if not data.get(('langtitle', 0, 'value')):
+        not_empty(key, data, errors, context)
+
+def validate_availability(key, data, errors, context):
+    if not data.get(key) in settings.AVAILABILITIES:
+        raise Invalid(_('Invalid availability. Must be one of: {availabilities}'.format(availabilities=', '.join(settings.AVAILABILITIES))))

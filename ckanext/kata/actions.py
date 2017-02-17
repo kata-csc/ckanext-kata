@@ -18,13 +18,13 @@ import ckan.model as model
 from ckan.lib.search import index_for
 from ckan.lib.navl.validators import ignore_missing, ignore, not_empty
 from ckan.logic.validators import url_validator
-from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound, ValidationError
+from ckan.logic import check_access, NotAuthorized, side_effect_free, NotFound
 from ckanext.kata import utils, settings
-from ckan.logic import get_action
 from ckan import authz
 from ckanext.kata.schemas import Schemas
 import sqlalchemy
 from ckan.common import request
+import ckanext.kata.clamd_wrapper as clamd_wrapper
 
 _or_ = sqlalchemy.or_
 
@@ -56,7 +56,7 @@ def package_show(context, data_dict):
 
     if not data_dict.get('id') and not data_dict.get('name'):
         # Get package by data PIDs
-        data_dict['id'] = utils.get_package_id_by_data_pids(data_dict)
+        data_dict['id'] = utils.get_package_id_by_primary_pid(data_dict)
 
     pkg_dict1 = ckan.logic.action.get.package_show(context, data_dict)
     pkg_dict1 = utils.resource_to_dataset(pkg_dict1)
@@ -65,9 +65,6 @@ def package_show(context, data_dict):
     if 'agent' in pkg_dict1:
         agents = filter(None, pkg_dict1.get('agent', []))
         pkg_dict1['agent'] = agents or []
-
-    #print "testing with dummy data"
-    #pkg_dict1['titletest'] = {}
 
     # Normally logic function should not catch the raised errors
     # but here it is needed so action package_show won't catch it instead
@@ -91,7 +88,19 @@ def package_show(context, data_dict):
     return pkg_dict1
 
 
-def _handle_pids(context, data_dict):
+def _handle_package_id_on_create(data_dict):
+    '''
+    Create package id always on create. This method should set 'id' value for the
+    given data_dict. The value should be unique in the system.
+    If this method does not result in placing id to data_dict, then something
+    is very wrong and the user does not have anything to do with it. This should
+    always result in valid id getting placed into data_dict.
+    '''
+
+    data_dict['id'] = utils.get_unique_package_id()
+
+
+def _handle_pids(data_dict):
     '''
     Do some PID modifications to data_dict
     '''
@@ -107,59 +116,34 @@ def _handle_pids(context, data_dict):
 
         data_dict['pids'] = non_empty
 
-    if data_dict.get('generate_version_pid') == 'on':
-        data_dict['pids'] += [{'id': utils.generate_pid(),
-                               'type': 'version',
-                               'provider': 'Etsin',
-                               }]
-
-    # If no primary data PID, generate one if this is a new dataset
-    if not utils.get_pids_by_type('data', data_dict, primary=True):
-        model = context["model"]
-        session = context["session"]
-
-        if data_dict.get('id'):
-            query = session.query(model.Package.id).filter_by(name=data_dict['id'])  # id contains name !
-            result = query.first()
-
-            if result:
-                return  # Existing dataset, don't generate new data PID
-
-        data_dict['pids'].insert(0, {'id': utils.generate_pid(),
-                                     'type': 'data',
-                                     'primary': 'True',
-                                     'provider': 'Etsin',
-                                     })
+    # If no primary identifier exists, use dataset id as primary identifier
+    # by copying dataset id value to primary identifier PID
+    if not utils.get_primary_pid(data_dict):
+        if 'id' in data_dict and len(data_dict['id']) > 0:
+            data_dict['pids'].insert(0, {'id': data_dict['id'],
+                                    'type': 'primary',
+                                    'provider': 'Etsin'
+                                   })
 
 
-def _add_ida_download_url(context, data_dict):
+def _add_ida_download_url(data_dict):
     '''
-    Generate a download URL for actual data if no download URL has been specified,
-    an access application is to be used for availability,
-    and the dataset appears to be from IDA.
-
-    TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
+    Generate a download URL for actual data if no download URL has been specified
+    and access application_rems is used for availability,
+    and the dataset data appears to be from IDA.
     '''
 
     availability = data_dict.get('availability')
-    create_new_form = data_dict.get('access_application_new_form')
+    external_id = data_dict.get('external_id')
+    log.debug("Checking for dataset IDAiness through data PID: {p}".format(p=unicode(external_id)))
+    if availability == 'access_application_rems' and \
+        external_id and utils.is_ida_pid(external_id) and not \
+        data_dict.get('access_application_download_URL'):
 
-    if availability == 'access_application' and create_new_form in [u'True', u'on']:
-        log.debug("Dataset wants a new access application")
+        new_url = utils.generate_ida_download_url(external_id)
+        log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))
+        data_dict['access_application_download_URL'] = new_url
 
-        url = data_dict.get('access_application_download_URL')
-
-        data_pid = utils.get_primary_pid('data', data_dict)
-
-        if data_pid:
-            if not url:
-                log.debug("Checking for dataset IDAiness through data PID: {p}".format(p=data_pid))
-                if utils.is_ida_pid(data_pid):
-                    new_url = utils.generate_ida_download_url(data_pid)
-                    log.debug("Adding download URL for IDA dataset: {u}".format(u=new_url))
-                    data_dict['access_application_download_URL'] = new_url
-        else:
-            log.warn("Failed to get primary data PID for dataset")
 
 def package_create(context, data_dict):
     """
@@ -178,10 +162,13 @@ def package_create(context, data_dict):
     if data_dict.get('type') == 'harvest' and not user.sysadmin:
         ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
 
-    if data_dict.get('type') in ['harvest', 'dataset']:
-        data_dict = utils.dataset_to_resource(data_dict)
-        _handle_pids(context, data_dict)
-        _add_ida_download_url(context, data_dict)
+    data_dict = utils.dataset_to_resource(data_dict)
+
+    if not user.name == 'harvest':
+        _handle_package_id_on_create(data_dict)
+    _handle_pids(data_dict)
+
+    _add_ida_download_url(data_dict)
     
     if asbool(data_dict.get('private')) and not data_dict.get('persist_schema'):
         context['schema'] = Schemas.private_package_schema()
@@ -234,18 +221,9 @@ def package_update(context, data_dict):
     else:
         data_dict['accept-terms'] = 'yes'  # This is not needed when adding a resource
 
-    _handle_pids(context, data_dict)
+    _handle_pids(data_dict)
 
-    _add_ida_download_url(context, data_dict)
-
-    # # Check if data version has changed and if so, generate a new version_PID
-    # if not data_dict['version'] == temp_pkg_dict['version']:
-    #     data_dict['pids'].append(
-    #         {
-    #             u'provider': u'kata',
-    #             u'id': utils.generate_pid(),
-    #             u'type': u'version',
-    #         })
+    _add_ida_download_url(data_dict)
 
     if asbool(data_dict.get('private')) and not data_dict.get('persist_schema'):
         context['schema'] = Schemas.private_package_schema()
@@ -286,7 +264,7 @@ def package_delete(context, data_dict):
     '''
     # Logging for production use
     _log_action('Package', 'delete', context['user'], data_dict['id'])
-    
+
     ret = ckan.logic.action.delete.package_delete(context, data_dict)
     index = index_for('package')
     index.remove_dict(data_dict)
@@ -323,18 +301,24 @@ def _decorate(f, target_type, action):
     return call
 
 # Overwriting to add logging
-resource_create = _decorate(ckan.logic.action.create.resource_create, 'resource', 'create')
-resource_update = _decorate(ckan.logic.action.update.resource_update, 'resource', 'update')
 resource_delete = _decorate(ckan.logic.action.delete.resource_delete, 'resource', 'delete')
 related_delete = _decorate(ckan.logic.action.delete.related_delete, 'related', 'delete')
-# member_create = _decorate(ckan.logic.action.create.member_create, 'member', 'create')
-# member_delete = _decorate(ckan.logic.action.delete.member_delete, 'member', 'delete')
 group_create = _decorate(ckan.logic.action.create.group_create, 'group', 'create')
 group_update = _decorate(ckan.logic.action.update.group_update, 'group', 'update')
 group_delete = _decorate(ckan.logic.action.delete.group_delete, 'group', 'delete')
 organization_create = _decorate(ckan.logic.action.create.organization_create, 'organization', 'create')
 organization_update = _decorate(ckan.logic.action.update.organization_update, 'organization', 'update')
 organization_delete = _decorate(ckan.logic.action.delete.organization_delete, 'organization', 'delete')
+
+
+@clamd_wrapper.scan_for_malware
+def resource_create(context, data_dict):
+    return ckan.logic.action.create.resource_create(context, data_dict)
+
+
+@clamd_wrapper.scan_for_malware
+def resource_update(context, data_dict):
+    return ckan.logic.action.update.resource_update(context, data_dict)
 
 
 def related_create(context, data_dict):

@@ -4,10 +4,9 @@ import sys
 
 from ckan.lib.cli import CkanCommand
 from ckan.lib.dictization.model_dictize import package_dictize
-import ckan.model as model
 from ckanext.harvest.model import HarvestSource
 from ckanext.kata.model import setup
-
+import ckan.model as model
 
 class Kata(CkanCommand):
     '''

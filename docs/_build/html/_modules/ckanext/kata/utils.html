@@ -329,11 +329,11 @@
                   <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;agent&#39;</span><span class="p">,</span> <span class="p">[]))</span>
 
 </div>
-<div class="viewcode-block" id="datapid_to_name"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.datapid_to_name">[docs]</a><span class="k">def</span> <span class="nf">datapid_to_name</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+<div class="viewcode-block" id="pid_to_name"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.pid_to_name">[docs]</a><span class="k">def</span> <span class="nf">pid_to_name</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Wrap re.sub to convert a data-PID to package.name</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="o">*</span><span class="n">settings</span><span class="o">.</span><span class="n">DATAPID_TO_NAME_REGEXES</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="o">*</span><span class="n">settings</span><span class="o">.</span><span class="n">PID_TO_NAME_REGEXES</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">string</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="get_pids_by_type"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_pids_by_type">[docs]</a><span class="k">def</span> <span class="nf">get_pids_by_type</span><span class="p">(</span><span class="n">pid_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">primary</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">use_package_id</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -394,7 +394,7 @@
     <span class="k">return</span> <span class="bp">None</span>
 
 </div>
-<div class="viewcode-block" id="get_package_id_by_data_pids"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_package_id_by_data_pids">[docs]</a><span class="k">def</span> <span class="nf">get_package_id_by_data_pids</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="get_package_id_by_access_or_primary_pid"><a class="viewcode-back" href="../../../ckanext.kata.html#ckanext.kata.utils.get_package_id_by_access_or_primary_pid">[docs]</a><span class="k">def</span> <span class="nf">get_package_id_by_access_or_primary_pid</span><span class="p">(</span><span class="n">data_dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Try if the provided data PIDs match exactly one dataset.</span>
 

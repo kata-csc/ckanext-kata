@@ -65,10 +65,10 @@ class KataPrivacyTestCase(tests.WsgiAppCase, unittest.TestCase):
         cls.api_test_sysadmin.action.group_member_create(**user_dict)
 
         cls.TEST_DATADICT = copy.deepcopy(TEST_DATADICT)
-        cls.package_id = u'urn-nbn-fi-csc-kata20140728095757755621'
         cls.TEST_DATADICT['owner_org'] = 'test_organisation'
-        cls.TEST_DATADICT['id'] = cls.package_id
-        cls.api_test_user.action.package_create(**cls.TEST_DATADICT)
+        package = cls.api_test_user.action.package_create(**cls.TEST_DATADICT)
+        cls.TEST_DATADICT['id'] = package['id']
+        cls.package_id = package['id']
 
     @classmethod
     def teardown_class(cls):

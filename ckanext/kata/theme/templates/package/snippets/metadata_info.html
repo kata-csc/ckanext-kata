@@ -1,4 +1,7 @@
-{% set urn_url = h.get_urn_fi_address(pkg_dict) %}
+{% set urn_url = h.get_dataset_permanent_address(pkg_dict) %}
+{% set has_rights_to_dataset = h.check_access('package_update', {'id': pkg_dict['id']}) %} 
+{% set primary_pid = h.get_primary_pid(pkg_dict) %} 
+{% set external_id = h.get_external_id(pkg_dict) %} 
 {% set permanent_url = h.full_current_url() %}
 {% set lang = h.lang() %}
 {% import 'macros/kata_form.html' as kata_form %}
@@ -107,23 +110,6 @@
   </div>
 
   <div class="form-row">
-    <div class="form-label">{{ _('Organization') }}</div>
-    <div class="form-content">
-      {% if pkg_dict.get('organization') %}
-        {% set org=pkg_dict.organization %}
-        {% set root_nodes = h.get_action('group_tree_section', {'id': org.id, 'type': org.type}) %}
-        {% if not root_nodes.get('children') %}
-          {% link_for org.title or org.name, controller='organization', action='about', id=org.name %}
-        {% else %}
-          <span class="compact">
-            {% snippet 'organization/snippets/organization_tree.html', top_nodes=[root_nodes] %}
-          </span>
-        {% endif %}
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="form-row">
     <div class="form-label">{{ _('Distributor') }}</div>
     <div class="form-content">
       {% for contact in pkg_dict.contact %}
@@ -139,8 +125,12 @@
             {{ contact.email }}
           {% endif %}
         {% endif %}
-        <br><a href="{{ contact.URL }}">{{ contact.URL }}</a>
-        <br>{{ contact.phone }}
+        {% if contact.URL %}
+          <br><a href="{{ contact.URL }}">{{ contact.URL }}</a>
+        {% endif %}
+        {% if contact.phone %}
+          <br>{{ contact.phone }}
+        {% endif %}
       {% endfor %}
     </div>
   </div>
@@ -155,15 +145,33 @@
           {% endif %}
           {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
     </div>
   </div>
+
+  <div class="form-row">
+    <div class="form-label">{{ _('Organization') }}</div>
+    <div class="form-content">
+      {% if pkg_dict.get('organization') %}
+          {% set org = pkg_dict.organization %}
+          {% set root_nodes = h.get_parent_hierarchy(org) %}
+          {% if not root_nodes.get('children') %}
+            {% link_for org.title or org.name, controller='organization', action='about', id=org.name %}
+          {% else %}
+            <span class="compact">
+              {% snippet 'organization/snippets/organization_tree.html', top_nodes=[root_nodes], show_empty=True %}
+            </span>
+          {% endif %}
+      {% endif %}
+    </div>
+  </div>
+
   <div class="form-row">
     <div class="form-label">{{ _('Contributor') }}</div>
     <div class="form-content">
@@ -174,10 +182,10 @@
           {% endif %}
           {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
@@ -191,13 +199,13 @@
           {% if loop.index0 > 0 %}
             <br><br>
           {% endif %}
-          <b>{{ h.resolve_agent_role(agent.role) }}</b><br>
+            <b>{{ h.resolve_agent_role(agent.role) }}</b><br>
           {{ agent.name }}
           {% if agent.organisation %}
-          <br>{{ agent.organisation }}
+            <br>{{ agent.organisation }}
           {% endif %}
           {% if agent.URL %}
-          <br>{{ agent.URL }}
+            <br>{{ agent.URL }}
           {% endif %}
         {% endfor %}
       {% endfor %}
@@ -211,14 +219,13 @@
   <div class="form-row">
     <div class="form-label">{{ _('Data availability') }}</div>
     <div class="form-content">
-        {% if pkg_dict.availability == 'access_application' %}<a href="{{ pkg_dict.access_application_URL }}" target="_blank" class="download">{{ _('Access this dataset via this access form.')}}</a> {% endif%}
+        {% if pkg_dict.availability == 'access_application_rems' or pkg_dict.availability == 'access_application_other' %}<a href="{{ pkg_dict.access_application_URL }}" target="_blank" class="download">{{ _('Access this dataset via this access form.')}}</a> {% endif%}
         {% if pkg_dict.availability == 'direct_download' %}{% if pkg_dict.direct_download_URL %} <a href="{{pkg_dict.direct_download_URL}}" class="download">{{ _('Access this dataset freely.') }}</a> {% endif %} {% endif %}
         {% if pkg_dict.availability == 'access_request' %}{% if pkg_dict.access_request_URL %} <a href="{{pkg_dict.access_request_URL}}" class="download">{{ _('Access this dataset by logging in.') }}</a> {% endif %} {% endif %}
         {% if pkg_dict.availability == 'contact_owner' %}
             {% link_for _('Access this dataset by contacting the distributor.'), controller='ckanext.kata.controllers:ContactController', action='render_request_form', pkg_id=pkg_dict.name, class_='download' %}
         {% endif %}
-        {% if pkg_dict.availability == 'through_provider' %}<a href="{{ pkg_dict.through_provider_URL }}" class="download">{{ _('Access this dataset through data provider.') }}</a> {% endif %}
-        {% if not pkg_dict.availability %}{{ _('This dataset is available freely or availability is not specified.') }}{% endif %}
+        {% if not pkg_dict.availability %}{{ _(' available freely or availability is not specified') }}{% endif %}
     </div>
   </div>
 
@@ -256,16 +263,16 @@
       {% else %}
 
         <!-- Title -->
-        {{ h.get_title_in_lang(pkg_dict.title, lang) }}, 
+        {{ h.get_title_in_lang(pkg_dict.title, lang) }},
 
         <!-- Last modified -->
-        {{ h.extract_version_date(pkg_dict.version) }}, 
+        {{ h.extract_version_date(pkg_dict.version) }},
 
         <!-- Author -->
         {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
           {% for agent in role.list if agent.role == 'author' %}
             {% if agent.name %}
-              {{ agent.name }} ({{ _('author') }}), 
+              {{ agent.name }} ({{ _('author') }}),
             {% endif %}
           {% endfor %}
         {% endfor %}
@@ -273,12 +280,12 @@
         <!-- Distributor -->
         {% for contact in pkg_dict.contact %}
           {% if contact.name %}
-            {{ contact.name }} ({{ _('distributor') }}), 
+            {{ contact.name }} ({{ _('distributor') }}),
           {% endif %}
         {% endfor %}
 
         <!-- Etsin -->
-        {{ _('Etsin research data finder')}}, 
+        {{ _('Etsin research data finder')}},
 
         <!-- Current year -->
         {{ h.get_current_year() }}.
@@ -304,41 +311,41 @@
               {% endif %}
 
               <b>{{ _('Etsin default citation (en)') }}</b><br>
-              {{ h.get_title_in_lang(pkg_dict.title, 'en') }}, 
-              {{ h.extract_version_date(pkg_dict.version) }}, 
+              {{ h.get_title_in_lang(pkg_dict.title, 'en') }},
+              {{ h.extract_version_date(pkg_dict.version) }},
               {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
                 {% for agent in role.list if agent.role == 'author' %}
                   {% if agent.name %}
-                    {{ agent.name }} (author), 
+                    {{ agent.name }} (author),
                   {% endif %}
                 {% endfor %}
               {% endfor %}
               {% for contact in pkg_dict.contact %}
                 {% if contact.name %}
-                  {{ contact.name }} (distributor), 
+                  {{ contact.name }} (distributor),
                 {% endif %}
               {% endfor %}
-              Etsin research data finder, 
+              Etsin research data finder,
               {{ h.get_current_year() }}.
               {{ h.get_current_url() }}
               <br><br>
 
               <b>{{ _('Etsin default citation (fi)') }}</b><br>
-              {{ h.get_title_in_lang(pkg_dict.title, 'fi') }}, 
-              {{ h.extract_version_date(pkg_dict.version) }}, 
+              {{ h.get_title_in_lang(pkg_dict.title, 'fi') }},
+              {{ h.extract_version_date(pkg_dict.version) }},
               {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
                 {% for agent in role.list if agent.role == 'author' %}
                   {% if agent.name %}
-                    {{ agent.name }} (tekijä), 
+                    {{ agent.name }} (tekijä),
                   {% endif %}
                 {% endfor %}
               {% endfor %}
               {% for contact in pkg_dict.contact %}
                 {% if contact.name %}
-                  {{ contact.name }} (jakelija), 
+                  {{ contact.name }} (jakelija),
                 {% endif %}
               {% endfor %}
-              Etsin tutkimuksen tietoaineistojen hakupalvelu, 
+              Etsin tutkimuksen tietoaineistojen hakupalvelu,
               {{ h.get_current_year() }}.
               {{ h.get_current_url() }}
               <br><br>
@@ -427,49 +434,65 @@
 
   <!-- IDs -->
 
+  {%- if urn_url -%}
   <div class="form-row">
-    <div class="form-label">{{ _('Identifiers') }}</div>
+    <div class="form-label">{{ _('Permanent address for this page') }}</div>
+    <div class="form-content">
+      <a href="{{ urn_url }}">{{ urn_url }}</a>
+    </div>
+  </div>
+  {%- endif -%}
+
+  <div class="form-row">
+    <div class="form-label">{{ _('Identifier') }}</div>
     <div class="form-content">
       <table class="form-inner-table">
       <!--
         <tr>
-          <th>{{ _('Permanent address for dataset') }}</th>
+          <th></th>
           <td><a href="{{ permanent_url }}">{{ permanent_url }}</a></td>
-        </tr>
-        {%- if urn_url -%}
+        </tr>-->
         <tr>
-          <th>{{ _('Uniform Resource Name') }}</th>
-          <td><a href="{{ urn_url }}">{{ urn_url }}</a></td>
+          {% if primary_pid %} 
+            <td>{{ h.get_identifier_display_html(primary_pid) | safe }}</td> 
+          {% else %} 
+            <td>ERROR</td> 
+          {% endif %}
+          <td>{{ kata_form.tooltip(tooltip=_("<p>This is the permanent identifier (PID) for this dataset. Use it when citing this dataset. An identifier is unique and permanent. With identifiers you can unambiguously refer to a dataset. The permanent identifiers for digital systems are analogous to the ISBN for books. Examples of identifiers for data are URN, Handle and DOI, but many others exist.</p>")) }}</td>
         </tr>
-        {%- endif -%} -->
-        <tr>
-          <th>{{ _('Primary metadata identifier') }}</th>
-          <td>{{ h.get_identifier_display_html(pkg_dict.id) | safe }}</td>
-          <td>{{ kata_form.tooltip(tooltip=_("<p>Metadata identifier is an identifier given for a single metadata record. The primary metadata identifier is the metadata identifier which refers to this dataset. Additional metadata identifiers may exist in the dataset if for example the dataset's editor has wanted to refer to this metadata record using different identifier systems.</p>")) }}</td>
-        </tr>
-        <tr>
-          <th>{{ _('Primary data identifier') }}</th>
-          <td>{{ h.get_identifier_display_html(h.get_pids_by_type('data', pkg_dict, primary=True)[0]['id']) | safe }}
-          <td>{{ kata_form.tooltip(tooltip=_("<p>Data identifier is an identifier of the data this metadata record refers to. Several data identifiers - in addition to the primary data identifier - may exist in the dataset if for example the dataset's editor has wanted to refer to the data using different identifier systems.</p>")) }}</td>
-        </tr>
-        {% set first_version_pid = true %}
-        {% for pid_type in h.get_pid_types() %}
-          {% for pid in h.get_pids_by_type(pid_type, pkg_dict, primary=False) %}
-            <tr>
-              <th>{{ _(pid.get('type', '').capitalize() + ' identifier') | safe }}</th>
-              <td>{{ h.get_identifier_display_html(pid.id) | safe }}</td>
-              {% if pid_type == 'version' and first_version_pid %}
-                {% set first_version_pid = false %}
-                <td>{{ kata_form.tooltip(tooltip=_("Version identifier is just like the data identifier, but it refers to a certain version of data.")) }}</td>
-              {% endif %}
-            </tr>
-          {% endfor %}
-        {% endfor %}
       </table>
     </div>
   </div>
 
+  {%- if has_rights_to_dataset and external_id -%}
+  <div class="form-row">
+    <div class="form-label">{{ _('External identifier') }}</div>
+    <div class="form-content">{{ external_id }}</div>
+  </div>
+  {%- endif -%}
+
+  {% set relation_pids = h.get_pids_by_type('relation', pkg_dict) %}
+  {% if relation_pids %}
+    <div class="form-row" style="margin-bottom: 10px;">
+      <div class="form-label">{{ _('Related data') }}</div>
+      <div class="form-content" style="position: relative;">
+        <table class="form-inner-table">
+          {% for pid in relation_pids %}
+            <tr>
+              <td style="font-style: italic;">{{ h.get_relation_type_translation(pid.relation, lang) | safe }}</td>
+            </tr>
+            <tr>
+              <td style="padding-bottom: 15px;">{{ pid.id | safe }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    <div class="form-row">
+    </div>
+  {% endif %}
 </div>
+
 <div class="dataset-section form-tab-content">
 <!-- Dataset lifecycle events -->
 

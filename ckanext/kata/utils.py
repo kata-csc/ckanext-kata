@@ -7,25 +7,41 @@ import logging
 import urllib2
 import socket
 import functionally as fn
-from paste.deploy.converters import asbool
 
-from pylons import config
 from lxml import etree
 import re
 from sqlalchemy.sql import select, and_
 from ckan import model as model
 from ckan.lib.dictization import model_dictize
 
-from ckan.lib.email_notifications import send_notification
-from ckan.logic import get_action
 from ckan.model import User, Package, Session, PackageExtra
-from ckan.lib import helpers as h
 from ckanext.kata import settings
 import unicodedata
 
 
 log = logging.getLogger(__name__)
 
+IDA_PID_REGEX = re.compile(r'^urn:nbn:fi:csc-ida.*s$')
+
+
+def get_unique_package_id():
+    '''
+    Create new package id by generating a new one. Check that the generated id does not exist already.
+    This method should always return a previously unexisting package id. If this method returns None,
+    then something is wrong.
+    '''
+
+    new_id_exists = True
+    i=0
+    while new_id_exists and i < 10:
+        new_id = unicode(generate_pid())
+        existing_id_query = model.Session.query(model.Package)\
+                        .filter(model.Package.id == new_id)
+        if existing_id_query.first():
+            i += 1
+            continue
+        return new_id
+    return None
 
 def generate_pid():
     """
@@ -240,48 +256,30 @@ def get_funders(data_dict):
                   data_dict.get('agent', []))
 
 
-def datapid_to_name(string):
+def pid_to_name(string):
     '''
-    Wrap re.sub to convert a data-PID to package.name
+    Wrap re.sub to convert a PID to package.name.
     '''
-    return re.sub(*settings.DATAPID_TO_NAME_REGEXES, string=string)
+    if string:
+        return re.sub(*settings.PID_TO_NAME_REGEXES, string=string)
 
 
-def get_pids_by_type(pid_type, data_dict, primary=None, use_package_id=False):
+def get_pids_by_type(pid_type, data_dict, relation=None):
     '''
-    Get all of package PIDs of certain type
+    Get all package PID dicts of certain type
 
-    :param use_package_id: Set to True to get package.id as primary metadata PID
-    :param primary: True to get only primary pids, or False to get all pids without primary='True', use None to get all pids.
-    :param pid_type: PID type to get (data, metadata, version)
+    :param pid_type: PID type to get (primary, relation)
     :param data_dict:
+    :param relation: relation type. None == get all pids. Basically applicable only
+            when pid type is relation, otherwise not useful since primary type does
+            not have relation defined.
     :rtype: list of dicts
     '''
-    extra = []
-    if use_package_id:
-        if pid_type == 'metadata' and data_dict.get('id'):
-            extra = [{'primary': u'True', 'type': pid_type, 'id': data_dict['id']}]
 
     return [x for x in data_dict.get('pids', {}) if x.get('type') == pid_type and
-            (primary is None or asbool(x.get('primary', 'False')) == primary)] + extra
+            (relation == None or x.get('relation') == relation)]
 
-
-def get_primary_pid_from_validator_data_object(data, type):
-    '''
-    Find dataset's primary identifier from validator data dictionary
-
-    :param data: data object that validator functions get as parameter
-    :param type: Type of primary identifier that is looked for
-    :return: Primary identifier as string
-    '''
-    i=0
-    while data.get((u'pids', i, u'id')):
-        if data.get((u'pids', i, u'primary')) == 'True' and data.get((u'pids', i, u'type')) == type:
-            return data.get((u'pids', i, 'id'))
-        i=i+1
-    return None
-
-def get_primary_pid(pid_type, data_dict, use_package_id=False):
+def get_primary_pid(data_dict, get_as_dict=False):
     '''
     Returns the primary PID of the given type for a package.
     This is a convenience function that returns the first primary PID
@@ -289,47 +287,43 @@ def get_primary_pid(pid_type, data_dict, use_package_id=False):
 
     If no primary PID can be found, this function returns None.
 
-    :param pid_type: PID type to get (data, metadata, version)
     :param data_dict:
-    :param use_package_id: Set to True to get package.id as primary metadata PID
-    :return: the primary PID of the given type
-    :rtype: str or unicode
+    :param get_as_dict: If true, return a dictionary, otherwise return plaing string
+    :return: the primary identifier of the package
     '''
 
-    pids = get_pids_by_type(pid_type=pid_type, data_dict=data_dict, primary=True, use_package_id=use_package_id)
+    pids = get_pids_by_type(pid_type='primary', data_dict=data_dict)
     if pids:
+        if get_as_dict:
+            return pids[0]
         return pids[0]['id']
     else:
         return None
 
-def get_primary_data_pid_from_package(package):
-    '''
-    Returns the primary data PID for a _package_.
 
-    :param package: dataset to query
-    :type package: model.Package
-    :return: the primary data PID
+def get_external_id(data_dict):
+    '''
+    Returns the external ID.
+    External ID is to be used when an external system needs to identify
+    this dataset with non-changing ID.
+
+    If no ID can be found, this function returns None.
+
+    :param data_dict:
+    :return: the external ID of the package
     :rtype: str or unicode
     '''
 
-    pid_id = u'pids_{idx}_id'
-    pid_type = u'pids_{idx}_type'
-    pids = [(k, v) for k, v in package.extras.iteritems() if k.startswith('pids')]
-    primary_pid = None
-    for key, value in pids:
-        if 'primary' in key and value == u'True':  # Note string type!
-            idx = key.split('_')[1]
-            if package.extras[pid_type.format(idx=idx)] == 'data':
-                primary_pid = package.extras[pid_id.format(idx=idx)]
-
-    return primary_pid
+    if data_dict.get('external_id'):
+        return data_dict.get('external_id')
+    return None
 
 
 def get_package_id_by_pid(pid, pid_type):
     """ Find pid by id and type.
 
     :param pid: id of the pid
-    :param pid_type: type of the pid
+    :param pid_type: type of the pid (primary, relation)
     :return: id of the package
     """
     query = select(['key', 'package_id']).where(and_(model.PackageExtra.value == pid, model.PackageExtra.key.like('pids_%_id'),
@@ -344,25 +338,25 @@ def get_package_id_by_pid(pid, pid_type):
     return None
 
 
-def get_package_id_by_data_pids(data_dict):
+def get_package_id_by_primary_pid(data_dict):
     '''
-    Try if the provided data PIDs match exactly one dataset.
+    Try if the provided primary PID matches exactly one dataset.
+
+    THIS METHOD WAS PREVIOUSLY GET_PACKAGE_ID_BY_DATA_PIDS, is the below correct, or should relation pids also be used?
 
     :param data_dict:
     :return: Package id or None if not found.
     '''
-    data_pids = get_pids_by_type('data', data_dict)
-
-    if len(data_pids) == 0:
+    primary_pid = get_primary_pid(data_dict)
+    if not primary_pid:
         return None
 
-    pid_list = [pid.get('id') for pid in data_pids]
+    pid_list = [primary_pid]
 
     # Get package ID's with matching PIDS
     query = Session.query(model.PackageExtra.package_id.distinct()).\
         filter(model.PackageExtra.value.in_(pid_list))
     pkg_ids = query.all()
-
     if len(pkg_ids) != 1:
         return None              # Nothing to do if we get many or zero datasets
 
@@ -375,14 +369,14 @@ def get_package_id_by_data_pids(data_dict):
     # Dictize the results
     extras = model_dictize.extras_list_dictize(extras, {'model': PackageExtra})
 
-    # Check that matching PIDS are type 'data'.
+    # Check that matching PIDS are type 'primary'.
     for extra in extras:
-        key = extra['key'].split('_')   # eg. ('pids', '0', 'id')
+        key = extra['key'].split('_')   # eg. ['pids', '0', 'id']
 
         if key[2] == 'id' and extra['value'] in pid_list:
             type_key = '_'.join(key[:2] + ['type'])
 
-            if not filter(lambda x: x['key'] == type_key and x['value'] == 'data', extras):
+            if not filter(lambda x: x['key'] == type_key and (x['value'] == 'primary'), extras):
                 return None      # Found a hit with wrong type of PID
 
     return pkg_ids[0]    # No problems found, so use this
@@ -441,22 +435,21 @@ def is_ida_pid(pid):
     :rtype: bool
     '''
 
-    ida_pid_regex = 'urn:nbn:fi:csc-ida\w+'
-    return pid and re.match(ida_pid_regex, pid)
+    return pid and IDA_PID_REGEX.match(pid)
 
 
-def generate_ida_download_url(data_pid):
+def generate_ida_download_url(external_id):
     '''
-    Returns an assumed download URL for the data based on the given data PID.
+    Returns an assumed download URL for the data based on the given external ID.
 
     TODO: this should probably be done at the source end, i.e. in IDA itself or harvesters
 
-    :param data_pid: the PID of the IDA dataset (should be actual data PID, not metadata PID)
+    :param external_id: the ID for the IDA dataset
     :return: a download URL for an IDA dataset
     '''
 
-    ida_download_url_template = "http://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
-    return ida_download_url_template.format(p=data_pid)
+    ida_download_url_template = "https://avaa.tdata.fi/remsida/dl.jsp?pid={p}"
+    return ida_download_url_template.format(p=external_id)
 
 
 def slugify(str):

@@ -11,7 +11,6 @@ import ckan.model as model
 from ckan.lib import search
 from ckan.lib.helpers import url_for
 from ckan.logic import ValidationError, NotAuthorized
-from ckan.lib.navl.dictization_functions import Invalid
 from ckanext.kata import settings, utils
 from ckanext.kata.tests.functional import KataApiTestCase
 from ckanext.kata.tests.test_fixtures.unflattened import TEST_RESOURCE, TEST_ORGANIZATION
@@ -133,10 +132,13 @@ class TestCreateDatasetAndResources(KataApiTestCase):
         data_dict['id'] = orig_id
         output = self.api_user_normal.call_action('package_update', data_dict=data_dict)
         assert output['id'] == orig_id
+        output_name = output['name']
 
+        # Change data_dict's name and update it. It should not have changed
         data_dict['name'] = 'new-name-123456'
 
-        self.assertRaises(ValidationError, self.api_user_normal.call_action, 'package_update', data_dict=data_dict)
+        output_2 = self.api_user_normal.call_action('package_update', data_dict=data_dict)
+        assert output_2['name'] == output_name
 
     def test_create_dataset_invalid_agents(self):
         '''Test required fields for agents (role, name/organisation/URL)'''
@@ -507,7 +509,7 @@ class TestDataReading(KataApiTestCase):
         output = self.api_user_normal.action.package_create(**data_dict)
 
         data_dict['id'] = output['id']
-        data_dict['availability'] = 'access_application'
+        data_dict['availability'] = 'access_application_other'
         data_dict['access_application_URL'] = ACCESS_URL
 
         # UPDATE AVAILABILITY
@@ -526,7 +528,7 @@ class TestDataReading(KataApiTestCase):
         assert 'checksum' in output
         assert 'mimetype' in output
 
-        assert output.get('availability') == 'access_application'
+        assert output.get('availability') == 'access_application_other'
 
         output['availability'] = 'contact_owner'
         output['accept-terms'] = 'yes'
@@ -570,12 +572,12 @@ class TestDataReading(KataApiTestCase):
 
     def test_create_and_read_resource(self):
         '''
-        Create and read resource data through API and test that 'url' matches. Availability 'through_provider'.
+        Create and read resource data through API and test that 'url' matches. Availability 'access_request'.
         '''
         data_dict = copy.deepcopy(self.TEST_DATADICT)
         data_dict = self.get_unique_pids(data_dict)
-        data_dict['availability'] = 'through_provider'
-        data_dict['through_provider_URL'] = 'http://www.tdata.fi/'
+        data_dict['availability'] = 'access_request'
+        data_dict['access_request_URL'] = 'http://www.tdata.fi/'
         data_dict.pop('direct_download_URL')
 
         output = self.api_user_normal.action.package_create(**data_dict)

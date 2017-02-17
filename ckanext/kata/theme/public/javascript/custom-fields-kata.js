@@ -35,6 +35,24 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
         // Create tooltips with no fade-in (change false to number for a fade-in)
         jQuery(".kata-plus-btn").tooltip({ show: false });
       }
+
+      /* Show notification if user changes availability
+       * from access_application_rems to something else.
+       */
+      $("#usage-info input:radio").change(function () {
+        if ($(this).is(":checked") && $(this).attr('id') != 'access_application_rems') {
+          if ($('#access_application_rems_identifier').val().match('^.+$') !== null) {
+            $('#rems-pid-change-alert').css('display', 'block');
+          }
+        }
+        $('#access_application_rems_identifier').val('');
+        $('#access_application_rems_identifier').trigger('change');
+      });
+
+      /* Change external_id input value based on access_application_rems_identifier field. */
+      $('#access_application_rems_identifier').change(function() {
+        $('#external_id').val($(this).val());
+      });
     },
 
     /* Creates a new field and appends it to the list. This currently works by
@@ -47,9 +65,12 @@ this.ckan.module('custom-fields-kata', function (jQuery, _) {
      */
     newField: function (element) {
       var fields = this.cloneField(element);
-
       // Do some adjusting for copied PID fields
-      fields.find('.pid').removeProp('readonly')
+      fields.find('.pid').attr('readonly', false);
+      $("#target").val($("#target option:first").val());
+      fields.find('select.pid').val($('select.pid option:first').val());
+      fields.find('select.pid option').removeProp('selected');
+
       fields.find('.pid').removeClass (function (index, css) {
         return (css.match (/(^|\s)pids_\S+/g) || []).join(' ');
       });
@@ -169,26 +190,35 @@ KATA.toggleAccess = function(obj) {
             $('#urlDiv_access_application').slideDown("fast");
             $('#urlDiv_access_request').slideUp("fast");
             $('#urlDiv_direct_download').slideUp("fast");
+            $('#access_request').prop('checked', false);
+            $('#contact_owner').prop('checked', false);
+            $('#direct_download').prop('checked', false);
             break;
         case 'direct_download':
             $('#urlDiv_access_application').slideUp("fast");
             $('#urlDiv_access_request').slideUp("fast");
             $('#urlDiv_direct_download').slideDown("fast");
+            $('#access_application').prop('checked', false);
             break;
         case 'access_request':
             $('#urlDiv_access_application').slideUp("fast");
             $('#urlDiv_access_request').slideDown("fast");
             $('#urlDiv_direct_download').slideUp("fast");
+            $('#access_application').prop('checked', false);
             break;
         case 'contact_owner':
             $('#urlDiv_access_application').slideUp("fast");
             $('#urlDiv_access_request').slideUp("fast");
             $('#urlDiv_direct_download').slideUp("fast");
+            $('#access_application').prop('checked', false);
             break;
-        case 'through_provider':
-            $('#urlDiv_access_application').hide();
-            $('#urlDiv_access_request').hide();
-            $('#urlDiv_direct_download').hide();
+        case 'access_application_rems':
+            $('#access_application_rems_box').slideDown("fast");
+            $('#access_application_other_box').slideUp("fast");
+            break;
+        case 'access_application_other':
+            $('#access_application_other_box').slideDown("fast");
+            $('#access_application_rems_box').slideUp("fast");
             break;
         }
 };

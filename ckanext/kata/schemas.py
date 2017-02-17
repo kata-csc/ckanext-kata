@@ -88,12 +88,11 @@ class Schemas:
                              'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              # phone number can be missing from the first users
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
-        # phone number can be missing from the first users
         schema['event'] = {'type': [ignore_missing, va.check_events, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_interval_date],
                            'descr': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric]}
-        schema['id'] = [default(u''), co.update_pid, unicode]
+        schema['id'] = [not_empty, va.validate_package_id_format, unicode]
 
         # Langtitle fields are used by the UI, to construct a 'title' field with translations in JSON format
         # This is not necessarily needed for the API calls
@@ -103,7 +102,7 @@ class Schemas:
         # The title field contains all the title translations in JSON format.
         # The converter gen_translation_str_from_langtitle
         # needs to be called to construct the JSON string from the UI's langtitle fields.
-        schema['title'] = [ignore_empty]
+        schema['title'] = [va.not_empty_if_langtitle_empty]
 
         # Description (notes) is a multilanguage field similar to title
         schema['langnotes'] = {'value': [unicode, va.validate_notes_duplicates, co.escape_quotes],
@@ -118,37 +117,36 @@ class Schemas:
         schema['temporal_coverage_end'] = \
             [ignore_missing, va.validate_kata_date, co.convert_to_extras_kata, unicode]
         schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
-                          'id': [not_empty, va.validate_general, va.validate_pid_uniqueness,
+                          'id': [not_empty, va.validate_general, va.validate_primary_pid_uniqueness,
                                  unicode, co.flattened_to_extras],
-                          'type': [not_missing, unicode, co.flattened_to_extras],
-                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
+                          'type': [not_missing, va.validate_pid_type, unicode, co.flattened_to_extras],
+                          'relation': [ignore_missing, co.to_relation, va.validate_pid_relation_type,
+                                       unicode, co.flattened_to_extras]}
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
         schema['tags'] = cls.tags_schema()
         schema['xpaths'] = [ignore_missing, co.to_extras_json]
         schema['version'] = [not_empty, unicode, va.validate_kata_date]
-        schema['availability'] = [not_missing, co.convert_to_extras_kata]
+        schema['availability'] = [not_missing, va.validate_availability, co.convert_to_extras_kata]
         schema['langdis'] = [co.checkbox_to_boolean, co.convert_to_extras_kata]
-        schema['__extras'] = [va.check_agent, va.check_contact, va.check_pids, va.check_langtitle]
+        schema['__extras'] = [va.check_agent, va.check_contact, va.check_langtitle]
         schema['__junk'] = [va.check_junk]
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
+        schema['external_id'] = [ignore_missing, co.convert_external_id, va.validate_external_id_uniqueness, unicode, va.validate_general,
+                                   co.convert_to_extras_kata]
         schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['access_application_new_form'] = [co.checkbox_to_boolean, co.convert_to_extras_kata,
-                                                 co.remove_access_application_new_form, va.validate_ida_data_auth_policy]
         schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,
                                             unicode, va.validate_general, co.convert_to_extras_kata]
         schema['access_request_URL'] = [ignore_missing, va.check_access_request_url, url_validator,
                                         unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['through_provider_URL'] = [ignore_missing, va.check_through_provider_url, url_validator,
-                                          unicode, va.validate_general, co.convert_to_extras_kata]
         schema['discipline'] = [ignore_missing, va.validate_discipline, co.convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
         schema['license_URL'] = [va.continue_if_missing, va.validate_license_url, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode,
                                  va.validate_general]
         schema['owner_org'] = [va.kata_owner_org_validator, unicode]
-        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_direct_download_url,
+        schema['resources']['url'] = [default(settings.DATASET_URL_UNKNOWN), va.check_resource_url_for_direct_download_url,
                                       unicode, va.validate_general]
         # Conversion (and validation) of direct_download_URL to resource['url'] is in utils.py:dataset_to_resource()
         schema['resources']['algorithm'] = [ignore_missing, unicode, va.validate_algorithm]
@@ -233,10 +231,6 @@ class Schemas:
 
         schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
         schema['version'] = [ignore_missing, unicode]
-        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
-                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
-                          'type': [not_missing, unicode, co.flattened_to_extras],
-                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         return schema
 
     @classmethod
@@ -263,10 +257,6 @@ class Schemas:
                              'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
-        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
-                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
-                          'type': [not_missing, unicode, co.flattened_to_extras],
-                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         return schema
 
 
@@ -279,10 +269,6 @@ class Schemas:
         """
         schema = cls.create_package_schema_oai_dc()
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
-        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
-                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
-                          'type': [not_missing, unicode, co.flattened_to_extras],
-                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
         return schema
 
 
@@ -322,12 +308,6 @@ class Schemas:
         schema['temporal_coverage_begin'] = [ignore_missing, va.validate_kata_date_relaxed, co.convert_to_extras_kata, unicode]
         schema['temporal_coverage_end'] = [ignore_missing, va.validate_kata_date_relaxed, co.convert_to_extras_kata, unicode]
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
-        schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
-                          'id': [not_empty, va.validate_general, unicode, co.flattened_to_extras],
-                          'type': [not_missing, unicode, co.flattened_to_extras],
-                          'primary': [ignore_missing, unicode, co.flattened_to_extras]}
-        # schema['xpaths'] = [xpath_to_extras]
-
         return schema
 
     @classmethod
@@ -339,8 +319,7 @@ class Schemas:
         """
         schema = cls._create_package_schema()
         # Taken from ckan.logic.schema.default_update_package_schema():
-        schema['id'] = [ignore_missing, package_id_not_changed]
-        schema['name'] = [ignore_missing, va.package_name_not_changed]
+        schema['id'] = [not_empty, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, va.kata_owner_org_validator, unicode]
         return schema
 
@@ -353,7 +332,7 @@ class Schemas:
         '''
         schema = cls.create_package_schema_oai_dc_ida()
 
-        schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['id'] = [not_empty, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
 
         return schema
@@ -369,7 +348,7 @@ class Schemas:
         '''
         schema = cls.create_package_schema_oai_dc()
 
-        schema['id'] = [ignore_missing, package_id_not_changed]
+        schema['id'] = [not_empty, package_id_not_changed]
         schema['owner_org'] = [ignore_missing, owner_org_validator, unicode]
 
         return schema
@@ -395,10 +374,8 @@ class Schemas:
         for key in settings.KATA_FIELDS:
             schema[key] = [co.convert_from_extras_kata, ignore_missing, unicode]
 
-        schema['__after'] = [co.check_primary_pids]
         schema['agent'] = [co.flattened_from_extras, ignore_missing]
         schema['contact'] = [co.flattened_from_extras, ignore_missing]
-        schema['access_application_new_form'] = [unicode],
         schema['event'] = [co.flattened_from_extras, ignore_missing]
         schema['langdis'] = [unicode]
         # schema['organization'] = [ignore_missing, unicode]

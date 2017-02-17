@@ -41,8 +41,7 @@ TEST_RESOURCE = {'url': u'http://www.helsinki.fi',
                  'mimetype': u'application/csv',
                  'resource_type': 'file'}
 
-TEST_DATADICT = {'access_application_new_form': u'False',
-                 'accept-terms': u'yes',
+TEST_DATADICT = {'accept-terms': u'yes',
                  'agent': [{'role': u'author',
                             'name': u'T. Tekijä',
                             'organisation': u'O-Org',
@@ -127,24 +126,26 @@ TEST_DATADICT = {'access_application_new_form': u'False',
                  'pids': [
                      {
                          'provider': u'http://helda.helsinki.fi/oai/request',
-                         'id': u'some_data_pid',
-                         'type': u'data',
+                         'id': u'some_primary_pid',
+                         'type': u'primary',
+                     },
+                     {
+                         'provider': u'kata',
+                         'id': u'kata_data_PID',
+                         'type': u'relation',
+                         'relation': u'generalRelation',
                      },
                      {
                          'provider': u'kata',
                          'id': u'urn:nbn:fi:csc-kata20140728095757755621',
-                         'type': u'data',
-                         'primary': u'True',
-                     },
-                     {
-                         'provider': u'kata',
-                         'id': u'kata_metadata_PID',
-                         'type': u'metadata',
+                         'type': u'relation',
+                         'relation': u'isPartOf',
                      },
                      {
                          'provider': u'kata',
                          'id': u'kata_version_PID',
-                         'type': u'version',
+                         'type': u'relation',
+                         'relation': u'isPreviousVersionOf'
                      },
                  ],
                  'tag_string': u'Python,ohjelmoitunut solukuolema,programming',

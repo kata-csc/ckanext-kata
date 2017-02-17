@@ -4,7 +4,7 @@
 from ckan.common import OrderedDict
 from pylons.i18n.translation import gettext_noop as N_
 
-PID_TYPES = ['data', 'metadata', 'version']
+PID_TYPES = ['primary', 'relation']
 
 # Overridden CKAN role permissions
 ROLE_PERMISSIONS = OrderedDict([
@@ -120,12 +120,18 @@ DATASET_URL_UNKNOWN = 'http://'
 # Text string for dataset's resource.resource_type
 RESOURCE_TYPE_DATASET = 'dataset'
 
+AVAILABILITIES = ['access_application_rems',
+                  'access_application_other',
+                  'access_request',
+                  'contact_owner',
+                  'direct_download']
+
 # All availability URL fields used with different availability options
-AVAILABILITY_OPTIONS = {'access_application': 'access_application_URL',
+AVAILABILITY_OPTIONS = {'access_application_rems': 'access_application_URL',
+                        'access_application_other': 'access_application_URL',
                         'access_request': 'access_request_URL',
                         'contact_owner': None,
-                        'direct_download': 'direct_download_URL',
-                        'through_provider': 'through_provider_URL',
+                        'direct_download': 'direct_download_URL'
                         }
 
 # Required extras fields
@@ -135,7 +141,9 @@ KATA_FIELDS_REQUIRED = ['agent',
                         ]
 
 # Recommended extras fields
-KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
+KATA_FIELDS_RECOMMENDED = ['access_application_rems',
+                           'access_application_other',
+                           'external_id',
                            'access_application_URL',
                            'access_request_URL',
                            'citation',
@@ -148,13 +156,12 @@ KATA_FIELDS_RECOMMENDED = ['access_application_new_form',
                            'license_URL',
                            'pids',
                            'temporal_coverage_begin',
-                           'temporal_coverage_end',
-                           'through_provider_URL'
+                           'temporal_coverage_end'
                            ]
 
 KATA_FIELDS = KATA_FIELDS_RECOMMENDED + KATA_FIELDS_REQUIRED
 
-DATAPID_TO_NAME_REGEXES = [r'[^A-Za-z0-9]', r'-']     # [pattern, replace]
+PID_TO_NAME_REGEXES = [r'[^A-Za-z0-9]', r'-']     # [pattern, replace]
 
 # Change misleading or bad error summary names to more sane ones
 ERRORS = {
@@ -169,19 +176,20 @@ ERRORS = {
     u'Accept-terms': N_(u'Terms of use'),
     u'Langnotes': u'Description + language',
     u'License URL': u'Copyright notice',
+    u'External id': u'External identifier'
 }
 
 # Message strings to be automatically included in emails sent by users
 
 # Template for the message included at the beginning of emails sent through the contact form
 USER_MESSAGE_PREFIX_TEMPLATE = u"\n{sender_name} ({sender_email}) has sent you a message regarding the following dataset:\
-\n\n{package_title} (Identifier: {data_pid})\n\nThe message is below.\n\n\n{sender_name} ({sender_email}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
-\n\n{package_title} (Tunniste: {data_pid})\n\nViesti:\n\n\n    ---\n"
+\n\n{package_title} (Identifier: {package_id})\n\nThe message is below.\n\n\n{sender_name} ({sender_email}) on lähettänyt sinulle viestin koskien tietoaineistoa:\
+\n\n{package_title} (Tunniste: {package_id})\n\nViesti:\n\n\n    ---\n"
 
 # Template for the message included at the beginning of emails sent through the data access request form
-DATA_REQUEST_PREFIX_TEMPLATE = u"\n{sender_name} ({sender_email}) is requesting access to data in dataset\n\n{package_title} (Identifier: {data_pid})\n\n\
+DATA_REQUEST_PREFIX_TEMPLATE = u"\n{sender_name} ({sender_email}) is requesting access to data in dataset\n\n{package_title} (Identifier: {package_id})\n\n\
 for which you are currently marked as distributor.\n\nThe message is below.\n\n\n\
-{sender_name} ({sender_email}) pyytää dataa, joka liittyy tietoaineistoon\n\n{package_title} (Tunniste: {data_pid})\n\nja johon sinut on merkitty jakelijaksi. \
+{sender_name} ({sender_email}) pyytää dataa, joka liittyy tietoaineistoon\n\n{package_title} (Tunniste: {package_id})\n\nja johon sinut on merkitty jakelijaksi. \
 Mukaan liitetty viesti on alla.\n\n\n    ---\n"
 
 REPLY_TO_SENDER_NOTE = u"\n    ---\n\nPlease do not reply directly to this e-mail.\n\
