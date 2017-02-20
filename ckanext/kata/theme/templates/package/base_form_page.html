@@ -24,7 +24,8 @@
         {% block dataset_form_header %}
           <h2 class="pagetitle">{{ _("Add Dataset") }}</h2>
         {% endblock %}
-        <p>* = {{ _("required information") }}</p>
+        <p>** = {{ _("always required information") }}</p>
+        <p>* = {{ _("required information when publishing") }}</p>
 
         {% block form %}{{ c.form | safe }}{% endblock %}
 

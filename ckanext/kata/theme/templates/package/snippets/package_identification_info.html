@@ -17,7 +17,7 @@
   <label class="form-label kata-input-comp" for="pids__{{ index }}__id">{{ _('Identifier') }}</label>
 
   {% call kata_form.input(
-    'pids__' ~ index ~ '__id', id='pids__' ~ index ~ '__id', placeholder='http://www.pid.com/1234',
+    'pids__' ~ index ~ '__id', id='pids__' ~ index ~ '__id', placeholder=_('e.g. https://doi.org/123 or http://urn.fi/123'),
      value=primary_pid, control_classes=['kata-medium'], hasLabel=False,
      attrs={'class': "kata-medium-input pid pids_" ~ index, primary_pid_readonly:''})%}
 
@@ -55,7 +55,7 @@
                 <option {% if pid.id and pid.relation == relation.id %} selected {% endif %} value="{{ relation.id }}">{{ relation[lang] }}</option>
               {% endfor %}
             </select>
-            <input id="pids__{{ index }}__id" type="text" name="pids__{{ index }}__id" value="{{ pid.id | empty_and_escape }}" placeholder="http://www.pid.com/1234" class="kata-medium-input pid pids_{{ index }}" {{ pid_readonly }} />
+            <input id="pids__{{ index }}__id" type="text" name="pids__{{ index }}__id" value="{{ pid.id | empty_and_escape }}" placeholder="{{ _('e.g. https://doi.org/123 or http://urn.fi/123') }}" class="kata-medium-input pid pids_{{ index }}" {{ pid_readonly }} />
           </div>
             {% if pid.id %}
               <input style="margin: 3px; width: 20px; top: 6px" type="checkbox" id="pids__{{ index }}__modify" title="{{ _('Check this to correct errors in an existing PID') }}" onchange="$('input.pids_{{ index }}').attr('readonly',!$('input.pids_{{ index }}').attr('readonly')); $('select.pids_{{ index }}').attr('readonly', !$('select.pids_{{ index }}').attr('readonly'));" />

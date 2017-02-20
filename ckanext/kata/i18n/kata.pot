@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 4.2.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-20 12:57+0000\n"
+"POT-Creation-Date: 2017-02-20 13:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2593,7 +2593,11 @@ msgid ""
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/base_form_page.html:27
-msgid "required information"
+msgid "always required information"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/base_form_page.html:28
+msgid "required information when publishing"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/history.html:3
@@ -5076,7 +5080,7 @@ msgid "e.g. eng, fin, swe"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:27
-msgid "Find language codes from: "
+msgid "Use three letter ISO codes: "
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_basic_information.html:31
@@ -5133,6 +5137,11 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_form.html:37
 msgid "Update and publish"
+msgstr ""
+
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:20
+#: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:58
+msgid "e.g. https://doi.org/123 or http://urn.fi/123"
 msgstr ""
 
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:25

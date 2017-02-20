@@ -5,7 +5,7 @@
 
 <div class="tab-content-inner">
 
-  {% call kata_form.multilang_field('langtitle', _('Dataset title') + '*', 'langtitle-language-selection2', "input", values=data.title or h.multilang_to_json(data, 'langtitle', 'title'), lang=currentlang, classes=['error-block-fullwidth'], error=errors.langtitle, label_classes=['top-padding', 'center-align']) %}
+  {% call kata_form.multilang_field('langtitle', _('Dataset title') + '**', 'langtitle-language-selection2', "input", values=data.title or h.multilang_to_json(data, 'langtitle', 'title'), lang=currentlang, classes=['error-block-fullwidth'], error=errors.langtitle, label_classes=['top-padding', 'center-align']) %}
     {{ kata_form.tooltip(class='top-padding', tooltip=_("Give a title for your data. You can add titles in different languages by using the '+' button. You can remove a title from 'x' button if there are multiple titles. Giving at least one title is mandatory.")) }}
   {% endcall %}
 
@@ -24,7 +24,7 @@
 
         <span class="ui-icon ui-icon-info kata-add-dataset-info"></span>
         <span class="add-dataset-infotext">
-          {{ _('Find language codes from: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
+          {{ _('Use three letter ISO codes: ') }} <a target="_blank" href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a>
         </span>
       </div>
     </div>
