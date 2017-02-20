@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2017-01-31 08:46+0000\n"
+"POT-Creation-Date: 2017-02-20 12:57+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -88,7 +88,7 @@ msgid "Message not sent as logging wasn't permitted"
 msgstr "Viestiä ei lähetetty, koska lokin tallentamista ei sallittu"
 
 #: ckanext/kata/controllers.py:480 ckanext/kata/controllers.py:582
-#: ckanext/kata/controllers.py:608
+#: ckanext/kata/controllers.py:611
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
@@ -123,7 +123,7 @@ msgstr ""
 "on koostuttava vähintään kolmesta kirjaimesta."
 
 #: ckanext/kata/controllers.py:547 ckanext/kata/controllers.py:590
-#: ckanext/kata/controllers.py:616
+#: ckanext/kata/controllers.py:608
 #: ckanext/kata/theme/templates/kata/dummy.html:63
 msgid "Dataset not found"
 msgstr "Aineistoa ei löytynyt"
@@ -190,7 +190,7 @@ msgstr "Formaatit"
 
 #: ckanext/kata/controllers.py:842
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:246
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:91
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:90
 msgid "License"
 msgstr "Lisenssi"
 
@@ -262,13 +262,13 @@ msgstr "Jakelija"
 
 #: ckanext/kata/settings.py:57
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:415
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:241
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:240
 msgid "Funder"
 msgstr "Rahoittaja"
 
 #: ckanext/kata/settings.py:58
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:142
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:288
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:285
 msgid "Owner"
 msgstr "Omistaja"
 
@@ -1214,7 +1214,7 @@ msgstr ""
 #: ckanext/kata/theme/templates/kata/data-model.html:21
 #: ckanext/kata/theme/templates/kata/dummy.html:28
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:257
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:103
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:102
 msgid "Copyright notice"
 msgstr "Lisätietoja käyttöluvasta"
 
@@ -1460,7 +1460,7 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/kata/data-model.html:42
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:417
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:251
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:249
 msgid "Funding id"
 msgstr "Rahoitustunniste"
 
@@ -1604,7 +1604,7 @@ msgstr "Hyväksy palvelun käyttöehdot"
 
 #: ckanext/kata/theme/templates/kata/data-model.html:61
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:262
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:107
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:106
 msgid "Citation"
 msgstr "Sitaatti"
 
@@ -5056,7 +5056,7 @@ msgstr "Pysyvä linkki tälle sivulle"
 #: ckanext/kata/theme/templates/package/snippets/package_actors.html:90
 #: ckanext/kata/theme/templates/package/snippets/package_identification_info.html:17
 msgid "Identifier"
-msgstr "Aineiston tunniste"
+msgstr "Tunniste"
 
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:468
 msgid ""
@@ -5298,27 +5298,27 @@ msgstr ""
 msgid "http://myproject"
 msgstr "http://omaprojektini"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:242
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:241
 msgid "my funder"
 msgstr "oma rahoittaja"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:252
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:250
 msgid "1234"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:260
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:257
 msgid "Add funder"
 msgstr "Lisää rahoittaja"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:273
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:270
 msgid "Owner information"
 msgstr "Omistajatiedot"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:289
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:286
 msgid "name or ID such as ORCID"
 msgstr "nimi tai tunniste, kuten ORCID"
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:295
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:292
 msgid ""
 "Owner is a person or an organisation who decides upon the use of the "
 "dataset.<br /><br />Type the owner's name (firstname familyname) or ID, "
@@ -5328,7 +5328,7 @@ msgstr ""
 " /><br />Anna omistajan nimi (etunimi sukunimi) tai tunniste, kuten "
 "ORCID-tunniste."
 
-#: ckanext/kata/theme/templates/package/snippets/package_actors.html:299
+#: ckanext/kata/theme/templates/package/snippets/package_actors.html:296
 msgid "Add owner"
 msgstr "Lisää omistaja"
 
@@ -5554,16 +5554,18 @@ msgstr "Hyväksy"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:10
 msgid ""
-"You changed availability. Please note that the access rights management "
-"and access to the dataset is still available in Reetta. Should you at any"
-" point wish to return to having the Reetta availability in Etsin, it is "
-"possible by setting the correct PID to the field under \"Manage access "
-"rights with Reetta service\"."
+"You have changed availability. Please note, the access rights application"
+" form and related data still exist in the default access rights "
+"management service. Should you at any point wish that the page of this "
+"dataset would again contain a link to the same application form as "
+"previously, it is possible by setting the identifier you used originally "
+"into the field under \"Manage access rights using the default service\"."
 msgstr ""
-"Vaihdoit saatavuutta. Huomioithan että pääsynhallinta "
-"ja pääsy aineistoon on edelleen saatavilla Reetassa. Jos haluat palata "
-"käyttämään Reetta-saatavuutta Etsimessä, on se mahdollista asettamalla "
-"oikea tunniste \"Hallinnoi käyttöoikeuksia Reetta-palvelun avulla\" kenttään."
+"Vaihdoit saatavuutta. Huomioithan että pääsynhallintalomake ja siihen  "
+"liittyvät tiedot ovat edelleen olemassa oletuslupahakemuspalvelussa. Jos "
+"haluat, että ainestosivulla näytetään jälleen linkki alkuperäiseen "
+"pääsynhallintalomakkeeseen, se on mahdollista asettamalla oikea tunniste "
+"\"Hallinnoi käyttöoikeuksia oletuspalvelun avulla\" kenttään."
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:15
 msgid "Dataset is available for use by"
@@ -5598,33 +5600,47 @@ msgid "using access rights management service"
 msgstr "lupahakemuspalvelulla"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:58
-msgid "Manage access rights with Reetta service"
-msgstr "Hallinnoi käyttöoikeuksia Reetta-palvelun avulla"
+msgid "Manage access rights using the default service"
+msgstr "Hallinnoi käyttöoikeuksia oletuspalvelun avulla"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:59
 msgid ""
-"If you would like to use Reetta resource entitlement management system to"
-" manage access rights to the dataset, choose this option. You should "
-"enter an identifier to the text field that will be used for identifying "
-"the dataset in Reetta. In case you leave it blank, Etsin generates "
-"automatically an identifier for you. However, if your dataset is in IDA "
-"storage service, please enter your dataset's IDA metadata PID "
-"(Identifier.series), which is required to establish connection between "
-"Reetta and IDA. Applicants are able to access the application form via "
-"Etsin dataset page, and after the dataset distributor has accepted the "
-"applicant's application, the applicant will be notified of this "
-"automatically via email."
+"If you want to use Etsin default access rights management service to "
+"manage applications and permissions, choose the first option. Applicants "
+"are able to access an application form via the Etsin dataset page, which "
+"they can use to send a request to the distributor. When the distributor "
+"has accepted the application, the applicant will be notified of this "
+"automatically via email.<br><br>Additionally, access control is possible "
+"only if the dataset is stored in the IDA service. If so, please, enter "
+"your dataset's IDA metadata PID (Identifier.series). This is required to "
+"establish a link between the default service and IDA and thus enable "
+"access control.<br><br>If you are using another service than Etsin "
+"default access rights management service for managing the dataset's "
+"access rights, use 'Manage access rights using a custom service'. In this"
+" case you need to add a link to the corresponding dataset application "
+"form of that service. Etsin users will be able to access the application "
+"form via Etsin dataset page, but all communication after that happens "
+"between the dataset distributor and the applicant, and Etsin is no longer"
+" involved."
 msgstr ""
-"Jos haluat käyttää Reetta pääsynhallintapalvelua hallinnoidaksesi "
-" käyttöoikeuksia aineistoosi, valitse tämä vaihtoehto. Syötä tunniste "
-"tekstikenttään, jota käytetään aineiston tunnistamiseen Reetassa. Jos "
-"jätät kentän tyhjäksi, Etsin luo automaattisesti tunnisteen sinulle. "
-"Huomioithan sen, että jos aineistosi on IDA tallennuspalvelussa, sinun "
-"tulee syöttää aineistosi IDA metatietotunniste (Identifier.series), jota "
-"tarvitaan yhteyden luomiseksi IDAn ja Reetan välille. Aineiston käyttöluvan "
-"hakijat pääsevät käsiksi käyttölupalomakkeelle Etsimen aineistosivun kautta, "
-"ja aineiston jakelijan hyväksyttyä hakijan hakemus, hakijalle ilmoitetaan tästä "
-"automaattisesti sähköpostitse."
+"Etsimen oletuskäyttölupapalvelulla jakelija voi hallinnoida aineiston "
+"käyttölupahakemuksia. Aineiston jakelija saa tiedon hakemuksesta. Kun "
+"hakemus on hyväksytty, hakijalle ilmoitetaan tästä automaattisesti "
+"sähköpostitse. Jos haluat käyttää Etsimen oletuskäyttölupapalvelua, "
+"valitse ensimmäinen vaihtoehto. Tällöin aineiston käyttöluvan hakija "
+"pääsee käyttölupahakemuslomakkeeseen Etsimen kautta.<br><br>Etsimen "
+"kautta pääsynhallinta on tällä hetkellä mahdollista vain, jos aineisto on"
+" IDA-säilytyspalvelussa. Huomioithan, että siinä tapauksessa sinun tulee "
+"syöttää kenttään aineistosi IDA-metatietotunniste (Identifier.series). "
+"Sitä tarvitaan yhteyden luomiseksi IDA:n ja käyttölupapalvelun välille. "
+"<br><br>Jos käytät aineistosi käyttöoikeuksien hallintaan muuta kuin "
+"Etsimen oletuspalvelua, valitse 'Hallinnoi käyttöoikeuksia muun palvelun "
+"avulla'. Tässä tapauksessa "
+"sinun tulee syöttää tekstikenttään linkki, joka vie palvelussa olevaan "
+"aineiston lupahakulomakkeeseen. Aineiston käyttöluvan hakijat pääsevät "
+"tällöin käyttölupalomakkeelle Etsimen aineistosivun kautta, mutta "
+"viestiminen hakijan ja aineiston jakelijan välillä tapahtuu ilman, että "
+"Etsin on tähän osallisena."
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:62
 msgid "Enter identifier for the dataset"
@@ -5635,66 +5651,47 @@ msgid "e.g., urn:nbn:fi:csc-ida...s"
 msgstr "esim. urn:nbn:fi:csc-ida...s"
 
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:67
-msgid "Manage access rights using another service. "
+msgid "Manage access rights using a custom service"
 msgstr "Hallinnoi käyttöoikeuksia muun palvelun avulla"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:68
-msgid ""
-"If you are using another service than Reetta resource entitlement "
-"management system for managing the dataset's access rights, choose this "
-"option. In this case you need to input a link to that service's "
-"corresponsing dataset application form. Etsin users will be able to "
-"access the application form via Etsin dataset page, but all communication"
-" after that is business between the dataset distributor and the "
-"applicant, Etsin is no longer involved."
-msgstr ""
-"Jos käytä muuta palvelua aineistosi käyttöoikeuksien hallintaan kuin "
-"Reetta, valitse tämä vaihtoehto. Tässä tapauksessa sinun tulee syöttää "
-"tekstikenttään linkki, joka vie palvelussa olevaan aineiston lupahakulomakkeeseen. "
-"Aineiston käyttöluvan hakijat pääsevät käsiksi käyttölupalomakkeelle Etsimen "
-"aineistosivun kautta, mutta kaikki viestiminen tämän jälkeen tulee tapahtua "
-"hakijan ja aineiston jakelijan välillä ilman, että Etsin on tähän osallisena."
-
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:71
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:70
 msgid ""
 "Enter the address for the dataset's existing access rights application "
 "form"
 msgstr "Anna aineiston valmiin lupahakemuksen osoite"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:71
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:70
 msgid "http://remsid/"
 msgstr ""
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:77
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:76
 msgid "contacting the distributor"
 msgstr "ottamalla yhteyttä jakelijaan"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:86
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:85
 msgid ""
-"Choose how the data can be accessed. Type the URL information asked for "
-"depending on your choice. If the data is downloadable, choose the first "
-"or second option and provide the url. If the data is accessible after a "
-"person accepts terms and conditions in an external service, choose the "
-"third option. If the data can be accessed only by directly contacting the"
-" distributor, choose the last option. In this case data requests are sent"
-" by email to the address you provided in distributor section. "
-"Instructions on sharing files stored in IDA: "
+"Choose how the data can be accessed. If the data is downloadable, choose "
+"the first or second option and provide the URL.<br><br>If the data is "
+"accessible after a person accepts terms and conditions in an external "
+"service, choose the third option.<br><br>If the data can be accessed only"
+" by directly contacting the distributor, choose the last option. In this "
+"case data requests are sent by email to the address you provided in "
+"distributor section.<br><br>Instructions on sharing files stored in IDA: "
 msgstr ""
-"Valitse, miten dataan pääsee käsiksi. Kirjoita web-osoitetiedot, jos "
-"niitä kysytään (riippuu valinnastasi). Jos data on ladattavissa verkosta,"
-" valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki. Jos data"
-" on saatavissa sen jälkeen, kun käyttäjä esimerkiksi hyväksyy "
+"Valitse, miten dataan pääsee käsiksi. Jos data on ladattavissa verkosta, "
+"valitse ensimmäinen tai toinen vaihtoehto ja anna latauslinkki.<br><br>"
+"Jos data on saatavissa sen jälkeen, kun käyttäjä hyväksyy "
 "määrittelemäsi ehdot jossain ulkopuolisessa palvelussa, valitse kolmas "
-"vaihtoehto. Jos dataan pääsee käsiksi vain ottamalla suoraan yhteyttä "
+"vaihtoehto.<br><br>Jos dataan pääsee käsiksi vain ottamalla suoraan yhteyttä "
 "jakelijaan, valitse viimeinen vaihtoehto. Tässä tapauksessa datapyynnöt "
-"lähetetään edellä antamaasi jakelijan sähköpostiosoitteeseen. Ohjeet IDA-"
+"lähetetään edellä antamaasi jakelijan sähköpostiosoitteeseen.<br><br>Ohjeet IDA-"
 "palveluun tallennettujen tiedostojen jakamisesta: "
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:86
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:85
 msgid "http://openscience.fi/ida-browser-sharing"
 msgstr "http://avointiede.fi/ida-selain-jakaminen"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:100
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:99
 msgid ""
 "Choose a license from the given options. In addition to the chosen "
 "license, the relevant laws must be considered, e.g. Personal Data Act."
@@ -5702,19 +5699,19 @@ msgstr ""
 "Valitse lisenssi annetuista vaihtoehdoista. Valitun lisenssin lisäksi on "
 "huomioitava lainsäädäntö, kuten henkilötietolaki."
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:100
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:99
 msgid "Information about licenses"
 msgstr "Tietoa lisensseistä"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:100
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:99
 msgid "http://creativecommons.org/choose/?lang=en"
 msgstr "http://creativecommons.org/choose/?lang=fi"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:103
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:102
 msgid "e.g. additional information about the license"
 msgstr "esim. lisätietoa lisenssistä"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:104
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:103
 msgid ""
 "Provide detailed information about copyright notice, use constraints, "
 "referencing etc. Note that the field is required if license is set to "
@@ -5724,7 +5721,7 @@ msgstr ""
 "yms. Huomaa, että kenttä on pakollinen jos lisenssiksi on asetettu "
 "License Not Specified tai jokin versio tyypistä Other."
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:107
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:106
 msgid ""
 "e.g. Author, A.A.. (Year, Month Date of Publication). Dataset title. "
 "Retrieved from URL "
@@ -5732,7 +5729,7 @@ msgstr ""
 "esim. Tekijä, T.T.. (Julkaisuvuosi, -kuukausi -päivä). Datasetin otsikko."
 " Saatavilla osoitteesta "
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:108
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:107
 msgid ""
 "Provide a citation example for this dataset. If not specified, default "
 "citation format will be used."
@@ -5740,15 +5737,15 @@ msgstr ""
 "Voit antaa aineistolle esimerkkisitaatin. Jos et määritä omaa sitaattia, "
 "käyttäjälle näytetään oletusmuotoinen sitaatti."
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:113
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:112
 msgid "Enter the dataset's IDA identifier in order to create download link"
 msgstr "Syötä aineiston IDA-tunniste luodaksesi latauslinkin"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:117
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:116
 msgid "Input a valid IDA identifier"
 msgstr "Syötä kelvollinen IDA-tunniste"
 
-#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:119
+#: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:118
 msgid "IDA identifier (Identifier.series in IDA's file metadata)"
 msgstr "IDA-tunniste (Identifier.seriesl IDAn tiedostometadatassa)"
 
@@ -6286,88 +6283,4 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
-
-#~ msgid "Invalid value for access_application"
-#~ msgstr "Virheellinen arvo access_application kentälle"
-
-#~ msgid "Value must be a valid IDA identifier (urn:nbn:fi:csc-ida...s)"
-#~ msgstr "Syötä kelvollinen IDA-tunniste (urn:nbn:fi:csc-ida...s)"
-
-#~ msgid ""
-#~ "<p>Relation identifier is an identifier "
-#~ "of the data this metadata record "
-#~ "refers to. Several data identifiers may"
-#~ " exist in the dataset if for "
-#~ "example the dataset's editor has wanted"
-#~ " to refer to the data using "
-#~ "different identifier systems.</p>"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "You changed availability. Please note "
-#~ "that the access rights management and"
-#~ " access to the dataset is still "
-#~ "available in Reetta. Should you at "
-#~ "any point wish to return to having"
-#~ " the IDA-Reetta availability in "
-#~ "Etsin, it is possible by setting "
-#~ "the correct IDA PID to the field"
-#~ " under \"Manage access rights with "
-#~ "Reetta service, dataset is stored in "
-#~ "IDA\"."
-#~ msgstr ""
-
-#~ msgid "Manage access rights with Reetta service, dataset is stored in IDA"
-#~ msgstr ""
-#~ "Hallinnoi käyttöoikeuksia Reetta-palvelun "
-#~ "avulla, aineisto on tallennettu IDAan"
-
-#~ msgid ""
-#~ "If the dataset is in IDA storage"
-#~ " service and you would like to "
-#~ "use Reetta resource entitlement management "
-#~ "system to manage access rights to "
-#~ "the dataset, choose this option. IDA "
-#~ "is linked to Reetta, so your "
-#~ "dataset's IDA metadata PID (Identifier.series)"
-#~ " is required to establish connection "
-#~ "between Reetta and IDA. Applicants are"
-#~ " able to access the application form"
-#~ " via Etsin dataset page, and after"
-#~ " the dataset distributor has accepted "
-#~ "the applicant's application, the applicant "
-#~ "will be notified of this automatically."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Manage access rights using Reetta "
-#~ "service, dataset is not stored in "
-#~ "IDA."
-#~ msgstr ""
-#~ "Hallinnoi käyttöoikeuksia Reetta-palvelun "
-#~ "avulla, aineisto ei ole tallennettu "
-#~ "IDAan"
-
-#~ msgid ""
-#~ "If the dataset is not in IDA "
-#~ "storage service and you would like "
-#~ "to use Reetta resource entitlement "
-#~ "management system for managing access "
-#~ "rights to the dataset, choose this "
-#~ "option. Applicants are able to access"
-#~ " the application form via Etsin "
-#~ "dataset page, but all communication "
-#~ "after that is business between the "
-#~ "dataset distributor and the applicant, "
-#~ "Etsin is no longer involved."
-#~ msgstr ""
-
-#~ msgid "You must be logged in to upload a file."
-#~ msgstr "Kirjaudu sisään voidaksesi lähettää tiedoston"
-
-#~ msgid "Automatically generated"
-#~ msgstr "Luodaan automaattisesti"
-
-#~ msgid "e.g. Description of variables"
-#~ msgstr "esim. Muuttujien kuvaukset"
 

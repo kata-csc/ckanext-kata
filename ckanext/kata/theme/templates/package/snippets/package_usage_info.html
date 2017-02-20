@@ -7,7 +7,7 @@
 
   <div class="alert alert-info" id="rems-pid-change-alert" style="display: none;">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    {{ _('You changed availability. Please note that the access rights management and access to the dataset is still available in Reetta. Should you at any point wish to return to having the Reetta availability in Etsin, it is possible by setting the correct PID to the field under "Manage access rights with Reetta service".') }}
+    {{ _('You have changed availability. Please note, the access rights application form and related data still exist in the default access rights management service. Should you at any point wish that the page of this dataset would again contain a link to the same application form as previously, it is possible by setting the identifier you used originally into the field under "Manage access rights using the default service".') }}
   </div>
 
   <div class="form-row">
@@ -55,8 +55,8 @@
 
         <label class="radio" for="access_application_rems">
           <input type="radio" name="availability" id="access_application_rems" style="top: 4px" value="access_application_rems" onclick="KATA.toggleAccess(this)" onchange="" {% if access_application_rems_option %}checked value="True"{% endif %}/>
-          {{ _('Manage access rights with Reetta service') }}
-          {{ kata_form.tooltip(tooltip=_("If you would like to use Reetta resource entitlement management system to manage access rights to the dataset, choose this option. You should enter an identifier to the text field that will be used for identifying the dataset in Reetta. In case you leave it blank, Etsin generates automatically an identifier for you. However, if your dataset is in IDA storage service, please enter your dataset's IDA metadata PID (Identifier.series), which is required to establish connection between Reetta and IDA. Applicants are able to access the application form via Etsin dataset page, and after the dataset distributor has accepted the applicant's application, the applicant will be notified of this automatically via email.")) }}
+          {{ _('Manage access rights using the default service') }}
+          {{ kata_form.tooltip(tooltip=_("If you want to use Etsin default access rights management service to manage applications and permissions, choose the first option. Applicants are able to access an application form via the Etsin dataset page, which they can use to send a request to the distributor. When the distributor has accepted the application, the applicant will be notified of this automatically via email.<br><br>Additionally, access control is possible only if the dataset is stored in the IDA service. If so, please, enter your dataset's IDA metadata PID (Identifier.series). This is required to establish a link between the default service and IDA and thus enable access control.<br><br>If you are using another service than Etsin default access rights management service for managing the dataset's access rights, use 'Manage access rights using a custom service'. In this case you need to add a link to the corresponding dataset application form of that service. Etsin users will be able to access the application form via Etsin dataset page, but all communication after that happens between the dataset distributor and the applicant, and Etsin is no longer involved.")) }}
         </label>
         <div class="m-left" id="access_application_rems_box" {% if not access_application_rems_option %} style="display: none" {%endif%}>
           {{ form.input_unnamed('access_application_rems_identifier', label=_("Enter identifier for the dataset"), placeholder=_('e.g., urn:nbn:fi:csc-ida...s'), value=external_id, error=errors.external_id, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
@@ -64,8 +64,7 @@
 
         <label class="radio" for="access_application_other">
           <input type="radio" name="availability" id="access_application_other" style="top: 4px" value="access_application_other" onclick="KATA.toggleAccess(this)" {% if access_application_other_option %}checked value="True"{% endif %}/>
-          {{ _('Manage access rights using another service. ') }}
-          {{ kata_form.tooltip(tooltip=_("If you are using another service than Reetta resource entitlement management system for managing the dataset's access rights, choose this option. In this case you need to input a link to that service's corresponsing dataset application form. Etsin users will be able to access the application form via Etsin dataset page, but all communication after that is business between the dataset distributor and the applicant, Etsin is no longer involved.")) }}
+          {{ _('Manage access rights using a custom service') }}
         </label>
         <div class="m-left" id="access_application_other_box" {% if not access_application_other_option %} style="display: none" {%endif%}>
           {{ form.input('access_application_URL', label=_("Enter the address for the dataset's existing access rights application form"), id='access_application_URL', placeholder=_('http://remsid/'), value=data.access_application_URL, error=errors.access_application_URL, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
@@ -83,7 +82,7 @@
         <span class="error-block kata-error-non-input">{{ errors.availability[0] }}</span>
       {% endif %}
     </div>
-    {{ kata_form.tooltip(tooltip=_("Choose how the data can be accessed. Type the URL information asked for depending on your choice. If the data is downloadable, choose the first or second option and provide the url. If the data is accessible after a person accepts terms and conditions in an external service, choose the third option. If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section. Instructions on sharing files stored in IDA: ") ~ '<a href="' ~ _('http://openscience.fi/ida-browser-sharing') ~ '" target="_blank">' ~ _('http://openscience.fi/ida-browser-sharing') ~ '</a>') }}
+    {{ kata_form.tooltip(tooltip=_("Choose how the data can be accessed. If the data is downloadable, choose the first or second option and provide the URL.<br><br>If the data is accessible after a person accepts terms and conditions in an external service, choose the third option.<br><br>If the data can be accessed only by directly contacting the distributor, choose the last option. In this case data requests are sent by email to the address you provided in distributor section.<br><br>Instructions on sharing files stored in IDA: ") ~ '<a href="' ~ _('http://openscience.fi/ida-browser-sharing') ~ '" target="_blank">' ~ _('http://openscience.fi/ida-browser-sharing') ~ '</a>') }}
   </div>
 
   {% set error = errors.license_id %}
