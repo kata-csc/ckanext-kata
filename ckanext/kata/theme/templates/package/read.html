@@ -87,12 +87,16 @@
 
     <div class="uses-and-followers">
       <table>
+
+        {# Disabled since activity streams are not enabled currently
         <tr>
           <td>{{ _('Followers') }}</td>
           <td>{{ h.SI_number_span(h.get_action('dataset_follower_count', {'id': pkg.id})) }}</td>
           <td>{{ h.follow_button('dataset', pkg.name) }}</td>
           <td></td>
         </tr>
+        #}
+
         <tr>
           <td>{{ _('Data used') }}</td>
             <td></td>

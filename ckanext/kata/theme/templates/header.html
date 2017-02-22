@@ -76,9 +76,11 @@
                     <li>
                       <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}">{{ _('Edit Profile') }}</a>
                     </li>
+                    {# Disabled since activity streams are not enabled currently
                     <li>
                       {% link_for _('Activity Stream'), controller='user', action='activity', id=c.userobj.name %}
                     </li>
+                    #}
                   </ul>
                 </div>
 
