@@ -179,7 +179,7 @@ def escape_quotes(key, data, errors, context):
     :param context: context
     '''
 
-    data[key] = data.get(key).replace('"', '\\"')
+    data[key] = data.get(key).replace('"', '&quot;')
 
 
 def ltitle_from_extras(key, data, errors, context):

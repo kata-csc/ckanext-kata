@@ -20,7 +20,7 @@
         {% endfor %}
         </ul>
         {% for title in h.json_to_list(pkg_dict.title) %}
-          <div class="multilang-field hidden" data-value="{{ title.lang}}">{{ title.value }}</div>
+          <div class="multilang-field hidden" data-value="{{ title.lang}}">{{ title.value | safe }}</div>
         {% endfor %}
 
       </div>

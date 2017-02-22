@@ -16,7 +16,7 @@ Example:
 
 {% set truncate = truncate or 360 %}
 {% set truncate_title = truncate_title or 80 %}
-{% set title = h.get_translation_from_extras(package) or package.name %}
+{% set title = h.get_translation_from_extras(package) | safe or package.name %}
 {% set notes = h.markdown_extract(h.get_description(package), extract_length=truncate) %}
 
 <li class="{{ item_class or "dataset-item" }} {% if numbered %}numbered{% endif %}">
