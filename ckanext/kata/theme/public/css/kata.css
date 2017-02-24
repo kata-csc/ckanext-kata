@@ -2932,6 +2932,9 @@ ul.no-bullet {
   list-style-type: none;
   padding-left: 10px;
 }
+#show-empty-organizations {
+  top: 0px;
+}
 .browse-search-switcher {
   margin-bottom: 40px;
   font-size: 0;
