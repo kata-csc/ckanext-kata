@@ -60,6 +60,13 @@
         </label>
         <div class="m-left" id="access_application_rems_box" {% if not access_application_rems_option %} style="display: none" {%endif%}>
           {{ form.input_unnamed('access_application_rems_identifier', label=_("Enter identifier for the dataset"), placeholder=_('e.g., urn:nbn:fi:csc-ida...s'), value=external_id, error=errors.external_id, classes=['control-medium'], control_classes=["kata-label-pluspad"], label_classes=['kata-input-comp'])}}
+          <div class="register-reetta-info">
+            <span class="ui-icon ui-icon-info etsin-reetta-register-info"></span>
+            <span>
+              {{ _('The distributor needs to register at') }} <a target="_blank" href="https://reetta.csc.fi/">https://reetta.csc.fi/</a>
+            </span>
+          </div>
+          </span>
         </div>
 
         <label class="radio" for="access_application_other">
