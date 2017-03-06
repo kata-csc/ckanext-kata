@@ -8,7 +8,7 @@
 {% block subtitle %}{{ title or pkg.name }}{% endblock %}
 
 {% block inner_content %}
-  <h2 class="page-title">{{ title or pkg.name }}
+  <h2 class="page-title">{{ title | safe or pkg.name }}
     {% if pkg.state.startswith('draft') %}
       [{{ _('Draft') }}]
     {% endif %}

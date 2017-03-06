@@ -75,7 +75,7 @@ ckan.module('kata-multilang-field', function ($, translate) {
       this.inputDiv.find(this.options.inputtype).each(function () {
         var input = $(this);
         var lang = _.last(input.attr('id').split('_'));
-        input.val(values[lang]);
+        input.val(values[lang].replace(/&quot;/g, '"'));
         input.on('change', callback);
       });
     },
