@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2017-02-28 09:29+0000\n"
+"POT-Creation-Date: 2017-03-13 11:50+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -2691,8 +2691,9 @@ msgid "Search for organizations"
 msgstr "Etsi organisaatioita..."
 
 #: ckanext/kata/theme/templates/organization/index.html:42
-msgid "Show empty organizations"
-msgstr "Näytä tyhjät organisaatiot"
+#| msgid "All the title translations of the dataset"
+msgid "Include organisations without datasets"
+msgstr "Näytä myös organisaatiot, joilla ei ole aineistoja"
 
 #: ckanext/kata/theme/templates/organization/index.html:48
 msgid "Order by"
@@ -6281,4 +6282,7 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
+
+#~ msgid "Show empty organizations"
+#~ msgstr "Näytä tyhjät organisaatiot"
 
