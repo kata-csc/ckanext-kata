@@ -162,6 +162,8 @@ def package_create(context, data_dict):
     if data_dict.get('type') == 'harvest' and not user.sysadmin:
         ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
 
+    _remove_extras_from_data_dict(data_dict)
+
     data_dict = utils.dataset_to_resource(data_dict)
 
     if not user.name == 'harvest':
@@ -209,13 +211,14 @@ def package_update(context, data_dict):
     # Get all resources here since we get only 'dataset' resources from WUI.
     package_context = {'model': model, 'ignore_auth': True, 'validate': True,
                        'extras_as_string': True}
-    package_data = package_show(package_context, data_dict)
-    # package_data = ckan.logic.action.get.package_show(package_context, data_dict)
 
-    old_resources = package_data.get('resources', [])
+    _remove_extras_from_data_dict(data_dict)
+
+    package_data = package_show(package_context, data_dict)
 
     if not 'resources' in data_dict:
         # When this is reached, we are updating a dataset, not creating a new resource
+        old_resources = package_data.get('resources', [])
         data_dict['resources'] = old_resources
         data_dict = utils.dataset_to_resource(data_dict)
     else:
@@ -246,6 +249,23 @@ def package_update(context, data_dict):
     index.update_dict(pkg_dict)
 
     return pkg_dict1
+
+
+def _remove_extras_from_data_dict(data_dict):
+    '''
+    If the data_dict contains extras key with an array as value, one other extras
+    value gets deleted for unknown reaasons at least in ckan's
+    ckan.logic.action.update.package_update.
+
+    Since extras is not supposed to be given in package_update (or package_create)
+    call in any case, remove it just to make sure datasets do not get broken.
+
+    :param data_dict:
+    :return:
+    '''
+
+    if data_dict.get('extras'):
+        del data_dict['extras']
 
 
 def package_delete(context, data_dict):
