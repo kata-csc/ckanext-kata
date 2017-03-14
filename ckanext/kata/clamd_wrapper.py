@@ -64,8 +64,7 @@ def perform_scan(resource):
         handling exceptions.
     '''
     do_scan = asbool(config.get('kata.storage.malware_scan', False))
-
-    if do_scan:
+    if do_scan and not isinstance(resource, unicode):
         file_buffer = resource.file
         try:
             return _clamd_scan(file_buffer)
