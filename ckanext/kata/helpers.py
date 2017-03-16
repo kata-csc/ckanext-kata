@@ -29,6 +29,7 @@ from ckan.common import request
 from webhelpers.html import literal
 from datetime import date
 from ckanext.hierarchy.model import GroupTreeNode, group_dictize
+from ckanext.hierarchy.helpers import get_hierarchy_string_by_id
 
 log = logging.getLogger(__name__)
 
@@ -516,6 +517,18 @@ def get_parent_hierarchy(organization):
     parent_hierarchy = org.get_parent_group_hierarchy(type='organization')
     parent_hierarchy.append(org)
     return _direct_branch_fast(parent_hierarchy)
+
+
+def get_autocomplete_format_hierarchy(id):
+    '''
+    Fetches a hierarchy name 'Parent > Child' by group id.
+    :param id: organization id
+    :return: json {"id": "org_id", "text": "Organization Name > Child Organization Name"}
+    '''
+
+    name = get_hierarchy_string_by_id(id)
+
+    return json.dumps({"id": id, "text": name})
 
 
 def convert_language_code(lang, to_format, throw_exceptions=True):
@@ -1024,6 +1037,7 @@ def get_contact_captcha():
     '''
 
     return asbool(config.get('kata.contact_captcha', 'False'))
+
 
 def get_autocomplete_format(data):
     '''
