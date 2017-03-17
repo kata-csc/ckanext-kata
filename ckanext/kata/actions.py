@@ -434,29 +434,25 @@ def organization_autocomplete(context, data_dict):
         ``'title'``, and ``'id'``
     '''
 
+    def convert_to_dict(item):
+        out = {}
+        for k in ['id', 'name', 'title']:
+            out[k] = getattr(item, k)
+        out['hierarchy'] = get_hierarchy_string(item)
+        return out
+
+    def get_hierarchy_string(org_obj):
+        parent_hierarchy = org_obj.get_parent_group_hierarchy(type='organization')
+        parent_hierarchy.append(org_obj)
+        return ' > '.join([o.display_name for o in parent_hierarchy])
+
     check_access('organization_autocomplete', context, data_dict)
 
-    q = data_dict['q']
-    limit = data_dict.get('limit', 20)
-    model = context['model']
+    q = data_dict.get('q')
+    query = model.Group.search_by_name_or_title(q, group_type=None, is_org=True).limit(20)
+    out = map(convert_to_dict, query.all())
 
-    query = model.Group.search_by_name_or_title(q, group_type=None, is_org=True)
-
-    organization_list = []
-    for organization in query.all():
-        result_dict = {}
-
-        for k in ['id', 'name', 'title']:
-            result_dict[k] = getattr(organization, k)
-
-        org_parents_objs = organization.get_parent_group_hierarchy(type='organization')
-        org_parents_titles = [getattr(org, 'title') for org in org_parents_objs]
-        org_parents_titles.append(result_dict.get('title'))  
-        result_dict['hierarchy'] = ' > '.join(org_parents_titles)
-
-        organization_list.append(result_dict)
-
-    return organization_list
+    return out
 
 
 @side_effect_free

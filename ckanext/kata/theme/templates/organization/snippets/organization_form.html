@@ -32,6 +32,8 @@
       </div>
 
       <!-- ckanext-hierarchy - choose parent organization -->
+
+      {% set allowable_parents_hierarchy = h.get_allowable_orgs(c.allowable_parent_groups) %}
         <div class="control-group control-full">
           <div class="form-row">
             <label class="control-label" for="field-parent">{{ _("Parent") }}</label>
@@ -39,7 +41,7 @@
               <select id="field-parent" name="groups__0__name" data-module="autocomplete">
                 {% set selected_parent = (data.get('groups') or [{'name': ''}])[0]['name'] %} {{ selected_parent }}
               <option value="" {% if not selected_parent %} selected="selected" {% endif %}>{{ _('None - top level') }}</option>
-              {% for org in c.allowable_parents_hierarchy %}
+              {% for org in allowable_parents_hierarchy %}
                 <option value="{{ org.name }}" {% if org.name == selected_parent %}selected="selected"{% endif %}>{{ org.hierarchy }}</option>
               {% endfor %}
               </select>

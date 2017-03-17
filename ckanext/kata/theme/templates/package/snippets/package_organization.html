@@ -17,35 +17,30 @@
     {% endif %}
   {% endif %}
 
-  {% set organizations_available = h.list_organisations_for_create_dataset(c.user) %}
-
   {% set existing_org = data.owner_org or data.group_id %}
+  {% set org_dict  = h.get_autocomplete_format_hierarchy(existing_org) %}
 
 <div class="kata-autocomplete error-block-autocomplete">
   <div class="form-row">
     <label for="field-organizations" class="form-label kata-input-comp" for="field-organizations">{{ _('Organization') }}**</label>
-    <div class="form-content kata-input-comp">
+    <div class="form-content">
+      <input
+        type="text"
+        id="field-organizations"
+        title="Organization**"
+        class="kata-medium-input"
+        name="owner_org"
+        value="{{ org_dict }}"
+        placeholder="Start typing ..."
+        data-module-label="hierarchy"
+        data-module="kata-autocomplete"
+        data-module-source="/api/2/util/package_organizations?incomplete=?"
+        data-module-interval="200"
+        data-module-items="100"
+        data-module-key="id"
+        data-module-getlabels
+      >
 
-
-      <div class="select2-search">
-        <div class="control-group">
-          <div class="controls">
-            <select id="field-organizations" name="owner_org" data-module="autocomplete">
-              {% if h.check_config_permission('create_unowned_dataset') %}
-                 <option value="" {% if not selected_org and data.id %} selected="selected" {% endif %}>{{ _('No organization') }}</option>
-              {% endif %}
-              {% if not existing_org %}
-                <option selected="selected" value=""></option>
-              {% endif %}
-              {% for organization in organizations_available %}
-                {# get out first org from users list only if there is not an existing org #}
-                {% set selected_org = (existing_org and existing_org == organization.id) %}
-                <option value="{{ organization.id }}" {% if selected_org %} selected="selected" {% endif %}>{{ organization.hierarchy }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="form-instructions dropdown">
       <a href="#" class="button dropdown-toggle" data-toggle="dropdown">
@@ -56,9 +51,9 @@
       </div>
     </div>
     {% if errors.owner_org %}
-      <span class="error-block error-block-margin separate-error">
+      <div class="error-block error-block-margin separate-error">
         {{ errors.owner_org[0] }}
-      </span>
+      </div>
     {% endif %}
 
   </div>

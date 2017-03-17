@@ -82,7 +82,8 @@ this.ckan.module('kata-autocomplete', function (jQuery, _) {
       var select2 = this.el.select2(settings).data('select2');
 
 	    if (this.options.getlabels) {
-          this.el.select2("data", jQuery.parseJSON(this.el.val()));
+          var data = jQuery.parseJSON(this.el.val())
+          this.el.select2("data", data);
       }
 
       if (this.options.tags && select2 && select2.search) {

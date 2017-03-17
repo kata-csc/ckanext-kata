@@ -989,13 +989,8 @@ input[id="xmlfile"] {
   float: left !important;
   width: 190px !important;
 }
-#s2id_field-organizations,
-#s2id_field-parent {
+#s2id_field-organizations {
   width: 100% !important;
-}
-form.dataset-form #s2id_field-organizations,
-form.dataset-form #s2id_field-parent {
-  width: 165% !important;
 }
 #resource-edit .resource-upload-buttons .controls a {
   background-color: #eaeaea !important;

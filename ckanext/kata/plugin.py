@@ -121,6 +121,10 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     controller=api_controller,
                     conditions=get,
                     action='language_autocomplete')
+        map.connect('/api/2/util/package_organizations',
+                    controller=api_controller,
+                    conditions=get,
+                    action='pkg_organization_autocomplete')
         map.connect('/request_dataset/send/{pkg_id}',
                     controller="ckanext.kata.controllers:ContactController",
                     action="send_request_message")
@@ -257,6 +261,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_hierarchy_string': helpers.get_hierarchy_string,
             'get_flat_hierarchy': helpers.get_flat_hierarchy,
             'get_parent_hierarchy': helpers.get_parent_hierarchy,
+            'get_autocomplete_format_hierarchy': helpers.get_autocomplete_format_hierarchy,
             'get_owners': helpers.get_owners,
             'get_package_ratings': helpers.get_package_ratings,
             'get_package_ratings_for_data_dict': helpers.get_package_ratings_for_data_dict,

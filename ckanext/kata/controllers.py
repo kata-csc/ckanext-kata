@@ -392,6 +392,13 @@ class KATAApiController(ApiController):
         return self._finish_ok(result_set)
 
 
+    def pkg_organization_autocomplete(self):
+        query = request.params.get('incomplete', '').encode('utf-8')
+        data = get_action('organization_autocomplete')({'user': c.user}, {'q': query})
+
+        return self._finish_ok(data)
+
+
 class ContactController(BaseController):
     """
     Add features to contact the dataset's owner.
