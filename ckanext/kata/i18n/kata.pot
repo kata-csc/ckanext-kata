@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 4.2.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-28 09:29+0000\n"
+"POT-Creation-Date: 2017-03-13 11:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2451,7 +2451,7 @@ msgid "Search for organizations"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/index.html:42
-msgid "Show empty organizations"
+msgid "Include organisations without datasets"
 msgstr ""
 
 #: ckanext/kata/theme/templates/organization/index.html:48

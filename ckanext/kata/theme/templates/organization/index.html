@@ -39,7 +39,7 @@
               {% else %}
                 {% set sorting = [(_('Title'), 'title'), (_('Datasets'), 'package_count')] %}
                 {% set sorting_selected = c.sort_by_selected %}
-                <span><input type="checkbox" id="show-empty-organizations" />&nbsp;&nbsp;<label for="show-empty-organizations" class="kata-checkbox-label">{{ _('Show empty organizations') }}</label></span>
+                <span><input type="checkbox" id="show-empty-organizations" />&nbsp;&nbsp;<label for="show-empty-organizations" class="kata-checkbox-label">{{ _('Include organisations without datasets') }}</label></span>
               {% endif %}
 
 
