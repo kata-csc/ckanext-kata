@@ -18,7 +18,15 @@ Example:
     <div class="organization-item-left">
 
       {% block title %}
-        <h3 class="organization-heading"><a href="{{ url }}">{{ organization.display_name }}</a></h3>
+        <h3 class="organization-heading">
+          {# Show the organization hierarchy as a breadcrumb component #}
+          {% set delim = joiner(" > ") %}
+          {% for organization in h.get_flat_hierarchy(organization) %}
+            {% set organization_url = h.url(controller='organization', action='read', id=organization.id) %}
+            {{ delim() }} <a href="{{ organization_url }}">{{ organization.title }}</a>
+          {% endfor %}
+          {# An alternative presentation with a single link: <a href="{{ url }}">{{ h.get_hierarchy_string(organization) }}</a> #}
+        </h3>
       {% endblock %}
 
       </div>

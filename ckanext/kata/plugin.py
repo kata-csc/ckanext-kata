@@ -254,6 +254,8 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
             'get_labels_for_uri': helpers.get_labels_for_uri,
             'get_labels_for_uri_nocache': helpers.get_labels_for_uri_nocache,
             'get_organization_sorters': helpers.get_organization_sorters,
+            'get_hierarchy_string': helpers.get_hierarchy_string,
+            'get_flat_hierarchy': helpers.get_flat_hierarchy,
             'get_parent_hierarchy': helpers.get_parent_hierarchy,
             'get_owners': helpers.get_owners,
             'get_package_ratings': helpers.get_package_ratings,

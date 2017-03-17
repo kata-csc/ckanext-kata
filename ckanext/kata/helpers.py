@@ -508,14 +508,25 @@ def _direct_branch_fast(org_list):
     return root
 
 
-def get_parent_hierarchy(organization):
+def get_flat_hierarchy(organization):
     # Get a single organization based on data_dict's organization dict
     query = model.Group.search_by_name_or_title(organization.get('name'), group_type=None, is_org=True)
     org = query.one()
 
     parent_hierarchy = org.get_parent_group_hierarchy(type='organization')
     parent_hierarchy.append(org)
+
+    return parent_hierarchy
+
+
+def get_parent_hierarchy(organization):
+    parent_hierarchy = get_flat_hierarchy(organization)
     return _direct_branch_fast(parent_hierarchy)
+
+
+def get_hierarchy_string(organization):
+    return ' > '.join([o.display_name for o in get_flat_hierarchy(organization)])
+
 
 
 def convert_language_code(lang, to_format, throw_exceptions=True):
