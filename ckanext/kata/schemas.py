@@ -153,6 +153,7 @@ class Schemas:
         schema['resources']['format'] = [ignore_missing, unicode, va.validate_general]
         schema['resources']['hash'].append(va.validate_general)
         schema['resources']['mimetype'].append(va.validate_mimetype)
+
         return schema
 
     @classmethod
@@ -257,6 +258,15 @@ class Schemas:
                              'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
+        schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
+
+        # Syke: harvested emails are not valid, no name required
+        schema['contact'] = {'name': [ignore_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
+                             'email': [not_empty, unicode, co.flattened_to_extras],
+                             'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
+                             # phone number can be missing from the first users
+                             'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
+
         return schema
 
 
@@ -411,7 +421,7 @@ class Schemas:
 
     @staticmethod
     def _harvest_non_unique_url(schema):
-        schema['url'] = [not_empty, unicode, url_validator]
+        schema['url'] = [not_empty, unicode]
         return schema
 
     @classmethod
