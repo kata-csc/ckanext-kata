@@ -58,9 +58,8 @@
     </div>
   </div>
   {% endif %}
-
-
 </div>
+
 <div class="dataset-section form-tab-content">
   <!-- Keywords, Author, Distributor -->
 
@@ -77,8 +76,8 @@
       {{ h.disciplines_string_resolved(pkg_dict.discipline, 'okm-tieteenala') }}
     </div>
   </div>
-
 </div>
+
 <div class="dataset-section form-tab-content">
 
   <div class="form-row">
@@ -90,13 +89,13 @@
             <br><br>
           {% endif %}
           {% if agent.name %}
-            {{ agent.name }}
+            {{ agent.name | safe }}
           {% endif %}
           {% if agent.organisation %}
             {% if agent.name %}
               <br>
             {% endif %}
-            {{ agent.organisation }}
+            {{ agent.organisation | safe }}
           {% endif %}
           {% if agent.URL %}
             {% if agent.name or agent.organisation %}
@@ -143,9 +142,9 @@
           {% if loop.index0 > 0 %}
             <br><br>
           {% endif %}
-          {{ agent.name }}
+          {{ agent.name | safe }}
           {% if agent.organisation %}
-            <br>{{ agent.organisation }}
+            <br>{{ agent.organisation | safe }}
           {% endif %}
           {% if agent.URL %}
             <br>{{ agent.URL }}
@@ -180,29 +179,9 @@
           {% if loop.index0 > 0 %}
             <br><br>
           {% endif %}
-          {{ agent.name }}
+          {{ agent.name | safe }}
           {% if agent.organisation %}
-            <br>{{ agent.organisation }}
-          {% endif %}
-          {% if agent.URL %}
-            <br>{{ agent.URL }}
-          {% endif %}
-        {% endfor %}
-      {% endfor %}
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-label">{{ _('Other') }}</div>
-    <div class="form-content">
-      {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
-        {% for agent in role.list if agent.role not in ['contributor', 'owner', 'distributor', 'author', 'funder'] %}
-          {% if loop.index0 > 0 %}
-            <br><br>
-          {% endif %}
-            <b>{{ h.resolve_agent_role(agent.role) }}</b><br>
-          {{ agent.name }}
-          {% if agent.organisation %}
-            <br>{{ agent.organisation }}
+            <br>{{ agent.organisation | safe }}
           {% endif %}
           {% if agent.URL %}
             <br>{{ agent.URL }}
@@ -212,7 +191,28 @@
     </div>
   </div>
 
+  <div class="form-row">
+    <div class="form-label">{{ _('Other') }}</div>
+    <div class="form-content">
+      {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+        {% for agent in role.list if agent.role not in ['contributor', 'owner', 'distributor', 'author', 'funder'] %}
+          {% if loop.index0 > 0 %}
+            <br><br>
+          {% endif %}
+            <b>{{ h.resolve_agent_role(agent.role) }}</b><br>
+          {{ agent.name | safe }}
+          {% if agent.organisation %}
+            <br>{{ agent.organisation | safe }}
+          {% endif %}
+          {% if agent.URL %}
+            <br>{{ agent.URL }}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
 </div>
+
 <div class="dataset-section form-tab-content">
   <!-- License -->
 
@@ -249,125 +249,125 @@
           <span property="dc:rights">{{ pkg_dict.license_title }}</span>
         {% endif %}
       </p>
+    </div>
   </div>
 
-    <div class="form-label">{{ _('Copyright notice') }}</div>
-    <div class="form-content">
-      {{ h.render_markdown(pkg_dict.license_URL) }}
-    </div>
+  <div class="form-label">{{ _('Copyright notice') }}</div>
+  <div class="form-content">
+    {{ h.render_markdown(pkg_dict.license_URL) }}
+  </div>
 
-    <div class="form-label">{{ _('Citation') }}</div>
-    <div class="form-content">
-      {% if 'citation' in pkg_dict %}
-        {{ h.render_markdown(pkg_dict.citation) }}
-      {% else %}
+  <div class="form-label">{{ _('Citation') }}</div>
+  <div class="form-content">
+    {% if 'citation' in pkg_dict %}
+      {{ h.render_markdown(pkg_dict.citation) }}
+    {% else %}
 
-        <!-- Title -->
-        {{ h.get_title_in_lang(pkg_dict.title, lang) }},
+      <!-- Title -->
+      {{ h.get_title_in_lang(pkg_dict.title, lang) }},
 
-        <!-- Last modified -->
-        {{ h.extract_version_date(pkg_dict.version) }},
+      <!-- Last modified -->
+      {{ h.extract_version_date(pkg_dict.version) }},
 
-        <!-- Author -->
-        {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
-          {% for agent in role.list if agent.role == 'author' %}
-            {% if agent.name %}
-              {{ agent.name }} ({{ _('author') }}),
-            {% endif %}
-          {% endfor %}
-        {% endfor %}
-
-        <!-- Distributor -->
-        {% for contact in pkg_dict.contact %}
-          {% if contact.name %}
-            {{ contact.name }} ({{ _('distributor') }}),
+      <!-- Author -->
+      {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+        {% for agent in role.list if agent.role == 'author' %}
+          {% if agent.name %}
+            {{ agent.name | safe }} ({{ _('author') }}),
           {% endif %}
         {% endfor %}
+      {% endfor %}
 
-        <!-- Etsin -->
-        {{ _('Etsin research data finder')}},
+      <!-- Distributor -->
+      {% for contact in pkg_dict.contact %}
+        {% if contact.name %}
+          {{ contact.name | safe }} ({{ _('distributor') }}),
+        {% endif %}
+      {% endfor %}
 
-        <!-- Current year -->
-        {{ h.get_current_year() }}.
+      <!-- Etsin -->
+      {{ _('Etsin research data finder')}},
 
-        <!-- Url -->
-        {{ h.get_current_url() }}<br>
+      <!-- Current year -->
+      {{ h.get_current_year() }}.
 
-      {% endif %}
+      <!-- Url -->
+      {{ h.get_current_url() }}<br>
 
-      <span class="fakelink" data-toggle="modal" data-target="#citations">{{_('Show more citation formats')}}</span>
+    {% endif %}
 
-      <div class="modal fade modal-content-block" id="citations" tabindex="-1" role="dialog" aria-labelledby="citationsLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <div class="modal-title ui-widget" id="citationsLabel">{{ _('Citations') }}</div>
-            </div>
-            <div class="modal-body">
-              {% if 'citation' in pkg_dict %}
-                <b>{{ _('Provided by distributor') }}</b><br />
-                {{ pkg_dict.citation }}
-                <br><br>
+    <span class="fakelink" data-toggle="modal" data-target="#citations">{{_('Show more citation formats')}}</span>
+
+    <div class="modal fade modal-content-block" id="citations" tabindex="-1" role="dialog" aria-labelledby="citationsLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title ui-widget" id="citationsLabel">{{ _('Citations') }}</div>
+          </div>
+          <div class="modal-body">
+            {% if 'citation' in pkg_dict %}
+              <b>{{ _('Provided by distributor') }}</b><br />
+              {{ pkg_dict.citation | safe }}
+              <br><br>
+            {% endif %}
+
+            <b>{{ _('Etsin default citation (en)') }}</b><br>
+            {{ h.get_title_in_lang(pkg_dict.title, 'en') }},
+            {{ h.extract_version_date(pkg_dict.version) }},
+            {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+              {% for agent in role.list if agent.role == 'author' %}
+                {% if agent.name %}
+                  {{ agent.name | safe }} (author),
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+            {% for contact in pkg_dict.contact %}
+              {% if contact.name | safe %}
+                {{ contact.name }} (distributor),
               {% endif %}
+            {% endfor %}
+            Etsin research data finder,
+            {{ h.get_current_year() }}.
+            {{ h.get_current_url() }}
+            <br><br>
 
-              <b>{{ _('Etsin default citation (en)') }}</b><br>
-              {{ h.get_title_in_lang(pkg_dict.title, 'en') }},
-              {{ h.extract_version_date(pkg_dict.version) }},
-              {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
-                {% for agent in role.list if agent.role == 'author' %}
-                  {% if agent.name %}
-                    {{ agent.name }} (author),
-                  {% endif %}
-                {% endfor %}
-              {% endfor %}
-              {% for contact in pkg_dict.contact %}
-                {% if contact.name %}
-                  {{ contact.name }} (distributor),
+            <b>{{ _('Etsin default citation (fi)') }}</b><br>
+            {{ h.get_title_in_lang(pkg_dict.title, 'fi') }},
+            {{ h.extract_version_date(pkg_dict.version) }},
+            {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+              {% for agent in role.list if agent.role == 'author' %}
+                {% if agent.name %}
+                  {{ agent.name | safe }} (tekijä),
                 {% endif %}
               {% endfor %}
-              Etsin research data finder,
-              {{ h.get_current_year() }}.
-              {{ h.get_current_url() }}
-              <br><br>
+            {% endfor %}
+            {% for contact in pkg_dict.contact %}
+              {% if contact.name %}
+                {{ contact.name | safe }} (jakelija),
+              {% endif %}
+            {% endfor %}
+            Etsin tutkimuksen tietoaineistojen hakupalvelu,
+            {{ h.get_current_year() }}.
+            {{ h.get_current_url() }}
+            <br><br>
 
-              <b>{{ _('Etsin default citation (fi)') }}</b><br>
-              {{ h.get_title_in_lang(pkg_dict.title, 'fi') }},
-              {{ h.extract_version_date(pkg_dict.version) }},
-              {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
-                {% for agent in role.list if agent.role == 'author' %}
-                  {% if agent.name %}
-                    {{ agent.name }} (tekijä),
-                  {% endif %}
-                {% endfor %}
-              {% endfor %}
-              {% for contact in pkg_dict.contact %}
-                {% if contact.name %}
-                  {{ contact.name }} (jakelija),
-                {% endif %}
-              {% endfor %}
-              Etsin tutkimuksen tietoaineistojen hakupalvelu,
-              {{ h.get_current_year() }}.
-              {{ h.get_current_url() }}
-              <br><br>
-
-            </div>
-            <div class="modal-footer ida-dialog">
-              <button type="button" class="ui-button ui-button-text-only ui-widget btn btn-default" data-dismiss="modal"><span class="ui-button-text ui-widget">{{ _('Close') }}</span></button>
-            </div>
+          </div>
+          <div class="modal-footer ida-dialog">
+            <button type="button" class="ui-button ui-button-text-only ui-widget btn btn-default" data-dismiss="modal"><span class="ui-button-text ui-widget">{{ _('Close') }}</span></button>
           </div>
         </div>
       </div>
-
     </div>
-
+  </div>
 </div>
+
 <div class="dataset-section form-tab-content">
   <!-- Coverage -->
 
   <div class="form-row">
     <div class="form-label">{{ _('Geographical areas covered') }}</div>
     <div class="form-content">
-      {{ pkg_dict.geographic_coverage }}
+      {{ pkg_dict.geographic_coverage | safe }}
     </div>
   </div>
 
@@ -389,8 +389,8 @@
       {% endif %}
     </div>
   </div>
-
 </div>
+
 <div class="dataset-section form-tab-content">
   <!-- Funding -->
 
@@ -415,8 +415,8 @@
         </tr>
         {% for f in funders %}
           <tr>
-            <td>{{ f.name }}</td>
-            <td>{{ f.organisation }}</td>
+            <td>{{ f.name | safe }}</td>
+            <td>{{ f.organisation | safe }}</td>
             <td><a href="{{ f.URL }}">{{ f.URL }}</a></td>
             <td>{{ f['fundingid'] }}</td>
           </tr>
@@ -428,8 +428,8 @@
     {% endif %}
     </div>
   </div>
-
 </div>
+
 <div class="dataset-section form-tab-content">
 
   <!-- IDs -->
@@ -530,6 +530,7 @@
     <div class="form-content">{{ pkg_dict.version }}</div>
   </div>
 </div>
+
 <div class="dataset-section form-tab-content">
     <!-- Additional information / technical information about the data file -->
     <div class="form-row">
@@ -539,32 +540,26 @@
           {% if pkg_dict.mimetype %}
             <tr>
               <th class="dataset-label">{{ _('File format: MIME type') }}</th>
-              <td class="dataset-details">{{ pkg_dict.mimetype }}</td>
+              <td class="dataset-details">{{ pkg_dict.mimetype | safe }}</td>
             </tr>
           {% endif %}
           {%  if pkg_dict.format %}
             <tr>
               <th class="dataset-label">{{ _('File format') }}</th>
-              <td class="dataset-details">{{ pkg_dict.format }}</td>
+              <td class="dataset-details">{{ pkg_dict.format | safe }}</td>
             </tr>
           {% endif %}
           {% if pkg_dict.algorithm and pkg_dict.checksum %}
             <tr>
               <th class="dataset-label">{{ _('Checksum') }}</th>
-              <td class="dataset-details">{{ pkg_dict.checksum }}</td>
+              <td class="dataset-details">{{ pkg_dict.checksum | safe }}</td>
             </tr>
             <tr>
               <th class="dataset-label">{{ _('Algorithm') }}</th>
-              <td class="dataset-details">{{ pkg_dict.algorithm }}</td>
+              <td class="dataset-details">{{ pkg_dict.algorithm | safe }}</td>
             </tr>
           {% endif %}
         </table>
       </div>
     </div>
 </div>
-{#
-<div class="dataset-section form-tab-content">
-  <!-- Additional info -->
-
-</div>
- #}
