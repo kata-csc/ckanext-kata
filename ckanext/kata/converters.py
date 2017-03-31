@@ -582,7 +582,6 @@ def resolve_license_id(license_id):
         return "undefined"
 
 
-
 def to_relation(key, data, errors, context):
     '''
     Try to match relation to existing defined relation, replace matched content with relation id.
@@ -613,6 +612,7 @@ def to_relation(key, data, errors, context):
             # no matching relation found, do nothing
             log.debug("No existing relation ID matched relation")
 
+
 def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
     '''
      This function modifies license_URL value in case license_id is not recognized.
@@ -637,6 +637,7 @@ def populate_license_URL_if_license_id_not_resolved(key, data, errors, context):
     elif resolve_license_id(data.get(('license_id',))) == UNRESOLVED_LICENSE_ID:
         data[key] = data.get(('license_id',)) + '. ' + data.get(key) if data.get(key) else data.get(('license_id',))
 
+
 def convert_external_id(key, data, errors, context):
     '''
     If availability == 'access_application_rems' and external_id is not given, use package id as the external id
@@ -649,3 +650,11 @@ def convert_external_id(key, data, errors, context):
 
     if data.get(('availability',)) == 'access_application_rems' and not data.get(key):
         data[key] = data.get(('id',))
+
+
+def remove_trailing_spaces(key, data, error, context):
+    data[key] = utils.remove_trailing_spaces(data[key])
+
+
+def remove_all_spaces(key, data, error, context):
+    data[key] = utils.remove_all_spaces(data[key])

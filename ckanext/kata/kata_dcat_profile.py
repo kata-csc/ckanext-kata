@@ -7,6 +7,7 @@ from ckanext.kata.helpers import convert_language_code, get_download_url, \
     get_if_url, get_rightscategory, is_url, json_to_list, split_disciplines, \
     resolve_org_name
 from ckanext.kata.utils import get_primary_pid, get_pids_by_type
+from ckanext.kata.utils import remove_trailing_spaces, remove_all_spaces
 
 from rdflib import BNode, Literal, URIRef
 from rdflib.namespace import Namespace, RDF
@@ -76,22 +77,22 @@ class KataDcatProfile(RDFProfile):
         # Etsin: homepage
         uri = url_for(controller='package', action='read',
                       id=dataset_dict.get('name'), qualified=True)
-        g.add((dataset_ref, FOAF.homepage, URIRef(uri)))
+        g.add((dataset_ref, FOAF.homepage, URIRef(remove_trailing_spaces(uri))))
 
         # Etsin: primary identifier
-        g.add((dataset_ref, ADMS.identifier, URIRef(primary_pid)))
+        g.add((dataset_ref, ADMS.identifier, URIRef(remove_trailing_spaces(primary_pid))))
 
         # Etsin: Relation identifiers
         relation_pids = get_pids_by_type('relation', dataset_dict)
         for rpid in relation_pids:
             if rpid.get('relation') == 'isNewVersionOf' or rpid.get('relation') == 'isPreviousVersionOf':
-                g.add((dataset_ref, DCT.isVersionOf, URIRef(rpid.get('id'))))
+                g.add((dataset_ref, DCT.isVersionOf, URIRef(remove_trailing_spaces(rpid.get('id')))))
             elif rpid.get('relation') == 'hasPart':
-                g.add((dataset_ref, DCT.hasPart, URIRef(rpid.get('id'))))
+                g.add((dataset_ref, DCT.hasPart, URIRef(remove_trailing_spaces(rpid.get('id')))))
             elif rpid.get('relation') == 'isPartOf':
-                g.add((dataset_ref, DCT.isPartOf, URIRef(rpid.get('id'))))
+                g.add((dataset_ref, DCT.isPartOf, URIRef(remove_trailing_spaces(rpid.get('id')))))
             else:
-                g.add((dataset_ref, DCT.identifier, URIRef(rpid.get('id'))))
+                g.add((dataset_ref, DCT.identifier, URIRef(remove_trailing_spaces(rpid.get('id')))))
 
         # Etsin: Title and Description, including translations
         items = [
@@ -197,16 +198,16 @@ class KataDcatProfile(RDFProfile):
             contact_email = contact.get('email')
             if contact_email and contact_email != 'hidden':
                 g.add((agent_node_ref, FOAF.mbox,
-                       URIRef("mailto:" + contact_email)))
+                       URIRef("mailto:" + remove_trailing_spaces(contact_email))))
 
             contact_url = contact.get('URL')
             if contact_url:
-                g.add((agent_node_ref, FOAF.homepage, URIRef(contact_url)))
+                g.add((agent_node_ref, FOAF.homepage, URIRef(remove_trailing_spaces(contact_url))))
 
-            contact_phone = contact.get('phone')
+            contact_phone = remove_all_spaces(contact.get('phone'))
             if contact_phone:
                 g.add((agent_node_ref, FOAF.phone,
-                       URIRef("tel:" + contact_phone)))
+                       URIRef("tel:" + remove_trailing_spaces(contact_phone))))
 
         # Etsin: Organization
         organization_name = resolve_org_name(dataset_dict.get('owner_org'))
@@ -222,7 +223,7 @@ class KataDcatProfile(RDFProfile):
             g.add((dataset_ref, DCAT.keyword, Literal(display_name)))
             tag_name = tag.get('name')
             if is_url(tag_name):
-                g.add((dataset_ref, DCAT.theme, URIRef(tag_name)))
+                g.add((dataset_ref, DCAT.theme, URIRef(remove_trailing_spaces(tag_name))))
 
         # Etsin: Dates
         # Peter: Issued-field is new. This used to be inside CatalogRecord.
@@ -288,7 +289,7 @@ class KataDcatProfile(RDFProfile):
         disciplines = dataset_dict.get('discipline', '')
         for discipline in split_disciplines(disciplines):
             if is_url(discipline):
-                disc = URIRef(discipline)
+                disc = URIRef(remove_trailing_spaces(discipline))
 
             else:
                 disc = Literal(discipline)

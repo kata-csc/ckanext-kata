@@ -462,3 +462,15 @@ def slugify(str):
 
     nkfd_form = unicodedata.normalize('NFKD', str)
     return u"".join([c for c in nkfd_form if not unicodedata.combining(c)])
+
+
+def remove_trailing_spaces(str):
+    if str and isinstance(str, basestring):
+        return str.strip()
+    return str
+
+
+def remove_all_spaces(str):
+    if str and isinstance(str, basestring):
+        return re.sub('\s+', '', str)
+    return str

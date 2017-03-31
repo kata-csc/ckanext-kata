@@ -81,13 +81,13 @@ class Schemas:
                            'name': [ignore_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
                            'id': [ignore_empty, va.validate_general, unicode, co.flattened_to_extras],
                            'organisation': [ignore_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
-                           'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
+                           'URL': [ignore_empty, co.remove_trailing_spaces, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                            'fundingid': [ignore_empty, va.validate_general, unicode, co.flattened_to_extras]}
         schema['contact'] = {'name': [not_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
-                             'email': [not_empty, unicode, va.validate_email, co.flattened_to_extras],
-                             'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
+                             'email': [not_empty, co.remove_trailing_spaces, unicode, va.validate_email, co.flattened_to_extras],
+                             'URL': [ignore_empty, co.remove_trailing_spaces, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              # phone number can be missing from the first users
-                             'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
+                             'phone': [ignore_missing, co.remove_trailing_spaces, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['event'] = {'type': [ignore_missing, va.check_events, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_interval_date],
@@ -119,8 +119,8 @@ class Schemas:
         schema['pids'] = {'provider': [ignore_missing, unicode, co.flattened_to_extras],
                           'id': [not_empty, va.validate_general, va.validate_primary_pid_uniqueness,
                                  unicode, co.flattened_to_extras],
-                          'type': [not_missing, va.validate_pid_type, unicode, co.flattened_to_extras],
-                          'relation': [ignore_missing, co.to_relation, va.validate_pid_relation_type,
+                          'type': [not_missing, co.remove_trailing_spaces, va.validate_pid_type, unicode, co.flattened_to_extras],
+                          'relation': [ignore_missing, co.remove_trailing_spaces, co.to_relation, va.validate_pid_relation_type,
                                        unicode, co.flattened_to_extras]}
         schema['tag_string'] = [ignore_missing, not_empty, va.kata_tag_string_convert]
         # otherwise the tags would be validated with default tag validator during update
@@ -133,13 +133,13 @@ class Schemas:
         schema['__junk'] = [va.check_junk]
         schema['name'] = [va.continue_if_missing, co.default_name_from_id, unicode, package_name_validator,
                           va.validate_general]
-        schema['external_id'] = [ignore_missing, co.convert_external_id, va.validate_external_id_uniqueness, unicode, va.validate_general,
+        schema['external_id'] = [ignore_missing, co.remove_trailing_spaces, co.convert_external_id, va.validate_external_id_uniqueness, unicode, va.validate_general,
                                    co.convert_to_extras_kata]
-        schema['access_application_download_URL'] = [ignore_missing, va.validate_access_application_download_url,
+        schema['access_application_download_URL'] = [ignore_missing, co.remove_trailing_spaces, va.validate_access_application_download_url,
                                                      unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['access_application_URL'] = [ignore_missing, va.validate_access_application_url,
+        schema['access_application_URL'] = [ignore_missing, co.remove_trailing_spaces, va.validate_access_application_url,
                                             unicode, va.validate_general, co.convert_to_extras_kata]
-        schema['access_request_URL'] = [ignore_missing, va.check_access_request_url, url_validator,
+        schema['access_request_URL'] = [ignore_missing, co.remove_trailing_spaces, va.check_access_request_url, url_validator,
                                         unicode, va.validate_general, co.convert_to_extras_kata]
         schema['discipline'] = [ignore_missing, va.validate_discipline, co.convert_to_extras_kata, unicode]
         schema['geographic_coverage'] = [ignore_missing, va.validate_spatial, co.convert_to_extras_kata, unicode]
@@ -215,15 +215,15 @@ class Schemas:
             value.insert(0, va.ignore_empty_data)
 
         schema['contact'] = {'name': [ignore_missing,  unicode, co.flattened_to_extras],
-                             'email': [ignore_missing, unicode, co.flattened_to_extras],
-                             'URL': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
-                             'phone': [ignore_missing, unicode, co.flattened_to_extras]}
+                             'email': [ignore_missing, co.remove_trailing_spaces, unicode, co.flattened_to_extras],
+                             'URL': [ignore_missing, co.remove_trailing_spaces, ignore_empty, unicode, co.flattened_to_extras],
+                             'phone': [ignore_missing, co.remove_trailing_spaces, unicode, co.flattened_to_extras]}
 
         schema['agent'] = {'role': [not_empty, va.check_agent_fields, unicode, co.flattened_to_extras],
                            'name': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
                            'id': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
                            'organisation': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
-                           'URL': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras],
+                           'URL': [ignore_missing, co.remove_trailing_spaces, ignore_empty, unicode, co.flattened_to_extras],
                            'fundingid': [ignore_missing, ignore_empty, unicode, co.flattened_to_extras]}
 
         schema['language'] = \
@@ -250,12 +250,12 @@ class Schemas:
         schema['availability'].insert(0, ignore_missing)
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
-        schema['license_URL'] = [va.continue_if_missing, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode, va.validate_general]
+        schema['license_URL'] = [va.continue_if_missing, co.remove_trailing_spaces, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['maintainer'] = [ignore_missing, unicode, va.validate_general]
         schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
-                             'email': [ignore_missing, unicode, va.validate_email, co.flattened_to_extras],
-                             'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
-                             'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
+                             'email': [ignore_missing, co.remove_trailing_spaces, unicode, va.validate_email, co.flattened_to_extras],
+                             'URL': [ignore_empty, co.remove_trailing_spaces, url_validator, va.validate_general, unicode, co.flattened_to_extras],
+                             'phone': [ignore_missing, co.remove_trailing_spaces, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
         return schema
 
