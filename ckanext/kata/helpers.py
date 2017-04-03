@@ -512,7 +512,7 @@ def _direct_branch_fast(org_list):
 def get_flat_hierarchy(organization):
     # Get a single organization based on data_dict's organization dict
     query = model.Group.search_by_name_or_title(organization.get('name'), group_type=None, is_org=True)
-    org = query.one()
+    org = query.first()
 
     parent_hierarchy = org.get_parent_group_hierarchy(type='organization')
     parent_hierarchy.append(org)

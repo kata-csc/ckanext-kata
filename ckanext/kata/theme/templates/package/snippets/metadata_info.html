@@ -240,6 +240,7 @@
   </div>
 
   <div class="form-row">
+
     <div class="form-label">{{ _('License') }}</div>
     <div class="form-content">
       <p>
@@ -250,110 +251,110 @@
         {% endif %}
       </p>
     </div>
-  </div>
 
-  <div class="form-label">{{ _('Copyright notice') }}</div>
-  <div class="form-content">
-    {{ h.render_markdown(pkg_dict.license_URL) }}
-  </div>
+    <div class="form-label">{{ _('Copyright notice') }}</div>
+    <div class="form-content">
+      {{ h.render_markdown(pkg_dict.license_URL) }}
+    </div>
 
-  <div class="form-label">{{ _('Citation') }}</div>
-  <div class="form-content">
-    {% if 'citation' in pkg_dict %}
-      {{ h.render_markdown(pkg_dict.citation) }}
-    {% else %}
+    <div class="form-label">{{ _('Citation') }}</div>
+    <div class="form-content">
+      {% if 'citation' in pkg_dict %}
+        {{ h.render_markdown(pkg_dict.citation) }}
+      {% else %}
 
-      <!-- Title -->
-      {{ h.get_title_in_lang(pkg_dict.title, lang) }},
+        <!-- Title -->
+        {{ h.get_title_in_lang(pkg_dict.title, lang) }},
 
-      <!-- Last modified -->
-      {{ h.extract_version_date(pkg_dict.version) }},
+        <!-- Last modified -->
+        {{ h.extract_version_date(pkg_dict.version) }},
 
-      <!-- Author -->
-      {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
-        {% for agent in role.list if agent.role == 'author' %}
-          {% if agent.name %}
-            {{ agent.name | safe }} ({{ _('author') }}),
+        <!-- Author -->
+        {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+          {% for agent in role.list if agent.role == 'author' %}
+            {% if agent.name %}
+              {{ agent.name | safe }} ({{ _('author') }}),
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+
+        <!-- Distributor -->
+        {% for contact in pkg_dict.contact %}
+          {% if contact.name %}
+            {{ contact.name | safe }} ({{ _('distributor') }}),
           {% endif %}
         {% endfor %}
-      {% endfor %}
 
-      <!-- Distributor -->
-      {% for contact in pkg_dict.contact %}
-        {% if contact.name %}
-          {{ contact.name | safe }} ({{ _('distributor') }}),
-        {% endif %}
-      {% endfor %}
+        <!-- Etsin -->
+        {{ _('Etsin research data finder')}},
 
-      <!-- Etsin -->
-      {{ _('Etsin research data finder')}},
+        <!-- Current year -->
+        {{ h.get_current_year() }}.
 
-      <!-- Current year -->
-      {{ h.get_current_year() }}.
+        <!-- Url -->
+        {{ h.get_current_url() }}<br>
 
-      <!-- Url -->
-      {{ h.get_current_url() }}<br>
+      {% endif %}
 
-    {% endif %}
+      <span class="fakelink" data-toggle="modal" data-target="#citations">{{_('Show more citation formats')}}</span>
 
-    <span class="fakelink" data-toggle="modal" data-target="#citations">{{_('Show more citation formats')}}</span>
+      <div class="modal fade modal-content-block" id="citations" tabindex="-1" role="dialog" aria-labelledby="citationsLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="modal-title ui-widget" id="citationsLabel">{{ _('Citations') }}</div>
+            </div>
+            <div class="modal-body">
+              {% if 'citation' in pkg_dict %}
+                <b>{{ _('Provided by distributor') }}</b><br />
+                {{ pkg_dict.citation | safe }}
+                <br><br>
+              {% endif %}
 
-    <div class="modal fade modal-content-block" id="citations" tabindex="-1" role="dialog" aria-labelledby="citationsLabel" aria-hidden="true" style="display: none;">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <div class="modal-title ui-widget" id="citationsLabel">{{ _('Citations') }}</div>
-          </div>
-          <div class="modal-body">
-            {% if 'citation' in pkg_dict %}
-              <b>{{ _('Provided by distributor') }}</b><br />
-              {{ pkg_dict.citation | safe }}
+              <b>{{ _('Etsin default citation (en)') }}</b><br>
+              {{ h.get_title_in_lang(pkg_dict.title, 'en') }},
+              {{ h.extract_version_date(pkg_dict.version) }},
+              {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+                {% for agent in role.list if agent.role == 'author' %}
+                  {% if agent.name %}
+                    {{ agent.name | safe }} (author),
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+              {% for contact in pkg_dict.contact %}
+                {% if contact.name | safe %}
+                  {{ contact.name }} (distributor),
+                {% endif %}
+              {% endfor %}
+              Etsin research data finder,
+              {{ h.get_current_year() }}.
+              {{ h.get_current_url() }}
               <br><br>
-            {% endif %}
 
-            <b>{{ _('Etsin default citation (en)') }}</b><br>
-            {{ h.get_title_in_lang(pkg_dict.title, 'en') }},
-            {{ h.extract_version_date(pkg_dict.version) }},
-            {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
-              {% for agent in role.list if agent.role == 'author' %}
-                {% if agent.name %}
-                  {{ agent.name | safe }} (author),
+              <b>{{ _('Etsin default citation (fi)') }}</b><br>
+              {{ h.get_title_in_lang(pkg_dict.title, 'fi') }},
+              {{ h.extract_version_date(pkg_dict.version) }},
+              {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
+                {% for agent in role.list if agent.role == 'author' %}
+                  {% if agent.name %}
+                    {{ agent.name | safe }} (tekijä),
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+              {% for contact in pkg_dict.contact %}
+                {% if contact.name %}
+                  {{ contact.name | safe }} (jakelija),
                 {% endif %}
               {% endfor %}
-            {% endfor %}
-            {% for contact in pkg_dict.contact %}
-              {% if contact.name | safe %}
-                {{ contact.name }} (distributor),
-              {% endif %}
-            {% endfor %}
-            Etsin research data finder,
-            {{ h.get_current_year() }}.
-            {{ h.get_current_url() }}
-            <br><br>
+              Etsin tutkimuksen tietoaineistojen hakupalvelu,
+              {{ h.get_current_year() }}.
+              {{ h.get_current_url() }}
+              <br><br>
 
-            <b>{{ _('Etsin default citation (fi)') }}</b><br>
-            {{ h.get_title_in_lang(pkg_dict.title, 'fi') }},
-            {{ h.extract_version_date(pkg_dict.version) }},
-            {% for role in pkg_dict.agent|groupby('role') if role.grouper != 'funder' %}
-              {% for agent in role.list if agent.role == 'author' %}
-                {% if agent.name %}
-                  {{ agent.name | safe }} (tekijä),
-                {% endif %}
-              {% endfor %}
-            {% endfor %}
-            {% for contact in pkg_dict.contact %}
-              {% if contact.name %}
-                {{ contact.name | safe }} (jakelija),
-              {% endif %}
-            {% endfor %}
-            Etsin tutkimuksen tietoaineistojen hakupalvelu,
-            {{ h.get_current_year() }}.
-            {{ h.get_current_url() }}
-            <br><br>
-
-          </div>
-          <div class="modal-footer ida-dialog">
-            <button type="button" class="ui-button ui-button-text-only ui-widget btn btn-default" data-dismiss="modal"><span class="ui-button-text ui-widget">{{ _('Close') }}</span></button>
+            </div>
+            <div class="modal-footer ida-dialog">
+              <button type="button" class="ui-button ui-button-text-only ui-widget btn btn-default" data-dismiss="modal"><span class="ui-button-text ui-widget">{{ _('Close') }}</span></button>
+            </div>
           </div>
         </div>
       </div>
