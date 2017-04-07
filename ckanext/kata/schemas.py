@@ -254,18 +254,11 @@ class Schemas:
         schema['license_URL'] = [va.continue_if_missing, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['maintainer'] = [ignore_missing, unicode, va.validate_general]
         schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
-                             'email': [ignore_missing, unicode, va.validate_email, co.flattened_to_extras],
+                             'email': [ignore_missing, unicode, co.flattened_to_extras], # Syke contact emails may not be valid, but that's ok
                              'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
         schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
-
-        # Syke: harvested emails are not valid, no name required
-        schema['contact'] = {'name': [ignore_empty, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
-                             'email': [not_empty, unicode, co.flattened_to_extras],
-                             'URL': [ignore_empty, url_validator, va.validate_general, unicode, co.flattened_to_extras],
-                             # phone number can be missing from the first users
-                             'phone': [ignore_missing, unicode, va.validate_phonenum, co.flattened_to_extras]}
 
         return schema
 
