@@ -901,6 +901,15 @@ class KataPackageController(PackageController):
 
         return render('kata/browse.html')
 
+    def read(self, id):
+        _or_ = sqlalchemy.or_
+        state = model.Session.query(model.Package).filter(_or_(model.Package.name == id, model.Package.id == id)).value(
+            'state')
+        if state == 'deleted':
+            return render('kata/tombstone.html')
+        else:
+            return super(KataPackageController, self).read(id)
+
 
 class KataInfoController(BaseController):
     '''
