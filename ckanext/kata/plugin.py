@@ -189,6 +189,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_actions(self):
         """ Register actions. """
         return {
+            'dataset_purge': actions.dataset_purge,
             'group_activity_list': actions.group_activity_list,
             'group_activity_list_html': actions.group_activity_list_html,
             'group_create': actions.group_create,
