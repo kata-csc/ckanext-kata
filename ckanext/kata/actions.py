@@ -162,7 +162,8 @@ def package_create(context, data_dict):
     if data_dict.get('type') == 'harvest' and not user.sysadmin:
         ckan.lib.base.abort(401, _('Unauthorized to add a harvest source'))
 
-    _remove_extras_from_data_dict(data_dict)
+    if not user.name == "harvest":
+        _remove_extras_from_data_dict(data_dict)
 
     data_dict = utils.dataset_to_resource(data_dict)
 
@@ -212,7 +213,9 @@ def package_update(context, data_dict):
     package_context = {'model': model, 'ignore_auth': True, 'validate': True,
                        'extras_as_string': True}
 
-    _remove_extras_from_data_dict(data_dict)
+    user = model.User.get(context['user'])
+    if not user.name == "harvest":
+        _remove_extras_from_data_dict(data_dict)
 
     package_data = package_show(package_context, data_dict)
 

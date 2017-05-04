@@ -518,7 +518,7 @@ def resolve_license_id(license_id):
     if license_id:
         license_id_lower = license_id.lower().strip()
         if 'cc' in license_id_lower or ('creative' in license_id_lower and 'commons' in license_id_lower):
-            if 'by' in license_id_lower or 'attribution' in license_id_lower:
+            if 'by' in license_id_lower or 'attribution' in license_id_lower or 'nime' in license_id_lower:
                 if 'nc' in license_id_lower or 'noncommercial' in license_id_lower:
                     if 'sa' in license_id_lower or 'sharealike' in license_id_lower:
                         license_id_work = 'CC-BY-NC-SA'

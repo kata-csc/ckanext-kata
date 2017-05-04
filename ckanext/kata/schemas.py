@@ -153,6 +153,7 @@ class Schemas:
         schema['resources']['format'] = [ignore_missing, unicode, va.validate_general]
         schema['resources']['hash'].append(va.validate_general)
         schema['resources']['mimetype'].append(va.validate_mimetype)
+
         return schema
 
     @classmethod
@@ -253,10 +254,12 @@ class Schemas:
         schema['license_URL'] = [va.continue_if_missing, co.remove_trailing_spaces, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['maintainer'] = [ignore_missing, unicode, va.validate_general]
         schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
-                             'email': [ignore_missing, co.remove_trailing_spaces, unicode, va.validate_email, co.flattened_to_extras],
+                             'email': [ignore_missing, co.remove_trailing_spaces, unicode, co.flattened_to_extras], # Syke emails may not be valid
                              'URL': [ignore_empty, co.remove_trailing_spaces, url_validator, va.validate_general, unicode, co.flattened_to_extras],
                              'phone': [ignore_missing, co.remove_trailing_spaces, unicode, va.validate_phonenum, co.flattened_to_extras]}
         schema['version'] = [not_empty, unicode, va.validate_kata_date_relaxed]
+        schema['tag_string'] = [ignore_missing, ignore_empty, va.kata_tag_string_convert]
+
         return schema
 
 
@@ -411,7 +414,7 @@ class Schemas:
 
     @staticmethod
     def _harvest_non_unique_url(schema):
-        schema['url'] = [not_empty, unicode, url_validator]
+        schema['url'] = [not_empty, unicode]
         return schema
 
     @classmethod
