@@ -43,12 +43,6 @@
               </label>
               <input type="number" class="input-small since-year" value="{{ c.current_search_limiters['temporal_coverage_begin'] }}" name="ext_temporal_coverage_begin">
 
-              <!-- Spatial search widget -->
-              {% block secondary_content %}
-                {% snippet "spatial/snippets/spatial_query.html", default_extent="{ \"type\":
-    \"Polygon\", \"coordinates\": [[[19.0,59.67454],[31.6,59.67454],[31.6,69.911465],[19.0,69.911465],[19.0,59.67454]]]}" %}
-              {% endblock %}
-
             </div>
 
           </form>

@@ -213,6 +213,7 @@ def package_update(context, data_dict):
     package_context = {'model': model, 'ignore_auth': True, 'validate': True,
                        'extras_as_string': True}
 
+    user = model.User.get(context['user'])
     if not user.name == "harvest":
         _remove_extras_from_data_dict(data_dict)
 
