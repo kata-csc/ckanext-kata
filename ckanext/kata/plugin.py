@@ -155,6 +155,9 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     '/',
                     controller="ckanext.kata.controllers:KataHomeController",
                     action="index")
+        map.connect('/dataset/{id}',
+                    controller="ckanext.kata.controllers:KataPackageController",
+                    action="read")
 
         # Hide resource_read page
         map.redirect('/dataset/{id}/resource/{resource_id}', '/dataset/{id}')
@@ -186,6 +189,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
     def get_actions(self):
         """ Register actions. """
         return {
+            'dataset_purge': actions.dataset_purge,
             'group_activity_list': actions.group_activity_list,
             'group_activity_list_html': actions.group_activity_list_html,
             'group_create': actions.group_create,

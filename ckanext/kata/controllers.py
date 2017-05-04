@@ -106,7 +106,7 @@ class MetadataController(BaseController):
         # key = pids_x_type with correspondig value being 'primary'. type index (between the underscores) is used
         # for finding out the corresponding id index for primary id
         query = model.Session.query(model.PackageExtra, model.Package).filter(_or_(_and_(model.PackageExtra.key.like('pids_%_id'), model.PackageExtra.value.like('urn:nbn:fi:csc-%')), _and_(model.PackageExtra.key.like('pids_%_type'), model.PackageExtra.value.like('primary')))). \
-            join(model.Package).filter(model.Package.private == False).filter(model.Package.state == 'active'). \
+            join(model.Package).filter(model.Package.private == False).filter(_or_(model.Package.state == 'active', model.Package.state == 'deleted')). \
             values('package_id', 'name', 'key', 'value')
 
         # Group stuff according to package ids
@@ -900,6 +900,17 @@ class KataPackageController(PackageController):
           'Use `c.search_facets` instead.')
 
         return render('kata/browse.html')
+
+    def read(self, id):
+        _or_ = sqlalchemy.or_
+        query = model.Session.query(model.Package, model.PackageExtra).filter(_or_(model.Package.name == id, model.Package.id == id)).join(model.PackageExtra).filter(model.PackageExtra.key == 'contact_0_email').first()
+
+        if query and len(query) == 2 and query[0].state == 'deleted':
+            c.org_title = model.Session.query(model.Group).filter(model.Group.id == query[0].owner_org).value('title')
+            c.distributor_email = query[1].value
+            return render('kata/tombstone.html')
+
+        return super(KataPackageController, self).read(id)
 
 
 class KataInfoController(BaseController):

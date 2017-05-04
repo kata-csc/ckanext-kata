@@ -294,6 +294,19 @@ def package_delete(context, data_dict):
     return ret
 
 
+def dataset_purge(context, data_dict):
+    '''
+    Empty method because purging dataset needs to be disabled, 
+    since datasets should exist even if they are deleted by users, so they
+    can be referred to in the tombstone page.
+    
+    :param context: 
+    :param data_dict: 
+    :return: 
+    '''
+    return "Purging of datasets not allowed"
+
+
 def _log_action(target_type, action, who, target_id):
     try:
         log_str = '[ ' + target_type + ' ] [ ' + str(datetime.datetime.now())

@@ -1,0 +1,20 @@
+{% extends "page.html" %}
+
+{% set org_title = c.org_title %}
+{% set distributor_email = c.distributor_email %}
+
+{% block subtitle %}{{ _("Tombstone page") }}{% endblock %}
+
+{% block content %}
+
+<div id="etsin-main" style="margin-bottom: 20px">
+  <div class="etsin-container">
+    <div class="container">
+      <div class="row-fluid">
+        This dataset has been deleted.<br>Organization: {{ org_title }}.<br>Contact: {{ distributor_email }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
