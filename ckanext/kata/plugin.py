@@ -157,7 +157,7 @@ class KataPlugin(SingletonPlugin, DefaultDatasetForm):
                     action="index")
         map.connect('/dataset/{id}',
                     controller="ckanext.kata.controllers:KataPackageController",
-                    action="read")
+                    action="read", requirements={'id': 'urn.*[\d]$'})
 
         # Hide resource_read page
         map.redirect('/dataset/{id}/resource/{resource_id}', '/dataset/{id}')

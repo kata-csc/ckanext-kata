@@ -307,11 +307,7 @@ class TestAuthorisation(KataWsgiTestCase):
         offset = url_for(controller='package', action='read', id=package['id'])
         res = self.app.get(offset)
 
-        assert res.status == 302, 'The user should be redirected to login page, since the package is deleted'
-        res = res.follow()
-
-        assert 'Unauthorized to read package' in res, \
-                "The package should be deleted and not shown to an anonymous user."
+        assert res.status == 200, 'The user should arrive to dataset page, since the package is deleted'
 
 
     def test_delete_authorized_external(self):
@@ -337,11 +333,7 @@ class TestAuthorisation(KataWsgiTestCase):
         offset = url_for(controller='package', action='read', id=package['id'])
         res = self.app.get(offset)
 
-        assert res.status == 302, 'The user should be redirected to login page, since the package is deleted'
-        res = res.follow()
-
-        assert 'Unauthorized to read package' in res, \
-                "The package should be deleted and not shown to an anonymous user."
+        assert res.status == 200, 'The user should arrive to dataset page, since the package is deleted'
 
     @raises(NotAuthorized)
     def test_delete_unauthorized_external(self):
@@ -400,8 +392,8 @@ class TestURNExport(KataWsgiTestCase):
                                                          {'name': 'test-organization', 'title': "Test organization"})
 
         for i, (count, private, delete) in enumerate([(1, False, False), (1, True, False), (2, False, False),
-                                                      (2, False, True), (3, False, False),
-                                                      (5, False, False), (5, True, False), (7, False, False), (7, False, True), (9, False, False)]):
+                                                      (3, False, True), (4, False, False),
+                                                      (6, False, False), (6, True, False), (8, False, False), (10, False, True), (12, False, False)]):
             data = copy.deepcopy(TEST_DATADICT)
             if i<=4:
                 for pid in data.get('pids', []):
