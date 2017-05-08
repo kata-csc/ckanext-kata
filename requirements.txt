@@ -2,7 +2,7 @@ SPARQLWrapper==1.7.6
 rdflib==4.2.1
 iso8601==0.1.11
 pyClamd==0.3.17
-lxml==3.6.0
+lxml==3.7.3
 functionally==1.0.1
 python-magic==0.4.12
 iso-639==0.4.5
