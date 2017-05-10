@@ -903,11 +903,10 @@ class KataPackageController(PackageController):
 
     def read(self, id):
         _or_ = sqlalchemy.or_
-        query = model.Session.query(model.Package, model.PackageExtra).filter(_or_(model.Package.name == id, model.Package.id == id)).join(model.PackageExtra).filter(model.PackageExtra.key == 'contact_0_email').first()
-
-        if query and len(query) == 2 and query[0].state == 'deleted':
-            c.org_title = model.Session.query(model.Group).filter(model.Group.id == query[0].owner_org).value('title')
-            c.distributor_email = query[1].value
+        query = model.Session.query(model.Package).filter(_or_(model.Package.name == id, model.Package.id == id)).first()
+        if query and query.state == 'deleted':
+            c.org = model.Session.query(model.Group).filter(model.Group.id == query.owner_org).first()
+            c.title_json = query.title
             return render('kata/tombstone.html')
 
         return super(KataPackageController, self).read(id)
