@@ -158,6 +158,18 @@ def dataset_to_resource(data_dict):
                 # Use the first 'dataset' resource.
                 resource_index = i
                 break
+
+        # SMEAR specific: Remove once this has been run once for smear datasets
+        # The goal here is to remove the unnecessary supplements
+        for i in range(len(data_dict['resources'])):
+            if data_dict['resources'][i].get('resource_type', None) == settings.RESOURCE_TYPE_RDF and \
+               data_dict['resources'][i].get('description', None) == 'Current metadata in RDF format' and \
+               data_dict['owner_org'] == '15fcc27c-7666-4457-9691-5477f1317713':
+
+                data_dict['resources'][i] = {}
+                break
+        # END
+
     else:
         data_dict['resources'] = [None]
         resource_index = 0
