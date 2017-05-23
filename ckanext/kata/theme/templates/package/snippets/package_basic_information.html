@@ -41,7 +41,7 @@
   <div class="form-row">
     {% set autocomplete_source = '/api/2/util/discipline_autocomplete?incomplete=?&language=' ~ h.lang()  %}
     {% set disc_attrs = {'data-module': 'kata-autocomplete', 'data-module-tags': 'true', 'data-module-source': autocomplete_source , 'data-module-key': 'key', 'data-module-label': 'label', 'data-module-getlabels': 'true'} %}
-    {{ kata_form.tooltip(tooltip=_("Select scientific disciplines the dataset belongs to. When you start typing, you will get suggestions for matching discipline names. You can select a suggested keyword with a mouse click. To remove a keyword, click the \'x\' symbol on the keyword tag.")) }}
+    {{ kata_form.tooltip(tooltip=_("Select scientific disciplines the dataset belongs to. When you start typing, you will get suggestions for matching discipline names. You can browse the available disciplines by searching and browsing the Finto okm-tieteenala vocabulary. You can select a suggested keyword with a mouse click. To remove a keyword, click the \'x\' symbol on the keyword tag.")) }}
     {{ form.input('discipline', id='discipline_field', label=_('Disciplines'), placeholder=_('e.g. Mathematics'), value=h.get_autocomplete_format(data.discipline), error=errors.discipline, classes=['control-medium'], control_classes=['error-block-autocomplete error-block-88'], attrs=disc_attrs, label_classes=['center-align']) }}
   </div>
 </div>
