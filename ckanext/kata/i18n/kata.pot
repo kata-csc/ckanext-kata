@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 4.3.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-23 09:09+0000\n"
+"POT-Creation-Date: 2017-05-24 11:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -323,18 +323,18 @@ msgstr ""
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,:#+?=&/."
 msgstr ""
 
-#: ckanext/kata/validators.py:282
+#: ckanext/kata/validators.py:282 ckanext/kata/validators.py:290
 #, python-format
 msgid ""
-"Discipline \"%s\" must be a valid concept defined in Finto okm-tieteenala "
-"vocabulary"
+"Discipline \"%s\" is not part of the official classification of disciplines. "
+"See help for further info."
 msgstr ""
 
-#: ckanext/kata/validators.py:287 ckanext/kata/validators.py:290
+#: ckanext/kata/validators.py:287
 #, python-format
 msgid ""
-"Discipline \"%s\" must be a valid concept URL defined in Finto okm-tieteenala"
-" vocabulary"
+"Discipline \"%s\" must be a valid URL defined in Finto okm-tieteenala "
+"vocabulary. See help for further info."
 msgstr ""
 
 #: ckanext/kata/validators.py:312
