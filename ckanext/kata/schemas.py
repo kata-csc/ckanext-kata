@@ -301,7 +301,7 @@ class Schemas:
 
         schema.pop('accept-terms', None)
 
-        schema['discipline'] = [ignore_missing]
+        schema['discipline'] = [ignore_missing, co.convert_to_extras_kata, unicode]
         schema['event'] = {'type': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general],
                            'who': [ignore_missing, unicode, co.flattened_to_extras, va.validate_general, va.contains_alphanumeric],
                            'when': [ignore_missing, unicode, co.flattened_to_extras, va.validate_kata_date_relaxed],
