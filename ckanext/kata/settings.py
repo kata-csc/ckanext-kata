@@ -119,6 +119,7 @@ DATASET_URL_UNKNOWN = 'http://'
 
 # Text string for dataset's resource.resource_type
 RESOURCE_TYPE_DATASET = 'dataset'
+RESOURCE_TYPE_RDF = 'rdf'
 
 AVAILABILITIES = ['access_application_rems',
                   'access_application_other',

@@ -12,7 +12,6 @@ ckan.module('etsin-ida-prefill', function ($, _) {
         },
 
         initialize: function () {
-            var primIdentifierField = $('#pids__0__id');
             var directDlField = $('#direct_download_URL');
             var idaPrefillModal = null;
             var idaUrnInput = $('#ida-prefill-input');
@@ -45,8 +44,6 @@ ckan.module('etsin-ida-prefill', function ($, _) {
                 valid = checkRegexp(idaUrnInput, idaPidRegex);
 
                 if (valid) {
-                    // Update primary pid field and close modal
-                    $('#pids__0__id').val(idaUrnInput.val());
                     directDlField.val('https://avaa.tdata.fi/openida/dl.jsp?pid='.concat(idaUrnInput.val()));
                     idaPrefillModal.dialog('close');
                 }

@@ -291,8 +291,8 @@
         <!-- Current year -->
         {{ h.get_current_year() }}.
 
-        <!-- Url -->
-        {{ h.get_current_url() }}<br>
+        <!-- Primary identifier -->
+        {{ primary_pid | safe }}<br>
 
       {% endif %}
 
@@ -328,7 +328,7 @@
               {% endfor %}
               Etsin research data finder,
               {{ h.get_current_year() }}.
-              {{ h.get_current_url() }}
+              {{ primary_pid | safe }}
               <br><br>
 
               <b>{{ _('Etsin default citation (fi)') }}</b><br>
@@ -348,7 +348,7 @@
               {% endfor %}
               Etsin tutkimuksen tietoaineistojen hakupalvelu,
               {{ h.get_current_year() }}.
-              {{ h.get_current_url() }}
+              {{ primary_pid | safe }}
               <br><br>
 
             </div>
