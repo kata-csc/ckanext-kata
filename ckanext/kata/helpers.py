@@ -725,8 +725,7 @@ def get_label_for_uri(uri, ontology=None, lang=None):
             if label.get('lang') == lang:
                 return label.get('value')
         # If no label for the language is found, use the first one available
-        if label[0]:
-            return label[0].get('value')
+        return labels[0].get('value')
 
     return uri
 
