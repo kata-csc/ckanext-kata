@@ -357,7 +357,7 @@ class TestValidators(TestCase):
         errors = defaultdict(list)
 
         dada = copy.deepcopy(TEST_DATA_FLATTENED)
-        dada[('discipline',)] = u'Matematiikka'
+        dada[('discipline',)] = u'http://www.yso.fi/onto/okm-tieteenala/ta111'
 
         validate_discipline(('discipline',), dada, errors, None)
         assert len(errors) == 0
@@ -367,6 +367,12 @@ class TestValidators(TestCase):
         assert len(errors) == 0
 
         dada[('discipline',)] = u'Matematiikka (Logiikka!)'
+        self.assertRaises(Invalid, validate_discipline, ('discipline',), dada, errors, None)
+
+        dada[('discipline',)] = u'Matematiikka'
+        self.assertRaises(Invalid, validate_discipline, ('discipline',), dada, errors, None)
+
+        dada[('discipline',)] = u'http://www.yso.fi/onto/okm-tieteenala/xyz123'
         self.assertRaises(Invalid, validate_discipline, ('discipline',), dada, errors, None)
 
     def test_validate_spatial(self):

@@ -555,7 +555,7 @@ class TestDataReading(KataApiTestCase):
         output = self.api_user_normal.action.package_create(**data_dict)
 
         data_dict['id'] = output['id']
-        data_dict['discipline'] = 'Matematiikka'
+        data_dict['discipline'] = 'http://www.yso.fi/onto/okm-tieteenala/ta111'
 
         output = self.api_user_normal.action.package_show(id=data_dict['id'])
         assert 'discipline' not in output

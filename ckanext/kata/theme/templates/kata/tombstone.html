@@ -1,7 +1,9 @@
 {% extends "page.html" %}
 
-{% set org_title = c.org_title %}
-{% set distributor_email = c.distributor_email %}
+<!--{% set org_title = c.org_title %}-->
+{% set org = c.org %}
+{% set title_json = c.title_json %}
+{% set lang = h.lang() %}
 
 {% block subtitle %}{{ _("Tombstone page") }}{% endblock %}
 
@@ -11,7 +13,11 @@
   <div class="etsin-container">
     <div class="container">
       <div class="row-fluid">
-        This dataset has been deleted.<br>Organization: {{ org_title }}.<br>Contact: {{ distributor_email }}
+        This dataset has been deleted<br>Title: {{ h.get_title_in_lang(title_json, lang) }}<br>Organization:
+          {% set delim = joiner(" > ") %}
+          {% for organization in h.get_flat_hierarchy(org) %}
+            {{ delim() }} {{ organization.title }}
+          {% endfor %}
       </div>
     </div>
   </div>

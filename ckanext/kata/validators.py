@@ -275,6 +275,21 @@ def validate_discipline(key, data, errors, context):
             if not discipline_match.match(item):
                 raise Invalid(_('Discipline "%s" must be alphanumeric '
                                 'characters or symbols: -,:#+?=&/.') % (item))
+
+            # Validate discipline so that it must be a valid URL from okm-tieteenala vocabulary
+            if not 'finto.fi/okm-tieteenala' in item and not 'yso.fi/onto/okm-tieteenala' in item:
+                raise Invalid(
+                    _('Discipline "%s" is not part of the official classification of disciplines. See help for further info.') % item)
+            else:
+                try:
+                    response = urllib2.urlopen(item)
+                    if response.getcode() != 200:
+                        raise Invalid(_('Discipline "%s" must be a valid URL defined in Finto okm-tieteenala vocabulary. See help for further info.') % item)
+                except urllib2.HTTPError:
+                    raise Invalid(
+                        _('Discipline "%s" is not part of the official classification of disciplines. See help for further info.') % item)
+
+
     else:
         # With ONKI component, the entire parameter might not exist
         # so we generate it any way
