@@ -95,15 +95,9 @@ class TestHelpers(TestCase):
                                                    'en') == u'http://www.yso.fi/onto/okm-tieteenala/xyz1234, Fysiikka'
 
     def test_get_label_for_uri(self):
-        discipline = u'Matematiikka'
-        assert helpers.get_label_for_uri(discipline, None, 'en') == discipline
-        discipline = u'http://www.yso.fi/baldur/okm-tieteenala/ta111'
-        assert helpers.get_label_for_uri(discipline, None, 'en') == discipline
-        assert helpers.get_label_for_uri(discipline, 'okm-tieteenala') == discipline
         discipline = u'http://www.yso.fi/onto/okm-tieteenala/ta111'
-        assert helpers.get_label_for_uri(discipline) == u'Mathematics'
-        discipline = u'http://www.yso.fi/onto/okm-tieteenala/xyz1234'
-        assert helpers.get_label_for_uri(discipline) == discipline
+        assert helpers.get_label_for_uri(discipline, None, 'en') == u'Mathematics'
+        assert helpers.get_label_for_uri(discipline, 'okm-tieteenala', 'en') == u'Mathematics'
 
     def test_get_translation(self):
         translation_json = '{"fin":"otsikko", "eng":"title"}'
