@@ -251,7 +251,7 @@ class Schemas:
         schema['availability'].insert(0, ignore_missing)
         schema['discipline'].insert(0, ignore_missing)
         schema['geographic_coverage'].insert(0, ignore_missing)
-        schema['license_URL'] = [va.continue_if_missing, co.remove_trailing_spaces, co.populate_license_URL_if_license_id_not_resolved, co.convert_to_extras_kata, unicode, va.validate_general]
+        schema['license_URL'] = [va.continue_if_missing, co.remove_trailing_spaces, co.convert_to_extras_kata, unicode, va.validate_general]
         schema['maintainer'] = [ignore_missing, unicode, va.validate_general]
         schema['contact'] = {'name': [ignore_missing, va.validate_general, unicode, va.contains_alphanumeric, co.flattened_to_extras],
                              'email': [ignore_missing, va.validate_email, co.remove_trailing_spaces, unicode, co.flattened_to_extras],
