@@ -597,7 +597,18 @@ at least three letters."))
                                       id=c.package.name))
 
         contacts = utils.get_package_contacts(c.package.id)
-        c.recipient_options = [{'text': contact['name'], 'value': contact['id']} for contact in contacts]
+        c.recipient_options = []
+        for contact in contacts:
+            if 'name' in contact:
+                text_val = contact['name']
+            else:
+                at_idx = contact['email'].find('@')
+                text_val = contact['email'][0:at_idx]
+                text_val = text_val.replace(".", " ").title()
+                print(text_val)
+
+            c.recipient_options.append({'text': text_val, 'value': contact['id']})
+
         c.recipient_index = request.params.get('recipient', '')
         c.current_time = base64.b64encode(self.crypto.encrypt(self._pad(str(int(time.time())))))
         return render('contact/contact_form.html')
