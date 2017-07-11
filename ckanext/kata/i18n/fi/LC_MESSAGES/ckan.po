@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2017-05-24 11:33+0000\n"
+"POT-Creation-Date: 2017-07-10 17:24+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -88,7 +88,7 @@ msgid "Message not sent as logging wasn't permitted"
 msgstr "Viestiä ei lähetetty, koska lokin tallentamista ei sallittu"
 
 #: ckanext/kata/controllers.py:487 ckanext/kata/controllers.py:592
-#: ckanext/kata/controllers.py:618
+#: ckanext/kata/controllers.py:629
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
@@ -123,54 +123,54 @@ msgstr ""
 "on koostuttava vähintään kolmesta kirjaimesta."
 
 #: ckanext/kata/controllers.py:554 ckanext/kata/controllers.py:589
-#: ckanext/kata/controllers.py:615
+#: ckanext/kata/controllers.py:626
 #: ckanext/kata/theme/templates/kata/dummy.html:63
 msgid "Dataset not found"
 msgstr "Aineistoa ei löytynyt"
 
-#: ckanext/kata/controllers.py:671
+#: ckanext/kata/controllers.py:682
 msgid "Login failed. Bad username or password."
 msgstr "Kirjautuminen epäonnistui. Väärä käyttäjätunnus tai salasana."
 
-#: ckanext/kata/controllers.py:682
+#: ckanext/kata/controllers.py:693
 msgid "Successfully logged out."
 msgstr "Olet nyt kirjautunut ulos."
 
-#: ckanext/kata/controllers.py:700
+#: ckanext/kata/controllers.py:711
 msgid "Unauthorized to upload metadata"
 msgstr "Ei oikeuksia ladata metadataa palvelimelle"
 
-#: ckanext/kata/controllers.py:724
+#: ckanext/kata/controllers.py:735
 msgid "Give upload URL or file."
 msgstr "Anna tiedosto tai URL"
 
-#: ckanext/kata/controllers.py:729
+#: ckanext/kata/controllers.py:740
 msgid "Could not fetch from url {ur}"
 msgstr "Ei voituu noutaa osoitteesta {ur}"
 
-#: ckanext/kata/controllers.py:732
+#: ckanext/kata/controllers.py:743
 msgid "Invalid upload URL"
 msgstr "Virheellinen latausosoite"
 
-#: ckanext/kata/controllers.py:734
+#: ckanext/kata/controllers.py:745
 msgid "Invalid XML content"
 msgstr "Virheellinen XML sisältö"
 
-#: ckanext/kata/controllers.py:738
+#: ckanext/kata/controllers.py:749
 msgid "Failed to load file"
 msgstr "Tiedostoa ei voitu ladata"
 
-#: ckanext/kata/controllers.py:767 ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:778 ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr "Ei oikeuksia nähdä tätä sivua"
 
-#: ckanext/kata/controllers.py:845 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:856 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:100
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr "Organisaatiot"
 
-#: ckanext/kata/controllers.py:846
+#: ckanext/kata/controllers.py:857
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -180,15 +180,15 @@ msgstr "Organisaatiot"
 msgid "Groups"
 msgstr "Ryhmät"
 
-#: ckanext/kata/controllers.py:847
+#: ckanext/kata/controllers.py:858
 msgid "Tags"
 msgstr "Asiasanat"
 
-#: ckanext/kata/controllers.py:848
+#: ckanext/kata/controllers.py:859
 msgid "Formats"
 msgstr "Formaatit"
 
-#: ckanext/kata/controllers.py:849
+#: ckanext/kata/controllers.py:860
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:247
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:97
 msgid "License"
@@ -902,6 +902,14 @@ msgstr ""
 "target=\"_blank\">palautelomakkeen </a>kautta. Mikäli löydät palvelusta "
 "virheellisiä tietoja, voit pyytää niiden poistoa tai korjaamista samalla "
 "lomakkeella."
+
+#: ckanext/kata/theme/templates/home/about.html:59
+msgid ""
+" The metadata is available via the <a href=\"http://openscience.fi/etsin-"
+"api\" target=_\"blank\"> Etsin API </a> with CC0 waiver. "
+msgstr "Etsimessä julkaistut metatiedot ovat käytettävissä "
+"<a href=\"http://avointiede.fi/etsin-rajapinta\" target=\"_blank\"> "
+"avoimen rajapinnan </a> kautta CC0-lisenssillä."
 
 #: ckanext/kata/theme/templates/home/index.html:3
 msgid "Welcome"
@@ -2580,7 +2588,7 @@ msgstr ""
 " alueella eniten aineistoja. Esimerkiksi avainsanat, ryhmät, lisenssi, "
 "tiedostoformaatti tai maa"
 
-#: ckanext/kata/theme/templates/kata/tombstone.html:6
+#: ckanext/kata/theme/templates/kata/tombstone.html:8
 msgid "Tombstone page"
 msgstr ""
 
