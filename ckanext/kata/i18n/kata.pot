@@ -1,14 +1,14 @@
 # Translations template for ckanext-kata.
-# Copyright (C) 2017 ORGANIZATION
+# Copyright (C) 2018 ORGANIZATION
 # This file is distributed under the same license as the ckanext-kata project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 4.3.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-07-10 17:24+0000\n"
+"POT-Creation-Date: 2018-04-30 12:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -808,13 +808,13 @@ msgstr ""
 
 #: ckanext/kata/theme/templates/home/about.html:52
 msgid ""
-" You can send inquiries or feedback concerning Etsin via the <a "
-"href=\"http://openscience.fi/contact-form\" target=\"_blank\">contact "
-"form</a>. Should you find any erroneous information in the service, you may "
-"request their removal or correction via the same form. "
+" You can send inquiries or feedback concerning Etsin by contacting the <a "
+"href=\"mailto:servicedesk@csc.fi\" target=\"_blank\">service desk</a>. Should"
+" you find any erroneous information in the service, you may request their "
+"removal or correction by contacting the same address. "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/about.html:59
+#: ckanext/kata/theme/templates/home/about.html:60
 msgid ""
 " The metadata is available via the <a href=\"http://openscience.fi/etsin-"
 "api\" target=_\"blank\"> Etsin API </a> with CC0 waiver. "
