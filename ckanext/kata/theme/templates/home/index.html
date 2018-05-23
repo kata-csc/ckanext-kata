@@ -24,6 +24,17 @@
             {% endif %}
           </div>
 
+          <div class="extra-messages">
+            {{ self.flash() }}
+            <i class="icon-warning-sign" style="display: inline;"></i>
+            <p style="color: #2F4F2F; display: inline;">
+              {% trans %}
+                The Etsin Research Data Finder is undergoing a major makeover and will soon become an integrated part of the Finnish Fairdata Services. Some minor disturbances may occur during the reconstruction.<br><br>If you plan publishing new datasets in the near future we recommend using contacting the distributor as access type, if you have to restrict access to your dataset. Open publishing is always recommended if possible.<br><br>If you plan to publish data stored in IDA please contact <a href="mailto:servicedesk@csc.fi">servicedesk@csc.fi</a> so we can ensure the process will go smoothly.
+              {% endtrans %}
+            </p>
+          </div>
+          <br>
+
           <h2 class="etsin-secondary-title">{{ _("Search for a Dataset") }}</h2>
 
           <form id="dataset-search" class="dataset-search clearfix search-form" action="{% url_for controller='package', action='search' %}" method="get" data-module="select-switch">

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 4.3.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-30 12:15+0000\n"
+"POT-Creation-Date: 2018-05-22 13:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -834,84 +834,97 @@ msgstr ""
 msgid "You can not add or edit data during maintenance break"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:27
+#: ckanext/kata/theme/templates/home/index.html:30
+msgid ""
+" The Etsin Research Data Finder is undergoing a major makeover and will soon "
+"become an integrated part of the Finnish Fairdata Services. Some minor "
+"disturbances may occur during the reconstruction.<br><br>If you plan "
+"publishing new datasets in the near future we recommend using contacting the "
+"distributor as access type, if you have to restrict access to your dataset. "
+"Open publishing is always recommended if possible.<br><br>If you plan to "
+"publish data stored in IDA please contact <a "
+"href=\"mailto:servicedesk@csc.fi\">servicedesk@csc.fi</a> so we can ensure "
+"the process will go smoothly. "
+msgstr ""
+
+#: ckanext/kata/theme/templates/home/index.html:36
 #: ckanext/kata/theme/templates/kata/dummy.html:186
 #: ckanext/kata/theme/templates/package/search.html:4
 #: ckanext/kata/theme/templates/package/search.html:23
 msgid "Search for a Dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:33
+#: ckanext/kata/theme/templates/home/index.html:42
 #: ckanext/kata/theme/templates/organization/index.html:21
 #: ckanext/kata/theme/templates/organization/read.html:54
 #: ckanext/kata/theme/templates/package/search.html:29
 msgid "Enter search term or query…"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:36
+#: ckanext/kata/theme/templates/home/index.html:45
 #: ckanext/kata/theme/templates/organization/index.html:24
 #: ckanext/kata/theme/templates/organization/read.html:57
 #: ckanext/kata/theme/templates/package/search.html:32
 msgid "Submit"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:80
+#: ckanext/kata/theme/templates/home/index.html:89
 msgid "Datasets "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:94
+#: ckanext/kata/theme/templates/home/index.html:103
 msgid "Tags "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:108
+#: ckanext/kata/theme/templates/home/index.html:117
 msgid "Disciplines "
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:126
+#: ckanext/kata/theme/templates/home/index.html:135
 msgid "Describe your research dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:127
+#: ckanext/kata/theme/templates/home/index.html:136
 msgid ""
 "Add metadata on your dataset to Etsin. This information documents the content"
 " and context of the data."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:133
+#: ckanext/kata/theme/templates/home/index.html:142
 msgid "Publish your dataset's description"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:134
+#: ckanext/kata/theme/templates/home/index.html:143
 msgid ""
 "Publish the metadata on your data. The descriptive information enables others"
 " to find your dataset in Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:140
+#: ckanext/kata/theme/templates/home/index.html:149
 msgid "Get a permanent identifier for your dataset"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:141
+#: ckanext/kata/theme/templates/home/index.html:150
 msgid ""
 "Receive a permanent identifier for your dataset. The identifier creates a "
 "permanent link to the dataset page in Etsin."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:147
+#: ckanext/kata/theme/templates/home/index.html:156
 msgid "Link to your dataset and share it"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:148
+#: ckanext/kata/theme/templates/home/index.html:157
 msgid ""
 "Link to your dataset from your publications and CV. Via Etsin you may also "
 "share your dataset with others as openly or based on applications."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:165
+#: ckanext/kata/theme/templates/home/index.html:174
 msgid "What is Etsin?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:168
+#: ckanext/kata/theme/templates/home/index.html:177
 msgid ""
 "Etsin enables you to find research datasets and to make your own datasets "
 "discoverable to others. Etsin offers access to datasets in various fields via"
@@ -920,11 +933,11 @@ msgid ""
 "dataset."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:171
+#: ckanext/kata/theme/templates/home/index.html:180
 msgid "Who can use Etsin?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:174
+#: ckanext/kata/theme/templates/home/index.html:183
 msgid ""
 "Anyone can use Etsin to search for research datasets. Haka-authenticated "
 "users may enter information on their own datasets, and of others' datasets "
@@ -933,11 +946,11 @@ msgid ""
 " scientist or researcher in order use the service."
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:177
+#: ckanext/kata/theme/templates/home/index.html:186
 msgid "Is all data in Etsin open?"
 msgstr ""
 
-#: ckanext/kata/theme/templates/home/index.html:180
+#: ckanext/kata/theme/templates/home/index.html:189
 msgid ""
 "The published metadata on the dataset is open to everyone. The data owner "
 "decides how the underlying research data can be accessed and by whom. "
