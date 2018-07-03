@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Kata\n"
 "Report-Msgid-Bugs-To: kata-project@postit.csc.fi>\n"
-"POT-Creation-Date: 2018-05-22 13:25+0000\n"
+"POT-Creation-Date: 2018-07-03 10:59+0000\n"
 "PO-Revision-Date: 2010-04-08 07:44+0300\n"
 "Last-Translator: CSC - IT Center for Science Ltd. <kata-"
 "project@postit.csc.fi>\n"
@@ -515,43 +515,54 @@ msgstr ""
 "tavoitteena on, että vuoteen 2017 mennessä Suomi nousee yhdeksi "
 "johtavista maista tieteen ja tutkimuksen avoimuudessa.</p>"
 
-#: ckanext/kata/theme/templates/footer.html:25
+#: ckanext/kata/theme/templates/footer.html:20
+msgid ""
+" <p>We use cookies to enhance the user experience. By using Etsin you "
+"consent to using cookies. <a href=\"https://www.csc.fi/en/use-of-"
+"cookies\">Read more about our use of cookies</a>.</p> "
+msgstr ""
+" <p>Sivustomme käyttää evästeitä käyttökokemuksen parantamiseksi. Sivustomme "
+"saattavat sisältää myös kolmansien osapuolten evästeitä. Jatkamalla sivuston "
+"käyttöä hyväksyt evästeet. <a href=\"https://www.csc.fi/fi/evasteiden-"
+"kaytto\">Lue lisää evästeiden käytöstämme</a>.</p> "
+
+#: ckanext/kata/theme/templates/footer.html:28
 msgid "http://openscience.fi"
 msgstr "http://avointiede.fi"
 
-#: ckanext/kata/theme/templates/footer.html:27
+#: ckanext/kata/theme/templates/footer.html:30
 msgid "http://www.csc.fi/"
 msgstr "http://www.csc.fi/"
 
-#: ckanext/kata/theme/templates/footer.html:30
+#: ckanext/kata/theme/templates/footer.html:33
 msgid "http://okm.fi/OPM/?lang=en"
 msgstr "http://okm.fi/OPM/"
 
-#: ckanext/kata/theme/templates/footer.html:31
+#: ckanext/kata/theme/templates/footer.html:34
 msgid "/base/images/about_logo_okm_en.png"
 msgstr "/base/images/about_logo_okm_fi.gif"
 
-#: ckanext/kata/theme/templates/footer.html:31
+#: ckanext/kata/theme/templates/footer.html:34
 msgid "Ministry of Education and Culture of Finland"
 msgstr "Opetus- ja kulttuuriministeriö"
 
-#: ckanext/kata/theme/templates/footer.html:32
+#: ckanext/kata/theme/templates/footer.html:35
 msgid "http://openscience.fi/"
 msgstr "http://avointiede.fi"
 
-#: ckanext/kata/theme/templates/footer.html:33
+#: ckanext/kata/theme/templates/footer.html:36
 msgid "/base/images/about_logo_att_pysty_en.png"
 msgstr "/base/images/about_logo_att_pysty_fi.png"
 
-#: ckanext/kata/theme/templates/footer.html:33
+#: ckanext/kata/theme/templates/footer.html:36
 msgid "Open Science and Research Initiative"
 msgstr "Avoin tiede ja tutkimus -hanke"
 
-#: ckanext/kata/theme/templates/footer.html:34
+#: ckanext/kata/theme/templates/footer.html:37
 msgid "https://www.csc.fi/en"
 msgstr "http://www.csc.fi/fi"
 
-#: ckanext/kata/theme/templates/footer.html:35
+#: ckanext/kata/theme/templates/footer.html:38
 msgid "CSC - IT Center for Science"
 msgstr "CSC - Tieteen tietotekniikan keskus Oy"
 
@@ -924,7 +935,7 @@ msgstr "Palvelussa on huoltokatko"
 msgid "You can not add or edit data during maintenance break"
 msgstr "Et voi lisätä tai muokata dataa huoltokatkon aikana"
 
-#: ckanext/kata/theme/templates/home/index.html:30
+#: ckanext/kata/theme/templates/home/index.html:31
 msgid ""
 " The Etsin Research Data Finder is undergoing a major makeover and will "
 "soon become an integrated part of the Finnish Fairdata Services. Some "
@@ -936,46 +947,54 @@ msgid ""
 " <a href=\"mailto:servicedesk@csc.fi\">servicedesk@csc.fi</a> so we can "
 "ensure the process will go smoothly. "
 msgstr ""
-"Etsin tutkimusaineistojen hakupalvelusta on tulossa osa Fairdata-palvelukokonaisuutta. Kehitystyöstä johtuen palvelussa voi esiintyä poikkeuksia normaalista toiminnasta.<br><br>Mikäli olet julkaisemassa uusia aineistoja suosittelemme Ota yhteyttä jakelijaan -vaihtoehtoa tapauksissa, joissa aineistoon pääsyä on rajoitettava. Aineistojen avoin julkaiseminen on aina suositeltavaa kun se on mahdollista.<br><br>Jos olet julkaisemassa IDA-palvelussa olevia aineistoja, olethan ensin yhteydessä meihin <a href=\"mailto:servicedesk@csc.fi\">servicedesk@csc.fi</a>"
+"Etsin tutkimusaineistojen hakupalvelusta on tulossa osa Fairdata-"
+"palvelukokonaisuutta. Kehitystyöstä johtuen palvelussa voi esiintyä "
+"poikkeuksia normaalista toiminnasta.<br><br>Mikäli olet julkaisemassa "
+"uusia aineistoja suosittelemme Ota yhteyttä jakelijaan -vaihtoehtoa "
+"tapauksissa, joissa aineistoon pääsyä on rajoitettava. Aineistojen avoin "
+"julkaiseminen on aina suositeltavaa kun se on mahdollista.<br><br>Jos "
+"olet julkaisemassa IDA-palvelussa olevia aineistoja, olethan ensin "
+"yhteydessä meihin <a "
+"href=\"mailto:servicedesk@csc.fi\">servicedesk@csc.fi</a>"
 
-#: ckanext/kata/theme/templates/home/index.html:36
+#: ckanext/kata/theme/templates/home/index.html:38
 #: ckanext/kata/theme/templates/kata/dummy.html:186
 #: ckanext/kata/theme/templates/package/search.html:4
 #: ckanext/kata/theme/templates/package/search.html:23
 msgid "Search for a Dataset"
 msgstr "Etsi aineistoa"
 
-#: ckanext/kata/theme/templates/home/index.html:42
+#: ckanext/kata/theme/templates/home/index.html:44
 #: ckanext/kata/theme/templates/organization/index.html:21
 #: ckanext/kata/theme/templates/organization/read.html:54
 #: ckanext/kata/theme/templates/package/search.html:29
 msgid "Enter search term or query…"
 msgstr "Anna hakusana tai -lauseke…"
 
-#: ckanext/kata/theme/templates/home/index.html:45
+#: ckanext/kata/theme/templates/home/index.html:47
 #: ckanext/kata/theme/templates/organization/index.html:24
 #: ckanext/kata/theme/templates/organization/read.html:57
 #: ckanext/kata/theme/templates/package/search.html:32
 msgid "Submit"
 msgstr "Lähetä"
 
-#: ckanext/kata/theme/templates/home/index.html:89
+#: ckanext/kata/theme/templates/home/index.html:91
 msgid "Datasets "
 msgstr "Aineistoa"
 
-#: ckanext/kata/theme/templates/home/index.html:103
+#: ckanext/kata/theme/templates/home/index.html:105
 msgid "Tags "
 msgstr "Asiasanaa"
 
-#: ckanext/kata/theme/templates/home/index.html:117
+#: ckanext/kata/theme/templates/home/index.html:119
 msgid "Disciplines "
 msgstr "Tieteenalaa"
 
-#: ckanext/kata/theme/templates/home/index.html:135
+#: ckanext/kata/theme/templates/home/index.html:137
 msgid "Describe your research dataset"
 msgstr "Kuvaile oma tutkimusaineistosi"
 
-#: ckanext/kata/theme/templates/home/index.html:136
+#: ckanext/kata/theme/templates/home/index.html:138
 msgid ""
 "Add metadata on your dataset to Etsin. This information documents the "
 "content and context of the data."
@@ -983,11 +1002,11 @@ msgstr ""
 "Lisää tutkimusaineistosi metatiedot Etsimeen. Kuvailevat tiedot kertovat "
 "aineiston sisällöstä ja sen taustasta."
 
-#: ckanext/kata/theme/templates/home/index.html:142
+#: ckanext/kata/theme/templates/home/index.html:144
 msgid "Publish your dataset's description"
 msgstr "Julkaise aineistosi kuvailutiedot"
 
-#: ckanext/kata/theme/templates/home/index.html:143
+#: ckanext/kata/theme/templates/home/index.html:145
 msgid ""
 "Publish the metadata on your data. The descriptive information enables "
 "others to find your dataset in Etsin."
@@ -995,11 +1014,11 @@ msgstr ""
 "Julkaise tutkimusaineistosi metatiedot. Kuvailevien tietojen pohjalta "
 "muut voivat löytää aineistosi Etsimen haussa."
 
-#: ckanext/kata/theme/templates/home/index.html:149
+#: ckanext/kata/theme/templates/home/index.html:151
 msgid "Get a permanent identifier for your dataset"
 msgstr "Saa aineistolle pysyvä tunniste"
 
-#: ckanext/kata/theme/templates/home/index.html:150
+#: ckanext/kata/theme/templates/home/index.html:152
 msgid ""
 "Receive a permanent identifier for your dataset. The identifier creates a"
 " permanent link to the dataset page in Etsin."
@@ -1007,11 +1026,11 @@ msgstr ""
 "Saat palvelusta aineistolle pysyvän tunnisteen. Tunnisteen perusteella "
 "muodostuu pysyvä linkki aineiston kuvailusivulle Etsimessä."
 
-#: ckanext/kata/theme/templates/home/index.html:156
+#: ckanext/kata/theme/templates/home/index.html:158
 msgid "Link to your dataset and share it"
 msgstr "Linkitä aineistoon ja jaa halutessasi muille"
 
-#: ckanext/kata/theme/templates/home/index.html:157
+#: ckanext/kata/theme/templates/home/index.html:159
 msgid ""
 "Link to your dataset from your publications and CV. Via Etsin you may "
 "also share your dataset with others as openly or based on applications."
@@ -1020,11 +1039,11 @@ msgstr ""
 "Etsimen kautta voit myös jakaa aineistoa muille joko avoimesti tai "
 "hakemusten perusteella."
 
-#: ckanext/kata/theme/templates/home/index.html:174
+#: ckanext/kata/theme/templates/home/index.html:176
 msgid "What is Etsin?"
 msgstr "Mikä Etsin on?"
 
-#: ckanext/kata/theme/templates/home/index.html:177
+#: ckanext/kata/theme/templates/home/index.html:179
 msgid ""
 "Etsin enables you to find research datasets and to make your own datasets"
 " discoverable to others. Etsin offers access to datasets in various "
@@ -1039,11 +1058,11 @@ msgstr ""
 "tuottanut, mitä se käsittelee, missä formaatissa se on ja millaisin "
 "ehdoin sitä saa käyttää."
 
-#: ckanext/kata/theme/templates/home/index.html:180
+#: ckanext/kata/theme/templates/home/index.html:182
 msgid "Who can use Etsin?"
 msgstr "Kuka voi käyttää Etsintä?"
 
-#: ckanext/kata/theme/templates/home/index.html:183
+#: ckanext/kata/theme/templates/home/index.html:185
 msgid ""
 "Anyone can use Etsin to search for research datasets. Haka-authenticated "
 "users may enter information on their own datasets, and of others' "
@@ -1058,11 +1077,11 @@ msgstr ""
 "lähteistä ja monelta eri alalta. Palvelun käyttäjien ei tarvitse olla "
 "ammattitutkijoita."
 
-#: ckanext/kata/theme/templates/home/index.html:186
+#: ckanext/kata/theme/templates/home/index.html:188
 msgid "Is all data in Etsin open?"
 msgstr "Onko kaikki Etsimen data avointa?"
 
-#: ckanext/kata/theme/templates/home/index.html:189
+#: ckanext/kata/theme/templates/home/index.html:191
 msgid ""
 "The published metadata on the dataset is open to everyone. The data owner"
 " decides how the underlying research data can be accessed and by whom. "
@@ -6322,29 +6341,4 @@ msgstr "Ei aineistoja."
 #: ckanext/kata/theme/templates/user/read.html:102
 msgid "You are not allowed to view other users' information."
 msgstr "Sinulla ei ole lupaa katsella muiden käyttäjien tietoja."
-
-#~ msgid ""
-#~ "The Etsin Research Data Finder is "
-#~ "undergoing a major makeover and will "
-#~ "soon become an integrated part of "
-#~ "the Finnish Fairdata Services. Some "
-#~ "minor disturbances may occur during the"
-#~ " reconstruction. If you are planning "
-#~ "to publish new datasets in the "
-#~ "near future we recommend using "
-#~ "contacting the distributor as access "
-#~ "type, if you have to restrict "
-#~ "access to your dataset. Open publishing"
-#~ " is always recommended if possible."
-#~ msgstr ""
-#~ "Etsin tutkimusaineistojen hakupalvelusta on "
-#~ "tulossa osa Fairdata-palvelukokonaisuutta. "
-#~ "Kehitystyöstä johtuen palvelussa voi esiintyä"
-#~ " poikkeuksia normaalista toiminnasta. Mikäli "
-#~ "olet julkaisemassa uusia aineistoja "
-#~ "suosittelemme Ota yhteyttä jakelijaan "
-#~ "-vaihtoehtoa tapauksissa, joissa aineistoon "
-#~ "pääsyä on rajoitettava. Aineistojen avoin "
-#~ "julkaiseminen on aina suositeltavaa kun "
-#~ "se on mahdollista."
 
