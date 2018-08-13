@@ -194,7 +194,6 @@ class TestContactForm(KataWsgiTestCase):
 
         params = {
             'recipient': package_contact_id,
-            'check_this_out': _time,
             'accept_logging': 'True'
         }
 
@@ -205,7 +204,6 @@ class TestContactForm(KataWsgiTestCase):
         _time = base64.b64encode(cc.crypto.encrypt(cc._pad(str(int(time.time())-21))))
         params = {
             'recipient': package_contact_id,
-            'check_this_out': _time,
             'accept_logging': 'True'
         }
         self.app.post(send_contact_offset, params=params, status=302)

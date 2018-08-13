@@ -500,17 +500,7 @@ u"service."))
 
         user_msg = request.params.get('msg', '')
 
-        ct = int(time.time())
-        try:
-            check = self.crypto.decrypt(base64.b64decode(request.params.get('check_this_out')))
-            check = re.sub(' ', '', check)
-        except TypeError:
-            h.flash_error(_(u"Message not sent. Couldn't confirm human interaction (spam bot control)"))
-            return redirect(url)
-
-        hp = request.params.get('hp')
-
-        if hp or not check or (ct - int(check) < 20) or (ct - int(check) > 1200):
+        if request.params.get('hp'):
             h.flash_error(_(u"Message not sent. Couldn't confirm human interaction (spam bot control)"))
             return redirect(url)
 
