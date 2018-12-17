@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-kata 4.3.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-03 10:59+0000\n"
+"POT-Creation-Date: 2018-12-17 15:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,8 +84,8 @@ msgstr ""
 msgid "Message not sent as logging wasn't permitted"
 msgstr ""
 
-#: ckanext/kata/controllers.py:487 ckanext/kata/controllers.py:592
-#: ckanext/kata/controllers.py:629
+#: ckanext/kata/controllers.py:487 ckanext/kata/controllers.py:582
+#: ckanext/kata/controllers.py:619
 msgid ""
 "Sending contact emails is prohibited for now. Please try again later or "
 "contact customer service."
@@ -95,72 +95,72 @@ msgstr ""
 msgid "Recipient not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:508 ckanext/kata/controllers.py:514
+#: ckanext/kata/controllers.py:504
 msgid "Message not sent. Couldn't confirm human interaction (spam bot control)"
 msgstr ""
 
-#: ckanext/kata/controllers.py:534
+#: ckanext/kata/controllers.py:524
 msgid "Message sent"
 msgstr ""
 
-#: ckanext/kata/controllers.py:536
+#: ckanext/kata/controllers.py:526
 msgid "No message"
 msgstr ""
 
-#: ckanext/kata/controllers.py:538
+#: ckanext/kata/controllers.py:528
 msgid ""
 "Message not sent. Please, provide reply address and name. Name must contain "
 "at least three letters."
 msgstr ""
 
-#: ckanext/kata/controllers.py:554 ckanext/kata/controllers.py:589
-#: ckanext/kata/controllers.py:626 ckanext/kata/theme/templates/kata/dummy.html:63
+#: ckanext/kata/controllers.py:544 ckanext/kata/controllers.py:579
+#: ckanext/kata/controllers.py:616 ckanext/kata/theme/templates/kata/dummy.html:63
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/kata/controllers.py:682
+#: ckanext/kata/controllers.py:672
 msgid "Login failed. Bad username or password."
 msgstr ""
 
-#: ckanext/kata/controllers.py:693
+#: ckanext/kata/controllers.py:683
 msgid "Successfully logged out."
 msgstr ""
 
-#: ckanext/kata/controllers.py:711
+#: ckanext/kata/controllers.py:701
 msgid "Unauthorized to upload metadata"
 msgstr ""
 
-#: ckanext/kata/controllers.py:735
+#: ckanext/kata/controllers.py:725
 msgid "Give upload URL or file."
 msgstr ""
 
-#: ckanext/kata/controllers.py:740
+#: ckanext/kata/controllers.py:730
 msgid "Could not fetch from url {ur}"
 msgstr ""
 
-#: ckanext/kata/controllers.py:743
+#: ckanext/kata/controllers.py:733
 msgid "Invalid upload URL"
 msgstr ""
 
-#: ckanext/kata/controllers.py:745
+#: ckanext/kata/controllers.py:735
 msgid "Invalid XML content"
 msgstr ""
 
-#: ckanext/kata/controllers.py:749
+#: ckanext/kata/controllers.py:739
 msgid "Failed to load file"
 msgstr ""
 
-#: ckanext/kata/controllers.py:778 ckanext/kata/middleware.py:15
+#: ckanext/kata/controllers.py:768 ckanext/kata/middleware.py:15
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/kata/controllers.py:856 ckanext/kata/theme/templates/header.html:31
+#: ckanext/kata/controllers.py:846 ckanext/kata/theme/templates/header.html:31
 #: ckanext/kata/theme/templates/header.html:100
 #: ckanext/kata/theme/templates/package/base.html:12
 msgid "Organizations"
 msgstr ""
 
-#: ckanext/kata/controllers.py:857
+#: ckanext/kata/controllers.py:847
 #: ckanext/kata/theme/templates/group/base_form_page.html:6
 #: ckanext/kata/theme/templates/group/index.html:6
 #: ckanext/kata/theme/templates/group/index.html:18
@@ -170,15 +170,15 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: ckanext/kata/controllers.py:858
+#: ckanext/kata/controllers.py:848
 msgid "Tags"
 msgstr ""
 
-#: ckanext/kata/controllers.py:859
+#: ckanext/kata/controllers.py:849
 msgid "Formats"
 msgstr ""
 
-#: ckanext/kata/controllers.py:860
+#: ckanext/kata/controllers.py:850
 #: ckanext/kata/theme/templates/package/snippets/metadata_info.html:247
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:97
 msgid "License"
@@ -275,180 +275,180 @@ msgstr ""
 msgid "Terms of use"
 msgstr ""
 
-#: ckanext/kata/validators.py:66
+#: ckanext/kata/validators.py:67
 #, python-format
 msgid "Keyword \"%s\" must be alphanumeric characters or symbols: -_.()/#+:?=&"
 msgstr ""
 
-#: ckanext/kata/validators.py:108
+#: ckanext/kata/validators.py:109
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01/2002-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:116
+#: ckanext/kata/validators.py:117
 msgid "To date must be greater than from date. Example: 2001-01-01/2002-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:126
+#: ckanext/kata/validators.py:127
 msgid "Invalid date format, must be ISO 8601. Example: 2001-01-01"
 msgstr ""
 
-#: ckanext/kata/validators.py:129 ckanext/kata/validators.py:150
+#: ckanext/kata/validators.py:130 ckanext/kata/validators.py:151
 msgid "Invalid date"
 msgstr ""
 
-#: ckanext/kata/validators.py:147
+#: ckanext/kata/validators.py:148
 msgid ""
 "Invalid {key} date format: {val}, must be ISO 8601 or truncated: 2001-03-01 "
 "or 2001-03"
 msgstr ""
 
-#: ckanext/kata/validators.py:167
+#: ckanext/kata/validators.py:168
 msgid "Invalid email address"
 msgstr ""
 
-#: ckanext/kata/validators.py:177
+#: ckanext/kata/validators.py:178
 msgid "Invalid characters: <> not allowed"
 msgstr ""
 
-#: ckanext/kata/validators.py:187
+#: ckanext/kata/validators.py:188
 msgid "Value must contain alphanumeric characters"
 msgstr ""
 
-#: ckanext/kata/validators.py:196
+#: ckanext/kata/validators.py:197
 msgid "Invalid telephone number, must be e.g. +358 (45) 123 45 67 or 010-234567"
 msgstr ""
 
-#: ckanext/kata/validators.py:276
+#: ckanext/kata/validators.py:277
 #, python-format
 msgid "Discipline \"%s\" must be alphanumeric characters or symbols: -,:#+?=&/."
 msgstr ""
 
-#: ckanext/kata/validators.py:282 ckanext/kata/validators.py:290
+#: ckanext/kata/validators.py:283 ckanext/kata/validators.py:292
 #, python-format
 msgid ""
 "Discipline \"%s\" is not part of the official classification of disciplines. "
 "See help for further info."
 msgstr ""
 
-#: ckanext/kata/validators.py:287
+#: ckanext/kata/validators.py:288
 #, python-format
 msgid ""
 "Discipline \"%s\" must be a valid URL defined in Finto okm-tieteenala "
 "vocabulary. See help for further info."
 msgstr ""
 
-#: ckanext/kata/validators.py:312
+#: ckanext/kata/validators.py:314
 #, python-format
 msgid ""
 "Spatial coverage \"%s\" must be alphanumeric characters or symbols: "
 "-'/,:().;= "
 msgstr ""
 
-#: ckanext/kata/validators.py:331
+#: ckanext/kata/validators.py:333
 #, python-format
 msgid "File type (mimetype) \"%s\" must be alphanumeric characters or symbols: _-+./"
 msgstr ""
 
-#: ckanext/kata/validators.py:343
+#: ckanext/kata/validators.py:345
 #, python-format
 msgid "Algorithm \"%s\" must be alphanumeric characters or symbols _-()"
 msgstr ""
 
-#: ckanext/kata/validators.py:354
+#: ckanext/kata/validators.py:356
 msgid "First title can not be empty"
 msgstr ""
 
-#: ckanext/kata/validators.py:370
+#: ckanext/kata/validators.py:372
 msgid "Duplicate fields for a language not permitted"
 msgstr ""
 
-#: ckanext/kata/validators.py:394
+#: ckanext/kata/validators.py:396
 msgid "Missing compulsory agent: {0}"
 msgstr ""
 
-#: ckanext/kata/validators.py:406
+#: ckanext/kata/validators.py:408
 msgid "Missing compulsory distributor information"
 msgstr ""
 
-#: ckanext/kata/validators.py:428
+#: ckanext/kata/validators.py:430
 msgid "Missing dataset title"
 msgstr ""
 
-#: ckanext/kata/validators.py:443 ckanext/kata/validators.py:479
+#: ckanext/kata/validators.py:445 ckanext/kata/validators.py:481
 #: ckanext/kata/theme/templates/package/snippets/package_usage_info.html:27
 msgid "Missing value"
 msgstr ""
 
-#: ckanext/kata/validators.py:497
+#: ckanext/kata/validators.py:499
 msgid ""
 "An organization must be supplied. If you do not find a suitable organization,"
 " please choose the default organization 'Ei linkitetä organisaatioon - do not"
 " link to an organization'."
 msgstr ""
 
-#: ckanext/kata/validators.py:510
+#: ckanext/kata/validators.py:512
 msgid ""
 "The provided organization does not exist. Please contact Etsin administration"
 " using our contact form at http://openscience.fi/contact-form"
 msgstr ""
 
-#: ckanext/kata/validators.py:526
+#: ckanext/kata/validators.py:528
 msgid "Terms of use must be accepted"
 msgstr ""
 
-#: ckanext/kata/validators.py:543
+#: ckanext/kata/validators.py:545
 msgid ""
 "Copyright notice is needed if license is not specified or is a variant of "
 "license type other."
 msgstr ""
 
-#: ckanext/kata/validators.py:584
+#: ckanext/kata/validators.py:586
 msgid "Value {ext_id} exists in another dataset {id}"
 msgstr ""
 
-#: ckanext/kata/validators.py:616
+#: ckanext/kata/validators.py:618
 msgid "Primary identifier {pid} exists in another dataset {id}"
 msgstr ""
 
-#: ckanext/kata/validators.py:653
+#: ckanext/kata/validators.py:655
 msgid "PID relation must be one of the following values: "
 msgstr ""
 
-#: ckanext/kata/validators.py:671
+#: ckanext/kata/validators.py:673
 msgid "PID relation must be defined if PID type is relation"
 msgstr ""
 
-#: ckanext/kata/validators.py:686
+#: ckanext/kata/validators.py:688
 msgid "Package id must start with \"urn:nbn:fi:csc-kata\""
 msgstr ""
 
-#: ckanext/kata/validators.py:712
+#: ckanext/kata/validators.py:714
 msgid ""
 "External identifier must be provided to create new access request form "
 "automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:743 ckanext/kata/validators.py:756
+#: ckanext/kata/validators.py:745 ckanext/kata/validators.py:758
 msgid ""
 "There was an internal problem in validating permissions for creating new "
 "access request form automatically. Please contact Etsin administration for "
 "more information."
 msgstr ""
 
-#: ckanext/kata/validators.py:748
+#: ckanext/kata/validators.py:750
 msgid ""
 "Distributor email address must be provided to create new access request form "
 "automatically"
 msgstr ""
 
-#: ckanext/kata/validators.py:758
+#: ckanext/kata/validators.py:760
 msgid ""
 "Neither you nor the distributor ({dist}) is allowed to create new access "
 "request form automatically. Please check the validity of distributor email "
 "address."
 msgstr ""
 
-#: ckanext/kata/validators.py:768
+#: ckanext/kata/validators.py:770
 msgid "Invalid availability. Must be one of: {availabilities}"
 msgstr ""
 
@@ -601,20 +601,20 @@ msgstr ""
 msgid "Your full name"
 msgstr ""
 
-#: ckanext/kata/theme/templates/contact/contact_form.html:43
-#: ckanext/kata/theme/templates/contact/dataset_request_form.html:26
+#: ckanext/kata/theme/templates/contact/contact_form.html:42
+#: ckanext/kata/theme/templates/contact/dataset_request_form.html:25
 msgid "Leave this unchecked"
 msgstr ""
 
-#: ckanext/kata/theme/templates/contact/contact_form.html:47
-#: ckanext/kata/theme/templates/contact/dataset_request_form.html:30
+#: ckanext/kata/theme/templates/contact/contact_form.html:46
+#: ckanext/kata/theme/templates/contact/dataset_request_form.html:29
 msgid ""
 "I understand that by sending this form details like time, message and IP will"
 " be logged by the service to prevent abuse"
 msgstr ""
 
-#: ckanext/kata/theme/templates/contact/contact_form.html:65
-#: ckanext/kata/theme/templates/contact/dataset_request_form.html:48
+#: ckanext/kata/theme/templates/contact/contact_form.html:71
+#: ckanext/kata/theme/templates/contact/dataset_request_form.html:54
 msgid "Send"
 msgstr ""
 
@@ -783,48 +783,33 @@ msgstr ""
 #: ckanext/kata/theme/templates/home/about.html:23
 msgid ""
 " is a research data finder that contains descriptive information – that is, "
-"metadata – on research datasets. The metadata stored in Etsin includes "
+"metadata – on research datasets. <br/> <br/> The Etsin Research Data Finder "
+"is undergoing a major makeover and will soon become an integrated part of the"
+" Finnish <a href=\"https://www.fairdata.fi/en/\" target=\"_blank\">Fairdata "
+"Services</a> . Some minor disturbances may occur during the reconstruction. "
+"<br/> <br/> If you plan publishing new datasets in the near future we "
+"recommend using contacting the distributor as access type, if you have to "
+"restrict access to your dataset. Open publishing is always recommended if "
+"possible. Also, read <a href=\"https://www.fairdata.fi/en/etsin/adding-to-"
+"datasets-to-old-etsin/\" target=\"_blank\">the instructions for creating a "
+"new dataset in the old Etsin</a>. <br/> <br/> If you plan to publish data "
+"stored in IDA please contact servicedesk@csc.fi so we can ensure the process "
+"will go smoothly. <br/> <br/> The metadata stored in Etsin includes "
 "information on the author, subject, format and licensing of the dataset. In "
 "the service you can search and find data from various fields of research. "
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:30
-msgid ""
-" Researchers, research groups or organisations can also use Etsin to publish "
-"information on their datasets and offer them for wider use. Haka-"
+"<br/> <br/> Researchers, research groups or organisations can also use Etsin "
+"to publish information on their datasets and offer them for wider use. Haka-"
 "authenticated users may enter information on their own datasets, and of "
-"others' datasets with their permission. "
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:37
-msgid ""
-" The published metadata on the dataset is open to everyone. The data rights "
-"owner decides how the underlying research data can be accessed and by whom. "
-"Sharing your data openly is recommended whenever possible. Etsin works "
-"independently of actual data storage location. "
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:44
-msgid ""
-" Further <a href=\"http://openscience.fi/etsin\" target=\"_blank\">service "
-"information</a> including <a href=\"http://openscience.fi/etsin-user-"
-"instructions\" target=\"_blank\">user instructions</a> and <a "
-"href=\"http://openscience.fi/etsin-statistics\" "
-"target=\"_blank\">statistics</a> may be found in the openscience.fi website. "
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:52
-msgid ""
-" You can send inquiries or feedback concerning Etsin by contacting the <a "
-"href=\"mailto:servicedesk@csc.fi\" target=\"_blank\">service desk</a>. Should"
-" you find any erroneous information in the service, you may request their "
-"removal or correction by contacting the same address. "
-msgstr ""
-
-#: ckanext/kata/theme/templates/home/about.html:60
-msgid ""
-" The metadata is available via the <a href=\"http://openscience.fi/etsin-"
-"api\" target=_\"blank\"> Etsin API </a> with CC0 waiver. "
+"others' datasets with their permission. Read more in the <a "
+"href=\"https://www.fairdata.fi/etsin-tietosuojaseloste/\" "
+"target=\"_blank\">Etsin Privacy Policy Document </a>. <br/> <br/> The "
+"published metadata on the dataset is open to everyone. The data rights owner "
+"decides how the underlying research data can be accessed and by whom. Sharing"
+" your data openly is recommended whenever possible. Etsin works independently"
+" of actual data storage location. <br/> <br/> You can send inquiries or "
+"feedback concerning Etsin by contacting the service desk. Should you find any"
+" erroneous information in the service, you may request their removal or "
+"correction by contacting the same address. "
 msgstr ""
 
 #: ckanext/kata/theme/templates/home/index.html:3
@@ -5889,7 +5874,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: ckanext/kata/theme/templates/user/new_user_form.html:28
+#: ckanext/kata/theme/templates/user/new_user_form.html:35
 msgid "Create Account"
 msgstr ""
 
