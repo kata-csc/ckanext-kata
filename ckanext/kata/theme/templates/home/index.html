@@ -26,6 +26,19 @@
 
           <div class="extra-messages">
             {{ self.flash() }}
+            <p class="maintenance-message">
+              {% trans %}              
+                IMPORTANT INFORMATION ABOUT ETSIN! Old Etsin (etsin.avointiede.fi) will be migrated into new Etsin (<a href="https://etsin.fairdata.fi">etsin.fairdata.fi</a>) at the end of June 2019. After the migration all PUBLISHED datasets will be visible in new Etsin.
+              </br>
+              Describing the datasets in Etsin will not be possible after 12th June 2019. Instead, describing the datasets will be done in new metadata tool, Qvain, which will be launched at the begin of July 2019.
+              </br>
+              Note! Remember to publish your dataset if you want it to be migrated into new Etsin.
+              {% endtrans %}
+            </p>
+          </div>          
+          
+          <div class="extra-messages">
+            {{ self.flash() }}
             <i class="icon-warning-sign" style="display: inline;"></i>
             <p style="color: #2F4F2F; display: inline;">
               {% trans %}

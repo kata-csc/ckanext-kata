@@ -20,6 +20,20 @@
           {{ super() }}
         {% endblock %}
         <div class="row-fluid">
+          <div class="extra-messages">
+            {{ self.flash() }}
+            <p class="maintenance-message">
+               <!--style="color: white; background-color: red; font-size: 18px; line-height: 26px">-->
+              {% trans %}              
+                IMPORTANT INFORMATION ABOUT ETSIN! Old Etsin (etsin.avointiede.fi) will be migrated into new Etsin (<a href="https://etsin.fairdata.fi">etsin.fairdata.fi</a>) at the end of June 2019. After the migration all PUBLISHED datasets will be visible in new Etsin.
+              </br>
+              Describing the datasets in Etsin will not be possible after 12th June 2019. Instead, describing the datasets will be done in new metadata tool, Qvain, which will be launched at the begin of July 2019.
+              </br>
+              Note! Remember to publish your dataset if you want it to be migrated into new Etsin.
+              {% endtrans %}
+            </p>
+          </div>
+          
           <h2 class="etsin-secondary-title">{{ _("Search for a Dataset") }}</h2>
 
           <form id="dataset-search" class="dataset-search clearfix search-form" method="get" data-module="select-switch">
