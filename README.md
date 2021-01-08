@@ -1,3 +1,5 @@
+# This repository was part of an older version of Etsin which is no longer in use. For the newest version of Etsin, see https://github.com/CSCfi/etsin-finder/
+
 Kata is a CKAN extension for handling metadata of research datasets. It is used in [Etsin research data finder](https://etsin.avointiede.fi/en/).
 
 Installation
